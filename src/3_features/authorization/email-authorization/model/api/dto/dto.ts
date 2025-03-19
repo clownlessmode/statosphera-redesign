@@ -1,4 +1,4 @@
 export interface AuthorizationDto {
-  login: string;
+  email: string;
   password: string;
 }
