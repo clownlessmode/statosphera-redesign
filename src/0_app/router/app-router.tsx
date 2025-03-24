@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { AnimatePresence } from "framer-motion";
 import { ROUTES } from "./routes";
 import RouteGuard from "./route-guard";
-import React, { createElement } from "react";
 
 const AppRouter = () => {
   return (

@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { type LucideIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -13,6 +13,8 @@ import { Link } from "react-router";
 
 export function NavSecondary({
   items,
+  isCollapsed,
+  toggleSidebar,
   ...props
 }: {
   items: {
@@ -20,6 +22,8 @@ export function NavSecondary({
     url: string;
     icon: LucideIcon;
   }[];
+  isCollapsed: boolean;
+  toggleSidebar: () => void;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
@@ -40,6 +44,16 @@ export function NavSecondary({
           <SidebarMenuItem>
             <SidebarMenuButton>
               <ThemeSwitcher size="sm" />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem onClick={toggleSidebar}>
+            <SidebarMenuButton>
+              {isCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
+              <p>Скрыть</p>{" "}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
