@@ -3,25 +3,18 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@shared/ui/dialog";
-import { Label } from "@shared/ui/label";
-import { Input } from "@shared/ui/input";
+
 import { MessageSquareWarning } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@shared/ui/card";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import ErrorForm from "./error-form";
-
+import { Separator } from "@shared/ui/separator";
+import SuggestionForm from "./suggestion-form";
+import OtherForm from "./other-form";
 const Feedback = () => {
   return (
     <Dialog>
@@ -41,15 +34,26 @@ const Feedback = () => {
         </DialogHeader>
         <Tabs defaultValue="error" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="error">Ошибка</TabsTrigger>
-            <TabsTrigger value="suggestion">Предложение</TabsTrigger>
-            <TabsTrigger value="other">Другое</TabsTrigger>
+            <TabsTrigger value="error" className="sm:text-sm text-xs">
+              Ошибка
+            </TabsTrigger>
+            <TabsTrigger value="suggestion" className="sm:text-sm text-xs">
+              Предложение
+            </TabsTrigger>
+            <TabsTrigger value="other" className="sm:text-sm text-xs">
+              Другое
+            </TabsTrigger>
           </TabsList>
+          <Separator className="my-2" />
           <TabsContent value="error">
             <ErrorForm />
           </TabsContent>
-          <TabsContent value="suggestion">suggestion</TabsContent>
-          <TabsContent value="other">other</TabsContent>
+          <TabsContent value="suggestion">
+            <SuggestionForm />
+          </TabsContent>
+          <TabsContent value="other">
+            <OtherForm />
+          </TabsContent>
         </Tabs>
       </DialogContent>
     </Dialog>

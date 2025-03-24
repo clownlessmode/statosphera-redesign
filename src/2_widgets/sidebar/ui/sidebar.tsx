@@ -41,7 +41,7 @@ const Sidebar = ({
       },
       {
         title: "Дайджесты",
-        url: "#",
+        url: ROUTES_PATH.DIGESTS,
         icon: FileChartPieIcon,
       },
       {

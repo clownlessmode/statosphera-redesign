@@ -11,49 +11,41 @@ import {
 import { FC } from "react";
 import { FormValues } from "../model/error-form/types";
 import useForm from "../model/error-form/hook";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@shared/ui/select";
+
 import { ROUTES } from "@app/router/routes";
-import { RouteConfig } from "@app/router/types";
 import {
   ButtonGroup,
   ButtonGroupItem,
   RadioGroup,
-  RadioGroupItem,
 } from "@shared/ui/radio-group";
-import { FrownIcon, Meh, MehIcon, SmileIcon } from "lucide-react";
+import { Angry, Annoyed, Frown, Meh, ServerCrash } from "lucide-react";
+import { Textarea } from "@shared/ui/textarea";
+import MultipleSelector from "@shared/ui/multiple-selector";
 
 const importance = [
   {
     text: "Минимальная",
-    icon: <MehIcon className="size-6" />,
+    icon: <Meh />,
     value: "Минимальная",
   },
   {
     text: "Низкая",
-    icon: <FrownIcon className="size-6" />,
+    icon: <Annoyed />,
     value: "Низкая",
   },
   {
     text: "Средняя",
-    icon: <FrownIcon className="size-6" />,
+    icon: <Frown />,
     value: "Средняя",
   },
   {
     text: "Высокая",
-    icon: <FrownIcon className="size-6" />,
+    icon: <Angry />,
     value: "Высокая",
   },
   {
     text: "Критическая",
-    icon: <FrownIcon className="size-6" />,
+    icon: <ServerCrash />,
     value: "Критическая",
   },
 ];
@@ -75,40 +67,33 @@ const ErrorForm: FC = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Раздел</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full">
-                    <SelectValue
-                      placeholder="Выберите раздел"
-                      className="w-full"
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {Object.entries(
-                    ROUTES.reduce<Record<string, RouteConfig[]>>(
-                      (groups, route) => {
-                        const groupName = route.group || "Другое";
-                        if (!groups[groupName]) {
-                          groups[groupName] = [];
-                        }
-                        groups[groupName].push(route);
-                        return groups;
-                      },
-                      {}
-                    )
-                  ).map(([groupName, routes]) => (
-                    <SelectGroup key={groupName}>
-                      <SelectLabel>{groupName}</SelectLabel>
-                      {routes.map((route) => (
-                        <SelectItem key={route.path} value={route.path}>
-                          {route.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <MultipleSelector
+                  value={
+                    field.value
+                      ? [{ label: field.value, value: field.value }]
+                      : []
+                  }
+                  onChange={(options) => {
+                    // Если выбран хотя бы один элемент, берем значение первого
+                    if (options.length > 0) {
+                      field.onChange(options[0].value);
+                    } else {
+                      field.onChange(undefined);
+                    }
+                  }}
+                  defaultOptions={ROUTES.map((route) => ({
+                    label: route.label || "",
+                    value: route.label || "",
+                  }))}
+                  placeholder="Выберите раздел"
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      Ничего не найдено
+                    </p>
+                  }
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -147,7 +132,23 @@ const ErrorForm: FC = () => {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="page"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Комментарий</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Опишите проблему"
+                  className="resize-y"
+                  {...field}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

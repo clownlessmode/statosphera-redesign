@@ -32,7 +32,7 @@ const RouteGuard: FC<RouteGuardProps> = ({
 
   if (variant === "private") {
     if (!isAuthenticated) {
-      return <Navigate to={ROUTES_PATH.SIGN_IN} replace />;
+      return <Navigate to={ROUTES_PATH.LOGIN} replace />;
     }
 
     if (allowedRoles && !allowedRoles.includes(userRole ?? "")) {
