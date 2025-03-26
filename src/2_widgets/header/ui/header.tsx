@@ -10,22 +10,22 @@ import { ProfileBadge } from "@entities/session";
 import { NotificationsBadge } from "@entities/notifications";
 interface Props {
   title?: string;
-  actions?: React.ReactNode;
+  actions?: {
+    left?: React.ReactNode;
+    right?: React.ReactNode;
+  };
 }
 const Header: FC<Props> = ({ title, actions }) => {
   const { isMobile } = useSidebar();
   return (
     <div className="flex flex-row justify-between items-center gap-2">
       <div className="flex flex-row items-center gap-1">
-        {isMobile && (
-          <Button variant="ghost" size="icon">
-            <SidebarTrigger />
-          </Button>
-        )}
+        {isMobile && <SidebarTrigger size="icon" />}
         {title && <h1 className="text-xl font-bold">{title}</h1>}
+        {actions?.left && actions.left}
       </div>
-      {actions && actions}
       <div className="flex flex-row gap-2">
+        {actions?.right && actions.right}
         <Feedback />
         <NotificationsBadge />
         <ProfileBadge />

@@ -1,0 +1,98 @@
+import { Notification } from "@entities/notifications/model/types";
+
+export const NOTIFICATIONS_MOCK: Notification[] = [
+  {
+    id: 1,
+    is_read: true,
+    is_important: false,
+    alert_type: {
+      id: 1,
+      name: "Info",
+      created_at: "2025-01-15T10:30:00Z",
+      updated_at: "2025-01-15T10:30:00Z",
+    },
+    user: 101,
+    title: "Обновление системы",
+    description: "Плановое обновление системы завершено успешно",
+    message: "Все сервисы работают в штатном режиме после обновления",
+    emotion: "neutral",
+    read_at: "2025-03-20T15:45:00Z",
+    updated_at: "2025-03-20T14:30:00Z",
+  },
+  {
+    id: 2,
+    is_read: false,
+    is_important: true,
+    alert_type: {
+      id: 2,
+      name: "Warning",
+      created_at: "2025-01-10T08:20:00Z",
+      updated_at: "2025-01-10T08:20:00Z",
+    },
+    user: 101,
+    title: "Критическая нагрузка на сервер",
+    description: "Обнаружена высокая нагрузка на основной сервер",
+    message:
+      "Рекомендуется проверить активные процессы и оптимизировать работу приложений",
+    emotion: "concerned",
+    read_at: "",
+    updated_at: "2025-03-24T09:15:00Z",
+  },
+  {
+    id: 3,
+    is_read: false,
+    is_important: false,
+    alert_type: {
+      id: 3,
+      name: "Notification",
+      created_at: "2025-02-05T11:40:00Z",
+      updated_at: "2025-02-05T11:40:00Z",
+    },
+    user: 102,
+    title: "Новое сообщение",
+    description: "У вас новое сообщение от администратора",
+    message: "Пожалуйста, ознакомьтесь с обновленной политикой безопасности",
+    emotion: "neutral",
+    read_at: "",
+    updated_at: "2025-03-22T16:20:00Z",
+  },
+  {
+    id: 4,
+    is_read: true,
+    is_important: true,
+    alert_type: {
+      id: 4,
+      name: "Critical",
+      created_at: "2025-01-20T14:10:00Z",
+      updated_at: "2025-01-20T14:10:00Z",
+    },
+    user: 103,
+    title: "Сбой в работе базы данных",
+    description: "Обнаружен критический сбой в работе основной базы данных",
+    message:
+      "Аварийное восстановление выполнено успешно. Потери данных не обнаружены.",
+    emotion: "relieved",
+    read_at: "2025-03-19T10:05:00Z",
+    updated_at: "2025-03-19T08:30:00Z",
+  },
+  {
+    id: 5,
+    is_read: false,
+    is_important: false,
+    alert_type: {
+      id: 1,
+      name: "Info",
+      created_at: "2025-01-15T10:30:00Z",
+      updated_at: "2025-01-15T10:30:00Z",
+    },
+    user: 101,
+    title: "Запланированное обслуживание",
+    description:
+      "Плановое техническое обслуживание запланировано на следующую неделю",
+    message:
+      "Сервис будет недоступен 2 апреля с 02:00 до 04:00 по местному времени",
+    emotion: "informative",
+    read_at: "",
+    updated_at: "2025-03-25T11:00:00Z",
+  },
+];

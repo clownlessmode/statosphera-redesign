@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -8,7 +9,7 @@
   --background: #ffffff;
   --foreground: #333333;
 
-  --card: #ebebea;
+  --card: #fafafa;
   --card-foreground: #333333;
 
   --popover: #ffffff;

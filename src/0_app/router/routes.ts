@@ -7,7 +7,7 @@ import { Sidebar } from "@widgets/sidebar";
 import { Notifications } from "@pages/notifications";
 import { Digests } from "@pages/digests";
 import { Lessons } from "@pages/lessons";
-
+import { Roadmap } from "@pages/roadmap";
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -97,6 +97,13 @@ export const ROUTES: RouteConfig[] = [
     element: Lessons(),
     layout: Sidebar,
     label: "Обучение",
+  },
+  {
+    path: ROUTES_PATH.ROADMAP,
+    variant: "private",
+    element: Roadmap(),
+    layout: Sidebar,
+    label: "Роадмап",
   },
   {
     path: ROUTES_PATH.NOT_FOUND,

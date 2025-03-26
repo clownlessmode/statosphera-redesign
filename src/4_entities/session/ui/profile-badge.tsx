@@ -1,5 +1,5 @@
 import { Button } from "@shared/ui/button";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,

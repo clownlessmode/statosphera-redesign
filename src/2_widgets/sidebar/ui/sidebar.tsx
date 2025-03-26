@@ -108,8 +108,9 @@ const Sidebar = ({
       },
       {
         title: "Дорожка карта",
-        url: "#",
+        url: ROUTES_PATH.ROADMAP,
         icon: MapIcon,
+        disabled: true,
       },
     ],
   };

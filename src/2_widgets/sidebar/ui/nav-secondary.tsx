@@ -10,7 +10,7 @@ import {
 } from "@shared/ui/sidebar";
 import { ThemeSwitcher } from "@features/theme-switcher/theme-switcher";
 import { Link } from "react-router";
-
+import { cn } from "@shared/lib/utils";
 export function NavSecondary({
   items,
   isCollapsed,
@@ -21,6 +21,7 @@ export function NavSecondary({
     title: string;
     url: string;
     icon: LucideIcon;
+    disabled?: boolean;
   }[];
   isCollapsed: boolean;
   toggleSidebar: () => void;
@@ -30,13 +31,32 @@ export function NavSecondary({
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map(
-            (item: { title: string; url: string; icon: LucideIcon }) => (
+            (item: {
+              title: string;
+              url: string;
+              icon: LucideIcon;
+              disabled?: boolean;
+            }) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <Link to={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </Link>
+                <SidebarMenuButton
+                  asChild
+                  disabled={item.disabled}
+                  className={cn(
+                    "cursor-pointer",
+                    item.disabled && "opacity-30 cursor-not-allowed"
+                  )}
+                >
+                  {item.disabled ? (
+                    <span>
+                      <item.icon />
+                      {item.title}
+                    </span>
+                  ) : (
+                    <Link to={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  )}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )
