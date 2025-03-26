@@ -27,31 +27,39 @@ const Digests = async () => {
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
       <Tabs defaultValue="all" className="w-full">
         <Header title="Дайджесты" />
-
-        <div className="rounded-3xl bg-background p-4 gap-4 h-full flex flex-row-reverse">
-          <TabsList className="flex flex-col sticky top-4 text-start items-start w-1/5 h-fit">
-            <TabsTrigger value="all" className="w-full justify-between">
+        <div className="rounded-3xl bg-background p-4 gap-4 h-full flex flex-col lg:flex-row-reverse">
+          <TabsList className="flex flex-col static lg:sticky top-4 text-start items-start h-fit w-full lg:w-fit">
+            <TabsTrigger value="all" className="w-full justify-between gap-4">
               <div className="flex flex-row gap-2 items-center">
                 <GalleryHorizontalEnd className="size-4 text-muted-foreground" />
                 Все
               </div>
               <Badge>{digests.length}</Badge>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="w-full justify-between">
+            <TabsTrigger
+              value="analytics"
+              className="w-full justify-between gap-4"
+            >
               <div className="flex flex-row gap-2 items-center">
                 <ChartNetwork className="size-4 text-muted-foreground" />
                 Аналитика
               </div>
               <Badge>{analytics.length}</Badge>
             </TabsTrigger>
-            <TabsTrigger value="director" className="w-full justify-between">
+            <TabsTrigger
+              value="director"
+              className="w-full justify-between gap-4"
+            >
               <div className="flex flex-row gap-2 items-center">
                 <ShieldUser className="size-4 text-muted-foreground" /> Совет
                 директоров
               </div>
               <Badge>{director.length}</Badge>
             </TabsTrigger>
-            <TabsTrigger value="franchise" className="w-full justify-between">
+            <TabsTrigger
+              value="franchise"
+              className="w-full justify-between gap-4"
+            >
               <div className="flex flex-row gap-2 items-center">
                 <Store className="size-4 text-muted-foreground" /> Франчайзинг
               </div>
@@ -59,7 +67,7 @@ const Digests = async () => {
             </TabsTrigger>
             <TabsTrigger
               value="groupCompany"
-              className="w-full justify-between"
+              className="w-full justify-between gap-4"
             >
               <div className="flex flex-row gap-2 items-center">
                 <Boxes className="size-4 text-muted-foreground" /> Группа

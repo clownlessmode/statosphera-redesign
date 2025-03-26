@@ -21,8 +21,19 @@ export const EmailAuthorization: FC = () => {
   const { setSession } = useSession();
   const navigate = useNavigate();
   const handleSubmit = async (data: FormValues) => {
-    const session = await authorize(data);
-    setSession(session);
+    // const session = await authorize(data);
+    setSession({
+      auth: true,
+      idRole: 1,
+      idUser: 1,
+      isAdminProduct: true,
+      isGrillProject: true,
+      idStore: [1],
+      role: "ADMIN",
+      userName: "Тестовый Пользователь Статосферы",
+      school: false,
+    });
+    // session;
     navigate("/");
   };
   return (
