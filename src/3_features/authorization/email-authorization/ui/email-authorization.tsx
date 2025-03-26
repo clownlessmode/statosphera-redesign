@@ -11,16 +11,17 @@ import { Input } from "@shared/ui/input";
 import { Button } from "@shared/ui/button";
 import useForm from "../model/hook";
 import { preventSpaces } from "@shared/lib/prevent-spaces";
-import { FormValues } from "../model/types";
+// import { FormValues } from "../model/types";
 import { useAuthorizationController } from "../model/api/controller";
 import { useSession } from "@entities/session";
 import { useNavigate } from "react-router";
 export const EmailAuthorization: FC = () => {
   const form = useForm();
-  const { authorize, isAuthorizationLoading } = useAuthorizationController();
+  const { isAuthorizationLoading } = useAuthorizationController();
   const { setSession } = useSession();
   const navigate = useNavigate();
-  const handleSubmit = async (data: FormValues) => {
+  // data: FormValues;
+  const handleSubmit = async () => {
     // const session = await authorize(data);
     setSession({
       auth: true,
