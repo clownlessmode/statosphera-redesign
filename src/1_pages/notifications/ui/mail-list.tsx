@@ -7,7 +7,6 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import { Mail } from "../data";
 import useMail from "../use-mail";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 interface MailListProps {
   items: Mail[];

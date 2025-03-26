@@ -7,7 +7,7 @@ import { ClockIcon } from "lucide-react";
 import { FC } from "react";
 import { Digest } from "../model/types";
 
-const DigestCard: FC<Digest> = ({ date_add, id, pach_cdn, title, type }) => {
+const DigestCard: FC<Digest> = ({ date_add, pach_cdn, title, type }) => {
   return (
     <div className="flex flex-row gap-10 hover:scale-[0.98] transition-all duration-300 cursor-pointer origin-left">
       <Card

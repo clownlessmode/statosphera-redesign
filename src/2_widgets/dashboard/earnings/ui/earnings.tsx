@@ -7,7 +7,6 @@ import {
   LabelList,
   XAxis,
   YAxis,
-  Tooltip,
 } from "recharts";
 
 const chartData = [
@@ -27,42 +26,42 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CustomTooltip = ({ active, payload }: any) => {
-  if (!active || !payload || payload.length === 0) {
-    return null;
-  }
+// const CustomTooltip = ({ active, payload }: any) => {
+//   if (!active || !payload || payload.length === 0) {
+//     return null;
+//   }
 
-  const data = payload[0].payload;
-  const value = data.desktop;
+//   const data = payload[0].payload;
+//   const value = data.desktop;
 
-  const formatNumber = (value: number) => {
-    return (
-      new Intl.NumberFormat("ru-RU", {
-        style: "decimal",
-        maximumFractionDigits: 0,
-      }).format(value) + "₽"
-    );
-  };
+//   const formatNumber = (value: number) => {
+//     return (
+//       new Intl.NumberFormat("ru-RU", {
+//         style: "decimal",
+//         maximumFractionDigits: 0,
+//       }).format(value) + "₽"
+//     );
+//   };
 
-  return (
-    <div className="rounded-lg border bg-background p-2 shadow-sm">
-      <div className="font-medium">{data.fullName}</div>
-      <div className="flex items-center gap-2 text-sm">
-        <div className="flex h-2 w-2 rounded-full bg-[var(--color-desktop)]" />
-        <span>Выручка: {formatNumber(value)}</span>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="rounded-lg border bg-background p-2 shadow-sm">
+//       <div className="font-medium">{data.fullName}</div>
+//       <div className="flex items-center gap-2 text-sm">
+//         <div className="flex h-2 w-2 rounded-full bg-[var(--color-desktop)]" />
+//         <span>Выручка: {formatNumber(value)}</span>
+//       </div>
+//     </div>
+//   );
+// };
 
 const Earnings = () => {
-  const formatNumber = (value: number) => {
-    if (value >= 1000) {
-      return `${value.toLocaleString("ru-RU")}₽`;
-    } else {
-      return `${value}₽`;
-    }
-  };
+  // const formatNumber = (value: number) => {
+  //   if (value >= 1000) {
+  //     return `${value.toLocaleString("ru-RU")}₽`;
+  //   } else {
+  //     return `${value}₽`;
+  //   }
+  // };
 
   return (
     <Card className="w-full h-[400px] flex flex-col">

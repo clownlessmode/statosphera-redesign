@@ -2,5 +2,7 @@
 import { FormValues } from "./types";
 
 export const defaultValues: FormValues = {
-  email: "",
+  type: "",
+  page: "",
+  message: "",
 };

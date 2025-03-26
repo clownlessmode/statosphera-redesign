@@ -1,7 +1,3 @@
-import { Bell } from "lucide-react";
-import { Badge } from "@shared/ui/badge";
-import { Button } from "@shared/ui/button";
-
 import { FC } from "react";
 
 import { SidebarTrigger, useSidebar } from "@shared/ui/sidebar";

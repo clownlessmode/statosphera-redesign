@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { ArrowBigDownDash, ChevronDown, ExternalLink } from "lucide-react";
+import { ArrowBigDownDash, ExternalLink } from "lucide-react";
 import { Link } from "react-router";
 
 const WriteOffIndicator = () => {
