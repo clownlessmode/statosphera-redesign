@@ -8,6 +8,8 @@ import { Notifications } from "@pages/notifications";
 import { Digests } from "@pages/digests";
 import { Lessons } from "@pages/lessons";
 import { Roadmap } from "@pages/roadmap";
+import { Digest } from "@pages/digest";
+import { Stores } from "@pages/stores";
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -19,22 +21,13 @@ export const ROUTES_PATH = {
 
   // Тренировка
   LESSONS: "/lessons",
-  TRAINING_HOME: "/training/home",
-  TRAINING_GLOBAL: "/training/global",
-  TRAINING_INCOME_STORE: "/training/income-store",
-  INSTRUCTIONS_TRAINING: "/training/instructions",
-  INFO_VISION_TRAINING: "/training/info-vision",
 
   // Дайджесты
   DIGESTS: "/digest",
-  DIGEST_ALL: "/digest/all",
-  DIGEST_ANALITYCS: "/digest/analytics",
-  DIGEST_FRANCHISE: "/digest/franchise",
-  DIGEST_SD: "/digest/sd",
-  DIGEST_GROUP: "/digest/group",
+  DIGEST: "/digest/:id",
 
   // Магазины и доходы
-  STORE_DIRECTORY: "/store-directory",
+  STORES: "/stores",
   INCOME_STORE: "/income/store",
   INCOME_TODAY: "/income/today",
   INCOME_FRC: "/income/frc",
@@ -65,7 +58,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.LOGIN,
     variant: "auth",
-    element: Authorization(),
+    element: <Authorization />,
     label: "Логин",
   },
 
@@ -73,50 +66,63 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.DASHBOARD,
     variant: "private",
-    element: Dashboard(),
+    element: <Dashboard />,
     layout: Sidebar,
     label: "Главная",
   },
   {
     path: ROUTES_PATH.DIGESTS,
     variant: "private",
-    element: Digests(),
+    element: <Digests />,
     layout: Sidebar,
     label: "Дайджесты",
   },
   {
+    path: ROUTES_PATH.DIGEST,
+    variant: "private",
+    element: <Digest />,
+    layout: Sidebar,
+    label: "Дайджест",
+  },
+  {
     path: ROUTES_PATH.NOTIFICATIONS,
     variant: "private",
-    element: Notifications(),
+    element: <Notifications />,
     layout: Sidebar,
     label: "Уведомления",
   },
   {
     path: ROUTES_PATH.LESSONS,
     variant: "private",
-    element: Lessons(),
+    element: <Lessons />,
     layout: Sidebar,
     label: "Обучение",
   },
   {
     path: ROUTES_PATH.ROADMAP,
     variant: "private",
-    element: Roadmap(),
+    element: <Roadmap />,
     layout: Sidebar,
     label: "Роадмап",
   },
   {
     path: ROUTES_PATH.NOT_FOUND,
     variant: "public",
-    element: NotFound(),
+    element: <NotFound />,
     layout: Sidebar,
     label: "Не найдено",
   },
   {
     path: ROUTES_PATH.FORBIDDEN,
     variant: "public",
-    element: Forbidden(),
+    element: <Forbidden />,
     layout: Sidebar,
     label: "Forbidden",
+  },
+  {
+    path: ROUTES_PATH.STORES,
+    variant: "private",
+    element: <Stores />,
+    layout: Sidebar,
   },
 ];

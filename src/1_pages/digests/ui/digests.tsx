@@ -1,3 +1,5 @@
+"use client";
+import { useSearchParams } from "react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import { Header } from "@widgets/header";
 import { digestsMock } from "@shared/constants/mock/digests-mock";
@@ -14,7 +16,18 @@ import { Badge } from "@shared/ui/badge";
 
 import DigestCard from "@entities/digests/ui/digest-card";
 
-const Digests = async () => {
+const Digests = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentType = searchParams.get("type") || "all";
+
+  const updateURL = (value: string) => {
+    if (value === "all") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ type: value });
+    }
+  };
+
   const digests = digestsMock;
   const analytics = digests.filter((digest) => digest.type === "analytics");
   const director = digests.filter((digest) => digest.type === "director");
@@ -25,7 +38,11 @@ const Digests = async () => {
 
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
-      <Tabs defaultValue="all" className="w-full">
+      <Tabs
+        defaultValue={currentType}
+        className="w-full"
+        onValueChange={updateURL}
+      >
         <Header title="Дайджесты" />
         <div className="rounded-3xl bg-background p-4 gap-4 h-full flex flex-col lg:flex-row-reverse">
           <TabsList className="flex flex-col static lg:sticky top-4 text-start items-start h-fit w-full lg:w-fit">

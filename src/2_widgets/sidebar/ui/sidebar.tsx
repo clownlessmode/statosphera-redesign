@@ -66,7 +66,7 @@ const Sidebar = ({
       },
       {
         title: "Справочник магазинов",
-        url: "#",
+        url: ROUTES_PATH.STORES,
         icon: Store,
       },
       {
