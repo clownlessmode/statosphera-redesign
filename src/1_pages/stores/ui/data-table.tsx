@@ -29,11 +29,12 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    enableColumnResizing: true,
   });
 
   return (
-    <Table>
-      <TableHeader>
+    <Table className="rounded-md">
+      <TableHeader className="bg-muted text-muted-foreground rounded-md">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
