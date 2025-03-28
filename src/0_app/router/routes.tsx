@@ -10,6 +10,8 @@ import { Lessons } from "@pages/lessons";
 import { Roadmap } from "@pages/roadmap";
 import { Digest } from "@pages/digest";
 import { Stores } from "@pages/stores";
+import { Standarts } from "@pages/standarts";
+import { Standart } from "@pages/standart";
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -23,30 +25,17 @@ export const ROUTES_PATH = {
   LESSONS: "/lessons",
 
   // Дайджесты
-  DIGESTS: "/digest",
-  DIGEST: "/digest/:id",
+  DIGESTS: "/digests",
+  DIGEST: "/digests/:id",
+
+  // Стандарты
+  STANDARTS: "/standarts",
+  STANDART: "/standarts/:id",
 
   // Магазины и доходы
   STORES: "/stores",
-  INCOME_STORE: "/income/store",
-  INCOME_TODAY: "/income/today",
-  INCOME_FRC: "/income/frc",
 
-  // Документы и отчеты
-  INSTRUCTIONS: "/instructions",
-  INFO_VISION: "/info-vision",
   ROADMAP: "/roadmap",
-
-  // Анализ и рейтинги
-  RATING_PARTNERS: "/rating-partners",
-  ABC_ANALYSIS: "/abc",
-
-  // Специальные разделы
-  LOYALTY: "/loyalty",
-  GRILL: "/grill",
-  NOMENCLATURE: "/nomenclature",
-  RD: "/rd",
-  STAFF: "/staff",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -123,6 +112,18 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.STORES,
     variant: "private",
     element: <Stores />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.STANDARTS,
+    variant: "private",
+    element: <Standarts />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.STANDART,
+    variant: "private",
+    element: <Standart />,
     layout: Sidebar,
   },
 ];

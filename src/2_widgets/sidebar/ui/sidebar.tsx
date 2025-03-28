@@ -45,8 +45,8 @@ const Sidebar = ({
         icon: FileChartPieIcon,
       },
       {
-        title: "Инструкции",
-        url: "#",
+        title: "Стандарты",
+        url: ROUTES_PATH.STANDARTS,
         icon: FileQuestion,
       },
       {
