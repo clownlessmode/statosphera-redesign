@@ -1,5 +1,5 @@
 import { Header } from "@widgets/header";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router";
+import { useParams } from "react-router";
 
 import { File } from "lucide-react";
 
