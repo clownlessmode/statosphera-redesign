@@ -9,7 +9,7 @@ export const Authorization = () => {
       <div
         className="flex flex-col justify-between px-7 py-8 h-screen gap-6 items-center w-full bg-cover bg-center bg-no-repeat dark:bg-background/95 dark:bg-blend-overlay"
         style={{
-          backgroundImage: "url('/public/auth-background.png')",
+          backgroundImage: "url('/auth-background.webp')",
         }}
       >
         <div className="flex justify-between items-center w-full">
