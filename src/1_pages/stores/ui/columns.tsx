@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@shared/ui/badge";
+
 import { Payment } from "./data";
 
-import { SortableHeader } from "./sortable-header";
+import { SortableHeader } from "@shared/ui/sortable-header";
+import StatusBadge from "@shared/ui/status-badge";
 
 export const columns: ColumnDef<Payment>[] = [
   {
@@ -20,17 +21,13 @@ export const columns: ColumnDef<Payment>[] = [
     header: ({ column }) => <SortableHeader column={column} title="Статус" />,
     cell: ({ row }) => {
       const status = row.getValue("storeCondition") as string;
-      const normalizedStatus = status.toLowerCase();
-
-      let variant: "default" | "destructive" | "secondary" = "secondary";
-
-      if (normalizedStatus === "действующие") variant = "default";
-      else if (normalizedStatus === "закрытые") variant = "secondary";
-
       return (
-        <Badge variant={variant} className="w-full capitalize">
-          {status.toLowerCase()}
-        </Badge>
+        <StatusBadge
+          className="w-full"
+          status={status}
+          positiveValues={["действующие", "открытые"]}
+          negativeValues={["закрытые", "неактивные"]}
+        />
       );
     },
   },

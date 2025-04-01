@@ -17,24 +17,25 @@ import { useSession } from "@entities/session";
 import { useNavigate } from "react-router";
 export const EmailAuthorization: FC = () => {
   const form = useForm();
+  // authorize;
   const { isAuthorizationLoading } = useAuthorizationController();
   const { setSession } = useSession();
   const navigate = useNavigate();
-  // data: FormValues;
   const handleSubmit = async () => {
+    // data: FormValues;
     // const session = await authorize(data);
+    // session;
     setSession({
       auth: true,
       idRole: 1,
+      idStore: [1],
       idUser: 1,
       isAdminProduct: true,
       isGrillProject: true,
-      idStore: [1],
       role: "ADMIN",
-      userName: "Тестовый Пользователь Статосферы",
       school: false,
+      userName: "Тестовый Юзер Обрабатывающий",
     });
-    // session;
     navigate("/");
   };
   return (

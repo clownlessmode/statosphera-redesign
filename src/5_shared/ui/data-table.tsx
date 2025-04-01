@@ -32,6 +32,20 @@ interface DataTableProps<TData, TValue> {
   }) => React.ReactNode;
 }
 
+// Вспомогательная функция для проверки "пустой" ячейки
+function isEmptyValue(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string" && value.trim() === "") return true;
+  if (Array.isArray(value) && value.length === 0) return true;
+  if (
+    typeof value === "object" &&
+    value !== null &&
+    Object.keys(value).length === 0
+  )
+    return true;
+  return false;
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -60,15 +74,19 @@ export function DataTable<TData, TValue>({
 
   const handleRowClick = (row: TData) => {
     onRowClick?.(row);
-
-    if (renderRowDialog) {
-      setSelectedRow(row);
-    }
+    if (renderRowDialog) setSelectedRow(row);
   };
 
   const closeDialog = () => {
     setSelectedRow(null);
   };
+
+  // Проверяем, есть ли строки с НЕпустыми данными
+  const hasNonEmptyRows = table
+    .getRowModel()
+    .rows.some((row) =>
+      row.getVisibleCells().some((cell) => !isEmptyValue(cell.getValue()))
+    );
 
   return (
     <>
@@ -92,7 +110,16 @@ export function DataTable<TData, TValue>({
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {!table.getRowModel().rows.length || !hasNonEmptyRows ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Нет данных
+                </TableCell>
+              </TableRow>
+            ) : (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -109,15 +136,6 @@ export function DataTable<TData, TValue>({
                   ))}
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Нет данных
-                </TableCell>
-              </TableRow>
             )}
           </TableBody>
         </Table>

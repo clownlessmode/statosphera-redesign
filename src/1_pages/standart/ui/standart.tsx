@@ -67,28 +67,3 @@ const Standart = () => {
 };
 
 export default Standart;
-
-//  <Accordion
-//    type="single"
-//    className="flex flex-col static lg:sticky top-4 text-start items-start h-fit w-full lg:w-fit"
-//  >
-//    <AccordionItem value="all" className="w-full justify-between gap-4">
-//      <AccordionTrigger className="flex flex-row gap-2 items-center">
-
-//      </AccordionTrigger>
-//    </AccordionItem>
-//    <TabsTrigger value="all" className="w-full justify-between gap-4">
-//      <div className="flex flex-row gap-2 items-center">
-//        <Video className="size-4 text-muted-foreground" />
-//        Видео
-//      </div>
-//      <Badge>{standart?.attachedVideo}</Badge>
-//    </TabsTrigger>
-//    <TabsTrigger value="all" className="w-full justify-between gap-4">
-//      <div className="flex flex-row gap-2 items-center">
-//        <Camera className="size-4 text-muted-foreground" />
-//        Фото
-//      </div>
-//      <Badge>{standart?.attachedPhoto}</Badge>
-//    </TabsTrigger>
-//  </Accordion>;

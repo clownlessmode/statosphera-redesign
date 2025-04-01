@@ -12,6 +12,7 @@ import { Digest } from "@pages/digest";
 import { Stores } from "@pages/stores";
 import { Standarts } from "@pages/standarts";
 import { Standart } from "@pages/standart";
+import { Grill } from "@pages/grill";
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -36,6 +37,8 @@ export const ROUTES_PATH = {
   STORES: "/stores",
 
   ROADMAP: "/roadmap",
+
+  GRILL: "/grill",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -112,6 +115,12 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.STORES,
     variant: "private",
     element: <Stores />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.GRILL,
+    variant: "private",
+    element: <Grill />,
     layout: Sidebar,
   },
   {

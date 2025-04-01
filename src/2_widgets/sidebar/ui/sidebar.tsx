@@ -61,7 +61,7 @@ const Sidebar = ({
       },
       {
         title: "Гриль",
-        url: "#",
+        url: ROUTES_PATH.GRILL,
         icon: Ham,
       },
       {
