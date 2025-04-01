@@ -7,12 +7,6 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 import { DataTable } from "../../../5_shared/ui/data-table";
 import { columns } from "./columns";
 import { payments } from "./data";
-import {
-  Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogTitle,
-} from "@shared/ui/dialog";
 import StoreDetails from "./store-details";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import StoresMap from "./stores-map";
