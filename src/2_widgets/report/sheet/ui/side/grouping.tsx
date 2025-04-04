@@ -12,13 +12,15 @@ import { Eraser } from "lucide-react";
 
 import { FC } from "react";
 
-const Products: FC = () => {
+const Grouping: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Продукты</CardTitle>
+        <CardTitle>Группировка</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>Фильтруйте данные по продуктам</CardDescription>
+          <CardDescription>
+            Группируйте данные по нужным столбцам
+          </CardDescription>
           <Button
             size={"sm"}
             className="text-muted-foreground"
@@ -33,4 +35,4 @@ const Products: FC = () => {
   );
 };
 
-export default Products;
+export default Grouping;

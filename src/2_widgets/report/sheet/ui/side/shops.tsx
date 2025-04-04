@@ -7,38 +7,66 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+} from "@shared/ui/form";
+import { MultiSelect } from "@shared/ui/multiselect";
 
 import {
   BarChart3,
-  CalendarIcon,
-  CalendarRange,
+  Cat,
+  Dog,
   Eraser,
-  Flag,
-  History,
-  Sun,
-  Sunrise,
-  Sunset,
-  Undo,
+  Fish,
+  KeySquare,
+  Lock,
+  LockOpen,
+  Rabbit,
+  ShoppingBag,
+  Turtle,
 } from "lucide-react";
-
+const frameworksList = [
+  {
+    value: "next.js",
+    label: "Next.js",
+    icon: Dog,
+  },
+  {
+    value: "sveltekit",
+    label: "SvelteKit",
+    icon: Cat,
+  },
+  {
+    value: "nuxt.js",
+    label: "Nuxt.js",
+    icon: Turtle,
+  },
+  {
+    value: "remix",
+    label: "Remix",
+    icon: Rabbit,
+  },
+  {
+    value: "astro",
+    label: "Astro",
+    icon: Fish,
+  },
+];
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import DateRangePicker from "../../../../../5_shared/ui/date-range-picker";
-import { TimePicker } from "@shared/ui/time-picker";
 
 const Shops: FC = () => {
-  const form = useForm({
-    defaultValues: {
-      end: new Date(),
-    },
-  });
+  const form = useForm();
   return (
-    <Card className="w-[500px] mr-4">
+    <Card className="w-full mr-4">
       <CardHeader>
         <CardTitle>Магазины</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>Фильтруйте данные по дате и времени</CardDescription>
+          <CardDescription>Фильтруйте данные по магазинам</CardDescription>
           <Button
             size={"sm"}
             className="text-muted-foreground"
@@ -54,75 +82,51 @@ const Shops: FC = () => {
             className="flex flex-col gap-4 w-full"
             // onSubmit={form.handleSubmit(handleSubmit)}
           >
+            <FormItem>
+              <FormLabel htmlFor="">Канал</FormLabel>
+              <div className="flex flex-row gap-2 ">
+                <Button className="w-full">
+                  <KeySquare /> В аренду
+                </Button>
+                <Button className="w-full">
+                  <BarChart3 />
+                  Инвестиционная
+                </Button>
+                <Button className="w-full">
+                  <ShoppingBag />
+                  ФРС
+                </Button>
+              </div>
+            </FormItem>
+            <FormItem>
+              <FormLabel htmlFor="">Статус</FormLabel>
+              <div className="flex flex-row gap-2 ">
+                <Button className="w-full">
+                  <LockOpen /> Открытый
+                </Button>
+                <Button className="w-full">
+                  <Lock />
+                  Закрытый
+                </Button>
+              </div>
+            </FormItem>
             <FormField
               control={form.control}
-              name="end"
+              name="frameworks"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
-                  <DateRangePicker {...field} className="w-full" />
+                  <FormLabel>Партнеры</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={frameworksList}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      placeholder="Выберите партнеров"
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
-
-            <div className="w-full grid grid-cols-3 gap-2">
-              <Button>
-                <CalendarRange className="h-4 w-4" /> Полгода
-              </Button>
-              <Button>
-                <Flag className="h-4 w-4" /> Начало года
-              </Button>
-              <Button>
-                <BarChart3 className="h-4 w-4" /> Текущий квартал
-              </Button>
-              <Button>
-                <CalendarIcon className="h-4 w-4" /> Текущий месяц
-              </Button>
-              <Button>
-                <Undo className="h-4 w-4" /> Прошлая неделя
-              </Button>
-              <Button>
-                <History className="h-4 w-4" /> Прошлый месяц
-              </Button>
-            </div>
-            <div className="flex flex-row gap-1 items-end w-full">
-              <FormField
-                control={form.control}
-                name="end"
-                render={({ field }) => (
-                  <FormItem className="mt-4 w-full">
-                    <FormLabel htmlFor={field.name}>
-                      Промежуток времени
-                    </FormLabel>
-                    <TimePicker {...field} className="w-full" />
-                  </FormItem>
-                )}
-              />
-              <p className="pb-2 font-light text-muted-foreground">––––</p>
-              <FormField
-                control={form.control}
-                name="end"
-                render={({ field }) => (
-                  <FormItem className="mt-4 w-full">
-                    <FormLabel htmlFor={field.name} className="opacity-0">
-                      Промежуток времени
-                    </FormLabel>
-                    <TimePicker {...field} className="w-full" />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="w-full grid grid-cols-3 gap-2">
-              <Button>
-                Утро <Sunrise />
-              </Button>
-              <Button>
-                День <Sun />
-              </Button>
-              <Button>
-                Вечер <Sunset />
-              </Button>
-            </div>
           </form>
         </Form>
       </CardContent>

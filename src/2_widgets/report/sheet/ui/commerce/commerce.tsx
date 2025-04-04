@@ -19,6 +19,11 @@ import {
   ViewTabsList,
   ViewTabsTrigger,
 } from "@shared/ui/view-tabs";
+import Shops from "../side/shops";
+import Products from "../side/products";
+import Grouping from "../side/grouping";
+import Indicators from "../side/indicators";
+import Unique from "../side/unique";
 const filters = [
   {
     title: "Дата",
@@ -28,12 +33,12 @@ const filters = [
   {
     title: "Магазины",
     icon: Store,
-    component: DateFilter,
+    component: Shops,
   },
   {
     title: "Продукты",
     icon: ShoppingBasket,
-    component: DateFilter,
+    component: Products,
   },
 ];
 
@@ -41,7 +46,7 @@ const grouping = [
   {
     title: "Группировка",
     icon: CircleDotDashed,
-    component: DateFilter,
+    component: Grouping,
   },
 ];
 
@@ -49,12 +54,12 @@ const indicators = [
   {
     title: "Показатели",
     icon: Grid2x2Check,
-    component: DateFilter,
+    component: Indicators,
   },
   {
     title: "Уникальные значения",
     icon: Combine,
-    component: DateFilter,
+    component: Unique,
   },
 ];
 const Commerce = () => {
