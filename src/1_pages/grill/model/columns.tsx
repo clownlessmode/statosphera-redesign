@@ -15,8 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@shared/ui/dialog";
-import { Input } from "@shared/ui/input";
-import { Label } from "recharts";
+
 import { EllipsisVertical } from "lucide-react";
 
 export const columns: ColumnDef<Grill>[] = [
