@@ -1,3 +1,5 @@
+import { ROUTES_PATH } from "@app/router/routes";
+import { useSession } from "@entities/session";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,8 +15,15 @@ import { DropdownMenuShortcut } from "@shared/ui/dropdown-menu";
 
 import { DropdownMenuItem } from "@shared/ui/dropdown-menu";
 import { LogOutIcon } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const Logout = () => {
+  const { clearSession } = useSession();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    clearSession();
+    navigate(ROUTES_PATH.LOGIN);
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -35,7 +44,7 @@ const Logout = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Отмена</AlertDialogCancel>
-          <AlertDialogAction>Выйти</AlertDialogAction>
+          <AlertDialogAction onClick={handleLogout}>Выйти</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

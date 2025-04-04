@@ -10,18 +10,20 @@ import { FC, useState } from "react";
 // import { terr } from "./terr-mock";
 import { useTheme } from "@app/providers/theme-provider";
 // import StoreDetails from "./store-details";
-import { Payment } from "./data";
+
 import { Card } from "@shared/ui/card";
-import { terr } from "./terr-mock";
+
 import StoreDetails from "./store-details";
+import { Store } from "../model/types";
+import { TERRITORY_MOCK } from "@shared/constants/mock/territory-mock";
 
 interface Props {
-  stores: Payment[];
+  stores: Store[];
 }
 
 const StoresMap: FC<Props> = ({ stores }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedStore, setSelectedStore] = useState<Payment>();
+  const [selectedStore, setSelectedStore] = useState<Store>();
   const { theme } = useTheme();
   return (
     <>
@@ -50,7 +52,7 @@ const StoresMap: FC<Props> = ({ stores }) => {
             }}
           >
             <Polygon
-              geometry={[terr]} // Обратите внимание на дополнительные квадратные скобки
+              geometry={[TERRITORY_MOCK]}
               options={{
                 fillColor: "#ebe8fc",
                 strokeColor: "#e50046",

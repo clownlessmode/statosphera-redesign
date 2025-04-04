@@ -1,11 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Payment } from "./data";
-
 import { SortableHeader } from "@shared/ui/sortable-header";
 import StatusBadge from "@shared/ui/status-badge";
+import { Store } from "./types";
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Store>[] = [
   {
     accessorKey: "idStore",
     header: ({ column }) => <SortableHeader column={column} title="ID" />,

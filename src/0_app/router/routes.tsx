@@ -13,6 +13,7 @@ import { Stores } from "@pages/stores";
 import { Standarts } from "@pages/standarts";
 import { Standart } from "@pages/standart";
 import { Grill } from "@pages/grill";
+import { Report } from "@pages/report";
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -35,7 +36,7 @@ export const ROUTES_PATH = {
 
   // Магазины и доходы
   STORES: "/stores",
-
+  REPORT: "/report",
   ROADMAP: "/roadmap",
 
   GRILL: "/grill",
@@ -115,6 +116,12 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.STORES,
     variant: "private",
     element: <Stores />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.REPORT,
+    variant: "private",
+    element: <Report />,
     layout: Sidebar,
   },
   {

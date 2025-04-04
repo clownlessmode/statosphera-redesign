@@ -51,7 +51,7 @@ const Sidebar = ({
       },
       {
         title: "Отчёты",
-        url: "#",
+        url: `${ROUTES_PATH.REPORT}?open=true`,
         icon: FileChartColumn,
       },
       {

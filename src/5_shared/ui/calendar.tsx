@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import * as React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
 
-import { cn } from "@shared/lib/utils"
-import { buttonVariants } from "@shared/ui/button"
+import { cn } from "@shared/lib/utils";
+import { buttonVariants } from "@shared/ui/button";
+import { ru } from "date-fns/locale";
 
 function Calendar({
   className,
@@ -15,6 +16,8 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker>) {
   return (
     <DayPicker
+      
+      locale={ru}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
@@ -50,9 +53,9 @@ function Calendar({
           "day-range-end aria-selected:bg-primary aria-selected:text-primary-foreground",
         day_selected:
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
+        day_today: "bg-secondary text-secondary-foreground",
         day_outside:
-          "day-outside text-muted-foreground aria-selected:text-muted-foreground",
+          "day-outside text-muted-foreground aria-selected:text-foreground",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
@@ -69,7 +72,7 @@ function Calendar({
       }}
       {...props}
     />
-  )
+  );
 }
 
-export { Calendar }
+export { Calendar };

@@ -1,35 +1,6 @@
-export type Payment = {
-  idStore: number;
-  storeCondition: string;
-  ageGroup: string;
-  storeName: string | null;
-  storeAddress: string | null;
-  storeCity: string | null;
-  idCity: number | null;
-  storeRegion: string | null;
-  idRegion: number | null;
-  nameManager: string | null;
-  idManager: number | null;
-  legalEntity: string | null;
-  longitude: number | null;
-  latitude: number | null;
-  sublease: string | null;
-  coffee: string | null;
-  openingHours: string | null;
-  nightStore: string | null;
-  deliveryIm: string | null;
-  storeEmail: string | null;
-  storePhone: string | null;
-  countCachBox: string | null;
-  countCachBoxKso: string | null;
-  countCachBoxGibrid: string | null;
-  distanceNextStore: string | null;
-  walkingDelivery: string | null;
-  startDate: string | null;
-  endDate: string | null;
-};
+import type { Store } from "@pages/stores/model/types";
 
-export const payments: Payment[] = [
+export const STORES_MOCK: Store[] = [
   {
     idStore: 42036,
     storeCondition: "Действующие",

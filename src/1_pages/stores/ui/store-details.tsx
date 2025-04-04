@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@shared/ui/dialog";
 import { ComponentProps, FC } from "react";
-import { Payment } from "./data";
+
 import { Card, CardContent, CardHeader } from "@shared/ui/card";
 import {
   Building,
@@ -19,15 +19,17 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { Separator } from "@shared/ui/separator";
-import { NotFoundRow } from "./not-found-row";
+import { NotFoundRow } from "../../../5_shared/ui/table/not-found-row";
 import StatusBadge from "@shared/ui/status-badge";
 import formatDate from "@shared/lib/format-date";
 import { ScrollArea } from "@shared/ui/scroll-area";
 import { Map, Placemark, Polygon } from "@pbe/react-yandex-maps";
-import { terr } from "./terr-mock";
+
 import { useTheme } from "@app/providers/theme-provider";
+import { Store } from "../model/types";
+import { TERRITORY_MOCK } from "@shared/constants/mock/territory-mock";
 interface Props extends ComponentProps<FC<DialogProps>> {
-  row: Payment;
+  row: Store;
 }
 
 const StoreDetails: FC<Props> = ({ open, onOpenChange, row }) => {
@@ -213,7 +215,7 @@ const StoreDetails: FC<Props> = ({ open, onOpenChange, row }) => {
               }}
             >
               <Polygon
-                geometry={[terr]} // Обратите внимание на дополнительные квадратные скобки
+                geometry={[TERRITORY_MOCK]} // Обратите внимание на дополнительные квадратные скобки
                 options={{
                   fillColor: "#ebe8fc",
                   strokeColor: "#e50046",
