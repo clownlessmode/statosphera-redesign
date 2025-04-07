@@ -201,6 +201,10 @@ export const MultiSelect = React.forwardRef<
                     return (
                       <Badge
                         key={value}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleOption(value);
+                        }}
                         className={cn(multiSelectVariants({ variant }))}
                         style={{ animationDuration: `${animation}s` }}
                       >
@@ -208,13 +212,7 @@ export const MultiSelect = React.forwardRef<
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
                         {option?.label}
-                        <XCircle
-                          className="ml-2 h-4 w-4 cursor-pointer"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            toggleOption(value);
-                          }}
-                        />
+                        <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
                       </Badge>
                     );
                   })}
@@ -273,6 +271,7 @@ export const MultiSelect = React.forwardRef<
               onKeyDown={handleInputKeyDown}
             />
             <CommandList>
+              {/* <ScrollArea className="h-[320px]"> */}
               <CommandEmpty>Ничего не найдено</CommandEmpty>
               <CommandGroup>
                 <CommandItem
@@ -343,6 +342,7 @@ export const MultiSelect = React.forwardRef<
                   </CommandItem>
                 </div>
               </CommandGroup>
+              {/* </ScrollArea> */}
             </CommandList>
           </Command>
         </PopoverContent>

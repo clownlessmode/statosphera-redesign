@@ -64,7 +64,6 @@ const DateFilter: FC = () => {
                 </FormItem>
               )}
             />
-
             <div className="w-full grid grid-cols-3 gap-2">
               <Button>
                 <CalendarRange className="h-4 w-4" /> Полгода
