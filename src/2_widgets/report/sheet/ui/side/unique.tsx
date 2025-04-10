@@ -1,3 +1,4 @@
+import { COLUMN_KEYS } from "@shared/constants/column-keys";
 import { Button } from "@shared/ui/button";
 
 import {
@@ -7,15 +8,86 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Form, FormItem, FormLabel } from "@shared/ui/form";
-
+import { CheckboxTree } from "@shared/ui/checkbox-tree";
+import {
+  ShoppingBag,
+  Share2,
+  Map,
+  Landmark,
+  CreditCard,
+  Receipt,
+} from "lucide-react";
 import { Eraser } from "lucide-react";
 
 import { FC } from "react";
-import { useForm } from "react-hook-form";
+export const useUniqueValues = () => {
+  // const mode = useMode((s) => s.mode);
 
+  return [
+    {
+      id: "storeUniqueGroup",
+      name: "Магазины",
+      icon: ShoppingBag, // lucide-react иконка для магазинов
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_STORE, name: "Магазины" },
+        { id: COLUMN_KEYS.UNIQUE_STORE_LM, name: "Магазины PM" },
+        { id: COLUMN_KEYS.UNIQUE_STORE_LY, name: "Магазины PY" },
+      ],
+    },
+    {
+      id: "channelUniqueGroup",
+      name: "Каналы",
+      icon: Share2, // lucide-react иконка для каналов
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_CHANNEL, name: "Каналы" },
+        { id: COLUMN_KEYS.UNIQUE_CHANNEL_LM, name: "Каналы PM" },
+        { id: COLUMN_KEYS.UNIQUE_CHANNEL_LY, name: "Каналы PY" },
+      ],
+    },
+    {
+      id: "regionUniqueGroup",
+      name: "Регионы",
+      icon: Map, // lucide-react иконка для регионов
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_REGION, name: "Регионы" },
+        { id: COLUMN_KEYS.UNIQUE_REGION_LM, name: "Регионы PM" },
+        { id: COLUMN_KEYS.UNIQUE_REGION_LY, name: "Регионы PY" },
+      ],
+    },
+    {
+      id: "cityUniqueGroup",
+      name: "Города",
+      icon: Landmark, // lucide-react иконка для городов
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_CITY, name: "Города" },
+        { id: COLUMN_KEYS.UNIQUE_CITY_LM, name: "Города PM" },
+        { id: COLUMN_KEYS.UNIQUE_CITY_LY, name: "Города PY" },
+      ],
+    },
+    {
+      id: "cardNumberUniqueGroup",
+      name: "Номера карт",
+      icon: CreditCard, // lucide-react иконка для карт
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_CARD_NUMBER, name: "Номера карт" },
+        { id: COLUMN_KEYS.UNIQUE_CARD_NUMBER_LM, name: "Номера карт PM" },
+        { id: COLUMN_KEYS.UNIQUE_CARD_NUMBER_LY, name: "Номера карт PY" },
+      ],
+    },
+    {
+      id: "checkUniqueGroup",
+      name: "Чек",
+      icon: Receipt, // lucide-react иконка для чеков
+      children: [
+        { id: COLUMN_KEYS.UNIQUE_CHECK, name: "Чек" },
+        { id: COLUMN_KEYS.UNIQUE_CHECK_LM, name: "Чек PM" },
+        { id: COLUMN_KEYS.UNIQUE_CHECK_LY, name: "Чек PY" },
+      ],
+    },
+  ];
+};
 const Unique: FC = () => {
-  const form = useForm();
+  const uniques = useUniqueValues();
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -34,21 +106,7 @@ const Unique: FC = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-4 w-full"
-            // onSubmit={form.handleSubmit(handleSubmit)}
-          >
-            <FormItem>
-              <FormLabel htmlFor="">Канал</FormLabel>
-              <div className="flex flex-row gap-2">
-                <Button>В аренду</Button>
-                <Button>Инвестиционная</Button>
-                <Button>ФРС</Button>
-              </div>
-            </FormItem>
-          </form>
-        </Form>
+        <CheckboxTree data={uniques} />
       </CardContent>
     </Card>
   );

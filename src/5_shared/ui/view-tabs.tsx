@@ -131,7 +131,7 @@ export function ViewTabsTrigger({
       onClick={handleClick}
       data-state={isActive ? "active" : "inactive"}
       className={cn(
-        "group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium whitespace-nowrap",
+        "group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium whitespace-nowrap cursor-pointer",
         "transition-colors duration-200",
         "hover:bg-muted hover:text-foreground",
         "text-muted-foreground",

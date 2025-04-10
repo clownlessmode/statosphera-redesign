@@ -16,23 +16,68 @@ import {
   Eraser,
   Flag,
   History,
-  Sun,
-  Sunrise,
-  Sunset,
   Undo,
 } from "lucide-react";
 
 import { FC } from "react";
-import { useForm } from "react-hook-form";
-import DateRangePicker from "../../../../../5_shared/ui/date-range-picker";
-import { TimePicker } from "@shared/ui/time-picker";
+
+import DateRangePicker from "@shared/ui/date-range-picker";
+import useForm from "../model/hook";
+import {
+  endOfMonth,
+  endOfQuarter,
+  format,
+  startOfMonth,
+  startOfQuarter,
+  startOfYear,
+  subDays,
+  subMonths,
+  subWeeks,
+} from "date-fns";
 
 const DateFilter: FC = () => {
-  const form = useForm({
-    defaultValues: {
-      end: new Date(),
-    },
-  });
+  const form = useForm();
+
+  const setDateRange = (start: Date, end: Date) => {
+    form.setValue("dateStart", format(start, "yyyy-MM-dd"));
+    form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
+  };
+
+  const today = new Date();
+
+  const handleHalfYear = () => {
+    const start = subMonths(today, 6);
+    setDateRange(start, today);
+  };
+
+  const handleStartOfYear = () => {
+    const start = startOfYear(today);
+    setDateRange(start, today);
+  };
+
+  const handleCurrentQuarter = () => {
+    const start = startOfQuarter(today);
+    const end = endOfQuarter(today);
+    setDateRange(start, end);
+  };
+
+  const handleCurrentMonth = () => {
+    const start = startOfMonth(today);
+    const end = subDays(today, 1); // до вчерашнего дня
+    setDateRange(start, end);
+  };
+
+  const handleLastWeek = () => {
+    const end = subDays(today, 1);
+    const start = subWeeks(end, 1);
+    setDateRange(start, end);
+  };
+
+  const handleLastMonth = () => {
+    const start = startOfMonth(subMonths(today, 1));
+    const end = endOfMonth(subMonths(today, 1));
+    setDateRange(start, end);
+  };
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -56,7 +101,7 @@ const DateFilter: FC = () => {
           >
             <FormField
               control={form.control}
-              name="end"
+              name="dateStart"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
@@ -64,30 +109,30 @@ const DateFilter: FC = () => {
                 </FormItem>
               )}
             />
-            <div className="w-full grid grid-cols-3 gap-2">
-              <Button>
-                <CalendarRange className="h-4 w-4" /> Полгода
+            <div className="w-full grid grid-cols-3 gap-2 mt-2">
+              <Button type="button" onClick={handleHalfYear}>
+                <CalendarRange className="h-4 w-4 mr-1" /> Полгода
               </Button>
-              <Button>
-                <Flag className="h-4 w-4" /> Начало года
+              <Button type="button" onClick={handleStartOfYear}>
+                <Flag className="h-4 w-4 mr-1" /> Начало года
               </Button>
-              <Button>
-                <BarChart3 className="h-4 w-4" /> Текущий квартал
+              <Button type="button" onClick={handleCurrentQuarter}>
+                <BarChart3 className="h-4 w-4 mr-1" /> Текущий квартал
               </Button>
-              <Button>
-                <CalendarIcon className="h-4 w-4" /> Текущий месяц
+              <Button type="button" onClick={handleCurrentMonth}>
+                <CalendarIcon className="h-4 w-4 mr-1" /> Текущий месяц
               </Button>
-              <Button>
-                <Undo className="h-4 w-4" /> Прошлая неделя
+              <Button type="button" onClick={handleLastWeek}>
+                <Undo className="h-4 w-4 mr-1" /> Прошлая неделя
               </Button>
-              <Button>
-                <History className="h-4 w-4" /> Прошлый месяц
+              <Button type="button" onClick={handleLastMonth}>
+                <History className="h-4 w-4 mr-1" /> Прошлый месяц
               </Button>
             </div>
-            <div className="flex flex-row gap-1 items-end w-full">
+            {/* <div className="flex flex-row gap-1 items-end w-full">
               <FormField
                 control={form.control}
-                name="end"
+                name="timeStart"
                 render={({ field }) => (
                   <FormItem className="mt-4 w-full">
                     <FormLabel htmlFor={field.name}>
@@ -100,18 +145,23 @@ const DateFilter: FC = () => {
               <p className="pb-2 font-light text-muted-foreground">––––</p>
               <FormField
                 control={form.control}
-                name="end"
+                name="timeEnd"
                 render={({ field }) => (
                   <FormItem className="mt-4 w-full">
                     <FormLabel htmlFor={field.name} className="opacity-0">
                       Промежуток времени
                     </FormLabel>
-                    <TimePicker {...field} className="w-full" />
+                    <TimePicker
+                      disabled
+                      value={null}
+                      {...field}
+                      className="w-full"
+                    />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="w-full grid grid-cols-3 gap-2">
+            </div> */}
+            {/* <div className="w-full grid grid-cols-3 gap-2">
               <Button>
                 Утро <Sunrise />
               </Button>
@@ -121,7 +171,7 @@ const DateFilter: FC = () => {
               <Button>
                 Вечер <Sunset />
               </Button>
-            </div>
+            </div> */}
           </form>
         </Form>
       </CardContent>

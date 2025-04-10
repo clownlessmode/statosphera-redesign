@@ -52,9 +52,7 @@ export function TimePicker({
   // hours12h = hh
   const formatStr = useMemo(
     () =>
-      use12HourFormat
-        ? "yyyy-MM-dd hh:mm:ss.SSS a xxxx"
-        : "yyyy-MM-dd HH:mm:ss.SSS xxxx",
+      use12HourFormat ? "yyyy-MM-dd hh:mm a xxxx" : "yyyy-MM-dd HH:mm xxxx",
     [use12HourFormat]
   );
   const [ampm, setAmpm] = useState(

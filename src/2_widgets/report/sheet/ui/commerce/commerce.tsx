@@ -9,7 +9,6 @@ import {
 
 import { Separator } from "@shared/ui/separator";
 
-import DateFilter from "../side/date";
 import {
   ViewTabs,
   ViewTabsContent,
@@ -24,6 +23,7 @@ import Products from "../side/products";
 import Grouping from "../side/grouping";
 import Indicators from "../side/indicators";
 import Unique from "../side/unique";
+import { DateFilter } from "../side/date";
 const filters = [
   {
     title: "Дата",
