@@ -7,7 +7,7 @@ import {
 } from "@shared/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 
-import Commerce from "./commerce/commerce";
+import Commerce from "./commerce/ui/commerce";
 import Check from "./check/check";
 
 export default function SheetDemo() {

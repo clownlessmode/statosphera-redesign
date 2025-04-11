@@ -18,12 +18,13 @@ import {
   ViewTabsList,
   ViewTabsTrigger,
 } from "@shared/ui/view-tabs";
-import Shops from "../side/shops";
-import Products from "../side/products";
-import Grouping from "../side/grouping";
-import Indicators from "../side/indicators";
-import Unique from "../side/unique";
-import { DateFilter } from "../side/date";
+import Shops from "../../side/shops/ui/shops";
+import Products from "../../side/products/ui/products";
+import Grouping from "../../side/grouping/ui/grouping";
+import Indicators from "../../side/indicators";
+import Unique from "../../side/unique";
+import { DateFilter } from "../../side/date";
+import { CombinedSubmitButton } from "./submit-button";
 const filters = [
   {
     title: "Дата",
@@ -65,7 +66,7 @@ const indicators = [
 const Commerce = () => {
   return (
     <ViewTabs defaultValue={filters[0].title} className="flex flex-row gap-4">
-      <ViewTabsList className="flex flex-col h-fit bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4">
+      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4">
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
           <ViewTabsGroupContent>
@@ -76,6 +77,7 @@ const Commerce = () => {
             ))}
           </ViewTabsGroupContent>
         </ViewTabsGroup>
+
         <Separator />
 
         <ViewTabsGroup>
@@ -99,6 +101,8 @@ const Commerce = () => {
             ))}
           </ViewTabsGroupContent>
         </ViewTabsGroup>
+        <Separator />
+        <CombinedSubmitButton />
       </ViewTabsList>
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96">
         {filters.map((item, index) => (

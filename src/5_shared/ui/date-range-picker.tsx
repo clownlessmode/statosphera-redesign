@@ -1,24 +1,26 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@shared/ui/button";
 import { Calendar } from "@shared/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@shared/ui/popover";
 import { cn } from "@shared/lib/utils";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import * as React from "react";
 import { type DateRange } from "react-day-picker";
 
-export default function DateRangePicker({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: addDays(new Date(), -20),
-    to: new Date(),
-  });
+interface DateRangePickerProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+  value?: DateRange;
+  onChange?: (range: DateRange | undefined) => void;
+}
 
+export const DateRangePicker = React.forwardRef<
+  HTMLDivElement,
+  DateRangePickerProps
+>(({ className, value, onChange, ...props }, ref) => {
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid gap-2", className)} ref={ref} {...props}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -26,18 +28,18 @@ export default function DateRangePicker({
             variant={"outline"}
             className={cn(
               "w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              !value && "text-muted-foreground"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
+            {value?.from ? (
+              value.to ? (
                 <>
-                  {format(date.from, "dd.MM.yyyy")} -{" "}
-                  {format(date.to, "dd.MM.yyyy")}
+                  {format(value.from, "dd.MM.yyyy")} –{" "}
+                  {format(value.to, "dd.MM.yyyy")}
                 </>
               ) : (
-                format(date.from, "dd.MM.yyyy")
+                format(value.from, "dd.MM.yyyy")
               )
             ) : (
               <span>Выберите дату</span>
@@ -47,13 +49,15 @@ export default function DateRangePicker({
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
+            defaultMonth={value?.from}
+            selected={value}
+            onSelect={onChange}
             numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>
     </div>
   );
-}
+});
+
+DateRangePicker.displayName = "DateRangePicker";

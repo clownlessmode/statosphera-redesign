@@ -1,84 +1,68 @@
-import { Button } from "@shared/ui/button";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@shared/ui/card";
-import CheckboxCards from "@shared/ui/checkbox-cards";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-} from "@shared/ui/form";
-import { MultiSelect } from "@shared/ui/multiselect";
-
 import {
   BarChart3,
-  Eraser,
   KeySquare,
   Lock,
   LockOpen,
   ShoppingBag,
   User,
 } from "lucide-react";
-
-const channel = [
+import {
+  AGE_GROUP,
+  CHANNEL,
+  STORE_CONDITIONS,
+} from "../../../commerce/model/store";
+export const channel = [
   {
     label: "В аренду",
-    value: "day",
+    value: CHANNEL.RENT,
     icon: KeySquare,
   },
   {
     label: "Инвестиционная",
-    value: "invest",
+    value: CHANNEL.INVEST,
     icon: BarChart3,
     disableCheck: true,
   },
   {
     label: "ФРС",
-    value: "frs",
+    value: CHANNEL.FRS,
     icon: ShoppingBag,
   },
 ];
 
-const time = [
+export const time = [
   {
     label: "Менее 3 мес.",
-    value: "0-3",
+    value: AGE_GROUP.NOT_CALCULATED,
   },
   {
     label: "От 3 до 6 мес.",
-    value: "3-6",
+    value: AGE_GROUP.TODDLER,
   },
   {
     label: "От 6 до 12 мес.",
-    value: "6-12",
+    value: AGE_GROUP.TEENAGER,
   },
   {
     label: "Более года",
-    value: "12+",
+    value: AGE_GROUP.ADULT,
   },
 ];
 
-const status = [
+export const status = [
   {
     label: "Открытые",
-    value: "open",
+    value: STORE_CONDITIONS.OPEN,
     icon: LockOpen,
   },
   {
     label: "Закрытые",
-    value: "closed",
+    value: STORE_CONDITIONS.CLOSED,
     icon: Lock,
   },
 ];
 
-const usersList = [
+export const usersList = [
   {
     value: "1",
     label: "Иванов А.П.",
@@ -130,7 +114,7 @@ const usersList = [
     icon: User,
   },
 ];
-const cities = [
+export const cities = [
   { idCity: 2470, storeCity: "Кемерово" },
   { idCity: 624387, storeCity: "Калтан" },
   { idCity: 624472, storeCity: "Железногорск" },
@@ -165,7 +149,7 @@ const cities = [
   { idCity: 751088019, storeCity: "Назарово" },
   { idCity: null, storeCity: null },
 ];
-const regions = [
+export const regions = [
   { idRegion: 2469, storeRegion: "Кемеровская область" },
   { idRegion: 624471, storeRegion: "Красноярский край" },
   { idRegion: 1441288, storeRegion: "Новосибирская область" },
@@ -174,7 +158,7 @@ const regions = [
   { idRegion: 551881893, storeRegion: "Республика Алтай" },
   { idRegion: null, storeRegion: null },
 ];
-const shops = [
+export const shops = [
   { idStore: 42036, storeName: "А-Судженск, 50-летия Октября ул, 1" },
   { idStore: 24002, storeName: "Ачинск, 3-й микрорайон ул, 9а" },
   { idStore: 22010, storeName: "Барнаул, 65 лет Победы ул, 13" },
@@ -335,155 +319,3 @@ const shops = [
   { idStore: 42037, storeName: "Юрга, Победы пр, 38" },
   { idStore: 2003, storeName: null },
 ];
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-
-const Shops: FC = () => {
-  const form = useForm();
-  return (
-    <Card className="w-full mr-4">
-      <CardHeader>
-        <CardTitle>Магазины</CardTitle>
-        <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>Фильтруйте данные по магазинам</CardDescription>
-          <Button
-            size={"sm"}
-            className="text-muted-foreground"
-            variant={"outline"}
-          >
-            Очистить фильтры <Eraser className="text-primary/80" />
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-4 w-full"
-            // onSubmit={form.handleSubmit(handleSubmit)}
-          >
-            <FormItem>
-              <FormLabel htmlFor="">Канал</FormLabel>
-              <CheckboxCards options={channel} className="grid-cols-3" />
-            </FormItem>
-            <FormItem>
-              <FormLabel htmlFor="">Статус</FormLabel>
-              <CheckboxCards options={status} />
-            </FormItem>
-            <FormItem>
-              <FormLabel htmlFor="">Период деятельности магазина</FormLabel>
-              <CheckboxCards
-                options={time}
-                className="grid-cols-4"
-                disableCheck
-              />
-            </FormItem>
-            <FormField
-              control={form.control}
-              name="partners"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Партнеры</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      options={usersList}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      placeholder="Выберите партнеров"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="regions"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Регионы</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      options={regions
-                        .filter(
-                          (
-                            region
-                          ): region is {
-                            idRegion: number;
-                            storeRegion: string;
-                          } =>
-                            region.idRegion !== null &&
-                            region.storeRegion !== null
-                        )
-                        .map((region) => ({
-                          label: region.storeRegion,
-                          value: String(region.idRegion),
-                        }))}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      placeholder="Выберите регионы"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cities"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Города</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      options={cities
-                        .filter(
-                          (
-                            city
-                          ): city is { idCity: number; storeCity: string } =>
-                            city.idCity !== null && city.storeCity !== null
-                        )
-                        .map((city) => ({
-                          label: city.storeCity,
-                          value: String(city.idCity),
-                        }))}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      placeholder="Выберите города"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="shops"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Магазины</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      options={shops
-                        .filter(
-                          (
-                            shop
-                          ): shop is { idStore: number; storeName: string } =>
-                            shop.idStore !== null && shop.storeName !== null
-                        )
-                        .map((shop) => ({
-                          label: shop.storeName,
-                          value: String(shop.idStore),
-                        }))}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      placeholder="Выберите магазины"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default Shops;

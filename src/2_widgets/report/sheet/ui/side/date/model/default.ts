@@ -8,13 +8,14 @@ let dateStart: string;
 let dateEnd: string;
 
 if (today.getDate() === 1) {
+  // Сегодня — первое число месяца → берём весь предыдущий месяц
   const lastMonth = subMonths(today, 1);
   dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
   dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
 } else {
-  const yesterday = subDays(today, 1);
-  dateStart = format(yesterday, "yyyy-MM-dd");
-  dateEnd = format(yesterday, "yyyy-MM-dd");
+  // Иначе → с начала месяца до вчерашнего дня
+  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
+  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
 }
 
 export const defaultValues: FormValues = {

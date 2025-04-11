@@ -12,25 +12,42 @@ interface Option {
   icon?: LucideIcon;
 }
 
-interface Props extends Omit<CheckboxPrimitive.CheckboxProps, "onChange"> {
+interface Props
+  extends Omit<CheckboxPrimitive.CheckboxProps, "onChange" | "checked"> {
   options: Option[];
   className?: string;
   disableCheck?: boolean;
-  value?: string[];
-  onChange?: (value: string[]) => void;
+  value?: any; // Может быть значением или null
+  onChange?: (value: any) => void; // Возвращает значение или null
 }
 
-const CheckboxCards: FC<Props> = ({
+const BooleanCheckboxCard: FC<Props> = ({
   options,
   className,
   disableCheck = false,
-  value = [],
+  value = null,
   onChange,
 }) => {
-  const handleClick = (optionValue: string) => {
-    const newValue = value.includes(optionValue)
-      ? value.filter((v) => v !== optionValue)
-      : [...value, optionValue];
+  // Определяем состояние чекбоксов
+  const isBothSelected = value === null;
+  const isOptionSelected = (optionValue: any) => {
+    return isBothSelected || value === optionValue;
+  };
+
+  const handleClick = (optionValue: any) => {
+    let newValue: any;
+
+    if (value === null) {
+      // Если оба выбраны (null), клик на любом отключает его
+      newValue =
+        optionValue === options[0].value ? options[1].value : options[0].value;
+    } else if (value === optionValue) {
+      // Клик на уже выбранном - снимаем выделение
+      newValue = null;
+    } else {
+      // Выбираем другой вариант
+      newValue = optionValue;
+    }
 
     onChange?.(newValue);
   };
@@ -41,7 +58,7 @@ const CheckboxCards: FC<Props> = ({
         <CheckboxPrimitive.Root
           disabled={option.disabled}
           key={option.value}
-          checked={value.includes(option.value)}
+          checked={isOptionSelected(option.value)}
           onCheckedChange={() => handleClick(option.value)}
           className={cn(
             "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:shadow-xs data-[state=checked]:hover:bg-primary/90",
@@ -54,7 +71,7 @@ const CheckboxCards: FC<Props> = ({
           {option.label}
           {!disableCheck && !option.disableCheck && (
             <CheckboxPrimitive.Indicator className="absolute top-1/2 -translate-y-1/2 right-4">
-              <Check className=" text-primary-foreground" strokeWidth={2} />
+              <Check className="text-primary-foreground" strokeWidth={2} />
             </CheckboxPrimitive.Indicator>
           )}
         </CheckboxPrimitive.Root>
@@ -63,4 +80,4 @@ const CheckboxCards: FC<Props> = ({
   );
 };
 
-export default CheckboxCards;
+export default BooleanCheckboxCard;

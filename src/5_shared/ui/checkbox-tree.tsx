@@ -239,11 +239,6 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
             return item?.checkable === false || newCheckedState[id];
           });
 
-          const anyChecked = siblings.some((id) => {
-            const item = findItemById(id, data);
-            return item?.checkable !== false && newCheckedState[id];
-          });
-
           // If all checkable children are checked, check the parent
           // If some are checked, parent should be in indeterminate state (we'll handle this visually)
           newCheckedState[parentId] = allChecked;
@@ -359,7 +354,7 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
         />
         <div
           className="w-full h-[48px]"
-          onDrop={(e) => {
+          onDrop={() => {
             handleDrop({ id: "", name: "parent_div" });
           }}
         ></div>

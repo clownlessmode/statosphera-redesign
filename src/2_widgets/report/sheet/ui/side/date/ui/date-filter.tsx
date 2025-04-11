@@ -1,5 +1,4 @@
 import { Button } from "@shared/ui/button";
-
 import {
   Card,
   CardContent,
@@ -8,170 +7,115 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
-
 import {
   BarChart3,
   CalendarIcon,
   CalendarRange,
-  Eraser,
   Flag,
   History,
   Undo,
 } from "lucide-react";
+import { FC, useEffect } from "react";
 
-import { FC } from "react";
-
-import DateRangePicker from "@shared/ui/date-range-picker";
 import useForm from "../model/hook";
-import {
-  endOfMonth,
-  endOfQuarter,
-  format,
-  startOfMonth,
-  startOfQuarter,
-  startOfYear,
-  subDays,
-  subMonths,
-  subWeeks,
-} from "date-fns";
+
+import { DateRangePicker } from "@shared/ui/date-range-picker";
+
+import { format } from "date-fns";
+import ClearFilters from "@features/clear-filters/ui/clear-filters";
+import { dateRanges } from "@shared/lib/date-ranges";
+import { useFiltersStore } from "../../../commerce/model/store";
 
 const DateFilter: FC = () => {
   const form = useForm();
+  const today = new Date();
+  const { updateDateFilter } = useFiltersStore();
 
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
   };
 
-  const today = new Date();
-
-  const handleHalfYear = () => {
-    const start = subMonths(today, 6);
-    setDateRange(start, today);
-  };
-
-  const handleStartOfYear = () => {
-    const start = startOfYear(today);
-    setDateRange(start, today);
-  };
-
-  const handleCurrentQuarter = () => {
-    const start = startOfQuarter(today);
-    const end = endOfQuarter(today);
+  // Обработчики кнопок
+  const handleButtonClick = (handlerKey: keyof typeof dateRanges) => {
+    const { start, end } = dateRanges[handlerKey](today);
     setDateRange(start, end);
   };
 
-  const handleCurrentMonth = () => {
-    const start = startOfMonth(today);
-    const end = subDays(today, 1); // до вчерашнего дня
-    setDateRange(start, end);
-  };
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      updateDateFilter(values.dateStart || "", values.dateEnd || "");
+    });
+    return () => subscription.unsubscribe();
+  }, [form, updateDateFilter]);
 
-  const handleLastWeek = () => {
-    const end = subDays(today, 1);
-    const start = subWeeks(end, 1);
-    setDateRange(start, end);
-  };
-
-  const handleLastMonth = () => {
-    const start = startOfMonth(subMonths(today, 1));
-    const end = endOfMonth(subMonths(today, 1));
-    setDateRange(start, end);
-  };
   return (
     <Card className="w-full mr-4">
       <CardHeader>
         <CardTitle>Дата</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>Фильтруйте данные по дате и времени</CardDescription>
-          <Button
-            size={"sm"}
-            className="text-muted-foreground"
-            variant={"outline"}
-          >
-            Очистить фильтры <Eraser className="text-primary/80" />
-          </Button>
+          <ClearFilters form={form} />
         </div>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            className="flex flex-col gap-4 w-full"
-            // onSubmit={form.handleSubmit(handleSubmit)}
-          >
+          <form className="flex flex-col gap-4 w-full">
             <FormField
               control={form.control}
               name="dateStart"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
-                  <DateRangePicker {...field} className="w-full" />
+                  <DateRangePicker
+                    {...field}
+                    className="w-full"
+                    value={{
+                      from: new Date(form.getValues().dateStart),
+                      to: new Date(form.getValues().dateEnd),
+                    }}
+                  />
                 </FormItem>
               )}
             />
             <div className="w-full grid grid-cols-3 gap-2 mt-2">
-              <Button type="button" onClick={handleHalfYear}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("halfYear")}
+              >
                 <CalendarRange className="h-4 w-4 mr-1" /> Полгода
               </Button>
-              <Button type="button" onClick={handleStartOfYear}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("startOfYear")}
+              >
                 <Flag className="h-4 w-4 mr-1" /> Начало года
               </Button>
-              <Button type="button" onClick={handleCurrentQuarter}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("currentQuarter")}
+              >
                 <BarChart3 className="h-4 w-4 mr-1" /> Текущий квартал
               </Button>
-              <Button type="button" onClick={handleCurrentMonth}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("currentMonth")}
+              >
                 <CalendarIcon className="h-4 w-4 mr-1" /> Текущий месяц
               </Button>
-              <Button type="button" onClick={handleLastWeek}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("lastWeek")}
+              >
                 <Undo className="h-4 w-4 mr-1" /> Прошлая неделя
               </Button>
-              <Button type="button" onClick={handleLastMonth}>
+              <Button
+                type="button"
+                onClick={() => handleButtonClick("lastMonth")}
+              >
                 <History className="h-4 w-4 mr-1" /> Прошлый месяц
               </Button>
             </div>
-            {/* <div className="flex flex-row gap-1 items-end w-full">
-              <FormField
-                control={form.control}
-                name="timeStart"
-                render={({ field }) => (
-                  <FormItem className="mt-4 w-full">
-                    <FormLabel htmlFor={field.name}>
-                      Промежуток времени
-                    </FormLabel>
-                    <TimePicker {...field} className="w-full" />
-                  </FormItem>
-                )}
-              />
-              <p className="pb-2 font-light text-muted-foreground">––––</p>
-              <FormField
-                control={form.control}
-                name="timeEnd"
-                render={({ field }) => (
-                  <FormItem className="mt-4 w-full">
-                    <FormLabel htmlFor={field.name} className="opacity-0">
-                      Промежуток времени
-                    </FormLabel>
-                    <TimePicker
-                      disabled
-                      value={null}
-                      {...field}
-                      className="w-full"
-                    />
-                  </FormItem>
-                )}
-              />
-            </div> */}
-            {/* <div className="w-full grid grid-cols-3 gap-2">
-              <Button>
-                Утро <Sunrise />
-              </Button>
-              <Button>
-                День <Sun />
-              </Button>
-              <Button>
-                Вечер <Sunset />
-              </Button>
-            </div> */}
           </form>
         </Form>
       </CardContent>
