@@ -82,116 +82,172 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
       return state;
     });
 
-    // Get all item IDs in the tree
-    const getAllItemIds = React.useCallback(
-      (items: TreeDataItem[] | TreeDataItem): string[] => {
-        const ids: string[] = [];
-        if (items instanceof Array) {
-          items.forEach((item) => {
-            ids.push(item.id);
-            if (item.children) {
-              ids.push(...getAllItemIds(item.children));
-            }
-          });
+    // Cache for item lookup to avoid repeated traversals
+    const itemCache = React.useRef<Map<string, TreeDataItem>>(new Map());
+    // Cache for parent-child relationships
+    const parentChildMap = React.useRef<Map<string, string[]>>(new Map());
+    // Cache for parent lookup
+    const childParentMap = React.useRef<Map<string, string>>(new Map());
+
+    // Initialize cache on mount or when data changes
+    React.useEffect(() => {
+      // Clear caches
+      itemCache.current.clear();
+      parentChildMap.current.clear();
+      childParentMap.current.clear();
+
+      // Build cache
+      const buildCache = (
+        items: TreeDataItem[] | TreeDataItem,
+        parentId?: string
+      ) => {
+        if (Array.isArray(items)) {
+          items.forEach((item) => buildCache(item, parentId));
         } else {
-          ids.push(items.id);
-          if (items.children) {
-            ids.push(...getAllItemIds(items.children));
+          // Add item to cache
+          itemCache.current.set(items.id, items);
+
+          // Add parent-child relationship
+          if (parentId) {
+            childParentMap.current.set(items.id, parentId);
+
+            const siblings = parentChildMap.current.get(parentId) || [];
+            siblings.push(items.id);
+            parentChildMap.current.set(parentId, siblings);
+          }
+
+          // Process children
+          if (items.children && items.children.length > 0) {
+            buildCache(items.children, items.id);
           }
         }
-        return ids;
+      };
+
+      buildCache(data);
+    }, [data]);
+
+    // Find an item by ID using cache
+    const findItemById = React.useCallback(
+      (itemId: string): TreeDataItem | undefined => {
+        return itemCache.current.get(itemId);
       },
       []
     );
 
     // Get all descendant IDs of an item
     const getDescendantIds = React.useCallback(
-      (item: TreeDataItem): string[] => {
+      (itemId: string): string[] => {
         const ids: string[] = [];
-        if (item.children) {
-          item.children.forEach((child) => {
+        const item = findItemById(itemId);
+
+        if (!item || !item.children) return ids;
+
+        const processChildren = (children: TreeDataItem[]) => {
+          children.forEach((child) => {
             ids.push(child.id);
             if (child.children) {
-              ids.push(...getDescendantIds(child));
+              processChildren(child.children);
             }
           });
-        }
-        return ids;
-      },
-      []
-    );
-
-    // Find an item by ID
-    const findItemById = React.useCallback(
-      (
-        itemId: string,
-        items: TreeDataItem[] | TreeDataItem
-      ): TreeDataItem | null => {
-        if (items instanceof Array) {
-          for (const item of items) {
-            if (item.id === itemId) return item;
-            if (item.children) {
-              const found = findItemById(itemId, item.children);
-              if (found) return found;
-            }
-          }
-          return null;
-        } else {
-          if (items.id === itemId) return items;
-          if (items.children) {
-            return findItemById(itemId, items.children);
-          }
-          return null;
-        }
-      },
-      []
-    );
-
-    // Get parent-child relationships
-    const getParentChildMap = React.useCallback(
-      (items: TreeDataItem[] | TreeDataItem): Map<string, string[]> => {
-        const map = new Map<string, string[]>();
-
-        const process = (item: TreeDataItem, parentId?: string) => {
-          if (parentId) {
-            const children = map.get(parentId) || [];
-            children.push(item.id);
-            map.set(parentId, children);
-          }
-
-          if (item.children) {
-            item.children.forEach((child) => {
-              process(child, item.id);
-            });
-          }
         };
 
-        if (items instanceof Array) {
-          items.forEach((item) => process(item));
-        } else {
-          process(items);
-        }
-
-        return map;
+        processChildren(item.children);
+        return ids;
       },
-      []
+      [findItemById]
     );
 
-    // Find the parent of an item
-    const findParentId = React.useCallback(
-      (
-        itemId: string,
-        parentChildMap: Map<string, string[]>
-      ): string | null => {
-        for (const [parentId, childIds] of parentChildMap.entries()) {
-          if (childIds.includes(itemId)) {
-            return parentId;
+    // Handle checkbox change with debouncing to prevent rapid re-renders
+    const handleCheckChange = React.useCallback(
+      (itemId: string, checked: boolean) => {
+        const item = findItemById(itemId);
+        if (!item) return;
+
+        setCheckedState((prevState) => {
+          const newState = { ...prevState };
+
+          // Set the current item's state
+          newState[itemId] = checked;
+
+          // Update descendants if they exist
+          const descendants = getDescendantIds(itemId);
+          descendants.forEach((id) => {
+            const descendant = findItemById(id);
+            if (descendant && descendant.checkable !== false) {
+              newState[id] = checked;
+            }
+          });
+
+          // Update ancestors
+          let currentId = itemId;
+          let parentId = childParentMap.current.get(currentId);
+
+          while (parentId) {
+            const siblings = parentChildMap.current.get(parentId) || [];
+
+            // Calculate if all checkable siblings are checked
+            const allSiblingsChecked = siblings.every((id) => {
+              const siblingItem = findItemById(id);
+              return siblingItem?.checkable === false || newState[id];
+            });
+
+            // Only update parent if needed
+            if (newState[parentId] !== allSiblingsChecked) {
+              newState[parentId] = allSiblingsChecked;
+              currentId = parentId;
+              parentId = childParentMap.current.get(currentId);
+            } else {
+              break; // No need to check further up if state doesn't change
+            }
           }
-        }
-        return null;
+
+          return newState;
+        });
+
+        // Notify of changes using a setTimeout to ensure we're not in the middle of a render cycle
+        setTimeout(() => {
+          if (onCheckedChange) {
+            const checkedIds = Object.entries(checkedState)
+              .filter(([_, isChecked]) => isChecked)
+              .map(([id]) => id);
+            onCheckedChange(checkedIds);
+          }
+        }, 0);
       },
-      []
+      [checkedState, findItemById, getDescendantIds, onCheckedChange]
     );
+
+    // Calculate indeterminate states - memoized to prevent recalculation
+    const getIndeterminateState = React.useCallback(
+      (itemId: string): boolean => {
+        const item = findItemById(itemId);
+        if (!item || !item.children) return false;
+
+        const descendants = getDescendantIds(itemId);
+        if (descendants.length === 0) return false;
+
+        // Check if some but not all descendants are checked
+        const hasChecked = descendants.some((id) => checkedState[id]);
+        const hasUnchecked = descendants.some((id) => !checkedState[id]);
+
+        return hasChecked && hasUnchecked;
+      },
+      [checkedState, findItemById, getDescendantIds]
+    );
+
+    // Create a memoized map of indeterminate states to avoid recalculations during render
+    const indeterminateStates = React.useMemo(() => {
+      const states = new Map<string, boolean>();
+
+      // Only calculate for items with children
+      Array.from(itemCache.current.values())
+        .filter((item) => item.children && item.children.length > 0)
+        .forEach((item) => {
+          states.set(item.id, getIndeterminateState(item.id));
+        });
+
+      return states;
+    }, [checkedState, getIndeterminateState]);
 
     // Handle select change
     const handleSelectChange = React.useCallback(
@@ -202,91 +258,6 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
         }
       },
       [onSelectChange]
-    );
-
-    // Handle checkbox change
-    const handleCheckChange = React.useCallback(
-      (itemId: string, checked: boolean) => {
-        const item = findItemById(itemId, data);
-        if (!item) return;
-
-        const newCheckedState = { ...checkedState };
-
-        // Set the clicked item's state
-        newCheckedState[itemId] = checked;
-
-        // Get all descendants and set their state
-        const descendants = getDescendantIds(item);
-        descendants.forEach((id) => {
-          const descendantItem = findItemById(id, data);
-          if (descendantItem && descendantItem.checkable !== false) {
-            newCheckedState[id] = checked;
-          }
-        });
-
-        // Update parent states
-        const parentChildMap = getParentChildMap(data);
-        const updateParentState = (childId: string) => {
-          const parentId = findParentId(childId, parentChildMap);
-          if (!parentId) return;
-
-          const parent = findItemById(parentId, data);
-          if (!parent || parent.checkable === false) return;
-
-          const siblings = parentChildMap.get(parentId) || [];
-          const allChecked = siblings.every((id) => {
-            const item = findItemById(id, data);
-            return item?.checkable === false || newCheckedState[id];
-          });
-
-          // If all checkable children are checked, check the parent
-          // If some are checked, parent should be in indeterminate state (we'll handle this visually)
-          newCheckedState[parentId] = allChecked;
-
-          // Recursively update ancestors
-          updateParentState(parentId);
-        };
-
-        // Start updating from the item's parent
-        updateParentState(itemId);
-
-        setCheckedState(newCheckedState);
-
-        // Notify of changes
-        if (onCheckedChange) {
-          const checkedIds = Object.entries(newCheckedState)
-            .filter(([_, isChecked]) => isChecked)
-            .map(([id]) => id);
-          onCheckedChange(checkedIds);
-        }
-      },
-      [
-        checkedState,
-        data,
-        findItemById,
-        getDescendantIds,
-        getParentChildMap,
-        findParentId,
-        onCheckedChange,
-      ]
-    );
-
-    // Calculate indeterminate states
-    const getIndeterminateState = React.useCallback(
-      (itemId: string): boolean => {
-        const item = findItemById(itemId, data);
-        if (!item || !item.children) return false;
-
-        const descendants = getDescendantIds(item);
-        const checkedDescendants = descendants.filter((id) => checkedState[id]);
-
-        // If some but not all descendants are checked, the item is in indeterminate state
-        return (
-          checkedDescendants.length > 0 &&
-          checkedDescendants.length < descendants.length
-        );
-      },
-      [checkedState, data, findItemById, getDescendantIds]
     );
 
     // Handle drag
@@ -349,7 +320,7 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
           draggedItem={draggedItem}
           checkedState={checkedState}
           handleCheckChange={handleCheckChange}
-          getIndeterminateState={getIndeterminateState}
+          indeterminateStates={indeterminateStates}
           {...props}
         />
         <div
@@ -373,7 +344,7 @@ type CheckboxTreeItemProps = CheckboxTreeProps & {
   draggedItem: TreeDataItem | null;
   checkedState: CheckedState;
   handleCheckChange: (itemId: string, checked: boolean) => void;
-  getIndeterminateState: (itemId: string) => boolean;
+  indeterminateStates: Map<string, boolean>;
 };
 
 const CheckboxTreeItem = React.forwardRef<
@@ -394,7 +365,7 @@ const CheckboxTreeItem = React.forwardRef<
       draggedItem,
       checkedState,
       handleCheckChange,
-      getIndeterminateState,
+      indeterminateStates,
       ...props
     },
     ref
@@ -409,6 +380,7 @@ const CheckboxTreeItem = React.forwardRef<
             <li key={item.id}>
               {item.children ? (
                 <CheckboxTreeNode
+                  indeterminateStates={indeterminateStates}
                   item={item}
                   selectedItemId={selectedItemId}
                   expandedItemIds={expandedItemIds}
@@ -420,7 +392,7 @@ const CheckboxTreeItem = React.forwardRef<
                   draggedItem={draggedItem}
                   checkedState={checkedState}
                   handleCheckChange={handleCheckChange}
-                  getIndeterminateState={getIndeterminateState}
+                  isIndeterminate={indeterminateStates.get(item.id) || false}
                 />
               ) : (
                 <CheckboxTreeLeaf
@@ -433,7 +405,7 @@ const CheckboxTreeItem = React.forwardRef<
                   draggedItem={draggedItem}
                   checkedState={checkedState}
                   handleCheckChange={handleCheckChange}
-                  getIndeterminateState={getIndeterminateState}
+                  isIndeterminate={indeterminateStates.get(item.id) || false}
                 />
               )}
             </li>
@@ -457,7 +429,8 @@ const CheckboxTreeNode = ({
   draggedItem,
   checkedState,
   handleCheckChange,
-  getIndeterminateState,
+  isIndeterminate,
+  indeterminateStates,
 }: {
   item: TreeDataItem;
   handleSelectChange: (item: TreeDataItem | undefined) => void;
@@ -470,7 +443,8 @@ const CheckboxTreeNode = ({
   draggedItem: TreeDataItem | null;
   checkedState: CheckedState;
   handleCheckChange: (itemId: string, checked: boolean) => void;
-  getIndeterminateState: (itemId: string) => boolean;
+  isIndeterminate: boolean;
+  indeterminateStates: Map<string, boolean>;
 }) => {
   const [value, setValue] = React.useState(
     expandedItemIds.includes(item.id) ? [item.id] : []
@@ -478,7 +452,16 @@ const CheckboxTreeNode = ({
   const [isDragOver, setIsDragOver] = React.useState(false);
 
   const isChecked = checkedState[item.id] || false;
-  const isIndeterminate = getIndeterminateState(item.id);
+
+  // Use memoized handler for checkbox change to prevent recreating function on each render
+  const onCheckboxChange = React.useCallback(
+    (checked: boolean) => {
+      if (item.checkable !== false && !item.disabled) {
+        handleCheckChange(item.id, checked === true);
+      }
+    },
+    [item.id, item.checkable, item.disabled, handleCheckChange]
+  );
 
   const onDragStart = (e: React.DragEvent) => {
     if (!item.draggable) {
@@ -538,25 +521,12 @@ const CheckboxTreeNode = ({
           onDragLeave={onDragLeave}
           onDrop={onDrop}
         >
-          <div
-            className="flex items-center mr-2"
-            data-checkbox-trigger="true"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (item.checkable !== false && !item.disabled) {
-                handleCheckChange(item.id, !isChecked);
-              }
-            }}
-          >
+          <div className="flex items-center mr-2" data-checkbox-trigger="true">
             <CheckboxPrimitive.Root
               id={`checkbox-${item.id}`}
               checked={isChecked}
               disabled={item.disabled || item.checkable === false}
-              onCheckedChange={(checked) => {
-                if (item.checkable !== false && !item.disabled) {
-                  handleCheckChange(item.id, checked === true);
-                }
-              }}
+              onCheckedChange={onCheckboxChange}
               className={cn(
                 "h-4 w-4 shrink-0 rounded-sm border border-primary",
                 "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
@@ -604,7 +574,7 @@ const CheckboxTreeNode = ({
             draggedItem={draggedItem}
             checkedState={checkedState}
             handleCheckChange={handleCheckChange}
-            getIndeterminateState={getIndeterminateState}
+            indeterminateStates={indeterminateStates}
           />
         </AccordionContent>
       </AccordionPrimitive.Item>
@@ -624,7 +594,7 @@ const CheckboxTreeLeaf = React.forwardRef<
     draggedItem: TreeDataItem | null;
     checkedState: CheckedState;
     handleCheckChange: (itemId: string, checked: boolean) => void;
-    getIndeterminateState: (itemId: string) => boolean;
+    isIndeterminate: boolean;
   }
 >(
   (
@@ -639,13 +609,23 @@ const CheckboxTreeLeaf = React.forwardRef<
       draggedItem,
       checkedState,
       handleCheckChange,
-      getIndeterminateState,
+      isIndeterminate,
       ...props
     },
     ref
   ) => {
     const [isDragOver, setIsDragOver] = React.useState(false);
     const isChecked = checkedState[item.id] || false;
+
+    // Use memoized handler for checkbox change to prevent recreating function on each render
+    const onCheckboxChange = React.useCallback(
+      (checked: boolean) => {
+        if (item.checkable !== false && !item.disabled) {
+          handleCheckChange(item.id, checked === true);
+        }
+      },
+      [item.id, item.checkable, item.disabled, handleCheckChange]
+    );
 
     const onDragStart = (e: React.DragEvent) => {
       if (!item.draggable) {
@@ -704,25 +684,12 @@ const CheckboxTreeLeaf = React.forwardRef<
         onDrop={onDrop}
         {...props}
       >
-        <div
-          className="flex items-center mr-2"
-          data-checkbox-trigger="true"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (item.checkable !== false && !item.disabled) {
-              handleCheckChange(item.id, !isChecked);
-            }
-          }}
-        >
+        <div className="flex items-center mr-2" data-checkbox-trigger="true">
           <CheckboxPrimitive.Root
             id={`checkbox-${item.id}`}
             checked={isChecked}
             disabled={item.disabled || item.checkable === false}
-            onCheckedChange={(checked) => {
-              if (item.checkable !== false && !item.disabled) {
-                handleCheckChange(item.id, checked === true);
-              }
-            }}
+            onCheckedChange={onCheckboxChange}
             className={cn(
               "h-4 w-4 shrink-0 rounded-sm border border-primary",
               "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

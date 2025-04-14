@@ -1,18 +1,7 @@
 import { COLUMN_KEYS } from "@shared/constants/column-keys";
-import { Button } from "@shared/ui/button";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@shared/ui/card";
-import { CheckboxTree } from "@shared/ui/checkbox-tree";
 import {
   ArrowUpRight,
   DollarSign,
-  Eraser,
   Gift,
   MinusCircle,
   Percent,
@@ -26,9 +15,6 @@ import {
   TrendingUp,
   Weight,
 } from "lucide-react";
-
-import { FC } from "react";
-
 export const useIndicatorList = () => {
   return [
     {
@@ -232,31 +218,3 @@ export const useIndicatorList = () => {
     },
   ];
 };
-
-const Indicators: FC = () => {
-  const indicators = useIndicatorList();
-  return (
-    <Card className="w-full mr-4">
-      <CardHeader>
-        <CardTitle>Показатели</CardTitle>
-        <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>
-            Группируйте данные по нужным столбцам
-          </CardDescription>
-          <Button
-            size={"sm"}
-            className="text-muted-foreground"
-            variant={"outline"}
-          >
-            Очистить фильтры <Eraser className="text-primary/80" />
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <CheckboxTree data={indicators} />
-      </CardContent>
-    </Card>
-  );
-};
-
-export default Indicators;

@@ -21,10 +21,11 @@ import {
 import Shops from "../../side/shops/ui/shops";
 import Products from "../../side/products/ui/products";
 import Grouping from "../../side/grouping/ui/grouping";
-import Indicators from "../../side/indicators";
+
 import Unique from "../../side/unique";
 import { DateFilter } from "../../side/date";
 import { CombinedSubmitButton } from "./submit-button";
+import { Indicators } from "../../side/indicators";
 const filters = [
   {
     title: "Дата",
