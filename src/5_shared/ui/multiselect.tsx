@@ -15,6 +15,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@shared/ui/command";
+import { Skeleton } from "./skeleton";
 
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -34,16 +35,16 @@ const multiSelectVariants = cva(
     },
   }
 );
-
+export interface MultiSelectOption {
+  label: string;
+  value: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}
 interface MultiSelectProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof multiSelectVariants> {
-  options: {
-    label: string;
-    value: string;
-    icon?: React.ComponentType<{ className?: string }>;
-  }[];
   value?: string[];
+  options: MultiSelectOption[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   placeholder?: string;
@@ -51,6 +52,8 @@ interface MultiSelectProps
   maxCount?: number;
   modalPopover?: boolean;
   className?: string;
+  onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
+  isLoading?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -69,6 +72,8 @@ export const MultiSelect = React.forwardRef<
       maxCount = 2,
       modalPopover = false,
       className,
+      isLoading = false,
+      onOpenChange,
       ...props
     },
     ref
@@ -109,11 +114,14 @@ export const MultiSelect = React.forwardRef<
           : options.map((o) => o.value)
       );
     };
-
+    const handlePopoverOpenChange = (open: boolean) => {
+      setIsPopoverOpen(open);
+      onOpenChange?.(open); // Пробрасываем событие наружу
+    };
     return (
       <Popover
         open={isPopoverOpen}
-        onOpenChange={setIsPopoverOpen}
+        onOpenChange={handlePopoverOpenChange}
         modal={modalPopover}
       >
         <PopoverTrigger asChild>
@@ -196,74 +204,90 @@ export const MultiSelect = React.forwardRef<
         <PopoverContent
           className="w-full p-0"
           align="start"
-          onEscapeKeyDown={() => setIsPopoverOpen(false)}
+          onEscapeKeyDown={() => handlePopoverOpenChange(false)}
         >
           <Command>
-            <CommandInput placeholder="Поиск..." />
+            {!isLoading && <CommandInput placeholder="Поиск..." />}
             <CommandList>
-              <CommandEmpty>Ничего не найдено</CommandEmpty>
-              <CommandGroup>
-                <CommandItem onSelect={toggleAll} className="cursor-pointer">
-                  <div
-                    className={cn(
-                      "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
-                      selectedValues.length === options.length
-                        ? "bg-primary text-foreground"
-                        : "opacity-50 [&_svg]:invisible"
-                    )}
-                  >
-                    <CheckIcon className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                  <span>Выбрать всё</span>
-                </CommandItem>
-                {options.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    onSelect={() => toggleOption(option.value)}
-                    className="cursor-pointer"
-                  >
-                    <div
-                      className={cn(
-                        "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
-                        selectedValues.includes(option.value)
-                          ? "bg-primary text-foreground"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}
+              {isLoading ? (
+                <CommandGroup>
+                  {[...Array(4)].map((_, i) => (
+                    <CommandItem key={i} className="cursor-pointer">
+                      <Skeleton className="mr-2 size-5 bg-muted" />
+                      <Skeleton className="h-5 w-full bg-muted" />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ) : (
+                <>
+                  <CommandEmpty>Ничего не найдено</CommandEmpty>
+                  <CommandGroup>
+                    <CommandItem
+                      onSelect={toggleAll}
+                      className="cursor-pointer"
                     >
-                      <CheckIcon className="h-4 w-4 text-primary-foreground" />
-                    </div>
-                    {option.icon && (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
-                    <span>{option.label}</span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-              <CommandSeparator />
-              <CommandGroup>
-                <div className="flex items-center justify-between">
-                  {selectedValues.length > 0 && (
-                    <>
-                      <CommandItem
-                        onSelect={handleClear}
-                        className="flex-1 justify-center cursor-pointer"
+                      <div
+                        className={cn(
+                          "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
+                          selectedValues.length === options.length
+                            ? "bg-primary text-foreground"
+                            : "opacity-50 [&_svg]:invisible"
+                        )}
                       >
-                        Очистить
+                        <CheckIcon className="h-4 w-4 text-primary-foreground" />
+                      </div>
+                      <span>Выбрать всё</span>
+                    </CommandItem>
+                    {options.map((option) => (
+                      <CommandItem
+                        key={option.value}
+                        onSelect={() => toggleOption(option.value)}
+                        className="cursor-pointer"
+                      >
+                        <div
+                          className={cn(
+                            "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
+                            selectedValues.includes(option.value)
+                              ? "bg-primary text-foreground"
+                              : "opacity-50 [&_svg]:invisible"
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                        {option.icon && (
+                          <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        )}
+                        <span>{option.label}</span>
                       </CommandItem>
-                      <Separator
-                        orientation="vertical"
-                        className="flex min-h-6 h-full"
-                      />
-                    </>
-                  )}
-                  <CommandItem
-                    onSelect={() => setIsPopoverOpen(false)}
-                    className="flex-1 justify-center cursor-pointer max-w-full"
-                  >
-                    Закрыть
-                  </CommandItem>
-                </div>
-              </CommandGroup>
+                    ))}
+                  </CommandGroup>
+                  <CommandSeparator />
+                  <CommandGroup>
+                    <div className="flex items-center justify-between">
+                      {selectedValues.length > 0 && (
+                        <>
+                          <CommandItem
+                            onSelect={handleClear}
+                            className="flex-1 justify-center cursor-pointer"
+                          >
+                            Очистить
+                          </CommandItem>
+                          <Separator
+                            orientation="vertical"
+                            className="flex min-h-6 h-full"
+                          />
+                        </>
+                      )}
+                      <CommandItem
+                        onSelect={() => handlePopoverOpenChange(false)}
+                        className="flex-1 justify-center cursor-pointer max-w-full"
+                      >
+                        Закрыть
+                      </CommandItem>
+                    </div>
+                  </CommandGroup>
+                </>
+              )}
             </CommandList>
           </Command>
         </PopoverContent>

@@ -22,7 +22,7 @@ import Shops from "../../side/shops/ui/shops";
 import Products from "../../side/products/ui/products";
 import Grouping from "../../side/grouping/ui/grouping";
 
-import Unique from "../../side/unique";
+import Unique from "../../side/unique/ui/unique";
 import { DateFilter } from "../../side/date";
 import { CombinedSubmitButton } from "./submit-button";
 import { Indicators } from "../../side/indicators";
@@ -66,8 +66,11 @@ const indicators = [
 ];
 const Commerce = () => {
   return (
-    <ViewTabs defaultValue={filters[0].title} className="flex flex-row gap-4">
-      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4">
+    <ViewTabs
+      defaultValue={filters[0].title}
+      className="flex flex-row gap-4 h-screen"
+    >
+      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4 h-full">
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
           <ViewTabsGroupContent>

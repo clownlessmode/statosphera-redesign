@@ -1,5 +1,4 @@
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
-
 import {
   Card,
   CardContent,
@@ -18,49 +17,33 @@ import {
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { FC } from "react";
-
-import {
-  channel,
-  cities,
-  regions,
-  shops,
-  status,
-  time,
-  usersList,
-} from "../model/mock";
-import useForm from "../model/hook";
+import { channel, status, time } from "../model/mock";
+import useForm, {
+  useCities,
+  usePartners,
+  useRegions,
+  useShops,
+} from "../model/hook";
 import {
   AGE_GROUP,
   FRS_CHANNEL,
   STORE_CONDITIONS,
   useFiltersStore,
 } from "../../../commerce/model/store";
-const filteredCities = cities
-  .filter(
-    (city): city is { idCity: number; storeCity: string } =>
-      city.idCity !== null && city.storeCity !== null
-  )
-  .map((city) => ({
-    label: city.storeCity,
-    value: String(city.idCity),
-  }));
 
-export const filteredRegions = regions
-  .filter(
-    (
-      region
-    ): region is {
-      idRegion: number;
-      storeRegion: string;
-    } => region.idRegion !== null && region.storeRegion !== null
-  )
-  .map((region) => ({
-    label: region.storeRegion,
-    value: String(region.idRegion),
-  }));
 const Shops: FC = () => {
   const form = useForm();
-  const { updateStoreFilter } = useFiltersStore();
+  const { updateStoreFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+
+  const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
+    usePartners(allData);
+  const { handleOpenRegionsSelect, isRegionsLoading, regionsOptions } =
+    useRegions(allData);
+  const { citiesOptions, handleOpenCitiesSelect, isCitiesLoading } =
+    useCities(allData);
+  const { handleOpenShopsSelect, isShopsLoading, shopsOptions } =
+    useShops(allData);
 
   return (
     <Card className="w-full mr-4">
@@ -150,7 +133,9 @@ const Shops: FC = () => {
                     <FormControl>
                       <MultiSelect
                         value={field.value?.map(String) || []}
-                        options={usersList}
+                        options={partnerOptions}
+                        isLoading={isPartnersLoading}
+                        onOpenChange={(open) => handleOpenPartnersSelect(open)}
                         onValueChange={(value) => {
                           const numericValues = value.map(Number);
                           field.onChange(numericValues);
@@ -173,14 +158,16 @@ const Shops: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={regionsOptions}
+                      onOpenChange={(open) => handleOpenRegionsSelect(open)}
+                      isLoading={isRegionsLoading}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);
                         updateStoreFilter("idRegion", numericValues);
                       }}
                       defaultValue={field.value?.map(String)}
-                      placeholder="Выберите партнеров"
+                      placeholder="Выберите регионы"
                     />
                   </FormControl>
                 </FormItem>
@@ -195,7 +182,9 @@ const Shops: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredCities}
+                      options={citiesOptions}
+                      onOpenChange={(open) => handleOpenCitiesSelect(open)}
+                      isLoading={isCitiesLoading}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);
@@ -218,17 +207,9 @@ const Shops: FC = () => {
                     <MultiSelect
                       maxCount={1}
                       value={field.value?.map(String)}
-                      options={shops
-                        .filter(
-                          (
-                            shop
-                          ): shop is { idStore: number; storeName: string } =>
-                            shop.idStore !== null && shop.storeName !== null
-                        )
-                        .map((shop) => ({
-                          label: shop.storeName,
-                          value: String(shop.idStore),
-                        }))}
+                      options={shopsOptions}
+                      isLoading={isShopsLoading}
+                      onOpenChange={(open) => handleOpenShopsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);

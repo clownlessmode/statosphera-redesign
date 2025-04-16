@@ -1,5 +1,3 @@
-import { Button } from "@shared/ui/button";
-
 import {
   Card,
   CardContent,
@@ -9,21 +7,26 @@ import {
 } from "@shared/ui/card";
 import { CheckboxTree } from "@shared/ui/checkbox-tree";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useIndicatorList } from "../model/list";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import useForm from "../model/hook";
-import {
-  Form,
-  FormField,
-  FormControl,
-  FormItem,
-  FormLabel,
-} from "@shared/ui/form";
+import { Form, FormField, FormControl, FormItem } from "@shared/ui/form";
+import { useFiltersStore } from "../../../commerce/model/store";
 
 const Indicators: FC = () => {
   const indicators = useIndicatorList();
+  const { updateIndicators } = useFiltersStore();
   const form = useForm();
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      const indicators = [...(values.proceeds || [])].filter(
+        (item): item is string => item !== undefined
+      );
+      updateIndicators(indicators);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, updateIndicators]);
 
   return (
     <Card className="w-full mr-4">
@@ -36,7 +39,7 @@ const Indicators: FC = () => {
           <ClearFilters form={form} />
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="">
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField
@@ -44,13 +47,8 @@ const Indicators: FC = () => {
               name="proceeds"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Показатели</FormLabel>
                   <FormControl>
-                    <CheckboxTree
-                      data={indicators}
-                      initialCheckedItems={field.value || []}
-                      onCheckedChange={field.onChange}
-                    />
+                    <CheckboxTree {...field} data={indicators} />
                   </FormControl>
                 </FormItem>
               )}

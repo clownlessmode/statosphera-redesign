@@ -11,31 +11,30 @@ import { Input } from "@shared/ui/input";
 import { Button } from "@shared/ui/button";
 import useForm from "../model/hook";
 import { preventSpaces } from "@shared/lib/prevent-spaces";
-// import { FormValues } from "../model/types";
+import { FormValues } from "../model/types";
 import { useAuthorizationController } from "../model/api/controller";
 import { useSession } from "@entities/session";
 import { useNavigate } from "react-router";
 export const EmailAuthorization: FC = () => {
   const form = useForm();
-  // authorize;
-  const { isAuthorizationLoading } = useAuthorizationController();
+  const { authorize, isAuthorizationLoading } = useAuthorizationController();
   const { setSession } = useSession();
   const navigate = useNavigate();
-  const handleSubmit = async () => {
-    // data: FormValues;
-    // const session = await authorize(data);
-    // session;
-    setSession({
-      auth: true,
-      idRole: 1,
-      idStore: [1],
-      idUser: 1,
-      isAdminProduct: true,
-      isGrillProject: true,
-      role: "ADMIN",
-      school: false,
-      userName: "Тестовый Юзер Обрабатывающий",
-    });
+  const handleSubmit = async (data: FormValues) => {
+    const session = await authorize(data);
+    setSession(session);
+
+    // {
+    // auth: true,
+    // idRole: 1,
+    // idStore: [1],
+    // idUser: 1,
+    // isAdminProduct: true,
+    // isGrillProject: true,
+    // role: "ADMIN",
+    // school: false,
+    // userName: "Тестовый Юзер Обрабатывающий",
+    // }
     navigate("/");
   };
   return (

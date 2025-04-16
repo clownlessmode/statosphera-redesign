@@ -14,32 +14,54 @@ import {
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
 
-import { Pizza, Salad } from "lucide-react";
-
 import { FC } from "react";
-
-import { filteredRegions } from "../../shops/ui/shops";
 import { useFiltersStore } from "../../../commerce/model/store";
 import useForm from "../model/hook";
 
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
+import {
+  healthy,
+  useDirection,
+  useEconomist,
+  useFranchise,
+  useGroup,
+  useSeason,
+  useSubdivision,
+  useSubgroup,
+  useSubsubgroup,
+  useTeam,
+} from "../model/mock";
 
-export const healthy = [
-  {
-    label: "ПП",
-    value: true,
-    icon: Salad,
-  },
-  {
-    label: "Не ПП",
-    value: false,
-    icon: Pizza,
-  },
-];
 const Products: FC = () => {
   const form = useForm();
-  const { updateProductFilter } = useFiltersStore();
+  const { updateProductFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+
+  const { franchiseOptions, handleOpenFranchiseSelect, isFranchiseLoading } =
+    useFranchise(allData);
+  const {
+    handleOpenSubdivisionsSelect,
+    isSubdivisionsLoading,
+    subdivisionOptions,
+  } = useSubdivision(allData);
+  const { handleOpenTeamsSelect, isTeamLoading, teamOptions } =
+    useTeam(allData);
+  const { directionOptions, handleOpenDirectionsSelect, isDirectionLoading } =
+    useDirection(allData);
+  const { economistOptions, handleOpenEconomistsSelect, isEconomistLoading } =
+    useEconomist(allData);
+  const { handleOpenSeasonsSelect, isSeasonsLoading, seasonsOptions } =
+    useSeason(allData);
+  const { groupOptions, handleOpenGroupsSelect, isGroupsLoading } =
+    useGroup(allData);
+  const { handleOpenSubgroupsSelect, isSubGroupsLoading, subgroupOptions } =
+    useSubgroup(allData);
+  const {
+    handleOpenSubsubgroupsSelect,
+    isSubsubgroupsLoading,
+    subsubgroupOptions,
+  } = useSubsubgroup(allData);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -61,7 +83,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={franchiseOptions}
+                      isLoading={isFranchiseLoading}
+                      onOpenChange={(open) => handleOpenFranchiseSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -83,7 +107,11 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={subdivisionOptions}
+                      isLoading={isSubdivisionsLoading}
+                      onOpenChange={(open) =>
+                        handleOpenSubdivisionsSelect(open)
+                      }
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -99,6 +127,7 @@ const Products: FC = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="teamProducts"
@@ -108,7 +137,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={teamOptions}
+                      isLoading={isTeamLoading}
+                      onOpenChange={(open) => handleOpenTeamsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -130,7 +161,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={directionOptions}
+                      isLoading={isDirectionLoading}
+                      onOpenChange={(open) => handleOpenDirectionsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -152,7 +185,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={economistOptions}
+                      isLoading={isEconomistLoading}
+                      onOpenChange={(open) => handleOpenEconomistsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -174,7 +209,7 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={[]}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -196,7 +231,7 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={[]}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -219,7 +254,7 @@ const Products: FC = () => {
                     <BooleanCheckboxCard
                       {...field}
                       options={healthy}
-                      className="grid-cols-2"
+                      className="grid-cols-3"
                     />
                   </FormControl>
                 </FormItem>
@@ -234,7 +269,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={seasonsOptions}
+                      isLoading={isSeasonsLoading}
+                      onOpenChange={(open) => handleOpenSeasonsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -259,7 +296,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={groupOptions}
+                      isLoading={isGroupsLoading}
+                      onOpenChange={(open) => handleOpenGroupsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -281,7 +320,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={subgroupOptions}
+                      isLoading={isSubGroupsLoading}
+                      onOpenChange={(open) => handleOpenSubgroupsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -303,7 +344,11 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={subsubgroupOptions}
+                      isLoading={isSubsubgroupsLoading}
+                      onOpenChange={(open) =>
+                        handleOpenSubsubgroupsSelect(open)
+                      }
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -325,7 +370,7 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={filteredRegions}
+                      options={[]}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);

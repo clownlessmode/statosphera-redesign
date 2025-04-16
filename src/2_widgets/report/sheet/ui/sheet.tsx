@@ -8,7 +8,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 
 import Commerce from "./commerce/ui/commerce";
-import Check from "./check/check";
+import { Check } from "./check";
 
 export default function SheetDemo() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,7 +46,7 @@ export default function SheetDemo() {
             <TabsContent value="commerce" className="pr-4">
               <Commerce />
             </TabsContent>
-            <TabsContent value="check">
+            <TabsContent value="check" className="pr-4">
               <Check />
             </TabsContent>
           </Tabs>

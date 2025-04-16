@@ -6,10 +6,9 @@ import type { FC } from "react";
 interface Option {
   label: string;
   value: any;
-  defaultChecked?: boolean;
-  disableCheck?: boolean;
   disabled?: boolean;
   icon?: LucideIcon;
+  disableCheck?: boolean;
 }
 
 interface Props
@@ -17,8 +16,8 @@ interface Props
   options: Option[];
   className?: string;
   disableCheck?: boolean;
-  value?: any; // Может быть значением или null
-  onChange?: (value: any) => void; // Возвращает значение или null
+  value?: any;
+  onChange?: (value: any) => void;
 }
 
 const BooleanCheckboxCard: FC<Props> = ({
@@ -28,27 +27,9 @@ const BooleanCheckboxCard: FC<Props> = ({
   value = null,
   onChange,
 }) => {
-  // Определяем состояние чекбоксов
-  const isBothSelected = value === null;
-  const isOptionSelected = (optionValue: any) => {
-    return isBothSelected || value === optionValue;
-  };
-
   const handleClick = (optionValue: any) => {
-    let newValue: any;
-
-    if (value === null) {
-      // Если оба выбраны (null), клик на любом отключает его
-      newValue =
-        optionValue === options[0].value ? options[1].value : options[0].value;
-    } else if (value === optionValue) {
-      // Клик на уже выбранном - снимаем выделение
-      newValue = null;
-    } else {
-      // Выбираем другой вариант
-      newValue = optionValue;
-    }
-
+    // Переключаем выбор: если уже выбран - снимаем, иначе выбираем
+    const newValue = value === optionValue ? null : optionValue;
     onChange?.(newValue);
   };
 
@@ -58,13 +39,17 @@ const BooleanCheckboxCard: FC<Props> = ({
         <CheckboxPrimitive.Root
           disabled={option.disabled}
           key={option.value}
-          checked={isOptionSelected(option.value)}
+          checked={value === option.value}
           onCheckedChange={() => handleClick(option.value)}
           className={cn(
-            "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:shadow-xs data-[state=checked]:hover:bg-primary/90",
+            "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
             "h-9 px-4 py-2 has-[>svg]:px-3",
-            "border border-input bg-background shadow-xs hover:border-muted-foreground ",
-            "relative flex transition-all active:scale-[0.99] hover:shadow-sm cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-md text-sm font-medium  disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-30 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+            "border border-input bg-background hover:border-muted-foreground",
+            "relative flex transition-all active:scale-[0.99] cursor-pointer",
+            "items-center justify-center gap-1 whitespace-nowrap rounded-md",
+            "text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed",
+            "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+            "outline-none focus-visible:ring-2 focus-visible:ring-ring"
           )}
         >
           {option.icon && <option.icon />}

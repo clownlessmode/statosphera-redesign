@@ -16,16 +16,15 @@ import {
   Undo,
 } from "lucide-react";
 import { FC, useEffect } from "react";
-
 import useForm from "../model/hook";
-
 import { DateRangePicker } from "@shared/ui/date-range-picker";
-
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import { dateRanges } from "@shared/lib/date-ranges";
 import { useFiltersStore } from "../../../commerce/model/store";
-
+import { DateRange } from "react-day-picker";
+// const MIN_DATE = new Date(2018, 4, 1);
+// const MAX_DATE = subDays(new Date(), 1);
 const DateFilter: FC = () => {
   const form = useForm();
   const today = new Date();
@@ -36,7 +35,18 @@ const DateFilter: FC = () => {
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
   };
 
-  // Обработчики кнопок
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    if (range?.from && range.to) {
+      setDateRange(range.from, range.to);
+    } else if (range?.from) {
+      form.setValue("dateStart", format(range.from, "yyyy-MM-dd"));
+      form.setValue("dateEnd", "");
+    } else {
+      form.setValue("dateStart", "");
+      form.setValue("dateEnd", "");
+    }
+  };
+
   const handleButtonClick = (handlerKey: keyof typeof dateRanges) => {
     const { start, end } = dateRanges[handlerKey](today);
     setDateRange(start, end);
@@ -48,6 +58,15 @@ const DateFilter: FC = () => {
     });
     return () => subscription.unsubscribe();
   }, [form, updateDateFilter]);
+
+  const dateRangeValue = {
+    from: form.getValues("dateStart")
+      ? parseISO(form.getValues("dateStart"))
+      : undefined,
+    to: form.getValues("dateEnd")
+      ? parseISO(form.getValues("dateEnd"))
+      : undefined,
+  };
 
   return (
     <Card className="w-full mr-4">
@@ -68,12 +87,9 @@ const DateFilter: FC = () => {
                 <FormItem>
                   <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
                   <DateRangePicker
-                    {...field}
+                    onChange={handleDateRangeChange}
                     className="w-full"
-                    value={{
-                      from: new Date(form.getValues().dateStart),
-                      to: new Date(form.getValues().dateEnd),
-                    }}
+                    value={dateRangeValue}
                   />
                 </FormItem>
               )}

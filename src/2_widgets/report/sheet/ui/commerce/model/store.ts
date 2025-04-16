@@ -1,6 +1,7 @@
 // features/filters-store/store.ts
 
 import { COLUMN_KEYS } from "@shared/constants/column-keys";
+import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 export enum FULL_GROUPS_SERVER {
@@ -58,6 +59,7 @@ export enum FULL_GROUPS_SERVER {
   LOYAL_AGE = "loyalAge",
   CASH_BOX = "cashBox",
 }
+
 export enum GROUPINGS {
   MONTH = FULL_GROUPS_SERVER.MONTH,
   DAY = FULL_GROUPS_SERVER.DAY,
@@ -187,7 +189,22 @@ export enum VALUE_WRITE_OFF {
   WRITEOFF_MOM = COLUMN_KEYS.WRITE_OFF_MOM,
   WRITEOFF_MOM_PERCENT = COLUMN_KEYS.WRITE_OFF_MOM_PERCENT,
 }
+export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
+const today = new Date();
 
+let dateStart: string;
+let dateEnd: string;
+
+if (today.getDate() === 1) {
+  // Сегодня — первое число месяца → берём весь предыдущий месяц
+  const lastMonth = subMonths(today, 1);
+  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
+  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
+} else {
+  // Иначе → с начала месяца до вчерашнего дня
+  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
+  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
+}
 type FiltersState = {
   // Основная структура данных
   filters: {
@@ -259,6 +276,8 @@ type FiltersState = {
       article: ARTICLE_WRITE_OFF[];
     };
   };
+  uniques: string[];
+  indicators: string[];
   values: string[];
   filterDate: {
     dateStart: string;
@@ -314,11 +333,13 @@ type FiltersState = {
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
   updatePagination: (limit: number, offset: number) => void;
   updateGroups: (groups: string[]) => void;
-  updateValues: (values: string[]) => void;
-
+  updateUniques: (uniques: string[]) => void;
+  updateIndicators: (indicators: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
+    | "uniques"
+    | "indicators"
     | "updateStoreFilter"
     | "updateProductFilter"
     | "updateCheckFilter"
@@ -330,7 +351,8 @@ type FiltersState = {
     | "updateSorts"
     | "updatePagination"
     | "updateGroups"
-    | "updateValues"
+    | "updateUniques"
+    | "updateIndicators"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -350,7 +372,8 @@ const initialState: Omit<
   | "updateSorts"
   | "updatePagination"
   | "updateGroups"
-  | "updateValues"
+  | "updateUniques"
+  | "updateIndicators"
   | "resetAllFilters"
   | "getApiPayload"
 > = {
@@ -416,9 +439,11 @@ const initialState: Omit<
     },
   },
   values: ["proceeds"],
+  uniques: [],
+  indicators: [],
   filterDate: {
-    dateStart: "2024-01-01",
-    dateEnd: "2024-01-02",
+    dateStart,
+    dateEnd,
   },
   filterTime: {
     timeStart: "",
@@ -426,11 +451,11 @@ const initialState: Omit<
   },
   sorts: {
     sort: "desc",
-    colId: ["proceeds"],
+    colId: [],
   },
   limit: 100,
   offset: 0,
-  groups: ["day"],
+  groups: [],
 };
 
 export const useFiltersStore = create<FiltersState>((set, get) => ({
@@ -513,7 +538,17 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
 
   updateGroups: (groups) => set({ groups }),
 
-  updateValues: (values) => set({ values }),
+  updateUniques: (uniques) =>
+    set({
+      uniques,
+      values: [...uniques, ...get().indicators], // Автоматически обновляем values
+    }),
+
+  updateIndicators: (indicators) =>
+    set({
+      indicators,
+      values: [...get().uniques, ...indicators], // Автоматически обновляем values
+    }),
 
   resetAllFilters: () => set(initialState),
 
