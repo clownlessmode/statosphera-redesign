@@ -96,6 +96,7 @@ export const getOptionChart = (option: EChartsOption) => {
     xAxis: {
       type: "category",
       boundaryGap: false,
+
       axisLine: {
         lineStyle: {
           color: colors.text,
@@ -108,6 +109,10 @@ export const getOptionChart = (option: EChartsOption) => {
     yAxis: {
       type: "value",
       boundaryGap: false,
+      min: (value: any) => value.min * 0.9,
+      max: (value: any) => value.max * 1.1,
+      //       // min: (value: any) => Math.max(0, value.min - 100),
+
       axisLine: {
         show: false,
       },
@@ -123,10 +128,17 @@ export const getOptionChart = (option: EChartsOption) => {
         },
       },
     },
+    // grid: {
+    //   left: "5%",
+    //   right: "5%",
+    //   bottom: "3%",
+    //   containLabel: true,
+    // },
     grid: {
       left: "5%",
       right: "5%",
-      bottom: "3%",
+      top: "15%", // Добавляем верхний отступ
+      bottom: "12%", // Увеличиваем нижний отступ
       containLabel: true,
     },
     color: colors.series, // Цвета для серий данных

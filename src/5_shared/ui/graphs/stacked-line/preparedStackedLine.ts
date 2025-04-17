@@ -6,7 +6,7 @@ type ColorsLine = {
 };
 
 const defaultLineStyles = {
-  width: 3,
+  width: 4,
 };
 
 export type StackedLineOptions = {
