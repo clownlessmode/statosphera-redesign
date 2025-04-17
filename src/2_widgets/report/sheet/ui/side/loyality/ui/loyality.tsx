@@ -16,7 +16,7 @@ import {
 
 import { FC } from "react";
 import { gender, type } from "../model/mock";
-import { useFiltersStore } from "../../../commerce/model/store";
+import { useFiltersStore } from "../../../../model/filters-store";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Input } from "@shared/ui/input";
 import useForm from "../model/hook";

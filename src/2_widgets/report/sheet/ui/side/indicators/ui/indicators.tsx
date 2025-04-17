@@ -12,7 +12,7 @@ import { useIndicatorList } from "../model/list";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import useForm from "../model/hook";
 import { Form, FormField, FormControl, FormItem } from "@shared/ui/form";
-import { useFiltersStore } from "../../../commerce/model/store";
+import { useFiltersStore } from "../../../../model/filters-store";
 
 const Indicators: FC = () => {
   const indicators = useIndicatorList();

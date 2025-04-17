@@ -14,7 +14,6 @@ import { useTheme } from "@app/providers/theme-provider";
 const themeLabels: Record<string, string> = {
   light: "Светлая",
   dark: "Тёмная",
-  system: "Системная",
 };
 
 interface ThemeSwitcherProps {
@@ -70,13 +69,6 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
           }}
         >
           Тёмная
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            setTheme("system");
-          }}
-        >
-          Системная
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

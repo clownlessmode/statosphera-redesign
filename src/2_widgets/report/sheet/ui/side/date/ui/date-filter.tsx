@@ -21,7 +21,7 @@ import { DateRangePicker } from "@shared/ui/date-range-picker";
 import { format, parseISO } from "date-fns";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import { dateRanges } from "@shared/lib/date-ranges";
-import { useFiltersStore } from "../../../commerce/model/store";
+import { useFiltersStore } from "../../../../model/filters-store";
 import { DateRange } from "react-day-picker";
 // const MIN_DATE = new Date(2018, 4, 1);
 // const MAX_DATE = subDays(new Date(), 1);

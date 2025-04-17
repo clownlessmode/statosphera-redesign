@@ -20,7 +20,7 @@ type ViewTabsContextType = {
 
 const ViewTabsContext = createContext<ViewTabsContextType | null>(null);
 
-function useViewTabs() {
+export function useViewTabs() {
   const context = useContext(ViewTabsContext);
   if (!context) {
     throw new Error("ViewTabs components must be used within <ViewTabs>");
@@ -115,16 +115,21 @@ export function ViewTabsTrigger({
   children,
   icon: Icon,
   className,
+  onGroupChange,
 }: {
   value: string;
   children: ReactNode;
   icon?: React.ElementType;
   className?: string;
+  onGroupChange?: (value: string) => void;
 }) {
   const { active, scrollTo } = useViewTabs();
   const isActive = active === value;
 
-  const handleClick = useCallback(() => scrollTo(value), [scrollTo, value]);
+  const handleClick = useCallback(() => {
+    scrollTo(value);
+    onGroupChange?.(value);
+  }, [scrollTo, value, onGroupChange]);
 
   return (
     <button

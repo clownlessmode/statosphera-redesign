@@ -10,7 +10,6 @@ interface ReportStore {
   total: ReportTotalResponse | null;
   table: ReportTableResponse | null;
   lastUpdate: number;
-
   setGraph: (data: ReportGraphResponse) => void;
   setTotal: (data: ReportTotalResponse) => void;
   setTable: (data: ReportTableResponse) => void;

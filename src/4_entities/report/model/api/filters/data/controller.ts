@@ -6,7 +6,7 @@ import {
   ReportTotalResponse,
 } from "./service";
 import { ApiError } from "@shared/api/types";
-import { FilterApiPayload } from "@widgets/report/sheet/ui/commerce/model/store";
+import { FilterApiPayload } from "@widgets/report/sheet/model/filters-store";
 
 export const useReport = () => {
   const queryClient = useQueryClient();

@@ -15,7 +15,7 @@ import {
 } from "@shared/ui/form";
 
 import { FC } from "react";
-import { useFiltersStore } from "../../../commerce/model/store";
+import { useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 
 import { MultiSelect } from "@shared/ui/multiselect";

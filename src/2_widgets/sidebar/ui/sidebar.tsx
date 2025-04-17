@@ -27,11 +27,12 @@ import { NavMain } from "./nav-main";
 
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
-
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 const Sidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
+  const { tab } = useTabStore();
   const data = {
     navMain: [
       {
@@ -51,7 +52,7 @@ const Sidebar = ({
       },
       {
         title: "Отчёты",
-        url: `${ROUTES_PATH.REPORT}?open=true`,
+        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
         icon: FileChartColumn,
       },
       {

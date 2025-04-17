@@ -1,3 +1,4 @@
+// SheetDemo.tsx
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import {
@@ -9,22 +10,36 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 
 import Commerce from "./commerce/ui/commerce";
 import { Check } from "./check";
+import { useTabStore } from "../model/url-store";
 
 export default function SheetDemo() {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const openParam = searchParams.get("open");
+  const tabParam = searchParams.get("tab");
 
   const getOpenFromParam = (param: string | null): boolean => {
-    if (param === "false") return false;
-    return true;
+    return param !== "false"; // default true
+  };
+
+  const getTabFromParam = (param: string | null): "commerce" | "check" => {
+    return param === "check" ? "check" : "commerce";
   };
 
   const [open, setOpen] = useState(getOpenFromParam(openParam));
 
+  const tab = useTabStore((state) => state.tab);
+  const setTab = useTabStore((state) => state.setTab);
+
+  // Sync 'open' from URL
   useEffect(() => {
-    const shouldBeOpen = getOpenFromParam(openParam);
-    setOpen(shouldBeOpen);
+    setOpen(getOpenFromParam(openParam));
   }, [openParam]);
+
+  // Sync 'tab' from URL
+  useEffect(() => {
+    setTab(getTabFromParam(tabParam));
+  }, [tabParam, setTab]);
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
@@ -32,11 +47,19 @@ export default function SheetDemo() {
     setSearchParams(searchParams, { replace: true });
   };
 
+  const handleTabChange = (value: string) => {
+    if (value === "commerce" || value === "check") {
+      setTab(value);
+      searchParams.set("tab", value);
+      setSearchParams(searchParams, { replace: true });
+    }
+  };
+
   return (
     <SheetMain open={open} onOpenChange={handleOpenChange}>
       <SheetContent side="left" close={false} className="sadas">
         <div>
-          <Tabs defaultValue="commerce" className="gap-0">
+          <Tabs value={tab} onValueChange={handleTabChange} className="gap-0">
             <SheetHeader className="p-0 border-b border-border shadow-sm">
               <TabsList className="w-full rounded-none px-4 py-2 h-fit">
                 <TabsTrigger value="commerce">Коммерческая</TabsTrigger>

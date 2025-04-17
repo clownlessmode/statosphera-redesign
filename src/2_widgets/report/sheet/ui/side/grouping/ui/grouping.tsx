@@ -13,7 +13,7 @@ import { Calendar, MapPin, ShoppingBasket, Store } from "lucide-react";
 
 import { FC, useEffect } from "react";
 
-import { GROUPINGS, useFiltersStore } from "../../../commerce/model/store";
+import { GROUPINGS, useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 const days = [

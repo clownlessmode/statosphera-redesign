@@ -1,14 +1,5 @@
-import {
-  Calendar,
-  CircleDotDashed,
-  Combine,
-  Grid2x2Check,
-  ShoppingBasket,
-  Store,
-} from "lucide-react";
-
-import { Separator } from "@shared/ui/separator";
-
+import React, { useEffect } from "react";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import {
   ViewTabs,
   ViewTabsContent,
@@ -17,65 +8,35 @@ import {
   ViewTabsLabel,
   ViewTabsList,
   ViewTabsTrigger,
+  useViewTabs,
 } from "@shared/ui/view-tabs";
-import Shops from "../../side/shops/ui/shops";
-import Products from "../../side/products/ui/products";
-import Grouping from "../../side/grouping/ui/grouping";
-
-import Unique from "../../side/unique/ui/unique";
-import { DateFilter } from "../../side/date";
+import { Separator } from "@shared/ui/separator";
 import { CombinedSubmitButton } from "./submit-button";
-import { Indicators } from "../../side/indicators";
-const filters = [
-  {
-    title: "Дата",
-    icon: Calendar,
-    component: DateFilter,
-  },
-  {
-    title: "Магазины",
-    icon: Store,
-    component: Shops,
-  },
-  {
-    title: "Продукты",
-    icon: ShoppingBasket,
-    component: Products,
-  },
-];
+import { filters, grouping, indicators } from "../model/tabs";
 
-const grouping = [
-  {
-    title: "Группировка",
-    icon: CircleDotDashed,
-    component: Grouping,
-  },
-];
+const CommerceInner = () => {
+  const { targetViewValue, setTargetViewValue } = useTabStore();
+  const { scrollTo } = useViewTabs();
 
-const indicators = [
-  {
-    title: "Показатели",
-    icon: Grid2x2Check,
-    component: Indicators,
-  },
-  {
-    title: "Уникальные значения",
-    icon: Combine,
-    component: Unique,
-  },
-];
-const Commerce = () => {
+  useEffect(() => {
+    if (targetViewValue) {
+      scrollTo(targetViewValue);
+      setTargetViewValue(null);
+    }
+  }, [targetViewValue, scrollTo, setTargetViewValue]);
+
   return (
-    <ViewTabs
-      defaultValue={filters[0].title}
-      className="flex flex-row gap-4 h-screen"
-    >
+    <>
       <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4 h-full">
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
           <ViewTabsGroupContent>
             {filters.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={`filter-trigger-${index}`}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
@@ -88,7 +49,11 @@ const Commerce = () => {
           <ViewTabsLabel>Группировка</ViewTabsLabel>
           <ViewTabsGroupContent>
             {grouping.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={`grouping-trigger-${index}`}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
@@ -99,7 +64,11 @@ const Commerce = () => {
           <ViewTabsLabel>Показатели</ViewTabsLabel>
           <ViewTabsGroupContent>
             {indicators.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={`indicator-trigger-${index}`}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
@@ -108,23 +77,46 @@ const Commerce = () => {
         <Separator />
         <CombinedSubmitButton />
       </ViewTabsList>
-      <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96">
+      <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
         {filters.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+          <ViewTabsContent value={item.title} key={`filter-content-${index}`}>
             <item.component />
           </ViewTabsContent>
         ))}
         {grouping.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+          <ViewTabsContent value={item.title} key={`grouping-content-${index}`}>
             <item.component />
           </ViewTabsContent>
         ))}
         {indicators.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+          <ViewTabsContent
+            value={item.title}
+            key={`indicator-content-${index}`}
+          >
             <item.component />
           </ViewTabsContent>
         ))}
       </div>
+    </>
+  );
+};
+
+const Commerce = () => {
+  const defaultValue =
+    filters.length > 0
+      ? filters[0].title
+      : grouping.length > 0
+      ? grouping[0].title
+      : indicators.length > 0
+      ? indicators[0].title
+      : "";
+
+  return (
+    <ViewTabs
+      defaultValue={defaultValue}
+      className="flex flex-row gap-4 h-screen"
+    >
+      <CommerceInner />
     </ViewTabs>
   );
 };

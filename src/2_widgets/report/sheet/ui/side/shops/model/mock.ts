@@ -9,7 +9,7 @@ import {
   AGE_GROUP,
   CHANNEL,
   STORE_CONDITIONS,
-} from "../../../commerce/model/store";
+} from "../../../../model/filters-store";
 export const channel = [
   {
     label: "В аренду",

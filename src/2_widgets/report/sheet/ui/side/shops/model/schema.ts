@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   ageGroupSchema,
   frsChannelSchema,
-} from "../../../commerce/model/store";
+} from "../../../../model/filters-store";
 
 export const schema = z.object({
   idStore: z.array(z.number()),

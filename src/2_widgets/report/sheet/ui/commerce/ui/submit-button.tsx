@@ -1,7 +1,7 @@
 import { Button } from "@shared/ui/button";
-import { useFiltersStore } from "../model/store";
+import { useFiltersStore } from "../../../model/filters-store";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
-import { useReportStore } from "./store";
+import { useReportStore } from "../../../model/report-store";
 import { useSearchParams } from "react-router";
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();

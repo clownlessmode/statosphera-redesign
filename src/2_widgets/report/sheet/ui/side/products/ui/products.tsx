@@ -15,7 +15,7 @@ import {
 import { MultiSelect } from "@shared/ui/multiselect";
 
 import { FC } from "react";
-import { useFiltersStore } from "../../../commerce/model/store";
+import { useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";

@@ -29,7 +29,7 @@ import {
   FRS_CHANNEL,
   STORE_CONDITIONS,
   useFiltersStore,
-} from "../../../commerce/model/store";
+} from "../../../../model/filters-store";
 
 const Shops: FC = () => {
   const form = useForm();

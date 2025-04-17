@@ -129,7 +129,7 @@ const Check = () => {
         <Separator />
         <CombinedSubmitButton />
       </ViewTabsList>
-      <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96">
+      <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
         {filters.map((item, index) => (
           <ViewTabsContent value={item.title} key={index}>
             <item.component />
