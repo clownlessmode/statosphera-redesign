@@ -1,5 +1,3 @@
-import { EChartsOption } from "echarts";
-
 export const getFormatTooltip = (params: unknown) => {
   if (!Array.isArray(params)) {
     return "";

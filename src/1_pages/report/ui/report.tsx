@@ -2,18 +2,16 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
-import { ReportCard } from "./report-card";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import FiltersAccordeon from "./filters";
-
+import { mockData } from "@entities/report/model/api/filters/data/service";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
-  const { graph } = useReportStore();
+  // const { graph } = useReportStore();
   const { tab } = useTabStore();
-
+  const graph = mockData;
   return (
     <>
       <Sheet />

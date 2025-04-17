@@ -29,7 +29,7 @@ export interface ReportGraphResponse {
   card3: GraphCard;
 }
 
-const mockData = {
+export const mockData = {
   graph: [
     {
       name: "Выбранный период",
@@ -104,6 +104,7 @@ export class ReportService {
     return response.data;
   }
   static async getReportGraph(dto: any): Promise<ReportGraphResponse> {
+    console.log(dto);
     // const response = await api.post<any>("report-page/graphic", dto);
     // return response.data;
     return mockData as ReportGraphResponse;

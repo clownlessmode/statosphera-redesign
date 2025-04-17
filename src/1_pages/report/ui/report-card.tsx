@@ -6,8 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Skeleton } from "@shared/ui/skeleton";
-import { ArrowBigDownDash, Circle, ExternalLink } from "lucide-react";
+import { Circle, ExternalLink } from "lucide-react";
 import { Link } from "react-router";
 
 type ReportCardProps = {

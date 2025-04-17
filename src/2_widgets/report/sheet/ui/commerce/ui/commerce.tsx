@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import {
   ViewTabs,
