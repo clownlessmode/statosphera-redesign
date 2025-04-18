@@ -15,6 +15,9 @@ import {
 import { Badge } from "@shared/ui/badge";
 
 import DigestCard from "@entities/digests/ui/digest-card";
+import { useDigests } from "@entities/digests/model/api/controller";
+import { Skeleton } from "@shared/ui/skeleton";
+import { useMemo } from "react";
 
 const Digests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,16 +31,19 @@ const Digests = () => {
     }
   };
 
-  const digests = digestsMock;
-  const analytics = digests.filter((digest) => digest.type === "analytics");
-  const director = digests.filter((digest) => digest.type === "director");
-  const franchise = digests.filter((digest) => digest.type === "franchise");
-  const groupCompany = digests.filter(
-    (digest) => digest.type === "groupCompany"
-  );
+  const { digests, isDigestsLoading } = useDigests();
+
+  const filteredDigests = useMemo(() => {
+    return {
+      analytics: digests?.filter((digest) => digest.type === "analytics"),
+      director: digests?.filter((digest) => digest.type === "director"),
+      franchise: digests?.filter((digest) => digest.type === "franchise"),
+      groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
+    };
+  }, [digests, currentType]);
 
   return (
-    <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
+    <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Tabs
         defaultValue={currentType}
         className="w-full"
@@ -51,7 +57,11 @@ const Digests = () => {
                 <GalleryHorizontalEnd className="size-4 text-muted-foreground" />
                 Все
               </div>
-              <Badge>{digests.length}</Badge>
+              {isDigestsLoading ? (
+                <Skeleton className="w-5 h-4" />
+              ) : (
+                <Badge>{digests?.length}</Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="analytics"
@@ -61,7 +71,11 @@ const Digests = () => {
                 <ChartNetwork className="size-4 text-muted-foreground" />
                 Аналитика
               </div>
-              <Badge>{analytics.length}</Badge>
+              {isDigestsLoading ? (
+                <Skeleton className="w-5 h-4" />
+              ) : (
+                <Badge>{filteredDigests.analytics?.length}</Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="director"
@@ -71,7 +85,11 @@ const Digests = () => {
                 <ShieldUser className="size-4 text-muted-foreground" /> Совет
                 директоров
               </div>
-              <Badge>{director.length}</Badge>
+              {isDigestsLoading ? (
+                <Skeleton className="w-5 h-4" />
+              ) : (
+                <Badge>{filteredDigests.director?.length}</Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="franchise"
@@ -80,7 +98,11 @@ const Digests = () => {
               <div className="flex flex-row gap-2 items-center">
                 <Store className="size-4 text-muted-foreground" /> Франчайзинг
               </div>
-              <Badge>{franchise.length}</Badge>
+              {isDigestsLoading ? (
+                <Skeleton className="w-5 h-4" />
+              ) : (
+                <Badge>{filteredDigests.franchise?.length}</Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger
               value="groupCompany"
@@ -90,41 +112,90 @@ const Digests = () => {
                 <Boxes className="size-4 text-muted-foreground" /> Группа
                 компаний
               </div>
-              <Badge>{groupCompany.length}</Badge>
+              {isDigestsLoading ? (
+                <Skeleton className="w-5 h-4" />
+              ) : (
+                <Badge>{filteredDigests.groupCompany?.length}</Badge>
+              )}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="all">
             <div className="flex flex-col gap-2 w-full">
-              {digests.map((item) => (
-                <DigestCard key={item.id} {...item} type="Аналитика" />
+              {digests?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Аналитика"
+                />
               ))}
             </div>
           </TabsContent>
           <TabsContent value="analytics">
             <div className="flex flex-col gap-2 w-full">
-              {analytics.map((item) => (
-                <DigestCard key={item.id} {...item} type="Аналитика" />
+              {filteredDigests.analytics?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Аналитика"
+                />
               ))}
             </div>
           </TabsContent>
           <TabsContent value="director">
             <div className="flex flex-col gap-2 w-full">
-              {director.map((item) => (
-                <DigestCard key={item.id} {...item} type="Аналитика" />
+              {filteredDigests.director?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Аналитика"
+                />
               ))}
             </div>
           </TabsContent>
           <TabsContent value="franchise">
             <div className="flex flex-col gap-2 w-full">
-              {franchise.map((item) => (
-                <DigestCard key={item.id} {...item} type="Аналитика" />
+              {filteredDigests.franchise?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Аналитика"
+                />
               ))}
             </div>
           </TabsContent>
           <TabsContent value="groupCompany">
             <div className="flex flex-col gap-2 w-full">
-              {groupCompany.map((item) => (
-                <DigestCard key={item.id} {...item} type="Аналитика" />
+              {filteredDigests.groupCompany?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Аналитика"
+                />
               ))}
             </div>
           </TabsContent>

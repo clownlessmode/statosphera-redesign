@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import {
   DirectionFilterResponse,
-  FiltersProductsService,
   FranchiseFilterResponse,
   GroupEconomistFilterResponse,
   GroupMainFilterResponse,
@@ -11,8 +10,13 @@ import {
   SubgroupFilterResponse,
   SubSubGroupFilterResponse,
   TeamFilterResponse,
-} from "./service";
+  AutoManagerFilterResponse,
+  TypeSenderFilterResponse,
+  NomenklaturaFilterResponse,
+} from "./types";
+
 import { FilterApiPayload } from "@widgets/report/sheet/model/filters-store";
+import { FiltersProductsService } from "./service";
 
 export const useFilters = () => {
   const queryClient = useQueryClient();
@@ -113,6 +117,41 @@ export const useFilters = () => {
       return response;
     },
   });
+
+  const autoManager = useMutation<
+    AutoManagerFilterResponse[],
+    ApiError,
+    FilterApiPayload
+  >({
+    mutationFn: async (dto: FilterApiPayload) => {
+      const response = await FiltersProductsService.getAutoManager(dto);
+      queryClient.invalidateQueries({ queryKey: ["autoManager"] });
+      return response;
+    },
+  });
+  const getTypeSender = useMutation<
+    TypeSenderFilterResponse[],
+    ApiError,
+    FilterApiPayload
+  >({
+    mutationFn: async (dto: FilterApiPayload) => {
+      const response = await FiltersProductsService.getTypeSender(dto);
+      queryClient.invalidateQueries({ queryKey: ["typeSender"] });
+      return response;
+    },
+  });
+  const nomenklatura = useMutation<
+    NomenklaturaFilterResponse[],
+    ApiError,
+    FilterApiPayload
+  >({
+    mutationFn: async (dto: FilterApiPayload) => {
+      const response = await FiltersProductsService.getNomenklatura(dto);
+      queryClient.invalidateQueries({ queryKey: ["nomenklatura"] });
+      return response;
+    },
+  });
+
   return {
     getFranchise: franchise.mutateAsync,
     isFranchiseLoading: franchise.isPending,
@@ -129,8 +168,8 @@ export const useFilters = () => {
     getEconomist: economist.mutateAsync,
     isEconomistLoading: economist.isPending,
     //
-    // getAutoManager: auto.mutateAsync,
-    // isSubdivisionsLoading: subdivision.isPending,
+    getAutoManager: autoManager.mutateAsync,
+    isAutoManagerLoading: autoManager.isPending,
     //
     getSeasons: seasonality.mutateAsync,
     isSeasonsLoading: seasonality.isPending,
@@ -143,5 +182,11 @@ export const useFilters = () => {
     //
     getSubSubGroups: subsubgroups.mutateAsync,
     isSubsubgroupsLoading: subsubgroups.isPending,
+    //
+    getTypeSender: getTypeSender.mutateAsync,
+    isTypeSenderLoading: getTypeSender.isPending,
+    //
+    getNomenklatura: nomenklatura.mutateAsync,
+    isNomenklaturaLoading: nomenklatura.isPending,
   };
 };

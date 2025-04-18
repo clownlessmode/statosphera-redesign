@@ -5,17 +5,33 @@ import { ru } from "date-fns/locale";
 import { Calendar } from "lucide-react";
 import { ClockIcon } from "lucide-react";
 import { FC } from "react";
-import { Digest } from "../model/types";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 
-const DigestCard: FC<Digest> = ({ date_add, pach_cdn, title, type, id }) => {
+interface Props {
+  id: string;
+  cover: string;
+  title: string;
+  type: string;
+  create_add: string;
+  count: number;
+  description: string;
+}
+const DigestCard: FC<Props> = ({
+  id,
+  cover,
+  title,
+  type,
+  create_add,
+  count,
+  description,
+}) => {
   return (
     <Link to={`${ROUTES_PATH.DIGESTS}/${id}`}>
       <div className="flex flex-row gap-6 items-center hover:scale-[0.98] transition-all duration-300 cursor-pointer origin-left active:scale-[0.96]">
         <Card
           style={{
-            backgroundImage: `linear-gradient(var(--accent), transparent 42%, transparent 57%, var(--accent)), url(${pach_cdn[0]})`,
+            backgroundImage: `linear-gradient(var(--accent), transparent 42%, transparent 57%, var(--accent)), url(${cover})`,
           }}
           className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center bg-[length:auto_60%] transform translate-z-0 bg-clip-padding"
         />
@@ -28,18 +44,18 @@ const DigestCard: FC<Digest> = ({ date_add, pach_cdn, title, type, id }) => {
               {title}
             </h3>
             <p className="mt-1 text-muted-foreground line-clamp-1 md:line-clamp-3 text-ellipsis ">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa
-              consequatur minus dicta accusantium quos, ratione suscipit id
-              adipisci voluptatibus. Lorem ipsum dolor sit, amet consectetur
-              adipisicing elit. Ipsa consequatur minus dicta accusantium quos,
-              ratione suscipit id adipisci voluptatibus.
+              {description ? (
+                description
+              ) : (
+                <p className="min-h-[72px]">Описание отсутствует</p>
+              )}
             </p>
           </div>
           <div className="flex flex-col md:flex-row md:items-center items-start gap-1.5 md:gap-6 text-muted-foreground text-sm font-medium leading-tight">
             <div className="flex items-center gap-2">
               <ClockIcon className="h-4 w-4" />{" "}
               {(() => {
-                const minutes = Math.round((pach_cdn.length * 15) / 60);
+                const minutes = Math.round((count * 15) / 60);
                 if (minutes % 10 === 1 && minutes !== 11) {
                   return `${minutes} минута`;
                 } else if (
@@ -55,7 +71,7 @@ const DigestCard: FC<Digest> = ({ date_add, pach_cdn, title, type, id }) => {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />{" "}
-              {format(new Date(date_add), "dd MMMM yyyy", {
+              {format(new Date(create_add), "dd MMMM yyyy", {
                 locale: ru,
               })}
             </div>

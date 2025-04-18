@@ -1,8 +1,18 @@
-export interface Digest {
-  id: number;
+export type GetDigestsResponse = {
+  id: string;
   title: string;
   type: string;
-  pach_cdn: string[];
-  year: number;
-  date_add: string;
-}
+  create_add: string;
+  description: string;
+  count: number;
+  cover: string;
+}[];
+
+export type GetDigestResponse = {
+  daydjest: {
+    id: string;
+    pages: string[];
+    title: string;
+    type: string;
+  }[];
+};

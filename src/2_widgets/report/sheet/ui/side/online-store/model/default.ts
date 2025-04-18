@@ -7,15 +7,7 @@ export const defaultValues: FormValues = {
   imTypeOrder: "all",
   imDeliveryMethod: "all",
   imPaymentMethod: "all",
-  imStatusOrder: [
-    "Завершен",
-    "Отменен_клиентом",
-    "Отменен",
-    "Сборка",
-    "Собран",
-    "Принят",
-    "Создан",
-  ],
+  imStatusOrder: [],
   imReceiveInterval: [],
   imPromo: [],
 };

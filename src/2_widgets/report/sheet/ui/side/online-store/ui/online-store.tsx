@@ -20,12 +20,29 @@ import useForm from "../model/hook";
 
 import { MultiSelect } from "@shared/ui/multiselect";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
-import { type, typeDelivery, typeOrder, typePayment } from "../model/mock";
-
-const Receipts: FC = () => {
+import {
+  type,
+  typeDelivery,
+  typeOrder,
+  typePayment,
+  useInterval,
+  useStatusOrder,
+  usePromo,
+} from "../model/mock";
+const OnlineStore: FC = () => {
   const form = useForm();
-  const { updateOnlineStoreFilter } = useFiltersStore();
-  // const allData = getApiPayload();
+  const { updateOnlineStoreFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+  const {
+    statusOrderOptions,
+    isStatusOrderLoading,
+    handleOpenStatusOrderSelect,
+  } = useStatusOrder(allData);
+  const { intervalOptions, isIntervalLoading, handleOpenIntervalSelect } =
+    useInterval(allData);
+  const { promoOptions, isPromoLoading, handleOpenPromoSelect } =
+    usePromo(allData);
+
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -129,16 +146,23 @@ const Receipts: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={statusOrderOptions}
+                      isLoading={isStatusOrderLoading}
+                      onOpenChange={(open) => handleOpenStatusOrderSelect(open)}
                       onValueChange={(value) => {
-                        const numericValues = value.map(String);
-                        field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        field.onChange(value);
+                        updateOnlineStoreFilter(
+                          "imStatusOrder",
+                          value as unknown as (
+                            | "Завершен"
+                            | "Отменен_клиентом"
+                            | "Отменен"
+                            | "Сборка"
+                            | "Собран"
+                            | "Принят"
+                            | "Создан"
+                          )[]
+                        );
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите статус заказа"
@@ -156,16 +180,16 @@ const Receipts: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={intervalOptions}
+                      isLoading={isIntervalLoading}
+                      onOpenChange={(open) => handleOpenIntervalSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        updateOnlineStoreFilter(
+                          "imReceiveInterval",
+                          numericValues
+                        );
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите интервал заказа"
@@ -183,16 +207,13 @@ const Receipts: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={promoOptions}
+                      isLoading={isPromoLoading}
+                      onOpenChange={(open) => handleOpenPromoSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        updateOnlineStoreFilter("imPromo", numericValues);
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите промо заказа"
@@ -208,4 +229,4 @@ const Receipts: FC = () => {
   );
 };
 
-export default Receipts;
+export default OnlineStore;

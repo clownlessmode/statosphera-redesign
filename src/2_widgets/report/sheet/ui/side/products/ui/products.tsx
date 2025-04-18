@@ -31,6 +31,9 @@ import {
   useSubgroup,
   useSubsubgroup,
   useTeam,
+  useAutoManager,
+  useTypeSender,
+  useNomenklatura,
 } from "../model/mock";
 
 const Products: FC = () => {
@@ -62,6 +65,18 @@ const Products: FC = () => {
     isSubsubgroupsLoading,
     subsubgroupOptions,
   } = useSubsubgroup(allData);
+  const {
+    handleOpenAutoManagerSelect,
+    isAutoManagerLoading,
+    autoManagerOptions,
+  } = useAutoManager(allData);
+  const { handleOpenTypeSenderSelect, isTypeSenderLoading, typeSenderOptions } =
+    useTypeSender(allData);
+  const {
+    handleOpenNomenklaturaSelect,
+    isNomenklaturaLoading,
+    nomenklaturaOptions,
+  } = useNomenklatura(allData);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -209,7 +224,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
+                      options={autoManagerOptions}
+                      isLoading={isAutoManagerLoading}
+                      onOpenChange={(open) => handleOpenAutoManagerSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -231,7 +248,9 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
+                      options={typeSenderOptions}
+                      isLoading={isTypeSenderLoading}
+                      onOpenChange={(open) => handleOpenTypeSenderSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -370,7 +389,11 @@ const Products: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
+                      isLoading={isNomenklaturaLoading}
+                      options={nomenklaturaOptions}
+                      onOpenChange={(open) =>
+                        handleOpenNomenklaturaSelect(open)
+                      }
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);

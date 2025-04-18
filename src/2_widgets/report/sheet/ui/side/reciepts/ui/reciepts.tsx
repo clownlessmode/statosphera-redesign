@@ -15,7 +15,7 @@ import {
 } from "@shared/ui/form";
 
 import { FC } from "react";
-import { typeQR, typePayment } from "../model/mock";
+import { typeQR, typePayment, useEmployeeName } from "../model/mock";
 import { useFiltersStore } from "../../../../model/filters-store";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Input } from "@shared/ui/input";
@@ -25,8 +25,13 @@ import { MultiSelect } from "@shared/ui/multiselect";
 
 const Receipts: FC = () => {
   const form = useForm();
-  const { updateCheckFilter } = useFiltersStore();
-  // const allData = getApiPayload();
+  const { updateCheckFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+  const {
+    employeeNameOptions,
+    handleOpenEmployeeNameSelect,
+    isEmployeeNameLoading,
+  } = useEmployeeName(allData);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -136,16 +141,15 @@ const Receipts: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={employeeNameOptions}
+                      isLoading={isEmployeeNameLoading}
+                      onOpenChange={(open) =>
+                        handleOpenEmployeeNameSelect(open)
+                      }
                       onValueChange={(value) => {
-                        const numericValues = value.map(String);
+                        const numericValues = value.map(Number);
                         field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        updateCheckFilter("cashBox", numericValues);
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите кассира"

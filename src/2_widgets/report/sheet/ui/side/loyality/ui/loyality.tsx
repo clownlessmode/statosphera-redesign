@@ -15,7 +15,7 @@ import {
 } from "@shared/ui/form";
 
 import { FC } from "react";
-import { gender, type } from "../model/mock";
+import { gender, type, useLoyalAction, useLoyalBonus } from "../model/mock";
 import { useFiltersStore } from "../../../../model/filters-store";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Input } from "@shared/ui/input";
@@ -26,8 +26,16 @@ import { MultiSelect } from "@shared/ui/multiselect";
 
 const Loyality: FC = () => {
   const form = useForm();
-  const { updateLoyalFilter } = useFiltersStore();
-  // const allData = getApiPayload();
+  const { updateLoyalFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+
+  const {
+    loyalActionOptions,
+    handleOpenLoyalActionSelect,
+    isLoyalActionLoading,
+  } = useLoyalAction(allData);
+  const { loyalBonusOptions, handleOpenLoyalBonusSelect, isLoyalBonusLoading } =
+    useLoyalBonus(allData);
 
   return (
     <Card className="w-full mr-4">
@@ -133,16 +141,13 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={loyalActionOptions}
+                      isLoading={isLoyalActionLoading}
+                      onOpenChange={(open) => handleOpenLoyalActionSelect(open)}
                       onValueChange={(value) => {
-                        const numericValues = value.map(String);
+                        const numericValues = value.map(Number);
                         field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        updateLoyalFilter("guidDiscount", numericValues);
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите акцию"
@@ -160,16 +165,13 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={[]}
-                      isLoading={false}
-                      onOpenChange={(open) => console.log(open)} //handleOpenSeasonsSelect(open)}
+                      options={loyalBonusOptions}
+                      isLoading={isLoyalBonusLoading}
+                      onOpenChange={(open) => handleOpenLoyalBonusSelect(open)}
                       onValueChange={(value) => {
-                        const numericValues = value.map(String);
+                        const numericValues = value.map(Number);
                         field.onChange(numericValues);
-                        // updateProductFilter(
-                        //   "seasonalityProducts",
-                        //   numericValues
-                        // );
+                        updateLoyalFilter("guidBonus", numericValues);
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите бонус"

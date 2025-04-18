@@ -17,19 +17,19 @@ export interface ShopsFilterResponse {
 }
 export class FiltersShopsService {
   static async getPartners(dto: any): Promise<PartnersFilterResponse[]> {
-    const response = await api.post<any>("store-manager/filter-manager", dto);
+    const response = await api.post<any>("store/manager", dto);
     return response.data;
   }
   static async getRegions(dto: any): Promise<RegionsFilterResponse[]> {
-    const response = await api.post<any>("store-region/filter-region", dto);
+    const response = await api.post<any>("filters/region", dto);
     return response.data;
   }
   static async getCities(dto: any): Promise<CitiesFilterResponse[]> {
-    const response = await api.post<any>("store-city/filter-city", dto);
+    const response = await api.post<any>("filters/city", dto);
     return response.data;
   }
   static async getShops(dto: any): Promise<ShopsFilterResponse[]> {
-    const response = await api.post<any>("store-shop/filter-shop", dto);
+    const response = await api.post<any>("store/shop", dto);
     return response.data;
   }
 }

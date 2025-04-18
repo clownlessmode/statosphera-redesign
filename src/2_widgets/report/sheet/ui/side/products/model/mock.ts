@@ -1,15 +1,18 @@
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import {
+  AutoManagerFilterResponse,
   DirectionFilterResponse,
   FranchiseFilterResponse,
   GroupEconomistFilterResponse,
   GroupMainFilterResponse,
+  NomenklaturaFilterResponse,
   SeasonFilterResponse,
   SubdivisionFilterResponse,
   SubgroupFilterResponse,
   SubSubGroupFilterResponse,
   TeamFilterResponse,
-} from "@entities/report/model/api/filters/products/service";
+  TypeSenderFilterResponse,
+} from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { Pizza, Salad, Utensils } from "lucide-react";
 import { useState } from "react";
@@ -68,13 +71,13 @@ export const useSubdivision = (allData: any) => {
       const response = await getSubdivisions(allData);
       const apiOptions = response.map(
         (subdivision: SubdivisionFilterResponse) => ({
-          label: subdivision.groupsFranchise,
-          value: String(subdivision.idGroupsFranchise?.[0] || ""),
+          label: subdivision.subdivisionProducts,
+          value: String(subdivision.idSubdivisionProducts?.[0] || ""),
         })
       );
       setSubdibisionOptions(apiOptions);
     } catch (error) {
-      console.error("Ошибка при загрузке партнёров:", error);
+      console.error("Ошибка при загрузке подразделений:", error);
     }
   };
 
@@ -276,5 +279,97 @@ export const useSubsubgroup = (allData: any) => {
     handleOpenSubsubgroupsSelect,
     subsubgroupOptions,
     isSubsubgroupsLoading,
+  };
+};
+
+export const useAutoManager = (allData: any) => {
+  const [autoManagerOptions, setAutoManagerOptions] = useState<
+    MultiSelectOption[]
+  >([]);
+  const { getAutoManager, isAutoManagerLoading } = useFilters();
+
+  const handleOpenAutoManagerSelect = async (isOpen: boolean) => {
+    if (!isOpen) return;
+
+    try {
+      const response = await getAutoManager(allData);
+      const apiOptions = response.map(
+        (autoManager: AutoManagerFilterResponse) => ({
+          label: autoManager.managerAuto,
+          value: String(autoManager.idManagerAuto?.[0] || ""),
+        })
+      );
+      setAutoManagerOptions(apiOptions);
+    } catch (error) {
+      console.error("Ошибка при загрузке автоменеджеров:", error);
+    }
+  };
+
+  return {
+    handleOpenAutoManagerSelect,
+    autoManagerOptions,
+    isAutoManagerLoading,
+  };
+};
+
+export const useTypeSender = (allData: any) => {
+  const [typeSenderOptions, setTypeSenderOptions] = useState<
+    MultiSelectOption[]
+  >([]);
+  const { getTypeSender, isTypeSenderLoading } = useFilters();
+
+  const handleOpenTypeSenderSelect = async (isOpen: boolean) => {
+    if (!isOpen) return;
+
+    try {
+      const response = await getTypeSender(allData);
+      const apiOptions = response.map(
+        (typeSender: TypeSenderFilterResponse) => ({
+          label: typeSender.typeProducts,
+          value: String(typeSender.idTypeProducts?.[0] || ""),
+        })
+      );
+      setTypeSenderOptions(apiOptions);
+    } catch (error) {
+      console.error("Ошибка при загрузке типов отправителей:", error);
+    }
+  };
+
+  return {
+    handleOpenTypeSenderSelect,
+    typeSenderOptions,
+    isTypeSenderLoading,
+  };
+};
+
+export const useNomenklatura = (allData: any) => {
+  const [nomenklaturaOptions, setNomenklaturaOptions] = useState<
+    MultiSelectOption[]
+  >([]);
+  const { getNomenklatura, isNomenklaturaLoading } = useFilters();
+
+  const handleOpenNomenklaturaSelect = async (isOpen: boolean) => {
+    if (!isOpen) return;
+
+    try {
+      const response = await getNomenklatura(allData);
+      const apiOptions = response.map(
+        (nomenklatura: NomenklaturaFilterResponse) => ({
+          label: nomenklatura.productName
+            ? nomenklatura.productName
+            : "Название не указано (ID: " + nomenklatura.idProduct + ")",
+          value: String(nomenklatura.idProduct?.[0] || ""),
+        })
+      );
+      setNomenklaturaOptions(apiOptions);
+    } catch (error) {
+      console.error("Ошибка при загрузке номенклатуры:", error);
+    }
+  };
+
+  return {
+    handleOpenNomenklaturaSelect,
+    nomenklaturaOptions,
+    isNomenklaturaLoading,
   };
 };

@@ -1,8 +1,5 @@
-"use client";
-
 import { Header } from "@widgets/header";
 import { useNavigate, useParams } from "react-router";
-import { digestsMock } from "@shared/constants/mock/digests-mock";
 import { Button } from "@shared/ui/button";
 import { ChevronLeft, MessageCircle, Minus, Plus } from "lucide-react";
 import { ScrollToTop } from "@features/scroll-to-top";
@@ -17,16 +14,15 @@ import {
 } from "@shared/ui/dialog";
 import { Dialog } from "@shared/ui/dialog";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-
+import { useDigests } from "@entities/digests/model/api/controller";
 const Digest = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string | undefined }>();
-  const MOCK_DIGEST = id
-    ? digestsMock.find((digest) => digest.id.toString() === id)
-    : undefined;
+  const { digest, isDigestLoading } = useDigests(id);
+  console.log(digest, isDigestLoading);
+  const MOCK_DIGEST = digest?.daydjest[0];
 
   const [width, setWidth] = useState<number>(() => {
-    // Пытаемся получить сохраненное значение при инициализации
     const savedWidth = localStorage.getItem("digestImageWidth");
     return savedWidth ? Number(savedWidth) : 100;
   });
@@ -59,7 +55,7 @@ const Digest = () => {
         </div>
         {MOCK_DIGEST && (
           <div className="flex flex-col gap-1 items-center">
-            {MOCK_DIGEST.pach_cdn.map((item, index) => (
+            {MOCK_DIGEST.pages.map((item, index) => (
               <motion.img
                 key={item}
                 src={item}
