@@ -2,7 +2,6 @@
 import { useSearchParams } from "react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import { Header } from "@widgets/header";
-import { digestsMock } from "@shared/constants/mock/digests-mock";
 
 import {
   Boxes,
