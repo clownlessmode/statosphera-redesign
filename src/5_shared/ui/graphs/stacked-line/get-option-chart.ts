@@ -5,7 +5,7 @@ import { getFormatTooltip } from "./formatter-tooltip";
 const themeColors = {
   light: {
     text: "#333333", // --foreground
-    background: "#ffffff", // --background
+    background: "#fafafa", // --background
     gridLine: "#acaaa740", // --muted-foreground + 25% прозрачности
     series: [
       "#E50046", // --chart-1
@@ -19,7 +19,7 @@ const themeColors = {
   },
   dark: {
     text: "#d4d4d4", // --foreground
-    background: "#191919", // --background
+    background: "#262626", // --background
     gridLine: "#63636340", // --muted-foreground + 25% прозрачности
     series: [
       "#E50046", // --chart-1

@@ -11,6 +11,9 @@ import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { tableColumns } from "@shared/constants/table-columns";
 import { tableConfig } from "@shared/constants/grouping-columns";
 import { mergeColumnDefsWithPriority } from "./table/mergeColumnDefsWithPriority";
+import FiltersAccordeon from "./filters";
+import { Button } from "@shared/ui/button";
+import { Download, Save, Star } from "lucide-react";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total } = useReportStore();
@@ -21,11 +24,29 @@ const Report: FC = () => {
     <>
       <Sheet />
       <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
-        <Header title={tab === "commerce" ? "Коммерческая" : "Чековая"} />
+        <Header
+          title={tab === "commerce" ? "Коммерческая" : "Чековая"}
+          actions={{
+            right: (
+              <div className="flex flex-row gap-2">
+                <Button variant="outline">
+                  <Download />
+                </Button>
+                <Button variant="outline">
+                  <Save />
+                </Button>
+                <Button variant="outline">
+                  <Star /> Сохраненные отчеты
+                </Button>
+              </div>
+            ),
+          }}
+        />
         <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
           {/* <FiltersAccordeon /> */}
           {graph ? (
             <div className="flex flex-row gap-2 w-full">
+              
               <StackedLine
                 option={{
                   title: {

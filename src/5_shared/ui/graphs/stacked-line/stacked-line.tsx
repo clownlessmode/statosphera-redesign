@@ -2,6 +2,7 @@ import { CSSProperties, useMemo } from "react";
 import { EChartsOption } from "echarts";
 import ReactECharts from "echarts-for-react";
 import { getOptionChart } from "./get-option-chart";
+import { Card } from "@shared/ui/card";
 
 interface CustomChartComponentProps {
   option: EChartsOption;
@@ -12,9 +13,9 @@ const StackedLine = ({ option }: CustomChartComponentProps) => {
   const optionCharts = useMemo(() => getOptionChart(option), [option]);
 
   return (
-    <div className="w-full h-full ">
+    <Card className="w-full h-full ">
       <ReactECharts option={optionCharts} style={{ height: "100%" }} />
-    </div>
+    </Card>
   );
 };
 
