@@ -12,8 +12,8 @@ const StackedLine = ({ option }: CustomChartComponentProps) => {
   const optionCharts = useMemo(() => getOptionChart(option), [option]);
 
   return (
-    <div className="w-full h-full">
-      <ReactECharts option={optionCharts} />
+    <div className="w-full h-full ">
+      <ReactECharts option={optionCharts} style={{ height: "100%" }} />
     </div>
   );
 };

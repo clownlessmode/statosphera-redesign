@@ -12,7 +12,7 @@ import Commerce from "./commerce/ui/commerce";
 import { Check } from "./check";
 import { useTabStore } from "../model/url-store";
 
-export default function SheetDemo() {
+export default function ReportFiltersSheet() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const openParam = searchParams.get("open");

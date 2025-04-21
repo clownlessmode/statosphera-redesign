@@ -111,7 +111,6 @@ export const getOptionChart = (option: EChartsOption) => {
       boundaryGap: false,
       min: (value: any) => value.min * 0.9,
       max: (value: any) => value.max * 1.1,
-      //       // min: (value: any) => Math.max(0, value.min - 100),
 
       axisLine: {
         show: false,
@@ -128,20 +127,15 @@ export const getOptionChart = (option: EChartsOption) => {
         },
       },
     },
-    // grid: {
-    //   left: "5%",
-    //   right: "5%",
-    //   bottom: "3%",
-    //   containLabel: true,
-    // },
+
     grid: {
       left: "5%",
       right: "5%",
-      top: "15%", // Добавляем верхний отступ
-      bottom: "12%", // Увеличиваем нижний отступ
+      top: "20%",
+      bottom: "0%",
       containLabel: true,
     },
-    color: colors.series, // Цвета для серий данных
+    color: colors.series,
     ...otherOption,
   };
 };

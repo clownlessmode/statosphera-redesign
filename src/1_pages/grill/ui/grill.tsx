@@ -51,9 +51,7 @@ const Grill = () => {
         actions={{ left: <Button>Добавить позицию</Button> }}
       />
       <div className="rounded-3xl px-4 py-4 gap-4 h-fit flex flex-row min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] w-full bg-background">
-        <div className="overflow-x-auto w-full max-w-full max-h-[calc(100vh-4rem)] ">
-          <DataTable columns={columns} data={data} />
-        </div>
+    
         <div className="flex gap-4 flex-col">
           <Card>
             <CardHeader>

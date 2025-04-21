@@ -1,0 +1,105 @@
+.ag-theme-quartz.dark,
+.ag-theme-quartz.light {
+  --ag-font-family: "Ubuntu";
+  --ag-header-height: 28px;
+  --ag-wrapper-border-radius: 10px;
+  --ag-row-height: 30px !important;
+  --ag-range-selection-border-color: transparent;
+  --ag-foreground-color: "#fff";
+  --ag-row-border-color: rgba(140, 140, 140, 0.147);
+}
+
+.ag-theme-quartz.dark {
+  --ag-background-color: #323241;
+  --ag-header-background-color: #40404a;
+  --ag-header-cell-hover-background-color: #40404a;
+  --ag-selected-row-background-color: #40404a;
+  --ag-row-hover-color: #40404a;
+}
+
+.ag-theme-quartz.light {
+  --ag-background-color: #f4f6ff;
+  --ag-header-background-color: #d7ddf7;
+  --ag-header-cell-hover-background-color: #d7ddf7;
+  --ag-selected-row-background-color: #d8def8;
+  --ag-row-hover-color: #d8def8;
+}
+
+.ag-row {
+  text-align: center;
+}
+
+.dark .ag-row.ag-row-pinned {
+  background-color: #4d4d60;
+}
+
+.light .ag-row.ag-row-pinned {
+  background-color: #e3e5f4;
+}
+
+.ag-header-cell-text {
+  font-size: 12px;
+}
+
+.light .ag-header-cell-text {
+  color: #303030;
+}
+
+.dark .ag-header-cell-text {
+  color: #f4f6ff;
+}
+
+.ag-floating-top {
+  overflow-y: hidden !important;
+}
+
+.ag-header-cell-label {
+  justify-content: center;
+  text-align: center;
+}
+
+.ag-header-cell-resize::after {
+  background: #898990;
+}
+
+.ag-body-vertical-scroll-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.light .ag-body-vertical-scroll-viewport::-webkit-scrollbar-thumb {
+  background-color: #a09c9c;
+}
+
+.dark .ag-body-vertical-scroll-viewport::-webkit-scrollbar-thumb {
+  background-color: #1e1e1e;
+}
+
+.ag-body-vertical-scroll-viewport::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar {
+  height: 8px;
+}
+
+.ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.light .ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
+  background-color: #a09c9c;
+}
+
+.dark .ag-body-horizontal-scroll-viewport::-webkit-scrollbar-thumb {
+  background-color: #1e1e1e;
+}
+
+.ag-horizontal-right-spacer {
+  display: none;
+}
+
+.ag-horizontal-left-spacer {
+  visibility: hidden;
+}

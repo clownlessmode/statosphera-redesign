@@ -13,10 +13,32 @@ import {
   RegionsFilterResponse,
   ShopsFilterResponse,
 } from "@entities/report/model/api/filters/shops/service";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 const useForm = () => {
+  const {
+    ageGroup,
+    channel,
+    district,
+    idCity,
+    idLegalEntity,
+    idManager,
+    idRegion,
+    idStore,
+    storeCondition,
+  } = useFiltersStore((state) => state.filters.store);
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: defaultValues,
+    defaultValues: {
+      ageGroup: ageGroup || defaultValues.ageGroup,
+      channel: channel || defaultValues.channel,
+      district: district || defaultValues.district,
+      idCity: idCity || defaultValues.idCity,
+      idLegalEntity: idLegalEntity || defaultValues.idLegalEntity,
+      idManager: idManager || defaultValues.idManager,
+      idRegion: idRegion || defaultValues.idRegion,
+      idStore: idStore || defaultValues.idStore,
+      storeCondition: storeCondition || defaultValues.storeCondition,
+    },
     mode: "all",
   });
 

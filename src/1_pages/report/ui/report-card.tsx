@@ -26,7 +26,7 @@ export const ReportCard = ({
 }: ReportCardProps) => {
   return (
     <>
-      <Card className="w-full h-full gap-1 flex flex-col justify-between min-w-[210px]">
+      <Card className="w-full h-full gap-1 flex flex-col justify-between min-w-[300px]">
         <div className="flex flex-col">
           <CardHeader className="flex justify-between items-center">
             <CardTitle>{title}</CardTitle>

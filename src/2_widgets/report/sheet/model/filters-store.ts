@@ -438,9 +438,9 @@ const initialState: Omit<
       article: [],
     },
   },
-  values: ["proceeds"],
+  values: [],
   uniques: [],
-  indicators: [],
+  indicators: ["proceeds"],
   filterDate: {
     dateStart,
     dateEnd,
