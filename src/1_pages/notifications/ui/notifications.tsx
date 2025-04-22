@@ -3,7 +3,7 @@ import { Header } from "@widgets/header";
 import { useNotifications } from "@entities/notifications/model/api/controller";
 import { Mails } from "./mail";
 const Notifications = () => {
-  const { notifications, isNotificationsLoading } = useNotifications(100, 0);
+  const { notifications } = useNotifications();
 
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">

@@ -5,7 +5,7 @@ import { Bell } from "lucide-react";
 import { Link } from "react-router";
 import { useNotifications } from "../model/api/controller";
 const NotificationsBadge = () => {
-  const { notifications } = useNotifications(100, 0);
+  const { notifications } = useNotifications();
   const unreadNotificationsCount = notifications?.filter(
     (notification) => !notification.is_read
   ).length;
