@@ -1,4 +1,5 @@
 import { api } from "@shared/api/api";
+import { FilterApiPayload } from "@widgets/report/sheet/model/filters-store";
 
 export interface ReportTableResponse {
   data: any[];
@@ -30,18 +31,25 @@ export interface ReportGraphResponse {
 }
 
 export class ReportService {
-  static async getReportTable(dto: any): Promise<ReportTableResponse> {
+  static async getReportTable(
+    dto: FilterApiPayload
+  ): Promise<ReportTableResponse> {
     const response = await api.post<any>("report-page/data", dto);
 
     return response.data;
   }
-  static async getReportGraph(dto: any): Promise<ReportGraphResponse> {
-    console.log(dto);
+  static async getReportGraph(
+    dto: FilterApiPayload
+  ): Promise<ReportGraphResponse> {
     const response = await api.post<any>("report-page/graphic", dto);
     return response.data;
   }
-  static async getReportTotal(dto: any): Promise<ReportTotalResponse> {
-    const response = await api.post<any>("report-page/data_total", dto);
+  static async getReportTotal(
+    dto: FilterApiPayload
+  ): Promise<ReportTotalResponse> {
+    const { limit, offset, ...payload } = dto;
+
+    const response = await api.post<any>("report-page/data_total", payload);
     return response.data;
   }
 }

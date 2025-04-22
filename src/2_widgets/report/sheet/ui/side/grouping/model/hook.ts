@@ -13,6 +13,7 @@ const daysOptions = Object.values(GROUPINGS).filter((val) =>
     GROUPINGS.MONTH,
     GROUPINGS.WEEK,
     GROUPINGS.DAY,
+    GROUPINGS.HOUR,
   ].includes(val)
 );
 const geoOptions = [GROUPINGS.CITY, GROUPINGS.REGION];

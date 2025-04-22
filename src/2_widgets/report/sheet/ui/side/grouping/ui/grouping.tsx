@@ -11,11 +11,12 @@ import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
 
 import { Calendar, MapPin, ShoppingBasket, Store } from "lucide-react";
 
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 
 import { GROUPINGS, useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 export const days = [
   {
     label: "Год",
@@ -126,6 +127,21 @@ export const product = [
   },
 ];
 const Grouping: FC = () => {
+  const { tab } = useTabStore();
+
+  const displayedDays = useMemo(() => {
+    const baseDays = [...days];
+    if (tab === "check") {
+      if (!baseDays.some((day) => day.value === GROUPINGS.HOUR)) {
+        baseDays.push({
+          label: "Час",
+          value: GROUPINGS.HOUR,
+        });
+      }
+    }
+    return baseDays;
+  }, [tab]);
+
   const form = useForm();
   const { updateGroups } = useFiltersStore();
   useEffect(() => {
@@ -171,7 +187,7 @@ const Grouping: FC = () => {
                       onChange={(values) => {
                         field.onChange(values);
                       }}
-                      options={days}
+                      options={displayedDays}
                       className="grid-cols-2"
                     />
                   </FormItem>

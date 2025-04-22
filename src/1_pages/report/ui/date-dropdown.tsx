@@ -21,6 +21,7 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useSearchParams } from "react-router";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -74,12 +75,13 @@ const DateDropdown = () => {
       console.error("Error fetching report:", error);
     }
   };
+  const { tab } = useTabStore();
   const options = [
     {
       label: "По часам",
       icon: <Clock className="w-4 h-4" />,
       value: "hour",
-      disabled: true,
+      disabled: tab === "check" ? false : true,
     },
     {
       label: "По дням",

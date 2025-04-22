@@ -23,13 +23,13 @@ import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import { dateRanges } from "@shared/lib/date-ranges";
 import { useFiltersStore } from "../../../../model/filters-store";
 import { DateRange } from "react-day-picker";
+
 // const MIN_DATE = new Date(2018, 4, 1);
 // const MAX_DATE = subDays(new Date(), 1);
 const DateFilter: FC = () => {
   const form = useForm();
   const today = new Date();
   const { updateDateFilter } = useFiltersStore();
-
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
