@@ -1,17 +1,16 @@
 import { Header } from "@widgets/header";
-import { mails } from "../data";
 
-import { accounts } from "../data";
+import { useNotifications } from "@entities/notifications/model/api/controller";
 import { Mails } from "./mail";
-
 const Notifications = () => {
+  const { notifications, isNotificationsLoading } = useNotifications(100, 0);
+
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Уведомления" />
       <div className="rounded-3xl bg-background gap-4">
         <Mails
-          accounts={accounts}
-          mails={mails}
+          mails={notifications || []}
           defaultLayout={undefined}
           defaultCollapsed={undefined}
           navCollapsedSize={4}

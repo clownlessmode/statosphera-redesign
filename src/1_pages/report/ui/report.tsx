@@ -6,26 +6,30 @@ import { useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
-import UniversalTable from "./table/universal-table";
+
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { tableColumns } from "@shared/constants/table-columns";
 import { tableConfig } from "@shared/constants/grouping-columns";
 import { mergeColumnDefsWithPriority } from "./table/mergeColumnDefsWithPriority";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
-import { Cog, Download, Eraser, Save, Star } from "lucide-react";
+import { Cog, Eraser, Save, Star } from "lucide-react";
 
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import UniversalTable from "./table";
+import { DownloadReport } from "@features/reports/download";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
-  const { graph, table, total } = useReportStore();
+  const { graph, table, total, clearAll } = useReportStore();
 
   const { tab } = useTabStore();
   const mergedColumns = mergeColumnDefsWithPriority(tableColumns, tableConfig);
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
+  const { resetAllFilters, updatePagination } = useFiltersStore();
   return (
     <>
       <Sheet />
@@ -34,9 +38,7 @@ const Report: FC = () => {
           actions={{
             right: (
               <div className="flex flex-row gap-2">
-                <Button variant="outline">
-                  <Download />
-                </Button>
+                <DownloadReport />
                 <Button variant="outline">
                   <Save />
                 </Button>
@@ -55,7 +57,7 @@ const Report: FC = () => {
             )}
           >
             <div className="flex flex-col gap-2 w-full">
-              <div className="flex flex-row gap-1 items-center justify-between">
+              <div className="flex flex-row gap-1 items-center justify-between ">
                 <h1 className="font-bold leading-none md:text-xl text-md tracking-tight">
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
                 </h1>
@@ -67,11 +69,22 @@ const Report: FC = () => {
                     variant="outline"
                     onClick={() => setIsFiltersOpen(!isFiltersOpen)}
                   >
-                    Изменить фильтры <Cog className="text-primary/80" />
+                    {!isCompleted || !isFiltersOpen ? (
+                      <>
+                        Изменить фильтры <Cog className="text-primary/80" />
+                      </>
+                    ) : (
+                      <>
+                        Показать график <Cog className="text-primary/80" />
+                      </>
+                    )}
                   </Button>
                   <Button
                     size="sm"
-                    onClick={() => console.log("cleared")}
+                    onClick={() => {
+                      resetAllFilters();
+                      clearAll();
+                    }}
                     variant="outline"
                   >
                     Очистить фильтры <Eraser className="text-primary/80" />

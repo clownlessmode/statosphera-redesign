@@ -1,9 +1,10 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@shared/ui/button";
 import { FilterBadges } from "./filter-badges";
 import { GroupBadges } from "./group-badges";
 import { ReportBadges } from "./values-badges";
 import { Card } from "@shared/ui/card";
-import { Filter, BarChart3, Layers3, Cog } from "lucide-react";
+import { Filter, BarChart3, Layers3 } from "lucide-react";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useNavigate } from "react-router";
 import {
@@ -11,7 +12,12 @@ import {
   grouping,
   indicators,
 } from "@widgets/report/sheet/ui/commerce/model/tabs";
-import { useState } from "react";
+
+const animationVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
 
 const FiltersAccordeon = ({
   isOpen,
@@ -21,6 +27,7 @@ const FiltersAccordeon = ({
 }) => {
   const { setTargetViewValue, tab } = useTabStore();
   const navigate = useNavigate();
+
   const handleOpenSheet = (targetValue: string | null) => {
     if (targetValue) {
       setTargetViewValue(targetValue);
@@ -28,20 +35,28 @@ const FiltersAccordeon = ({
     }
   };
 
-  // Determine target values from imported arrays
   const targetFilterValue = filters.length > 0 ? filters[0].title : null;
   const targetIndicatorValue =
     indicators.length > 0 ? indicators[0].title : null;
   const targetGroupingValue = grouping.length > 0 ? grouping[0].title : null;
+
   return (
-    <>
+    <AnimatePresence>
       {isOpen && (
-        <div className="flex flex-col gap-2">
+        <motion.div
+          key="filters-accordion"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={animationVariants}
+          transition={{ duration: 0.2 }}
+          className="flex flex-col gap-2 w-full"
+        >
           <Card
             onClick={() => handleOpenSheet(targetFilterValue)}
             className="flex flex-row gap-1 justify-between items-center p-2"
           >
-            <div className="flex flex-row gap-1 items-center ">
+            <div className="flex flex-row gap-1 items-center">
               <Filter className="size-4" />
               <p className="text-sm">Фильтры:</p>
               <FilterBadges tab={tab} />
@@ -76,9 +91,9 @@ const FiltersAccordeon = ({
               Изменить группировки <Layers3 className="size-4" />
             </Button>
           </Card>
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

@@ -16,7 +16,7 @@ import { FC, useEffect } from "react";
 import { GROUPINGS, useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
-const days = [
+export const days = [
   {
     label: "Год",
     value: GROUPINGS.YEAR,
@@ -39,7 +39,7 @@ const days = [
   },
 ];
 
-const geo = [
+export const geo = [
   {
     label: "Город",
     value: GROUPINGS.CITY,
@@ -49,7 +49,7 @@ const geo = [
     value: GROUPINGS.REGION,
   },
 ];
-const shop = [
+export const shop = [
   {
     label: "Магазин",
     value: GROUPINGS.STORE,
@@ -75,7 +75,7 @@ const shop = [
     value: "nameManager",
   },
 ];
-const product = [
+export const product = [
   {
     label: "Cтруктура продаж",
     value: GROUPINGS.GROUP_FRANCHISE,

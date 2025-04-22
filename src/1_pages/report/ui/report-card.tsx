@@ -36,9 +36,6 @@ export const ReportCard = ({
       <div className="flex flex-col gap-0.5">
         <CardHeader className="flex justify-between items-center p-0 pb-0">
           <CardTitle className="text-sm font-medium">{title}</CardTitle>
-          <Link to="/dashboard/margin" className="p-0">
-            <ExternalLink className="w-3 h-3" />
-          </Link>
         </CardHeader>
         <CardContent className="p-0 flex items-center gap-1 text-xs leading-tight">
           <p className="text-base font-semibold">{value}</p>

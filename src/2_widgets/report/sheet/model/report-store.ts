@@ -13,6 +13,7 @@ interface ReportStore {
   setGraph: (data: ReportGraphResponse) => void;
   setTotal: (data: ReportTotalResponse) => void;
   setTable: (data: ReportTableResponse) => void;
+  clearAll: () => void;
 }
 
 export const useReportStore = create<ReportStore>((set) => ({
@@ -38,6 +39,14 @@ export const useReportStore = create<ReportStore>((set) => ({
       table: deepEqual(state.table, data) ? state.table : data,
       lastUpdate: Date.now(),
     })),
+
+  clearAll: () =>
+    set({
+      graph: null,
+      total: null,
+      table: null,
+      lastUpdate: 0,
+    }),
 }));
 
 // Вспомогательная функция для глубокого сравнения

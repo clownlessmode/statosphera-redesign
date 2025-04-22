@@ -12,20 +12,16 @@ import {
 import { Separator } from "@shared/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import { TooltipProvider } from "@shared/ui/tooltip";
-import { Mail } from "../data";
+
 import useMail from "../use-mail";
 import { MailDisplay } from "./mail-display";
 import { MailList } from "./mail-list";
 
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { Notification } from "@entities/notifications/model/api/types";
 
 interface MailProps {
-  accounts: {
-    label: string;
-    email: string;
-    icon: React.ReactNode;
-  }[];
-  mails: Mail[];
+  mails: Notification[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
@@ -70,14 +66,14 @@ export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
               <MailList items={mails} />
             </TabsContent>
             <TabsContent value="unread" className="m-0">
-              <MailList items={mails.filter((item) => !item.read)} />
+              <MailList items={mails.filter((item) => !item.is_read)} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
           <MailDisplay
-            mail={mails.find((item) => item.id === selected) || null}
+            mail={mails.find((item) => item.id === Number(selected)) || null}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

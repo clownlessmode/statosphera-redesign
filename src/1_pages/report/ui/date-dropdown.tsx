@@ -17,6 +17,10 @@ import {
 } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { create } from "zustand";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { useSearchParams } from "react-router";
+import { useReportStore } from "@widgets/report/sheet/model/report-store";
+import { useReport } from "@entities/report/model/api/filters/data/controller";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -31,8 +35,45 @@ export const useDateFilterStore = create<DateFilterState>((set) => ({
 }));
 
 const DateDropdown = () => {
-  const { value, setValue } = useDateFilterStore();
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const { getApiPayload } = useFiltersStore();
+  const { setGraph, setTotal, setTable } = useReportStore();
+
+  const allData = getApiPayload();
+  const disabled = allData.groups.length === 0 || allData.values.length === 0;
+  const { getGraph, getTable, getTotal } = useReport();
+  const { value, setValue } = useDateFilterStore();
+  const handleSubmit = async (value: DateFilterValue) => {
+    try {
+      setValue(value);
+      const [graph, total, table] = await Promise.all([
+        getGraph({
+          ...allData,
+          values: [allData.values[0]],
+          groups: [value],
+          sorts: { colId: [allData.values[0]], sort: "asc" },
+        }),
+        getTotal({
+          ...allData,
+          sorts: { colId: [allData.values[0]], sort: "asc" },
+        }),
+        getTable({
+          ...allData,
+          sorts: { colId: [allData.values[0]], sort: "asc" },
+        }),
+      ]);
+
+      setGraph(graph);
+      setTotal(total);
+      setTable(table);
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("open", "false");
+      setSearchParams(newParams);
+    } catch (error) {
+      console.error("Error fetching report:", error);
+    }
+  };
   const options = [
     {
       label: "По часам",
@@ -83,7 +124,7 @@ const DateDropdown = () => {
         {options.map((option) => (
           <DropdownMenuItem
             key={option.value}
-            onClick={() => setValue(option.value as any)}
+            onClick={() => handleSubmit(option.value as DateFilterValue)}
             disabled={option.disabled}
           >
             <span className="mr-2 text-primary-foreground">{option.icon}</span>

@@ -37,7 +37,7 @@ const Sidebar = ({
     navMain: [
       {
         title: "Продажи",
-        url: "#",
+        url: ROUTES_PATH.SALES_DYNAMICS,
         icon: DollarSign,
       },
       {

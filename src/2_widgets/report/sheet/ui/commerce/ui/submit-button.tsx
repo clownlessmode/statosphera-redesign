@@ -3,6 +3,7 @@ import { useFiltersStore } from "../../../model/filters-store";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useReportStore } from "../../../model/report-store";
 import { useSearchParams } from "react-router";
+import { useDateFilterStore } from "@pages/report/ui/date-dropdown";
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -10,6 +11,7 @@ export const CombinedSubmitButton = () => {
   const { setGraph, setTotal, setTable } = useReportStore();
 
   const allData = getApiPayload();
+  const { value } = useDateFilterStore();
   const disabled = allData.groups.length === 0 || allData.values.length === 0;
   const { getGraph, getTable, getTotal } = useReport();
 
@@ -19,6 +21,7 @@ export const CombinedSubmitButton = () => {
         getGraph({
           ...allData,
           values: [allData.values[0]],
+          groups: [value],
           sorts: { colId: [allData.values[0]], sort: "asc" },
         }),
         getTotal({
