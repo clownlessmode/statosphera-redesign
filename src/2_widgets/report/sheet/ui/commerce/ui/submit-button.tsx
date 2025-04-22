@@ -18,6 +18,7 @@ export const CombinedSubmitButton = () => {
       const [graph, total, table] = await Promise.all([
         getGraph({
           ...allData,
+          values: [allData.values[0]],
           sorts: { colId: [allData.values[0]], sort: "asc" },
         }),
         getTotal({

@@ -152,3 +152,11 @@ body {
     max-height: var(--radix-popover-content-available-height);
   }
 }
+.ag-header-cell-label {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.ag-cell {
+  text-align: center !important;
+}

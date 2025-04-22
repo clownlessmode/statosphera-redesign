@@ -27,11 +27,12 @@ import Grouping from "../../side/grouping/ui/grouping";
 
 import Unique from "../../side/unique/ui/unique";
 import { DateFilter } from "../../side/date";
-import { CombinedSubmitButton } from "./submit-button";
+
 import { Indicators } from "../../side/indicators";
 import { LoyalityFilter } from "../../side/loyality";
 import { RecieptsFilter } from "../../side/reciepts";
 import { OnlineStoreFilter } from "../../side/online-store";
+import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
 const filters = [
   {
     title: "Дата",

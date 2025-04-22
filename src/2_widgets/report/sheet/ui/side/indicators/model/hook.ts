@@ -11,7 +11,7 @@ const useForm = () => {
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      proceeds: indicators || [],
+      proceeds: indicators || ["proceeds"],
     },
     mode: "all",
   });

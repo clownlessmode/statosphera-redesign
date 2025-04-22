@@ -88,7 +88,7 @@ const UniversalTable = ({
           ...col,
           cellStyle: {
             ...(typeof col.cellStyle === "function" ? {} : col.cellStyle ?? {}),
-            textAlign: isNumber ? "center" : "left",
+            textAlign: isNumber ? "center" : "center",
           },
         };
       });
@@ -130,6 +130,7 @@ const UniversalTable = ({
   const defaultColDef = useMemo<ColDef>(
     () => ({
       resizable: true,
+      cellStyle: { textAlign: "center" }, // 👈 Центрируем все ячейки
     }),
     []
   );
@@ -170,11 +171,14 @@ const UniversalTable = ({
       }`}
       style={
         {
-          "--ag-cell-horizontal-padding": "8px",
-          "--ag-cell-vertical-padding": "4px",
-          "--ag-header-cell-horizontal-padding": "8px",
-          "--ag-header-cell-vertical-padding": "4px",
-          "--ag-row-height": "40px",
+          "--ag-row-height": "36px",
+          "--ag-header-height": "36px",
+          "--ag-header-cell-height": "32px",
+          "--ag-header-icon-size": "12px",
+          "--ag-cell-horizontal-padding": "6px",
+          "--ag-cell-vertical-padding": "2px",
+          "--ag-header-cell-horizontal-padding": "6px",
+          "--ag-header-cell-vertical-padding": "2px",
         } as React.CSSProperties
       }
     >

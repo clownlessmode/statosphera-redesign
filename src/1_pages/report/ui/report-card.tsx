@@ -25,31 +25,36 @@ export const ReportCard = ({
   isNegative = false,
 }: ReportCardProps) => {
   return (
-    <>
-      <Card className="w-full h-full gap-1 flex flex-col justify-between min-w-[300px]">
-        <div className="flex flex-col">
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle>{title}</CardTitle>
-            <Link to="/dashboard/margin" className="p-0">
-              <ExternalLink className="w-4 h-4" />
-            </Link>
-          </CardHeader>
-          <CardContent className="leading-none text-sm flex items-center gap-1">
-            <p className=" text-xl font-bold">{value}</p>
-            <Circle
-              className={cn(
-                "size-2",
-                isNegative ? "text-destructive" : "text-positive"
-              )}
-              fill="currentColor"
-            />
-          </CardContent>
-        </div>
-        <CardFooter className=" items-end flex flex-col text-left w-full">
-          <p className="w-full">{subtitle}</p>
-          <p className="w-full text-muted-foreground font-bold">{subvalue}</p>
-        </CardFooter>
-      </Card>
-    </>
+    <Card
+      className={cn(
+        // Основной стиль карточки
+        "w-full  min-w-[250px] px-4 py-2 flex flex-col justify-between gap-1 h-full",
+        // Минимальная высота
+        "min-h-[100px]"
+      )}
+    >
+      <div className="flex flex-col gap-0.5">
+        <CardHeader className="flex justify-between items-center p-0 pb-0">
+          <CardTitle className="text-sm font-medium">{title}</CardTitle>
+          <Link to="/dashboard/margin" className="p-0">
+            <ExternalLink className="w-3 h-3" />
+          </Link>
+        </CardHeader>
+        <CardContent className="p-0 flex items-center gap-1 text-xs leading-tight">
+          <p className="text-base font-semibold">{value}</p>
+          <Circle
+            className={cn(
+              "size-3",
+              isNegative ? "text-destructive" : "text-positive"
+            )}
+            fill="currentColor"
+          />
+        </CardContent>
+      </div>
+      <CardFooter className="p-0 flex flex-col items-start text-left mt-1">
+        <p className="text-xs leading-snug">{subtitle}</p>
+        <p className="text-xs text-muted-foreground font-medium">{subvalue}</p>
+      </CardFooter>
+    </Card>
   );
 };
