@@ -20,8 +20,8 @@ const DownloadReport = () => {
   const handleDownloadReport = async (typeFile: "csv" | "excel") => {
     await downloadReport({
       ...payload,
-      values: [payload.values[0]],
-      groups: [payload.groups[0]],
+      values: payload.values,
+      groups: payload.groups,
       sorts: { colId: [payload.values[0]], sort: "asc" },
       typeFile,
     });
