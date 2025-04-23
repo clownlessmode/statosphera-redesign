@@ -22,6 +22,9 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import UniversalTable from "./table";
 import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
+import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
+import { getTopLevelValues } from "@shared/lib/get-top-level";
+import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model/list";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph } = useReportStore();
@@ -35,14 +38,28 @@ const Report: FC = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
   const { resetAllFilters } = useFiltersStore();
   const { value } = useDateFilterStore();
-  // const uniques =
+  const indicators = useIndicatorList();
+  const uniques = useUniqueValues();
+
+  const values = [...indicators, ...uniques];
+
+  const topLevelValues = getTopLevelValues(values);
   const onCellClick = async (params: any) => {
     console.log(params);
     try {
+      console.log(
+        topLevelValues.includes(params.field.toLowerCase()),
+        params.field,
+        topLevelValues
+      );
       const [graph] = await Promise.all([
         getGraph({
           ...allData,
-          values: [allData.values[0]],
+          values: [
+            topLevelValues.includes(params.field.toLowerCase())
+              ? params.field
+              : allData.values[0],
+          ],
           groups: [value],
           sorts: { colId: [allData.values[0]], sort: "asc" },
         }),
@@ -173,9 +190,6 @@ const Report: FC = () => {
               data={table?.data as any[]}
               totalData={total?.data as any[]}
               columnDefs={mergedColumns}
-              onRowClick={(row) => {
-                console.log("Row clicked:", row);
-              }}
               onCellClick={onCellClick}
             />
           ) : (

@@ -121,6 +121,7 @@ const Products: FC = () => {
                   <FormLabel>Структурное подразделение</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled
                       value={field.value?.map(String) || []}
                       options={subdivisionOptions}
                       isLoading={isSubdivisionsLoading}
@@ -151,6 +152,7 @@ const Products: FC = () => {
                   <FormLabel>Команда</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled
                       value={field.value?.map(String) || []}
                       options={teamOptions}
                       isLoading={isTeamLoading}
@@ -175,6 +177,7 @@ const Products: FC = () => {
                   <FormLabel>Направление</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled
                       value={field.value?.map(String) || []}
                       options={directionOptions}
                       isLoading={isDirectionLoading}

@@ -38,7 +38,7 @@ const DateDropdown = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { getApiPayload } = useFiltersStore();
-  const { setGraph, setTotal, setTable } = useReportStore();
+  const { setGraph } = useReportStore();
 
   const allData = getApiPayload();
   // const disabled = allData.groups.length === 0 || allData.values.length === 0;

@@ -34,7 +34,7 @@ const Indicators: FC = () => {
         <CardTitle>Показатели</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>
-            Группируйте данные по нужным столбцам
+            Получайте отчет по нужным показателям
           </CardDescription>
           <ClearFilters form={form} />
         </div>

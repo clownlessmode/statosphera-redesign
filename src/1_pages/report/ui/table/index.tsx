@@ -8,7 +8,6 @@ import { UniversalTableProps } from "./types";
 import { calculateTotalRow } from "./utils";
 import { getAgGridTheme } from "./theme";
 
-// Регистрируем модули AG Grid
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function UniversalTable({
@@ -24,7 +23,6 @@ export default function UniversalTable({
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [pinnedTopData, setPinnedTopData] = useState<any[]>([]);
 
-  // Вычисляем колонки
   useEffect(() => {
     if (!data?.length) return;
     const first = data[0];
