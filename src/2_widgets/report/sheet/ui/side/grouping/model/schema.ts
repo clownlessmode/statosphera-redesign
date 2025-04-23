@@ -7,4 +7,8 @@ export const schema = z.object({
   geo: z.array(z.string()),
   store: z.array(z.string()),
   product: z.array(z.string()),
+  loyal: z.array(z.string()),
+  personal: z.array(z.string()),
+  online: z.array(z.string()),
+  id: z.array(z.string()),
 });

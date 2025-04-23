@@ -29,7 +29,7 @@ const Report: FC = () => {
   const mergedColumns = mergeColumnDefsWithPriority(tableColumns, tableConfig);
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
-  const { resetAllFilters, updatePagination } = useFiltersStore();
+  const { resetAllFilters } = useFiltersStore();
   return (
     <>
       <Sheet />

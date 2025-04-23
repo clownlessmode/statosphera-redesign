@@ -8,4 +8,8 @@ export const defaultValues: FormValues = {
   geo: [],
   store: [],
   product: [],
+  loyal: [],
+  personal: [],
+  online: [],
+  id: [],
 };

@@ -6,8 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Circle, ExternalLink } from "lucide-react";
-import { Link } from "react-router";
+import { Circle } from "lucide-react";
 
 type ReportCardProps = {
   title: string;

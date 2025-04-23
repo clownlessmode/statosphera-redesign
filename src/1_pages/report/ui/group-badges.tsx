@@ -1,12 +1,27 @@
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import { product } from "@widgets/report/sheet/ui/side/grouping/ui/grouping";
-import { shop } from "@widgets/report/sheet/ui/side/grouping/ui/grouping";
-import { geo } from "@widgets/report/sheet/ui/side/grouping/ui/grouping";
-import { days } from "@widgets/report/sheet/ui/side/grouping/ui/grouping";
+import {
+  days,
+  product,
+  shop,
+  geo,
+  loyal,
+  personal,
+  online,
+  id,
+} from "@widgets/report/sheet/ui/side/grouping/model/mock";
 import { Link } from "react-router";
 
-const allGroups = [...days, ...geo, ...shop, ...product];
+const allGroups = [
+  ...days,
+  ...geo,
+  ...shop,
+  ...product,
+  ...loyal,
+  ...personal,
+  ...online,
+  ...id,
+];
 
 // Создаем маппинг value -> label
 const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(

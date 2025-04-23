@@ -6,6 +6,8 @@ export const useNotifications = () => {
   const notificationsQuery = useQuery<Notification[]>({
     queryKey: ["notifications"],
     queryFn: () => NotificationService.getNotifications(100, 0),
+    refetchInterval: 5_000,
+    refetchIntervalInBackground: true,
   });
 
   const readNotification = useMutation<Notification, Error, number>({

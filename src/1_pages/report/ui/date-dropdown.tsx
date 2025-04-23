@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -42,7 +41,7 @@ const DateDropdown = () => {
   const { setGraph, setTotal, setTable } = useReportStore();
 
   const allData = getApiPayload();
-  const disabled = allData.groups.length === 0 || allData.values.length === 0;
+  // const disabled = allData.groups.length === 0 || allData.values.length === 0;
   const { getGraph, getTable, getTotal } = useReport();
   const { value, setValue } = useDateFilterStore();
   const handleSubmit = async (value: DateFilterValue) => {

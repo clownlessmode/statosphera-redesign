@@ -13,8 +13,7 @@ import {
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
 const DownloadReport = () => {
-  const { downloadReport, isDownloadReportLoading } =
-    useDownloadReportController();
+  const { downloadReport } = useDownloadReportController();
   const { getApiPayload } = useFiltersStore();
   const [isOpen, setIsOpen] = useState(false);
   const payload = getApiPayload();

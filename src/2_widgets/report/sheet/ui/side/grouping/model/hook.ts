@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "./schema";
-import { defaultValues } from "./default";
+
 import { useForm as useHookForm } from "react-hook-form";
 import { FormValues } from "./types";
 import { useFiltersStore, GROUPINGS } from "../../../../model/filters-store";
@@ -40,6 +40,25 @@ const productOptions = [
   GROUPINGS.GROUP_ECONOMIST,
 ];
 
+const loyalOptions = [
+  GROUPINGS.CARD_NUMBER,
+  GROUPINGS.IM_SEX_LOYAL,
+  GROUPINGS.LOYAL_AGE,
+];
+
+const personalOptions = [GROUPINGS.CASH_BOX];
+
+const onlineOptions = [
+  GROUPINGS.IM_TYPE_ORDER,
+  GROUPINGS.IM_DELIVERY_METHOD,
+  GROUPINGS.IM_PAYMENT_METHOD,
+  GROUPINGS.IM_STATUS_ORDER,
+  GROUPINGS.IM_PROMO,
+  GROUPINGS.IM_RECEIVE_INTERVAL,
+];
+
+const idOptions = [GROUPINGS.ID_CHECK, GROUPINGS.CASH_BOX];
+
 const useForm = () => {
   const selectedGroupings = useFiltersStore((state) => state.groups);
 
@@ -53,6 +72,10 @@ const useForm = () => {
       geo: matchValues(geoOptions),
       store: matchValues(storeOptions),
       product: matchValues(productOptions),
+      loyal: matchValues(loyalOptions),
+      personal: matchValues(personalOptions),
+      online: matchValues(onlineOptions),
+      id: matchValues(idOptions),
     },
     mode: "all",
   });

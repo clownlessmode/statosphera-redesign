@@ -1,8 +1,5 @@
-import { DataTable } from "@shared/ui/table/data-table";
 import { Header } from "@widgets/header";
-import { columns } from "../model/columns";
-import type { Grill as GrillType } from "../model/types";
-import { GRILL_MOCK } from "@shared/constants/mock/grill-mock";
+
 import { Button } from "@shared/ui/button";
 import {
   Card,
@@ -43,7 +40,6 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 const Grill = () => {
-  const data: GrillType[] = GRILL_MOCK;
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
@@ -51,7 +47,6 @@ const Grill = () => {
         actions={{ left: <Button>Добавить позицию</Button> }}
       />
       <div className="rounded-3xl px-4 py-4 gap-4 h-fit flex flex-row min-h-[calc(100vh-4rem)] max-h-[calc(100vh-4rem)] w-full bg-background">
-    
         <div className="flex gap-4 flex-col">
           <Card>
             <CardHeader>
