@@ -17,6 +17,9 @@ export const CombinedSubmitButton = () => {
 
   const handleSubmit = async () => {
     try {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set("open", "false");
+      setSearchParams(newParams);
       const [graph, total, table] = await Promise.all([
         getGraph({
           ...allData,
@@ -37,9 +40,6 @@ export const CombinedSubmitButton = () => {
       setGraph(graph);
       setTotal(total);
       setTable(table);
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set("open", "false");
-      setSearchParams(newParams);
     } catch (error) {
       console.error("Error fetching report:", error);
     }

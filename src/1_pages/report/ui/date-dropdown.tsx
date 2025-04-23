@@ -42,31 +42,21 @@ const DateDropdown = () => {
 
   const allData = getApiPayload();
   // const disabled = allData.groups.length === 0 || allData.values.length === 0;
-  const { getGraph, getTable, getTotal } = useReport();
+  const { getGraph } = useReport();
   const { value, setValue } = useDateFilterStore();
   const handleSubmit = async (value: DateFilterValue) => {
     try {
       setValue(value);
-      const [graph, total, table] = await Promise.all([
+      const [graph] = await Promise.all([
         getGraph({
           ...allData,
           values: [allData.values[0]],
           groups: [value],
           sorts: { colId: [allData.values[0]], sort: "asc" },
         }),
-        getTotal({
-          ...allData,
-          sorts: { colId: [allData.values[0]], sort: "asc" },
-        }),
-        getTable({
-          ...allData,
-          sorts: { colId: [allData.values[0]], sort: "asc" },
-        }),
       ]);
 
       setGraph(graph);
-      setTotal(total);
-      setTable(table);
       const newParams = new URLSearchParams(searchParams);
       newParams.set("open", "false");
       setSearchParams(newParams);

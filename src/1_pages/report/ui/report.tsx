@@ -17,19 +17,42 @@ import { Cog, Eraser, Save, Star } from "lucide-react";
 
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
-import DateDropdown from "./date-dropdown";
+import DateDropdown, { useDateFilterStore } from "./date-dropdown";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import UniversalTable from "./table";
 import { DownloadReport } from "@features/reports/download";
+import { useReport } from "@entities/report/model/api/filters/data/controller";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
-  const { graph, table, total, clearAll } = useReportStore();
+  const { graph, table, total, clearAll, setGraph } = useReportStore();
+  const { getGraph } = useReport();
+  const { getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
 
   const { tab } = useTabStore();
   const mergedColumns = mergeColumnDefsWithPriority(tableColumns, tableConfig);
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
   const { resetAllFilters } = useFiltersStore();
+  const { value } = useDateFilterStore();
+  // const uniques =
+  const onCellClick = async (params: any) => {
+    console.log(params);
+    try {
+      const [graph] = await Promise.all([
+        getGraph({
+          ...allData,
+          values: [allData.values[0]],
+          groups: [value],
+          sorts: { colId: [allData.values[0]], sort: "asc" },
+        }),
+      ]);
+      setGraph(graph);
+    } catch (error) {
+      console.error("Error fetching report:", error);
+    }
+  };
+
   return (
     <>
       <Sheet />
@@ -150,6 +173,10 @@ const Report: FC = () => {
               data={table?.data as any[]}
               totalData={total?.data as any[]}
               columnDefs={mergedColumns}
+              onRowClick={(row) => {
+                console.log("Row clicked:", row);
+              }}
+              onCellClick={onCellClick}
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">

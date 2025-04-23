@@ -16,6 +16,8 @@ export default function UniversalTable({
   totalData,
   columnDefs: providedDefs,
   className,
+  onRowClick,
+  onCellClick,
 }: UniversalTableProps) {
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -100,6 +102,18 @@ export default function UniversalTable({
         animateRows
         enableCellTextSelection
         domLayout="normal"
+        // клик по строке
+        onRowClicked={(e) => {
+          onRowClick?.(e.data);
+        }}
+        // клик по ячейке
+        onCellClicked={(e) => {
+          onCellClick?.({
+            rowData: e.data,
+            field: e.colDef.field ?? "",
+            value: e.value,
+          });
+        }}
         overlayNoRowsTemplate="Нет данных для отображения"
         onGridReady={(params: any) => {
           const allIds: string[] = [];

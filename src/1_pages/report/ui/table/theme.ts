@@ -23,7 +23,7 @@ export function getAgGridTheme(isLight: boolean): Theme {
         headerColumnResizeHandleColor: "#dad9d8",
         accentColor: "#e50046",
         borderColor: "#dad9d8",
-        selectedRowBackgroundColor: "#ffadc6",
+        selectedRowBackgroundColor: "#e4e4e4",
       }
     : {
         backgroundColor: "#191919",
@@ -34,7 +34,7 @@ export function getAgGridTheme(isLight: boolean): Theme {
         headerColumnResizeHandleColor: "#2f2f2f",
         accentColor: "#e50046",
         borderColor: "#2f2f2f",
-        selectedRowBackgroundColor: "#ffadc6",
+        selectedRowBackgroundColor: "#262626",
       };
 
   return themeMaterial.withParams(params);

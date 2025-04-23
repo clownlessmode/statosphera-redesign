@@ -9,4 +9,8 @@ export interface UniversalTableProps {
   columnDefs?: ColDef[];
   /** Дополнительные классы для корневого div */
   className?: string;
+
+  onRowClick?: (rowData: any) => void;
+
+  onCellClick?: (params: { rowData: any; field: string; value: any }) => void;
 }
