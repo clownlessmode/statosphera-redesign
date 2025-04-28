@@ -9,10 +9,8 @@ export type GetDigestsResponse = {
 }[];
 
 export type GetDigestResponse = {
-  daydjest: {
-    id: string;
-    pages: string[];
-    title: string;
-    type: string;
-  }[];
+  id: string;
+  pages: string[];
+  name_daydjest: string;
+  type: string;
 };

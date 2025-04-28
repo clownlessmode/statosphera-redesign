@@ -9,14 +9,22 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { FC } from "react";
-import { FormValues } from "../model/other-form/types";
-import useForm from "../model/other-form/hook";
-import { Textarea } from "@shared/ui/textarea";
 
-const OtherForm: FC = () => {
+import { Textarea } from "@shared/ui/textarea";
+import useFeedbackController, { FEEDBACK_TYPES } from "../model/api/controller";
+import useForm from "../model/hook";
+import { FormValues } from "../model/types";
+
+interface Props {
+  setIsOpen: (isOpen: boolean) => void;
+}
+const OtherForm: FC<Props> = ({ setIsOpen }) => {
   const form = useForm();
+  const { sendFeedback, isFeedbackLoading } = useFeedbackController();
   const handleSubmit = (data: FormValues) => {
+    sendFeedback({ ...data, type: FEEDBACK_TYPES.OTHER });
     console.log(data);
+    setIsOpen(false);
   };
   return (
     <Form {...form}>
@@ -42,7 +50,10 @@ const OtherForm: FC = () => {
         />
         <FormMessage />
         <DialogFooter>
-          <Button className="w-full" disabled={!form.formState.isValid}>
+          <Button
+            className="w-full"
+            disabled={!form.formState.isValid || isFeedbackLoading}
+          >
             Отправить
           </Button>
         </DialogFooter>

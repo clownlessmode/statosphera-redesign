@@ -6,11 +6,8 @@ import { useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
-
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
-import { tableColumns } from "@shared/constants/table-columns";
-import { tableConfig } from "@shared/constants/grouping-columns";
-import { mergeColumnDefsWithPriority } from "./table/mergeColumnDefsWithPriority";
+import { columnDefs } from "@shared/constants/table-columns";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
 import { Cog, Eraser, Save, Star } from "lucide-react";
@@ -33,7 +30,6 @@ const Report: FC = () => {
   const allData = getApiPayload();
 
   const { tab } = useTabStore();
-  const mergedColumns = mergeColumnDefsWithPriority(tableColumns, tableConfig);
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
   const { resetAllFilters } = useFiltersStore();
@@ -189,7 +185,7 @@ const Report: FC = () => {
             <UniversalTable
               data={table?.data as any[]}
               totalData={total?.data as any[]}
-              columnDefs={mergedColumns}
+              columnDefs={columnDefs}
               onCellClick={onCellClick}
             />
           ) : (

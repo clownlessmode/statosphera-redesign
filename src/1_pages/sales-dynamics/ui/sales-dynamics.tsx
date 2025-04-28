@@ -1,12 +1,198 @@
 import { Header } from "@widgets/header";
-import { FC } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
+import { Lfl } from "@features/sales-dynamics/lfl";
+import { ShopsFilter } from "@features/sales-dynamics/shops-filter";
+import { DaysFilter } from "@features/sales-dynamics/days-filter";
+import { GraphDate } from "@features/sales-dynamics/graph-date";
+import { DownloadSalesDynamics } from "@features/sales-dynamics/download";
+import UniversalTable from "@pages/report/ui/table";
+import { columnDefs } from "@shared/constants/table-columns";
+import { Input } from "@shared/ui/input";
+import { AddIndicators } from "@features/sales-dynamics/add-indicators";
+import { useDefaultValues } from "@features/sales-dynamics/add-indicators/model/default";
+import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
+import { useSalesDynamicsController } from "../model/api/controller";
+import { useSalesDynamicsStore } from "../model/sales-dynamics-store";
+import { SalesSelect } from "@features/sales-dynamics/sales-select";
+import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
+import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
+import { useDateFilterStore } from "@features/sales-dynamics/graph-date/ui/graph-date";
+import { useSalesSelectStore } from "@features/sales-dynamics/sales-select/ui/sales-select";
 
 const SalesDynamics: FC = () => {
+  // где-то вверху компонента
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // мемоизированный отфильтрованный массив
+
+  const { defaultValues, isLoading } = useDefaultValues();
+  const { value } = useDateFilterStore();
+  const { lfl } = useSalesDynamicsFiltersStore((state) => state);
+  const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
+  const { values } = useSalesDynamicsFiltersStore((state) => state);
+  const { filters } = useSalesDynamicsFiltersStore((state) => state);
+  const prepareLine = usePreparedStackedLine();
+  const { getTable, getTotal, getGraph, getSecondGraph } =
+    useSalesDynamicsController();
+  const getApiPayload = useSalesDynamicsFiltersStore(
+    (state) => state.getApiPayload
+  );
+  const {
+    table,
+    total,
+    setTable,
+    setTotal,
+    graph,
+    setGraph,
+    secondGraph,
+    setSecondGraph,
+  } = useSalesDynamicsStore();
+  useEffect(() => {
+    setSearchTerm("");
+  }, [filterDate, filters, values, lfl]);
+  const filteredTable = useMemo(() => {
+    if (!table) return [];
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return table;
+
+    const tokens = term.split(/\s+/).filter((t) => t.length > 1);
+    return (table as any).filter((row: any) => {
+      const name = row.storeName.toLowerCase();
+      const fullMatch = tokens.every((token) => name.includes(token));
+      if (fullMatch) return true;
+      let idx = 0;
+      for (let i = 0; i < term.length; i++) {
+        const char = term[i];
+        idx = name.indexOf(char, idx);
+        if (idx === -1) return false;
+        idx++;
+      }
+      return true;
+    });
+  }, [
+    table,
+    searchTerm,
+    defaultValues,
+    filters,
+    filterDate,
+    value,
+    lfl,
+    values,
+  ]);
+  const { first, second } = useSalesSelectStore((state) => state);
+  useEffect(() => {
+    if (isLoading) return;
+
+    const getData = async () => {
+      const payload = getApiPayload();
+      const [totalRes, tableRes, graphRes, secondGraphRes] = await Promise.all([
+        getTotal({ ...payload, values: defaultValues.indicators_and_groups }),
+        getTable({ ...payload, values: defaultValues.indicators_and_groups }),
+        getGraph({ ...payload, value: first.value, groups: value }),
+        getSecondGraph({ ...payload, value: second.value, groups: value }),
+      ]);
+      setTotal(totalRes);
+      setTable(tableRes);
+      setGraph(graphRes);
+      setSecondGraph(secondGraphRes);
+    };
+    getData();
+  }, [
+    isLoading,
+    lfl,
+    getApiPayload,
+    filterDate,
+    values,
+    filters,
+    value,
+    first,
+    second,
+  ]);
+
+  const isCompleted = !!table && !!total && !!graph && !!secondGraph;
   return (
-    <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
-      <Header title="Динамика продаж" />
-      <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4"></div>
-    </div>
+    <>
+      <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
+        <Header
+          title="Динамика продаж"
+          actions={{
+            left: (
+              <div className="flex flex-row gap-2">
+                <DaysFilter />
+                <ShopsFilter />
+                <Lfl />
+              </div>
+            ),
+            right: (
+              <div className="flex flex-row gap-2">
+                <DownloadSalesDynamics />
+                <GraphDate />
+              </div>
+            ),
+          }}
+        />
+        <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
+          <div className="flex flex-row gap-2 max-h-[40vh] w-full h-full">
+            <div className="flex flex-col gap-2 h-full w-full">
+              <SalesSelect index={1} />
+              {isCompleted && (
+                <StackedLine
+                  mirror={1}
+                  option={{
+                    title: {
+                      text: first.label,
+                    },
+                    legend: {
+                      data: ["Выбранный период", "Прошлый год"],
+                    },
+                    series: graph && prepareLine(graph),
+                  }}
+                />
+              )}
+            </div>
+            <div className="flex flex-col gap-2 h-full w-full">
+              <SalesSelect index={2} />
+              {isCompleted && (
+                <StackedLine
+                  mirror={1}
+                  option={{
+                    title: {
+                      text: second.label,
+                    },
+                    legend: {
+                      data: ["Выбранный период", "Прошлый год"],
+                    },
+                    series: secondGraph && prepareLine(secondGraph),
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 h-full w-full">
+            <div className="flex flex-row gap-2">
+              <Input
+                placeholder="Поиск по магазину"
+                className="w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="w-full flex flex-row gap-2 justify-end">
+                <AddIndicators
+                  defaultValues={defaultValues.indicators_and_groups}
+                />
+              </div>
+            </div>
+            {isCompleted && (
+              <UniversalTable
+                data={filteredTable as any}
+                totalData={total as any}
+                columnDefs={columnDefs}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

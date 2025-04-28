@@ -25,15 +25,15 @@ export const CombinedSubmitButton = () => {
           ...allData,
           values: [allData.values[0]],
           groups: [value],
-          sorts: { colId: [allData.values[0]], sort: "asc" },
+          sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
         getTotal({
           ...allData,
-          sorts: { colId: [allData.values[0]], sort: "asc" },
+          sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
         getTable({
           ...allData,
-          sorts: { colId: [allData.values[0]], sort: "asc" },
+          sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
       ]);
 

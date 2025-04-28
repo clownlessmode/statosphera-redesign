@@ -15,9 +15,11 @@ import ErrorForm from "./error-form";
 import { Separator } from "@shared/ui/separator";
 import SuggestionForm from "./suggestion-form";
 import OtherForm from "./other-form";
+import { useState } from "react";
 const Feedback = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <MessageSquareWarning className="w-4 h-4" />
@@ -46,13 +48,13 @@ const Feedback = () => {
           </TabsList>
           <Separator className="my-2" />
           <TabsContent value="error">
-            <ErrorForm />
+            <ErrorForm setIsOpen={setIsOpen} />
           </TabsContent>
           <TabsContent value="suggestion">
-            <SuggestionForm />
+            <SuggestionForm setIsOpen={setIsOpen} />
           </TabsContent>
           <TabsContent value="other">
-            <OtherForm />
+            <OtherForm setIsOpen={setIsOpen} />
           </TabsContent>
         </Tabs>
       </DialogContent>

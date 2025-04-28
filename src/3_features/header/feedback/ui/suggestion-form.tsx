@@ -9,8 +9,6 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { FC } from "react";
-import { FormValues } from "../model/suggestion-form/types";
-import useForm from "../model/suggestion-form/hook";
 
 import { ROUTES } from "@app/router/routes";
 import {
@@ -21,7 +19,16 @@ import {
 import { Angry, Annoyed, Frown, Meh, ServerCrash } from "lucide-react";
 import { Textarea } from "@shared/ui/textarea";
 import MultipleSelector from "@shared/ui/multiple-selector";
-
+import useFeedbackController, { FEEDBACK_TYPES } from "../model/api/controller";
+import { FormValues } from "../model/types";
+import useForm from "../model/hook";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+} from "@shared/ui/select";
 const importance = [
   {
     text: "Минимальное",
@@ -49,11 +56,17 @@ const importance = [
     value: "Критическая",
   },
 ];
-
-const SuggestionForm: FC = () => {
+interface Props {
+  setIsOpen: (isOpen: boolean) => void;
+}
+const SuggestionForm: FC<Props> = ({ setIsOpen }) => {
   const form = useForm();
+
+  const { sendFeedback, isFeedbackLoading } = useFeedbackController();
   const handleSubmit = (data: FormValues) => {
+    sendFeedback({ ...data, type: FEEDBACK_TYPES.WISH });
     console.log(data);
+    setIsOpen(false);
   };
   return (
     <Form {...form}>
@@ -68,31 +81,21 @@ const SuggestionForm: FC = () => {
             <FormItem>
               <FormLabel>Раздел</FormLabel>
               <FormControl>
-                <MultipleSelector
-                  value={
-                    field.value
-                      ? [{ label: field.value, value: field.value }]
-                      : []
-                  }
-                  onChange={(options) => {
-                    // Если выбран хотя бы один элемент, берем значение первого
-                    if (options.length > 0) {
-                      field.onChange(options[0].value);
-                    } else {
-                      field.onChange(undefined);
-                    }
-                  }}
-                  defaultOptions={ROUTES.map((route) => ({
-                    label: route.label || "",
-                    value: route.label || "",
-                  }))}
-                  placeholder="Выберите раздел"
-                  emptyIndicator={
-                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                      Ничего не найдено
-                    </p>
-                  }
-                />
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Выберите раздел" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROUTES.map((route) => (
+                      <SelectItem
+                        key={route.path}
+                        value={route.label as string}
+                      >
+                        {route.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +104,7 @@ const SuggestionForm: FC = () => {
 
         <FormField
           control={form.control}
-          name="type"
+          name="rank"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Важность предложения</FormLabel>
@@ -114,17 +117,17 @@ const SuggestionForm: FC = () => {
                   <FormItem className="flex items-center justufy-center flex-col text-center w-full">
                     <FormControl className="w-full">
                       <ButtonGroup
-                        defaultValue="neutral"
-                        className="w-full flex flex-wrap justify-center gap-full"
+                        value={field.value ?? "neutral"} // контролируемое значение
+                        onValueChange={field.onChange} // обновляем RHF
+                        className="flex flex-row justify-between w-full"
                       >
                         {importance.map((item) => (
                           <ButtonGroupItem
-                            className={
-                              "text-[8px] p-2 w-full  max-w-[85px]! min-w-[80px]!"
-                            }
-                            value={item.value}
+                            key={item.value}
+                            value={item.value} // гарантированно непустая строка
                             icon={item.icon}
                             label={item.text}
+                            className="text-[8px] p-2 w-full max-w-[85px] min-w-[80px]"
                           />
                         ))}
                       </ButtonGroup>
@@ -138,7 +141,7 @@ const SuggestionForm: FC = () => {
 
         <FormField
           control={form.control}
-          name="page"
+          name="textMessage"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Комментарий</FormLabel>
@@ -154,7 +157,10 @@ const SuggestionForm: FC = () => {
         />
         <FormMessage />
         <DialogFooter>
-          <Button className="w-full" disabled={!form.formState.isValid}>
+          <Button
+            className="w-full"
+            disabled={!form.formState.isValid || isFeedbackLoading}
+          >
             Отправить
           </Button>
         </DialogFooter>

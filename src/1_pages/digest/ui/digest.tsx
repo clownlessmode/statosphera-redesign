@@ -19,8 +19,6 @@ const Digest = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string | undefined }>();
   const { digest, isDigestLoading } = useDigests(id);
-  console.log(digest, isDigestLoading);
-  const MOCK_DIGEST = digest?.daydjest[0];
 
   const [width, setWidth] = useState<number>(() => {
     const savedWidth = localStorage.getItem("digestImageWidth");
@@ -45,7 +43,7 @@ const Digest = () => {
   const isMobile = useIsMobile();
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2">
-      <Header title={`Дайджест ${!isMobile ? MOCK_DIGEST?.title : ""}`} />
+      <Header title={`Дайджест ${digest?.name_daydjest}`} />
       <div className="relative rounded-3xl bg-background px-4 pt-4 gap-4 h-fit flex flex-col min-h-screen">
         <div className="p-2 backdrop-blur-2xl rounded-md w-fit  border-border/5 border  sticky top-4">
           <Button className="w-fit" onClick={() => navigate(-1)}>
@@ -53,9 +51,9 @@ const Digest = () => {
             Вернуться назад
           </Button>
         </div>
-        {MOCK_DIGEST && (
+        {digest && (
           <div className="flex flex-col gap-1 items-center">
-            {MOCK_DIGEST.pages.map((item, index) => (
+            {digest.pages.map((item, index) => (
               <motion.img
                 key={item}
                 src={item}

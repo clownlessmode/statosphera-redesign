@@ -44,7 +44,7 @@ export function GroupBadges({ tab }: { tab: string }) {
     >
       {groups.map((group, index) => (
         <Badge key={`group-${index}`}>
-          Группировка: {groupValueToLabelMap[group] || group}
+          {groupValueToLabelMap[group] || group}
         </Badge>
       ))}
     </Link>

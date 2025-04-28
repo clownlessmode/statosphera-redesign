@@ -5,7 +5,6 @@ import { ChevronRight, LucideIcon } from "lucide-react";
 import { cn } from "@shared/lib/utils";
 import { Checkbox } from "@shared/ui/checkbox";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-// Type for an item in the tree structure
 export interface CheckboxTreeItem {
   id: string;
   label: string;

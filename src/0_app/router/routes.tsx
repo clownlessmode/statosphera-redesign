@@ -112,7 +112,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "public",
     element: <Forbidden />,
     layout: Sidebar,
-    label: "Forbidden",
+    label: "Нет доступа",
   },
   {
     path: ROUTES_PATH.STORES,
