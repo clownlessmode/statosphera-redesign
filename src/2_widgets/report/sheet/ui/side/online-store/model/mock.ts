@@ -169,10 +169,8 @@ export const usePromo = (allData: any) => {
     try {
       const response = await getPromo(allData);
       const apiOptions = response.map((promo: PromoFilterResponse) => ({
-        label:
-          promo.im_promo ||
-          "Промо не указана (ID: " + promo.im_promo?.[0] + ")",
-        value: String(promo.im_promo?.[0] || ""),
+        label: promo.im_promo,
+        value: String(promo.im_promo || ""),
       }));
       setPromoOptions(apiOptions);
     } catch (error) {

@@ -57,9 +57,12 @@ export default function UniversalTable({
 
   // Итоговая строка
   useEffect(() => {
-    const total = totalData?.[0] ?? calculateTotalRow(data);
-    setPinnedTopData([total]);
-  }, [data, totalData]);
+    if (totalData && totalData.length > 0) {
+      setPinnedTopData([totalData[0]]);
+    } else {
+      setPinnedTopData([]);
+    }
+  }, [totalData]);
 
   const defaultColDef = useMemo<ColDef>(
     () => ({

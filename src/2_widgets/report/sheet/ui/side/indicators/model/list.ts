@@ -17,7 +17,7 @@ import {
   Weight,
 } from "lucide-react";
 
-const indicators = [
+const all_indicators = [
   {
     id: COLUMN_KEY.GROUP_PROCEEDS,
     label: "Выручка",
@@ -568,7 +568,47 @@ const indicators = [
     ],
   },
 ];
+interface IndicatorGroup {
+  id: string;
+  label: string;
+  value: string;
+  icon: any;
+  children: { id: string; label: string; value: string }[];
+}
 
-export const useIndicatorList = () => {
-  return sortGroups(indicators);
+export function excludeIndicators(
+  source: IndicatorGroup[],
+  excludeList: string[]
+): IndicatorGroup[] {
+  return source
+    .filter((group) => !excludeList.includes(group.id)) // убираем группы
+    .map((group) => {
+      const filteredChildren = group.children.filter(
+        (child) => !excludeList.includes(child.id)
+      );
+
+      // Если после удаления детей ничего не осталось, вернем undefined
+      if (filteredChildren.length === 0) {
+        return undefined;
+      }
+
+      return {
+        ...group,
+        children: filteredChildren,
+      };
+    })
+    .filter((group): group is IndicatorGroup => Boolean(group)); // правильная фильтрация
+}
+
+export const useIndicatorList = (type: "check" | "commerce") => {
+  const filtered = sortGroups(all_indicators);
+  const check = excludeIndicators(filtered, [
+    "writeOffGroup",
+    "writeOffPercentGroup",
+  ]);
+  const commerce = excludeIndicators(filtered, ["avgCheckGroup", "checkGroup"]);
+  if (type === "check") {
+    return check;
+  }
+  return commerce;
 };

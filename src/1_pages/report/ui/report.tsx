@@ -34,8 +34,8 @@ const Report: FC = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
   const { resetAllFilters } = useFiltersStore();
   const { value } = useDateFilterStore();
-  const indicators = useIndicatorList();
-  const uniques = useUniqueValues();
+  const indicators = useIndicatorList(tab);
+  const uniques = useUniqueValues(tab);
 
   const values = [...indicators, ...uniques];
 

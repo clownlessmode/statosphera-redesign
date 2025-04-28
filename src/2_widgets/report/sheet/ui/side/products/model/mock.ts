@@ -237,7 +237,7 @@ export const useSubgroup = (allData: any) => {
       const response = await getSubGroups(allData);
       const apiOptions = response.map((subgroup: SubgroupFilterResponse) => ({
         label: subgroup.subGroups,
-        value: String(subgroup.subGroups?.[0] || ""),
+        value: String(subgroup.idSubGroups?.[0] || ""),
       }));
       setSubgroupOptions(apiOptions);
     } catch (error) {

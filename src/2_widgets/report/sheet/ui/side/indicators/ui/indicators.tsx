@@ -13,9 +13,11 @@ import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import useForm from "../model/hook";
 import { Form, FormField, FormControl, FormItem } from "@shared/ui/form";
 import { useFiltersStore } from "../../../../model/filters-store";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 
 const Indicators: FC = () => {
-  const indicators = useIndicatorList();
+  const { tab } = useTabStore();
+  const indicators = useIndicatorList(tab);
   const { updateIndicators } = useFiltersStore();
   const form = useForm();
   useEffect(() => {

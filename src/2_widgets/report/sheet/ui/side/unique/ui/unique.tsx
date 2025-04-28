@@ -13,9 +13,10 @@ import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import useForm from "../model/hook";
 import { Form, FormControl, FormField, FormItem } from "@shared/ui/form";
 import { useFiltersStore } from "../../../../model/filters-store";
-
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 const Unique: FC = () => {
-  const uniques = useUniqueValues();
+  const { tab } = useTabStore();
+  const uniques = useUniqueValues(tab);
   const { updateUniques } = useFiltersStore();
   const form = useForm();
   useEffect(() => {
