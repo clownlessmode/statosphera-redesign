@@ -61,6 +61,7 @@ export enum FULL_GROUPS_SERVER {
 }
 
 export enum GROUPINGS {
+  TYPE = "type",
   MONTH = FULL_GROUPS_SERVER.MONTH,
   DAY = FULL_GROUPS_SERVER.DAY,
   QUARTER = FULL_GROUPS_SERVER.QUARTER,
@@ -242,7 +243,7 @@ type FiltersState = {
       cashBox: number[];
       checkNumber: number[];
       numberfield: number[];
-      type: "Продажа" | "Возврат" | null;
+      type: ("Продажа" | "Возврат")[];
     };
     loyal: {
       isLoyal: boolean | null;
@@ -412,7 +413,7 @@ const initialState: Omit<
       cashBox: [],
       checkNumber: [],
       numberfield: [],
-      type: null,
+      type: [],
     },
     loyal: {
       isLoyal: null,

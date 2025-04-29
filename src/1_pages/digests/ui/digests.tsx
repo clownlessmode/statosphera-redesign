@@ -129,7 +129,7 @@ const Digests = () => {
                   cover={item.cover}
                   title={item.title}
                   create_add={item.create_add}
-                  type="Аналитика"
+                  type={item.type}
                 />
               ))}
             </div>
@@ -161,7 +161,7 @@ const Digests = () => {
                   cover={item.cover}
                   title={item.title}
                   create_add={item.create_add}
-                  type="Аналитика"
+                  type="Совет директоров"
                 />
               ))}
             </div>
@@ -177,7 +177,7 @@ const Digests = () => {
                   cover={item.cover}
                   title={item.title}
                   create_add={item.create_add}
-                  type="Аналитика"
+                  type="Франчайзинг"
                 />
               ))}
             </div>
@@ -193,7 +193,7 @@ const Digests = () => {
                   cover={item.cover}
                   title={item.title}
                   create_add={item.create_add}
-                  type="Аналитика"
+                  type="Группа компаний"
                 />
               ))}
             </div>

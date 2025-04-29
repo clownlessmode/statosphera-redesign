@@ -18,18 +18,23 @@ import {
 import { FC, useEffect } from "react";
 import useForm from "../model/hook";
 import { DateRangePicker } from "@shared/ui/date-range-picker";
-import { format, parseISO } from "date-fns";
+import { format, parse, parseISO, subDays } from "date-fns";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import { dateRanges } from "@shared/lib/date-ranges";
 import { useFiltersStore } from "../../../../model/filters-store";
 import { DateRange } from "react-day-picker";
+import { TimeRangePicker } from "@shared/ui/time-range-picker";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 
-// const MIN_DATE = new Date(2018, 4, 1);
-// const MAX_DATE = subDays(new Date(), 1);
+const MIN_DATE = new Date(2018, 4, 1);
+const MAX_DATE = subDays(new Date(), 1);
+
 const DateFilter: FC = () => {
   const form = useForm();
+  const { tab } = useTabStore();
   const today = new Date();
-  const { updateDateFilter } = useFiltersStore();
+  const { updateDateFilter, updateTimeFilter } = useFiltersStore();
+
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
@@ -55,9 +60,10 @@ const DateFilter: FC = () => {
   useEffect(() => {
     const subscription = form.watch((values) => {
       updateDateFilter(values.dateStart || "", values.dateEnd || "");
+      updateTimeFilter(values.timeStart || "", values.timeEnd || "");
     });
     return () => subscription.unsubscribe();
-  }, [form, updateDateFilter]);
+  }, [form, updateDateFilter, updateTimeFilter]);
 
   const dateRangeValue = {
     from: form.getValues("dateStart")
@@ -87,6 +93,8 @@ const DateFilter: FC = () => {
                 <FormItem>
                   <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
                   <DateRangePicker
+                    min={MIN_DATE}
+                    max={MAX_DATE}
                     onChange={handleDateRangeChange}
                     className="w-full"
                     value={dateRangeValue}
@@ -94,6 +102,7 @@ const DateFilter: FC = () => {
                 </FormItem>
               )}
             />
+
             <div className="w-full grid grid-cols-3 gap-2 mt-2">
               <Button
                 type="button"
@@ -132,6 +141,42 @@ const DateFilter: FC = () => {
                 <History className="h-4 w-4 mr-1" /> Прошлый месяц
               </Button>
             </div>
+            {tab === "check" && (
+              <FormField
+                control={form.control}
+                name="timeStart"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>
+                      Промежуток времени
+                    </FormLabel>
+                    <TimeRangePicker
+                      from={
+                        field.value
+                          ? parse(field.value, "HH:mm", new Date())
+                          : undefined
+                      }
+                      to={
+                        form.getValues("timeEnd")
+                          ? parse(
+                              form.getValues("timeEnd"),
+                              "HH:mm",
+                              new Date()
+                            )
+                          : undefined
+                      }
+                      onFromChange={(date: Date) =>
+                        field.onChange(format(date, "HH:mm"))
+                      }
+                      onToChange={(date: Date) =>
+                        form.setValue("timeEnd", format(date, "HH:mm"))
+                      }
+                      className="w-full"
+                    />
+                  </FormItem>
+                )}
+              />
+            )}
           </form>
         </Form>
       </CardContent>

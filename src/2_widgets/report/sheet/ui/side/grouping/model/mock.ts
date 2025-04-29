@@ -167,4 +167,8 @@ export const id = [
     label: "Номер кассы",
     value: GROUPINGS.CASH_BOX,
   },
+  {
+    label: "Тип чека",
+    value: GROUPINGS.TYPE,
+  },
 ];

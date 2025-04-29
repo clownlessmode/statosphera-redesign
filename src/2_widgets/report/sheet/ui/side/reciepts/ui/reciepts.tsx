@@ -15,7 +15,7 @@ import {
 } from "@shared/ui/form";
 
 import { FC } from "react";
-import { typeQR, typePayment, useEmployeeName } from "../model/mock";
+import { typeQR, typePayment, useEmployeeName, typeCheck } from "../model/mock";
 import { useFiltersStore } from "../../../../model/filters-store";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Input } from "@shared/ui/input";
@@ -70,7 +70,7 @@ const Receipts: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Вид оплаты</FormLabel>
+                    <FormLabel htmlFor="">Тип оплаты</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
                       options={typePayment}
@@ -78,6 +78,26 @@ const Receipts: FC = () => {
                       onChange={(value) => {
                         field.onChange(value);
                         updateCheckFilter("paymentClass", value);
+                      }}
+                    />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor="">Тип чека</FormLabel>
+                    <BooleanCheckboxCard
+                      {...field}
+                      options={typeCheck}
+                      className="grid-cols-3"
+                      onChange={(value) => {
+                        field.onChange(value);
+                        updateCheckFilter("type", [value]);
                       }}
                     />
                   </FormItem>

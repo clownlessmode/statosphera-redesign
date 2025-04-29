@@ -19,6 +19,178 @@ import {
 
 const all_indicators = [
   {
+    id: COLUMN_KEY.GROUP_TURNOVER_GOODS,
+    label: "Оборачиваемость остатков",
+    value: COLUMN_KEY.GROUP_TURNOVER_GOODS,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS,
+        label: "Оборачиваемость остатков",
+        value: COLUMN_KEY.TURNOVER_GOODS,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_LM,
+        label: "Оборачиваемость остатков PM",
+        value: COLUMN_KEY.TURNOVER_GOODS_LM,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_MOM,
+        label: "Оборачиваемость остатков MOM",
+        value: COLUMN_KEY.TURNOVER_GOODS_MOM,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT,
+        label: "Оборачиваемость остатков MOM%",
+        value: COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_LY,
+        label: "Оборачиваемость остатков PY",
+        value: COLUMN_KEY.TURNOVER_GOODS_LY,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_YOY,
+        label: "Оборачиваемость остатков YOY",
+        value: COLUMN_KEY.TURNOVER_GOODS_YOY,
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
+        label: "Оборачиваемость остатков YOY%",
+        value: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARGIN_PERCENT_DISCOUNT,
+    label: "Маржа % без учета скидки",
+    value: COLUMN_KEY.GROUP_MARGIN_PERCENT_DISCOUNT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
+        label: "Маржа % без учета скидки",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
+        label: "Маржа % без учета скидки PM",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM,
+        label: "Маржа % без учета скидки MOM",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM,
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
+        label: "Маржа % без учета скидки MOM%",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
+        label: "Маржа % без учета скидки PY",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
+        label: "Маржа % без учета скидки YOY",
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+        label: "Наценка % без учета скидки YOY%",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PROCEEDS,
+    label: "Наценка % без учета скидки",
+    value: COLUMN_KEY.GROUP_MARKUP_PERCENT_DISCOUNT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+        label: "Наценка % без учета скидки",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+        label: "Наценка % без учета скидки PM",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+        label: "Наценка % без учета скидки MOM",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+        label: "Наценка % без учета скидки MOM%",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+        label: "Наценка % без учета скидки PY",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+        label: "Наценка % без учета скидки YOY",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+        label: "Наценка % без учета скидки YOY%",
+        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARKUP_DISCOUNT,
+    label: "Наценка без учета скидки",
+    value: COLUMN_KEY.GROUP_MARKUP_DISCOUNT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT,
+        label: "Наценка без учета скидки",
+        value: COLUMN_KEY.MARKUP_DISCOUNT,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_LM,
+        label: "Наценка без учета скидки PM",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_LM,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_MOM,
+        label: "Наценка без учета скидки MOM",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_MOM,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT,
+        label: "Наценка без учета скидки MOM%",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_LY,
+        label: "Наценка без учета скидки PY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_LY,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_YOY,
+        label: "Наценка без учета скидки YOY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_YOY,
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT,
+        label: "Наценка без учета скидки YOY%",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT,
+      },
+    ],
+  },
+  {
     id: COLUMN_KEY.GROUP_PROCEEDS,
     label: "Выручка",
     value: COLUMN_KEY.GROUP_PROCEEDS,

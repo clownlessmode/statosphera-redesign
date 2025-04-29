@@ -12,9 +12,9 @@ import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
 import {
   BadgeCheck,
   Calendar,
-  Fingerprint,
   Globe,
   MapPin,
+  Receipt,
   ShoppingBasket,
   Store,
   User,
@@ -250,7 +250,7 @@ const Grouping: FC = () => {
                     return (
                       <FormItem>
                         <FormLabel htmlFor="">
-                          <Fingerprint /> ID
+                          <Receipt /> Чек
                         </FormLabel>
                         <CheckboxCards
                           {...field}
@@ -259,7 +259,7 @@ const Grouping: FC = () => {
                             field.onChange(values);
                           }}
                           options={id}
-                          className="grid-cols-2"
+                          className="grid-cols-3"
                         />
                       </FormItem>
                     );

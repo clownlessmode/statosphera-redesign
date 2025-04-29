@@ -1,9 +1,33 @@
 import { useFilters } from "@entities/report/model/api/filters/check/controller";
 import { EmployeeNameFilterResponse } from "@entities/report/model/api/filters/check/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
-import { Slash, Badge, Banknote, CreditCard, QrCode } from "lucide-react";
+import {
+  Slash,
+  Badge,
+  Banknote,
+  CreditCard,
+  QrCode,
+  ShoppingCart,
+  ArrowUpLeft,
+} from "lucide-react";
 import { useState } from "react";
-
+export const typeCheck = [
+  {
+    label: "Все",
+    value: null,
+    icon: Badge,
+  },
+  {
+    label: "Продажа",
+    value: "Продажа",
+    icon: ShoppingCart,
+  },
+  {
+    label: "Возврат",
+    value: "Возврат",
+    icon: ArrowUpLeft,
+  },
+];
 export const typePayment = [
   {
     label: "Все",

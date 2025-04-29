@@ -26,6 +26,12 @@ const DigestCard: FC<Props> = ({
   count,
   description,
 }) => {
+  const typeMap: Record<string, string> = {
+    analytics: "Аналитика",
+    director: "Совет директоров",
+    franchising: "Франчайзинг",
+    groupCompany: "Группа компаний",
+  };
   return (
     <Link to={`${ROUTES_PATH.DIGESTS}/${id}`}>
       <div className="flex flex-row gap-6 items-center hover:scale-[0.98] transition-all duration-300 cursor-pointer origin-left active:scale-[0.96]">
@@ -37,7 +43,7 @@ const DigestCard: FC<Props> = ({
         />
         <div className="flex flex-col gap-2 justify-between py-4 ">
           <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
-            {type}
+            {typeMap[type] ? typeMap[type] : type}
           </Badge>
           <div>
             <h3 className="text-2xl font-semibold tracking-tight leading-none">

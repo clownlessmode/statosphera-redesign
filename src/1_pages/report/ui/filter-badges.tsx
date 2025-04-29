@@ -30,7 +30,7 @@ const getSectionLabel = (sectionKey: string): string => {
 const getFilterLabel = (sectionKey: string, filterKey: string): string => {
   const labels: Record<string, Record<string, string>> = {
     store: {
-      idStore: "ID магазина",
+      idStore: "Магазин",
       idCity: "Город",
       idRegion: "Регион",
       idManager: "Менеджер",
@@ -40,7 +40,54 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       channel: "Канал",
       district: "Район",
     },
-    // Добавьте другие секции по аналогии
+    product: {
+      groupFranchise: "Франшиза",
+      ppProducts: "PP-продукты",
+      subDivisionProducts: "Подразделение",
+      subGroups: "Подгруппы",
+      subSubGroups: "Подподгруппы",
+      typeProducts: "Тип товаров",
+      teamProducts: "Команда",
+      directionProducts: "Направление",
+      groupsEconomist: "Группы экономиста",
+      idGroupMain: "Основная группа",
+      idProduct: "Товар",
+      seasonalityProducts: "Сезонность",
+      managerAuto: "Авто-менеджер",
+    },
+    check: {
+      tabNumber: "Табельный номер",
+      containsBankQr: "Содержит QR банка",
+      paymentClass: "Класс оплаты",
+      shift: "Смена",
+      cashBox: "Касса",
+      checkNumber: "Номер чека",
+      numberfield: "Числовое поле",
+      type: "Тип чека",
+    },
+    loyal: {
+      isLoyal: "Лояльный клиент",
+      cardNumber: "Номер карты",
+      sex: "Пол",
+      guidDiscount: "ID скидки",
+      guidBonus: "ID бонуса",
+      ageStart: "Возраст от",
+      ageEnd: "Возраст до",
+      groupAge: "Возрастная группа",
+    },
+    onlineStore: {
+      isIm: "Онлайн-заказ",
+      imTypeOrder: "Тип заказа",
+      imDeliveryMethod: "Способ доставки",
+      imPaymentMethod: "Способ оплаты",
+      imStatusOrder: "Статус заказа",
+      imReceiveInterval: "Интервал получения",
+      imPromo: "Промо",
+    },
+    writeoff: {
+      indicator: "Показатель списания",
+      article: "Статья списания",
+    },
   };
 
   return labels[sectionKey]?.[filterKey] || filterKey;

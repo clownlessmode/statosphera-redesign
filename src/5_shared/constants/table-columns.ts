@@ -2,7 +2,46 @@ import { divideNumberSpaces } from "@shared/ui/graphs/stacked-line/formatter-too
 import { ColDef } from "ag-grid-community";
 
 export enum COLUMN_KEY {
-  // ----------------- ВЕС -----------------
+  // ----------------- Наценка без учета скидки -----------------
+  GROUP_MARKUP_DISCOUNT = "groupMarkupDiscount",
+  MARKUP_DISCOUNT = "markupDiscount",
+  MARKUP_DISCOUNT_LM = "markupDiscountLM",
+  MARKUP_DISCOUNT_MOM = "markupDiscountMoM",
+  MARKUP_DISCOUNT_MOM_PERCENT = "markupDiscountMoMPercent",
+  MARKUP_DISCOUNT_LY = "markupDiscountLY",
+  MARKUP_DISCOUNT_YOY = "markupDiscountYoY",
+  MARKUP_DISCOUNT_YOY_PERCENT = "markupDiscountYoYPercent",
+
+  // ----------------- Наценка в процентах без скидки -----------------
+  GROUP_MARKUP_PERCENT_DISCOUNT = "groupMarkupPercentDiscount",
+  MARKUP_PERCENT_DISCOUNT = "markupPercentDiscount",
+  MARKUP_PERCENT_DISCOUNT_LM = "markupPercentDiscountLM",
+  MARKUP_PERCENT_DISCOUNT_MOM = "markupPercentDiscountMoM",
+  MARKUP_PERCENT_DISCOUNT_MOM_PERCENT = "markupPercentDiscountMoMPercent",
+  MARKUP_PERCENT_DISCOUNT_LY = "markupPercentDiscountLY",
+  MARKUP_PERCENT_DISCOUNT_YOY = "markupPercentDiscountYoY",
+  MARKUP_PERCENT_DISCOUNT_YOY_PERCENT = "markupPercentDiscountYoYPercent",
+
+  // ----------------- Маржа в процентах без скидки -----------------
+  GROUP_MARGIN_PERCENT_DISCOUNT = "groupMarginPercentDiscount",
+  MARGIN_PERCENT_DISCOUNT = "marginPercentDiscount",
+  MARGIN_PERCENT_DISCOUNT_LM = "marginPercentDiscountLM",
+  MARGIN_PERCENT_DISCOUNT_MOM = "marginPercentDiscountMoM",
+  MARGIN_PERCENT_DISCOUNT_MOM_PERCENT = "marginPercentDiscountMoMPercent",
+  MARGIN_PERCENT_DISCOUNT_LY = "marginPercentDiscountLY",
+  MARGIN_PERCENT_DISCOUNT_YOY = "marginPercentDiscountYoY",
+
+  // ----------------- Оборачиваемость остатков -----------------
+  GROUP_TURNOVER_GOODS = "groupTurnoverGoods",
+  TURNOVER_GOODS = "turnoverGoods",
+  TURNOVER_GOODS_LM = "turnoverGoodsLM",
+  TURNOVER_GOODS_MOM = "turnoverGoodsMoM",
+  TURNOVER_GOODS_MOM_PERCENT = "turnoverGoodsMoMPercent",
+  TURNOVER_GOODS_LY = "turnoverGoodsLY",
+  TURNOVER_GOODS_YOY = "turnoverGoodsYoY",
+  TURNOVER_GOODS_YOY_PERCENT = "turnoverGoodsYoYPercent",
+
+  // ----------------- Вес -----------------
   WEIGHT_GROUP = "weightGroup",
   WEIGHT = "weight",
   WEIGHT_MOM = "weightMoM",
@@ -355,6 +394,231 @@ export const formatNumber = (value: number) =>
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
+    headerName: "Маржа % без учета скидки",
+    headerTooltip: "Маржа % без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT]),
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
+    headerName: "Маржа % без учета скидки PM",
+    headerTooltip: "Маржа % без учета скидки PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM]),
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM,
+    headerName: "Маржа % без учета скидки MOM",
+    headerTooltip: "Маржа % без учета скидки MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
+    headerName: "Маржа % без учета скидки MOM%",
+    headerTooltip: "Маржа % без учета скидки MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
+    headerName: "Маржа % без учета скидки PY",
+    headerTooltip: "Маржа % без учета скидки PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY]),
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
+    headerName: "Маржа % без учета скидки YOY",
+    headerTooltip: "Маржа % без учета скидки YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+    headerName: "Наценка % без учета скидки YOY%",
+    headerTooltip: "Наценка % без учета скидки YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+    headerName: "Наценка % без учета скидки",
+    headerTooltip: "Наценка % без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+    headerName: "Наценка % без учета скидки PM",
+    headerTooltip: "Наценка % без учета скидки PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+    headerName: "Наценка % без учета скидки MOM",
+    headerTooltip: "Наценка % без учета скидки MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+    headerName: "Наценка % без учета скидки MOM%",
+    headerTooltip: "Наценка % без учета скидки MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+    headerName: "Наценка % без учета скидки PY",
+    headerTooltip: "Наценка % без учета скидки PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+    headerName: "Наценка % без учета скидки YOY",
+    headerTooltip: "Наценка % без учета скидки YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+    headerName: "Наценка % без учета скидки YOY%",
+    headerTooltip: "Наценка % без учета скидки YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT,
+    headerName: "Наценка без учета скидки",
+    headerTooltip: "Наценка без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_LM,
+    headerName: "Наценка без учета скидки PM",
+    headerTooltip: "Наценка без учета скидки PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_LM]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_MOM,
+    headerName: "Наценка без учета скидки MOM",
+    headerTooltip: "Наценка без учета скидки MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT,
+    headerName: "Наценка без учета скидки MOM%",
+    headerTooltip: "Наценка без учета скидки MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_LY,
+    headerName: "Наценка без учета скидки PY",
+    headerTooltip: "Наценка без учета скидки PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_LY]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_YOY,
+    headerName: "Наценка без учета скидки YOY",
+    headerTooltip: "Наценка без учета скидки YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_YOY]),
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT,
+    headerName: "Наценка без учета скидки YOY%",
+    headerTooltip: "Наценка без учета скидки YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT]),
+  },
+
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT,
+    headerName: "Оборачиваемость остатков MOM%",
+    headerTooltip: "Оборачиваемость остатков MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_LY,
+    headerName: "Оборачиваемость остатков PY",
+    headerTooltip: "Оборачиваемость остатков PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LY]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_YOY,
+    headerName: "Оборачиваемость остатков YOY",
+    headerTooltip: "Оборачиваемость остатков YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
+    headerName: "Оборачиваемость остатков YOY%",
+    headerTooltip: "Оборачиваемость остатков YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_MOM,
+    headerName: "Оборачиваемость остатков MOM",
+    headerTooltip: "Оборачиваемость остатков MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_LM,
+    headerName: "Оборачиваемость остатков PM",
+    headerTooltip: "Оборачиваемость остатков PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LM]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS,
+    headerName: "Оборачиваемость остатков",
+    headerTooltip: "Оборачиваемость остатков",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS]),
+  },
   {
     field: COLUMN_KEY.STORE_NAME,
     headerName: "Магазин",
