@@ -5,7 +5,6 @@ import { AgGridReact } from "ag-grid-react";
 import { ModuleRegistry, AllCommunityModule, ColDef } from "ag-grid-community";
 import { useTheme } from "@app/providers/theme-provider";
 import { UniversalTableProps } from "./types";
-import { calculateTotalRow } from "./utils";
 import { getAgGridTheme } from "./theme";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -17,6 +16,10 @@ export default function UniversalTable({
   className,
   onRowClick,
   onCellClick,
+  // New props
+  selectionType = "single", // 'single' | 'multiple'
+  multiSelectWithoutCtrl = true, // allow click-selection without ctrl for multi
+  onSelectionChange, // callback when selection changes
 }: UniversalTableProps) {
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -39,7 +42,7 @@ export default function UniversalTable({
       }))
     ).filter((def) => def.field && first.hasOwnProperty(def.field));
 
-    // Пустая заполнитель-колонка
+    // Empty filler column
     defs.push({
       headerName: "",
       field: "__filler__",
@@ -55,7 +58,7 @@ export default function UniversalTable({
     setColumnDefs(defs);
   }, [data, providedDefs]);
 
-  // Итоговая строка
+  // Totals row
   useEffect(() => {
     if (totalData && totalData.length > 0) {
       setPinnedTopData([totalData[0]]);
@@ -99,21 +102,28 @@ export default function UniversalTable({
         defaultColDef={defaultColDef}
         pinnedTopRowData={pinnedTopData}
         loadThemeGoogleFonts
-        rowSelection="multiple"
+        // Use props for selection
+        rowSelection={selectionType}
+        rowMultiSelectWithClick={multiSelectWithoutCtrl}
         animateRows
         enableCellTextSelection
         domLayout="normal"
-        // клик по строке
+        // Row click
         onRowClicked={(e) => {
           onRowClick?.(e.data);
         }}
-        // клик по ячейке
+        // Cell click
         onCellClicked={(e) => {
           onCellClick?.({
             rowData: e.data,
             field: e.colDef.field ?? "",
             value: e.value,
           });
+        }}
+        // Selection change
+        onSelectionChanged={(e) => {
+          const selected = e.api.getSelectedRows();
+          onSelectionChange?.(selected);
         }}
         overlayNoRowsTemplate="Нет данных для отображения"
         onGridReady={(params: any) => {

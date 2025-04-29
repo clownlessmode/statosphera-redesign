@@ -6,7 +6,7 @@ import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model
 // Компонент для отображения уникальных значений
 export function UniqueBadges({ tab }: { tab: string }) {
   const { uniques } = useFiltersStore();
-  const uniqueList = useIndicatorList();
+  const uniqueList = useIndicatorList(tab as any);
 
   if (!uniques || uniques.length === 0) return null;
 
@@ -52,7 +52,7 @@ export function getLabelByValue(
 
 export function IndicatorBadges({ tab }: { tab: string }) {
   const { indicators } = useFiltersStore();
-  const indicatorList = useIndicatorList();
+  const indicatorList = useIndicatorList("check");
 
   if (!indicators || indicators.length === 0) return null;
 

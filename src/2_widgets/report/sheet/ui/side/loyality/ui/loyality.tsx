@@ -14,7 +14,7 @@ import {
   FormLabel,
 } from "@shared/ui/form";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { gender, type, useLoyalAction, useLoyalBonus } from "../model/mock";
 import { useFiltersStore } from "../../../../model/filters-store";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
@@ -23,9 +23,19 @@ import useForm from "../model/hook";
 
 import { DualRangeSlider } from "@shared/ui/dual-range-slider";
 import { MultiSelect } from "@shared/ui/multiselect";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const Loyality: FC = () => {
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
 

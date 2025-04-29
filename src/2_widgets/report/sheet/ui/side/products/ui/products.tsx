@@ -14,7 +14,7 @@ import {
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useFiltersStore } from "../../../../model/filters-store";
 import useForm from "../model/hook";
 
@@ -35,9 +35,19 @@ import {
   useTypeSender,
   useNomenklatura,
 } from "../model/mock";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const Products: FC = () => {
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   const { updateProductFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
 

@@ -5,6 +5,7 @@ import { ChevronRight, LucideIcon } from "lucide-react";
 import { cn } from "@shared/lib/utils";
 import { Checkbox } from "@shared/ui/checkbox";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { Badge } from "./badge";
 export interface CheckboxTreeItem {
   id: string;
   label: string;
@@ -187,7 +188,9 @@ function CheckboxTreeNode({
   );
 
   const isIndeterminate = !allChildrenSelected && someChildrenSelected;
-
+  const selectedCount = childrenValues.filter((val) =>
+    selectedValues.includes(val)
+  ).length;
   const handleChange = (checked: boolean) => {
     let newSelectedValues = [...selectedValues];
 
@@ -229,7 +232,7 @@ function CheckboxTreeNode({
             <ChevronRight
               className={cn(
                 expanded && "rotate-90",
-                "h-4 w-4 shrink-0 transition-transform duration-200 text-accent-foreground/50 mr-1"
+                "h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1"
               )}
             />
           </button>
@@ -245,8 +248,10 @@ function CheckboxTreeNode({
           className={cn(
             "h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent",
             "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            isIndeterminate && "bg-primary text-primary-foreground",
-            allChildrenSelected && "bg-primary text-primary-foreground",
+            isIndeterminate &&
+              "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
+            allChildrenSelected &&
+              "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
             disabled && "opacity-50 cursor-not-allowed"
           )}
           ref={(el) => {
@@ -261,11 +266,17 @@ function CheckboxTreeNode({
           className={cn(
             "text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none",
             disabled && "cursor-not-allowed opacity-70",
-            allChildrenSelected && "text-accent-foreground"
+            isIndeterminate && "text-foreground",
+            allChildrenSelected && "text-foreground"
           )}
         >
           <TreeIcon item={item} />
           {item.label}
+          {hasChildren && selectedCount > 0 && (
+            <Badge className="ml-1 text-[10px] rounded-sm px-1.5">
+              {selectedCount}
+            </Badge>
+          )}
         </label>
       </div>
 

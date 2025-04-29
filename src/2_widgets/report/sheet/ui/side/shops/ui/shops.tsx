@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { channel, status, time } from "../model/mock";
 import useForm, {
   useCities,
@@ -30,9 +30,19 @@ import {
   STORE_CONDITIONS,
   useFiltersStore,
 } from "../../../../model/filters-store";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const Shops: FC = () => {
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   const { updateStoreFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
 

@@ -18,7 +18,7 @@ import { useDigests } from "@entities/digests/model/api/controller";
 const Digest = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string | undefined }>();
-  const { digest, isDigestLoading } = useDigests(id);
+  const { digest } = useDigests(id);
 
   const [width, setWidth] = useState<number>(() => {
     const savedWidth = localStorage.getItem("digestImageWidth");

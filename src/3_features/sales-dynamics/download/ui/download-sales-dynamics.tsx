@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 
 const DownloadSalesDynamics = () => {
   // const [isOpen, setIsOpen] = useState(false);
-  const handleDownloadReport = async (typeFile: "csv" | "excel") => {
+  const handleDownloadReport = async () => {
     // await downloadReport({
     //   ...payload,
     //   values: payload.values,
@@ -13,7 +13,7 @@ const DownloadSalesDynamics = () => {
     // });
   };
   return (
-    <Button variant="outline" onClick={() => handleDownloadReport("excel")}>
+    <Button variant="outline" onClick={() => handleDownloadReport()}>
       <Download />
     </Button>
   );

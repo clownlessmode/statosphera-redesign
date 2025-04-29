@@ -13,6 +13,10 @@ import {
   CalendarRange,
   Flag,
   History,
+  Moon,
+  Sun,
+  Sunrise,
+  Sunset,
   Undo,
 } from "lucide-react";
 import { FC, useEffect } from "react";
@@ -25,16 +29,35 @@ import { useFiltersStore } from "../../../../model/filters-store";
 import { DateRange } from "react-day-picker";
 import { TimeRangePicker } from "@shared/ui/time-range-picker";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const MIN_DATE = new Date(2018, 4, 1);
 const MAX_DATE = subDays(new Date(), 1);
-
+const timeRanges: Record<string, [string, string]> = {
+  morning: ["06:00", "12:00"],
+  day: ["12:00", "18:00"],
+  evening: ["18:00", "00:00"],
+  night: ["00:00", "06:00"],
+};
 const DateFilter: FC = () => {
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   const { tab } = useTabStore();
   const today = new Date();
   const { updateDateFilter, updateTimeFilter } = useFiltersStore();
-
+  const handleTimeButtonClick = (key: keyof typeof timeRanges) => {
+    const [start, end] = timeRanges[key];
+    form.setValue("timeStart", start);
+    form.setValue("timeEnd", end);
+  };
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
@@ -177,6 +200,32 @@ const DateFilter: FC = () => {
                 )}
               />
             )}
+            <div className="w-full grid grid-cols-4 gap-2 mt-2">
+              <Button
+                type="button"
+                onClick={() => handleTimeButtonClick("morning")}
+              >
+                <Sunrise className="h-4 w-4 mr-1" /> Утро
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleTimeButtonClick("day")}
+              >
+                <Sun className="h-4 w-4 mr-1" /> День
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleTimeButtonClick("evening")}
+              >
+                <Sunset className="h-4 w-4 mr-1" /> Вечер
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleTimeButtonClick("night")}
+              >
+                <Moon className="h-4 w-4 mr-1" /> Ночь
+              </Button>
+            </div>
           </form>
         </Form>
       </CardContent>

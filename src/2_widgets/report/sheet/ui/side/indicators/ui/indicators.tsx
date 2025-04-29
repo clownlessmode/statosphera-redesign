@@ -14,12 +14,23 @@ import useForm from "../model/hook";
 import { Form, FormField, FormControl, FormItem } from "@shared/ui/form";
 import { useFiltersStore } from "../../../../model/filters-store";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { Badge } from "@shared/ui/badge";
 
 const Indicators: FC = () => {
   const { tab } = useTabStore();
   const indicators = useIndicatorList(tab);
   const { updateIndicators } = useFiltersStore();
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   useEffect(() => {
     const subscription = form.watch((values) => {
       const indicators = [...(values.proceeds || [])].filter(
@@ -33,7 +44,14 @@ const Indicators: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Показатели</CardTitle>
+        <CardTitle className="flex flex-row items-center">
+          Показатели
+          {form.watch("proceeds")?.length > 0 && (
+            <Badge className="ml-1 text-[10px]">
+              Выбрано: {form.watch("proceeds")?.length}
+            </Badge>
+          )}
+        </CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>
             Получайте отчет по нужным показателям

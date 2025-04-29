@@ -13,13 +13,11 @@ import {
   DollarSign,
   Tag,
   CreditCard,
-  TrendingUp,
   Archive,
   Percent,
   Calculator,
   Box,
   Ruler,
-  QrCode,
   ListOrdered,
 } from "lucide-react";
 

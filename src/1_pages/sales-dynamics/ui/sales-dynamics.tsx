@@ -18,6 +18,11 @@ import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
 import { useDateFilterStore } from "@features/sales-dynamics/graph-date/ui/graph-date";
 import { useSalesSelectStore } from "@features/sales-dynamics/sales-select/ui/sales-select";
+import { Button } from "@shared/ui/button";
+import { Store } from "lucide-react";
+import { DialogContent } from "@shared/ui/dialog";
+import { DialogTrigger } from "@shared/ui/dialog";
+import { Dialog } from "@shared/ui/dialog";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента
@@ -26,6 +31,7 @@ const SalesDynamics: FC = () => {
   // мемоизированный отфильтрованный массив
 
   const { defaultValues, isLoading } = useDefaultValues();
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const { value } = useDateFilterStore();
   const { lfl } = useSalesDynamicsFiltersStore((state) => state);
   const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
@@ -109,6 +115,33 @@ const SalesDynamics: FC = () => {
     second,
   ]);
 
+  const handleSelectionChange = async (selectedRows: any) => {
+    console.log(selectedRows);
+
+    const payload = getApiPayload();
+    const [graphRes, secondGraphRes] = await Promise.all([
+      getSecondGraph({
+        ...payload,
+        value: second.value,
+        groups: value,
+        filters: {
+          ...payload.filters,
+          idStore: selectedRows.map((row: any) => row.idStore),
+        },
+      }),
+      getGraph({
+        ...payload,
+        value: first.value,
+        groups: value,
+        filters: {
+          ...payload.filters,
+          idStore: selectedRows.map((row: any) => row.idStore),
+        },
+      }),
+    ]);
+    setGraph(graphRes);
+    setSecondGraph(secondGraphRes);
+  };
   const isCompleted = !!table && !!total && !!graph && !!secondGraph;
   return (
     <>
@@ -176,6 +209,33 @@ const SalesDynamics: FC = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              {selectedRows.length > 0 && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <Store /> Выбранные магазины: {selectedRows.length}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <div className="flex flex-col gap-2 ">
+                      {selectedRows.map((row) => (
+                        <div key={row.idStore} className="flex flex-row gap-8">
+                          <span>{row.storeName}</span>
+                          {/* <X
+                            onClick={() =>
+                              setSelectedRows(
+                                selectedRows.filter(
+                                  (r) => r.idStore !== row.idStore
+                                )
+                              )
+                            }
+                          /> */}
+                        </div>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )}
               <div className="w-full flex flex-row gap-2 justify-end">
                 <AddIndicators
                   defaultValues={defaultValues.indicators_and_groups}
@@ -184,6 +244,11 @@ const SalesDynamics: FC = () => {
             </div>
             {isCompleted && (
               <UniversalTable
+                selectionType="multiple"
+                onSelectionChange={(selectedRows) => {
+                  setSelectedRows(selectedRows);
+                  handleSelectionChange(selectedRows);
+                }}
                 data={filteredTable as any}
                 totalData={total as any}
                 columnDefs={columnDefs}

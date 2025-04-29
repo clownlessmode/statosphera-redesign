@@ -1,16 +1,31 @@
 import { ColDef } from "ag-grid-community";
 
 export interface UniversalTableProps {
-  /** Основные данные для таблицы */
   data: any[];
-  /** При необходимости можно передать предрасчитанные итоговые данные */
+  /** Опциональные данные для итоговой (прикреплённой) строки */
   totalData?: any[];
-  /** Определения колонок по ag-grid */
+  /** Пользовательские определения колонок (ColDef) */
   columnDefs?: ColDef[];
-  /** Дополнительные классы для корневого div */
+  /** CSS-класс для контейнера таблицы */
   className?: string;
+  /** Обработчик клика по строке */
+  onRowClick?: (data: any) => void;
+  /** Обработчик клика по ячейке */
+  onCellClick?: (info: { rowData: any; field: string; value: any }) => void;
 
-  onRowClick?: (rowData: any) => void;
-
-  onCellClick?: (params: { rowData: any; field: string; value: any }) => void;
+  /**
+   * Тип выбора строк: "single" — одиночный, "multiple" — множественный.
+   * По умолчанию: "multiple"
+   */
+  selectionType?: "single" | "multiple";
+  /**
+   * Если true, в режиме множественного выбора клик без Ctrl переключает выбор строки.
+   * По умолчанию: true
+   */
+  multiSelectWithoutCtrl?: boolean;
+  /**
+   * Колбэк, вызываемый при изменении выбора строк.
+   * Принимает массив выбранных объектов данных.
+   */
+  onSelectionChange?: (selectedRows: any[]) => void;
 }

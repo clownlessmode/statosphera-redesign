@@ -90,8 +90,10 @@ export const getOptionChart = (option: EChartsOption) => {
       backgroundColor: colors.tooltipBg,
       borderColor: colors.tooltipBorder,
       textStyle: {
+        fontSize: 10,
         color: colors.text,
       },
+      borderRadius: 12,
     },
     xAxis: {
       type: "category",

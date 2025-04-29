@@ -36,6 +36,7 @@ import {
   online,
   id,
 } from "../model/mock";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const Grouping: FC = () => {
   const { tab } = useTabStore();
@@ -54,6 +55,15 @@ const Grouping: FC = () => {
   }, [tab]);
 
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   const { updateGroups } = useFiltersStore();
   useEffect(() => {
     const subscription = form.watch((values) => {

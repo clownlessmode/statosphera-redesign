@@ -161,3 +161,9 @@ body {
 .ag-cell {
   text-align: center;
 }
+
+.ag-cell-focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}

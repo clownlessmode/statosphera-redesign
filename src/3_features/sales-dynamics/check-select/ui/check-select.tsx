@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import { Box, Calculator, ListOrdered, QrCode, Ruler } from "lucide-react";
-import React, { FC } from "react";
+import { FC } from "react";
 
 const CheckSelect: FC = () => {
   return (

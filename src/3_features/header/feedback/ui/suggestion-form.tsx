@@ -18,7 +18,6 @@ import {
 } from "@shared/ui/radio-group";
 import { Angry, Annoyed, Frown, Meh, ServerCrash } from "lucide-react";
 import { Textarea } from "@shared/ui/textarea";
-import MultipleSelector from "@shared/ui/multiple-selector";
 import useFeedbackController, { FEEDBACK_TYPES } from "../model/api/controller";
 import { FormValues } from "../model/types";
 import useForm from "../model/hook";

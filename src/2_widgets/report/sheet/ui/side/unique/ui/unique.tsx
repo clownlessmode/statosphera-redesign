@@ -14,11 +14,22 @@ import useForm from "../model/hook";
 import { Form, FormControl, FormField, FormItem } from "@shared/ui/form";
 import { useFiltersStore } from "../../../../model/filters-store";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { Badge } from "@shared/ui/badge";
 const Unique: FC = () => {
   const { tab } = useTabStore();
   const uniques = useUniqueValues(tab);
   const { updateUniques } = useFiltersStore();
   const form = useForm();
+  const addReset = useFormResetStore((s) => s.addReset);
+  const removeReset = useFormResetStore((s) => s.removeReset);
+
+  useEffect(() => {
+    addReset(form.reset);
+    return () => {
+      removeReset(form.reset);
+    };
+  }, [form.reset, addReset, removeReset]);
   useEffect(() => {
     const subscription = form.watch((values) => {
       const unique = [...(values.proceeds || [])].filter(
@@ -31,7 +42,14 @@ const Unique: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Уникальные значения</CardTitle>
+        <CardTitle className="flex flex-row items-center">
+          Уникальные значения
+          {form.watch("proceeds")?.length > 0 && (
+            <Badge className="ml-1 text-[10px]">
+              Выбрано: {form.watch("proceeds")?.length}
+            </Badge>
+          )}
+        </CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>
             Получайте нужные данные по уникальным значениям

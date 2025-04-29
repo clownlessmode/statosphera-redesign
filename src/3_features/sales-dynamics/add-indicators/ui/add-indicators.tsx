@@ -3,7 +3,7 @@ import { CheckboxTree, CheckboxTreeItem } from "@shared/ui/checkbox-tree";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Form, FormControl, FormField, FormItem } from "@shared/ui/form";
 
-import { Eraser, Plus } from "lucide-react";
+import { ArrowUpRight, Eraser, Plus } from "lucide-react";
 
 import {
   Card,
@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { useSalesDynamicsIndicatorsController } from "../model/api/controller";
 import { Group, UpdateIndicatorsRequest } from "../model/api/types";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
+import { Badge } from "@shared/ui/badge";
 interface Props {
   defaultValues: string[];
 }
@@ -84,11 +85,29 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
       <DialogContent className="p-0 rounded-xl border-none">
         <Card className="w-full mr-4">
           <CardHeader>
-            <CardTitle>Группы и показатели</CardTitle>
-            <div className="flex flex-row gap-2 justify-between items-center w-full">
-              <CardDescription>
-                Выберите группы и показатели для добавления в фильтрацию
-              </CardDescription>
+            <CardTitle className="flex flex-row items-center">
+              Группы и показатели
+              {form.watch("indicators_and_groups")?.length > 0 && (
+                <Badge className="ml-1 text-[10px]">
+                  Выбрано: {form.watch("indicators_and_groups")?.length}
+                </Badge>
+              )}
+            </CardTitle>{" "}
+            <CardDescription>
+              Выберите группы и показатели для добавления в фильтрацию
+            </CardDescription>
+            <div className="flex flex-row gap-2">
+              <Button
+                size="sm"
+                className="text-muted-foreground"
+                variant="outline"
+                onClick={() => {
+                  reset({ indicators_and_groups: defaultValues });
+                }}
+              >
+                Вернуть к стандартным фильтрам{" "}
+                <ArrowUpRight className="text-primary/80" />
+              </Button>
               <Button
                 size="sm"
                 className="text-muted-foreground"

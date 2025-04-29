@@ -3,6 +3,7 @@ import {
   Calendar,
   CircleDotDashed,
   Combine,
+  Eraser,
   Globe,
   Grid2x2Check,
   Receipt,
@@ -33,6 +34,8 @@ import { LoyalityFilter } from "../../side/loyality";
 import { RecieptsFilter } from "../../side/reciepts";
 import { OnlineStoreFilter } from "../../side/online-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
+import { Button } from "@shared/ui/button";
+import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 const filters = [
   {
     title: "Дата",
@@ -87,6 +90,7 @@ const indicators = [
   },
 ];
 const Check = () => {
+  const resetAll = useFormResetStore((s) => s.resetAll);
   return (
     <ViewTabs
       defaultValue={filters[0].title}
@@ -131,6 +135,12 @@ const Check = () => {
         <CombinedSubmitButton />
       </ViewTabsList>
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
+        <div className="flex flex-col gap-2">
+          <Button onClick={resetAll}>
+            Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
+          </Button>
+          <Separator />
+        </div>
         {filters.map((item, index) => (
           <ViewTabsContent value={item.title} key={index}>
             <item.component />
