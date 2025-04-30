@@ -40,52 +40,52 @@ export const columns: ColumnDef<Store>[] = [
     header: ({ column }) => <SortableHeader column={column} title="Город" />,
     enableColumnFilter: true,
   },
-  {
-    accessorKey: "nameManager",
-    header: ({ column }) => (
-      <SortableHeader column={column} title="Управляющий" />
-    ),
-    enableColumnFilter: true,
-  },
-  {
-    accessorKey: "storeEmail",
-    header: ({ column }) => <SortableHeader column={column} title="Почта" />,
-    enableColumnFilter: true,
-  },
-  {
-    accessorKey: "startDate",
-    header: ({ column }) => <SortableHeader column={column} title="Открытие" />,
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("startDate"));
-      return (
-        <div>
-          {new Intl.DateTimeFormat("ru-RU", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }).format(date)}
-        </div>
-      );
-    },
-    enableColumnFilter: true,
-  },
-  {
-    accessorKey: "endDate",
-    header: ({ column }) => (
-      <SortableHeader column={column} title="Последняя продажа" />
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("endDate"));
-      return (
-        <div>
-          {new Intl.DateTimeFormat("ru-RU", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }).format(date)}
-        </div>
-      );
-    },
-    enableColumnFilter: true,
-  },
+  // {
+  //   accessorKey: "nameManager",
+  //   header: ({ column }) => (
+  //     <SortableHeader column={column} title="Управляющий" />
+  //   ),
+  //   enableColumnFilter: true,
+  // },
+  // {
+  //   accessorKey: "storeEmail",
+  //   header: ({ column }) => <SortableHeader column={column} title="Почта" />,
+  //   enableColumnFilter: true,
+  // },
+  // {
+  //   accessorKey: "startDate",
+  //   header: ({ column }) => <SortableHeader column={column} title="Открытие" />,
+  //   cell: ({ row }) => {
+  //     const date = new Date(row.getValue("startDate"));
+  //     return (
+  //       <div>
+  //         {new Intl.DateTimeFormat("ru-RU", {
+  //           day: "numeric",
+  //           month: "long",
+  //           year: "numeric",
+  //         }).format(date)}
+  //       </div>
+  //     );
+  //   },
+  //   enableColumnFilter: true,
+  // },
+  // {
+  //   accessorKey: "endDate",
+  //   header: ({ column }) => (
+  //     <SortableHeader column={column} title="Последняя продажа" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const date = new Date(row.getValue("endDate"));
+  //     return (
+  //       <div>
+  //         {new Intl.DateTimeFormat("ru-RU", {
+  //           day: "numeric",
+  //           month: "long",
+  //           year: "numeric",
+  //         }).format(date)}
+  //       </div>
+  //     );
+  //   },
+  //   enableColumnFilter: true,
+  // },
 ];
