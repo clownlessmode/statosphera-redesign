@@ -15,6 +15,8 @@ import { Standart } from "@pages/standart";
 import { Grill } from "@pages/grill";
 import { Report } from "@pages/report";
 import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
+import { Products } from "@pages/products";
+
 export const ROUTES_PATH = {
   // Авторизация
   LOGIN: "/login",
@@ -40,6 +42,7 @@ export const ROUTES_PATH = {
   REPORT: "/report",
   SALES_DYNAMICS: "/sales-dynamics",
   ROADMAP: "/roadmap",
+  PRODUCTS: "/products",
 
   GRILL: "/grill",
 
@@ -124,6 +127,12 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.REPORT,
     variant: "private",
     element: <Report />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.PRODUCTS,
+    variant: "private",
+    element: <Products />,
     layout: Sidebar,
   },
   {

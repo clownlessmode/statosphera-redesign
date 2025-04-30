@@ -57,7 +57,7 @@ const Sidebar = ({
       },
       {
         title: "Номенклатура",
-        url: "#",
+        url: ROUTES_PATH.PRODUCTS,
         icon: PanelsTopLeft,
       },
       {

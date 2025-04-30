@@ -79,7 +79,7 @@ export default function UniversalTable({
 
   return (
     <div
-      className={`rounded-[16px] overflow-hidden border border-border h-full w-full ${
+      className={`rounded-[16px] overflow-hidden border border-border h-full w-full flex-1 ${
         className || ""
       }`}
       style={
@@ -108,6 +108,7 @@ export default function UniversalTable({
         animateRows
         enableCellTextSelection
         domLayout="normal"
+        className="flex-1"
         // Row click
         onRowClicked={(e) => {
           onRowClick?.(e.data);
@@ -127,12 +128,21 @@ export default function UniversalTable({
         }}
         overlayNoRowsTemplate="Нет данных для отображения"
         onGridReady={(params: any) => {
-          const allIds: string[] = [];
-          params.columnApi.getAllColumns()?.forEach((col: any) => {
-            const cd = col.getColDef();
-            if (!cd.width && !cd.flex) allIds.push(col.getColId());
-          });
-          params.columnApi.autoSizeColumns(allIds, false);
+          const api = params.api;
+
+          // берём все колонки грида
+          const allCols = api.getAllGridColumns();
+
+          // фильтруем те, где нет width и нет flex
+          const colsToSize = allCols
+            .filter((col: any) => {
+              const def = col.getColDef();
+              return !def.width && !def.flex;
+            })
+            .map((col: any) => col.getColId());
+
+          // авто-размер колонок по содержимому
+          api.autoSizeColumns(colsToSize, /* skipHeader */ false);
         }}
       />
     </div>

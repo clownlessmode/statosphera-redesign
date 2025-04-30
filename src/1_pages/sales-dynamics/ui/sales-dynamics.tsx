@@ -86,34 +86,71 @@ const SalesDynamics: FC = () => {
     values,
   ]);
   const { first, second } = useSalesSelectStore((state) => state);
+  // 1. Эффект только для Total
   useEffect(() => {
     if (isLoading) return;
 
-    const getData = async () => {
+    const fetchTotal = async () => {
       const payload = getApiPayload();
-      const [totalRes, tableRes, graphRes, secondGraphRes] = await Promise.all([
-        getTotal({ ...payload, values: defaultValues.indicators_and_groups }),
-        getTable({ ...payload, values: defaultValues.indicators_and_groups }),
-        getGraph({ ...payload, value: first.value, groups: value }),
-        getSecondGraph({ ...payload, value: second.value, groups: value }),
-      ]);
+      const totalRes = await getTotal({
+        ...payload,
+        values: defaultValues.indicators_and_groups,
+      });
       setTotal(totalRes);
+    };
+
+    fetchTotal();
+  }, [isLoading, lfl, getApiPayload, filterDate, values, filters]);
+
+  // 2. Эффект только для Table
+  useEffect(() => {
+    if (isLoading) return;
+
+    const fetchTable = async () => {
+      const payload = getApiPayload();
+      const tableRes = await getTable({
+        ...payload,
+        values: defaultValues.indicators_and_groups,
+      });
       setTable(tableRes);
+    };
+
+    fetchTable();
+  }, [isLoading, lfl, getApiPayload, filterDate, values, filters]);
+
+  // 3. Эффект для первого графика
+  useEffect(() => {
+    if (isLoading) return;
+
+    const fetchFirstGraph = async () => {
+      const payload = getApiPayload();
+      const graphRes = await getGraph({
+        ...payload,
+        value: first.value,
+        groups: value,
+      });
       setGraph(graphRes);
+    };
+
+    fetchFirstGraph();
+  }, [isLoading, getApiPayload, filterDate, values, filters, first.value]);
+
+  // 4. Эффект для второго графика
+  useEffect(() => {
+    if (isLoading) return;
+
+    const fetchSecondGraph = async () => {
+      const payload = getApiPayload();
+      const secondGraphRes = await getSecondGraph({
+        ...payload,
+        value: second.value,
+        groups: value,
+      });
       setSecondGraph(secondGraphRes);
     };
-    getData();
-  }, [
-    isLoading,
-    lfl,
-    getApiPayload,
-    filterDate,
-    values,
-    filters,
-    value,
-    first,
-    second,
-  ]);
+
+    fetchSecondGraph();
+  }, [isLoading, getApiPayload, filterDate, values, filters, second.value]);
 
   const handleSelectionChange = async (selectedRows: any) => {
     console.log(selectedRows);
