@@ -12,6 +12,10 @@ export class NotificationService {
     return response.data;
   }
 
+  static async getCountNotifications(): Promise<{ count: number }[]> {
+    const response = await api.get<{ count: number }[]>(`notifications`);
+    return response.data;
+  }
   static async readNotification(id: number): Promise<Notification> {
     const response = await api.patch<Notification>(`notifications/${id}/read`);
     return response.data;

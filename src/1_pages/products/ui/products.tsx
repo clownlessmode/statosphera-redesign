@@ -1,9 +1,10 @@
-import UniversalTable from "@pages/report/ui/table";
 import { Input } from "@shared/ui/input";
 import { Header } from "@widgets/header";
 import { mock } from "../model/mock";
-import { columnDefs } from "@shared/constants/table-columns";
 
+import { nomenclatureColumns } from "../model/col-defs";
+import UniversalTable from "@pages/report/ui/table";
+import EditProduct, { Product } from "./edit-product";
 const Products = () => {
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -13,8 +14,13 @@ const Products = () => {
           center: <Input placeholder="Поиск" className="w-full max-w-sm" />,
         }}
       />
-      <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
-        <UniversalTable data={mock as any[]} columnDefs={columnDefs} />
+      <div className="rounded-3xl bg-background p-4 flex flex-col h-[calc(100vh-4rem)] gap-4">
+        <UniversalTable
+          data={mock}
+          columnDefs={nomenclatureColumns}
+          actions={(rowData) => <EditProduct product={rowData.rowData} />}
+          actionsIndex={0}
+        />
       </div>
     </div>
   );

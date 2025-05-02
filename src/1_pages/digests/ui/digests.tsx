@@ -40,7 +40,7 @@ const Digests = () => {
       groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
     };
   }, [digests, currentType]);
-
+  console.log(digests);
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Tabs

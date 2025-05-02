@@ -31,6 +31,7 @@ export const useDateFilterStore = create<DateFilterState>((set) => ({
 const GraphDate = () => {
   const { value, setValue } = useDateFilterStore();
   const handleSubmit = async (value: DateFilterValue) => {
+    console.log(value);
     try {
       setValue(value);
     } catch (error) {

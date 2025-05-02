@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useMemo, useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ModuleRegistry, AllCommunityModule, ColDef } from "ag-grid-community";
@@ -9,18 +10,26 @@ import { getAgGridTheme } from "./theme";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+interface Props extends UniversalTableProps {
+  /** React-компонент для колонки "действий". Появится в каждой строке */
+  actions?: React.FC<{ rowData: any }>;
+  /** Индекс, куда вставить колонку с действиями (по умолчанию 0) */
+  actionsIndex?: number;
+}
+
 export default function UniversalTable({
   data,
   totalData,
   columnDefs: providedDefs,
+  actions,
+  actionsIndex = 0,
   className,
   onRowClick,
   onCellClick,
-  // New props
-  selectionType = "single", // 'single' | 'multiple'
-  multiSelectWithoutCtrl = true, // allow click-selection without ctrl for multi
-  onSelectionChange, // callback when selection changes
-}: UniversalTableProps) {
+  selectionType = "single",
+  multiSelectWithoutCtrl = true,
+  onSelectionChange,
+}: Props) {
   const { theme } = useTheme();
   const isLight = theme === "light";
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
@@ -30,7 +39,8 @@ export default function UniversalTable({
     if (!data?.length) return;
     const first = data[0];
 
-    const defs = (
+    // Основные колонки
+    const baseDefs: ColDef[] =
       providedDefs ||
       Object.keys(first).map((key) => ({
         field: key,
@@ -39,11 +49,39 @@ export default function UniversalTable({
         cellStyle: {
           textAlign: typeof first[key] === "number" ? "center" : "left",
         },
-      }))
-    ).filter((def) => def.field && first.hasOwnProperty(def.field));
+      }));
 
-    // Empty filler column
-    defs.push({
+    const filteredBaseDefs = baseDefs.filter(
+      (d) => d.field && first.hasOwnProperty(d.field)
+    );
+
+    const mergedDefs: ColDef[] = [...filteredBaseDefs];
+
+    // Вставляем колонку действий, если передан компонент
+    if (actions) {
+      const pos =
+        actionsIndex >= 0 && actionsIndex <= mergedDefs.length
+          ? actionsIndex
+          : 0;
+      mergedDefs.splice(pos, 0, {
+        headerName: "",
+        field: "__actions__",
+        cellRenderer: (params: any) => {
+          const ActionComp = actions;
+          return <ActionComp rowData={params.data} />;
+        },
+        resizable: false,
+
+        suppressMovable: false,
+        sortable: false,
+        filter: false,
+        lockPosition: true,
+        width: 50,
+      } as ColDef);
+    }
+
+    // Колонка-заполнитель до конца
+    mergedDefs.push({
       headerName: "",
       field: "__filler__",
       valueGetter: () => "",
@@ -55,12 +93,11 @@ export default function UniversalTable({
       flex: 1,
     });
 
-    setColumnDefs(defs);
-  }, [data, providedDefs]);
+    setColumnDefs(mergedDefs);
+  }, [data, providedDefs, actions, actionsIndex]);
 
-  // Totals row
   useEffect(() => {
-    if (totalData && totalData.length > 0) {
+    if (totalData && totalData.length) {
       setPinnedTopData([totalData[0]]);
     } else {
       setPinnedTopData([]);
@@ -68,13 +105,9 @@ export default function UniversalTable({
   }, [totalData]);
 
   const defaultColDef = useMemo<ColDef>(
-    () => ({
-      resizable: true,
-      cellStyle: { textAlign: "center" },
-    }),
+    () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
     []
   );
-
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
 
   return (
@@ -102,47 +135,32 @@ export default function UniversalTable({
         defaultColDef={defaultColDef}
         pinnedTopRowData={pinnedTopData}
         loadThemeGoogleFonts
-        // Use props for selection
         rowSelection={selectionType}
         rowMultiSelectWithClick={multiSelectWithoutCtrl}
         animateRows
         enableCellTextSelection
         domLayout="normal"
         className="flex-1"
-        // Row click
-        onRowClicked={(e) => {
-          onRowClick?.(e.data);
-        }}
-        // Cell click
-        onCellClicked={(e) => {
+        onRowClicked={(e) => onRowClick?.(e.data)}
+        onCellClicked={(e) =>
           onCellClick?.({
             rowData: e.data,
             field: e.colDef.field ?? "",
             value: e.value,
-          });
-        }}
-        // Selection change
-        onSelectionChanged={(e) => {
-          const selected = e.api.getSelectedRows();
-          onSelectionChange?.(selected);
-        }}
+          })
+        }
+        onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         overlayNoRowsTemplate="Нет данных для отображения"
-        onGridReady={(params: any) => {
+        onGridReady={(params) => {
           const api = params.api;
-
-          // берём все колонки грида
-          const allCols = api.getAllGridColumns();
-
-          // фильтруем те, где нет width и нет flex
-          const colsToSize = allCols
-            .filter((col: any) => {
+          const colsToSize = api
+            .getAllGridColumns()
+            .filter((col) => {
               const def = col.getColDef();
               return !def.width && !def.flex;
             })
-            .map((col: any) => col.getColId());
-
-          // авто-размер колонок по содержимому
-          api.autoSizeColumns(colsToSize, /* skipHeader */ false);
+            .map((col) => col.getColId());
+          api.autoSizeColumns(colsToSize, false);
         }}
       />
     </div>

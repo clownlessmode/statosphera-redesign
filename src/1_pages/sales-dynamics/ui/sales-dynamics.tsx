@@ -32,7 +32,7 @@ const SalesDynamics: FC = () => {
 
   const { defaultValues, isLoading } = useDefaultValues();
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
-  const { value } = useDateFilterStore();
+  const { value: dateGranularity } = useDateFilterStore((state) => state);
   const { lfl } = useSalesDynamicsFiltersStore((state) => state);
   const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
   const { values } = useSalesDynamicsFiltersStore((state) => state);
@@ -75,16 +75,7 @@ const SalesDynamics: FC = () => {
       }
       return true;
     });
-  }, [
-    table,
-    searchTerm,
-    defaultValues,
-    filters,
-    filterDate,
-    value,
-    lfl,
-    values,
-  ]);
+  }, [table, searchTerm, defaultValues, filters, filterDate, lfl, values]);
   const { first, second } = useSalesSelectStore((state) => state);
   // 1. Эффект только для Total
   useEffect(() => {
@@ -127,13 +118,21 @@ const SalesDynamics: FC = () => {
       const graphRes = await getGraph({
         ...payload,
         value: first.value,
-        groups: value,
+        groups: dateGranularity,
       });
       setGraph(graphRes);
     };
 
     fetchFirstGraph();
-  }, [isLoading, getApiPayload, filterDate, values, filters, first.value]);
+  }, [
+    isLoading,
+    getApiPayload,
+    filterDate,
+    values,
+    filters,
+    first.value,
+    dateGranularity,
+  ]);
 
   // 4. Эффект для второго графика
   useEffect(() => {
@@ -144,13 +143,21 @@ const SalesDynamics: FC = () => {
       const secondGraphRes = await getSecondGraph({
         ...payload,
         value: second.value,
-        groups: value,
+        groups: dateGranularity,
       });
       setSecondGraph(secondGraphRes);
     };
 
     fetchSecondGraph();
-  }, [isLoading, getApiPayload, filterDate, values, filters, second.value]);
+  }, [
+    isLoading,
+    getApiPayload,
+    filterDate,
+    values,
+    filters,
+    second.value,
+    dateGranularity,
+  ]);
 
   const handleSelectionChange = async (selectedRows: any) => {
     console.log(selectedRows);
@@ -160,7 +167,7 @@ const SalesDynamics: FC = () => {
       getSecondGraph({
         ...payload,
         value: second.value,
-        groups: value,
+        groups: dateGranularity,
         filters: {
           ...payload.filters,
           idStore: selectedRows.map((row: any) => row.idStore),
@@ -169,7 +176,7 @@ const SalesDynamics: FC = () => {
       getGraph({
         ...payload,
         value: first.value,
-        groups: value,
+        groups: dateGranularity,
         filters: {
           ...payload.filters,
           idStore: selectedRows.map((row: any) => row.idStore),
