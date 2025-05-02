@@ -65,7 +65,7 @@ const Report: FC = () => {
       console.error("Error fetching report:", error);
     }
   };
-
+  console.log(total);
   return (
     <>
       <Sheet />
@@ -184,7 +184,7 @@ const Report: FC = () => {
           {isCompleted ? (
             <UniversalTable
               data={table?.data as any[]}
-              totalData={total?.data as any[]}
+              totalData={total as any}
               columnDefs={columnDefs}
               onCellClick={onCellClick}
             />
