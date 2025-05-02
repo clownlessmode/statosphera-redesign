@@ -85,7 +85,7 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const totalRes = await getTotal({
         ...payload,
-        values: defaultValues.indicators_and_groups,
+        values: values || defaultValues.indicators_and_groups,
       });
       setTotal(totalRes);
     };
@@ -101,7 +101,7 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const tableRes = await getTable({
         ...payload,
-        values: defaultValues.indicators_and_groups,
+        values: values || defaultValues.indicators_and_groups,
       });
       setTable(tableRes);
     };
