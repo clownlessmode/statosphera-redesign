@@ -2,6 +2,51 @@ import { divideNumberSpaces } from "@shared/ui/graphs/stacked-line/formatter-too
 import { ColDef } from "ag-grid-community";
 
 export enum COLUMN_KEY {
+  //Коэффициент оборачиваемости ITR
+  ITR_GROUP = "itrGroup",
+  ITR = "itr",
+  ITR_LM = "itrLM",
+  ITR_MOM = "itrMoM",
+  ITR_MOM_PERCENT = "itrMoMPercent",
+  ITR_LY = "itrLY",
+  ITR_YOY = "itrYoY",
+  ITR_YOY_PERCENT = "itrYoYPercent",
+
+  // остатки товара на начало дня
+  OPENING_BALANCE_GROUP = "openingBalanceGroup",
+  OPENING_BALANCE = "openingBalance",
+  OPENING_BALANCE_LM = "openingBalanceLM",
+  OPENING_BALANCE_MOM = "openingBalanceMoM",
+  OPENING_BALANCE_MOM_PERCENT = "openingBalanceMoMPercent",
+  OPENING_BALANCE_LY = "openingBalanceLY",
+  OPENING_BALANCE_YOY = "openingBalanceYoY",
+
+  // остатки товара на конец дня
+  FINAL_BALANCE_GROUP = "finalBalanceGroup",
+  FINAL_BALANCE = "finalBalance",
+  FINAL_BALANCE_LM = "finalBalanceLM",
+  FINAL_BALANCE_MOM = "finalBalanceMoM",
+  FINAL_BALANCE_MOM_PERCENT = "finalBalanceMoMPercent",
+  FINAL_BALANCE_LY = "finalBalanceLY",
+  FINAL_BALANCE_YOY = "finalBalanceYoY",
+  // Списания вес
+  WRITEOFF_WEIGHT_GROUP = "writeOffWeightGroup",
+  WRITEOFF_WEIGHT = "writeOffWeight",
+  WRITEOFF_WEIGHT_LY = "writeOffLYWeight",
+  WRITEOFF_WEIGHT_YOY = "writeOffWeightYoY",
+  WRITEOFF_WEIGHT_PERCENT_YOY = "writeOffWeightYoYPercent",
+  WRITEOFF_WEIGHT_LM = "writeOffWeightLM",
+  WRITEOFF_WEIGHT_MOM = "writeOffWeightMoM",
+  WRITEOFF_WEIGHT_PERCENT_MOM = "writeOffWeightMoMPercent",
+  // Списания колличество
+  WRITEOFF_COUNT_GROUP = "writeOffCountGroup",
+  WRITEOFF_COUNT = "writeOffCount",
+  WRITEOFF_COUNT_LY = "writeOffCountLY",
+  WRITEOFF_COUNT_YOY = "writeOffCountYoY",
+  WRITEOFF_COUNT_YOY_PERCENT = "writeOffCountYoYPercent",
+  WRITEOFF_COUNT_LM = "writeOffCountLM",
+  WRITEOFF_COUNT_MOM = "writeOffCountMoM",
+  WRITEOFF_COUNT_MOM_PERCENT = "writeOffCountMoMPercent",
   // ----------------- Наценка без учета скидки -----------------
   GROUP_MARKUP_DISCOUNT = "groupMarkupDiscount",
   MARKUP_DISCOUNT = "markupDiscount",
@@ -394,6 +439,330 @@ export const formatNumber = (value: number) =>
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
+  {
+    field: COLUMN_KEY.ITR,
+    headerName: "Коэффициент оборачиваемости ITR",
+    headerTooltip: "Коэффициент оборачиваемости ITR",
+    cellDataType: "number",
+    valueFormatter: (params: any) => formatNumber(params.data[COLUMN_KEY.ITR]),
+  },
+  {
+    field: COLUMN_KEY.ITR_LM,
+    headerName: "Коэффициент оборачиваемости ITR PM",
+    headerTooltip: "Коэффициент оборачиваемости ITR PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_LM]),
+  },
+  {
+    field: COLUMN_KEY.ITR_MOM,
+    headerName: "Коэффициент оборачиваемости ITR MOM",
+    headerTooltip: "Коэффициент оборачиваемости ITR MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_MOM]),
+  },
+  {
+    field: COLUMN_KEY.ITR_MOM_PERCENT,
+    headerName: "Коэффициент оборачиваемости ITR MOM%",
+    headerTooltip: "Коэффициент оборачиваемости ITR MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.ITR_LY,
+    headerName: "Коэффициент оборачиваемости ITR PY",
+    headerTooltip: "Коэффициент оборачиваемости ITR PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_LY]),
+  },
+  {
+    field: COLUMN_KEY.ITR_YOY,
+    headerName: "Коэффициент оборачиваемости ITR YOY",
+    headerTooltip: "Коэффициент оборачиваемости ITR YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_YOY]),
+  },
+  {
+    field: COLUMN_KEY.ITR_YOY_PERCENT,
+    headerName: "Коэффициент оборачиваемости ITR YOY%",
+    headerTooltip: "Коэффициент оборачиваемости ITR YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.ITR_YOY_PERCENT]),
+  },
+
+  {
+    field: COLUMN_KEY.OPENING_BALANCE,
+    headerName: "Остатки на начало дня",
+    headerTooltip: "Остатки на начало дня",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE]),
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_LM,
+    headerName: "Остатки на начало дня PM",
+    headerTooltip: "Остатки на начало дня PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_LM]),
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_MOM,
+    headerName: "Остатки на начало дня MOM",
+    headerTooltip: "Остатки на начало дня MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_MOM]),
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT,
+    headerName: "Остатки на начало дня MOM%",
+    headerTooltip: "Остатки на начало дня MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_LY,
+    headerName: "Остатки на начало дня PY",
+    headerTooltip: "Остатки на начало дня PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_LY]),
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_YOY,
+    headerName: "Остатки на начало дня YOY",
+    headerTooltip: "Остатки на начало дня YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_YOY]),
+  },
+
+  {
+    field: COLUMN_KEY.FINAL_BALANCE,
+    headerName: "Остатки на конец дня",
+    headerTooltip: "Остатки на конец дня",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE]),
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_LM,
+    headerName: "Остатки на конец дня PM",
+    headerTooltip: "Остатки на конец дня PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_LM]),
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_MOM,
+    headerName: "Остатки на конец дня MOM",
+    headerTooltip: "Остатки на конец дня MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_MOM]),
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT,
+    headerName: "Остатки на конец дня MOM%",
+    headerTooltip: "Остатки на конец дня MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_LY,
+    headerName: "Остатки на конец дня PY",
+    headerTooltip: "Остатки на конец дня PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_LY]),
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_YOY,
+    headerName: "Остатки на конец дня YOY",
+    headerTooltip: "Остатки на конец дня YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_YOY]),
+  },
+
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT,
+    headerName: "Списания, вес",
+    headerTooltip: "Списания, вес",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
+    headerName: "Списания, вес PM",
+    headerTooltip: "Списания, вес PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_LM]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
+    headerName: "Списания, вес MOM",
+    headerTooltip: "Списания, вес MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
+    headerName: "Списания, вес MOM%",
+    headerTooltip: "Списания, вес MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
+    headerName: "Списания, вес PY",
+    headerTooltip: "Списания, вес PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_LY]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
+    headerName: "Списания, вес YOY",
+    headerTooltip: "Списания, вес YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_YOY]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
+    headerName: "Списания, вес YOY%",
+    headerTooltip: "Списания, вес YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY]),
+  },
+
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT,
+    headerName: "Списания, кол-во",
+    headerTooltip: "Списания, кол-во",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_LM,
+    headerName: "Списания, кол-во PM",
+    headerTooltip: "Списания, кол-во PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_LM]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_MOM,
+    headerName: "Списания, кол-во MOM",
+    headerTooltip: "Списания, кол-во MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_MOM]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT,
+    headerName: "Списания, кол-во MOM%",
+    headerTooltip: "Списания, кол-во MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_LY,
+    headerName: "Списания, кол-во PY",
+    headerTooltip: "Списания, кол-во PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_LY]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_YOY,
+    headerName: "Списания, кол-во YOY",
+    headerTooltip: "Списания, кол-во YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_YOY]),
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT,
+    headerName: "Списания, кол-во YOY%",
+    headerTooltip: "Списания, кол-во YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT]),
+  },
+
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS,
+    headerName: "Оборачиваемость остатков",
+    headerTooltip: "Оборачиваемость остатков",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_LM,
+    headerName: "Оборачиваемость остатков PM",
+    headerTooltip: "Оборачиваемость остатков PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LM]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_MOM,
+    headerName: "Оборачиваемость остатков MOM",
+    headerTooltip: "Оборачиваемость остатков MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT,
+    headerName: "Оборачиваемость остатков MOM%",
+    headerTooltip: "Оборачиваемость остатков MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_LY,
+    headerName: "Оборачиваемость остатков PY",
+    headerTooltip: "Оборачиваемость остатков PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LY]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_YOY,
+    headerName: "Оборачиваемость остатков YOY",
+    headerTooltip: "Оборачиваемость остатков YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY]),
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
+    headerName: "Оборачиваемость остатков YOY%",
+    headerTooltip: "Оборачиваемость остатков YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT]),
+  },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
     headerName: "Маржа % без учета скидки",

@@ -19,6 +19,211 @@ import {
 
 const all_indicators = [
   {
+    id: COLUMN_KEY.ITR_GROUP,
+    label: "Коэффициент оборачиваемости ITR",
+    value: COLUMN_KEY.ITR_GROUP,
+    icon: MinusCircle,
+    children: [
+      {
+        id: COLUMN_KEY.ITR,
+        label: "Коэффициент оборачиваемости ITR",
+        value: COLUMN_KEY.ITR,
+      },
+      {
+        id: COLUMN_KEY.ITR_LM,
+        label: "Коэффициент оборачиваемости ITR PM",
+        value: COLUMN_KEY.ITR_LM,
+      },
+      {
+        id: COLUMN_KEY.ITR_MOM,
+        label: "Коэффициент оборачиваемости ITR MOM",
+        value: COLUMN_KEY.ITR_MOM,
+      },
+      {
+        id: COLUMN_KEY.ITR_MOM_PERCENT,
+        label: "Коэффициент оборачиваемости ITR MOM%",
+        value: COLUMN_KEY.ITR_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.ITR_LY,
+        label: "Коэффициент оборачиваемости ITR PY",
+        value: COLUMN_KEY.ITR_LY,
+      },
+      {
+        id: COLUMN_KEY.ITR_YOY,
+        label: "Коэффициент оборачиваемости ITR YOY",
+        value: COLUMN_KEY.ITR_YOY,
+      },
+      {
+        id: COLUMN_KEY.ITR_YOY_PERCENT,
+        label: "Коэффициент оборачиваемости ITR YOY%",
+        value: COLUMN_KEY.ITR_YOY_PERCENT,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.OPENING_BALANCE_GROUP,
+    label: "Остатки на начало дня",
+    value: COLUMN_KEY.OPENING_BALANCE_GROUP,
+    icon: MinusCircle,
+    children: [
+      {
+        id: COLUMN_KEY.OPENING_BALANCE,
+        label: "Остатки на начало дня",
+        value: COLUMN_KEY.OPENING_BALANCE,
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_LM,
+        label: "Остатки на начало дня PM",
+        value: COLUMN_KEY.OPENING_BALANCE_LM,
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_MOM,
+        label: "Остатки на начало дня MOM",
+        value: COLUMN_KEY.OPENING_BALANCE_MOM,
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT,
+        label: "Остатки на начало дня MOM%",
+        value: COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_LY,
+        label: "Остатки на начало дня PY",
+        value: COLUMN_KEY.OPENING_BALANCE_LY,
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_YOY,
+        label: "Остатки на начало дня YOY",
+        value: COLUMN_KEY.OPENING_BALANCE_YOY,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.FINAL_BALANCE_GROUP,
+    label: "Остатки на конец дня",
+    value: COLUMN_KEY.FINAL_BALANCE_GROUP,
+    icon: MinusCircle,
+    children: [
+      {
+        id: COLUMN_KEY.FINAL_BALANCE,
+        label: "Остатки на конец дня",
+        value: COLUMN_KEY.FINAL_BALANCE,
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_LM,
+        label: "Остатки на конец дня PM",
+        value: COLUMN_KEY.FINAL_BALANCE_LM,
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_MOM,
+        label: "Остатки на конец дня MOM",
+        value: COLUMN_KEY.FINAL_BALANCE_MOM,
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT,
+        label: "Остатки на конец дня MOM%",
+        value: COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_LY,
+        label: "Остатки на конец дня PY",
+        value: COLUMN_KEY.FINAL_BALANCE_LY,
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_YOY,
+        label: "Остатки на конец дня YOY",
+        value: COLUMN_KEY.FINAL_BALANCE_YOY,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
+    label: "Списания, вес",
+    value: COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
+    icon: MinusCircle,
+    children: [
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT,
+        label: "Списания, вес",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
+        label: "Списания, вес PM",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
+        label: "Списания, вес MOM",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
+        label: "Списания, вес MOM%",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
+        label: "Списания, вес PY",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
+        label: "Списания, вес YOY",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
+        label: "Списания, вес YOY%",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.WRITEOFF_COUNT_GROUP,
+    label: "Списания, кол-во",
+    value: COLUMN_KEY.WRITEOFF_COUNT_GROUP,
+    icon: MinusCircle,
+    children: [
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT,
+        label: "Списания, кол-во",
+        value: COLUMN_KEY.WRITEOFF_COUNT,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_LM,
+        label: "Списания, кол-во PM",
+        value: COLUMN_KEY.WRITEOFF_COUNT_LM,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_MOM,
+        label: "Списания, кол-во MOM",
+        value: COLUMN_KEY.WRITEOFF_COUNT_MOM,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT,
+        label: "Списания, кол-во MOM%",
+        value: COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_LY,
+        label: "Списания, кол-во PY",
+        value: COLUMN_KEY.WRITEOFF_COUNT_LY,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_YOY,
+        label: "Списания, кол-во YOY",
+        value: COLUMN_KEY.WRITEOFF_COUNT_YOY,
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT,
+        label: "Списания, кол-во YOY%",
+        value: COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT,
+      },
+    ],
+  },
+  {
     id: COLUMN_KEY.GROUP_TURNOVER_GOODS,
     label: "Оборачиваемость остатков",
     value: COLUMN_KEY.GROUP_TURNOVER_GOODS,
@@ -777,6 +982,11 @@ export const useIndicatorList = (type: "check" | "commerce") => {
   const check = excludeIndicators(filtered, [
     "writeOffGroup",
     "writeOffPercentGroup",
+    "writeOffWeightGroup",
+    "writeOffCountGroup",
+    "openingBalanceGroup",
+    "finalBalanceGroup",
+    "itrGroup",
   ]);
   const commerce = excludeIndicators(filtered, ["avgCheckGroup", "checkGroup"]);
   if (type === "check") {
