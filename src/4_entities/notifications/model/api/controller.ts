@@ -4,14 +4,13 @@ import { Notification } from "./types";
 
 export const useNotifications = () => {
   const notificationsQuery = useQuery<Notification[]>({
-    queryKey: ["notifications"],
+    queryKey: ["notifications", "list"], // отдельный ключ
     queryFn: () => NotificationService.getNotifications(100, 0),
-    refetchIntervalInBackground: true,
   });
   const notificationsCountQuery = useQuery<{ count: number }[]>({
-    queryKey: ["notifications"],
+    queryKey: ["notifications", "count"], // другой ключ
     queryFn: () => NotificationService.getCountNotifications(),
-    refetchInterval: 5_000,
+    refetchInterval: 1_000,
     refetchIntervalInBackground: true,
   });
   const readNotification = useMutation<Notification, Error, number>({

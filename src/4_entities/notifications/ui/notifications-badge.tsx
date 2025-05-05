@@ -5,14 +5,14 @@ import { Bell } from "lucide-react";
 import { Link } from "react-router";
 import { useNotifications } from "../model/api/controller";
 const NotificationsBadge = () => {
-  // const { count } = useNotifications();
+  const { count } = useNotifications();
 
   return (
     <Link to={ROUTES_PATH.NOTIFICATIONS}>
       <Button variant="outline">
         <Bell className="w-4 h-4" />
         <p className="hidden lg:block">Уведомления</p>
-        {/* {count && count[0].count > 0 && <Badge>{count[0].count}</Badge>} */}
+        {count && count[0].count > 0 && <Badge>{count[0].count}</Badge>}
       </Button>
     </Link>
   );

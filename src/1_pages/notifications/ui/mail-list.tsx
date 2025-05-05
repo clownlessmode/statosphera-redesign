@@ -52,10 +52,10 @@ export function MailList({ items }: MailListProps) {
               </div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
-              <ReactMarkdown>{item.message.substring(0, 250)}</ReactMarkdown>
+              <ReactMarkdown>{item.message?.substring(0, 250)}</ReactMarkdown>
             </div>
 
-            {item.emotion.length ? (
+            {item.emotion?.length ? (
               <div className="flex items-center gap-2">
                 <Badge
                   key={item.emotion}
