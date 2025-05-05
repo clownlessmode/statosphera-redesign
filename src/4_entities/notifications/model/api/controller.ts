@@ -10,7 +10,7 @@ export const useNotifications = () => {
   const notificationsCountQuery = useQuery<{ count: number }[]>({
     queryKey: ["notifications", "count"], // другой ключ
     queryFn: () => NotificationService.getCountNotifications(),
-    refetchInterval: 1_000,
+    refetchInterval: 30_000,
     refetchIntervalInBackground: true,
   });
   const readNotification = useMutation<Notification, Error, number>({
