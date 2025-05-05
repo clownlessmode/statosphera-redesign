@@ -1,3 +1,4 @@
+import React, { FC, useEffect, useMemo } from "react";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   Card,
@@ -8,37 +9,50 @@ import {
 } from "@shared/ui/card";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
 } from "@shared/ui/form";
-
-import { FC, useEffect } from "react";
-import { gender, type, useLoyalAction, useLoyalBonus } from "../model/mock";
-import { useFiltersStore } from "../../../../model/filters-store";
+import { MultiSelect, MultiSelectOption } from "@shared/ui/multiselect";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
-import { Input } from "@shared/ui/input";
-import useForm from "../model/hook";
-
 import { DualRangeSlider } from "@shared/ui/dual-range-slider";
-import { MultiSelect } from "@shared/ui/multiselect";
+import useForm from "../model/hook";
+import { useFiltersStore } from "../../../../model/filters-store";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { create } from "zustand";
+import { gender, type, useLoyalAction, useLoyalBonus } from "../model/mock";
+
+// Global store in same file
+interface SelectedOptionsState {
+  loyalAction: MultiSelectOption[];
+  loyalBonus: MultiSelectOption[];
+  setLoyalAction: (opts: MultiSelectOption[]) => void;
+  setLoyalBonus: (opts: MultiSelectOption[]) => void;
+}
+export const useSelectedOptionsStore = create<SelectedOptionsState>((set) => ({
+  loyalAction: [],
+  loyalBonus: [],
+  setLoyalAction: (opts) => set({ loyalAction: opts }),
+  setLoyalBonus: (opts) => set({ loyalBonus: opts }),
+}));
 
 const Loyality: FC = () => {
   const form = useForm();
+  const { loyalAction, loyalBonus, setLoyalAction, setLoyalBonus } =
+    useSelectedOptionsStore();
   const addReset = useFormResetStore((s) => s.addReset);
   const removeReset = useFormResetStore((s) => s.removeReset);
 
   useEffect(() => {
     addReset(form.reset);
-    return () => {
-      removeReset(form.reset);
-    };
+    return () => removeReset(form.reset);
   }, [form.reset, addReset, removeReset]);
+
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
 
+  // API hooks
   const {
     loyalActionOptions,
     handleOpenLoyalActionSelect,
@@ -46,6 +60,28 @@ const Loyality: FC = () => {
   } = useLoyalAction(allData);
   const { loyalBonusOptions, handleOpenLoyalBonusSelect, isLoyalBonusLoading } =
     useLoyalBonus(allData);
+
+  // merge stored + api
+  const mergeOpts = (
+    api: MultiSelectOption[],
+    stored: MultiSelectOption[]
+  ): MultiSelectOption[] => {
+    const map = new Map<string, MultiSelectOption>();
+    api.forEach((o) => map.set(o.value, o));
+    stored.forEach((o) => map.set(o.value, o));
+    return Array.from(map.values());
+  };
+
+  const effLoyalAction = useMemo(
+    () => mergeOpts(loyalActionOptions, loyalAction),
+    [loyalActionOptions, loyalAction]
+  );
+  const effLoyalBonus = useMemo(
+    () => mergeOpts(loyalBonusOptions, loyalBonus),
+    [loyalBonusOptions, loyalBonus]
+  );
+
+  console.log(effLoyalAction, "----", loyalAction);
 
   return (
     <Card className="w-full mr-4">
@@ -58,90 +94,76 @@ const Loyality: FC = () => {
           <ClearFilters form={form} />
         </div>
       </CardHeader>
+
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
+            {/* Тип */}
             <FormField
               control={form.control}
               name="isLoyal"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor="">Тип</FormLabel>
-                    <BooleanCheckboxCard
-                      {...field}
-                      options={type}
-                      className="grid-cols-3"
-                      onChange={(value) => {
-                        field.onChange(value);
-                        updateLoyalFilter("isLoyal", value);
-                      }}
-                    />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Тип</FormLabel>
+                  <BooleanCheckboxCard
+                    {...field}
+                    options={type}
+                    className="grid-cols-3"
+                    onChange={(vals) => {
+                      field.onChange(vals);
+                      updateLoyalFilter("isLoyal", vals);
+                    }}
+                  />
+                </FormItem>
+              )}
             />
-            <FormField
-              control={form.control}
-              name="cardNumber"
-              render={({}) => {
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor="">Номера карт</FormLabel>
-                    <Input
-                      type="text"
-                      disabled
-                      placeholder="Импортируйте номера карт из excel (скоро...)"
-                    />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="sex"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor="">Пол</FormLabel>
-                    <BooleanCheckboxCard
-                      {...field}
-                      options={gender}
-                      className="grid-cols-3"
-                      onChange={(values) => {
-                        field.onChange(values);
-                        updateLoyalFilter("sex", values);
-                      }}
-                    />
-                  </FormItem>
-                );
-              }}
-            />
+
+            {/* Возраст */}
             <FormField
               control={form.control}
               name="age"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor="">Возраст</FormLabel>
-                    <DualRangeSlider
-                      className="pb-7 pt-1"
-                      labelPosition="bottom"
-                      label={(label) => label}
-                      min={0}
-                      max={100}
-                      step={1}
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        updateLoyalFilter("ageStart", value[0]);
-                        updateLoyalFilter("ageEnd", value[1]);
-                      }}
-                    />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Возраст</FormLabel>
+                  <DualRangeSlider
+                    className="pb-7 pt-1"
+                    labelPosition="bottom"
+                    label={(l) => l}
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={field.value}
+                    onValueChange={([min, max]) => {
+                      field.onChange([min, max]);
+                      updateLoyalFilter("ageStart", min);
+                      updateLoyalFilter("ageEnd", max);
+                    }}
+                  />
+                </FormItem>
+              )}
             />
+
+            {/* Пол */}
+            <FormField
+              control={form.control}
+              name="sex"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Пол</FormLabel>
+                  <BooleanCheckboxCard
+                    {...field}
+                    options={gender}
+                    className="grid-cols-3"
+                    onChange={(vals) => {
+                      field.onChange(vals);
+                      updateLoyalFilter("sex", vals);
+                    }}
+                  />
+                </FormItem>
+              )}
+            />
+
+            {/* Акция */}
             <FormField
               control={form.control}
               name="guidDiscount"
@@ -151,21 +173,25 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={loyalActionOptions}
+                      options={effLoyalAction}
                       isLoading={isLoyalActionLoading}
-                      onOpenChange={(open) => handleOpenLoyalActionSelect(open)}
-                      onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateLoyalFilter("guidDiscount", numericValues);
+                      onOpenChange={handleOpenLoyalActionSelect}
+                      onValueChange={(vals) => {
+                        const nums = vals.map(Number);
+                        field.onChange(nums);
+                        updateLoyalFilter("guidDiscount", nums);
+                        setLoyalAction(
+                          effLoyalAction.filter((o) => vals.includes(o.value))
+                        );
                       }}
-                      defaultValue={field.value?.map(String)}
                       placeholder="Выберите акцию"
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
+
+            {/* Бонус */}
             <FormField
               control={form.control}
               name="guidBonus"
@@ -175,15 +201,17 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={loyalBonusOptions}
+                      options={effLoyalBonus}
                       isLoading={isLoyalBonusLoading}
-                      onOpenChange={(open) => handleOpenLoyalBonusSelect(open)}
-                      onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateLoyalFilter("guidBonus", numericValues);
+                      onOpenChange={handleOpenLoyalBonusSelect}
+                      onValueChange={(vals) => {
+                        const nums = vals.map(Number);
+                        field.onChange(nums);
+                        updateLoyalFilter("guidBonus", nums);
+                        setLoyalBonus(
+                          effLoyalBonus.filter((o) => vals.includes(o.value))
+                        );
                       }}
-                      defaultValue={field.value?.map(String)}
                       placeholder="Выберите бонус"
                     />
                   </FormControl>

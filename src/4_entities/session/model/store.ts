@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Session, SessionStore } from "./types";
 import { persist } from "zustand/middleware";
+import { Session, SessionStore } from "./types";
 
-const useSessionStore = create<SessionStore>()(
-  persist(
+export const useSessionStore = create<SessionStore>()(
+  persist<SessionStore>(
     (set) => ({
       session: null,
       setSession: (session: Session) => set({ session }),
@@ -15,12 +15,11 @@ const useSessionStore = create<SessionStore>()(
   )
 );
 
+// — опционально, для удобства в компонентах —
 const useSession = () => {
-  const session = useSessionStore((state) => state.session);
-  const setSession = useSessionStore((state) => state.setSession);
-  const clearSession = useSessionStore((state) => state.clearSession);
-
+  const session = useSessionStore((s) => s.session);
+  const setSession = useSessionStore((s) => s.setSession);
+  const clearSession = useSessionStore((s) => s.clearSession);
   return { session, setSession, clearSession };
 };
-
 export default useSession;

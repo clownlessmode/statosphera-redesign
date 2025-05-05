@@ -17,19 +17,55 @@ export interface ShopsFilterResponse {
 }
 export class FiltersShopsService {
   static async getPartners(dto: any): Promise<PartnersFilterResponse[]> {
-    const response = await api.post<any>("store/manager", dto);
+    const response = await api.post<any>("store/manager", {
+      ...dto,
+      filters: {
+        ...dto.filters,
+        store: {
+          ...dto.filters.store,
+          idManager: [],
+        },
+      },
+    });
     return response.data;
   }
   static async getRegions(dto: any): Promise<RegionsFilterResponse[]> {
-    const response = await api.post<any>("filters/region", dto);
+    const response = await api.post<any>("filters/region", {
+      ...dto,
+      filters: {
+        ...dto.filters,
+        store: {
+          ...dto.filters.store,
+          idRegion: [],
+        },
+      },
+    });
     return response.data;
   }
   static async getCities(dto: any): Promise<CitiesFilterResponse[]> {
-    const response = await api.post<any>("filters/city", dto);
+    const response = await api.post<any>("filters/city", {
+      ...dto,
+      filters: {
+        ...dto.filters,
+        store: {
+          ...dto.filters.store,
+          idCity: [],
+        },
+      },
+    });
     return response.data;
   }
   static async getShops(dto: any): Promise<ShopsFilterResponse[]> {
-    const response = await api.post<any>("store/shop", dto);
+    const response = await api.post<any>("store/shop", {
+      ...dto,
+      filters: {
+        ...dto.filters,
+        store: {
+          ...dto.filters.store,
+          idStore: [],
+        },
+      },
+    });
     return response.data;
   }
 }

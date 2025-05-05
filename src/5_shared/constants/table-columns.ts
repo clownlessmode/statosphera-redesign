@@ -3784,6 +3784,7 @@ export type ColumnPickerProps = {
 };
 
 export enum ColumnsKeyGroupings {
+  TYPE = "type",
   IS_IM = "isIm",
   IM_TYPE_ORDER = "imTypeOrder",
   NAME_MANAGER = "nameManager",
@@ -3860,6 +3861,8 @@ export const groupingColumns: ColumnGroup[] = [
     label: "Структурное подразделение",
     value: ColumnsKeyGroupings.SUBDIVISION_PRODUCTS,
   },
+  { label: "Тип чека", value: ColumnsKeyGroupings.TYPE },
+
   { label: "Команда", value: ColumnsKeyGroupings.TEAM_PRODUCTS },
   { label: "Направление", value: ColumnsKeyGroupings.DIRECTION_PRODUCTS },
   {

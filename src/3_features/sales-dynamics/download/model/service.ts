@@ -7,7 +7,8 @@ export class DownloadReportService {
   ): Promise<DownloadReportResponse> {
     const response = await api.post<DownloadReportResponse>(
       "Sales_dynamics/download_excel",
-      request
+      request,
+      { responseType: "blob" }
     );
     return response.data;
   }

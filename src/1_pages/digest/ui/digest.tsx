@@ -5,7 +5,7 @@ import { ChevronLeft, MessageCircle, Minus, Plus } from "lucide-react";
 import { ScrollToTop } from "@features/scroll-to-top";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DialogHeader,
   DialogContent,
@@ -16,6 +16,10 @@ import { Dialog } from "@shared/ui/dialog";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useDigests } from "@entities/digests/model/api/controller";
 const Digest = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const navigate = useNavigate();
   const { id } = useParams<{ id: string | undefined }>();
   const { digest } = useDigests(id);

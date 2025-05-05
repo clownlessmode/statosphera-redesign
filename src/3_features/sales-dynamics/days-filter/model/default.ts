@@ -2,7 +2,8 @@
 import { format, startOfMonth, endOfMonth, subMonths, subDays } from "date-fns";
 import { FormValues } from "./types";
 
-const today = new Date();
+// const today = new Date();
+const today = new Date(2025, 4, 1); // 4 = май (0-янв,1-фев,…,4-май)
 
 let dateStart: string;
 let dateEnd: string;

@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { channel, status, time } from "../model/mock";
 import useForm, {
   useCities,
@@ -31,8 +31,45 @@ import {
   useFiltersStore,
 } from "../../../../model/filters-store";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { create } from "zustand";
+import { MultiSelectOption } from "@shared/ui/multiselect";
+
+interface SelectedOptionsState {
+  partners: MultiSelectOption[];
+  regions: MultiSelectOption[];
+  cities: MultiSelectOption[];
+  shops: MultiSelectOption[];
+  setPartners: (opts: MultiSelectOption[]) => void;
+  setRegions: (opts: MultiSelectOption[]) => void;
+  setCities: (opts: MultiSelectOption[]) => void;
+  setShops: (opts: MultiSelectOption[]) => void;
+}
+
+// Global store for selected options labels
+export const useSelectedOptionsStore = create<SelectedOptionsState>(
+  (set: any) => ({
+    partners: [],
+    regions: [],
+    cities: [],
+    shops: [],
+    setPartners: (opts: MultiSelectOption[]) => set({ partners: opts }),
+    setRegions: (opts: MultiSelectOption[]) => set({ regions: opts }),
+    setCities: (opts: MultiSelectOption[]) => set({ cities: opts }),
+    setShops: (opts: MultiSelectOption[]) => set({ shops: opts }),
+  })
+);
 
 const Shops: FC = () => {
+  const {
+    partners,
+    regions,
+    cities,
+    shops,
+    setPartners,
+    setRegions,
+    setCities,
+    setShops,
+  } = useSelectedOptionsStore();
   const form = useForm();
   const addReset = useFormResetStore((s) => s.addReset);
   const removeReset = useFormResetStore((s) => s.removeReset);
@@ -54,6 +91,41 @@ const Shops: FC = () => {
     useCities(allData);
   const { handleOpenShopsSelect, isShopsLoading, shopsOptions } =
     useShops(allData);
+  const effectivePartnerOptions = useMemo<MultiSelectOption[]>(() => {
+    const map = new Map<string, MultiSelectOption>();
+    // сначала ставим свежие опции
+    partnerOptions.forEach((o) => map.set(o.value, o));
+    // потом «подмешиваем» те, что в сторе
+    partners.forEach((o) => map.set(o.value, o));
+    return Array.from(map.values());
+  }, [partnerOptions, partners]);
+
+  const effectiveRegionsOptions = useMemo<MultiSelectOption[]>(() => {
+    const map = new Map<string, MultiSelectOption>();
+    // сначала ставим свежие опции
+    regionsOptions.forEach((o) => map.set(o.value, o));
+    // потом «подмешиваем» те, что в сторе
+    regions.forEach((o) => map.set(o.value, o));
+    return Array.from(map.values());
+  }, [regionsOptions, regions]);
+
+  const effectiveCitiesOptions = useMemo<MultiSelectOption[]>(() => {
+    const map = new Map<string, MultiSelectOption>();
+    // сначала ставим свежие опции
+    citiesOptions.forEach((o) => map.set(o.value, o));
+    // потом «подмешиваем» те, что в сторе
+    cities.forEach((o) => map.set(o.value, o));
+    return Array.from(map.values());
+  }, [citiesOptions, cities]);
+
+  const effectiveShopsOptions = useMemo<MultiSelectOption[]>(() => {
+    const map = new Map<string, MultiSelectOption>();
+    // сначала ставим свежие опции
+    shopsOptions.forEach((o) => map.set(o.value, o));
+    // потом «подмешиваем» те, что в сторе
+    shops.forEach((o) => map.set(o.value, o));
+    return Array.from(map.values());
+  }, [shopsOptions, shops]);
 
   return (
     <Card className="w-full mr-4">
@@ -136,28 +208,31 @@ const Shops: FC = () => {
             <FormField
               control={form.control}
               name="idManager"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Партнеры</FormLabel>
-                    <FormControl>
-                      <MultiSelect
-                        value={field.value?.map(String) || []}
-                        options={partnerOptions}
-                        isLoading={isPartnersLoading}
-                        onOpenChange={(open) => handleOpenPartnersSelect(open)}
-                        onValueChange={(value) => {
-                          const numericValues = value.map(Number);
-                          field.onChange(numericValues);
-                          updateStoreFilter("idManager", numericValues);
-                        }}
-                        defaultValue={field.value?.map(String)}
-                        placeholder="Выберите партнеров"
-                      />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Партнеры</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value?.map(String) || []}
+                      options={effectivePartnerOptions}
+                      isLoading={isPartnersLoading}
+                      onOpenChange={handleOpenPartnersSelect}
+                      onValueChange={(value) => {
+                        const numeric = value.map(Number);
+                        field.onChange(numeric);
+                        updateStoreFilter("idManager", numeric);
+                        setPartners(
+                          effectivePartnerOptions.filter((o) =>
+                            value.includes(o.value)
+                          )
+                        );
+                      }}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите партнеров"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
@@ -168,13 +243,18 @@ const Shops: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={regionsOptions}
+                      options={effectiveRegionsOptions}
                       onOpenChange={(open) => handleOpenRegionsSelect(open)}
                       isLoading={isRegionsLoading}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);
                         updateStoreFilter("idRegion", numericValues);
+                        setRegions(
+                          effectiveRegionsOptions.filter((o) =>
+                            value.includes(o.value)
+                          )
+                        );
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите регионы"
@@ -192,13 +272,18 @@ const Shops: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={citiesOptions}
+                      options={effectiveCitiesOptions}
                       onOpenChange={(open) => handleOpenCitiesSelect(open)}
                       isLoading={isCitiesLoading}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);
                         updateStoreFilter("idCity", numericValues);
+                        setCities(
+                          effectiveCitiesOptions.filter((o) =>
+                            value.includes(o.value)
+                          )
+                        );
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите города"
@@ -217,13 +302,18 @@ const Shops: FC = () => {
                     <MultiSelect
                       maxCount={1}
                       value={field.value?.map(String)}
-                      options={shopsOptions}
+                      options={effectiveShopsOptions}
                       isLoading={isShopsLoading}
                       onOpenChange={(open) => handleOpenShopsSelect(open)}
                       onValueChange={(value) => {
                         const numericValues = value.map(Number);
                         field.onChange(numericValues);
                         updateStoreFilter(field.name, numericValues);
+                        setShops(
+                          effectiveShopsOptions.filter((o) =>
+                            value.includes(o.value)
+                          )
+                        );
                       }}
                       placeholder="Выберите магазины"
                     />

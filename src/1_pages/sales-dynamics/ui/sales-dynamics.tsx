@@ -19,10 +19,11 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { useDateFilterStore } from "@features/sales-dynamics/graph-date/ui/graph-date";
 import { useSalesSelectStore } from "@features/sales-dynamics/sales-select/ui/sales-select";
 import { Button } from "@shared/ui/button";
-import { Store } from "lucide-react";
+import { Store, X } from "lucide-react";
 import { DialogContent } from "@shared/ui/dialog";
 import { DialogTrigger } from "@shared/ui/dialog";
 import { Dialog } from "@shared/ui/dialog";
+import { Skeleton } from "@shared/ui/skeleton";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента
@@ -38,11 +39,21 @@ const SalesDynamics: FC = () => {
   const { values } = useSalesDynamicsFiltersStore((state) => state);
   const { filters } = useSalesDynamicsFiltersStore((state) => state);
   const prepareLine = usePreparedStackedLine();
-  const { getTable, getTotal, getGraph, getSecondGraph } =
-    useSalesDynamicsController();
+  const {
+    getTable,
+    getTotal,
+    getGraph,
+    getSecondGraph,
+    isTableLoading,
+    isTotalLoading,
+    isGraphLoading,
+    isSecondGraphLoading,
+  } = useSalesDynamicsController();
   const getApiPayload = useSalesDynamicsFiltersStore(
     (state) => state.getApiPayload
   );
+  const isAllLoading =
+    isTableLoading || isTotalLoading || isGraphLoading || isSecondGraphLoading;
   const {
     table,
     total,
@@ -210,40 +221,46 @@ const SalesDynamics: FC = () => {
         />
         <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
           <div className="flex flex-row gap-2 max-h-[40vh] w-full h-full">
-            <div className="flex flex-col gap-2 h-full w-full">
-              <SalesSelect index={1} />
-              {isCompleted && (
-                <StackedLine
-                  mirror={1}
-                  option={{
-                    title: {
-                      text: first.label,
-                    },
-                    legend: {
-                      data: ["Выбранный период", "Прошлый год"],
-                    },
-                    series: graph && prepareLine(graph),
-                  }}
-                />
-              )}
-            </div>
-            <div className="flex flex-col gap-2 h-full w-full">
-              <SalesSelect index={2} />
-              {isCompleted && (
-                <StackedLine
-                  mirror={1}
-                  option={{
-                    title: {
-                      text: second.label,
-                    },
-                    legend: {
-                      data: ["Выбранный период", "Прошлый год"],
-                    },
-                    series: secondGraph && prepareLine(secondGraph),
-                  }}
-                />
-              )}
-            </div>
+            {isAllLoading && <Skeleton className="w-full h-full" />}
+            {!isAllLoading && (
+              <div className="flex flex-col gap-2 h-full w-full">
+                <SalesSelect index={1} />
+                {isCompleted && (
+                  <StackedLine
+                    mirror={1}
+                    option={{
+                      title: {
+                        text: first.label,
+                      },
+                      legend: {
+                        data: ["Выбранный период", "Прошлый год"],
+                      },
+                      series: graph && prepareLine(graph),
+                    }}
+                  />
+                )}
+              </div>
+            )}
+            {isAllLoading && <Skeleton className="w-full h-full" />}
+            {!isAllLoading && (
+              <div className="flex flex-col gap-2 h-full w-full">
+                <SalesSelect index={2} />
+                {isCompleted && (
+                  <StackedLine
+                    mirror={1}
+                    option={{
+                      title: {
+                        text: second.label,
+                      },
+                      legend: {
+                        data: ["Выбранный период", "Прошлый год"],
+                      },
+                      series: secondGraph && prepareLine(secondGraph),
+                    }}
+                  />
+                )}
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-2 h-full w-full">
             <div className="flex flex-row gap-2">
@@ -263,9 +280,13 @@ const SalesDynamics: FC = () => {
                   <DialogContent>
                     <div className="flex flex-col gap-2 ">
                       {selectedRows.map((row) => (
-                        <div key={row.idStore} className="flex flex-row gap-8">
-                          <span>{row.storeName}</span>
-                          {/* <X
+                        <div
+                          key={row.idStore}
+                          className="grid grid-cols-5 gap-8 w-full"
+                        >
+                          <span className="col-span-4">{row.storeName}</span>
+                          <X
+                            className="cursor-pointer"
                             onClick={() =>
                               setSelectedRows(
                                 selectedRows.filter(
@@ -273,7 +294,7 @@ const SalesDynamics: FC = () => {
                                 )
                               )
                             }
-                          /> */}
+                          />
                         </div>
                       ))}
                     </div>
@@ -286,7 +307,8 @@ const SalesDynamics: FC = () => {
                 />
               </div>
             </div>
-            {isCompleted && (
+            {isAllLoading && <Skeleton className="w-full h-full" />}
+            {!isAllLoading && isCompleted && (
               <UniversalTable
                 selectionType="multiple"
                 onSelectionChange={(selectedRows) => {

@@ -978,8 +978,9 @@ export function excludeIndicators(
 }
 
 export const useIndicatorList = (type: "check" | "commerce") => {
-  const filtered = sortGroups(all_indicators);
-  const check = excludeIndicators(filtered, [
+  // const filtered = sortGroups(all_indicators);
+  const check = excludeIndicators(all_indicators, [
+    COLUMN_KEY.GROUP_TURNOVER_GOODS,
     "writeOffGroup",
     "writeOffPercentGroup",
     "writeOffWeightGroup",
@@ -988,7 +989,10 @@ export const useIndicatorList = (type: "check" | "commerce") => {
     "finalBalanceGroup",
     "itrGroup",
   ]);
-  const commerce = excludeIndicators(filtered, ["avgCheckGroup", "checkGroup"]);
+  const commerce = excludeIndicators(all_indicators, [
+    "avgCheckGroup",
+    "checkGroup",
+  ]);
   if (type === "check") {
     return check;
   }

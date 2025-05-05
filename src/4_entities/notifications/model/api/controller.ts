@@ -5,9 +5,9 @@ import { Notification } from "./types";
 export const useNotifications = () => {
   const notificationsQuery = useQuery<Notification[]>({
     queryKey: ["notifications", "list"], // отдельный ключ
-    queryFn: () => NotificationService.getNotifications(100, 0),
+    queryFn: () => NotificationService.getNotifications(1000, 0),
   });
-  const notificationsCountQuery = useQuery<{ count: number }[]>({
+  const notificationsCountQuery = useQuery<number>({
     queryKey: ["notifications", "count"], // другой ключ
     queryFn: () => NotificationService.getCountNotifications(),
     refetchInterval: 30_000,

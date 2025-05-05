@@ -37,9 +37,9 @@ const DigestCard: FC<Props> = ({
       <div className="flex flex-row gap-6 items-center hover:scale-[0.98] transition-all duration-300 cursor-pointer origin-left active:scale-[0.96]">
         <Card
           style={{
-            backgroundImage: `url(${cover})`,
+            backgroundImage: cover ? `url(${cover})` : "url(/digest/cover.png)",
           }}
-          className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center transform translate-z-0 bg-clip-padding"
+          className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
         />
         <div className="flex flex-col gap-2 justify-between py-4 ">
           <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">

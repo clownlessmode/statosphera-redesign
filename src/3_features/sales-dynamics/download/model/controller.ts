@@ -19,7 +19,7 @@ export const useDownloadSalesDynamics = () => {
           loading: "Генерация файла",
           success: () => {
             queryClient.invalidateQueries({ queryKey: ["report-table"] });
-            return `Файл отправлен на генерацию, скоро вам придет уведомление о готовности`;
+            return `Файл сейчас будет скачан на ваш компьютер`;
           },
           error: (error) => {
             if (error.response?.data) {

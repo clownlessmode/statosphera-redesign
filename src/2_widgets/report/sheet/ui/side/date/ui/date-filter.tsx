@@ -200,32 +200,34 @@ const DateFilter: FC = () => {
                 )}
               />
             )}
-            <div className="w-full grid grid-cols-4 gap-2 mt-2">
-              <Button
-                type="button"
-                onClick={() => handleTimeButtonClick("morning")}
-              >
-                <Sunrise className="h-4 w-4 mr-1" /> Утро
-              </Button>
-              <Button
-                type="button"
-                onClick={() => handleTimeButtonClick("day")}
-              >
-                <Sun className="h-4 w-4 mr-1" /> День
-              </Button>
-              <Button
-                type="button"
-                onClick={() => handleTimeButtonClick("evening")}
-              >
-                <Sunset className="h-4 w-4 mr-1" /> Вечер
-              </Button>
-              <Button
-                type="button"
-                onClick={() => handleTimeButtonClick("night")}
-              >
-                <Moon className="h-4 w-4 mr-1" /> Ночь
-              </Button>
-            </div>
+            {tab === "check" && (
+              <div className="w-full grid grid-cols-4 gap-2 mt-2">
+                <Button
+                  type="button"
+                  onClick={() => handleTimeButtonClick("morning")}
+                >
+                  <Sunrise className="h-4 w-4 mr-1" /> Утро
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleTimeButtonClick("day")}
+                >
+                  <Sun className="h-4 w-4 mr-1" /> День
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleTimeButtonClick("evening")}
+                >
+                  <Sunset className="h-4 w-4 mr-1" /> Вечер
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleTimeButtonClick("night")}
+                >
+                  <Moon className="h-4 w-4 mr-1" /> Ночь
+                </Button>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>
