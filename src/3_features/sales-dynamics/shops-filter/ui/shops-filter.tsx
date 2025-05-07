@@ -17,8 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@shared/ui/form";
-import { Store } from "lucide-react";
-import { useState } from "react";
+import { Check, Minus, Plus, Store, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import useForm, {
   useShops,
   useCities,
@@ -33,6 +33,7 @@ import {
 } from "@pages/sales-dynamics/model/filters-store";
 import { channel, status, time } from "../model/mock";
 import { MultiSelect } from "@shared/ui/multiselect";
+import { useSession } from "@entities/session";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,13 @@ const ShopsFilter = () => {
     useCities(allData);
   const { handleOpenShopsSelect, isShopsLoading, shopsOptions } =
     useShops(allData);
-
+  const [selectedMyShops, setSelectedMyShops] = useState<boolean>(false);
+  const { session } = useSession();
+  useEffect(() => {
+    if (selectedMyShops) {
+      updateFilters("idStore", session?.idStore as number[]);
+    }
+  }, [selectedMyShops]);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -66,6 +73,18 @@ const ShopsFilter = () => {
             </div>
           </CardHeader>
           <CardContent>
+            <Button
+              className="w-full mb-6"
+              variant={selectedMyShops ? "default" : "outline"}
+              onClick={() => setSelectedMyShops(!selectedMyShops)}
+            >
+              {selectedMyShops ? "Снять выбор" : "Выбрать мои магазины"}
+              {selectedMyShops ? (
+                <X className="w-4 h-4" />
+              ) : (
+                <Plus className="w-4 h-4" />
+              )}
+            </Button>
             <Form {...form}>
               <form className="flex flex-col gap-4 w-full">
                 <FormField
@@ -76,6 +95,7 @@ const ShopsFilter = () => {
                       <FormItem>
                         <FormLabel htmlFor="">Канал</FormLabel>
                         <CheckboxCards
+                          disabled={selectedMyShops}
                           {...field}
                           onChange={(values) => {
                             field.onChange(values);
@@ -97,6 +117,7 @@ const ShopsFilter = () => {
                         <FormLabel htmlFor="">Статус</FormLabel>
                         <CheckboxCards
                           {...field}
+                          disabled={selectedMyShops}
                           onChange={(values) => {
                             field.onChange(values);
                             updateFilters(
@@ -122,6 +143,7 @@ const ShopsFilter = () => {
                         </FormLabel>
                         <CheckboxCards
                           {...field}
+                          disabled={selectedMyShops}
                           disableCheck
                           onChange={(values) => {
                             field.onChange(values);
@@ -143,6 +165,7 @@ const ShopsFilter = () => {
                         <FormLabel>Партнеры</FormLabel>
                         <FormControl>
                           <MultiSelect
+                            disabled={selectedMyShops}
                             value={field.value?.map(String) || []}
                             options={partnerOptions}
                             isLoading={isPartnersLoading}
@@ -170,6 +193,7 @@ const ShopsFilter = () => {
                       <FormLabel>Регионы</FormLabel>
                       <FormControl>
                         <MultiSelect
+                          disabled={selectedMyShops}
                           value={field.value?.map(String) || []}
                           options={regionsOptions}
                           onOpenChange={(open) => handleOpenRegionsSelect(open)}
@@ -194,6 +218,7 @@ const ShopsFilter = () => {
                       <FormLabel>Города</FormLabel>
                       <FormControl>
                         <MultiSelect
+                          disabled={selectedMyShops}
                           value={field.value?.map(String) || []}
                           options={citiesOptions}
                           onOpenChange={(open) => handleOpenCitiesSelect(open)}
@@ -218,6 +243,7 @@ const ShopsFilter = () => {
                       <FormLabel>Магазины</FormLabel>
                       <FormControl>
                         <MultiSelect
+                          disabled={selectedMyShops}
                           maxCount={1}
                           value={field.value?.map(String)}
                           options={shopsOptions}

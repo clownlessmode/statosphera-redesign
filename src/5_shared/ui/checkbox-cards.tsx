@@ -18,6 +18,7 @@ interface Props extends Omit<CheckboxPrimitive.CheckboxProps, "onChange"> {
   disableCheck?: boolean;
   value?: string[];
   onChange?: (value: string[]) => void;
+  disabled?: boolean;
 }
 
 const CheckboxCards: FC<Props> = ({
@@ -26,6 +27,7 @@ const CheckboxCards: FC<Props> = ({
   disableCheck = false,
   value = [],
   onChange,
+  disabled = false,
 }) => {
   const handleClick = (optionValue: string) => {
     const newValue = value.includes(optionValue)
@@ -39,7 +41,7 @@ const CheckboxCards: FC<Props> = ({
     <div className={cn("w-full grid grid-cols-2 gap-2", className)}>
       {options.map((option) => (
         <CheckboxPrimitive.Root
-          disabled={option.disabled}
+          disabled={option.disabled || disabled}
           key={option.value}
           checked={value.includes(option.value)}
           onCheckedChange={() => handleClick(option.value)}
