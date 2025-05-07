@@ -44,10 +44,8 @@ const SalesDynamics: FC = () => {
     getTotal,
     getGraph,
     getSecondGraph,
-    isTableLoading,
-    isTotalLoading,
-    isGraphLoading,
     isSecondGraphLoading,
+    isGraphLoading,
   } = useSalesDynamicsController();
   const getApiPayload = useSalesDynamicsFiltersStore(
     (state) => state.getApiPayload
@@ -232,7 +230,19 @@ const SalesDynamics: FC = () => {
                       legend: {
                         data: ["Выбранный период", "Прошлый год"],
                       },
-                      series: graph && prepareLine(graph),
+                      series:
+                        graph &&
+                        prepareLine(
+                          graph,
+                          dateGranularity == "month" && !isGraphLoading
+                            ? {
+                                firstLineStyle: { width: 4, type: "solid" },
+                                secondLineStyle: { width: 3, type: "dashed" },
+                                thirdLineStyle: { width: 4, type: "solid" },
+                                fourthLineStyle: { width: 3, type: "dashed" },
+                              }
+                            : {}
+                        ),
                     }}
                   />
                 )}
@@ -252,7 +262,19 @@ const SalesDynamics: FC = () => {
                       legend: {
                         data: ["Выбранный период", "Прошлый год"],
                       },
-                      series: secondGraph && prepareLine(secondGraph),
+                      series:
+                        secondGraph &&
+                        prepareLine(
+                          secondGraph,
+                          dateGranularity == "month" && !isSecondGraphLoading
+                            ? {
+                                firstLineStyle: { width: 4, type: "solid" },
+                                secondLineStyle: { width: 3, type: "dashed" },
+                                thirdLineStyle: { width: 4, type: "solid" },
+                                fourthLineStyle: { width: 3, type: "dashed" },
+                              }
+                            : {}
+                        ),
                     }}
                   />
                 )}

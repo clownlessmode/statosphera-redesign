@@ -65,6 +65,7 @@ export const getOptionChart = (option: EChartsOption) => {
         borderColor: colors.text,
       },
     },
+
     title: {
       left: "center",
       top: "2%",
