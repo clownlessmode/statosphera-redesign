@@ -32,7 +32,6 @@ export const columns: ColumnDef<Grill>[] = [
               size="icon"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("Action clicked for", grill);
               }}
             >
               <EllipsisVertical className="w-4 h-4" />

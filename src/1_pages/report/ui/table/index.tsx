@@ -26,9 +26,10 @@ export default function UniversalTable({
   className,
   onRowClick,
   onCellClick,
+  onSelectionChange,
+
   selectionType = "single",
   multiSelectWithoutCtrl = true,
-  onSelectionChange,
 }: Props) {
   const { theme } = useTheme();
   const isLight = theme === "light";

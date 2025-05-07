@@ -75,7 +75,7 @@ export enum COLUMN_KEY {
   MARGIN_PERCENT_DISCOUNT_MOM_PERCENT = "marginPercentDiscountMoMPercent",
   MARGIN_PERCENT_DISCOUNT_LY = "marginPercentDiscountLY",
   MARGIN_PERCENT_DISCOUNT_YOY = "marginPercentDiscountYoY",
-
+  MARGIN_PERCENT_DISCOUNT_YOY_PERCENT = "marginPercentDiscountYoYPercent",
   // ----------------- Оборачиваемость остатков -----------------
   GROUP_TURNOVER_GOODS = "groupTurnoverGoods",
   TURNOVER_GOODS = "turnoverGoods",
@@ -1001,8 +1001,8 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка",
     headerTooltip: "Выручка",
     cellDataType: "number",
-    valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS]),
+    // valueFormatter: (params: any) =>
+    //   formatNumber(params.data[COLUMN_KEY.PROCEEDS]),
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1014,8 +1014,8 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка PM",
     headerTooltip: "В прошлом месяце",
     cellDataType: "number",
-    valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_LM]),
+    // valueFormatter: (params: any) =>
+    //   formatNumber(params.data[COLUMN_KEY.PROCEEDS_LM]),
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };

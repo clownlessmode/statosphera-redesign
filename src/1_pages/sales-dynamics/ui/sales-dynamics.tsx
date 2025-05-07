@@ -52,8 +52,7 @@ const SalesDynamics: FC = () => {
   const getApiPayload = useSalesDynamicsFiltersStore(
     (state) => state.getApiPayload
   );
-  const isAllLoading =
-    isTableLoading || isTotalLoading || isGraphLoading || isSecondGraphLoading;
+
   const {
     table,
     total,
@@ -91,12 +90,11 @@ const SalesDynamics: FC = () => {
   // 1. Эффект только для Total
   useEffect(() => {
     if (isLoading) return;
-
     const fetchTotal = async () => {
       const payload = getApiPayload();
       const totalRes = await getTotal({
         ...payload,
-        values: values || defaultValues.indicators_and_groups,
+        values: defaultValues.indicators_and_groups,
       });
       setTotal(totalRes);
     };
@@ -112,7 +110,7 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const tableRes = await getTable({
         ...payload,
-        values: values || defaultValues.indicators_and_groups,
+        values: defaultValues.indicators_and_groups,
       });
       setTable(tableRes);
     };
@@ -171,8 +169,6 @@ const SalesDynamics: FC = () => {
   ]);
 
   const handleSelectionChange = async (selectedRows: any) => {
-    console.log(selectedRows);
-
     const payload = getApiPayload();
     const [graphRes, secondGraphRes] = await Promise.all([
       getSecondGraph({
@@ -198,6 +194,7 @@ const SalesDynamics: FC = () => {
     setSecondGraph(secondGraphRes);
   };
   const isCompleted = !!table && !!total && !!graph && !!secondGraph;
+  const isAllLoading = !table || !total || !graph || !secondGraph;
   return (
     <>
       <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">

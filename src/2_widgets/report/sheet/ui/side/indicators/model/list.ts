@@ -1,5 +1,5 @@
 import { COLUMN_KEY } from "@shared/constants/table-columns";
-import { sortGroups } from "@shared/lib/sort-groups";
+// import { sortGroups } from "@shared/lib/sort-groups";
 import {
   ArrowUpRight,
   DollarSign,
@@ -305,7 +305,7 @@ const all_indicators = [
     ],
   },
   {
-    id: COLUMN_KEY.GROUP_PROCEEDS,
+    id: COLUMN_KEY.GROUP_MARKUP_PERCENT_DISCOUNT,
     label: "Наценка % без учета скидки",
     value: COLUMN_KEY.GROUP_MARKUP_PERCENT_DISCOUNT,
     icon: DollarSign,
@@ -579,9 +579,9 @@ const all_indicators = [
         value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY_PERCENT,
         label: "Маржа % без учета скидки YOY%",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
+        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY_PERCENT,
       },
     ],
   },

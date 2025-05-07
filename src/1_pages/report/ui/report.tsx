@@ -2,12 +2,12 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useState, type FC } from "react";
+import { useCallback, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
-import { columnDefs } from "@shared/constants/table-columns";
+
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
 import { Cog, Eraser, Save, Star } from "lucide-react";
@@ -16,19 +16,21 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown, { useDateFilterStore } from "./date-dropdown";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import UniversalTable from "./table";
+
 import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
 import { getTopLevelValues } from "@shared/lib/get-top-level";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model/list";
+import InfinityTable from "./table/infinite-table";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
-  const { graph, table, total, clearAll, setGraph } = useReportStore();
-  const { getGraph } = useReport();
+  const { graph, table, total, clearAll, setGraph, error } = useReportStore();
+  const { getGraph, getTable } = useReport();
   const { getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
-
+  const { table: initialRows, total: initialTotalRows } = useReportStore();
   const { tab } = useTabStore();
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
@@ -65,7 +67,36 @@ const Report: FC = () => {
       console.error("Error fetching report:", error);
     }
   };
-  console.log(total);
+  const fetchData = useCallback(
+    ({ startRow, endRow }: { startRow: number; endRow: number }) => {
+      // Если запрошен блок с 0 до 100 (или меньше), отдаем сохранённые данные
+      if (startRow === 0 && initialRows && initialRows?.data.length >= endRow) {
+        console.log("FETCH DATA IN REPORT PRELOADED");
+
+        return Promise.resolve({
+          data: initialRows?.data.slice(startRow, endRow) ?? [],
+          totalRows: initialTotalRows ?? 0,
+        });
+      }
+
+      // Иначе — обычный запрос к API
+      const payload = getApiPayload();
+      console.log("FETCH DATA IN REPORT SERVER");
+
+      return getTable({
+        ...payload,
+        filterDate: {
+          dateStart: "2023-01-01",
+          dateEnd: "2025-01-01",
+        },
+        offset: startRow,
+        limit: endRow - startRow,
+        sorts: { colId: [payload.values[0]], sort: "asc" },
+        groups: ["day"],
+      });
+    },
+    [getTable, getApiPayload, initialRows, initialTotalRows]
+  );
   return (
     <>
       <Sheet />
@@ -182,15 +213,14 @@ const Report: FC = () => {
             </div>
           </div>
           {isCompleted ? (
-            <UniversalTable
-              data={table?.data as any[]}
+            <InfinityTable
+              fetchData={fetchData as any}
               totalData={total as any}
-              columnDefs={columnDefs}
               onCellClick={onCellClick}
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
-              <NotSelectedFilters />
+              {error ? <NotFoundFilters /> : <NotSelectedFilters />}
             </div>
           )}
         </div>

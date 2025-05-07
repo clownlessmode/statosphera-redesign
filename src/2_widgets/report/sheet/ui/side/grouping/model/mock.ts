@@ -122,6 +122,10 @@ export const loyal = [
     label: "Возраст",
     value: GROUPINGS.LOYAL_AGE,
   },
+  {
+    label: "Тип скидки",
+    value: GROUPINGS.DISCOUNT,
+  },
 ];
 
 export const personal = [

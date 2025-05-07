@@ -4,11 +4,12 @@ import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useReportStore } from "../../../model/report-store";
 import { useSearchParams } from "react-router";
 import { useDateFilterStore } from "@pages/report/ui/date-dropdown";
+import { ApiError } from "@shared/api/types";
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { getApiPayload } = useFiltersStore();
-  const { setGraph, setTotal, setTable } = useReportStore();
+  const { setGraph, setTotal, setTable, setError } = useReportStore();
 
   const allData = getApiPayload();
   const { value } = useDateFilterStore();
@@ -36,12 +37,14 @@ export const CombinedSubmitButton = () => {
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
       ]);
+      console.log("FETCH DATA IN SUBMIT BUTTON");
 
       setGraph(graph);
       setTotal(total);
       setTable(table);
     } catch (error) {
       console.error("Error fetching report:", error);
+      setError(error as ApiError);
     }
   };
 

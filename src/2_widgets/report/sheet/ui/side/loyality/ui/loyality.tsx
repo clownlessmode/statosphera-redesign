@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   Card,
