@@ -59,13 +59,11 @@ export enum COLUMN_KEY {
 
   // ----------------- Наценка в процентах без скидки -----------------
   GROUP_MARKUP_PERCENT_DISCOUNT = "groupMarkupDiscountPercent",
-  MARKUP_PERCENT_DISCOUNT = "markupDiscountPercent",
-  MARKUP_PERCENT_DISCOUNT_LM = "markupDiscountLMPercent",
-  MARKUP_PERCENT_DISCOUNT_MOM = "markupDiscountMoMPercent",
-  MARKUP_PERCENT_DISCOUNT_MOM_PERCENT = "markupDiscountMoMPercent",
-  MARKUP_PERCENT_DISCOUNT_LY = "markupDiscountLYPercent",
-  MARKUP_PERCENT_DISCOUNT_YOY = "markupDiscountYoYPercent",
-  MARKUP_PERCENT_DISCOUNT_YOY_PERCENT = "markupDiscountYoYPercent",
+  MARKUP_DISCOUNT_PERCENT = "markupDiscountPercent",
+  MARKUP_DISCOUNT_PERCENT_LM = "markupDiscountPercentLM",
+  MARKUP_DISCOUNT_PERCENT_MOM = "markupDiscountPercentMoM",
+  MARKUP_DISCOUNT_PERCENT_LY = "markupDiscountPercentLY",
+  MARKUP_DISCOUNT_PERCENT_YOY = "markupDiscountPercentYoY",
 
   // ----------------- Маржа в процентах без скидки -----------------
   GROUP_MARGIN_PERCENT_DISCOUNT = "groupMarginDiscountPercent",
@@ -444,7 +442,8 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Коэффициент оборачиваемости ITR",
     headerTooltip: "Коэффициент оборачиваемости ITR",
     cellDataType: "number",
-    valueFormatter: (params: any) => formatNumber(params.data[COLUMN_KEY.ITR]),
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_LM,
@@ -452,7 +451,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_MOM,
@@ -460,7 +459,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_MOM_PERCENT,
@@ -468,7 +467,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_LY,
@@ -476,7 +475,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_YOY,
@@ -484,7 +483,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_YOY_PERCENT,
@@ -492,7 +491,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.ITR_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -501,7 +500,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_LM,
@@ -509,7 +508,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_MOM,
@@ -517,7 +516,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT,
@@ -525,7 +524,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_LY,
@@ -533,7 +532,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_YOY,
@@ -541,7 +540,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.OPENING_BALANCE_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -550,7 +549,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_LM,
@@ -558,7 +557,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_MOM,
@@ -566,7 +565,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT,
@@ -574,7 +573,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_LY,
@@ -582,7 +581,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_YOY,
@@ -590,7 +589,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.FINAL_BALANCE_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -599,7 +598,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
@@ -607,7 +606,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
@@ -615,7 +614,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
@@ -623,7 +622,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
@@ -631,7 +630,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
@@ -639,7 +638,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
@@ -647,7 +646,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -656,7 +655,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_LM,
@@ -664,7 +663,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_MOM,
@@ -672,7 +671,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT,
@@ -680,7 +679,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_LY,
@@ -688,7 +687,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_YOY,
@@ -696,7 +695,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT,
@@ -704,7 +703,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITEOFF_COUNT_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -713,7 +712,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LM,
@@ -721,7 +720,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_MOM,
@@ -729,7 +728,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT,
@@ -737,7 +736,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LY,
@@ -745,7 +744,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_YOY,
@@ -753,7 +752,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
@@ -761,7 +760,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
@@ -769,7 +768,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
@@ -777,7 +776,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM,
@@ -785,7 +784,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
@@ -793,7 +792,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
@@ -801,7 +800,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
@@ -809,71 +808,63 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
+  // {
+  //   field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY_PERCENT,
+  //   headerName: "Наценка % без учета скидки YOY%",
+  //   headerTooltip: "Наценка % без учета скидки YOY%",
+  //   cellDataType: "number",
+  //   valueFormatter: (params: any) =>
+  //     formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY_PERCENT]),
+  // },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
-    headerName: "Наценка % без учета скидки YOY%",
-    headerTooltip: "Наценка % без учета скидки YOY%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT]),
-  },
-  {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT,
     headerName: "Наценка % без учета скидки",
     headerTooltip: "Наценка % без учета скидки",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
     headerName: "Наценка % без учета скидки PM",
     headerTooltip: "Наценка % без учета скидки PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
     headerName: "Наценка % без учета скидки MOM",
     headerTooltip: "Наценка % без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
     headerName: "Наценка % без учета скидки MOM%",
     headerTooltip: "Наценка % без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
     headerName: "Наценка % без учета скидки PY",
     headerTooltip: "Наценка % без учета скидки PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY,
     headerName: "Наценка % без учета скидки YOY",
     headerTooltip: "Наценка % без учета скидки YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY]),
-  },
-  {
-    field: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
-    headerName: "Наценка % без учета скидки YOY%",
-    headerTooltip: "Наценка % без учета скидки YOY%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT,
@@ -881,7 +872,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_LM,
@@ -889,7 +880,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_MOM,
@@ -897,7 +888,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT,
@@ -905,7 +896,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_LY,
@@ -913,7 +904,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_YOY,
@@ -921,7 +912,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT,
@@ -929,7 +920,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.MARKUP_DISCOUNT_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
 
   {
@@ -938,7 +929,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LY,
@@ -946,7 +937,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_YOY,
@@ -954,7 +945,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT,
@@ -962,7 +953,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_YOY_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_MOM,
@@ -970,7 +961,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LM,
@@ -978,7 +969,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS,
@@ -986,7 +977,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.TURNOVER_GOODS]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.STORE_NAME,
@@ -999,10 +990,9 @@ export const tableColumns: ColDef<any>[] = [
   {
     field: COLUMN_KEY.PROCEEDS,
     headerName: "Выручка",
-    headerTooltip: "Выручка",
     cellDataType: "number",
-    // valueFormatter: (params: any) =>
-    //   formatNumber(params.data[COLUMN_KEY.PROCEEDS]),
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1014,21 +1004,22 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка PM",
     headerTooltip: "В прошлом месяце",
     cellDataType: "number",
-    // valueFormatter: (params: any) =>
-    //   formatNumber(params.data[COLUMN_KEY.PROCEEDS_LM]),
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
       }
     },
   },
+
   {
     field: COLUMN_KEY.PROCEEDS_MOM,
     headerName: "Выручка MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1041,7 +1032,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      formatPercent(params.data[COLUMN_KEY.PROCEEDS_MOM_PERCENT]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1056,7 +1047,7 @@ export const tableColumns: ColDef<any>[] = [
     headerClass: "column",
     headerTooltip: "В прошлом году",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1068,7 +1059,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка YoY",
     headerTooltip: "Изменение по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1080,7 +1071,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка YoY %",
     headerTooltip: "Изменение по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatPercent(params.data[COLUMN_KEY.PROCEEDS_YOY_PERCENT]),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1094,7 +1085,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1106,7 +1097,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1119,7 +1110,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1132,7 +1123,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Процент изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatPercent(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_YOY_PERCENT]),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1146,7 +1137,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка Plan",
     headerTooltip: "План",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_PROCEEDS]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1158,7 +1149,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка PlanEx %",
     headerTooltip: "Текущее выполнение плана",
     valueFormatter: (params: any) =>
-      formatPercent(params.data[COLUMN_KEY.PLAN_PROCEEDS_EXECUTION_PERCENT]),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1172,7 +1163,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка Forecast",
     headerTooltip: "Прогноз выполнения на конец месяца",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_PROCEEDS_FORECAST]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1184,7 +1175,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка Forecast %",
     headerTooltip: "Прогноз выполнения на конец месяца %",
     valueFormatter: (params: any) =>
-      formatPercent(params.data[COLUMN_KEY.PLAN_PROCEEDS_FORECAST_PERCENT]),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1198,7 +1189,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка Cplan",
     headerTooltip: "План накопительный с начала текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_PLAN]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1210,9 +1201,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка CEx %",
     headerTooltip: "Процент выполнение плана накопительно с начала года",
     valueFormatter: (params: any) =>
-      formatPercent(
-        params.data[COLUMN_KEY.CUMULATIVE_PLAN_PROCEEDS_EXECUTION_PERCENT]
-      ),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1227,9 +1216,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Прогноза на конец месяца накопительный с начала текущего года",
     valueFormatter: (params: any) =>
-      formatPercent(
-        params.data[COLUMN_KEY.CUMULATIVE_PLAN_PROCEEDS_FORECAST_PERCENT]
-      ),
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1243,7 +1230,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков",
     headerTooltip: "Кол. Чеков",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1256,7 +1243,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков PM",
     headerTooltip: "В прошлом месяце",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1269,7 +1256,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1296,7 +1283,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков  PY",
     headerTooltip: "В прошлом году",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1309,7 +1296,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков YoY",
     headerTooltip: "Изменение по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1335,7 +1322,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_CHECK_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1347,7 +1334,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_CHECK_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1360,7 +1347,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1387,7 +1374,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков Plan",
     headerTooltip: "План",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_CHECK]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1413,7 +1400,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков Forecast",
     headerTooltip: "Прогноз выполнения на конец месяца",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_CHECK_FORECAST]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1440,7 +1427,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков CPlan",
     headerTooltip: "План накопительный с начала текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_CHECK_PLAN]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1485,7 +1472,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. чек",
     headerTooltip: "Ср. чек",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.AVG_CHECK]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1498,7 +1485,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек PM",
     headerTooltip: "В прошлом месяце",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.AVG_CHECK_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1539,7 +1526,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек  PY",
     headerTooltip: "В прошлом году",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.AVG_CHECK_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1551,7 +1538,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек YoY",
     headerTooltip: "Изменение по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.AVG_CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1577,7 +1564,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_AVG_CHECK_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1589,7 +1576,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_AVG_CHECK_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1602,7 +1589,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_AVG_CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1627,7 +1614,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек Plan",
     headerTooltip: "План",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_AVG_CHECK]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PLAN_AVG_CHECK_EXECUTION_PERCENT,
@@ -1648,7 +1635,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек Forecast",
     headerTooltip: "Прогноз выполнения на конец месяца",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_AVG_CHECK_FORECAST]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PLAN_AVG_CHECK_FORECAST_PERCENT,
@@ -1669,7 +1656,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Ср. Чек CPlan",
     headerTooltip: "План накопительный с начала текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_AVG_CHECK_PLAN]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1714,21 +1701,21 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC",
     headerTooltip: "Выручка по кюаркоду",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_QC]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PROCEEDS_Q_C_LM,
     headerTooltip: "В прошлом месяце",
     headerName: "Выручка QC PM",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_Q_C_LM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PROCEEDS_QC_MOM,
     headerName: "Выручка QC MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_QC_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PROCEEDS_QC_MOM_PERCENT,
@@ -1748,14 +1735,14 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC PY ",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_QC_LY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PROCEEDS_QC_YOY,
     headerName: "Выручка QC YoY",
     headerTooltip: "Изменение по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_QC_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PROCEEDS_QC_YOY_PERCENT,
@@ -1776,7 +1763,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_QC_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1788,7 +1775,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_QC_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1801,7 +1788,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_QC_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1828,7 +1815,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC Plan",
     headerTooltip: "План",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_PROCEEDS_QC]),
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.PLAN_PROCEEDS_QC_EXECUTION_PERCENT,
@@ -1849,7 +1836,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC Forecast",
     headerTooltip: "Прогноз выполнения на конец месяца",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_PROCEEDS_QC_FORECAST]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1875,7 +1862,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка QC CPlan",
     headerTooltip: "Накопительный план с начала года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROCEEDS_QC_PLAN]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1905,9 +1892,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Прогноз на конец месяца накопительный с начала текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(
-        params.data[COLUMN_KEY.CUMULATIVE_PLAN_PROCEEDS_QC_FORECAST_PERCENT]
-      ),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1921,7 +1906,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Применение QC %",
     headerTooltip: "Применение оплаты по Qc",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SHARE_OF_PAYMENTS_QC]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1933,7 +1918,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Применение QC % Plan",
     headerTooltip: "План применения оплаты по Qc",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_SHARE_OF_PAYMENTS_QC]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1961,7 +1946,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Применение QC % Forecast",
     headerTooltip: "Прогноз выполнения на конец месяца",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PLAN_SHARE_OF_PAYMENTS_QC_FORECAST]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1990,7 +1975,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидка, руб.",
     headerTooltip: "Скидка",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.DISCOUNT]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2003,7 +1988,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. PM",
     headerTooltip: "Прошлый месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.DISCOUNT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2016,7 +2001,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.DISCOUNT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2043,7 +2028,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.DISCOUNT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2055,7 +2040,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.DISCOUNT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2081,7 +2066,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_DISCOUNT_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2093,7 +2078,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Скидки, руб. PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_DISCOUNT_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2106,7 +2091,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_DISCOUNT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2235,7 +2220,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость",
     headerTooltip: "Себестоимость",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COST_PRICE]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2247,7 +2232,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость PM",
     headerTooltip: "Прошлый месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COST_PRICE_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2259,7 +2244,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость MOM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COST_PRICE_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2285,7 +2270,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COST_PRICE_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2297,7 +2282,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость YOY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COST_PRICE_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2323,7 +2308,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_COST_PRICE_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2335,7 +2320,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Себестоимость  PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_COST_PRICE_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2348,7 +2333,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_COST_PRICE_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2375,7 +2360,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб.",
     headerTooltip: "Наценка",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROFIT]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2387,7 +2372,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. PM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROFIT_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2399,7 +2384,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROFIT_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2425,7 +2410,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROFIT_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2437,7 +2422,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROFIT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2463,7 +2448,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROFIT_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2475,7 +2460,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Наценка, руб. PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROFIT_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2488,7 +2473,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_PROFIT_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -2515,7 +2500,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб.",
     headerTooltip: "Списания",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITE_OFF]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2529,7 +2514,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб. PM",
     headerTooltip: "Прошлый месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITE_OFF_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2543,7 +2528,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания  MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITE_OFF_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2572,7 +2557,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб.  PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITE_OFF_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2586,7 +2571,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб. YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.WRITE_OFF_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2615,7 +2600,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб. YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_WRITE_OFF_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2629,7 +2614,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Списания, руб. PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_WRITE_OFF_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -2644,7 +2629,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_WRITE_OFF_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#71DE56" };
@@ -3022,7 +3007,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке",
     headerTooltip: "SKU в чеке",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SKU_UNIQUE]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3034,7 +3019,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке PM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SKU_UNIQUE_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3046,7 +3031,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SKU_UNIQUE_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3072,7 +3057,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SKU_UNIQUE_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3084,7 +3069,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.SKU_UNIQUE_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3110,7 +3095,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_SKU_UNIQUE_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3122,7 +3107,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "SKU в чеке PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_SKU_UNIQUE_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3135,7 +3120,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_SKU_UNIQUE_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3162,7 +3147,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека",
     headerTooltip: "Длина чека",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.LEN_CHECK]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3174,7 +3159,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека  PM",
     headerTooltip: "Прошлый месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.LEN_CHECK_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3186,7 +3171,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.LEN_CHECK_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3213,7 +3198,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.LEN_CHECK_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3225,7 +3210,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.LEN_CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3251,7 +3236,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_LEN_CHECK_TODAY_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3263,7 +3248,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Длина чека PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_LEN_CHECK_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3276,7 +3261,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_LEN_CHECK_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3303,7 +3288,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков  QC",
     headerTooltip: "Кол. Чеков  QC",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COUNT_CHECK_QR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3315,7 +3300,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков  QC PM",
     headerTooltip: "Прошлый месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COUNT_CHECK_QR_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3327,7 +3312,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков  QC MoM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COUNT_CHECK_QR_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3353,7 +3338,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. Чеков  QC PY",
     headerTooltip: "Прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.COUNT_CHECK_QR_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3394,9 +3379,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. чека QC YTD",
     headerTooltip: "Накопительный итог с начало текущего года",
     valueFormatter: (params: any) =>
-      formatNumber(
-        params.data[COLUMN_KEY.CUMULATIVE_COUNT_CHECK_QR_TODAY_YEAR]
-      ),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3408,7 +3391,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Кол. чека QC PYTD",
     headerTooltip: "Накопительный итог прошлый год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_COUNT_CHECK_QR_LAST_YEAR]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3421,7 +3404,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение накопительного итога по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CUMULATIVE_COUNT_CHECK_QR_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3588,7 +3571,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Чеки лояльности",
     headerTooltip: "Количество чеков лояльности",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LOYAL]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3600,7 +3583,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Чеки лояльности LM",
     headerTooltip: "Количество чеков лояльности за последний месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LOYAL_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3612,7 +3595,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Чеки лояльности MoM",
     headerTooltip: "Изменение чеков лояльности по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LOYAL_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3639,7 +3622,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Чеки лояльности LY",
     headerTooltip: "Количество чеков лояльности за последний год",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LOYAL_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3651,7 +3634,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Чеки лояльности YoY",
     headerTooltip: "Изменение чеков лояльности по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.CHECK_LOYAL_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3678,7 +3661,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка ИМ",
     headerTooltip: "Выручка интернет-магазина",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_IM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3690,7 +3673,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка ИМ PM",
     headerTooltip: "Выручка интернет-магазина за последний месяц",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_IM_LM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3703,7 +3686,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение выручки интернет-магазина по сравнению с прошлым месяцем",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_IM_MOM]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3730,7 +3713,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip:
       "Изменение выручки интернет-магазина по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_IM_YOY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3757,7 +3740,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка ИМ PY",
     headerTooltip: "В прошлом году",
     valueFormatter: (params: any) =>
-      formatNumber(params.data[COLUMN_KEY.PROCEEDS_IM_LY]),
+      params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };

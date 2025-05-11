@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { channel, status, time } from "../model/mock";
 import useForm, {
   useCities,
@@ -33,6 +33,12 @@ import {
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 import { create } from "zustand";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
+import { useSession } from "@entities/session";
+import { Plus } from "lucide-react";
+import { Button } from "@shared/ui/button";
+import { X } from "lucide-react";
+import { useFilters } from "@entities/report/model/api/filters/shops/controller";
 
 interface SelectedOptionsState {
   partners: MultiSelectOption[];
@@ -58,7 +64,18 @@ export const useSelectedOptionsStore = create<SelectedOptionsState>(
     setShops: (opts: MultiSelectOption[]) => set({ shops: opts }),
   })
 );
-
+interface ShopsMyStore {
+  shopss: MultiSelectOption[];
+  my: boolean;
+  setShops: (opts: MultiSelectOption[]) => void;
+  setMy: (my: boolean) => void;
+}
+export const useShopsMyStore = create<ShopsMyStore>((set) => ({
+  shopss: [],
+  my: false,
+  setShops: (opts: MultiSelectOption[]) => set({ shopss: opts }),
+  setMy: (my: boolean) => set({ my }),
+}));
 const Shops: FC = () => {
   const {
     partners,
@@ -71,6 +88,7 @@ const Shops: FC = () => {
     setShops,
   } = useSelectedOptionsStore();
   const form = useForm();
+  const { my, setMy, shopss, setShops: setShopss } = useShopsMyStore();
   const addReset = useFormResetStore((s) => s.addReset);
   const removeReset = useFormResetStore((s) => s.removeReset);
 
@@ -127,6 +145,46 @@ const Shops: FC = () => {
     return Array.from(map.values());
   }, [shopsOptions, shops]);
 
+  const { session } = useSession();
+  const { getShops: getShopsApi } = useFilters();
+
+  useEffect(() => {
+    const fetchShops = async () => {
+      const response = await getShopsApi({
+        ...allData,
+        filters: {
+          ...allData.filters,
+          store: {
+            ...allData.filters.store,
+            idStore: session?.idStore as number[],
+          },
+        },
+      });
+      const apiOptions = response.map((shop: ShopsFilterResponse) => ({
+        label: shop.storeName,
+        value: String(shop.idStore?.[0] || ""),
+      }));
+      setShopss(apiOptions);
+    };
+    fetchShops();
+  }, []);
+
+  useEffect(() => {
+    if (my) {
+      form.setValue("idStore", session?.idStore as number[]);
+      updateStoreFilter("idStore", session?.idStore as number[]);
+      setShops(
+        effectiveShopsOptions.filter((o) =>
+          (session?.idStore as number[]).includes(Number(o.value))
+        )
+      );
+    }
+    if (!my) {
+      form.setValue("idStore", []);
+      updateStoreFilter("idStore", []);
+      setShops([]);
+    }
+  }, [my]);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -137,6 +195,14 @@ const Shops: FC = () => {
         </div>
       </CardHeader>
       <CardContent>
+        <Button
+          className="w-full mb-6"
+          variant={my ? "default" : "outline"}
+          onClick={() => setMy(!my)}
+        >
+          {my ? "Снять выбор" : "Выбрать мои магазины"}
+          {my ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        </Button>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField
@@ -148,6 +214,7 @@ const Shops: FC = () => {
                     <FormLabel htmlFor="">Канал</FormLabel>
                     <CheckboxCards
                       {...field}
+                      disabled={my}
                       onChange={(values) => {
                         field.onChange(values);
                         updateStoreFilter("channel", values as FRS_CHANNEL[]);
@@ -167,6 +234,7 @@ const Shops: FC = () => {
                   <FormItem>
                     <FormLabel htmlFor="">Статус</FormLabel>
                     <CheckboxCards
+                      disabled={my}
                       {...field}
                       onChange={(values) => {
                         field.onChange(values);
@@ -193,6 +261,7 @@ const Shops: FC = () => {
                     </FormLabel>
                     <CheckboxCards
                       {...field}
+                      disabled={my}
                       disableCheck
                       onChange={(values) => {
                         field.onChange(values);
@@ -213,6 +282,7 @@ const Shops: FC = () => {
                   <FormLabel>Партнеры</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled={my}
                       value={field.value?.map(String) || []}
                       options={effectivePartnerOptions}
                       isLoading={isPartnersLoading}
@@ -242,6 +312,7 @@ const Shops: FC = () => {
                   <FormLabel>Регионы</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled={my}
                       value={field.value?.map(String) || []}
                       options={effectiveRegionsOptions}
                       onOpenChange={(open) => handleOpenRegionsSelect(open)}
@@ -271,6 +342,7 @@ const Shops: FC = () => {
                   <FormLabel>Города</FormLabel>
                   <FormControl>
                     <MultiSelect
+                      disabled={my}
                       value={field.value?.map(String) || []}
                       options={effectiveCitiesOptions}
                       onOpenChange={(open) => handleOpenCitiesSelect(open)}
@@ -302,7 +374,7 @@ const Shops: FC = () => {
                     <MultiSelect
                       maxCount={1}
                       value={field.value?.map(String)}
-                      options={effectiveShopsOptions}
+                      options={my ? shopss : effectiveShopsOptions}
                       isLoading={isShopsLoading}
                       onOpenChange={(open) => handleOpenShopsSelect(open)}
                       onValueChange={(value) => {

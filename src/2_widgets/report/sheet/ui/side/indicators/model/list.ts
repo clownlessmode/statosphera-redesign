@@ -311,40 +311,40 @@ const all_indicators = [
     icon: DollarSign,
     children: [
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT,
         label: "Наценка % без учета скидки",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
         label: "Наценка % без учета скидки PM",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LM,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
         label: "Наценка % без учета скидки MOM",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
         label: "Наценка % без учета скидки MOM%",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_MOM_PERCENT,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
         label: "Наценка % без учета скидки PY",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_LY,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY,
         label: "Наценка % без учета скидки YOY",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY,
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY,
       },
-      {
-        id: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
-        label: "Наценка % без учета скидки YOY%",
-        value: COLUMN_KEY.MARKUP_PERCENT_DISCOUNT_YOY_PERCENT,
-      },
+      // {
+      //   id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY_PERCENT,
+      //   label: "Наценка % без учета скидки YOY%",
+      //   value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY_PERCENT,
+      // },
     ],
   },
   {

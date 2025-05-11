@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@shared/ui/form";
-import { Check, Minus, Plus, Store, X } from "lucide-react";
+import { Plus, Store, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import useForm, {
   useShops,
@@ -34,6 +34,8 @@ import {
 import { channel, status, time } from "../model/mock";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
+import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
+import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,9 +53,30 @@ const ShopsFilter = () => {
     useShops(allData);
   const [selectedMyShops, setSelectedMyShops] = useState<boolean>(false);
   const { session } = useSession();
+  const { getShops } = useSalesDynamicsController();
+
+  const [shops, setShops] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchShops = async () => {
+      const response = await getShops(allData);
+      const apiOptions = response.map((shop: ShopsFilterResponse) => ({
+        label: shop.storeName,
+        value: String(shop.idStore?.[0] || ""),
+      }));
+      setShops(apiOptions);
+    };
+    fetchShops();
+  }, []);
+
   useEffect(() => {
     if (selectedMyShops) {
+      form.setValue("idStore", session?.idStore as number[]);
       updateFilters("idStore", session?.idStore as number[]);
+    }
+    if (!selectedMyShops) {
+      form.setValue("idStore", []);
+      updateFilters("idStore", []);
     }
   }, [selectedMyShops]);
   return (
@@ -243,10 +266,9 @@ const ShopsFilter = () => {
                       <FormLabel>Магазины</FormLabel>
                       <FormControl>
                         <MultiSelect
-                          disabled={selectedMyShops}
                           maxCount={1}
                           value={field.value?.map(String)}
-                          options={shopsOptions}
+                          options={selectedMyShops ? shops : shopsOptions}
                           isLoading={isShopsLoading}
                           onOpenChange={(open) => handleOpenShopsSelect(open)}
                           onValueChange={(value) => {

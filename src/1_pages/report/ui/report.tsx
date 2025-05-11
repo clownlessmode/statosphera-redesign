@@ -2,7 +2,7 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useCallback, useState, type FC } from "react";
+import { useCallback, useState, useEffect, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
@@ -24,6 +24,7 @@ import { getTopLevelValues } from "@shared/lib/get-top-level";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model/list";
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
+
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph, error } = useReportStore();
@@ -38,10 +39,25 @@ const Report: FC = () => {
   const { value } = useDateFilterStore();
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
-
   const values = [...indicators, ...uniques];
 
+  // Create a unique filter key that changes when filters change
+  const [filterKey, setFilterKey] = useState(Date.now());
   const topLevelValues = getTopLevelValues(values);
+
+  // Update filterKey when filter criteria change
+  const payload = getApiPayload();
+  useEffect(() => {
+    setFilterKey(Date.now());
+  }, [
+    payload.values?.join(","),
+    payload.groups?.join(","),
+
+    payload.filterDate?.dateStart,
+    payload.filterDate?.dateEnd,
+    JSON.stringify(payload.filters),
+  ]);
+
   const onCellClick = async (params: any) => {
     console.log(params);
     try {
@@ -67,10 +83,31 @@ const Report: FC = () => {
       console.error("Error fetching report:", error);
     }
   };
+
   const fetchData = useCallback(
     ({ startRow, endRow }: { startRow: number; endRow: number }) => {
-      // Если запрошен блок с 0 до 100 (или меньше), отдаем сохранённые данные
-      if (startRow === 0 && initialRows && initialRows?.data.length >= endRow) {
+      // If this is a new filter request, don't use cached data
+      if (startRow === 0) {
+        console.log("FETCH DATA IN REPORT SERVER - NEW REQUEST");
+
+        // Get current payload with all filters applied
+        const payload = getApiPayload();
+
+        return getTable({
+          ...payload,
+          filterDate: {
+            dateStart: payload.filterDate.dateStart,
+            dateEnd: payload.filterDate.dateEnd,
+          },
+          offset: startRow,
+          limit: endRow - startRow,
+          sorts: { colId: [payload.values[0]], sort: "asc" },
+          groups: payload.groups,
+        });
+      }
+
+      // For subsequent pages with same filter, use initial data if available
+      if (initialRows && initialRows?.data.length >= endRow) {
         console.log("FETCH DATA IN REPORT PRELOADED");
 
         return Promise.resolve({
@@ -79,24 +116,25 @@ const Report: FC = () => {
         });
       }
 
-      // Иначе — обычный запрос к API
+      // Otherwise, fetch from API
       const payload = getApiPayload();
-      console.log("FETCH DATA IN REPORT SERVER");
+      console.log("FETCH DATA IN REPORT SERVER - PAGINATION");
 
       return getTable({
         ...payload,
         filterDate: {
-          dateStart: "2023-01-01",
-          dateEnd: "2025-01-01",
+          dateStart: payload.filterDate.dateStart,
+          dateEnd: payload.filterDate.dateEnd,
         },
         offset: startRow,
         limit: endRow - startRow,
         sorts: { colId: [payload.values[0]], sort: "asc" },
-        groups: ["day"],
+        groups: payload.groups,
       });
     },
     [getTable, getApiPayload, initialRows, initialTotalRows]
   );
+
   return (
     <>
       <Sheet />
@@ -151,6 +189,7 @@ const Report: FC = () => {
                     onClick={() => {
                       resetAllFilters();
                       clearAll();
+                      setFilterKey(Date.now()); // Reset filter key when clearing filters
                     }}
                     variant="outline"
                   >
@@ -217,6 +256,7 @@ const Report: FC = () => {
               fetchData={fetchData as any}
               totalData={total as any}
               onCellClick={onCellClick}
+              filterKey={filterKey} // Pass the filter key to force reset when filters change
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">

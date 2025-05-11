@@ -32,6 +32,7 @@ export interface InfinityTableProps {
   onCellClick?: (info: { rowData: any; field: string; value: any }) => void;
   onRowClick?: (data: any) => void;
   onSelectionChange?: (selectedRows: any[]) => void;
+  filterKey?: string | number; // Add a filter key prop to detect changes
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -45,10 +46,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   onRowClick,
   onCellClick,
   onSelectionChange,
+  filterKey,
 }) => {
   const gridRef = useRef<AgGridReact>(null);
   const gridApiRef = useRef<GridApi | null>(null);
   const columnsSetRef = useRef(false);
+  const previousFilterKey = useRef<string | number | undefined>(filterKey);
 
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -59,6 +62,24 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
     []
   );
+
+  // Reset the grid when filterKey changes
+  useEffect(() => {
+    if (filterKey !== previousFilterKey.current && gridApiRef.current) {
+      // Reset the columns flag to force re-evaluation of columns on next data fetch
+      columnsSetRef.current = false;
+
+      // Clear existing data and columns
+      gridApiRef.current.setGridOption("rowData", []);
+      gridApiRef.current.setGridOption("columnDefs", []);
+
+      // Refresh the datasource to trigger a new data fetch
+      gridApiRef.current.setGridOption("datasource", datasource);
+
+      // Update the previous filter key
+      previousFilterKey.current = filterKey;
+    }
+  }, [filterKey]);
 
   // Utility: wrap colDef to show Skeleton when stub row
   const withSkeleton = (col: ColDef): ColDef => ({
@@ -75,7 +96,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     },
   });
 
-  // Datasource для бесконечной прокрутки с динамическими колонками
+  // Datasource for infinite scrolling with dynamic columns
   const datasource: IDatasource = useMemo(
     () => ({
       getRows: (params: IGetRowsParams) => {
@@ -86,7 +107,14 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
             const rows = resp.data;
             const total = resp.totalRows;
 
-            if (!columnsSetRef.current && rows.length > 0) {
+            // Update columns if either:
+            // 1. Columns haven't been set yet
+            // 2. We have rows but different structure than before
+            if (
+              rows.length > 0 &&
+              (!columnsSetRef.current ||
+                filterKey !== previousFilterKey.current)
+            ) {
               const firstRow = rows[0];
 
               const baseDefs: ColDef[] = masterColumnDefs.filter(
@@ -134,6 +162,21 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
               gridApiRef.current?.updateGridOptions({ columnDefs: mergedDefs });
               columnsSetRef.current = true;
+
+              // Auto-size columns after setting them
+              setTimeout(() => {
+                const colsToSize = gridApiRef.current
+                  ?.getAllGridColumns()
+                  .filter((col) => {
+                    const def = col.getColDef();
+                    return !def.width && !def.flex;
+                  })
+                  .map((col) => col.getColId());
+
+                if (colsToSize && colsToSize.length > 0) {
+                  gridApiRef.current?.autoSizeColumns(colsToSize, false);
+                }
+              }, 0);
             }
 
             params.successCallback(rows, total);
@@ -146,7 +189,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           });
       },
     }),
-    [fetchData, actions, actionsIndex]
+    [fetchData, actions, actionsIndex, filterKey]
   );
 
   useEffect(() => {
@@ -162,14 +205,21 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       const api = event.api;
       gridApiRef.current = api;
       api.setGridOption("datasource", datasource);
-      const colsToSize = api
-        .getAllGridColumns()
-        .filter((col) => {
-          const def = col.getColDef();
-          return !def.width && !def.flex;
-        })
-        .map((col) => col.getColId());
-      api.autoSizeColumns(colsToSize, false);
+
+      // Initial auto-size for columns that don't have width or flex
+      setTimeout(() => {
+        const colsToSize = api
+          .getAllGridColumns()
+          .filter((col) => {
+            const def = col.getColDef();
+            return !def.width && !def.flex;
+          })
+          .map((col) => col.getColId());
+
+        if (colsToSize && colsToSize.length > 0) {
+          api.autoSizeColumns(colsToSize, false);
+        }
+      }, 0);
     },
     [datasource]
   );

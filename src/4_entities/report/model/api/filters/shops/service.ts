@@ -62,7 +62,7 @@ export class FiltersShopsService {
         ...dto.filters,
         store: {
           ...dto.filters.store,
-          idStore: [],
+          idStore: dto.filters.store.idStore,
         },
       },
     });
