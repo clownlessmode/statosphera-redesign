@@ -7,37 +7,31 @@ import {
 } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 interface Props {
-  writeOff: number | undefined;
-  writeOffPercent: number | undefined;
-  writeOffYoY: number | undefined;
-  writeOffYoYPercent: number | undefined;
+  avgCheck: number | undefined;
+  avgCheckYoY: number | undefined;
+  avgCheckYoYPercent: number | undefined;
   isLoading: boolean;
 }
 
-const WriteOffIndicator = ({
-  writeOff,
-  writeOffPercent,
-  writeOffYoY,
-  writeOffYoYPercent,
+const AverageCheck = ({
+  avgCheck,
+  avgCheckYoY,
+  avgCheckYoYPercent,
   isLoading,
 }: Props) => {
   return (
     <>
-      {isLoading &&
-      !writeOff &&
-      !writeOffPercent &&
-      !writeOffYoY &&
-      !writeOffYoYPercent ? (
-        <WriteOffIndicator.Skeleton />
+      {isLoading && !avgCheck && !avgCheckYoY && !avgCheckYoYPercent ? (
+        <AverageCheck.Skeleton />
       ) : (
-        <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+        <Card className="w-full h-full gap-1 flex flex-col justify-between">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Списания (показатель)</CardTitle>
+              <CardTitle>Средний чек (за текущий месяц)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {writeOff?.toLocaleString()}₽ ({writeOffPercent}%)
+                {avgCheck?.toLocaleString()}₽ ({avgCheckYoYPercent}%)
               </p>
               {/* <ArrowBigDownDash
                 className="w-4 h-4 text-destructive"
@@ -48,7 +42,7 @@ const WriteOffIndicator = ({
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {writeOffYoY?.toLocaleString()}₽ ({writeOffYoYPercent}%)
+              {avgCheckYoY?.toLocaleString()}₽ ({avgCheckYoYPercent}%)
             </p>
           </CardFooter>
         </Card>
@@ -57,9 +51,9 @@ const WriteOffIndicator = ({
   );
 };
 
-export default WriteOffIndicator;
+export default AverageCheck;
 
-WriteOffIndicator.Skeleton = () => {
+AverageCheck.Skeleton = () => {
   return (
     <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
       <div className="flex flex-col gap-1">

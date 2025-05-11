@@ -7,37 +7,31 @@ import {
 } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 interface Props {
-  writeOff: number | undefined;
-  writeOffPercent: number | undefined;
-  writeOffYoY: number | undefined;
-  writeOffYoYPercent: number | undefined;
+  proceeds: number | undefined;
+  proceedsYoY: number | undefined;
+  proceedsYoYPercent: number | undefined;
   isLoading: boolean;
 }
 
-const WriteOffIndicator = ({
-  writeOff,
-  writeOffPercent,
-  writeOffYoY,
-  writeOffYoYPercent,
+const CurrentRevenue = ({
+  proceeds,
+  proceedsYoY,
+  proceedsYoYPercent,
   isLoading,
 }: Props) => {
   return (
     <>
-      {isLoading &&
-      !writeOff &&
-      !writeOffPercent &&
-      !writeOffYoY &&
-      !writeOffYoYPercent ? (
-        <WriteOffIndicator.Skeleton />
+      {isLoading && !proceeds && !proceedsYoY && !proceedsYoYPercent ? (
+        <CurrentRevenue.Skeleton />
       ) : (
-        <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+        <Card className="w-full h-full gap-1 flex flex-col justify-between bg-primary py-2">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Списания (показатель)</CardTitle>
+              <CardTitle>Выручка (за текущий месяц)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {writeOff?.toLocaleString()}₽ ({writeOffPercent}%)
+                {proceeds?.toLocaleString()}₽ ({proceedsYoYPercent}%)
               </p>
               {/* <ArrowBigDownDash
                 className="w-4 h-4 text-destructive"
@@ -47,8 +41,8 @@ const WriteOffIndicator = ({
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
-            <p className="w-full text-muted-foreground font-bold">
-              {writeOffYoY?.toLocaleString()}₽ ({writeOffYoYPercent}%)
+            <p className="w-full text-primary-foreground font-bold">
+              {proceedsYoY?.toLocaleString()}₽ ({proceedsYoYPercent}%)
             </p>
           </CardFooter>
         </Card>
@@ -57,9 +51,9 @@ const WriteOffIndicator = ({
   );
 };
 
-export default WriteOffIndicator;
+export default CurrentRevenue;
 
-WriteOffIndicator.Skeleton = () => {
+CurrentRevenue.Skeleton = () => {
   return (
     <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
       <div className="flex flex-col gap-1">
