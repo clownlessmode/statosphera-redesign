@@ -491,7 +491,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Коэффициент оборачиваемости ITR YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
 
   {
@@ -524,7 +524,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на начало дня MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.OPENING_BALANCE_LY,
@@ -573,7 +573,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Остатки на конец дня MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_LY,
@@ -622,7 +622,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
@@ -646,7 +646,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, вес YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
 
   {
@@ -679,7 +679,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_LY,
@@ -703,7 +703,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания, кол-во YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
 
   {
@@ -736,7 +736,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LY,
@@ -760,7 +760,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
@@ -768,7 +768,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
@@ -776,7 +776,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM,
@@ -784,7 +784,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
@@ -792,7 +792,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
@@ -800,7 +800,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_YOY,
@@ -808,7 +808,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Маржа % без учета скидки YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   // {
   //   field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY_PERCENT,
@@ -824,7 +824,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
@@ -832,7 +832,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
@@ -840,7 +840,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
@@ -848,7 +848,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
@@ -856,7 +856,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_YOY,
@@ -864,7 +864,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка % без учета скидки YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT,
@@ -896,7 +896,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_LY,
@@ -920,7 +920,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка без учета скидки YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
 
   {
@@ -929,7 +929,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_LY,
@@ -953,7 +953,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Оборачиваемость остатков YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS_MOM,
@@ -992,7 +992,7 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Выручка",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -1032,7 +1032,7 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
     cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };

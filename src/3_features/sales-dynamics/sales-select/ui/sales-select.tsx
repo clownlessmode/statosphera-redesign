@@ -28,11 +28,6 @@ export interface SelectOption {
   icon: React.ReactNode;
 }
 
-// Дефолтный список опций
-// const SELECT_OPTIONS: SelectOption[] = [
-//   {
-//     value: "revenue",
-//     label: "Выручка, руб.",
 //     icon: <DollarSign className="mr-2 inline-block" />,
 //   },
 //   {

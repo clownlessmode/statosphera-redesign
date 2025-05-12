@@ -24,6 +24,7 @@ import { DialogContent } from "@shared/ui/dialog";
 import { DialogTrigger } from "@shared/ui/dialog";
 import { Dialog } from "@shared/ui/dialog";
 import { Skeleton } from "@shared/ui/skeleton";
+import { useSalesDynamicsIndicatorsController } from "@features/sales-dynamics/add-indicators/model/api/controller";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента
@@ -50,7 +51,7 @@ const SalesDynamics: FC = () => {
   const getApiPayload = useSalesDynamicsFiltersStore(
     (state) => state.getApiPayload
   );
-
+  const { updateValues } = useSalesDynamicsFiltersStore((state) => state);
   const {
     table,
     total,
@@ -61,6 +62,10 @@ const SalesDynamics: FC = () => {
     secondGraph,
     setSecondGraph,
   } = useSalesDynamicsStore();
+  useEffect(() => {
+    if (isLoading) return;
+    updateValues(defaultValues.indicators_and_groups);
+  }, [isLoading, defaultValues, updateValues]);
   useEffect(() => {
     setSearchTerm("");
   }, [filterDate, filters, values, lfl]);
@@ -84,7 +89,9 @@ const SalesDynamics: FC = () => {
       return true;
     });
   }, [table, searchTerm, defaultValues, filters, filterDate, lfl, values]);
+
   const { first, second } = useSalesSelectStore((state) => state);
+
   // 1. Эффект только для Total
   useEffect(() => {
     if (isLoading) return;
@@ -92,14 +99,13 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const totalRes = await getTotal({
         ...payload,
-        values: defaultValues.indicators_and_groups,
+        values: values || defaultValues.indicators_and_groups, // <-- берем из стора, а не из defaultValues
       });
       setTotal(totalRes);
     };
 
     fetchTotal();
   }, [isLoading, lfl, getApiPayload, filterDate, values, filters]);
-
   // 2. Эффект только для Table
   useEffect(() => {
     if (isLoading) return;
@@ -108,7 +114,7 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const tableRes = await getTable({
         ...payload,
-        values: defaultValues.indicators_and_groups,
+        values: values || defaultValues.indicators_and_groups, // <-- берем из стора, а не из defaultValues
       });
       setTable(tableRes);
     };

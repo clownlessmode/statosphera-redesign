@@ -92,7 +92,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         // @ts-ignore
         return col.cellRenderer(params);
       }
-      return params.value;
+      return params.valueFormatted ?? params.value;
     },
   });
 

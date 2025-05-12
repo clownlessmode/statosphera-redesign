@@ -24,6 +24,7 @@ import { useSalesDynamicsIndicatorsController } from "../model/api/controller";
 import { Group, UpdateIndicatorsRequest } from "../model/api/types";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { Badge } from "@shared/ui/badge";
+import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
 interface Props {
   defaultValues: string[];
 }
@@ -44,6 +45,7 @@ export function buildSalesDynamics(
 }
 const AddIndicators: FC<Props> = ({ defaultValues }) => {
   const { updateValues } = useSalesDynamicsFiltersStore();
+
   useSalesDynamicsFiltersStore();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -63,10 +65,6 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
 
   const onSubmit = async (data: FormValues) => {
     setIsOpen(false);
-
-    console.table({
-      groups: buildSalesDynamics(data.indicators_and_groups, indicators),
-    });
 
     const payload: UpdateIndicatorsRequest = {
       groups: buildSalesDynamics(data.indicators_and_groups, indicators),
