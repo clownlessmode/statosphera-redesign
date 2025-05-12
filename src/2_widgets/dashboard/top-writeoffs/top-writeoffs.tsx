@@ -25,13 +25,7 @@ const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
           <DoubleHorizontalBarChart.Skeleton />
         ) : (
           <DoubleHorizontalBarChart
-            data={
-              data?.data.series.map(({ name, data }) => ({
-                name,
-                proceeds: Number(data[0]) || 0,
-                writeOff: Number(data[1]) || 0,
-              })) || []
-            }
+            data={data?.data || { yAxis: [], series: [] }}
             isLoading={false}
           />
         )}

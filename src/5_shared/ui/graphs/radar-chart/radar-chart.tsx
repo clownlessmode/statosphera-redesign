@@ -58,10 +58,19 @@ export const RadarChart = ({
           fontSize: 12,
         },
         formatter: (params: any) => {
-          const { data, name, value } = params;
-          return `${name}: ${value.toLocaleString()}%`;
+          const values = Array.isArray(params) ? params[0].value : params.value;
+
+          const indicatorsText = indicators
+            .map(
+              (ind, i) =>
+                `${ind.name.replace(/\n.*/, "")}: ${values[i].toFixed(2)}%`
+            )
+            .join("<br/>");
+
+          return `<strong>${title}</strong><br/>${indicatorsText}`;
         },
       },
+
       radar: {
         // радиус и центр настраиваем под пропорции
         radius: "80%",

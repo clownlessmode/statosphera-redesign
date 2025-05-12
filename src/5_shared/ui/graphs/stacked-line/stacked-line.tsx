@@ -4,10 +4,9 @@ import * as echarts from "echarts"; // обязательно импортиру
 import { Card } from "@shared/ui/card";
 import { getOptionChart } from "./get-option-chart";
 import { cn } from "@shared/lib/utils";
-import { motion } from "motion/react";
 
 interface CustomChartComponentProps {
-  option: echarts.EChartsOption;
+  option: echarts.EChartsOption | any;
   style?: CSSProperties;
   className?: string;
   /** если передать одно и то же число в mirror у двух графиков, они синхронизируются */

@@ -1,18 +1,20 @@
 import ReactECharts from "echarts-for-react";
 import { useTheme } from "@app/providers/theme-provider";
-import { EChartsOption } from "echarts";
+
 import { useMemo } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
 import { Skeleton } from "@shared/ui/skeleton";
 
-type BarData = {
+type SeriesItem = {
   name: string;
-  proceeds: number;
-  writeOff: number;
+  data: (string | number)[];
 };
 
-type DoubleHorizontalBarChartProps = {
-  data: BarData[];
+type UniversalBarChartProps = {
+  data: {
+    yAxis: string[];
+    series: SeriesItem[];
+  };
   title?: string;
   isLoading?: boolean;
 };
@@ -21,11 +23,11 @@ export const DoubleHorizontalBarChart = ({
   data,
   title,
   isLoading = false,
-}: DoubleHorizontalBarChartProps) => {
+}: UniversalBarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
 
-  const option: EChartsOption = useMemo(() => {
+  const option = useMemo(() => {
     return {
       backgroundColor: "transparent",
       title: title
@@ -43,17 +45,23 @@ export const DoubleHorizontalBarChart = ({
         borderColor: colors.tooltipBorder,
         borderRadius: 12,
         textStyle: { color: colors.text },
-        formatter: (params: any) =>
-          params
+        formatter: (params: any[]) => {
+          const category = params[0]?.name;
+          const details = params
             .map(
-              (p: any) =>
-                `<strong>${p.seriesName}:</strong> ${p.value.toLocaleString()}`
+              (p) =>
+                `<strong>${p.seriesName}:</strong> ${Number(
+                  p.value
+                ).toLocaleString()}`
             )
-            .join("<br />"),
+            .join("<br />");
+          return `<div><strong>${category}</strong><br />${details}</div>`;
+        },
       },
+
       legend: {
-        data: ["Выручка", "Списания"],
-        top: 0, // отступ сверху
+        data: data.series.map((s) => s.name),
+        top: 0,
         left: "center",
         icon: "roundRect",
         textStyle: { color: colors.text },
@@ -74,47 +82,28 @@ export const DoubleHorizontalBarChart = ({
       },
       yAxis: {
         type: "category",
-        data: data.map((item) => item.name),
+        data: data.yAxis,
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { show: false }, // <== убрали отображение названий
+        axisLabel: { show: false },
       },
-      series: [
-        {
-          name: "Выручка",
-          type: "bar",
-          data: data.map((item) => item.proceeds),
-          barWidth: 12,
-          itemStyle: {
-            borderRadius: 6,
-            color: colors.series[0],
-          },
-          label: {
-            show: true,
-            position: "right",
-            color: colors.text,
-            fontSize: 10,
-            formatter: ({ value }: any) => value.toLocaleString(),
-          },
+      series: data.series.map((serie, i) => ({
+        name: serie.name,
+        type: "bar",
+        data: serie.data.map((v) => Number(v)),
+        barWidth: 12,
+        itemStyle: {
+          borderRadius: 6,
+          color: colors.series[i % colors.series.length],
         },
-        {
-          name: "Списания",
-          type: "bar",
-          data: data.map((item) => item.writeOff),
-          barWidth: 12,
-          itemStyle: {
-            borderRadius: 6,
-            color: colors.series[1],
-          },
-          label: {
-            show: true,
-            position: "right",
-            color: colors.text,
-            fontSize: 10,
-            formatter: ({ value }: any) => value.toLocaleString(),
-          },
+        label: {
+          show: true,
+          position: "right",
+          color: colors.text,
+          fontSize: 10,
+          formatter: ({ value }: any) => Number(value).toLocaleString(),
         },
-      ],
+      })),
     };
   }, [data, colors, title]);
 
@@ -138,7 +127,7 @@ DoubleHorizontalBarChart.Skeleton = () => {
   return (
     <div className="w-full h-full flex flex-col gap-[10px] items-start justify-end animate-pulse pb-1">
       {Array.from({ length: 9 }).map((_, idx) => (
-        <div className="flex flex-col gap-1">
+        <div key={idx} className="flex flex-col gap-1">
           <Skeleton
             className="h-[10px] rounded-md bg-muted-foreground"
             style={{ width: `${50 + Math.random() * 150}px` }}

@@ -7,6 +7,7 @@ interface HoursRevenueProps {
   isLoading: boolean;
   data: any | undefined;
 }
+
 const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
   const prepareLine = usePreparedStackedLine();
   console.log(data);
@@ -40,6 +41,46 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
               },
               toolbox: {
                 show: false,
+              },
+              tooltip: {
+                trigger: "axis",
+                backgroundColor: "#1f1f1f",
+                borderColor: "#333",
+                borderRadius: 8,
+                padding: 10,
+                textStyle: {
+                  color: "#fff",
+                  fontSize: 12,
+                },
+                formatter: function (params: any): string {
+                  const items = Array.isArray(params) ? params : [params];
+                  const label = items[0]?.axisValueLabel || "";
+
+                  const lines = items.map((p: any) => {
+                    const rawValue = Array.isArray(p.value)
+                      ? p.value[1]
+                      : p.value;
+                    const value =
+                      typeof rawValue === "number"
+                        ? rawValue
+                        : Number(rawValue);
+
+                    return `
+      <div>
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${
+          p.color
+        };margin-right:6px;"></span>
+        <strong>${p.seriesName}:</strong> ${
+                      isNaN(value) ? "-" : value.toLocaleString("ru-RU")
+                    } ₽
+      </div>
+    `;
+                  });
+
+                  return `<div><strong>${label}</strong></div>${lines.join(
+                    ""
+                  )}`;
+                },
               },
 
               yAxis: {
