@@ -174,7 +174,7 @@ const SalesDynamics: FC = () => {
 
   const handleSelectionChange = async (selectedRows: any) => {
     const payload = getApiPayload();
-    const [graphRes, secondGraphRes] = await Promise.all([
+    const [secondGraphRes, graphRes] = await Promise.all([
       getSecondGraph({
         ...payload,
         value: second.value,
