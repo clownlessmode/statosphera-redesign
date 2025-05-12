@@ -31,7 +31,7 @@ const Loyalty = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                НЕТ ДАННЫХ В ОТВЕТЕ{" "}
+                <Skeleton className="w-[100px] h-[24px] bg-muted-foreground rounded-md" />
                 {/* {proceeds?.toLocaleString()}₽ ({proceedsYoYPercent}%) */}
               </p>
               {/* <ArrowBigDownDash
@@ -43,7 +43,7 @@ const Loyalty = ({
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Доля в процентах</p>
             <p className="w-full text-muted-foreground font-bold">
-              НЕТ ДАННЫХ В ОТВЕТЕ{" "}
+              <Skeleton className="w-[100px] h-[24px] bg-muted-foreground rounded-md" />
               {/* {proceedsYoY?.toLocaleString()}₽ ({proceedsYoYPercent}%) */}
             </p>
           </CardFooter>

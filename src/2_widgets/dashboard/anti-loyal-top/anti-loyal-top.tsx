@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 
-import { StackedBarChart } from "@shared/ui/graphs/stacked-bars/stacked-bars";
 import { SalesStructure as SalesStructureType } from "@pages/dashboard/api/types";
+import { BarHorizontalChart } from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 interface AntiLoyalTopProps {
   isLoading: boolean;
   data: SalesStructureType | undefined;
@@ -21,12 +21,13 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
       </CardHeader>
       <CardContent className="flex-1">
         {(isLoading && !data) || !data?.data.xAxis || !data?.data.series ? (
-          <StackedBarChart.Skeleton />
+          <BarHorizontalChart.Skeleton sort="desc" />
         ) : (
-          <StackedBarChart
-            xAxis={data?.data.xAxis}
-            series={data?.data.series}
-          />
+          //   <BarHorizontalChart
+          //     labels={data?.data.xAxis}
+          //     values={data?.data.series.map((series) => series.data)}
+          //   />\
+          <></>
         )}
       </CardContent>
     </Card>

@@ -2,7 +2,6 @@ import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
 import { useTheme } from "@app/providers/theme-provider";
 import { graphColors } from "@shared/constants/graph-colors";
-import { Skeleton } from "@shared/ui/skeleton";
 
 type BarHorizontalChartProps = {
   labels: string[]; // адреса для тултипа
@@ -29,8 +28,8 @@ export const BarHorizontalChart = ({
     grid: {
       top: 0,
       bottom: 0,
-      left: 16,
-      right: 16,
+      left: 0,
+      right: 0,
       containLabel: true,
     },
     tooltip: {
@@ -85,15 +84,31 @@ export const BarHorizontalChart = ({
   );
 };
 
-BarHorizontalChart.Skeleton = ({ count = 7 }: { count?: number }) => {
+BarHorizontalChart.Skeleton = ({
+  count = 10,
+  sort = "asc",
+}: {
+  count?: number;
+  sort?: "asc" | "desc";
+}) => {
+  const widths = Array.from({ length: count }).map((_, i) => ({
+    width: 40 + i * (50 / count) + Math.random(),
+    index: i,
+  }));
+
+  const sortedWidths =
+    sort === "desc"
+      ? widths.sort((a, b) => b.width - a.width)
+      : widths.sort((a, b) => a.width - b.width);
+
   return (
     <div className="w-full h-full flex flex-col gap-3 py-2 px-4">
-      {Array.from({ length: count }).map((_, i) => (
+      {sortedWidths.map(({ width, index }) => (
         <div
-          key={i}
-          className="w-full h-[20px] rounded-full bg-muted animate-pulse"
+          key={index}
+          className="w-full h-[20px] rounded-full bg-muted-foreground animate-pulse"
           style={{
-            width: `${40 + Math.random() * 50}%`,
+            width: `${width}%`,
           }}
         />
       ))}

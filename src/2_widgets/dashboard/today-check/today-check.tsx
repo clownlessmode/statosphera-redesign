@@ -16,7 +16,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const TodayRevenue = ({
+const TodayCheck = ({
   negative,
   proceedsTotal,
   proceedsWoYPercent,
@@ -29,12 +29,12 @@ const TodayRevenue = ({
       !proceedsTotal &&
       !proceedsWoYPercent &&
       !weekAgoProceedsTotal ? (
-        <TodayRevenue.Skeleton />
+        <TodayCheck.Skeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Выручка (сегодня)</CardTitle>
+              <CardTitle>Чеки (сегодня)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
@@ -50,12 +50,12 @@ const TodayRevenue = ({
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
-            <p className="w-full">Выручка на прошлой неделе</p>
+            <p className="w-full">Чеки на прошлой неделе</p>
             <p className="w-full text-primary-foreground font-bold">
               {weekAgoProceedsTotal?.toLocaleString()}₽ ({proceedsWoYPercent}%)
             </p>
 
-            <p className="w-full">Изменения к последнему закрытому часу</p>
+            <p className="w-full">Изменения к последнему закрытому чаcу</p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal?.toLocaleString()}₽ ({proceedsWoYPercent}%)
             </p>
@@ -66,9 +66,9 @@ const TodayRevenue = ({
   );
 };
 
-export default TodayRevenue;
+export default TodayCheck;
 
-TodayRevenue.Skeleton = () => {
+TodayCheck.Skeleton = () => {
   return (
     <Card className="w-full h-full gap-1 flex flex-col justify-between">
       <div className="flex flex-col gap-1">

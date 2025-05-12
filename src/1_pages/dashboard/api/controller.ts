@@ -6,11 +6,10 @@ import { DashboardService } from "./service";
 export const useDashboard = () => {
   const dashboard = useQuery<GetWeeklyRevenueResponse>({
     queryKey: ["dashboard"],
-    queryFn: () => DashboardService.getWeeklyRevenue(),
+    queryFn: () => DashboardService.getAllData(),
   });
 
   return {
-    
     dashboard: dashboard.data,
     isDashboardLoading: dashboard.isLoading,
   };

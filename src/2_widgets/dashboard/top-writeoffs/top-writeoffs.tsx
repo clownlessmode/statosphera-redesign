@@ -1,12 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 
-import { StackedBarChart } from "@shared/ui/graphs/stacked-bars/stacked-bars";
-import { SalesStructure as SalesStructureType } from "@pages/dashboard/api/types";
+import { DoubleHorizontalBarChart } from "@shared/ui/graphs/double-horizontal-chart/double-hotizontal-chart";
+import { TopWriteOff } from "@pages/dashboard/api/types";
 interface TopWriteoffsProps {
   isLoading: boolean;
-  data: SalesStructureType | undefined;
+  data: TopWriteOff | undefined;
 }
+
 const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
   return (
     <Card className="w-full h-[400px] flex flex-col">
@@ -20,12 +21,18 @@ const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
         )}
       </CardHeader>
       <CardContent className="flex-1">
-        {(isLoading && !data) || !data?.data.xAxis || !data?.data.series ? (
-          <StackedBarChart.Skeleton />
+        {isLoading && !data ? (
+          <DoubleHorizontalBarChart.Skeleton />
         ) : (
-          <StackedBarChart
-            xAxis={data?.data.xAxis}
-            series={data?.data.series}
+          <DoubleHorizontalBarChart
+            data={
+              data?.data.series.map(({ name, data }) => ({
+                name,
+                proceeds: Number(data[0]) || 0,
+                writeOff: Number(data[1]) || 0,
+              })) || []
+            }
+            isLoading={false}
           />
         )}
       </CardContent>

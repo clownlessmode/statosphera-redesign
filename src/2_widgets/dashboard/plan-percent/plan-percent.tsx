@@ -1,17 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 
-import { StackedBarChart } from "@shared/ui/graphs/stacked-bars/stacked-bars";
-import { SalesStructure as SalesStructureType } from "@pages/dashboard/api/types";
+import { RadarChart } from "@shared/ui/graphs/radar-chart/radar-chart";
+
 interface PlanPercentProps {
   isLoading: boolean;
-  data: SalesStructureType | undefined;
+  planAvgCheckForecastPercent: number | undefined;
+  planCheckForecastPercent: number | undefined;
+  planProceedsForecastPercent: number | undefined;
+  planProceedsQcForecastPercent: number | null;
+  planShareOfPaymentsQcForecastPercent: number | null;
 }
-const PlanPercent = ({ isLoading, data }: PlanPercentProps) => {
+const PlanPercent = ({
+  isLoading,
+  planAvgCheckForecastPercent,
+  planCheckForecastPercent,
+  planProceedsForecastPercent,
+  planProceedsQcForecastPercent,
+  planShareOfPaymentsQcForecastPercent,
+}: PlanPercentProps) => {
   return (
     <Card className="w-full h-[400px] flex flex-col">
       <CardHeader>
-        {isLoading && !data ? (
+        {isLoading ? (
           <CardTitle>
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>
@@ -20,12 +31,23 @@ const PlanPercent = ({ isLoading, data }: PlanPercentProps) => {
         )}
       </CardHeader>
       <CardContent className="flex-1">
-        {(isLoading && !data) || !data?.data.xAxis || !data?.data.series ? (
-          <StackedBarChart.Skeleton />
+        {isLoading ? (
+          <RadarChart.Skeleton />
         ) : (
-          <StackedBarChart
-            xAxis={data?.data.xAxis}
-            series={data?.data.series}
+          <RadarChart
+            data={[
+              { name: "Выручка", value: planProceedsForecastPercent || 0 },
+              { name: "Чеки", value: planCheckForecastPercent || 0 },
+              { name: "Ср. чек", value: planAvgCheckForecastPercent || 0 },
+              {
+                name: "Применение QC",
+                value: planProceedsQcForecastPercent || 0,
+              },
+              {
+                name: "Выручка QC",
+                value: planShareOfPaymentsQcForecastPercent || 0,
+              },
+            ]}
           />
         )}
       </CardContent>

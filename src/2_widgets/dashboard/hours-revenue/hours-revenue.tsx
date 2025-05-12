@@ -1,13 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
+import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { Skeleton } from "@shared/ui/skeleton";
 
-import { StackedBarChart } from "@shared/ui/graphs/stacked-bars/stacked-bars";
-import { SalesStructure as SalesStructureType } from "@pages/dashboard/api/types";
 interface HoursRevenueProps {
   isLoading: boolean;
-  data: SalesStructureType | undefined;
+  data: any | undefined;
 }
 const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
+  const prepareLine = usePreparedStackedLine();
+  console.log(data);
   return (
     <Card className="w-full h-[400px] flex flex-col">
       <CardHeader>
@@ -20,12 +22,35 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
         )}
       </CardHeader>
       <CardContent className="flex-1">
-        {(isLoading && !data) || !data?.data.xAxis || !data?.data.series ? (
-          <StackedBarChart.Skeleton />
+        {isLoading && !data ? (
+          <StackedLine.Skeleton />
         ) : (
-          <StackedBarChart
-            xAxis={data?.data.xAxis}
-            series={data?.data.series}
+          <StackedLine
+            className="border-none"
+            option={{
+              grid: {
+                top: 0,
+                left: 10,
+                right: 10,
+                bottom: 0,
+                containLabel: true,
+              },
+              legend: {
+                data: ["Выбранный период", "Прошлый год"],
+              },
+              toolbox: {
+                show: false,
+              },
+
+              yAxis: {
+                type: "value",
+                axisLine: { show: false },
+                axisTick: { show: false },
+                axisLabel: { show: false },
+                splitLine: { show: false },
+              },
+              series: data && prepareLine(data),
+            }}
           />
         )}
       </CardContent>

@@ -3,7 +3,6 @@ import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { useMemo, useState } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
-import { Skeleton } from "@shared/ui/skeleton";
 
 type DonutChartProps = {
   data: { name: string; value: number }[];

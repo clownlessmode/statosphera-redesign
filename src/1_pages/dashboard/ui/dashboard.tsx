@@ -20,6 +20,8 @@ import HoursRevenue from "@widgets/dashboard/hours-revenue/hours-revenue";
 import PlanPercent from "@widgets/dashboard/plan-percent/plan-percent";
 import TopWriteoffs from "@widgets/dashboard/top-writeoffs/top-writeoffs";
 import AntiLoyalTop from "@widgets/dashboard/anti-loyal-top/anti-loyal-top";
+import TodayRevenue from "@widgets/dashboard/today-revenue/today-revenue";
+import TodayCheck from "@widgets/dashboard/today-check/today-check";
 
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
@@ -27,7 +29,7 @@ const Dashboard = () => {
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
-      <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
+      <div className="rounded-3xl h-fit bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
         <WeeklyRevenue
           data={dashboard?.salesSevenDays}
           isLoading={isDashboardLoading}
@@ -131,22 +133,58 @@ const Dashboard = () => {
             storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
           />
         </div>
-        <HoursRevenue isLoading={isDashboardLoading} data={undefined} />
-        <PlanPercent isLoading={isDashboardLoading} data={undefined} />
-        <TopWriteoffs isLoading={isDashboardLoading} data={undefined} />
+        <HoursRevenue
+          isLoading={isDashboardLoading}
+          data={dashboard?.salesHours.data.graph}
+        />
+        <PlanPercent
+          isLoading={isDashboardLoading}
+          planAvgCheckForecastPercent={
+            dashboard?.cardOneExe.data?.[0]?.planAvgCheckForecastPercent
+          }
+          planCheckForecastPercent={
+            dashboard?.cardOneExe.data?.[0]?.planCheckForecastPercent
+          }
+          planProceedsForecastPercent={
+            dashboard?.cardOneExe.data?.[0]?.planProceedsForecastPercent
+          }
+          planProceedsQcForecastPercent={
+            dashboard?.cardOneExe.data?.[0]?.planProceedsQcForecastPercent ||
+            null
+          }
+          planShareOfPaymentsQcForecastPercent={
+            dashboard?.cardOneExe.data?.[0]
+              ?.planShareOfPaymentsQcForecastPercent || null
+          }
+        />
+        <TopWriteoffs
+          isLoading={isDashboardLoading}
+          data={dashboard?.topWriteOff}
+        />
         <AntiLoyalTop isLoading={isDashboardLoading} data={undefined} />
         <div className="flex flex-col gap-2 max-h-[400px]">
-          {/* <Loyalty
+          <TodayRevenue
             isLoading={isDashboardLoading}
-            proceeds={dashboard?.curentAppLoyal.data?.[0]?.proceeds}
-            proceedsYoY={dashboard?.curentAppLoyal.data?.[0]?.proceedsYoY}
-            proceedsYoYPercent={
-              dashboard?.curentAppLoyal.data?.[0]?.proceedsYoYPercent
+            negative={dashboard?.salesHours.data?.card1.negative}
+            proceedsTotal={dashboard?.salesHours.data?.card1.proceedsTotal}
+            proceedsWoYPercent={
+              dashboard?.salesHours.data?.card1.proceedsWoWPercent
+            }
+            weekAgoProceedsTotal={
+              dashboard?.salesHours.data?.card1.weekAgoProceedsTotal
             }
           />
-          */}
-          <p>Выручка сегодня</p>
-          <p>Чеки сегодня</p>
+          <TodayCheck
+            isLoading={isDashboardLoading}
+            negative={dashboard?.salesHours.data?.card2.negative}
+            proceedsTotal={dashboard?.salesHours.data?.card2.proceedsTotal}
+            proceedsWoYPercent={
+              dashboard?.salesHours.data?.card2.proceedsWoWPercent
+            }
+            weekAgoProceedsTotal={
+              dashboard?.salesHours.data?.card2.weekAgoProceedsTotal
+            }
+          />
         </div>
       </div>
     </div>
