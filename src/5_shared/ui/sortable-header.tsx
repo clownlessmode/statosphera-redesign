@@ -15,7 +15,7 @@ export function SortableHeader<TData>({
 
   const handleSort = () => {
     // Цикл сортировки: asc -> desc -> off
-    column.toggleSorting(isSorted === "asc");
+    column.toggleSorting(isSorted === "desc");
   };
 
   return (

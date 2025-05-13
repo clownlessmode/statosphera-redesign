@@ -22,7 +22,7 @@ const DownloadReport = () => {
       ...payload,
       values: payload.values,
       groups: payload.groups,
-      sorts: { colId: [payload.values[0]], sort: "asc" },
+      sorts: { colId: [payload.values[0]], sort: "desc" },
       typeFile,
     });
     setIsOpen(false);

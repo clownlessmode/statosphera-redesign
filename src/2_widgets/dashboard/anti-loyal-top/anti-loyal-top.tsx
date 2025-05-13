@@ -21,7 +21,7 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
       </CardHeader>
       <CardContent className="flex-1">
         {(isLoading && !data) || !data?.data.xAxis || !data?.data.series ? (
-          <BarHorizontalChart.Skeleton sort="desc" />
+          <BarHorizontalChart.Skeleton sort="asc" />
         ) : (
           //   <BarHorizontalChart
           //     labels={data?.data.xAxis}

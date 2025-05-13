@@ -75,7 +75,7 @@ const Report: FC = () => {
               : allData.values[0],
           ],
           groups: [value],
-          sorts: { colId: [allData.values[0]], sort: "asc" },
+          sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
       ]);
       setGraph(graph);
@@ -101,7 +101,7 @@ const Report: FC = () => {
           },
           offset: startRow,
           limit: endRow - startRow,
-          sorts: { colId: [payload.values[0]], sort: "asc" },
+          sorts: { colId: [payload.values[0]], sort: "desc" },
           groups: payload.groups,
         });
       }
@@ -128,7 +128,7 @@ const Report: FC = () => {
         },
         offset: startRow,
         limit: endRow - startRow,
-        sorts: { colId: [payload.values[0]], sort: "asc" },
+        sorts: { colId: [payload.values[0]], sort: "desc" },
         groups: payload.groups,
       });
     },
