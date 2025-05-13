@@ -59,7 +59,7 @@ export enum FULL_GROUPS_SERVER {
   LOYAL_AGE = "loyalAge",
   CASH_BOX = "cashBox",
   TYPE = "type",
-  ID_DISCOUNT = "idDiscount",
+  ID_DISCOUNT = "discountType",
 }
 
 export enum GROUPINGS {

@@ -256,7 +256,7 @@ const Report: FC = () => {
               fetchData={fetchData as any}
               totalData={total as any}
               onCellClick={onCellClick}
-              filterKey={filterKey} // Pass the filter key to force reset when filters change
+              filterKey={filterKey}
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
