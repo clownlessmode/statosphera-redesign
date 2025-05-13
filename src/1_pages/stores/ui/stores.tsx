@@ -8,16 +8,17 @@ import StoresMap from "./stores-map";
 import { Input } from "@shared/ui/input";
 import { Button } from "@shared/ui/button";
 import { useMemo, useState } from "react";
-import { STORES_MOCK } from "@shared/constants/mock/stores-mock";
 import { columns } from "../model/columns";
+import { useStoresController } from "../model/api/controller";
+import Spinner from "@shared/ui/spinner";
 
 const Stores = () => {
   const [search, setSearch] = useState("");
-  const data = STORES_MOCK;
+  const { stores: data, isStoresLoading } = useStoresController();
 
   // Фильтрация данных по всем полям
   const filteredData = useMemo(() => {
-    if (!search.trim()) return data;
+    if (!search.trim() || !data) return data;
 
     const lowerSearch = search.toLowerCase();
 
@@ -56,23 +57,29 @@ const Stores = () => {
 
           <TabsContent value="stores">
             <div className="overflow-x-auto w-full max-w-full">
-              <DataTable
-                columns={columns}
-                data={filteredData}
-                onRowClick={(row) => console.log("row clicked", row)}
-                renderRowDialog={({ row, isOpen, onClose }) => (
-                  <StoreDetails
-                    row={row}
-                    open={isOpen}
-                    onOpenChange={(open) => !open && onClose()}
-                  />
-                )}
-              />
+              {isStoresLoading ? (
+                <div className="flex justify-center items-center h-full min-h-[70vh] w-full">
+                  <Spinner />
+                </div>
+              ) : (
+                <DataTable
+                  columns={columns}
+                  data={filteredData || []}
+                  onRowClick={(row) => console.log("row clicked", row)}
+                  renderRowDialog={({ row, isOpen, onClose }) => (
+                    <StoreDetails
+                      row={row}
+                      open={isOpen}
+                      onOpenChange={(open) => !open && onClose()}
+                    />
+                  )}
+                />
+              )}
             </div>
           </TabsContent>
 
           <TabsContent value="map">
-            <StoresMap stores={filteredData} />
+            <StoresMap stores={filteredData || []} />
           </TabsContent>
         </Tabs>
       </div>

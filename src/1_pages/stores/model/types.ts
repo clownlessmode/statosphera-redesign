@@ -27,4 +27,5 @@ export type Store = {
   walkingDelivery: string | null;
   startDate: string | null;
   endDate: string | null;
+  polygon: number[] | null;
 };
