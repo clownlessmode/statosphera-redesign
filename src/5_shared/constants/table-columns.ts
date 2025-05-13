@@ -439,14 +439,6 @@ export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
   {
-    field: COLUMN_KEY.DISCOUNT_TYPE,
-    headerName: "Тип скидки",
-    headerTooltip: "Тип скидки",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-  },
-  {
     field: COLUMN_KEY.ITR,
     headerName: "Коэффициент оборачиваемости ITR",
     headerTooltip: "Коэффициент оборачиваемости ITR",
@@ -3776,6 +3768,7 @@ export type ColumnPickerProps = {
 };
 
 export enum ColumnsKeyGroupings {
+  DISCOUNT_TYPE = "discountType",
   TYPE = "type",
   IS_IM = "isIm",
   IM_TYPE_ORDER = "imTypeOrder",
@@ -4010,6 +4003,12 @@ export const tableConfig: ColDef<any>[] = [
   {
     field: ColumnsKeyGroupings.REGION,
     headerName: "Регион",
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    field: ColumnsKeyGroupings.DISCOUNT_TYPE,
+    headerName: "Тип скидки",
+    width: 300,
     cellStyle: { textAlign: "left" },
   },
   {

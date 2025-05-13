@@ -256,6 +256,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         onGridReady={onGridReady}
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
+        autoSizePadding={20}
         className="flex-1"
         overlayNoRowsTemplate="Нет данных для отображения"
         defaultColDef={defaultColDef}

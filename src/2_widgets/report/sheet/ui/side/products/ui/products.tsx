@@ -269,7 +269,7 @@ const Products: FC = () => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="subDivisionProducts"
               render={({ field }) => (
@@ -358,7 +358,7 @@ const Products: FC = () => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="groupsEconomist"

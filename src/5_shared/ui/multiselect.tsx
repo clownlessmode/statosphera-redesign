@@ -207,7 +207,9 @@ export const MultiSelect = React.forwardRef<
           onEscapeKeyDown={() => handlePopoverOpenChange(false)}
         >
           <Command>
-            {!isLoading && <CommandInput placeholder="Поиск..." />}
+            {!isLoading && options && options.length > 0 && (
+              <CommandInput placeholder="Поиск..." />
+            )}
             <CommandList>
               {isLoading ? (
                 <CommandGroup>
@@ -222,22 +224,24 @@ export const MultiSelect = React.forwardRef<
                 <>
                   <CommandEmpty>Ничего не найдено</CommandEmpty>
                   <CommandGroup>
-                    <CommandItem
-                      onSelect={toggleAll}
-                      className="cursor-pointer"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
-                          selectedValues.length === options.length
-                            ? "bg-primary text-foreground"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
+                    {options && options.length > 0 && (
+                      <CommandItem
+                        onSelect={toggleAll}
+                        className="cursor-pointer"
                       >
-                        <CheckIcon className="h-4 w-4 text-primary-foreground" />
-                      </div>
-                      <span>Выбрать всё</span>
-                    </CommandItem>
+                        <div
+                          className={cn(
+                            "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
+                            selectedValues.length === options.length
+                              ? "bg-primary text-foreground"
+                              : "opacity-50 [&_svg]:invisible"
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                        <span>Выбрать всё</span>
+                      </CommandItem>
+                    )}
                     {options.map((option) => (
                       <CommandItem
                         key={option.value}
@@ -262,30 +266,32 @@ export const MultiSelect = React.forwardRef<
                     ))}
                   </CommandGroup>
                   <CommandSeparator />
-                  <CommandGroup>
-                    <div className="flex items-center justify-between">
-                      {selectedValues.length > 0 && (
-                        <>
-                          <CommandItem
-                            onSelect={handleClear}
-                            className="flex-1 justify-center cursor-pointer"
-                          >
-                            Очистить
-                          </CommandItem>
-                          <Separator
-                            orientation="vertical"
-                            className="flex min-h-6 h-full"
-                          />
-                        </>
-                      )}
-                      <CommandItem
-                        onSelect={() => handlePopoverOpenChange(false)}
-                        className="flex-1 justify-center cursor-pointer max-w-full"
-                      >
-                        Закрыть
-                      </CommandItem>
-                    </div>
-                  </CommandGroup>
+                  {value && value.length > 0 && (
+                    <CommandGroup>
+                      <div className="flex items-center justify-between">
+                        {selectedValues.length > 0 && (
+                          <>
+                            <CommandItem
+                              onSelect={handleClear}
+                              className="flex-1 justify-center cursor-pointer"
+                            >
+                              Очистить
+                            </CommandItem>
+                            <Separator
+                              orientation="vertical"
+                              className="flex min-h-6 h-full"
+                            />
+                          </>
+                        )}
+                        <CommandItem
+                          onSelect={() => handlePopoverOpenChange(false)}
+                          className="flex-1 justify-center cursor-pointer max-w-full"
+                        >
+                          Закрыть
+                        </CommandItem>
+                      </div>
+                    </CommandGroup>
+                  )}
                 </>
               )}
             </CommandList>

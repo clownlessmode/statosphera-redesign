@@ -68,7 +68,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getEconomist(dto: any): Promise<GroupEconomistFilterResponse[]> {
-    const response = await api.post<any>("products/economist", {
+    const response = await api.post<any>("products-eco/economist", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -94,7 +94,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getTypeSender(dto: any): Promise<TypeSenderFilterResponse[]> {
-    const response = await api.post<any>("products/type", {
+    const response = await api.post<any>("products-type/type", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -107,7 +107,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getSeasons(dto: any): Promise<SeasonFilterResponse[]> {
-    const response = await api.post<any>("products/seasonality", {
+    const response = await api.post<any>("products-seas/seasonality", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -120,7 +120,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getGroup(dto: any): Promise<GroupMainFilterResponse[]> {
-    const response = await api.post<any>("products/main", {
+    const response = await api.post<any>("products-main/main", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -133,7 +133,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getSubGroup(dto: any): Promise<SubgroupFilterResponse[]> {
-    const response = await api.post<any>("products/sub", {
+    const response = await api.post<any>("products-sub/sub", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -146,7 +146,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getSubSubGroup(dto: any): Promise<SubSubGroupFilterResponse[]> {
-    const response = await api.post<any>("products/sub-sub", {
+    const response = await api.post<any>("products-sub-sub/sub-sub", {
       ...dto,
       filters: {
         ...dto.filters,

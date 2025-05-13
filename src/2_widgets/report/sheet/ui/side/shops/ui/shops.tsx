@@ -35,7 +35,7 @@ import { create } from "zustand";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 import { useSession } from "@entities/session";
-import { Plus } from "lucide-react";
+import { Eraser, Plus } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { X } from "lucide-react";
 import { useFilters } from "@entities/report/model/api/filters/shops/controller";
@@ -64,18 +64,21 @@ export const useSelectedOptionsStore = create<SelectedOptionsState>(
     setShops: (opts: MultiSelectOption[]) => set({ shops: opts }),
   })
 );
+
 interface ShopsMyStore {
   shopss: MultiSelectOption[];
   my: boolean;
   setShops: (opts: MultiSelectOption[]) => void;
   setMy: (my: boolean) => void;
 }
+
 export const useShopsMyStore = create<ShopsMyStore>((set) => ({
   shopss: [],
   my: false,
   setShops: (opts: MultiSelectOption[]) => set({ shopss: opts }),
   setMy: (my: boolean) => set({ my }),
 }));
+
 const Shops: FC = () => {
   const {
     partners,
@@ -91,15 +94,38 @@ const Shops: FC = () => {
   const { my, setMy, shopss, setShops: setShopss } = useShopsMyStore();
   const addReset = useFormResetStore((s) => s.addReset);
   const removeReset = useFormResetStore((s) => s.removeReset);
+  const { updateStoreFilter, getApiPayload } = useFiltersStore();
+  const allData = getApiPayload();
+  const storeFilters = getApiPayload().filters.store;
 
+  // First load effect - initialize saved filters
   useEffect(() => {
+    // Add reset handler
     addReset(form.reset);
+
+    // Get saved idStore from store filters when component mounts
+    const savedIdStore = storeFilters.idStore || [];
+
+    // Check if we have saved shops and they match the session shops (for "my" state)
+    const sessionStores = (session?.idStore as number[]) || [];
+
+    // Set "my" state based on saved filters
+    if (
+      savedIdStore.length > 0 &&
+      sessionStores.length > 0 &&
+      savedIdStore.length === sessionStores.length &&
+      savedIdStore.every((id) => sessionStores.includes(id))
+    ) {
+      setMy(true);
+    } else if (savedIdStore.length > 0) {
+      // We have saved shops, but they're not "my shops"
+      form.setValue("idStore", savedIdStore);
+    }
+
     return () => {
       removeReset(form.reset);
     };
-  }, [form.reset, addReset, removeReset]);
-  const { updateStoreFilter, getApiPayload } = useFiltersStore();
-  const allData = getApiPayload();
+  }, []);
 
   const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
     usePartners(allData);
@@ -109,6 +135,7 @@ const Shops: FC = () => {
     useCities(allData);
   const { handleOpenShopsSelect, isShopsLoading, shopsOptions } =
     useShops(allData);
+
   const effectivePartnerOptions = useMemo<MultiSelectOption[]>(() => {
     const map = new Map<string, MultiSelectOption>();
     // сначала ставим свежие опции
@@ -148,6 +175,7 @@ const Shops: FC = () => {
   const { session } = useSession();
   const { getShops: getShopsApi } = useFilters();
 
+  // Load "my shops" data
   useEffect(() => {
     const fetchShops = async () => {
       const response = await getShopsApi({
@@ -169,29 +197,94 @@ const Shops: FC = () => {
     fetchShops();
   }, []);
 
+  // Sync selected shops with store when form values or "my" status changes
   useEffect(() => {
+    const currentIdStore = form.getValues("idStore") || [];
+
     if (my) {
-      form.setValue("idStore", session?.idStore as number[]);
-      updateStoreFilter("idStore", session?.idStore as number[]);
-      setShops(
-        effectiveShopsOptions.filter((o) =>
-          (session?.idStore as number[]).includes(Number(o.value))
-        )
+      const sessionStores = (session?.idStore as number[]) || [];
+      form.setValue("idStore", sessionStores);
+      updateStoreFilter("idStore", sessionStores);
+
+      // Update selected options display
+      if (sessionStores.length > 0) {
+        const selectedShopOptions = effectiveShopsOptions.filter((o) =>
+          sessionStores.includes(Number(o.value))
+        );
+
+        // If we don't have labels for these shops yet, use the shopss from "my shops"
+        if (selectedShopOptions.length === 0) {
+          setShops(
+            shopss.filter((o) => sessionStores.includes(Number(o.value)))
+          );
+        } else {
+          setShops(selectedShopOptions);
+        }
+      }
+    } else if (currentIdStore.length > 0) {
+      // If not in "my" mode but we have selected shops, ensure store is updated
+      updateStoreFilter("idStore", currentIdStore);
+
+      // Make sure the shops list in the store is updated with current selections
+      const selectedOptions = effectiveShopsOptions.filter((o) =>
+        currentIdStore.includes(Number(o.value))
       );
+
+      if (selectedOptions.length > 0) {
+        setShops(selectedOptions);
+      }
     }
-    if (!my) {
-      form.setValue("idStore", []);
-      updateStoreFilter("idStore", []);
-      setShops([]);
-    }
-  }, [my]);
+  }, [my, effectiveShopsOptions.length]);
+
+  // // Handle "my shops" toggle
+  // const handleMyShopsToggle = () => {
+  //   const newMyState = !my;
+  //   setMy(newMyState);
+
+  //   if (newMyState) {
+  //     // Turning on "my shops"
+  //     const sessionStores = (session?.idStore as number[]) || [];
+  //     form.setValue("idStore", sessionStores);
+  //     updateStoreFilter("idStore", sessionStores);
+
+  //     // Update selected options display
+  //     const selectedOptions = shopss.filter((o) =>
+  //       sessionStores.includes(Number(o.value))
+  //     );
+  //     setShops(selectedOptions);
+  //   } else {
+  //     // Turning off "my shops" - clear selection
+  //     form.setValue("idStore", []);
+  //     updateStoreFilter("idStore", []);
+  //     setShops([]);
+  //   }
+  // };
+
   return (
     <Card className="w-full mr-4">
       <CardHeader>
         <CardTitle>Магазины</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>Фильтруйте данные по магазинам</CardDescription>
-          <ClearFilters form={form} />
+          <Button
+            size="sm"
+            className="text-muted-foreground"
+            variant="outline"
+            onClick={() => {
+              form.reset({
+                idStore: [],
+                channel: [],
+                storeCondition: [],
+                ageGroup: [],
+                idManager: [],
+                idRegion: [],
+                idCity: [],
+              });
+              setMy(false);
+            }}
+          >
+            Очистить фильтры <Eraser className="text-primary/80" />
+          </Button>{" "}
         </div>
       </CardHeader>
       <CardContent>
