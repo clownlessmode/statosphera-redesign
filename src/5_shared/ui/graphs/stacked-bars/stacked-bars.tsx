@@ -2,7 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { useMemo } from "react";
-import { Skeleton } from "@shared/ui/skeleton";
+
 import { graphColors } from "@shared/constants/graph-colors";
 
 type SeriesItem = {

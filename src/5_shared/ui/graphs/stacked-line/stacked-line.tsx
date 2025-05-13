@@ -1,4 +1,4 @@
-import { FC, CSSProperties, useMemo, useRef, useEffect } from "react";
+import { CSSProperties, useMemo, useRef, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts"; // обязательно импортируем core ECharts
 import { Card } from "@shared/ui/card";

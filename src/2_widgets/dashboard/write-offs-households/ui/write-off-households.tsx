@@ -1,5 +1,3 @@
-import { ArrowBigDownDash, ExternalLink } from "lucide-react";
-import { Link } from "react-router";
 import {
   Card,
   CardContent,

@@ -1,4 +1,3 @@
-import { YoYBlock } from "@pages/dashboard/api/types";
 import {
   Card,
   CardContent,

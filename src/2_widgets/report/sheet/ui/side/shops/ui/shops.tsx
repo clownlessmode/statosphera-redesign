@@ -1,4 +1,3 @@
-import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   Card,
   CardContent,
@@ -16,7 +15,7 @@ import {
   FormMessage,
 } from "@shared/ui/form";
 import { MultiSelect } from "@shared/ui/multiselect";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { channel, status, time } from "../model/mock";
 import useForm, {
   useCities,

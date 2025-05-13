@@ -22,8 +22,8 @@ export const columns: ColumnDef<Grill>[] = [
   {
     id: "actions",
     header: "", // или "Действия"
-    cell: ({ row }) => {
-      const grill = row.original;
+    cell: () => {
+      // const grill = row.original;
       return (
         <Dialog>
           <DialogTrigger asChild>

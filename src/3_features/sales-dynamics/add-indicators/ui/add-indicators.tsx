@@ -24,7 +24,7 @@ import { useSalesDynamicsIndicatorsController } from "../model/api/controller";
 import { Group, UpdateIndicatorsRequest } from "../model/api/types";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { Badge } from "@shared/ui/badge";
-import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
+
 interface Props {
   defaultValues: string[];
 }

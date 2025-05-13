@@ -24,7 +24,6 @@ import { DialogContent } from "@shared/ui/dialog";
 import { DialogTrigger } from "@shared/ui/dialog";
 import { Dialog } from "@shared/ui/dialog";
 import { Skeleton } from "@shared/ui/skeleton";
-import { useSalesDynamicsIndicatorsController } from "@features/sales-dynamics/add-indicators/model/api/controller";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента

@@ -2,10 +2,10 @@ import { Input } from "@shared/ui/input";
 import { Header } from "@widgets/header";
 import { mock } from "../model/mock";
 
-import { nomenclatureColumns } from "../model/col-defs";
-import UniversalTable from "@pages/report/ui/table";
-import EditProduct, { Product } from "./edit-product";
-import InfinityTable from "@pages/report/ui/table/infinite-table";
+// import { nomenclatureColumns } from "../model/col-defs";
+// import UniversalTable from "@pages/report/ui/table";
+import EditProduct from "./edit-product";
+// import InfinityTable from "@pages/report/ui/table/infinite-table";
 const Products = () => {
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
