@@ -430,6 +430,7 @@ export enum COLUMN_KEY {
   PROCEEDS_IM_LY = "proceedsImLY",
   PROCEEDS_IM_YOY = "proceedsImYoY",
   PROCEEDS_IM_YOY_PERCENT = "proceedsImYoYPercent",
+  DISCOUNT_TYPE = "discountType",
 }
 
 export const formatNumber = (value: number) =>
@@ -437,6 +438,14 @@ export const formatNumber = (value: number) =>
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
+  {
+    field: COLUMN_KEY.DISCOUNT_TYPE,
+    headerName: "Тип скидки",
+    headerTooltip: "Тип скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
   {
     field: COLUMN_KEY.ITR,
     headerName: "Коэффициент оборачиваемости ITR",

@@ -124,7 +124,7 @@ export const loyal = [
   },
   {
     label: "Тип скидки",
-    value: GROUPINGS.DISCOUNT,
+    value: GROUPINGS.DISCOUNT_TYPE,
   },
 ];
 
