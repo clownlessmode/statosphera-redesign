@@ -13,7 +13,7 @@ export class NotificationService {
   }
 
   static async getCountNotifications(): Promise<number> {
-    const response = await api.get<number>(`notifications`);
+    const response = await api.get<number>(`count_alert`);
     return response.data;
   }
   static async readNotification(id: number): Promise<Notification> {
