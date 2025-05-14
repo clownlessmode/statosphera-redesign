@@ -195,15 +195,15 @@ import { Header } from "@widgets/header";
 
 // export default Dashboard;
 
-const dashboard = () => {
+const Dashboard = () => {
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
       <div className="rounded-3xl h-fit bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-        dashboard
+        dashboard content
       </div>
     </div>
   );
 };
 
-export default dashboard;
+export default Dashboard;
