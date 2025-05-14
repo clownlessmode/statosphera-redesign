@@ -1,15 +1,20 @@
 // import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
-import { Header } from "@widgets/header";
+// import { Header } from "@widgets/header";
 // import { useDashboard } from "../api/controller";
 
 const Dashboard = () => {
   // const { dashboard, isDashboardLoading } = useDashboard();
   // console.log(dashboard, isDashboardLoading);
   return (
-    <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
-      <Header title="Главная" />
-      <div className="rounded-3xl h-full min-h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"></div>
-    </div>
+    <>
+      <div>
+        <h1>Dashboard</h1>
+      </div>
+    </>
+    // <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
+    //   <Header title="Главная" />
+    //   <div className="rounded-3xl h-full min-h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"></div>
+    // </div>
   );
 };
 
