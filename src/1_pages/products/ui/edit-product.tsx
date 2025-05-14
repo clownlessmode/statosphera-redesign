@@ -59,7 +59,7 @@ interface Props {
 const EditProduct: FC<Props> = ({ product }) => {
   const form = useForm();
   return (
-    <Dialog open={true}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button variant={"link"} size={"icon"}>
           <Settings />
