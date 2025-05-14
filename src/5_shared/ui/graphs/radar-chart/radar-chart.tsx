@@ -3,6 +3,7 @@ import { useTheme } from "@app/providers/theme-provider";
 
 import { useMemo } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
+import RadarChartSkeleton from "./radar-chart-skeleton";
 
 type RadarChartProps = {
   data: { name: string; value: number }[];
@@ -135,7 +136,7 @@ export const RadarChart = ({
       {isLoading ? (
         <div className="w-full h-full flex items-center justify-center">
           {/* Можно вставить ваш скелетон */}
-          <RadarChart.Skeleton />
+          <RadarChartSkeleton />
         </div>
       ) : (
         <ReactECharts
@@ -148,10 +149,3 @@ export const RadarChart = ({
     </div>
   );
 };
-
-RadarChart.Skeleton = () => (
-  <div className="w-full h-full flex items-center justify-center">
-    <div className="w-[70%] aspect-square rounded-full bg-muted-foreground animate-pulse" />
-    <div className="w-[40%] aspect-square rounded-full bg-muted z-10" />
-  </div>
-);

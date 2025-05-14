@@ -4,9 +4,69 @@ import { lazy, Suspense } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
 import MarkupSkeleton from "@widgets/dashboard/markup/ui/markup-skeleton";
+import WriteOffIndicatorSkeleton from "@widgets/dashboard/write-offs-indicator/ui/write-offs-indicator-skeleton";
+import ChannelRevenueSkeleton from "@widgets/dashboard/channel-revenue/ui/channel-revenue-skeleton";
+import SalesStructureSkeleton from "@widgets/dashboard/sales-structure/sales-structure-skeleton";
+import CurrentRevenueSkeleton from "@widgets/dashboard/current-revenue/current-revenue-skeleton";
+import CurrentCheckSkeleton from "@widgets/dashboard/current-check/current-check-skeleton";
+import AverageCheckSkeleton from "@widgets/dashboard/avarage-check/avarage-check-skeleton";
+import TopWriteOffSkeleton from "@widgets/dashboard/top-writeoffs/top-writeoffs-skeleton";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
 );
+const WriteOffIndicator = lazy(
+  () =>
+    import("@widgets/dashboard/write-offs-indicator/ui/write-offs-indicator")
+);
+const WriteOffHouseholds = lazy(
+  () =>
+    import("@widgets/dashboard/write-offs-households/ui/write-off-households")
+);
+
+const ChannelRevenue = lazy(
+  () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue")
+);
+const SalesStructure = lazy(
+  () => import("@widgets/dashboard/sales-structure/sales-structure")
+);
+const CurrentRevenue = lazy(
+  () => import("@widgets/dashboard/current-revenue/current-revenue")
+);
+const CurrentCheck = lazy(
+  () => import("@widgets/dashboard/current-check/current-check")
+);
+const AverageCheck = lazy(
+  () => import("@widgets/dashboard/avarage-check/avarage-check")
+);
+const WriteoffsLeaders = lazy(
+  () => import("@widgets/dashboard/writeoffs-leaders/writeoffs-leaders")
+);
+const Loyalty = lazy(() => import("@widgets/dashboard/loaylty/loyalty"));
+const ImRevenue = lazy(
+  () => import("@widgets/dashboard/im-revenue/im-revenue")
+);
+const LeaderImSales = lazy(
+  () => import("@widgets/dashboard/leader-im-sales/leader-im-sales")
+);
+const HoursRevenue = lazy(
+  () => import("@widgets/dashboard/hours-revenue/hours-revenue")
+);
+const PlanPercent = lazy(
+  () => import("@widgets/dashboard/plan-percent/plan-percent")
+);
+const TopWriteoffs = lazy(
+  () => import("@widgets/dashboard/top-writeoffs/top-writeoffs")
+);
+const AntiLoyalTop = lazy(
+  () => import("@widgets/dashboard/anti-loyal-top/anti-loyal-top")
+);
+const TodayRevenue = lazy(
+  () => import("@widgets/dashboard/today-revenue/today-revenue")
+);
+const TodayCheck = lazy(
+  () => import("@widgets/dashboard/today-check/today-check")
+);
+
 const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
@@ -38,7 +98,7 @@ const Dashboard = () => {
               />
             </Suspense>
           </div>
-          {/* <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<WriteOffIndicatorSkeleton />}>
             <WriteOffIndicator
               isLoading={isDashboardLoading}
               writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
@@ -50,8 +110,8 @@ const Dashboard = () => {
                 dashboard?.curentWriteOff.data?.[0]?.writeOffYoYPercent
               }
             />
-          </Suspense> */}
-          {/* <Suspense fallback={<div>Loading...</div>}>
+          </Suspense>
+          <Suspense fallback={<WriteOffIndicatorSkeleton />}>
             <WriteOffHouseholds
               isLoading={isDashboardLoading}
               householdGoods={
@@ -66,33 +126,23 @@ const Dashboard = () => {
               householdGoodsYoYPercent={
                 dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
               }
-            /> 
-          </Suspense>*/}
+            />
+          </Suspense>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default Dashboard;
-
-{
-  /* <WeeklyRevenueSkeleton />
-        
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<ChannelRevenueSkeleton />}>
           <ChannelRevenue
             isLoading={isDashboardLoading}
             data={dashboard?.salesChannel}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SalesStructureSkeleton />}>
           <SalesStructure
             isLoading={isDashboardLoading}
             data={dashboard?.salesStructure}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <div className="flex flex-col gap-2 max-h-[400px]">
+        <div className="flex flex-col gap-2 max-h-[400px]">
+          <Suspense fallback={<CurrentRevenueSkeleton />}>
             <CurrentRevenue
               isLoading={isDashboardLoading}
               proceeds={dashboard?.curentMonth.data?.[0]?.proceeds}
@@ -101,6 +151,8 @@ export default Dashboard;
                 dashboard?.curentMonth.data?.[0]?.proceedsYoYPercent
               }
             />
+          </Suspense>
+          <Suspense fallback={<CurrentCheckSkeleton />}>
             <CurrentCheck
               isLoading={isDashboardLoading}
               check={dashboard?.curentCheck.data?.[0]?.check}
@@ -109,6 +161,8 @@ export default Dashboard;
                 dashboard?.curentCheck.data?.[0]?.checkYoYPercent
               }
             />
+          </Suspense>
+          <Suspense fallback={<AverageCheckSkeleton />}>
             <AverageCheck
               isLoading={isDashboardLoading}
               avgCheck={dashboard?.curentAvgCheck.data?.[0]?.avgCheck}
@@ -117,9 +171,9 @@ export default Dashboard;
                 dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoYPercent
               }
             />
-          </div>
-        </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
+          </Suspense>
+        </div>
+        <Suspense fallback={<TopWriteOffSkeleton />}>
           <WriteoffsLeaders
             data={dashboard?.leaderWriteOffs}
             isLoading={isDashboardLoading}
@@ -213,66 +267,19 @@ export default Dashboard;
               }
             />
           </div>
-        </Suspense> */
+        </Suspense>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
+{
+  /* 
+       
+         
+         
+         
+         */
 }
-
-// import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
-// import { lazy } from "react";
-// import { Suspense } from "react";
-
-// import { lazy, Suspense } from "react";
-// import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
-// const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
-// const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
-// const WriteOffIndicator = lazy(
-//   () =>
-//     import("@widgets/dashboard/write-offs-indicator/ui/write-offs-indicator")
-// );
-// const WriteOffHouseholds = lazy(
-//   () =>
-//     import("@widgets/dashboard/write-offs-households/ui/write-off-households")
-// );
-
-// const ChannelRevenue = lazy(
-//   () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue")
-// );
-// const SalesStructure = lazy(
-//   () => import("@widgets/dashboard/sales-structure/sales-structure")
-// );
-// const CurrentRevenue = lazy(
-//   () => import("@widgets/dashboard/current-revenue/current-revenue")
-// );
-// const CurrentCheck = lazy(
-//   () => import("@widgets/dashboard/current-check/current-check")
-// );
-// const AverageCheck = lazy(
-//   () => import("@widgets/dashboard/avarage-check/avarage-check")
-// );
-// const WriteoffsLeaders = lazy(
-//   () => import("@widgets/dashboard/writeoffs-leaders/writeoffs-leaders")
-// );
-// const Loyalty = lazy(() => import("@widgets/dashboard/loaylty/loyalty"));
-// const ImRevenue = lazy(
-//   () => import("@widgets/dashboard/im-revenue/im-revenue")
-// );
-// const LeaderImSales = lazy(
-//   () => import("@widgets/dashboard/leader-im-sales/leader-im-sales")
-// );
-// const HoursRevenue = lazy(
-//   () => import("@widgets/dashboard/hours-revenue/hours-revenue")
-// );
-// const PlanPercent = lazy(
-//   () => import("@widgets/dashboard/plan-percent/plan-percent")
-// );
-// const TopWriteoffs = lazy(
-//   () => import("@widgets/dashboard/top-writeoffs/top-writeoffs")
-// );
-// const AntiLoyalTop = lazy(
-//   () => import("@widgets/dashboard/anti-loyal-top/anti-loyal-top")
-// );
-// const TodayRevenue = lazy(
-//   () => import("@widgets/dashboard/today-revenue/today-revenue")
-// );
-// const TodayCheck = lazy(
-//   () => import("@widgets/dashboard/today-check/today-check")
-// );

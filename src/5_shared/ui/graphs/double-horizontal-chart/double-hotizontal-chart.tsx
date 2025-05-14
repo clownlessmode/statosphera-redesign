@@ -3,7 +3,8 @@ import { useTheme } from "@app/providers/theme-provider";
 
 import { useMemo } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
-import { Skeleton } from "@shared/ui/skeleton";
+
+import DoubleHorizontalBarChartSkeleton from "./double-horizontal-chart-skeleton";
 
 type SeriesItem = {
   name: string;
@@ -110,7 +111,7 @@ export const DoubleHorizontalBarChart = ({
   return (
     <div className="w-full h-full">
       {isLoading ? (
-        <DoubleHorizontalBarChart.Skeleton />
+        <DoubleHorizontalBarChartSkeleton />
       ) : (
         <ReactECharts
           option={option}
@@ -119,25 +120,6 @@ export const DoubleHorizontalBarChart = ({
           style={{ height: "100%", width: "100%" }}
         />
       )}
-    </div>
-  );
-};
-
-DoubleHorizontalBarChart.Skeleton = () => {
-  return (
-    <div className="w-full h-full flex flex-col gap-[10px] items-start justify-end animate-pulse pb-1">
-      {Array.from({ length: 9 }).map((_, idx) => (
-        <div key={idx} className="flex flex-col gap-1">
-          <Skeleton
-            className="h-[10px] rounded-md bg-muted-foreground"
-            style={{ width: `${50 + Math.random() * 150}px` }}
-          />
-          <Skeleton
-            className="h-[10px] rounded-md bg-muted-foreground"
-            style={{ width: `${50 + Math.random() * 150}px` }}
-          />
-        </div>
-      ))}
     </div>
   );
 };
