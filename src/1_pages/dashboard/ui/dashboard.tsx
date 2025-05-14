@@ -2,9 +2,9 @@
 import { Header } from "@widgets/header";
 import { useDashboard } from "../api/controller";
 
-import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
-import { lazy } from "react";
-import { Suspense } from "react";
+// import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
+// import { lazy } from "react";
+// import { Suspense } from "react";
 
 // import { lazy, Suspense } from "react";
 // import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
@@ -18,9 +18,9 @@ import { Suspense } from "react";
 //   () =>
 //     import("@widgets/dashboard/write-offs-households/ui/write-off-households")
 // );
-const WeeklyRevenue = lazy(
-  () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
-);
+// const WeeklyRevenue = lazy(
+//   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
+// );
 // const ChannelRevenue = lazy(
 //   () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue")
 // );
