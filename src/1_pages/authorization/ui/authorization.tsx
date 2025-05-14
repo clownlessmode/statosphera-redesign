@@ -25,3 +25,5 @@ export const Authorization = () => {
     </SidebarProvider>
   );
 };
+
+export default Authorization;

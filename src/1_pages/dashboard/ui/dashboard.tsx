@@ -1,44 +1,36 @@
-// import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
-// import { Header } from "@widgets/header";
-// import { useDashboard } from "../api/controller";
-import { NotificationsBadge } from "@entities/notifications";
+import { Header } from "@widgets/header";
+import { useDashboard } from "../api/controller";
+import { lazy, Suspense } from "react";
+import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
+import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
+import MarkupSkeleton from "@widgets/dashboard/markup/ui/markup-skeleton";
+const WeeklyRevenue = lazy(
+  () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
+);
+const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
+const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
-  // const { dashboard, isDashboardLoading } = useDashboard();
-  // console.log(dashboard, isDashboardLoading);
+  const { dashboard, isDashboardLoading } = useDashboard();
+  console.log(dashboard, isDashboardLoading);
   return (
-    <>
-      <div>
-        <NotificationsBadge />
-        <h1>Dashboard</h1>
-      </div>
-    </>
-    // <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
-    //   <Header title="Главная" />
-    //   <div className="rounded-3xl h-full min-h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"></div>
-    // </div>
-  );
-};
-
-export default Dashboard;
-{
-  /* <Suspense fallback={}>
+    <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
+      <Header title="Главная" />
+      <div className="rounded-3xl h-full  bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
+        <Suspense fallback={<WeeklyRevenueSkeleton />}>
           <WeeklyRevenue
             data={dashboard?.salesSevenDays}
             isLoading={isDashboardLoading}
           />
-        </Suspense> */
-}
-{
-  /* <WeeklyRevenueSkeleton />
+        </Suspense>
         <div className="flex flex-col gap-2 h-fit ">
           <div className="flex flex-row gap-2">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<MarginSkeleton />}>
               <Margin
                 isLoading={isDashboardLoading}
                 data={dashboard?.curentMarzha.data?.[0]?.marginPercent}
               />
             </Suspense>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<MarkupSkeleton />}>
               <Markup
                 isLoading={isDashboardLoading}
                 percent={dashboard?.curentMarkup.data?.[0]?.markupPercent}
@@ -46,7 +38,7 @@ export default Dashboard;
               />
             </Suspense>
           </div>
-          <Suspense fallback={<div>Loading...</div>}>
+          {/* <Suspense fallback={<div>Loading...</div>}>
             <WriteOffIndicator
               isLoading={isDashboardLoading}
               writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
@@ -58,8 +50,8 @@ export default Dashboard;
                 dashboard?.curentWriteOff.data?.[0]?.writeOffYoYPercent
               }
             />
-          </Suspense>
-          <Suspense fallback={<div>Loading...</div>}>
+          </Suspense> */}
+          {/* <Suspense fallback={<div>Loading...</div>}>
             <WriteOffHouseholds
               isLoading={isDashboardLoading}
               householdGoods={
@@ -74,9 +66,19 @@ export default Dashboard;
               householdGoodsYoYPercent={
                 dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
               }
-            />
-          </Suspense>
+            /> 
+          </Suspense>*/}
         </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
+
+{
+  /* <WeeklyRevenueSkeleton />
+        
         <Suspense fallback={<div>Loading...</div>}>
           <ChannelRevenue
             isLoading={isDashboardLoading}
@@ -230,9 +232,7 @@ export default Dashboard;
 //   () =>
 //     import("@widgets/dashboard/write-offs-households/ui/write-off-households")
 // );
-// const WeeklyRevenue = lazy(
-//   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
-// );
+
 // const ChannelRevenue = lazy(
 //   () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue")
 // );

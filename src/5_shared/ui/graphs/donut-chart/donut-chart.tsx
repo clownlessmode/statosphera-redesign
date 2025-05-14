@@ -3,6 +3,7 @@ import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { useMemo, useState } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
+import DonutChartSkeleton from "./donut-chart-skeleton";
 
 type DonutChartProps = {
   data: { name: string; value: number }[];
@@ -114,7 +115,7 @@ export const DonutChart = ({
   return (
     <div className="w-full h-full">
       {isLoading ? (
-        <DonutChart.Skeleton />
+        <DonutChartSkeleton />
       ) : (
         <ReactECharts
           option={option}
@@ -125,15 +126,6 @@ export const DonutChart = ({
           className="w-full h-full"
         />
       )}
-    </div>
-  );
-};
-
-DonutChart.Skeleton = () => {
-  return (
-    <div className="w-full h-full flex items-center justify-center relative ">
-      <div className="absolute w-[70%] aspect-square rounded-full bg-muted-foreground animate-pulse" />
-      <div className="absolute w-[40%] aspect-square rounded-full bg-muted z-10" />
     </div>
   );
 };

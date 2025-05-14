@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card";
-// import { BarChart } from "@shared/ui/graphs/bar-chart/bar-chart";
+import { BarChart } from "@shared/ui/graphs/bar-chart/bar-chart";
 import { SalesSevenDays } from "@pages/dashboard/api/types";
 import { Skeleton } from "@shared/ui/skeleton";
 import WeeklyRevenueSkeleton from "./weekly-revenue-skeleton";
@@ -25,14 +25,11 @@ export default function WeeklyRevenue({ data, isLoading }: WeeklyRevenueProps) {
         {isLoading || !data ? (
           <WeeklyRevenueSkeleton />
         ) : (
-          <div>
-            <p>data</p>
-          </div>
-          // <BarChart
-          //   xAxisData={data.data.map((item) => item.day_of_week)}
-          //   yAxisData={data.data.map((item) => item.proceeds)}
-          //   tooltipData={data.data.map((item) => item.day.toString())}
-          // />
+          <BarChart
+            xAxisData={data.data.map((item) => item.day_of_week)}
+            yAxisData={data.data.map((item) => item.proceeds)}
+            tooltipData={data.data.map((item) => item.day.toString())}
+          />
         )}
       </CardContent>
     </Card>

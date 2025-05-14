@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 
 import { BarHorizontalChart } from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
+import BarHorizontalChartSkeleton from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart-skeleton";
 interface WriteoffsLeadersProps {
   isLoading: boolean;
   data: LeaderWriteOffs | undefined;
@@ -21,7 +22,7 @@ const WriteoffsLeaders = ({ isLoading, data }: WriteoffsLeadersProps) => {
       </CardHeader>
       <CardContent className="flex-1">
         {isLoading && !data ? (
-          <BarHorizontalChart.Skeleton />
+          <BarHorizontalChartSkeleton />
         ) : (
           <BarHorizontalChart
             isLoading={isLoading}

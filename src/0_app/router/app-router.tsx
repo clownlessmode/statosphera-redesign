@@ -3,6 +3,8 @@ import { AnimatePresence } from "framer-motion";
 
 import RouteGuard from "./route-guard";
 import { ROUTES } from "./routes";
+import { Suspense } from "react";
+import PageSkeleton from "@shared/ui/page-skeleton";
 
 const AppRouter = () => {
   return (
@@ -19,7 +21,11 @@ const AppRouter = () => {
                   allowedRoles={route.allowedRoles}
                 >
                   {route.layout ? (
-                    <route.layout>{route.element}</route.layout>
+                    <route.layout>
+                      <Suspense fallback={<PageSkeleton />}>
+                        {route.element}
+                      </Suspense>
+                    </route.layout>
                   ) : (
                     route.element
                   )}

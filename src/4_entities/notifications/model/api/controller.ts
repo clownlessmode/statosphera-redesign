@@ -25,6 +25,7 @@ export const useNotifications = () => {
     isNotificationsLoading: notificationsQuery.isLoading,
 
     count: notificationsCountQuery.data,
+    countLoading: notificationsCountQuery.isLoading,
     readNotification: readNotification.mutateAsync,
   };
 };
