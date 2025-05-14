@@ -1,13 +1,14 @@
 // import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 // import { Header } from "@widgets/header";
 // import { useDashboard } from "../api/controller";
-
+import { NotificationsBadge } from "@entities/notifications";
 const Dashboard = () => {
   // const { dashboard, isDashboardLoading } = useDashboard();
   // console.log(dashboard, isDashboardLoading);
   return (
     <>
       <div>
+        <NotificationsBadge />
         <h1>Dashboard</h1>
       </div>
     </>
