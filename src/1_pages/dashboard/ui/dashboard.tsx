@@ -11,6 +11,14 @@ import CurrentRevenueSkeleton from "@widgets/dashboard/current-revenue/current-r
 import CurrentCheckSkeleton from "@widgets/dashboard/current-check/current-check-skeleton";
 import AverageCheckSkeleton from "@widgets/dashboard/avarage-check/avarage-check-skeleton";
 import TopWriteOffSkeleton from "@widgets/dashboard/top-writeoffs/top-writeoffs-skeleton";
+import TodayCheckSkeleton from "@widgets/dashboard/today-check/today-check-skeleton";
+import TodayRevenueSkeleton from "@widgets/dashboard/today-revenue/today-revenue-skeleton";
+import AntiLoyalTopSkeleton from "@widgets/dashboard/anti-loyal-top/anti-loyal-top-skeleton";
+import PlanPercentSkeleton from "@widgets/dashboard/plan-percent/plan-precent-skeleton";
+import HoursRevenueSkeleton from "@widgets/dashboard/hours-revenue/hours-revenue-skeleton";
+import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
+import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
+import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
 );
@@ -179,16 +187,17 @@ const Dashboard = () => {
             isLoading={isDashboardLoading}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <div className="flex flex-col gap-2 max-h-[400px]">
+        <div className="flex flex-col gap-2 max-h-[400px]">
+          <Suspense fallback={<LoyaltySkeleton />}>
             <Loyalty
               isLoading={isDashboardLoading}
-              proceeds={dashboard?.curentAppLoyal.data?.[0]?.proceeds}
-              proceedsYoY={dashboard?.curentAppLoyal.data?.[0]?.proceedsYoY}
-              proceedsYoYPercent={
-                dashboard?.curentAppLoyal.data?.[0]?.proceedsYoYPercent
+              appLoyalPercent={
+                dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
               }
+              checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
             />
+          </Suspense>
+          <Suspense fallback={<ImRevenueSkeleton />}>
             <ImRevenue
               isLoading={isDashboardLoading}
               proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
@@ -197,21 +206,23 @@ const Dashboard = () => {
                 dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
               }
             />
+          </Suspense>
+          <Suspense fallback={<LeaderImSalesSkeleton />}>
             <LeaderImSales
               isLoading={isDashboardLoading}
               idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
               proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
               storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
             />
-          </div>
-        </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
+          </Suspense>
+        </div>
+        <Suspense fallback={<HoursRevenueSkeleton />}>
           <HoursRevenue
             isLoading={isDashboardLoading}
             data={dashboard?.salesHours.data.graph}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PlanPercentSkeleton />}>
           <PlanPercent
             isLoading={isDashboardLoading}
             planAvgCheckForecastPercent={
@@ -233,17 +244,20 @@ const Dashboard = () => {
             }
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<TopWriteOffSkeleton />}>
           <TopWriteoffs
             isLoading={isDashboardLoading}
             data={dashboard?.topWriteOff}
           />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AntiLoyalTop isLoading={isDashboardLoading} data={undefined} />
+        <Suspense fallback={<AntiLoyalTopSkeleton />}>
+          <AntiLoyalTop
+            isLoading={isDashboardLoading}
+            data={dashboard?.antitopLoyalApp.data as any}
+          />
         </Suspense>
-        <Suspense fallback={<div>Loading...</div>}>
-          <div className="flex flex-col gap-2 max-h-[400px]">
+        <div className="flex flex-col gap-2 max-h-[400px]">
+          <Suspense fallback={<TodayRevenueSkeleton />}>
             <TodayRevenue
               isLoading={isDashboardLoading}
               negative={dashboard?.salesHours.data?.card1.negative}
@@ -255,6 +269,8 @@ const Dashboard = () => {
                 dashboard?.salesHours.data?.card1.weekAgoProceedsTotal
               }
             />
+          </Suspense>
+          <Suspense fallback={<TodayCheckSkeleton />}>
             <TodayCheck
               isLoading={isDashboardLoading}
               negative={dashboard?.salesHours.data?.card2.negative}
@@ -266,20 +282,11 @@ const Dashboard = () => {
                 dashboard?.salesHours.data?.card2.weekAgoProceedsTotal
               }
             />
-          </div>
-        </Suspense>
+          </Suspense>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Dashboard;
-
-{
-  /* 
-       
-         
-         
-         
-         */
-}

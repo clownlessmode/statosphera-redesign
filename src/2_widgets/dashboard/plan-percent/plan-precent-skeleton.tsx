@@ -10,7 +10,7 @@ const PlanPercentSkeleton = () => {
           <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className="flex-1 justify-center w-full items-center mx-auto flex relative">
         <RadarChartSkeleton />
       </CardContent>
     </Card>

@@ -22,15 +22,15 @@ import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   healthy,
-  // useDirection,
+  useDirection,
   useEconomist,
   useFranchise,
   useGroup,
   useSeason,
-  // useSubdivision,
+  useSubdivision,
   useSubgroup,
   useSubsubgroup,
-  // useTeam,
+  useTeam,
   useAutoManager,
   useTypeSender,
   useNomenklatura,
@@ -109,15 +109,15 @@ const Products: FC = () => {
 
   const { franchiseOptions, handleOpenFranchiseSelect, isFranchiseLoading } =
     useFranchise(allData);
-  // const {
-  //   handleOpenSubdivisionsSelect,
-  //   isSubdivisionsLoading,
-  //   subdivisionOptions,
-  // } = useSubdivision(allData);
-  // const { handleOpenTeamsSelect, isTeamLoading, teamOptions } =
-  //   useTeam(allData);
-  // const { directionOptions, handleOpenDirectionsSelect, isDirectionLoading } =
-  // useDirection(allData);
+  const {
+    handleOpenSubdivisionsSelect,
+    isSubdivisionsLoading,
+    subdivisionOptions,
+  } = useSubdivision(allData);
+  const { handleOpenTeamsSelect, isTeamLoading, teamOptions } =
+    useTeam(allData);
+  const { directionOptions, handleOpenDirectionsSelect, isDirectionLoading } =
+    useDirection(allData);
   const { economistOptions, handleOpenEconomistsSelect, isEconomistLoading } =
     useEconomist(allData);
   const { handleOpenSeasonsSelect, isSeasonsLoading, seasonsOptions } =
@@ -146,13 +146,13 @@ const Products: FC = () => {
   const {
     economist,
     franchise,
-    // subdivision,
+    subdivision,
     setFranchise,
-    // setSubdivision,
-    // teams,
-    // setTeams,
-    // directions,
-    // setDirections,
+    setSubdivision,
+    teams,
+    setTeams,
+    directions,
+    setDirections,
     groups,
     setGroups,
     subgroups,
@@ -185,18 +185,18 @@ const Products: FC = () => {
     () => effective(franchiseOptions, franchise),
     [franchiseOptions, franchise]
   );
-  // const effSubdivision = useMemo(
-  //   () => effective(subdivisionOptions, subdivision),
-  //   [subdivisionOptions, subdivision]
-  // );
-  // const effTeams = useMemo(
-  //   () => effective(teamOptions, teams),
-  //   [teamOptions, teams]
-  // );
-  // const effDirections = useMemo(
-  //   () => effective(directionOptions, directions),
-  //   [directionOptions, directions]
-  // );
+  const effSubdivision = useMemo(
+    () => effective(subdivisionOptions, subdivision),
+    [subdivisionOptions, subdivision]
+  );
+  const effTeams = useMemo(
+    () => effective(teamOptions, teams),
+    [teamOptions, teams]
+  );
+  const effDirections = useMemo(
+    () => effective(directionOptions, directions),
+    [directionOptions, directions]
+  );
   const effEconomist = useMemo(
     () => effective(economistOptions, economist),
     [economistOptions, economist]
@@ -269,7 +269,7 @@ const Products: FC = () => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="subDivisionProducts"
               render={({ field }) => (
@@ -358,7 +358,7 @@ const Products: FC = () => {
                   </FormControl>
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="groupsEconomist"

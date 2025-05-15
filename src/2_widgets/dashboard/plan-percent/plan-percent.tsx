@@ -18,14 +18,23 @@ const PlanPercent = ({
   planProceedsQcForecastPercent,
   planShareOfPaymentsQcForecastPercent,
 }: PlanPercentProps) => {
+  console.log(
+    !isLoading,
+    planAvgCheckForecastPercent,
+    planCheckForecastPercent,
+    planProceedsForecastPercent,
+    planProceedsQcForecastPercent,
+    planShareOfPaymentsQcForecastPercent
+  );
+
   return (
     <>
       {!isLoading &&
-      planAvgCheckForecastPercent &&
-      planCheckForecastPercent &&
-      planProceedsForecastPercent &&
-      planProceedsQcForecastPercent &&
-      planShareOfPaymentsQcForecastPercent ? (
+      (planAvgCheckForecastPercent ||
+        planCheckForecastPercent ||
+        planProceedsForecastPercent ||
+        planProceedsQcForecastPercent ||
+        planShareOfPaymentsQcForecastPercent) ? (
         <Card className="w-full h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Процент выполнения плана</CardTitle>

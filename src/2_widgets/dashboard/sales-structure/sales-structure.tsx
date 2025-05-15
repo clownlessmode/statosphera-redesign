@@ -9,7 +9,11 @@ interface SalesStructureProps {
 const SalesStructure = ({ isLoading, data }: SalesStructureProps) => {
   return (
     <>
-      {isLoading && data && data.data && data.data.xAxis && data.data.series ? (
+      {!isLoading &&
+      data &&
+      data.data &&
+      data.data.xAxis &&
+      data.data.series ? (
         <Card className="w-full h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Структура продаж за 6 месяцев</CardTitle>

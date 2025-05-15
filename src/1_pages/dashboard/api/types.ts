@@ -55,6 +55,8 @@ export type YoYBlock = {
         proceedsIm?: number;
         proceedsImYoY?: number;
         proceedsImYoYPercent?: number;
+        appLoyalPercent?: number;
+        checkLoyal?: number;
       }[]
     | null;
 };
