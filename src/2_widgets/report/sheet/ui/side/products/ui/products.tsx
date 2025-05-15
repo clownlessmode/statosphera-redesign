@@ -339,7 +339,6 @@ const Products: FC = () => {
                   <FormLabel>Направление</FormLabel>
                   <FormControl>
                     <MultiSelect
-                      disabled
                       value={field.value?.map(String) || []}
                       options={effDirections}
                       isLoading={isDirectionLoading}

@@ -16,7 +16,7 @@ import {
 
 export class FiltersProductsService {
   static async getFranchise(dto: any): Promise<FranchiseFilterResponse[]> {
-    const response = await api.post<any>("products/franchise", {
+    const response = await api.post<any>("products-fr/franchise", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -55,7 +55,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getDirection(dto: any): Promise<DirectionFilterResponse[]> {
-    const response = await api.post<any>("products/direction", {
+    const response = await api.post<any>("products-dir/direction", {
       ...dto,
       filters: {
         ...dto.filters,
