@@ -46,15 +46,15 @@ export default defineConfig({
     // Включаем CORS
     cors: true,
   },
-  // Определяем переменные окружения, чтобы они были доступны в коде
-  define: {
-    "process.env.VITE_API_DOMAIN": JSON.stringify(
-      "https://dev.statosphera.ru/"
-    ),
-    "process.env.VITE_API_URL": JSON.stringify("api/v1/"),
-    "process.env.VITE_MOBILE_API_URL": JSON.stringify("api/v2/"),
-    "process.env.VITE_AUTHORIZATION_CAPTCHA_KEY": JSON.stringify(
-      "0x4AAAAAAAylA1q7ard0BoU4"
-    ),
-  },
+
+  // define: {
+  //   "process.env.VITE_API_DOMAIN": JSON.stringify(
+  //     "https://dev.statosphera.ru/"
+  //   ),
+  //   "process.env.VITE_API_URL": JSON.stringify("api/v1/"),
+  //   "process.env.VITE_MOBILE_API_URL": JSON.stringify("api/v2/"),
+  //   "process.env.VITE_AUTHORIZATION_CAPTCHA_KEY": JSON.stringify(
+  //     "0x4AAAAAAAylA1q7ard0BoU4"
+  //   ),
+  // },
 });
