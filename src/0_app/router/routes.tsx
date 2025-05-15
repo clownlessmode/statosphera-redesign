@@ -1,30 +1,49 @@
-import { lazy } from "react";
+// import { lazy } from "react";
 import { RouteConfig } from "./types";
 import { Sidebar } from "@widgets/sidebar";
 
-const Authorization = lazy(
-  () => import("@pages/authorization/ui/authorization")
-);
-const Dashboard = lazy(() => import("@pages/dashboard/ui/dashboard"));
-const Forbidden = lazy(() => import("@pages/forbidden/ui/forbidden"));
-const NotFound = lazy(() => import("@pages/not-found/ui/not-found"));
+// const Authorization = lazy(
+//   () => import("@pages/authorization/ui/authorization")
+// );
+// const Dashboard = lazy(() => import("@pages/dashboard/ui/dashboard"));
+// const Forbidden = lazy(() => import("@pages/forbidden/ui/forbidden"));
+// const NotFound = lazy(() => import("@pages/not-found/ui/not-found"));
 
-const Notifications = lazy(
-  () => import("@pages/notifications/ui/notifications")
-);
-const Digests = lazy(() => import("@pages/digests/ui/digests"));
-const Lessons = lazy(() => import("@pages/lessons/ui/lessons"));
-const Roadmap = lazy(() => import("@pages/roadmap/ui/roadmap"));
-const Digest = lazy(() => import("@pages/digest/ui/digest"));
-const Stores = lazy(() => import("@pages/stores/ui/stores"));
-const Standarts = lazy(() => import("@pages/standarts/ui/standarts"));
-const Standart = lazy(() => import("@pages/standart/ui/standart"));
-const Grill = lazy(() => import("@pages/grill/ui/grill"));
-const Report = lazy(() => import("@pages/report/ui/report"));
-const SalesDynamics = lazy(
-  () => import("@pages/sales-dynamics/ui/sales-dynamics")
-);
-const Products = lazy(() => import("@pages/products/ui/products"));
+// const Notifications = lazy(
+//   () => import("@pages/notifications/ui/notifications")
+// );
+// const Digests = lazy(() => import("@pages/digests/ui/digests"));
+// const Lessons = lazy(() => import("@pages/lessons/ui/lessons"));
+// const Roadmap = lazy(() => import("@pages/roadmap/ui/roadmap"));
+// const Digest = lazy(() => import("@pages/digest/ui/digest"));
+// const Stores = lazy(() => import("@pages/stores/ui/stores"));
+// const Standarts = lazy(() => import("@pages/standarts/ui/standarts"));
+// const Standart = lazy(() => import("@pages/standart/ui/standart"));
+// const Grill = lazy(() => import("@pages/grill/ui/grill"));
+// const Report = lazy(() => import("@pages/report/ui/report"));
+// const SalesDynamics = lazy(
+//   () => import("@pages/sales-dynamics/ui/sales-dynamics")
+// );
+// const Products = lazy(() => import("@pages/products/ui/products"));
+// import { lazy } from "react";  // больше не нужен
+
+import Authorization from "@pages/authorization/ui/authorization";
+import Dashboard from "@pages/dashboard/ui/dashboard";
+import Forbidden from "@pages/forbidden/ui/forbidden";
+import NotFound from "@pages/not-found/ui/not-found";
+
+import Notifications from "@pages/notifications/ui/notifications";
+import Digests from "@pages/digests/ui/digests";
+import Lessons from "@pages/lessons/ui/lessons";
+import Roadmap from "@pages/roadmap/ui/roadmap";
+import Digest from "@pages/digest/ui/digest";
+import Stores from "@pages/stores/ui/stores";
+import Standarts from "@pages/standarts/ui/standarts";
+import Standart from "@pages/standart/ui/standart";
+import Grill from "@pages/grill/ui/grill";
+import Report from "@pages/report/ui/report";
+import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
+import Products from "@pages/products/ui/products";
 
 export const ROUTES_PATH = {
   // Авторизация
