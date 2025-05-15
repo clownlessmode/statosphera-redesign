@@ -22,7 +22,7 @@ const CurrentRevenue = ({
 }: Props) => {
   return (
     <>
-      {isLoading && !proceeds && !proceedsYoY && !proceedsYoYPercent ? (
+      {isLoading || !proceeds || !proceedsYoY || !proceedsYoYPercent ? (
         <CurrentRevenueSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between bg-primary py-2">

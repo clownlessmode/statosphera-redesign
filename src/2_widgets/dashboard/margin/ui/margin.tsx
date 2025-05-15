@@ -14,7 +14,7 @@ interface MarginProps {
 const Margin = ({ data, isLoading }: MarginProps) => {
   return (
     <>
-      {isLoading && !data ? (
+      {isLoading || !data ? (
         <MarginSkeleton />
       ) : (
         <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">

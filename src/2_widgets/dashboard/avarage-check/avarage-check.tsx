@@ -22,7 +22,7 @@ const AverageCheck = ({
 }: Props) => {
   return (
     <>
-      {isLoading && !avgCheck && !avgCheckYoY && !avgCheckYoYPercent ? (
+      {isLoading || !avgCheck || !avgCheckYoY || !avgCheckYoYPercent ? (
         <AverageCheckSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between">

@@ -23,7 +23,7 @@ const LeaderImSales = ({
   console.log(proceedsIm);
   return (
     <>
-      {isLoading && !proceedsIm && !storeName ? (
+      {isLoading || !proceedsIm || !storeName ? (
         <LeaderImSalesSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted py-2">

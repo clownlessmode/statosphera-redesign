@@ -23,7 +23,7 @@ const Loyalty = ({
 }: Props) => {
   return (
     <>
-      {isLoading && !proceeds && !proceedsYoY && !proceedsYoYPercent ? (
+      {isLoading || !proceeds || !proceedsYoY || !proceedsYoYPercent ? (
         <LoyaltySkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted py-2">

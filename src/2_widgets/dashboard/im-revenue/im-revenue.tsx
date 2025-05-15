@@ -23,7 +23,7 @@ const ImRevenue = ({
   console.log(proceedsIm);
   return (
     <>
-      {isLoading && !proceedsIm && !proceedsImYoY && !proceedsImYoYPercent ? (
+      {isLoading || !proceedsIm || !proceedsImYoY || !proceedsImYoYPercent ? (
         <ImRevenueSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted py-2">

@@ -23,10 +23,10 @@ const WriteOffHouseholds = ({
 }: Props) => {
   return (
     <>
-      {isLoading &&
-      !householdGoods &&
-      !householdGoodsPercent &&
-      !householdGoodsYoY &&
+      {isLoading ||
+      !householdGoods ||
+      !householdGoodsPercent ||
+      !householdGoodsYoY ||
       !householdGoodsYoYPercent ? (
         <WriteOffHouseholds.Skeleton />
       ) : (

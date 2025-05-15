@@ -24,10 +24,10 @@ const WriteOffIndicator = ({
 }: Props) => {
   return (
     <>
-      {isLoading &&
-      !writeOff &&
-      !writeOffPercent &&
-      !writeOffYoY &&
+      {isLoading ||
+      !writeOff ||
+      !writeOffPercent ||
+      !writeOffYoY ||
       !writeOffYoYPercent ? (
         <WriteOffIndicatorSkeleton />
       ) : (

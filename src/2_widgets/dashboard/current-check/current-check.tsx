@@ -22,7 +22,7 @@ const CurrentCheck = ({
 }: Props) => {
   return (
     <>
-      {isLoading && !check && !checkYoY && !checkYoYPercent ? (
+      {isLoading || !check || !checkYoY || !checkYoYPercent ? (
         <CurrentCheckSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between">

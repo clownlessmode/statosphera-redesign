@@ -26,9 +26,9 @@ const TodayRevenue = ({
 }: Props) => {
   return (
     <>
-      {isLoading &&
-      !proceedsTotal &&
-      !proceedsWoYPercent &&
+      {isLoading ||
+      !proceedsTotal ||
+      !proceedsWoYPercent ||
       !weekAgoProceedsTotal ? (
         <TodayRevenueSkeleton />
       ) : (

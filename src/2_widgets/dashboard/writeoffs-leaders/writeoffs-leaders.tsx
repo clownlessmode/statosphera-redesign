@@ -12,7 +12,7 @@ const WriteoffsLeaders = ({ isLoading, data }: WriteoffsLeadersProps) => {
   return (
     <Card className="w-full h-[400px] flex flex-col">
       <CardHeader>
-        {isLoading && !data ? (
+        {isLoading || !data ? (
           <CardTitle>
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>

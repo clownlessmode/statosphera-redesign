@@ -16,7 +16,7 @@ interface MarkupProps {
 const Markup = ({ percent, proceeds, isLoading }: MarkupProps) => {
   return (
     <>
-      {isLoading && !percent ? (
+      {isLoading || !percent ? (
         <MarkupSkeleton />
       ) : (
         <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
