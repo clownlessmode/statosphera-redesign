@@ -6,12 +6,15 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import ImRevenueSkeleton from "./im-revenue-skeleton";
+import { ArrowBigDownDash } from "lucide-react";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   proceedsIm: number | undefined;
   proceedsImYoY: number | undefined;
   proceedsImYoYPercent: number | undefined;
   isLoading: boolean;
+  negative?: boolean;
 }
 
 const ImRevenue = ({
@@ -19,6 +22,7 @@ const ImRevenue = ({
   proceedsImYoY,
   proceedsImYoYPercent,
   isLoading,
+  negative,
 }: Props) => {
   console.log(proceedsIm);
   return (
@@ -33,12 +37,18 @@ const ImRevenue = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {proceedsIm?.toLocaleString()}₽ ({proceedsImYoYPercent}%)
+                {proceedsIm?.toLocaleString()}₽
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-destructive"
+              <ArrowBigDownDash
+                className={cn(
+                  "w-4 h-4",
+                  negative ? "text-destructive" : "text-positive",
+                  proceedsImYoYPercent && proceedsImYoYPercent > 0
+                    ? "rotate-180"
+                    : ""
+                )}
                 fill="currentColor"
-              /> */}
+              />
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">

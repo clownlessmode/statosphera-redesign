@@ -1,3 +1,4 @@
+import { cn } from "@shared/lib/utils";
 import {
   Card,
   CardContent,
@@ -6,12 +7,14 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
+import { ArrowBigDownDash } from "lucide-react";
 interface Props {
   householdGoods: number | undefined;
   householdGoodsPercent: number | undefined;
   householdGoodsYoY: number | undefined;
   householdGoodsYoYPercent: number | undefined;
   isLoading: boolean;
+  negative?: boolean;
 }
 
 const WriteOffHouseholds = ({
@@ -19,6 +22,7 @@ const WriteOffHouseholds = ({
   householdGoodsPercent,
   householdGoodsYoY,
   householdGoodsYoYPercent,
+  negative,
   isLoading,
 }: Props) => {
   return (
@@ -42,10 +46,16 @@ const WriteOffHouseholds = ({
               <p className=" text-xl font-bold">
                 {householdGoods?.toLocaleString()}₽ ({householdGoodsPercent}%)
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-positive"
+              <ArrowBigDownDash
+                className={cn(
+                  "w-4 h-4",
+                  negative ? "text-destructive" : "text-positive",
+                  householdGoodsYoYPercent && householdGoodsYoYPercent > 0
+                    ? "rotate-180"
+                    : ""
+                )}
                 fill="currentColor"
-              /> */}
+              />
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">

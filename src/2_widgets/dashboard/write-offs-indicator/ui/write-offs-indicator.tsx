@@ -7,12 +7,15 @@ import {
 } from "@shared/ui/card";
 
 import WriteOffIndicatorSkeleton from "./write-offs-indicator-skeleton";
+import { ArrowBigDownDash } from "lucide-react";
+import { cn } from "@shared/lib/utils";
 interface Props {
   writeOff: number | undefined;
   writeOffPercent: number | undefined;
   writeOffYoY: number | undefined;
   writeOffYoYPercent: number | undefined;
   isLoading: boolean;
+  negative: boolean | undefined;
 }
 
 const WriteOffIndicator = ({
@@ -21,6 +24,7 @@ const WriteOffIndicator = ({
   writeOffYoY,
   writeOffYoYPercent,
   isLoading,
+  negative,
 }: Props) => {
   return (
     <>
@@ -40,10 +44,16 @@ const WriteOffIndicator = ({
               <p className=" text-xl font-bold">
                 {writeOff?.toLocaleString()}₽ ({writeOffPercent}%)
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-destructive"
+              <ArrowBigDownDash
+                className={cn(
+                  "w-4 h-4",
+                  negative ? "text-destructive" : "text-positive",
+                  writeOffYoYPercent && writeOffYoYPercent > 0
+                    ? "rotate-180"
+                    : ""
+                )}
                 fill="currentColor"
-              /> */}
+              />
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">

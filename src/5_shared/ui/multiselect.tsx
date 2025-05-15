@@ -54,6 +54,7 @@ interface MultiSelectProps
   className?: string;
   onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
   isLoading?: boolean;
+  side?: "top" | "bottom";
 }
 
 export const MultiSelect = React.forwardRef<
@@ -74,6 +75,7 @@ export const MultiSelect = React.forwardRef<
       className,
       isLoading = false,
       onOpenChange,
+      side,
       ...props
     },
     ref
@@ -202,6 +204,7 @@ export const MultiSelect = React.forwardRef<
           </Button>
         </PopoverTrigger>
         <PopoverContent
+          {...(side && { side })}
           className="w-full p-0"
           align="start"
           onEscapeKeyDown={() => handlePopoverOpenChange(false)}

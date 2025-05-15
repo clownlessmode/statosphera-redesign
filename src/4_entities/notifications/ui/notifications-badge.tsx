@@ -12,8 +12,7 @@ const NotificationsBadge = () => {
       <Button variant="outline">
         <Bell className="w-4 h-4" />
         <p className="hidden lg:block">Уведомления</p>
-        {count && count > 0 && <Badge>{count}</Badge>}
-        {countLoading && <Badge className="text-transparent">0</Badge>}
+        {!!count && !countLoading && count > 0 && <Badge>{count}</Badge>}
       </Button>
     </Link>
   );

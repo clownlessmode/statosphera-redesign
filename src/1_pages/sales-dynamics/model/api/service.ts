@@ -76,11 +76,7 @@ export class SalesDynamicsService {
     return response.data;
   }
   static async getShops(dto: any): Promise<ShopsFilterResponse[]> {
-    const response = await api.post<any>("store/shop", {
-      filters: {
-        store: { ...dto.filters },
-      },
-    });
+    const response = await api.post<any>("store/shop", dto.filters);
     return response.data;
   }
   static async getSalesDynamicsTable(

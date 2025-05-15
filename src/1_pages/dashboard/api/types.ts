@@ -57,6 +57,7 @@ export type YoYBlock = {
         proceedsImYoYPercent?: number;
         appLoyalPercent?: number;
         checkLoyal?: number;
+        negative?: boolean;
       }[]
     | null;
 };

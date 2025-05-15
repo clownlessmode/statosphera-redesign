@@ -74,7 +74,14 @@ const DaysFilter = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <CalendarDays /> Даты
+          <CalendarDays />{" "}
+          {form.getValues("dateStart")
+            ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
+            : ""}{" "}
+          –{" "}
+          {form.getValues("dateEnd")
+            ? format(parseISO(form.getValues("dateEnd")), "dd.MM.yyyy")
+            : "Даты"}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0 rounded-xl border-none">

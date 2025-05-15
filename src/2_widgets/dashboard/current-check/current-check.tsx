@@ -6,18 +6,22 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import CurrentCheckSkeleton from "./current-check-skeleton";
+import { ArrowBigDownDash } from "lucide-react";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   check: number | undefined;
   checkYoY: number | undefined;
   checkYoYPercent: number | undefined;
   isLoading: boolean;
+  negative?: boolean;
 }
 
 const CurrentCheck = ({
   check,
   checkYoY,
   checkYoYPercent,
+  negative,
   isLoading,
 }: Props) => {
   return (
@@ -34,10 +38,14 @@ const CurrentCheck = ({
               <p className=" text-xl font-bold">
                 {check?.toLocaleString()}₽ ({checkYoYPercent}%)
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-destructive"
+              <ArrowBigDownDash
+                className={cn(
+                  "w-4 h-4",
+                  negative ? "text-destructive" : "text-positive",
+                  checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : ""
+                )}
                 fill="currentColor"
-              /> */}
+              />
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">

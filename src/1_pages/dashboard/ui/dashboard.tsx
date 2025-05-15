@@ -108,6 +108,7 @@ const Dashboard = () => {
           </div>
           <Suspense fallback={<WriteOffIndicatorSkeleton />}>
             <WriteOffIndicator
+              negative={dashboard?.curentWriteOff.data?.[0]?.negative}
               isLoading={isDashboardLoading}
               writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
               writeOffPercent={
@@ -121,6 +122,7 @@ const Dashboard = () => {
           </Suspense>
           <Suspense fallback={<WriteOffIndicatorSkeleton />}>
             <WriteOffHouseholds
+              negative={dashboard?.curentHouseHold.data?.[0]?.negative}
               isLoading={isDashboardLoading}
               householdGoods={
                 dashboard?.curentHouseHold.data?.[0]?.householdGoods
@@ -162,6 +164,7 @@ const Dashboard = () => {
           </Suspense>
           <Suspense fallback={<CurrentCheckSkeleton />}>
             <CurrentCheck
+              negative={dashboard?.curentCheck.data?.[0]?.negative}
               isLoading={isDashboardLoading}
               check={dashboard?.curentCheck.data?.[0]?.check}
               checkYoY={dashboard?.curentCheck.data?.[0]?.checkYoY}
@@ -172,6 +175,7 @@ const Dashboard = () => {
           </Suspense>
           <Suspense fallback={<AverageCheckSkeleton />}>
             <AverageCheck
+              negative={dashboard?.curentAvgCheck.data?.[0]?.negative}
               isLoading={isDashboardLoading}
               avgCheck={dashboard?.curentAvgCheck.data?.[0]?.avgCheck}
               avgCheckYoY={dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoY}
@@ -199,6 +203,7 @@ const Dashboard = () => {
           </Suspense>
           <Suspense fallback={<ImRevenueSkeleton />}>
             <ImRevenue
+              negative={dashboard?.currentCardIm.data?.[0]?.negative}
               isLoading={isDashboardLoading}
               proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
               proceedsImYoY={dashboard?.currentCardIm.data?.[0]?.proceedsImYoY}

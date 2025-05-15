@@ -207,6 +207,7 @@ const SalesDynamics: FC = () => {
             left: (
               <div className="flex flex-row gap-2">
                 <DaysFilter />
+                <GraphDate />
                 <ShopsFilter />
                 <Lfl />
               </div>
@@ -214,7 +215,6 @@ const SalesDynamics: FC = () => {
             right: (
               <div className="flex flex-row gap-2">
                 <DownloadSalesDynamics />
-                <GraphDate />
               </div>
             ),
           }}

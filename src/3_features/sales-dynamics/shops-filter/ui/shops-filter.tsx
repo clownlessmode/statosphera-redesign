@@ -36,6 +36,7 @@ import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
 import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
 import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
+import { Badge } from "@shared/ui/badge";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,7 +89,10 @@ const ShopsFilter = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Store /> Магазины
+          <Store /> Магазины{" "}
+          {allData.filters.idStore.length > 0 && (
+            <Badge>{allData.filters.idStore.length}</Badge>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0 rounded-xl border-none">
@@ -271,6 +275,7 @@ const ShopsFilter = () => {
                       <FormLabel>Магазины</FormLabel>
                       <FormControl>
                         <MultiSelect
+                          side="top"
                           maxCount={1}
                           value={field.value?.map(String)}
                           options={selectedMyShops ? shops : shopsOptions}

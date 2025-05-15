@@ -6,12 +6,15 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import AverageCheckSkeleton from "./avarage-check-skeleton";
+import { ArrowBigDownDash } from "lucide-react";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   avgCheck: number | undefined;
   avgCheckYoY: number | undefined;
   avgCheckYoYPercent: number | undefined;
   isLoading: boolean;
+  negative?: boolean;
 }
 
 const AverageCheck = ({
@@ -19,6 +22,7 @@ const AverageCheck = ({
   avgCheckYoY,
   avgCheckYoYPercent,
   isLoading,
+  negative,
 }: Props) => {
   return (
     <>
@@ -34,10 +38,16 @@ const AverageCheck = ({
               <p className=" text-xl font-bold">
                 {avgCheck?.toLocaleString()}₽ ({avgCheckYoYPercent}%)
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-destructive"
+              <ArrowBigDownDash
+                className={cn(
+                  "w-4 h-4",
+                  negative ? "text-destructive" : "text-positive",
+                  avgCheckYoYPercent && avgCheckYoYPercent > 0
+                    ? "rotate-180"
+                    : ""
+                )}
                 fill="currentColor"
-              /> */}
+              />
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
