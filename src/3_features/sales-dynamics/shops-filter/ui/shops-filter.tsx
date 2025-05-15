@@ -105,18 +105,20 @@ const ShopsFilter = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <Button
-              className="w-full mb-6"
-              variant={selectedMyShops ? "default" : "outline"}
-              onClick={() => setSelectedMyShops(!selectedMyShops)}
-            >
-              {selectedMyShops ? "Снять выбор" : "Выбрать мои магазины"}
-              {selectedMyShops ? (
-                <X className="w-4 h-4" />
-              ) : (
-                <Plus className="w-4 h-4" />
-              )}
-            </Button>
+            {session && session.idStore.length > 0 && (
+              <Button
+                className="w-full mb-6"
+                variant={selectedMyShops ? "default" : "outline"}
+                onClick={() => setSelectedMyShops(!selectedMyShops)}
+              >
+                {selectedMyShops ? "Снять выбор" : "Выбрать мои магазины"}
+                {selectedMyShops ? (
+                  <X className="w-4 h-4" />
+                ) : (
+                  <Plus className="w-4 h-4" />
+                )}
+              </Button>
+            )}
             <Form {...form}>
               <form className="flex flex-col gap-4 w-full">
                 <FormField
