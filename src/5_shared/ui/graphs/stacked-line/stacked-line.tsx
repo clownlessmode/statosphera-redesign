@@ -4,6 +4,7 @@ import * as echarts from "echarts"; // обязательно импортиру
 import { Card } from "@shared/ui/card";
 import { getOptionChart } from "./get-option-chart";
 import { cn } from "@shared/lib/utils";
+import { useTheme } from "@app/providers/theme-provider";
 
 interface CustomChartComponentProps {
   option: echarts.EChartsOption | any;
@@ -19,9 +20,14 @@ export default function StackedLine({
   mirror,
   className,
 }: CustomChartComponentProps) {
+  const { theme } = useTheme(); // ① получаем текущую тему
   const chartRef = useRef<ReactECharts>(null);
-  const optionCharts = useMemo(() => getOptionChart(option), [option]);
 
+  // ② пересчитываем опции при смене option **или** theme
+  const optionCharts = useMemo(
+    () => getOptionChart(option, theme as string),
+    [option, theme]
+  );
   useEffect(() => {
     if (mirror === undefined) return;
     const groupId = mirror.toString();

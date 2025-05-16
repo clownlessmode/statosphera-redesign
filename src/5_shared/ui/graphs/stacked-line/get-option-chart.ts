@@ -1,17 +1,17 @@
 import { EChartsOption } from "echarts";
 
-import { useTheme } from "@app/providers/theme-provider";
 import { getFormatTooltip } from "./formatter-tooltip";
 import { graphColors } from "@shared/constants/graph-colors";
-
-export const getOptionChart = (option: EChartsOption) => {
+export const getOptionChart = (
+  option: EChartsOption,
+  theme: "light" | "dark" | string
+) => {
   const { title, legend, ...otherOption } = option;
-  const { theme } = useTheme();
   const isLightTheme = theme === "light";
   const colors = isLightTheme ? graphColors.light : graphColors.dark;
 
   return {
-    backgroundColor: "transparent",
+    backgroundColor: colors.background,
     toolbox: {
       feature: {
         dataZoom: {

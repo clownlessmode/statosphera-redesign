@@ -23,7 +23,7 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
               className="border-none"
               option={{
                 grid: {
-                  top: 0,
+                  top: 5,
                   left: 10,
                   right: 10,
                   bottom: 0,
