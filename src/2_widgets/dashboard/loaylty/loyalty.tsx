@@ -19,7 +19,7 @@ const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading }: Props) => {
       {isLoading || !appLoyalPercent || !checkLoyal ? (
         <LoyaltySkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted py-2">
+        <Card className="w-full h-full gap-1 flex flex-col justify-between py-2">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Применение карт лояльности</CardTitle>

@@ -32,7 +32,7 @@ const TodayCheck = ({
       !weekAgoProceedsTotal ? (
         <TodayCheckSkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between bg-muted">
+        <Card className="w-full h-full gap-1 flex flex-col justify-between">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Чеки (сегодня)</CardTitle>

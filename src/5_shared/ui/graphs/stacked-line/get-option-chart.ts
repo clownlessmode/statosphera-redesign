@@ -11,7 +11,7 @@ export const getOptionChart = (option: EChartsOption) => {
   const colors = isLightTheme ? graphColors.light : graphColors.dark;
 
   return {
-    backgroundColor: colors.background,
+    backgroundColor: "transparent",
     toolbox: {
       feature: {
         dataZoom: {
