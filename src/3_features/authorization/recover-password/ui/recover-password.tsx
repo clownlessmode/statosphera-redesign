@@ -17,18 +17,22 @@ import {
 } from "@shared/ui/form";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
-import { FC } from "react";
+import { FC, useState } from "react";
 import useForm from "../model/hook";
 import { FormValues } from "../model/types";
 import { preventSpaces } from "@shared/lib/prevent-spaces";
+import { useRecoverPassword } from "../model/api/controller";
 
 export const RecoverPassword: FC = () => {
+  const [open, setIsOpen] = useState(false);
   const form = useForm();
+  const { isRecoverLoading, recover } = useRecoverPassword();
   const handleSubmit = (data: FormValues) => {
-    console.log(data);
+    recover(data);
+    setIsOpen(false);
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost">
           Не можете войти?{" "}
@@ -68,7 +72,11 @@ export const RecoverPassword: FC = () => {
             />
             <FormMessage />
             <DialogFooter>
-              <Button className="w-full" disabled={!form.formState.isValid}>
+              <Button
+                className="w-full"
+                disabled={!form.formState.isValid}
+                loading={isRecoverLoading}
+              >
                 Восстановить пароль
               </Button>
             </DialogFooter>
