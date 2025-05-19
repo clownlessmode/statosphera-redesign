@@ -62,18 +62,19 @@ export enum COLUMN_KEY {
   MARKUP_DISCOUNT_PERCENT = "markupDiscountPercent",
   MARKUP_DISCOUNT_PERCENT_LM = "markupDiscountPercentLM",
   MARKUP_DISCOUNT_PERCENT_MOM = "markupDiscountPercentMoM",
+  MARKUP_DISCOUNT_PERCENT_MOM_PERCENT = "markupDiscountPercentMoMPercent",
   MARKUP_DISCOUNT_PERCENT_LY = "markupDiscountPercentLY",
   MARKUP_DISCOUNT_PERCENT_YOY = "markupDiscountPercentYoY",
 
   // ----------------- Маржа в процентах без скидки -----------------
   GROUP_MARGIN_PERCENT_DISCOUNT = "groupMarginDiscountPercent",
   MARGIN_PERCENT_DISCOUNT = "marginDiscountPercent",
-  MARGIN_PERCENT_DISCOUNT_LM = "marginDiscountLMPercent",
-  MARGIN_PERCENT_DISCOUNT_MOM = "marginDiscountMoMPercent",
-  MARGIN_PERCENT_DISCOUNT_MOM_PERCENT = "marginDiscountMoMPercent",
-  MARGIN_PERCENT_DISCOUNT_LY = "marginDiscountLYPercent",
-  MARGIN_PERCENT_DISCOUNT_YOY = "marginDiscountYoYPercent",
-  MARGIN_PERCENT_DISCOUNT_YOY_PERCENT = "marginDiscountYoYPercent",
+  MARGIN_PERCENT_DISCOUNT_LM = "marginDiscountPercentLM",
+  MARGIN_PERCENT_DISCOUNT_MOM = "marginDiscountPercentMoM",
+  MARGIN_PERCENT_DISCOUNT_MOM_PERCENT = "marginDiscountPercentMoMPercent", //not
+  MARGIN_PERCENT_DISCOUNT_LY = "marginDiscountPercentLY",
+  MARGIN_PERCENT_DISCOUNT_YOY = "marginDiscountPercentYoY",
+  MARGIN_PERCENT_DISCOUNT_YOY_PERCENT = "marginDiscountPercentYoYPercent",
   // ----------------- Оборачиваемость остатков -----------------
   GROUP_TURNOVER_GOODS = "groupTurnoverGoods",
   TURNOVER_GOODS = "turnoverGoods",
@@ -835,14 +836,7 @@ export const tableColumns: ColDef<any>[] = [
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
   },
-  {
-    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
-    headerName: "Наценка % без учета скидки MOM",
-    headerTooltip: "Наценка % без учета скидки MOM",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-  },
+
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
     headerName: "Наценка % без учета скидки MOM%",

@@ -21,15 +21,7 @@ const Unique: FC = () => {
   const uniques = useUniqueValues(tab);
   const { updateUniques } = useFiltersStore();
   const form = useForm();
-  const addReset = useFormResetStore((s) => s.addReset);
-  const removeReset = useFormResetStore((s) => s.removeReset);
 
-  useEffect(() => {
-    addReset(form.reset);
-    return () => {
-      removeReset(form.reset);
-    };
-  }, [form.reset, addReset, removeReset]);
   useEffect(() => {
     const subscription = form.watch((values) => {
       const unique = [...(values.proceeds || [])].filter(

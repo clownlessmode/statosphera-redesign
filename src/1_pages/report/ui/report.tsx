@@ -21,9 +21,10 @@ import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
 import { getTopLevelValues } from "@shared/lib/get-top-level";
-import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model/list";
+
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
+import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();

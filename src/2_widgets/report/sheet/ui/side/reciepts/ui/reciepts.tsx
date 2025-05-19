@@ -35,15 +35,6 @@ export const useSelectedOptionsStore = create<SelectedOptionsState>((set) => ({
 
 const Receipts: FC = () => {
   const form = useForm();
-  const addReset = useFormResetStore((s) => s.addReset);
-  const removeReset = useFormResetStore((s) => s.removeReset);
-
-  useEffect(() => {
-    addReset(form.reset);
-    return () => {
-      removeReset(form.reset);
-    };
-  }, [form.reset, addReset, removeReset]);
   const { updateCheckFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
   const {

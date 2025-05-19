@@ -5,22 +5,30 @@ import { useReportStore } from "../../../model/report-store";
 import { useSearchParams } from "react-router";
 import { useDateFilterStore } from "@pages/report/ui/date-dropdown";
 import { ApiError } from "@shared/api/types";
+import { useCallback } from "react";
+
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { getApiPayload } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError } = useReportStore();
-
-  const allData = getApiPayload();
-  const { value } = useDateFilterStore();
-  const disabled = allData.groups.length === 0 || allData.values.length === 0;
   const { getGraph, getTable, getTotal } = useReport();
+  const { value } = useDateFilterStore();
+
+  // 🔄 Всегда актуальные данные для disabled
+  const isDisabled = useCallback(() => {
+    const { groups, values } = getApiPayload();
+    return groups.length === 0 || values.length === 0;
+  }, [getApiPayload]);
 
   const handleSubmit = async () => {
     try {
+      const allData = getApiPayload(); // ✅ всегда актуальные данные
+
       const newParams = new URLSearchParams(searchParams);
       newParams.set("open", "false");
       setSearchParams(newParams);
+
       const [graph, total, table] = await Promise.all([
         getGraph({
           ...allData,
@@ -37,7 +45,6 @@ export const CombinedSubmitButton = () => {
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
       ]);
-      console.log("FETCH DATA IN SUBMIT BUTTON");
 
       setGraph(graph);
       setTotal(total);
@@ -49,7 +56,7 @@ export const CombinedSubmitButton = () => {
   };
 
   return (
-    <Button onClick={handleSubmit} disabled={disabled}>
+    <Button onClick={handleSubmit} disabled={isDisabled()}>
       Получить отчет
     </Button>
   );

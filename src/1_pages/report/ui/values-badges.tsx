@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators/model/list";
+import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 
 // Компонент для отображения уникальных значений
 export function UniqueBadges({ tab }: { tab: string }) {

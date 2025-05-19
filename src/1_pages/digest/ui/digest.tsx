@@ -8,7 +8,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { useDigests } from "@entities/digests/model/api/controller";
-import CreateMessage from "./create-message";
+import { Feedback } from "@features/digests/feedback";
+
 const Digest = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -81,7 +82,7 @@ const Digest = () => {
               </div>
               <div className="p-5 backdrop-blur-2xl rounded-xl border-border/5 border bg-background/40">
                 {id && (
-                  <CreateMessage
+                  <Feedback
                     id={id}
                     description={`Дайджест ${digest?.name_daydjest || id}`}
                   />

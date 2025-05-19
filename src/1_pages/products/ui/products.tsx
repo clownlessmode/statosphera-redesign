@@ -22,7 +22,7 @@ const Products = () => {
           actions={(rowData) => <EditProduct product={rowData.rowData} />}
           actionsIndex={0}
         /> */}
-        <EditProduct product={mock[12]} />
+        <EditProduct product={mock[0]} />
       </div>
     </div>
   );

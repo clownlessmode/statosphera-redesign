@@ -22,20 +22,22 @@ import {
   ViewTabsList,
   ViewTabsTrigger,
 } from "@shared/ui/view-tabs";
-import Shops from "../../side/shops/ui/shops";
-import Products from "../../side/products/ui/products";
-import Grouping from "../../side/grouping/ui/grouping";
+// import Shops from "../../side/shops/ui/shops";
 
 import Unique from "../../side/unique/ui/unique";
-import { DateFilter } from "../../side/date";
 
-import { Indicators } from "../../side/indicators";
 import { LoyalityFilter } from "../../side/loyality";
 import { RecieptsFilter } from "../../side/reciepts";
 import { OnlineStoreFilter } from "../../side/online-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
-import { Button } from "@shared/ui/button";
+
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { DateFilter } from "../../side/date-filter";
+import { ShopsFilter } from "../../side/shops-filter";
+import { ProductsFilter } from "../../side/products-filter";
+import { Button } from "@shared/ui/button";
+import { GroupingFilter } from "../../side/grouping-filter";
+import  {IndicatorsFilter}  from "../../side/indicators-filter";
 const filters = [
   {
     title: "Дата",
@@ -45,7 +47,7 @@ const filters = [
   {
     title: "Магазины",
     icon: Store,
-    component: Shops,
+    component: ShopsFilter,
   },
   {
     title: "Лояльность",
@@ -60,7 +62,7 @@ const filters = [
   {
     title: "Продукты",
     icon: ShoppingBasket,
-    component: Products,
+    component: ProductsFilter,
   },
   {
     title: "Интернет магазин",
@@ -73,7 +75,7 @@ const grouping = [
   {
     title: "Группировка",
     icon: CircleDotDashed,
-    component: Grouping,
+    component: GroupingFilter,
   },
 ];
 
@@ -81,7 +83,7 @@ const indicators = [
   {
     title: "Показатели",
     icon: Grid2x2Check,
-    component: Indicators,
+    component: IndicatorsFilter,
   },
   {
     title: "Уникальные значения",
@@ -90,7 +92,7 @@ const indicators = [
   },
 ];
 const Check = () => {
-  const resetAll = useFormResetStore((s) => s.resetAll);
+  const { triggerReset } = useFormResetStore();
   return (
     <ViewTabs
       defaultValue={filters[0].title}
@@ -136,7 +138,7 @@ const Check = () => {
       </ViewTabsList>
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
         <div className="flex flex-col gap-2">
-          <Button onClick={resetAll}>
+          <Button onClick={() => triggerReset()}>
             Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
           </Button>
           <Separator />

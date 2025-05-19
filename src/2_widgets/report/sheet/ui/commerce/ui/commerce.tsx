@@ -13,21 +13,21 @@ import {
 import { Separator } from "@shared/ui/separator";
 import { CombinedSubmitButton } from "./submit-button";
 import { filters, grouping, indicators } from "../model/tabs";
-import { Button } from "@shared/ui/button";
 import { Eraser } from "lucide-react";
+import { Button } from "@shared/ui/button";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 const CommerceInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
   const { scrollTo } = useViewTabs();
-  const resetAll = useFormResetStore((s) => s.resetAll);
+
   useEffect(() => {
     if (targetViewValue) {
       scrollTo(targetViewValue);
       setTargetViewValue(null);
     }
   }, [targetViewValue, scrollTo, setTargetViewValue]);
-
+  const { triggerReset } = useFormResetStore();
   return (
     <>
       <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4 h-full">
@@ -81,12 +81,11 @@ const CommerceInner = () => {
         <CombinedSubmitButton />
       </ViewTabsList>
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
-        <div className="flex flex-col gap-2">
-          <Button onClick={resetAll}>
-            Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
-          </Button>
-          <Separator />
-        </div>
+        <Button onClick={() => triggerReset()}>
+          Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
+        </Button>
+        <Separator />
+
         {filters.map((item, index) => (
           <ViewTabsContent value={item.title} key={`filter-content-${index}`}>
             <item.component />

@@ -55,6 +55,7 @@ interface MultiSelectProps
   onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
   isLoading?: boolean;
   side?: "top" | "bottom";
+  externalLabels?: { value: string; label: string }[];
 }
 
 export const MultiSelect = React.forwardRef<
@@ -76,6 +77,7 @@ export const MultiSelect = React.forwardRef<
       isLoading = false,
       onOpenChange,
       side,
+      externalLabels,
       ...props
     },
     ref
@@ -139,8 +141,14 @@ export const MultiSelect = React.forwardRef<
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
-                    const option = options.find((o) => o.value === value);
-                    const IconComponent = option?.icon;
+                    const IconComponent = options.find(
+                      (o) => o.value === value
+                    )?.icon;
+                    const getLabel = (val: string) =>
+                      options.find((o) => o.value === val)?.label ??
+                      externalLabels?.find((o) => o.value === val)?.label ??
+                      val;
+
                     return (
                       <Badge
                         key={value}
@@ -154,11 +162,12 @@ export const MultiSelect = React.forwardRef<
                         {IconComponent && (
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
-                        {option?.label}
+                        {getLabel(value)}
                         <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
                       </Badge>
                     );
                   })}
+
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={cn(
@@ -268,36 +277,34 @@ export const MultiSelect = React.forwardRef<
                       </CommandItem>
                     ))}
                   </CommandGroup>
-                  <CommandSeparator />
-                  {value && value.length > 0 && (
-                    <CommandGroup>
-                      <div className="flex items-center justify-between">
-                        {selectedValues.length > 0 && (
-                          <>
-                            <CommandItem
-                              onSelect={handleClear}
-                              className="flex-1 justify-center cursor-pointer"
-                            >
-                              Очистить
-                            </CommandItem>
-                            <Separator
-                              orientation="vertical"
-                              className="flex min-h-6 h-full"
-                            />
-                          </>
-                        )}
-                        <CommandItem
-                          onSelect={() => handlePopoverOpenChange(false)}
-                          className="flex-1 justify-center cursor-pointer max-w-full"
-                        >
-                          Закрыть
-                        </CommandItem>
-                      </div>
-                    </CommandGroup>
-                  )}
                 </>
               )}
             </CommandList>
+            <CommandSeparator />
+            <CommandGroup>
+              <div className="flex items-center justify-between">
+                {selectedValues.length > 0 && (
+                  <>
+                    <CommandItem
+                      onSelect={handleClear}
+                      className="flex-1 justify-center cursor-pointer"
+                    >
+                      Очистить
+                    </CommandItem>
+                    <Separator
+                      orientation="vertical"
+                      className="flex min-h-6 h-full"
+                    />
+                  </>
+                )}
+                <CommandItem
+                  onSelect={() => handlePopoverOpenChange(false)}
+                  className="flex-1 justify-center cursor-pointer max-w-full"
+                >
+                  Закрыть
+                </CommandItem>
+              </div>
+            </CommandGroup>
           </Command>
         </PopoverContent>
       </Popover>

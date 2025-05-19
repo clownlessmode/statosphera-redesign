@@ -32,15 +32,7 @@ import {
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 const OnlineStore: FC = () => {
   const form = useForm();
-  const addReset = useFormResetStore((s) => s.addReset);
-  const removeReset = useFormResetStore((s) => s.removeReset);
 
-  useEffect(() => {
-    addReset(form.reset);
-    return () => {
-      removeReset(form.reset);
-    };
-  }, [form.reset, addReset, removeReset]);
   const { updateOnlineStoreFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
   const {

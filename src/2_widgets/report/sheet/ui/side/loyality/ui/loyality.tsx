@@ -41,13 +41,6 @@ const Loyality: FC = () => {
   const form = useForm();
   const { loyalAction, loyalBonus, setLoyalAction, setLoyalBonus } =
     useSelectedOptionsStore();
-  const addReset = useFormResetStore((s) => s.addReset);
-  const removeReset = useFormResetStore((s) => s.removeReset);
-
-  useEffect(() => {
-    addReset(form.reset);
-    return () => removeReset(form.reset);
-  }, [form.reset, addReset, removeReset]);
 
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();

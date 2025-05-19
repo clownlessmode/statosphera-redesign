@@ -6,12 +6,13 @@ import {
   ShoppingBasket,
   Store,
 } from "lucide-react";
-import { DateFilter } from "../../side/date";
-import Shops from "../../side/shops/ui/shops";
-import Products from "../../side/products/ui/products";
-import Grouping from "../../side/grouping/ui/grouping";
-import { Indicators } from "../../side/indicators";
+
 import Unique from "../../side/unique/ui/unique";
+import { DateFilter } from "../../side/date-filter";
+import { ShopsFilter } from "../../side/shops-filter";
+import { ProductsFilter } from "../../side/products-filter";
+import { GroupingFilter } from "../../side/grouping-filter";
+import { IndicatorsFilter } from "../../side/indicators-filter";
 
 export const filters = [
   {
@@ -22,12 +23,12 @@ export const filters = [
   {
     title: "Магазины",
     icon: Store,
-    component: Shops,
+    component: ShopsFilter,
   },
   {
     title: "Продукты",
     icon: ShoppingBasket,
-    component: Products,
+    component: ProductsFilter,
   },
 ];
 
@@ -35,7 +36,7 @@ export const grouping = [
   {
     title: "Группировка",
     icon: CircleDotDashed,
-    component: Grouping,
+    component: GroupingFilter,
   },
 ];
 
@@ -43,7 +44,7 @@ export const indicators = [
   {
     title: "Показатели",
     icon: Grid2x2Check,
-    component: Indicators,
+    component: IndicatorsFilter,
   },
   {
     title: "Уникальные значения",

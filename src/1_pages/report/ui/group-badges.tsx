@@ -1,26 +1,27 @@
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import {
-  days,
-  product,
-  shop,
-  geo,
-  loyal,
-  personal,
-  online,
-  id,
-} from "@widgets/report/sheet/ui/side/grouping/model/mock";
+  DAYS,
+  GEO,
+  ID,
+  LOYAL,
+  ONLINE,
+  PERSONAL,
+  PRODUCT,
+  SHOP,
+} from "@widgets/report/sheet/ui/side/grouping-filter";
+
 import { Link } from "react-router";
 
 const allGroups = [
-  ...days,
-  ...geo,
-  ...shop,
-  ...product,
-  ...loyal,
-  ...personal,
-  ...online,
-  ...id,
+  ...DAYS,
+  ...GEO,
+  ...SHOP,
+  ...PRODUCT,
+  ...LOYAL,
+  ...PERSONAL,
+  ...ONLINE,
+  ...ID,
 ];
 
 // Создаем маппинг value -> label
