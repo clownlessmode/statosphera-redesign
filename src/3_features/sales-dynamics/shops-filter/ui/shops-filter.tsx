@@ -71,18 +71,14 @@ const ShopsFilter = () => {
   }, []);
 
   useEffect(() => {
-    console.log("entered to useEffect");
     if (selectedMyShops) {
-      console.log("entered to useEffect 1");
       form.setValue("idStore", session?.idStore as number[]);
       updateFilters("idStore", session?.idStore as number[]);
     }
     if (!selectedMyShops) {
-      console.log("entered to useEffect 2");
       form.setValue("idStore", []);
       updateFilters("idStore", []);
     }
-    console.log("exited to useEffect 3");
   }, [selectedMyShops]);
 
   return (

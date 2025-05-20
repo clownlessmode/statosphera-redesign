@@ -98,7 +98,6 @@ export default function UniversalTable({
   }, [data, providedDefs, actions, actionsIndex]);
 
   useEffect(() => {
-    console.log(totalData);
     if (totalData && totalData.length) {
       setPinnedTopData([totalData[0]]);
     } else {

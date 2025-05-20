@@ -1,4 +1,3 @@
-import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   Card,
   CardContent,
@@ -13,53 +12,26 @@ import {
   FormItem,
   FormLabel,
 } from "@shared/ui/form";
-
-import { FC, useEffect, useMemo } from "react";
-import { typeQR, typePayment, useEmployeeName, typeCheck } from "../model/mock";
-import { useFiltersStore } from "../../../../model/filters-store";
+import ClearFilters from "./clear-filter";
+import { useForm } from "../model";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
+import { TYPE_CHECK, TYPE_PAYMENTS, TYPE_QR } from "../config";
 import { Input } from "@shared/ui/input";
-import useForm from "../model/hook";
+import { MultiSelect } from "@shared/ui/multiselect";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { useEmployeeName } from "../model/hooks/use-employee";
+import { FC } from "react";
 
-import { MultiSelect, MultiSelectOption } from "@shared/ui/multiselect";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-import { create } from "zustand";
-export interface SelectedOptionsState {
-  employeeName: MultiSelectOption[];
-  setEmployeeName: (opts: MultiSelectOption[]) => void;
-}
-export const useSelectedOptionsStore = create<SelectedOptionsState>((set) => ({
-  employeeName: [],
-  setEmployeeName: (opts) => set({ employeeName: opts }),
-}));
-
-const Receipts: FC = () => {
+const RecieptsFilter: FC = () => {
   const form = useForm();
   const { updateCheckFilter, getApiPayload } = useFiltersStore();
-  const allData = getApiPayload();
+  const payload = getApiPayload();
   const {
     employeeNameOptions,
     handleOpenEmployeeNameSelect,
     isEmployeeNameLoading,
-  } = useEmployeeName(allData);
-  const { employeeName, setEmployeeName } = useSelectedOptionsStore();
-
-  const effective = (
-    apiOpts: MultiSelectOption[],
-    stored: MultiSelectOption[]
-  ) => {
-    const map = new Map<string, MultiSelectOption>();
-    apiOpts.forEach((o) => map.set(o.value, o));
-    stored.forEach((o) => map.set(o.value, o));
-    return Array.from(map.values());
-  };
-
-  const effEmployeeName = useMemo(
-    () => effective(employeeNameOptions, employeeName),
-    [employeeNameOptions, employeeName]
-  );
-  console.log(effEmployeeName, "effEmployeeName");
-  console.log(employeeName, "employeeName");
+    savedEmployeeNameLabels,
+  } = useEmployeeName(payload);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -81,7 +53,7 @@ const Receipts: FC = () => {
                     <FormLabel htmlFor="">Вид оплаты</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typeQR}
+                      options={TYPE_QR}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -101,7 +73,7 @@ const Receipts: FC = () => {
                     <FormLabel htmlFor="">Тип оплаты</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typePayment}
+                      options={TYPE_PAYMENTS}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -121,7 +93,7 @@ const Receipts: FC = () => {
                     <FormLabel htmlFor="">Тип чека</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typeCheck}
+                      options={TYPE_CHECK}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -189,19 +161,15 @@ const Receipts: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={effEmployeeName}
+                      options={employeeNameOptions}
                       isLoading={isEmployeeNameLoading}
-                      onOpenChange={(open) =>
-                        handleOpenEmployeeNameSelect(open)
-                      }
+                      onOpenChange={handleOpenEmployeeNameSelect}
                       onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateCheckFilter("cashBox", numericValues);
-                        setEmployeeName(
-                          effEmployeeName.filter((o) => value.includes(o.value))
-                        );
+                        const numeric = value.map(Number);
+                        field.onChange(numeric);
+                        updateCheckFilter("cashBox", numeric);
                       }}
+                      externalLabels={savedEmployeeNameLabels}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите кассира"
                     />
@@ -215,5 +183,4 @@ const Receipts: FC = () => {
     </Card>
   );
 };
-
-export default Receipts;
+export default RecieptsFilter;

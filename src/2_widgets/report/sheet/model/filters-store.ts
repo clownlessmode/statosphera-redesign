@@ -499,7 +499,7 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateLoyalFilter: (key, value) =>
+  updateLoyalFilter: (key, value) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -508,7 +508,8 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
           [key]: value,
         },
       },
-    })),
+    }));
+  },
 
   updateOnlineStoreFilter: (key, value) =>
     set((state) => ({

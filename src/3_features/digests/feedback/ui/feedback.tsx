@@ -89,7 +89,6 @@ const Feedback: FC<Props> = ({ description, id }) => {
     !!formValues.commentsUseful?.trim() && !!formValues.contentClarity?.trim();
   const { sendFeedback } = useFeedbackController();
   const handleSubmit = async (data: FormValues) => {
-    console.log("Отправка формы:", data);
     const end = Date.now() + 1.5 * 1000;
     const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
     const frame = () => {

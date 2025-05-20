@@ -64,7 +64,7 @@ const SuggestionForm: FC<Props> = ({ setIsOpen }) => {
   const { sendFeedback, isFeedbackLoading } = useFeedbackController();
   const handleSubmit = (data: FormValues) => {
     sendFeedback({ ...data, type: FEEDBACK_TYPES.WISH });
-    console.log(data);
+
     setIsOpen(false);
   };
   return (

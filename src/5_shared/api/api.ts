@@ -12,9 +12,7 @@ export const api = axios.create({
 api.interceptors.response.use(
   (resp) => resp,
   (err) => {
-    console.log(">>> axios interceptor caught error", err.response?.status);
     if (err.response?.status === 401) {
-      console.log("401", useSessionStore.getState().session);
       useSessionStore.getState().clearSession();
       window.location.replace("/login");
     }

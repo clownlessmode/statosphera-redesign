@@ -1,4 +1,3 @@
-// types.ts
 import { z } from "zod";
 import { schema } from "./schema";
 

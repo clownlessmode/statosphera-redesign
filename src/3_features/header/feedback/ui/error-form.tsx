@@ -64,7 +64,7 @@ const ErrorForm: FC<Props> = ({ setIsOpen }) => {
   const { sendFeedback, isFeedbackLoading } = useFeedbackController();
   const handleSubmit = (data: FormValues) => {
     sendFeedback({ ...data, type: FEEDBACK_TYPES.ERROR });
-    console.log(data);
+
     setIsOpen(false);
   };
   return (

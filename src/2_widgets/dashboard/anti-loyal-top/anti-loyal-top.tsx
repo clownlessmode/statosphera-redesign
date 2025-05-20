@@ -12,7 +12,6 @@ interface AntiLoyalTopProps {
   data: ItemData[] | undefined;
 }
 const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
-  console.log("ANTI TOP", data);
   return (
     <>
       {!isLoading && data ? (

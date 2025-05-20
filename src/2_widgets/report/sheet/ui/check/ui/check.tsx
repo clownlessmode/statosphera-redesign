@@ -26,8 +26,6 @@ import {
 
 import Unique from "../../side/unique/ui/unique";
 
-import { LoyalityFilter } from "../../side/loyality";
-import { RecieptsFilter } from "../../side/reciepts";
 import { OnlineStoreFilter } from "../../side/online-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
 
@@ -37,7 +35,9 @@ import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
 import { Button } from "@shared/ui/button";
 import { GroupingFilter } from "../../side/grouping-filter";
-import  {IndicatorsFilter}  from "../../side/indicators-filter";
+import { IndicatorsFilter } from "../../side/indicators-filter";
+import { LoyaltyFilter } from "../../side/loyalty-filter";
+import { RecieptsFilter } from "../../side/reciepts-filter";
 const filters = [
   {
     title: "Дата",
@@ -52,7 +52,7 @@ const filters = [
   {
     title: "Лояльность",
     icon: BadgeCheck,
-    component: LoyalityFilter,
+    component: LoyaltyFilter,
   },
   {
     title: "Чеки",

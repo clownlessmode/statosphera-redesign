@@ -24,7 +24,6 @@ const ImRevenue = ({
   isLoading,
   negative,
 }: Props) => {
-  console.log(proceedsIm);
   return (
     <>
       {isLoading || !proceedsIm || !proceedsImYoY || !proceedsImYoYPercent ? (

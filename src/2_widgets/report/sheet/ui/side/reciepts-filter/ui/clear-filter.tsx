@@ -5,7 +5,6 @@ import { FC, useEffect, useRef } from "react";
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 
 interface Props {
@@ -13,8 +12,8 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateStoreFilter } = useFiltersStore();
-  const { toggleMyShopsMode } = useMyShopsStore();
+  const { updateCheckFilter } = useFiltersStore();
+
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
   const didMountRef = useRef(false);
@@ -26,28 +25,25 @@ const ClearFilters: FC<Props> = ({ form }) => {
     }
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
   }, [resetSignal]);
-
   const handleClearFilters = () => {
-    toggleMyShopsMode(false);
-    updateStoreFilter("idStore", []);
-    updateStoreFilter("idCity", []);
-    updateStoreFilter("idRegion", []);
-    updateStoreFilter("idManager", []);
-    updateStoreFilter("storeCondition", []);
-    updateStoreFilter("ageGroup", []);
-    updateStoreFilter("idLegalEntity", []);
-    updateStoreFilter("channel", []);
-    updateStoreFilter("district", []);
+    updateCheckFilter("tabNumber", []);
+    updateCheckFilter("containsBankQr", null);
+    updateCheckFilter("paymentClass", null);
+    updateCheckFilter("shift", []);
+    updateCheckFilter("cashBox", []);
+    updateCheckFilter("checkNumber", []);
+    updateCheckFilter("numberfield", []);
+    updateCheckFilter("type", []);
+
     form.reset({
-      idStore: [],
-      idCity: [],
-      idRegion: [],
-      idManager: [],
-      storeCondition: [],
-      ageGroup: [],
-      idLegalEntity: [],
-      channel: [],
-      district: [],
+      tabNumber: [],
+      containsBankQr: null,
+      paymentClass: null,
+      shift: [],
+      cashBox: [],
+      checkNumber: [],
+      numberfield: [],
+      type: null,
     });
   };
 

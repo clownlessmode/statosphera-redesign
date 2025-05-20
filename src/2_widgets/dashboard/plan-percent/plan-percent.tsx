@@ -18,15 +18,6 @@ const PlanPercent = ({
   planProceedsQcForecastPercent,
   planShareOfPaymentsQcForecastPercent,
 }: PlanPercentProps) => {
-  console.log(
-    !isLoading,
-    planAvgCheckForecastPercent,
-    planCheckForecastPercent,
-    planProceedsForecastPercent,
-    planProceedsQcForecastPercent,
-    planShareOfPaymentsQcForecastPercent
-  );
-
   return (
     <>
       {!isLoading &&

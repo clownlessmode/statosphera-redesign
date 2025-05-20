@@ -68,7 +68,7 @@ const GroupingFilter: FC = () => {
     });
     return () => subscription.unsubscribe();
   }, [form, updateGroups]);
-  console.log(groups);
+
   const filterFields = useMemo(
     () =>
       [

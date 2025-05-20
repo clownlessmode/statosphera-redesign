@@ -60,13 +60,7 @@ const Report: FC = () => {
   ]);
 
   const onCellClick = async (params: any) => {
-    console.log(params);
     try {
-      console.log(
-        topLevelValues.includes(params.field.toLowerCase()),
-        params.field,
-        topLevelValues
-      );
       const [graph] = await Promise.all([
         getGraph({
           ...allData,
@@ -89,8 +83,6 @@ const Report: FC = () => {
     ({ startRow, endRow }: { startRow: number; endRow: number }) => {
       // If this is a new filter request, don't use cached data
       if (startRow === 0) {
-        console.log("FETCH DATA IN REPORT SERVER - NEW REQUEST");
-
         // Get current payload with all filters applied
         const payload = getApiPayload();
 
@@ -109,8 +101,6 @@ const Report: FC = () => {
 
       // For subsequent pages with same filter, use initial data if available
       if (initialRows && initialRows?.data.length >= endRow) {
-        console.log("FETCH DATA IN REPORT PRELOADED");
-
         return Promise.resolve({
           data: initialRows?.data.slice(startRow, endRow) ?? [],
           totalRows: initialTotalRows ?? 0,
@@ -119,7 +109,6 @@ const Report: FC = () => {
 
       // Otherwise, fetch from API
       const payload = getApiPayload();
-      console.log("FETCH DATA IN REPORT SERVER - PAGINATION");
 
       return getTable({
         ...payload,

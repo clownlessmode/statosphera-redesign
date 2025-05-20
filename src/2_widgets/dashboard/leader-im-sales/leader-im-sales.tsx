@@ -20,7 +20,6 @@ const LeaderImSales = ({
   storeName,
   isLoading,
 }: Props) => {
-  console.log(proceedsIm);
   return (
     <>
       {isLoading || !proceedsIm || !storeName ? (

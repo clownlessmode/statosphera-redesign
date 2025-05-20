@@ -1,5 +1,4 @@
-import { FC, useEffect, useMemo } from "react";
-import ClearFilters from "@features/clear-filters/ui/clear-filters";
+import { FC } from "react";
 import {
   Card,
   CardContent,
@@ -14,67 +13,31 @@ import {
   FormLabel,
   FormControl,
 } from "@shared/ui/form";
-import { MultiSelect, MultiSelectOption } from "@shared/ui/multiselect";
+import { MultiSelect } from "@shared/ui/multiselect";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { DualRangeSlider } from "@shared/ui/dual-range-slider";
-import useForm from "../model/hook";
-import { useFiltersStore } from "../../../../model/filters-store";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-import { create } from "zustand";
-import { gender, type, useLoyalAction, useLoyalBonus } from "../model/mock";
+import { useForm, useLoyalAction, useLoyalBonus } from "../model";
 
-// Global store in same file
-interface SelectedOptionsState {
-  loyalAction: MultiSelectOption[];
-  loyalBonus: MultiSelectOption[];
-  setLoyalAction: (opts: MultiSelectOption[]) => void;
-  setLoyalBonus: (opts: MultiSelectOption[]) => void;
-}
-export const useSelectedOptionsStore = create<SelectedOptionsState>((set) => ({
-  loyalAction: [],
-  loyalBonus: [],
-  setLoyalAction: (opts) => set({ loyalAction: opts }),
-  setLoyalBonus: (opts) => set({ loyalBonus: opts }),
-}));
-
-const Loyality: FC = () => {
+import { GENDER, TYPE } from "../config";
+import ClearFilters from "./clear-filter";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+const LoyaltyFilter: FC = () => {
   const form = useForm();
-  const { loyalAction, loyalBonus, setLoyalAction, setLoyalBonus } =
-    useSelectedOptionsStore();
-
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
-  const allData = getApiPayload();
-
-  // API hooks
+  const payload = getApiPayload();
   const {
+    savedLoyalActionLabels,
     loyalActionOptions,
     handleOpenLoyalActionSelect,
     isLoyalActionLoading,
-  } = useLoyalAction(allData);
-  const { loyalBonusOptions, handleOpenLoyalBonusSelect, isLoyalBonusLoading } =
-    useLoyalBonus(allData);
+  } = useLoyalAction(payload);
 
-  // merge stored + api
-  const mergeOpts = (
-    api: MultiSelectOption[],
-    stored: MultiSelectOption[]
-  ): MultiSelectOption[] => {
-    const map = new Map<string, MultiSelectOption>();
-    api.forEach((o) => map.set(o.value, o));
-    stored.forEach((o) => map.set(o.value, o));
-    return Array.from(map.values());
-  };
-
-  const effLoyalAction = useMemo(
-    () => mergeOpts(loyalActionOptions, loyalAction),
-    [loyalActionOptions, loyalAction]
-  );
-  const effLoyalBonus = useMemo(
-    () => mergeOpts(loyalBonusOptions, loyalBonus),
-    [loyalBonusOptions, loyalBonus]
-  );
-
-  console.log(effLoyalAction, "----", loyalAction);
+  const {
+    savedLoyalBonusLabels,
+    loyalBonusOptions,
+    handleOpenLoyalBonusSelect,
+    isLoyalBonusLoading,
+  } = useLoyalBonus(payload);
 
   return (
     <Card className="w-full mr-4">
@@ -87,11 +50,9 @@ const Loyality: FC = () => {
           <ClearFilters form={form} />
         </div>
       </CardHeader>
-
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
-            {/* Тип */}
             <FormField
               control={form.control}
               name="isLoyal"
@@ -100,7 +61,7 @@ const Loyality: FC = () => {
                   <FormLabel>Тип</FormLabel>
                   <BooleanCheckboxCard
                     {...field}
-                    options={type}
+                    options={TYPE}
                     className="grid-cols-3"
                     onChange={(vals) => {
                       field.onChange(vals);
@@ -145,7 +106,7 @@ const Loyality: FC = () => {
                   <FormLabel>Пол</FormLabel>
                   <BooleanCheckboxCard
                     {...field}
-                    options={gender}
+                    options={GENDER}
                     className="grid-cols-3"
                     onChange={(vals) => {
                       field.onChange(vals);
@@ -166,17 +127,16 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={effLoyalAction}
+                      options={loyalActionOptions}
                       isLoading={isLoyalActionLoading}
                       onOpenChange={handleOpenLoyalActionSelect}
-                      onValueChange={(vals) => {
-                        const nums = vals.map(Number);
-                        field.onChange(nums);
-                        updateLoyalFilter("guidDiscount", nums);
-                        setLoyalAction(
-                          effLoyalAction.filter((o) => vals.includes(o.value))
-                        );
+                      onValueChange={(value) => {
+                        const numeric = value.map(Number);
+                        field.onChange(numeric);
+                        updateLoyalFilter("guidDiscount", numeric);
                       }}
+                      externalLabels={savedLoyalActionLabels}
+                      defaultValue={field.value?.map(String)}
                       placeholder="Выберите акцию"
                     />
                   </FormControl>
@@ -194,18 +154,17 @@ const Loyality: FC = () => {
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
-                      options={effLoyalBonus}
+                      options={loyalBonusOptions}
                       isLoading={isLoyalBonusLoading}
                       onOpenChange={handleOpenLoyalBonusSelect}
-                      onValueChange={(vals) => {
-                        const nums = vals.map(Number);
-                        field.onChange(nums);
-                        updateLoyalFilter("guidBonus", nums);
-                        setLoyalBonus(
-                          effLoyalBonus.filter((o) => vals.includes(o.value))
-                        );
+                      onValueChange={(value) => {
+                        const numeric = value.map(Number);
+                        field.onChange(numeric);
+                        updateLoyalFilter("guidBonus", numeric);
                       }}
-                      placeholder="Выберите бонус"
+                      externalLabels={savedLoyalBonusLabels}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите акцию"
                     />
                   </FormControl>
                 </FormItem>
@@ -218,4 +177,4 @@ const Loyality: FC = () => {
   );
 };
 
-export default Loyality;
+export default LoyaltyFilter;

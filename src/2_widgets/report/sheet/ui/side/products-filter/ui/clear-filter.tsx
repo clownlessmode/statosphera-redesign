@@ -1,6 +1,6 @@
 import { Button } from "@shared/ui/button";
 import { Eraser } from "lucide-react";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
@@ -14,9 +14,15 @@ const ClearFilters: FC<Props> = ({ form }) => {
   const { updateProductFilter } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
-  useEffect(() => {
-    handleClearFilters();
-  }, [resetSignal]);
+ const didMountRef = useRef(false);
+
+ useEffect(() => {
+   if (!didMountRef.current) {
+     didMountRef.current = true;
+     return; // ⛔ пропускаем первое срабатывание
+   }
+   handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
+ }, [resetSignal]);
   const handleClearFilters = () => {
     updateProductFilter("groupFranchise", []);
     updateProductFilter("ppProducts", null);
