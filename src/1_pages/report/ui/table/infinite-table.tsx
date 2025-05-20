@@ -32,7 +32,7 @@ export interface InfinityTableProps {
   onCellClick?: (info: { rowData: any; field: string; value: any }) => void;
   onRowClick?: (data: any) => void;
   onSelectionChange?: (selectedRows: any[]) => void;
-  filterKey?: string | number; // Add a filter key prop to detect changes
+  dataVersion?: number;
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -46,12 +46,13 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   onRowClick,
   onCellClick,
   onSelectionChange,
-  filterKey,
+  dataVersion = 0,
 }) => {
   const gridRef = useRef<AgGridReact>(null);
   const gridApiRef = useRef<GridApi | null>(null);
   const columnsSetRef = useRef(false);
-  const previousFilterKey = useRef<string | number | undefined>(filterKey);
+  const previousDataVersion = useRef<number>(dataVersion);
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -63,23 +64,25 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     []
   );
 
-  // Reset the grid when filterKey changes
+  // Обновляем данные при изменении dataVersion
   useEffect(() => {
-    if (filterKey !== previousFilterKey.current && gridApiRef.current) {
-      // Reset the columns flag to force re-evaluation of columns on next data fetch
-      columnsSetRef.current = false;
-
-      // Clear existing data and columns
+    if (dataVersion !== previousDataVersion.current && gridApiRef.current) {
+      gridApiRef.current.purgeInfiniteCache();
       gridApiRef.current.setGridOption("rowData", []);
-      gridApiRef.current.setGridOption("columnDefs", []);
-
-      // Refresh the datasource to trigger a new data fetch
-      gridApiRef.current.setGridOption("datasource", datasource);
-
-      // Update the previous filter key
-      previousFilterKey.current = filterKey;
+      previousDataVersion.current = dataVersion;
+      setForceUpdate((prev) => !prev);
     }
-  }, [filterKey]);
+  }, [dataVersion]);
+
+  // Принудительное обновление при изменении totalData
+  useEffect(() => {
+    if (gridApiRef.current && totalData?.length) {
+      setPinnedTopData([totalData[0]]);
+      setForceUpdate((prev) => !prev);
+    } else {
+      setPinnedTopData([]);
+    }
+  }, [totalData]);
 
   // Utility: wrap colDef to show Skeleton when stub row
   const withSkeleton = (col: ColDef): ColDef => ({
@@ -96,117 +99,109 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     },
   });
 
+  // Функция обновления колонок
+  const updateColumns = useCallback(
+    (firstRow: any) => {
+      if (!gridApiRef.current || !firstRow) return;
+
+      const baseDefs = masterColumnDefs.filter(
+        (col) => col.field && firstRow.hasOwnProperty(col.field)
+      );
+
+      const mergedDefs = baseDefs.map(withSkeleton);
+
+      if (actions) {
+        const pos =
+          actionsIndex >= 0 && actionsIndex <= mergedDefs.length
+            ? actionsIndex
+            : 0;
+        mergedDefs.splice(
+          pos,
+          0,
+          withSkeleton({
+            headerName: "",
+            field: "__actions__",
+            cellRenderer: (p: any) => {
+              const ActionComp = actions;
+              return <ActionComp rowData={p.data} />;
+            },
+            resizable: false,
+            suppressMovable: false,
+            sortable: false,
+            filter: false,
+            lockPosition: true,
+            width: 50,
+          })
+        );
+      }
+
+      mergedDefs.push({
+        headerName: "",
+        field: "__filler__",
+        valueGetter: () => "",
+        cellStyle: { padding: 0, border: "none" },
+        suppressMovable: true,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        flex: 1,
+      });
+
+      gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
+      columnsSetRef.current = true;
+
+      setTimeout(() => {
+        const colsToSize = gridApiRef.current
+          ?.getAllGridColumns()
+          .filter((col) => {
+            const def = col.getColDef();
+            return !def.width && !def.flex;
+          })
+          .map((col) => col.getColId());
+
+        if (colsToSize && colsToSize.length > 0) {
+          gridApiRef.current?.autoSizeColumns(colsToSize, false);
+        }
+      }, 0);
+    },
+    [actions, actionsIndex]
+  );
+
   // Datasource for infinite scrolling with dynamic columns
   const datasource: IDatasource = useMemo(
     () => ({
-      getRows: (params: IGetRowsParams) => {
+      getRows: async (params: IGetRowsParams) => {
         gridApiRef.current?.setGridOption("loading", true);
 
-        fetchData({ startRow: params.startRow, endRow: params.endRow })
-          .then((resp) => {
-            const rows = resp.data;
-            const total = resp.totalRows;
-
-            // Update columns if either:
-            // 1. Columns haven't been set yet
-            // 2. We have rows but different structure than before
-            if (
-              rows.length > 0 &&
-              (!columnsSetRef.current ||
-                filterKey !== previousFilterKey.current)
-            ) {
-              const firstRow = rows[0];
-
-              const baseDefs: ColDef[] = masterColumnDefs.filter(
-                (col) => col.field && firstRow.hasOwnProperty(col.field)
-              );
-
-              const mergedDefs: ColDef[] = baseDefs.map(withSkeleton);
-
-              if (actions) {
-                const pos =
-                  actionsIndex >= 0 && actionsIndex <= mergedDefs.length
-                    ? actionsIndex
-                    : 0;
-                mergedDefs.splice(
-                  pos,
-                  0,
-                  withSkeleton({
-                    headerName: "",
-                    field: "__actions__",
-                    cellRenderer: (p: any) => {
-                      const ActionComp = actions;
-                      return <ActionComp rowData={p.data} />;
-                    },
-                    resizable: false,
-                    suppressMovable: false,
-                    sortable: false,
-                    filter: false,
-                    lockPosition: true,
-                    width: 50,
-                  })
-                );
-              }
-
-              mergedDefs.push({
-                headerName: "",
-                field: "__filler__",
-                valueGetter: () => "",
-                cellStyle: { padding: 0, border: "none" },
-                suppressMovable: true,
-                sortable: false,
-                filter: false,
-                resizable: false,
-                flex: 1,
-              });
-
-              gridApiRef.current?.updateGridOptions({ columnDefs: mergedDefs });
-              columnsSetRef.current = true;
-
-              // Auto-size columns after setting them
-              setTimeout(() => {
-                const colsToSize = gridApiRef.current
-                  ?.getAllGridColumns()
-                  .filter((col) => {
-                    const def = col.getColDef();
-                    return !def.width && !def.flex;
-                  })
-                  .map((col) => col.getColId());
-
-                if (colsToSize && colsToSize.length > 0) {
-                  gridApiRef.current?.autoSizeColumns(colsToSize, false);
-                }
-              }, 0);
-            }
-
-            params.successCallback(rows, total);
-          })
-          .catch(() => {
-            params.failCallback();
-          })
-          .finally(() => {
-            gridApiRef.current?.setGridOption("loading", false);
+        try {
+          const resp = await fetchData({
+            startRow: params.startRow,
+            endRow: params.endRow,
           });
+
+          if (resp.data.length > 0 && !columnsSetRef.current) {
+            updateColumns(resp.data[0]);
+          }
+
+          params.successCallback(resp.data, resp.totalRows);
+        } catch (error) {
+          params.failCallback();
+        } finally {
+          gridApiRef.current?.setGridOption("loading", false);
+        }
       },
     }),
-    [fetchData, actions, actionsIndex, filterKey]
+    [fetchData, forceUpdate, updateColumns]
   );
-
-  useEffect(() => {
-    if (totalData?.length) {
-      setPinnedTopData([totalData[0]]);
-    } else {
-      setPinnedTopData([]);
-    }
-  }, [totalData]);
 
   const onGridReady = useCallback(
     (event: GridReadyEvent) => {
       const api = event.api;
       gridApiRef.current = api;
       api.setGridOption("datasource", datasource);
+      api.setGridOption("cacheBlockSize", cacheBlockSize);
+      // api.setGridOption("maxBlocksInCache", maxBlocksInCache);
 
-      // Initial auto-size for columns that don't have width or flex
       setTimeout(() => {
         const colsToSize = api
           .getAllGridColumns()
@@ -221,7 +216,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         }
       }, 0);
     },
-    [datasource]
+    [datasource, cacheBlockSize, maxBlocksInCache]
   );
 
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);

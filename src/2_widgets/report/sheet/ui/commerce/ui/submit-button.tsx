@@ -6,12 +6,13 @@ import { useSearchParams } from "react-router";
 import { useDateFilterStore } from "@pages/report/ui/date-dropdown";
 import { ApiError } from "@shared/api/types";
 import { useCallback } from "react";
+import { useTableVersionStore } from "@pages/report/ui/report";
 
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { bumpDataVersion } = useTableVersionStore();
   const { getApiPayload } = useFiltersStore();
-  const { setGraph, setTotal, setTable, setError } = useReportStore();
+  const { setGraph, setTotal, setTable, setError, clearAll } = useReportStore();
   const { getGraph, getTable, getTotal } = useReport();
   const { value } = useDateFilterStore();
 
@@ -22,6 +23,7 @@ export const CombinedSubmitButton = () => {
   }, [getApiPayload]);
 
   const handleSubmit = async () => {
+    clearAll();
     try {
       const allData = getApiPayload(); // ✅ всегда актуальные данные
 
@@ -49,6 +51,7 @@ export const CombinedSubmitButton = () => {
       setGraph(graph);
       setTotal(total);
       setTable(table);
+      bumpDataVersion();
     } catch (error) {
       console.error("Error fetching report:", error);
       setError(error as ApiError);

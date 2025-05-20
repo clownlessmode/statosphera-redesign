@@ -2,30 +2,39 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useCallback, useState, useEffect, type FC } from "react";
+import { useCallback, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
-
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
 import { Cog, Eraser, Save, Star } from "lucide-react";
-
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown, { useDateFilterStore } from "./date-dropdown";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-
 import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
 import { getTopLevelValues } from "@shared/lib/get-top-level";
-
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
+import { create } from "zustand";
 
+interface TableVersionState {
+  dataVersion: number;
+  setDataVersion: (version: number) => void;
+  bumpDataVersion: () => void; // <— новый экшен
+}
+
+export const useTableVersionStore = create<TableVersionState>((set) => ({
+  dataVersion: 0,
+  setDataVersion: (version: number) => set({ dataVersion: version }),
+  bumpDataVersion: () =>
+    set((state) => ({ dataVersion: state.dataVersion + 1 })),
+}));
 const Report: FC = () => {
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph, error } = useReportStore();
@@ -41,23 +50,8 @@ const Report: FC = () => {
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
   const values = [...indicators, ...uniques];
-
-  // Create a unique filter key that changes when filters change
-  const [filterKey, setFilterKey] = useState(Date.now());
   const topLevelValues = getTopLevelValues(values);
-
-  // Update filterKey when filter criteria change
-  const payload = getApiPayload();
-  useEffect(() => {
-    setFilterKey(Date.now());
-  }, [
-    payload.values?.join(","),
-    payload.groups?.join(","),
-
-    payload.filterDate?.dateStart,
-    payload.filterDate?.dateEnd,
-    JSON.stringify(payload.filters),
-  ]);
+  const { dataVersion, bumpDataVersion } = useTableVersionStore(); // Для контроля обновления таблицы
 
   const onCellClick = async (params: any) => {
     try {
@@ -81,35 +75,16 @@ const Report: FC = () => {
 
   const fetchData = useCallback(
     ({ startRow, endRow }: { startRow: number; endRow: number }) => {
-      // If this is a new filter request, don't use cached data
-      if (startRow === 0) {
-        // Get current payload with all filters applied
-        const payload = getApiPayload();
-
-        return getTable({
-          ...payload,
-          filterDate: {
-            dateStart: payload.filterDate.dateStart,
-            dateEnd: payload.filterDate.dateEnd,
-          },
-          offset: startRow,
-          limit: endRow - startRow,
-          sorts: { colId: [payload.values[0]], sort: "desc" },
-          groups: payload.groups,
-        });
-      }
-
-      // For subsequent pages with same filter, use initial data if available
-      if (initialRows && initialRows?.data.length >= endRow) {
+      // Если есть начальные данные и это первая загрузка - используем их
+      if (startRow === 0 && initialRows && initialRows.data.length > 0) {
         return Promise.resolve({
-          data: initialRows?.data.slice(startRow, endRow) ?? [],
-          totalRows: initialTotalRows ?? 0,
+          data: initialRows.data.slice(startRow, endRow),
+          totalRows: initialTotalRows,
         });
       }
 
-      // Otherwise, fetch from API
+      // Иначе делаем запрос к API
       const payload = getApiPayload();
-
       return getTable({
         ...payload,
         filterDate: {
@@ -124,6 +99,12 @@ const Report: FC = () => {
     },
     [getTable, getApiPayload, initialRows, initialTotalRows]
   );
+
+  const handleClearFilters = () => {
+    resetAllFilters();
+    clearAll();
+    bumpDataVersion(); // Принудительно обновляем таблицу
+  };
 
   return (
     <>
@@ -176,11 +157,7 @@ const Report: FC = () => {
                   </Button>
                   <Button
                     size="sm"
-                    onClick={() => {
-                      resetAllFilters();
-                      clearAll();
-                      setFilterKey(Date.now()); // Reset filter key when clearing filters
-                    }}
+                    onClick={handleClearFilters}
                     variant="outline"
                   >
                     Очистить фильтры <Eraser className="text-primary/80" />
@@ -246,7 +223,7 @@ const Report: FC = () => {
               fetchData={fetchData as any}
               totalData={total as any}
               onCellClick={onCellClick}
-              filterKey={filterKey}
+              dataVersion={dataVersion}
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
