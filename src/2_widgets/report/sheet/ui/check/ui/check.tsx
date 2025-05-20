@@ -22,12 +22,8 @@ import {
   ViewTabsList,
   ViewTabsTrigger,
 } from "@shared/ui/view-tabs";
-// import Shops from "../../side/shops/ui/shops";
-
 import Unique from "../../side/unique/ui/unique";
-
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
-
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";

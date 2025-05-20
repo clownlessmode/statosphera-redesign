@@ -33,18 +33,6 @@ const treeVariants = {
   dragOver: "before:opacity-100 before:bg-primary/20 text-primary-foreground",
 };
 
-// function findAllChildrenValues(item: CheckboxTreeItem): string[] {
-//   const values: string[] = [];
-//   if (!item.children || item.children.length === 0) {
-//     return [item.value];
-//   }
-
-//   for (const child of item.children) {
-//     values.push(...findAllChildrenValues(child));
-//   }
-
-//   return values;
-// }
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
@@ -94,7 +82,14 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
     };
 
     return (
-      <div ref={ref} className={cn("overflow-hidden relative p-2", className)}>
+      <div
+        ref={ref}
+        className={cn(
+          "overflow-hidden relative p-2",
+          disabled && "cursor-not-allowed!",
+          className
+        )}
+      >
         <CheckboxTreeInner
           items={data}
           selectedValues={value || []}
@@ -132,7 +127,13 @@ function CheckboxTreeInner({
   level = 0,
 }: CheckboxTreeInnerProps) {
   return (
-    <ul className={cn("list-none m-0 space-y-1", level > 0 && "pl-6")}>
+    <ul
+      className={cn(
+        "list-none m-0 space-y-1",
+        level > 0 && "pl-6",
+        disabled && "cursor-not-allowed!"
+      )}
+    >
       {items.map((item) => (
         <CheckboxTreeNode
           key={item.id}
@@ -215,7 +216,7 @@ function CheckboxTreeNode({
   };
 
   return (
-    <li className="my-1">
+    <li className={cn("my-1", disabled && "cursor-not-allowed!")}>
       <div
         className={cn(
           "group gap-0 flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
@@ -227,6 +228,7 @@ function CheckboxTreeNode({
           <button
             type="button"
             onClick={toggleExpand}
+            disabled={disabled}
             aria-label={expanded ? "Collapse" : "Expand"}
           >
             <ChevronRight

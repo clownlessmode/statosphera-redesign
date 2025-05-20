@@ -14,6 +14,9 @@ import { useIndicatorList } from "../config";
 import { useForm } from "../model";
 import ClearFilters from "./clear-filter";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { useTypeCheckStore } from "../../grouping-filter/model/hooks/use-type-checked";
+import { cn } from "@shared/lib/utils";
+import { Sparkles } from "lucide-react";
 
 const IndicatorsFilter: FC = () => {
   const { tab } = useTabStore();
@@ -30,6 +33,8 @@ const IndicatorsFilter: FC = () => {
     });
     return () => subscription.unsubscribe();
   }, [form, updateIndicators]);
+
+  const { isTypeCheckSelected } = useTypeCheckStore();
 
   return (
     <Card className="w-full mr-4">
@@ -49,16 +54,39 @@ const IndicatorsFilter: FC = () => {
           <ClearFilters form={form} />
         </div>
       </CardHeader>
+      {isTypeCheckSelected && (
+        <CardContent className="bg-background mx-4 p-4 rounded-md border">
+          <CardTitle className="mb-1 flex flex-row items-center gap-1">
+            Показатели будут выбраны автоматически{" "}
+            <Sparkles className="size-4 text-primary" />
+          </CardTitle>
+          <CardDescription>
+            Выбрана группировка "Тип скидки". Показатели будут выбраны
+            автоматически, но при необходимости вы всё ещё можете указать
+            уникальные значения вручную.
+          </CardDescription>
+        </CardContent>
+      )}
       <CardContent className="">
         <Form {...form}>
-          <form className="flex flex-col gap-4 w-full">
+          <form
+            className={cn(
+              "flex flex-col gap-4 w-full",
+              isTypeCheckSelected &&
+                "cursor-not-allowed! opacity-50 hover:none! pointer-events-none"
+            )}
+          >
             <FormField
               control={form.control}
               name="proceeds"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxTree {...field} data={indicators} />
+                    <CheckboxTree
+                      {...field}
+                      data={indicators}
+                      disabled={isTypeCheckSelected}
+                    />
                   </FormControl>
                 </FormItem>
               )}

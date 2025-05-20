@@ -37,11 +37,14 @@ import {
 } from "@widgets/report/sheet/model/filters-store";
 import { useForm } from "../model";
 import ClearFilters from "./clear-filter";
+import { useTypeCheckStore } from "../model/hooks/use-type-checked";
 
 const GroupingFilter: FC = () => {
   const { tab } = useTabStore();
   const form = useForm();
   const { updateGroups } = useFiltersStore();
+  const { setIsTypeCheckSelected } = useTypeCheckStore();
+
   const displayedDays = useMemo(() => {
     const baseDays = [...DAYS];
     if (tab === "check" && !baseDays.some((d) => d.value === GROUPINGS.HOUR)) {
@@ -63,10 +66,14 @@ const GroupingFilter: FC = () => {
         ...(values.online || []),
         ...(values.id || []),
       ].filter((item): item is string => item !== undefined);
+
       updateGroups(groups);
+
+      // Проверка: выбрана ли группировка "тип скидки"
+      setIsTypeCheckSelected(groups.includes(GROUPINGS.DISCOUNT_TYPE));
     });
     return () => subscription.unsubscribe();
-  }, [form, updateGroups]);
+  }, [form, updateGroups, setIsTypeCheckSelected]);
 
   const filterFields = useMemo(
     () =>
