@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import Commerce from "./commerce/ui/commerce";
 import { Check } from "./check";
 import { useTabStore } from "../model/url-store";
+import { useFormResetStore } from "../model/reset-store";
 
 export default function ReportFiltersSheet() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,7 +20,7 @@ export default function ReportFiltersSheet() {
   const tabParam = searchParams.get("tab");
 
   const getOpenFromParam = (param: string | null): boolean => {
-    return param !== "false"; // default true
+    return param !== "false";
   };
 
   const getTabFromParam = (param: string | null): "commerce" | "check" => {
@@ -46,8 +47,9 @@ export default function ReportFiltersSheet() {
     searchParams.set("open", String(isOpen));
     setSearchParams(searchParams, { replace: true });
   };
-
+  const { triggerReset } = useFormResetStore();
   const handleTabChange = (value: string) => {
+    triggerReset();
     if (value === "commerce" || value === "check") {
       setTab(value);
       searchParams.set("tab", value);
