@@ -32,7 +32,7 @@ export enum COLUMN_KEY {
   // Списания вес
   WRITEOFF_WEIGHT_GROUP = "writeOffWeightGroup",
   WRITEOFF_WEIGHT = "writeOffWeight",
-  WRITEOFF_WEIGHT_LY = "writeOffLYWeight",
+  WRITEOFF_WEIGHT_LY = "writeOffWeightLY",
   WRITEOFF_WEIGHT_YOY = "writeOffWeightYoY",
   WRITEOFF_WEIGHT_PERCENT_YOY = "writeOffWeightYoYPercent",
   WRITEOFF_WEIGHT_LM = "writeOffWeightLM",

@@ -53,6 +53,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   const columnsSetRef = useRef(false);
   const previousDataVersion = useRef<number>(dataVersion);
   const [forceUpdate, setForceUpdate] = useState(false);
+  const totalRowsRef = useRef<number>(0); // Добавляем ref для хранения общего количества строк
 
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -74,11 +75,10 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     }
   }, [dataVersion]);
 
-  // Принудительное обновление при изменении totalData
+  // Устанавливаем pinnedTopData при изменении totalData
   useEffect(() => {
-    if (gridApiRef.current && totalData?.length) {
+    if (totalData?.length > 0) {
       setPinnedTopData([totalData[0]]);
-      setForceUpdate((prev) => !prev);
     } else {
       setPinnedTopData([]);
     }
@@ -179,10 +179,15 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
             endRow: params.endRow,
           });
 
+          // Сохраняем общее количество строк
+          totalRowsRef.current = resp.totalRows;
+
           if (resp.data.length > 0 && !columnsSetRef.current) {
             updateColumns(resp.data[0]);
           }
 
+          // Важно: передаем актуальное количество строк в successCallback
+          // Это сообщает AG Grid, когда прекратить запрашивать дополнительные данные
           params.successCallback(resp.data, resp.totalRows);
         } catch (error) {
           params.failCallback();
@@ -190,6 +195,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           gridApiRef.current?.setGridOption("loading", false);
         }
       },
+      rowCount: totalRowsRef.current || undefined, // Это ключевое свойство для ограничения запросов
     }),
     [fetchData, forceUpdate, updateColumns]
   );
@@ -200,7 +206,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       gridApiRef.current = api;
       api.setGridOption("datasource", datasource);
       api.setGridOption("cacheBlockSize", cacheBlockSize);
-      // api.setGridOption("maxBlocksInCache", maxBlocksInCache);
+      // api.setGridOption("", maxBlocksInCache);
+
+      // Устанавливаем pinnedTopData если оно существует
+      if (pinnedTopData.length > 0) {
+        api.setGridOption("pinnedTopRowData", pinnedTopData);
+      }
 
       setTimeout(() => {
         const colsToSize = api
@@ -216,7 +227,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         }
       }, 0);
     },
-    [datasource, cacheBlockSize, maxBlocksInCache]
+    [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData]
   );
 
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
@@ -246,6 +257,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         rowModelType="infinite"
         enableCellTextSelection
         animateRows
+        autoSizeStrategy={{ type: "fitCellContents" }}
         cacheBlockSize={cacheBlockSize}
         maxBlocksInCache={maxBlocksInCache}
         onGridReady={onGridReady}

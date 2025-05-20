@@ -191,7 +191,7 @@ const Report: FC = () => {
                 isFiltersOpen ? "flex-row" : "flex-col"
               )}
             >
-              {isCompleted && (
+              {isCompleted && !isFiltersOpen && (
                 <>
                   <ReportCard
                     value={graph.card1.value1}
