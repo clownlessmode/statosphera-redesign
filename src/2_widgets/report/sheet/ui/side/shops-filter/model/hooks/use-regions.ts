@@ -30,8 +30,10 @@ export const useRegions = (allData: any) => {
       }));
 
       setRegionsOptions(apiOptions);
-      setRegionLabels(apiOptions); // сохраняем в zustand
+      setRegionLabels(apiOptions);
     } catch (error) {
+      setRegionsOptions([]);
+      setRegionLabels([]);
       console.error("Ошибка при загрузке регионов:", error);
     }
   };

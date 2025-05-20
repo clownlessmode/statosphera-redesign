@@ -30,8 +30,10 @@ export const useCities = (allData: any) => {
       }));
 
       setCitiesOptions(apiOptions);
-      setCityLabels(apiOptions); // сохраняем в zustand
+      setCityLabels(apiOptions);
     } catch (error) {
+      setCitiesOptions([]);
+      setCityLabels([]);
       console.error("Ошибка при загрузке городов:", error);
     }
   };

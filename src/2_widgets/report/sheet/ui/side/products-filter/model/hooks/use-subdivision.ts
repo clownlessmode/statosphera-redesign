@@ -36,6 +36,8 @@ export const useSubdivision = (allData: any) => {
       setSubdivisionOptions(apiOptions);
       setSubdivisionLabels(apiOptions);
     } catch (error) {
+      setSubdivisionOptions([]);
+      setSubdivisionLabels([]);
       console.error("Ошибка при загрузке подразделений:", error);
     }
   };

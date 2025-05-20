@@ -43,6 +43,8 @@ export const useStatusOrder = (allData: any) => {
       setStatusOrderOptions(apiOptions);
       setStatusOrderLabels(apiOptions);
     } catch (error) {
+      setStatusOrderOptions([]);
+      setStatusOrderLabels([]);
       console.error("Ошибка при загрузке статуса заказа:", error);
     }
   };

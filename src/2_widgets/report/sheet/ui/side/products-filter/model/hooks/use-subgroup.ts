@@ -33,6 +33,8 @@ export const useSubgroup = (allData: any) => {
       setSubgroupOptions(apiOptions);
       setSubgroupLabels(apiOptions);
     } catch (error) {
+      setSubgroupOptions([]);
+      setSubgroupLabels([]);
       console.error("Ошибка при загрузке подгрупп:", error);
     }
   };

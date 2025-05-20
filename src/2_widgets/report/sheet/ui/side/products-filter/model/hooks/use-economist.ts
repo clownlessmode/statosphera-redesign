@@ -35,6 +35,8 @@ export const useEconomist = (allData: any) => {
       setEconomistOptions(apiOptions);
       setEconomistLabels(apiOptions);
     } catch (error) {
+      setEconomistOptions([]);
+      setEconomistLabels([]);
       console.error("Ошибка при загрузке экономистов:", error);
     }
   };

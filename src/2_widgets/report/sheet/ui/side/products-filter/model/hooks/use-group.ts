@@ -31,6 +31,8 @@ export const useGroup = (allData: any) => {
       setGroupOptions(apiOptions);
       setGroupLabels(apiOptions);
     } catch (error) {
+      setGroupOptions([]);
+      setGroupLabels([]);
       console.error("Ошибка при загрузке групп:", error);
     }
   };

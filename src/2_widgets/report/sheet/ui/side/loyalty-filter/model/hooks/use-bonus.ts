@@ -37,6 +37,8 @@ export const useLoyalBonus = (allData: any) => {
       setLoyalBonusOptions(apiOptions);
       setLoyalBonusLabels(apiOptions);
     } catch (error) {
+      setLoyalBonusOptions([]);
+      setLoyalBonusLabels([]);
       console.error("Ошибка при загрузке лояльных бонусов:", error);
     }
   };

@@ -38,6 +38,8 @@ export const useInterval = (allData: any) => {
       setIntervalOptions(apiOptions);
       setIntervalLabels(apiOptions);
     } catch (error) {
+      setIntervalOptions([]);
+      setIntervalLabels([]);
       console.error("Ошибка при загрузке интервала:", error);
     }
   };

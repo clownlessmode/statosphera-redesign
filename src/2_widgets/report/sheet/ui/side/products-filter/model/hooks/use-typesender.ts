@@ -35,6 +35,8 @@ export const useTypeSender = (allData: any) => {
       setTypeSenderOptions(apiOptions);
       setTypeSenderLabels(apiOptions);
     } catch (error) {
+      setTypeSenderOptions([]);
+      setTypeSenderLabels([]);
       console.error("Ошибка при загрузке типов отправителей:", error);
     }
   };

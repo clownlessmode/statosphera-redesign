@@ -31,6 +31,8 @@ export const useTeam = (allData: any) => {
       setTeamOptions(apiOptions);
       setTeamLabels(apiOptions);
     } catch (error) {
+      setTeamOptions([]);
+      setTeamLabels([]);
       console.error("Ошибка при загрузке команд:", error);
     }
   };

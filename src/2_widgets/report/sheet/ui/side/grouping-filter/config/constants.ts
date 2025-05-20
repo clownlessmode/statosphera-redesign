@@ -68,18 +68,18 @@ export const PRODUCT = [
     label: "Cтруктура продаж",
     value: GROUPINGS.GROUP_FRANCHISE,
   },
-  {
-    label: "Структурное подразделение",
-    value: GROUPINGS.SUBDIVISION_PRODUCT,
-  },
+  // {
+  //   label: "Структурное подразделение",
+  //   value: GROUPINGS.SUBDIVISION_PRODUCT,
+  // },
   {
     label: "Группа",
     value: GROUPINGS.GROUP,
   },
-  {
-    label: "Команда",
-    value: GROUPINGS.TEAM_PRODUCT,
-  },
+  // {
+  //   label: "Команда",
+  //   value: GROUPINGS.TEAM_PRODUCT,
+  // },
   {
     label: "Подгруппа",
     value: GROUPINGS.SUBGROUPS,

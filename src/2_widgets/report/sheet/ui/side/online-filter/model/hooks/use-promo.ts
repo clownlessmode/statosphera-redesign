@@ -34,6 +34,8 @@ export const usePromo = (allData: any) => {
       setPromoOptions(apiOptions);
       setPromoLabels(apiOptions);
     } catch (error) {
+      setPromoOptions([]);
+      setPromoLabels([]);
       console.error("Ошибка при загрузке промо:", error);
     }
   };

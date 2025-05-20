@@ -39,8 +39,10 @@ export const useEmployeeName = (allData: any) => {
         })
       );
       setEmployeeNameOptions(apiOptions);
-      setEmployeeNameLabels(apiOptions); // сохраняем в стор
+      setEmployeeNameLabels(apiOptions);
     } catch (error) {
+      setEmployeeNameOptions([]);
+      setEmployeeNameLabels([]);
       console.error("Ошибка при загрузке сотрудников:", error);
     }
   };

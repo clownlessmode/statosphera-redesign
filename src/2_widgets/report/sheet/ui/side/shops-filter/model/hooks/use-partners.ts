@@ -30,8 +30,10 @@ export const usePartners = (allData: any) => {
       }));
 
       setPartnerOptions(apiOptions);
-      setPartnerLabels(apiOptions); // сохраняем в zustand
+      setPartnerLabels(apiOptions);
     } catch (error) {
+      setPartnerOptions([]);
+      setPartnerLabels([]);
       console.error("Ошибка при загрузке партнёров:", error);
     }
   };

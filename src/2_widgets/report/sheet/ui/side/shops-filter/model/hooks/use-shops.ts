@@ -30,8 +30,10 @@ export const useShops = (allData: any) => {
       }));
 
       setShopsOptions(apiOptions);
-      setShopLabels(apiOptions); // сохраняем в zustand
+      setShopLabels(apiOptions);
     } catch (error) {
+      setShopsOptions([]);
+      setShopLabels([]);
       console.error("Ошибка при загрузке магазинов:", error);
     }
   };

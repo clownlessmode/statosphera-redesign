@@ -33,6 +33,8 @@ export const useDirection = (allData: any) => {
       setDirectionOptions(apiOptions);
       setDirectionLabels(apiOptions);
     } catch (error) {
+      setDirectionOptions([]);
+      setDirectionLabels([]);
       console.error("Ошибка при загрузке направлений:", error);
     }
   };

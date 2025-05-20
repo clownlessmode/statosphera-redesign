@@ -36,6 +36,8 @@ export const useAutoManager = (allData: any) => {
       setAutoManagerOptions(apiOptions);
       setAutoManagerLabels(apiOptions);
     } catch (error) {
+      setAutoManagerOptions([]);
+      setAutoManagerLabels([]);
       console.error("Ошибка при загрузке автоменеджеров:", error);
     }
   };

@@ -35,6 +35,8 @@ export const useProduct = (allData: any) => {
       setProductOptions(apiOptions);
       setProductLabels(apiOptions);
     } catch (error) {
+      setProductOptions([]);
+      setProductLabels([]);
       console.error("Ошибка при загрузке номенклатуры:", error);
     }
   };

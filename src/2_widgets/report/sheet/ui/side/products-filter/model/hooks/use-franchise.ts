@@ -33,6 +33,8 @@ export const useFranchise = (allData: any) => {
       setFranchiseOptions(apiOptions);
       setFranchiseLabels(apiOptions);
     } catch (error) {
+      setFranchiseOptions([]);
+      setFranchiseLabels([]);
       console.error("Ошибка при загрузке франшиз:", error);
     }
   };

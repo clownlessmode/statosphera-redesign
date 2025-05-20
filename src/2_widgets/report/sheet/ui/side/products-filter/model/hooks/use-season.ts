@@ -31,6 +31,8 @@ export const useSeason = (allData: any) => {
       setSeasonsOptions(apiOptions);
       setSeasonLabels(apiOptions);
     } catch (error) {
+      setSeasonsOptions([]);
+      setSeasonLabels([]);
       console.error("Ошибка при загрузке сезонов:", error);
     }
   };

@@ -37,8 +37,10 @@ export const useLoyalAction = (allData: any) => {
         })
       );
       setLoyalActionOptions(apiOptions);
-      setLoyalActionLabels(apiOptions); // ✅ сохраняем в store
+      setLoyalActionLabels(apiOptions);
     } catch (error) {
+      setLoyalActionOptions([]);
+      setLoyalActionLabels([]);
       console.error("Ошибка при загрузке лояльных действий:", error);
     }
   };
