@@ -25,7 +25,7 @@ export const CombinedSubmitButton = () => {
   const handleSubmit = async () => {
     clearAll();
     try {
-      const allData = getApiPayload(); // ✅ всегда актуальные данные
+      const allData = getApiPayload();
 
       const newParams = new URLSearchParams(searchParams);
       newParams.set("open", "false");

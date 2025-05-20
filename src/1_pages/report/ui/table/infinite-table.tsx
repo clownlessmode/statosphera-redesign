@@ -48,7 +48,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   onCellClick,
   onSelectionChange,
   dataVersion = 0,
-  maxRows = 19,
+  maxRows,
 }) => {
   const gridRef = useRef<AgGridReact>(null);
   const gridApiRef = useRef<GridApi | null>(null);
@@ -57,7 +57,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   const [forceUpdate, setForceUpdate] = useState(false);
   const totalRowsRef = useRef<number>(0);
   const effectiveCacheBlockSize = useMemo(() => {
-    return maxRows && maxRows < cacheBlockSize ? maxRows - 1 : cacheBlockSize;
+    return maxRows ? Math.min(cacheBlockSize, maxRows) : cacheBlockSize;
   }, [maxRows, cacheBlockSize]);
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -150,20 +150,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
       gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
       columnsSetRef.current = true;
-
-      setTimeout(() => {
-        const colsToSize = gridApiRef.current
-          ?.getAllGridColumns()
-          .filter((col) => {
-            const def = col.getColDef();
-            return !def.width && !def.flex;
-          })
-          .map((col) => col.getColId());
-
-        if (colsToSize && colsToSize.length > 0) {
-          gridApiRef.current?.autoSizeColumns(colsToSize, false);
-        }
-      }, 0);
     },
     [actions, actionsIndex]
   );
@@ -174,33 +160,29 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         gridApiRef.current?.setGridOption("loading", true);
 
         try {
+          // Улучшение 2: Сразу ограничиваем endRow с учетом maxRows
+          const adjustedEndRow = maxRows
+            ? Math.min(params.endRow, maxRows)
+            : params.endRow;
+
+          // Улучшение 3: Если startRow превышает maxRows, возвращаем пустой результат
+          if (maxRows && params.startRow >= maxRows) {
+            params.successCallback([], maxRows);
+            return;
+          }
+
           const resp = await fetchData({
             startRow: params.startRow,
-            endRow: params.endRow,
+            endRow: adjustedEndRow,
           });
 
-          // Применяем ограничение по maxRows если он задан
+          // Улучшение 4: Корректный расчет actualTotalRows
           const actualTotalRows = maxRows
             ? Math.min(resp.totalRows, maxRows)
             : resp.totalRows;
 
-          // Проверяем, не превышает ли запрашиваемый endRow максимальное количество строк
-          const endRow = maxRows
-            ? Math.min(params.endRow, maxRows)
-            : params.endRow;
-
-          // Если endRow был скорректирован, делаем новый запрос
-          if (endRow !== params.endRow) {
-            const adjustedResp = await fetchData({
-              startRow: params.startRow,
-              endRow: endRow,
-            });
-            totalRowsRef.current = actualTotalRows;
-            params.successCallback(adjustedResp.data, actualTotalRows);
-          } else {
-            totalRowsRef.current = actualTotalRows;
-            params.successCallback(resp.data, actualTotalRows);
-          }
+          totalRowsRef.current = actualTotalRows;
+          params.successCallback(resp.data, actualTotalRows);
 
           if (resp.data.length > 0 && !columnsSetRef.current) {
             updateColumns(resp.data[0]);
@@ -211,9 +193,10 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           gridApiRef.current?.setGridOption("loading", false);
         }
       },
-      rowCount: totalRowsRef.current || undefined,
+      // Улучшение 5: Устанавливаем rowCount если есть maxRows
+      rowCount: maxRows || totalRowsRef.current || undefined,
     }),
-    [fetchData, forceUpdate, updateColumns, maxRows] // Добавляем maxRows в зависимости
+    [fetchData, forceUpdate, updateColumns, maxRows]
   );
 
   const onGridReady = useCallback(
@@ -226,7 +209,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         api.setGridOption("pinnedTopRowData", pinnedTopData);
       }
       if (maxRows && maxRows < 100) {
-        api.setGridOption("rowBuffer", Math.ceil(maxRows / 2));
+        api.setGridOption("rowBuffer", Math.min(Math.ceil(maxRows / 2), 50));
       }
 
       setTimeout(() => {
