@@ -33,6 +33,7 @@ export interface InfinityTableProps {
   onRowClick?: (data: any) => void;
   onSelectionChange?: (selectedRows: any[]) => void;
   dataVersion?: number;
+  maxRows?: number; // Новый пропс для ограничения максимального количества строк
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -47,14 +48,17 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   onCellClick,
   onSelectionChange,
   dataVersion = 0,
+  maxRows = 19,
 }) => {
   const gridRef = useRef<AgGridReact>(null);
   const gridApiRef = useRef<GridApi | null>(null);
   const columnsSetRef = useRef(false);
   const previousDataVersion = useRef<number>(dataVersion);
   const [forceUpdate, setForceUpdate] = useState(false);
-  const totalRowsRef = useRef<number>(0); // Добавляем ref для хранения общего количества строк
-
+  const totalRowsRef = useRef<number>(0);
+  const effectiveCacheBlockSize = useMemo(() => {
+    return maxRows && maxRows < cacheBlockSize ? maxRows - 1 : cacheBlockSize;
+  }, [maxRows, cacheBlockSize]);
   const { theme } = useTheme();
   const isLight = theme === "light";
 
@@ -65,7 +69,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     []
   );
 
-  // Обновляем данные при изменении dataVersion
   useEffect(() => {
     if (dataVersion !== previousDataVersion.current && gridApiRef.current) {
       gridApiRef.current.purgeInfiniteCache();
@@ -75,7 +78,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     }
   }, [dataVersion]);
 
-  // Устанавливаем pinnedTopData при изменении totalData
   useEffect(() => {
     if (totalData?.length > 0) {
       setPinnedTopData([totalData[0]]);
@@ -84,7 +86,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     }
   }, [totalData]);
 
-  // Utility: wrap colDef to show Skeleton when stub row
   const withSkeleton = (col: ColDef): ColDef => ({
     ...col,
     cellRenderer: (params: any) => {
@@ -99,7 +100,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     },
   });
 
-  // Функция обновления колонок
   const updateColumns = useCallback(
     (firstRow: any) => {
       if (!gridApiRef.current || !firstRow) return;
@@ -144,6 +144,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         sortable: false,
         filter: false,
         resizable: false,
+        suppressAutoSize: true,
         flex: 1,
       });
 
@@ -167,7 +168,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     [actions, actionsIndex]
   );
 
-  // Datasource for infinite scrolling with dynamic columns
   const datasource: IDatasource = useMemo(
     () => ({
       getRows: async (params: IGetRowsParams) => {
@@ -179,25 +179,41 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
             endRow: params.endRow,
           });
 
-          // Сохраняем общее количество строк
-          totalRowsRef.current = resp.totalRows;
+          // Применяем ограничение по maxRows если он задан
+          const actualTotalRows = maxRows
+            ? Math.min(resp.totalRows, maxRows)
+            : resp.totalRows;
+
+          // Проверяем, не превышает ли запрашиваемый endRow максимальное количество строк
+          const endRow = maxRows
+            ? Math.min(params.endRow, maxRows)
+            : params.endRow;
+
+          // Если endRow был скорректирован, делаем новый запрос
+          if (endRow !== params.endRow) {
+            const adjustedResp = await fetchData({
+              startRow: params.startRow,
+              endRow: endRow,
+            });
+            totalRowsRef.current = actualTotalRows;
+            params.successCallback(adjustedResp.data, actualTotalRows);
+          } else {
+            totalRowsRef.current = actualTotalRows;
+            params.successCallback(resp.data, actualTotalRows);
+          }
 
           if (resp.data.length > 0 && !columnsSetRef.current) {
             updateColumns(resp.data[0]);
           }
-
-          // Важно: передаем актуальное количество строк в successCallback
-          // Это сообщает AG Grid, когда прекратить запрашивать дополнительные данные
-          params.successCallback(resp.data, resp.totalRows);
         } catch (error) {
           params.failCallback();
         } finally {
           gridApiRef.current?.setGridOption("loading", false);
         }
       },
-      rowCount: totalRowsRef.current || undefined, // Это ключевое свойство для ограничения запросов
+      rowCount: totalRowsRef.current || undefined,
     }),
-    [fetchData, forceUpdate, updateColumns]
+    [fetchData, forceUpdate, updateColumns, maxRows] // Добавляем maxRows в зависимости
   );
 
   const onGridReady = useCallback(
@@ -205,12 +221,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       const api = event.api;
       gridApiRef.current = api;
       api.setGridOption("datasource", datasource);
-      api.setGridOption("cacheBlockSize", cacheBlockSize);
-      // api.setGridOption("", maxBlocksInCache);
-
-      // Устанавливаем pinnedTopData если оно существует
+      api.setGridOption("cacheBlockSize", effectiveCacheBlockSize);
       if (pinnedTopData.length > 0) {
         api.setGridOption("pinnedTopRowData", pinnedTopData);
+      }
+      if (maxRows && maxRows < 100) {
+        api.setGridOption("rowBuffer", Math.ceil(maxRows / 2));
       }
 
       setTimeout(() => {
@@ -227,7 +243,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         }
       }, 0);
     },
-    [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData]
+    [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData, maxRows]
   );
 
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);

@@ -220,6 +220,7 @@ const Report: FC = () => {
           </div>
           {isCompleted ? (
             <InfinityTable
+              maxRows={table.totalRows}
               fetchData={fetchData as any}
               totalData={total as any}
               onCellClick={onCellClick}
