@@ -1,4 +1,3 @@
-import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import {
   Card,
   CardContent,
@@ -13,37 +12,37 @@ import {
   FormItem,
   FormLabel,
 } from "@shared/ui/form";
-
-import { FC, useEffect } from "react";
-import { useFiltersStore } from "../../../../model/filters-store";
-import useForm from "../model/hook";
-
-import { MultiSelect } from "@shared/ui/multiselect";
+import { FC } from "react";
+import { useForm, useInterval, usePromo, useStatusOrder } from "../model";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import ClearFilters from "./clear-filter";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
-import {
-  type,
-  typeDelivery,
-  typeOrder,
-  typePayment,
-  useInterval,
-  useStatusOrder,
-  usePromo,
-} from "../model/mock";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-const OnlineStore: FC = () => {
+import { TYPE, TYPE_DELIVERY, TYPE_ORDER, TYPE_PAYMENT } from "../config";
+import { MultiSelect } from "@shared/ui/multiselect";
+
+const OnlineFilter: FC = () => {
   const form = useForm();
 
   const { updateOnlineStoreFilter, getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
   const {
+    savedStatusOrderLabels,
     statusOrderOptions,
     isStatusOrderLoading,
     handleOpenStatusOrderSelect,
   } = useStatusOrder(allData);
-  const { intervalOptions, isIntervalLoading, handleOpenIntervalSelect } =
-    useInterval(allData);
-  const { promoOptions, isPromoLoading, handleOpenPromoSelect } =
-    usePromo(allData);
+  const {
+    intervalOptions,
+    savedIntervalLabels,
+    isIntervalLoading,
+    handleOpenIntervalSelect,
+  } = useInterval(allData);
+  const {
+    savedPromoLabels,
+    promoOptions,
+    isPromoLoading,
+    handleOpenPromoSelect,
+  } = usePromo(allData);
 
   return (
     <Card className="w-full mr-4">
@@ -68,7 +67,7 @@ const OnlineStore: FC = () => {
                     <FormLabel htmlFor="">Тип</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={type}
+                      options={TYPE}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -88,7 +87,7 @@ const OnlineStore: FC = () => {
                     <FormLabel htmlFor="">Источник заказа</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typeOrder}
+                      options={TYPE_ORDER}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -108,7 +107,7 @@ const OnlineStore: FC = () => {
                     <FormLabel htmlFor="">Способ доставки</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typeDelivery}
+                      options={TYPE_DELIVERY}
                       className="grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
@@ -128,7 +127,7 @@ const OnlineStore: FC = () => {
                     <FormLabel htmlFor="">Способ оплаты</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
-                      options={typePayment}
+                      options={TYPE_PAYMENT}
                       className="grid-cols-4"
                       onChange={(value) => {
                         field.onChange(value);
@@ -150,7 +149,7 @@ const OnlineStore: FC = () => {
                       value={field.value?.map(String) || []}
                       options={statusOrderOptions}
                       isLoading={isStatusOrderLoading}
-                      onOpenChange={(open) => handleOpenStatusOrderSelect(open)}
+                      onOpenChange={handleOpenStatusOrderSelect}
                       onValueChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter(
@@ -166,6 +165,7 @@ const OnlineStore: FC = () => {
                           )[]
                         );
                       }}
+                      externalLabels={savedStatusOrderLabels}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите статус заказа"
                     />
@@ -184,7 +184,7 @@ const OnlineStore: FC = () => {
                       value={field.value?.map(String) || []}
                       options={intervalOptions}
                       isLoading={isIntervalLoading}
-                      onOpenChange={(open) => handleOpenIntervalSelect(open)}
+                      onOpenChange={handleOpenIntervalSelect}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -193,6 +193,7 @@ const OnlineStore: FC = () => {
                           numericValues
                         );
                       }}
+                      externalLabels={savedIntervalLabels}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите интервал заказа"
                     />
@@ -211,7 +212,7 @@ const OnlineStore: FC = () => {
                       value={field.value?.map(String) || []}
                       options={promoOptions}
                       isLoading={isPromoLoading}
-                      onOpenChange={(open) => handleOpenPromoSelect(open)}
+                      onOpenChange={handleOpenPromoSelect}
                       onValueChange={(value) => {
                         const numericValues = value.map(String);
                         field.onChange(numericValues);
@@ -219,6 +220,7 @@ const OnlineStore: FC = () => {
                       }}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите промо заказа"
+                      externalLabels={savedPromoLabels}
                     />
                   </FormControl>
                 </FormItem>
@@ -231,4 +233,4 @@ const OnlineStore: FC = () => {
   );
 };
 
-export default OnlineStore;
+export default OnlineFilter;

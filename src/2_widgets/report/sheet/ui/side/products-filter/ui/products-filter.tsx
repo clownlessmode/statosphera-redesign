@@ -33,7 +33,6 @@ import {
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { HEALTHY } from "../config";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
-import { GanttChart } from "lucide-react";
 
 const ProductsFilter: FC = () => {
   const { updateProductFilter, getApiPayload } = useFiltersStore();
@@ -252,7 +251,7 @@ const ProductsFilter: FC = () => {
                         field.onChange(numeric);
                         updateProductFilter("groupsEconomist", value);
                       }}
-                      externalLabels={economistOptions}
+                      externalLabels={savedEconomistLabels}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите справочник экономиста"
                     />

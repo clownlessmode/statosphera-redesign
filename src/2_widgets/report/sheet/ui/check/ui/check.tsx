@@ -26,7 +26,6 @@ import {
 
 import Unique from "../../side/unique/ui/unique";
 
-import { OnlineStoreFilter } from "../../side/online-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
 
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
@@ -38,6 +37,7 @@ import { GroupingFilter } from "../../side/grouping-filter";
 import { IndicatorsFilter } from "../../side/indicators-filter";
 import { LoyaltyFilter } from "../../side/loyalty-filter";
 import { RecieptsFilter } from "../../side/reciepts-filter";
+import { OnlineFilter } from "../../side/online-filter";
 const filters = [
   {
     title: "Дата",
@@ -67,7 +67,7 @@ const filters = [
   {
     title: "Интернет магазин",
     icon: Globe,
-    component: OnlineStoreFilter,
+    component: OnlineFilter,
   },
 ];
 

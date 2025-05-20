@@ -16,7 +16,6 @@ import {
 } from "@shared/ui/form";
 import { FC } from "react";
 
-import ClearFilters from "@features/clear-filters/ui/clear-filters";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Button } from "@shared/ui/button";
 import { Settings } from "lucide-react";

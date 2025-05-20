@@ -23,7 +23,7 @@ const CheckboxCard: FC<CheckboxCardProps> = ({
   onChange,
   icon: Icon,
   disabled = false,
-  className,
+
   disableCheckIcon = false,
 }) => {
   const handleChange = (checked: boolean) => {

@@ -42,7 +42,6 @@ const GroupingFilter: FC = () => {
   const { tab } = useTabStore();
   const form = useForm();
   const { updateGroups } = useFiltersStore();
-  const groups = useFiltersStore((s) => s.groups);
   const displayedDays = useMemo(() => {
     const baseDays = [...DAYS];
     if (tab === "check" && !baseDays.some((d) => d.value === GROUPINGS.HOUR)) {
