@@ -52,42 +52,68 @@ const FiltersAccordeon = ({
           transition={{ duration: 0.2 }}
           className="flex flex-col gap-2 w-full"
         >
+          {/* Фильтры */}
           <Card
             onClick={() => handleOpenSheet(targetFilterValue)}
-            className="flex flex-row gap-1 justify-between items-center p-2"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
           >
-            <div className="flex flex-row gap-1 items-center">
-              <Filter className="size-4" />
-              <p className="text-sm">Фильтры:</p>
-              <FilterBadges tab={tab} />
+            <div className="flex items-center gap-1">
+              <Filter className="size-4 flex-shrink-0" />
+              <p className="text-sm flex-shrink-0">Фильтры:</p>
             </div>
-            <Button className="w-[220px] justify-between" size={"sm"}>
+            <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
+              <div className="inline-flex gap-1">
+                <FilterBadges tab={tab} />
+              </div>
+            </div>
+            <Button
+              size="sm"
+              className="flex-shrink-0 justify-between w-[220px]"
+            >
               Изменить фильтры <Filter className="size-4" />
             </Button>
           </Card>
+
+          {/* Показатели */}
           <Card
             onClick={() => handleOpenSheet(targetIndicatorValue)}
-            className="flex flex-row gap-1 justify-between items-center p-2"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
           >
-            <div className="flex flex-row gap-1 items-center">
-              <BarChart3 className="size-4" />
-              <p className="text-sm">Показатели:</p>
-              <ReportBadges tab={tab} />
+            <div className="flex items-center gap-1">
+              <BarChart3 className="size-4 flex-shrink-0" />
+              <p className="text-sm flex-shrink-0">Показатели:</p>
             </div>
-            <Button size={"sm"} className="w-[220px] justify-between">
+            <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
+              <div className="inline-flex gap-1">
+                <ReportBadges tab={tab} />
+              </div>
+            </div>
+            <Button
+              size="sm"
+              className="flex-shrink-0 justify-between w-[220px]"
+            >
               Изменить показатели <BarChart3 className="size-4" />
             </Button>
           </Card>
+
+          {/* Группировки */}
           <Card
             onClick={() => handleOpenSheet(targetGroupingValue)}
-            className="flex flex-row gap-1 justify-between items-center p-2"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
           >
-            <div className="flex flex-row gap-1 items-center">
-              <Layers3 className="size-4" />
-              <p className="text-sm">Группировки:</p>
-              <GroupBadges tab={tab} />
+            <div className="flex items-center gap-1">
+              <Layers3 className="size-4 flex-shrink-0" />
+              <p className="text-sm flex-shrink-0">Группировки:</p>
             </div>
-            <Button size={"sm"} className="w-[220px] justify-between">
+            <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
+              <div className="inline-flex gap-1">
+                <GroupBadges tab={tab} />
+              </div>
+            </div>
+            <Button
+              size="sm"
+              className="flex-shrink-0 justify-between w-[220px]"
+            >
               Изменить группировки <Layers3 className="size-4" />
             </Button>
           </Card>

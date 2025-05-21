@@ -11,6 +11,35 @@ body {
   overflow-x: hidden;
 }
 
+.scrollbar-hide {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE и Edge */
+  -ms-overflow-style: none;
+}
+
+/* Webkit-браузеры (Chrome, Safari и др.) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  background: transparent;
+}
+
+* {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE и Edge */
+  -ms-overflow-style: none;
+}
+
+/* Webkit-браузеры (Chrome, Safari и др.) */
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  background: transparent;
+}
 :root {
   --background: #ffffff;
   --foreground: #333333;

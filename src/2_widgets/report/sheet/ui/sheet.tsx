@@ -58,8 +58,8 @@ export default function ReportFiltersSheet() {
   };
 
   return (
-    <SheetMain open={open} onOpenChange={handleOpenChange}>
-      <SheetContent side="left" close={false} forceMount>
+    <SheetMain open={open} onOpenChange={handleOpenChange} >
+      <SheetContent side="left" close={false} forceMount className="scrol">
         <div>
           <Tabs value={tab} onValueChange={handleTabChange} className="gap-0">
             <SheetHeader className="p-0 border-b border-border shadow-sm">

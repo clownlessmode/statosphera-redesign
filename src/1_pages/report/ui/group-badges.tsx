@@ -1,5 +1,8 @@
 import { Badge } from "@shared/ui/badge";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import {
+  GROUPINGS,
+  useFiltersStore,
+} from "@widgets/report/sheet/model/filters-store";
 import {
   DAYS,
   GEO,
@@ -22,8 +25,11 @@ const allGroups = [
   ...PERSONAL,
   ...ONLINE,
   ...ID,
+  {
+    label: "Час",
+    value: GROUPINGS.HOUR,
+  },
 ];
-
 // Создаем маппинг value -> label
 const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
   (acc, item) => {
@@ -41,7 +47,7 @@ export function GroupBadges({ tab }: { tab: string }) {
   return (
     <Link
       to={`/report/?open=true&tab=${tab}&group=${groups.join(",")}`}
-      className="flex flex-row gap-1 flex-wrap"
+      className="flex gap-2 flex-nowrap w-max"
     >
       {groups.map((group, index) => (
         <Badge key={`group-${index}`}>

@@ -321,11 +321,6 @@ const all_indicators = [
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
       },
       {
-        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM_PERCENT,
-        label: "Наценка % без учета скидки MOM%",
-        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM_PERCENT,
-      },
-      {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
         label: "Наценка % без учета скидки PY",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LY,
@@ -457,7 +452,7 @@ const all_indicators = [
       },
       {
         id: COLUMN_KEY.DISCOUNT_YOY_PERCENT,
-        label: "Скидки, руб. YoY%%",
+        label: "Скидки, руб. YoY%",
         value: COLUMN_KEY.DISCOUNT_YOY_PERCENT,
       },
     ],

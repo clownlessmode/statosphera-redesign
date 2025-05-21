@@ -838,9 +838,17 @@ export const tableColumns: ColDef<any>[] = [
   },
 
   {
-    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM_PERCENT,
     headerName: "Наценка % без учета скидки MOM%",
     headerTooltip: "Наценка % без учета скидки MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_MOM,
+    headerName: "Наценка % без учета скидки MOM",
+    headerTooltip: "Наценка % без учета скидки MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",

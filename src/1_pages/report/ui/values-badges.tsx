@@ -4,25 +4,7 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 
 // Компонент для отображения уникальных значений
-export function UniqueBadges({ tab }: { tab: string }) {
-  const { uniques } = useFiltersStore();
-  const uniqueList = useIndicatorList(tab as any);
 
-  if (!uniques || uniques.length === 0) return null;
-
-  return (
-    <Link
-      to={`/report/?open=true&tab=${tab}&unique=${uniques.join(",")}`}
-      className="flex flex-row gap-1 flex-wrap"
-    >
-      {uniques.map((unique, index) => (
-        <Badge key={`unique-${index}`}>
-          {getLabelByValue(uniqueList, unique) || unique}
-        </Badge>
-      ))}
-    </Link>
-  );
-}
 type WithChildren<T = any> = {
   label: string;
   value: string;
@@ -49,33 +31,47 @@ export function getLabelByValue(
 
   return undefined;
 }
+export function UniqueBadges({ tab }: { tab: string }) {
+  const { uniques } = useFiltersStore();
+  const uniqueList = useIndicatorList(tab as any);
+
+  if (!uniques || uniques.length === 0) return null;
+
+  return (
+    <>
+      {uniques.map((unique, index) => (
+        <Badge key={`unique-${index}`} className="flex-shrink-0">
+          {getLabelByValue(uniqueList, unique) || unique}
+        </Badge>
+      ))}
+    </>
+  );
+}
 
 export function IndicatorBadges({ tab }: { tab: string }) {
   const { indicators } = useFiltersStore();
-  const indicatorList = useIndicatorList("check");
+  const indicatorList = useIndicatorList(tab as any);
 
   if (!indicators || indicators.length === 0) return null;
 
   return (
-    <Link
-      to={`/report/?open=true&tab=${tab}&indicator=${indicators.join(",")}`}
-      className="flex flex-row gap-1 flex-wrap"
-    >
+    <>
       {indicators.map((indicator, index) => (
-        <Badge key={`indicator-${index}`}>
+        <Badge key={`indicator-${index}`} className="flex-shrink-0">
           {getLabelByValue(indicatorList, indicator) || indicator}
         </Badge>
       ))}
-    </Link>
+    </>
   );
 }
 
-// Объединенный компонент (опционально)
 export function ReportBadges({ tab }: { tab: string }) {
   return (
-    <div className="flex flex-row gap-2 flex-wrap">
-      <UniqueBadges tab={tab} />
-      <IndicatorBadges tab={tab} />
+    <div className="flex-1 min-w-0 overflow-x-auto">
+      <div className="flex gap-2 flex-nowrap w-max">
+        <UniqueBadges tab={tab} />
+        <IndicatorBadges tab={tab} />
+      </div>
     </div>
   );
 }

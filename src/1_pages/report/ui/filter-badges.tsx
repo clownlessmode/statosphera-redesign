@@ -99,7 +99,6 @@ export function FilterBadges({ tab }: { tab: string }) {
   const renderBadges = () => {
     const badges: JSX.Element[] = [];
 
-    // 1. Обработка основных фильтров
     Object.entries(filters).forEach(([sectionKey, sectionValue]) => {
       if (typeof sectionValue !== "object" || sectionValue === null) return;
 
@@ -168,7 +167,7 @@ export function FilterBadges({ tab }: { tab: string }) {
   return (
     <Link
       to={`/report/?open=true&tab=${tab}`}
-      className="flex flex-row gap-2 flex-wrap items-center"
+      className="flex flex-row gap-2 flex-nowrap items-center"
     >
       {renderBadges()}
     </Link>
