@@ -48,8 +48,16 @@ export const CombinedSubmitButton = () => {
             ...allData.filters,
             loyal: {
               ...allData.filters.loyal,
-              ageStart: allData.filters.loyal.ageStart === 0 && (null as any),
-              ageEnd: allData.filters.loyal.ageEnd === 100 && (null as any),
+              ageStart:
+                allData.filters.loyal.ageStart === 0 &&
+                allData.filters.loyal.ageEnd === 100
+                  ? null
+                  : allData.filters.loyal.ageStart,
+              ageEnd:
+                allData.filters.loyal.ageStart === 0 &&
+                allData.filters.loyal.ageEnd === 100
+                  ? null
+                  : allData.filters.loyal.ageEnd,
             },
           },
           sorts: { colId: [allData.values[0]], sort: "desc" },

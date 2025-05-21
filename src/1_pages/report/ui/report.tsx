@@ -143,8 +143,16 @@ const Report: FC = () => {
           ...payload.filters,
           loyal: {
             ...payload.filters.loyal,
-            ageStart: payload.filters.loyal.ageStart === 0 && (null as any),
-            ageEnd: payload.filters.loyal.ageEnd === 100 && (null as any),
+            ageStart:
+              payload.filters.loyal.ageStart === 0 &&
+              allData.filters.loyal.ageEnd === 100
+                ? null
+                : payload.filters.loyal.ageStart,
+            ageEnd:
+              payload.filters.loyal.ageStart === 0 &&
+              allData.filters.loyal.ageEnd === 100
+                ? null
+                : payload.filters.loyal.ageEnd,
           },
         },
         offset: startRow,
