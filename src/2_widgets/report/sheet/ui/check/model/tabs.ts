@@ -30,24 +30,24 @@ export const filters = [
     component: ShopsFilter,
   },
   {
-    title: "Лояльность",
-    icon: BadgeCheck,
-    component: LoyaltyFilter,
-  },
-  {
     title: "Чеки",
     icon: Receipt,
     component: RecieptsFilter,
   },
   {
-    title: "Продукты",
-    icon: ShoppingBasket,
-    component: ProductsFilter,
+    title: "Лояльность",
+    icon: BadgeCheck,
+    component: LoyaltyFilter,
   },
   {
     title: "Интернет магазин",
     icon: Globe,
     component: OnlineFilter,
+  },
+  {
+    title: "Продукты",
+    icon: ShoppingBasket,
+    component: ProductsFilter,
   },
 ];
 

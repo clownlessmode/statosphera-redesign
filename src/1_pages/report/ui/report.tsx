@@ -56,7 +56,7 @@ const Report: FC = () => {
   const uniques = useUniqueValues(tab);
   const values = [...indicators, ...uniques];
   const topLevelValues = getTopLevelValues(values);
-  const { dataVersion, bumpDataVersion } = useTableVersionStore(); // Для контроля обновления таблицы
+  const { dataVersion, bumpDataVersion } = useTableVersionStore();
 
   const onCellClick = async (params: any) => {
     try {
@@ -138,6 +138,14 @@ const Report: FC = () => {
         filterDate: {
           dateStart: payload.filterDate.dateStart,
           dateEnd: payload.filterDate.dateEnd,
+        },
+        filters: {
+          ...payload.filters,
+          loyal: {
+            ...payload.filters.loyal,
+            ageStart: payload.filters.loyal.ageStart === 0 && (null as any),
+            ageEnd: payload.filters.loyal.ageEnd === 100 && (null as any),
+          },
         },
         offset: startRow,
         limit: endRow - startRow,

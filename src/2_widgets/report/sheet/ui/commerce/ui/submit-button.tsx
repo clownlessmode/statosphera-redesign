@@ -44,6 +44,14 @@ export const CombinedSubmitButton = () => {
         }),
         getTable({
           ...allData,
+          filters: {
+            ...allData.filters,
+            loyal: {
+              ...allData.filters.loyal,
+              ageStart: allData.filters.loyal.ageStart === 0 && (null as any),
+              ageEnd: allData.filters.loyal.ageEnd === 100 && (null as any),
+            },
+          },
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
       ]);
