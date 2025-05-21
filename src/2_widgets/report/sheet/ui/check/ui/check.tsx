@@ -1,18 +1,5 @@
-import {
-  BadgeCheck,
-  Calendar,
-  CircleDotDashed,
-  Combine,
-  Eraser,
-  Globe,
-  Grid2x2Check,
-  Receipt,
-  ShoppingBasket,
-  Store,
-} from "lucide-react";
-
-import { Separator } from "@shared/ui/separator";
-
+import { useEffect } from "react";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import {
   ViewTabs,
   ViewTabsContent,
@@ -21,98 +8,56 @@ import {
   ViewTabsLabel,
   ViewTabsList,
   ViewTabsTrigger,
+  useViewTabs,
 } from "@shared/ui/view-tabs";
-import Unique from "../../side/unique/ui/unique";
-import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
+import { Separator } from "@shared/ui/separator";
+
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-import { DateFilter } from "../../side/date-filter";
-import { ShopsFilter } from "../../side/shops-filter";
-import { ProductsFilter } from "../../side/products-filter";
+import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
+import { filters, grouping, indicators } from "../model/tabs";
 import { Button } from "@shared/ui/button";
-import { GroupingFilter } from "../../side/grouping-filter";
-import { IndicatorsFilter } from "../../side/indicators-filter";
-import { LoyaltyFilter } from "../../side/loyalty-filter";
-import { RecieptsFilter } from "../../side/reciepts-filter";
-import { OnlineFilter } from "../../side/online-filter";
-const filters = [
-  {
-    title: "Дата",
-    icon: Calendar,
-    component: DateFilter,
-  },
-  {
-    title: "Магазины",
-    icon: Store,
-    component: ShopsFilter,
-  },
-  {
-    title: "Лояльность",
-    icon: BadgeCheck,
-    component: LoyaltyFilter,
-  },
-  {
-    title: "Чеки",
-    icon: Receipt,
-    component: RecieptsFilter,
-  },
-  {
-    title: "Продукты",
-    icon: ShoppingBasket,
-    component: ProductsFilter,
-  },
-  {
-    title: "Интернет магазин",
-    icon: Globe,
-    component: OnlineFilter,
-  },
-];
+import { Eraser } from "lucide-react";
 
-const grouping = [
-  {
-    title: "Группировка",
-    icon: CircleDotDashed,
-    component: GroupingFilter,
-  },
-];
-
-const indicators = [
-  {
-    title: "Показатели",
-    icon: Grid2x2Check,
-    component: IndicatorsFilter,
-  },
-  {
-    title: "Уникальные значения",
-    icon: Combine,
-    component: Unique,
-  },
-];
-const Check = () => {
+const CheckInner = () => {
+  const { targetViewValue, setTargetViewValue } = useTabStore();
+  const { scrollTo } = useViewTabs();
   const { triggerReset } = useFormResetStore();
+
+  useEffect(() => {
+    if (targetViewValue) {
+      scrollTo(targetViewValue);
+      setTargetViewValue(null);
+    }
+  }, [targetViewValue, scrollTo, setTargetViewValue]);
+
   return (
-    <ViewTabs
-      defaultValue={filters[0].title}
-      className="flex flex-row gap-4 h-screen"
-    >
+    <>
       <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4 h-full">
+        {/* Список триггеров (Filters / Grouping / Indicators) */}
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
           <ViewTabsGroupContent>
-            {filters.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+            {filters.map((item) => (
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={item.title}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
           </ViewTabsGroupContent>
         </ViewTabsGroup>
-
         <Separator />
-
         <ViewTabsGroup>
           <ViewTabsLabel>Группировка</ViewTabsLabel>
           <ViewTabsGroupContent>
-            {grouping.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+            {grouping.map((item) => (
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={item.title}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
@@ -122,8 +67,12 @@ const Check = () => {
         <ViewTabsGroup>
           <ViewTabsLabel>Показатели</ViewTabsLabel>
           <ViewTabsGroupContent>
-            {indicators.map((item, index) => (
-              <ViewTabsTrigger value={item.title} icon={item.icon} key={index}>
+            {indicators.map((item) => (
+              <ViewTabsTrigger
+                value={item.title}
+                icon={item.icon}
+                key={item.title}
+              >
                 {item.title}
               </ViewTabsTrigger>
             ))}
@@ -132,31 +81,43 @@ const Check = () => {
         <Separator />
         <CombinedSubmitButton />
       </ViewTabsList>
+
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
-        <div className="flex flex-col gap-2">
-          <Button onClick={() => triggerReset()}>
-            Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
-          </Button>
-          <Separator />
-        </div>
-        {filters.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+        <Button onClick={() => triggerReset()}>
+          Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
+        </Button>
+        <Separator />
+        {filters.map((item) => (
+          <ViewTabsContent value={item.title} key={item.title}>
             <item.component />
           </ViewTabsContent>
         ))}
-        {grouping.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+        {grouping.map((item) => (
+          <ViewTabsContent value={item.title} key={item.title}>
             <item.component />
           </ViewTabsContent>
         ))}
-        {indicators.map((item, index) => (
-          <ViewTabsContent value={item.title} key={index}>
+        {indicators.map((item) => (
+          <ViewTabsContent value={item.title} key={item.title}>
             <item.component />
           </ViewTabsContent>
         ))}
       </div>
-    </ViewTabs>
+    </>
   );
 };
 
-export default Check;
+export default function Check() {
+  // берём дефолтное значение, как и в Commerce
+  const defaultValue =
+    filters[0]?.title || grouping[0]?.title || indicators[0]?.title || "";
+
+  return (
+    <ViewTabs
+      defaultValue={defaultValue}
+      className="flex flex-row gap-4 h-screen"
+    >
+      <CheckInner />
+    </ViewTabs>
+  );
+}
