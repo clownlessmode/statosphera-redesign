@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
@@ -68,7 +67,7 @@ export function IndicatorBadges({ tab }: { tab: string }) {
 export function ReportBadges({ tab }: { tab: string }) {
   return (
     <div className="flex-1 min-w-0 overflow-x-auto">
-      <div className="flex gap-2 flex-nowrap w-max">
+      <div className="flex gap-2 flex-nowrap w-max ">
         <UniqueBadges tab={tab} />
         <IndicatorBadges tab={tab} />
       </div>
