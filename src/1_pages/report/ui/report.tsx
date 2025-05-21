@@ -22,6 +22,7 @@ import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 import { create } from "zustand";
+import { getLabelByValue } from "./values-badges";
 
 interface TableVersionState {
   dataVersion: number;
@@ -59,15 +60,27 @@ const Report: FC = () => {
   const { dataVersion, bumpDataVersion } = useTableVersionStore();
 
   const onCellClick = async (params: any) => {
+    // Определяем выбранное значение
+    const selectedValue = topLevelValues.includes(params.field.toLowerCase())
+      ? params.field
+      : allData.values[0];
+
+    // Если значение не изменилось или это не топ-уровневое значение - выходим
+    if (
+      selectedValue === selectedIndicator ||
+      !topLevelValues.includes(params.field.toLowerCase())
+    ) {
+      return;
+    }
+
+    // Обновляем состояние выбранного индикатора
+    setSelectedIndicator(selectedValue);
+
     try {
       const [graph] = await Promise.all([
         getGraph({
           ...allData,
-          values: [
-            topLevelValues.includes(params.field.toLowerCase())
-              ? params.field
-              : allData.values[0],
-          ],
+          values: [selectedValue],
           groups: [value],
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
@@ -177,8 +190,9 @@ const Report: FC = () => {
     requestCache.current = {};
     lastRequestKey.current = "";
     bumpDataVersion();
+    setSelectedIndicator(allData.values[0]); // Сбрасываем к первоначальному значению
   };
-
+  const [selectedIndicator, setSelectedIndicator] = useState(allData.values[0]);
   return (
     <>
       <Sheet />
@@ -241,7 +255,7 @@ const Report: FC = () => {
                 <StackedLine
                   option={{
                     title: {
-                      text: "Выручка",
+                      text: getLabelByValue(indicators, selectedIndicator), // Используем selectedIndicator вместо allData.values[0]
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],
