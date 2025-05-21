@@ -53,6 +53,7 @@ const RecieptsFilter: FC = () => {
                     <FormLabel htmlFor="">Вид оплаты</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
+                      // DISABLEDDDDDDD
                       options={TYPE_QR}
                       className="grid-cols-3"
                       onChange={(value) => {
