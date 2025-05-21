@@ -22,6 +22,7 @@ export interface InfinityTableProps {
   fetchData: (params: {
     startRow: number;
     endRow: number;
+    sortModel?: { colId: string; sort: "asc" | "desc" }[];
   }) => Promise<{ data: any[]; totalRows: number }>;
   cacheBlockSize?: number;
   maxBlocksInCache?: number;
@@ -33,7 +34,7 @@ export interface InfinityTableProps {
   onRowClick?: (data: any) => void;
   onSelectionChange?: (selectedRows: any[]) => void;
   dataVersion?: number;
-  maxRows?: number; // Новый пропс для ограничения максимального количества строк
+  maxRows?: number;
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -65,7 +66,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   const [pinnedTopData, setPinnedTopData] = useState<any[]>([]);
 
   const defaultColDef = useMemo<ColDef>(
-    () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
+    () => ({
+      resizable: true,
+      sortable: true,
+      cellStyle: { textAlign: "center" },
+      valueFormatter: (params) => (params.value == null ? "––" : params.value),
+    }),
     []
   );
 
@@ -98,6 +104,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       }
       return params.valueFormatted ?? params.value;
     },
+    valueFormatter: (params) => (params.value == null ? "––" : params.value),
   });
 
   const updateColumns = useCallback(
@@ -139,13 +146,22 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         headerName: "",
         field: "__filler__",
         valueGetter: () => "",
-        cellStyle: { padding: 0, border: "none" },
+        cellStyle: {
+          padding: 0,
+          border: "none",
+          display: "flex", // Добавлено
+          flex: 1, // Добавлено
+        },
         suppressMovable: true,
         sortable: false,
         filter: false,
         resizable: false,
         suppressAutoSize: true,
-        flex: 1,
+        suppressSizeToFit: true,
+        minWidth: 0,
+        flex: 2, // Увеличьте значение, если другие колонки тоже имеют flex
+        maxWidth: undefined, // Явное указание
+        cellClass: "ag-filler-cell", // Добавьте в CSS: .ag-filler-cell { flex-grow: 1; }
       });
 
       gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
@@ -160,23 +176,22 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         gridApiRef.current?.setGridOption("loading", true);
 
         try {
-          // Улучшение 2: Сразу ограничиваем endRow с учетом maxRows
           const adjustedEndRow = maxRows
             ? Math.min(params.endRow, maxRows)
             : params.endRow;
 
-          // Улучшение 3: Если startRow превышает maxRows, возвращаем пустой результат
           if (maxRows && params.startRow >= maxRows) {
             params.successCallback([], maxRows);
             return;
           }
+          const sortModel = params.sortModel ?? [];
 
           const resp = await fetchData({
             startRow: params.startRow,
             endRow: adjustedEndRow,
+            sortModel,
           });
 
-          // Улучшение 4: Корректный расчет actualTotalRows
           const actualTotalRows = maxRows
             ? Math.min(resp.totalRows, maxRows)
             : resp.totalRows;
@@ -193,7 +208,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           gridApiRef.current?.setGridOption("loading", false);
         }
       },
-      // Улучшение 5: Устанавливаем rowCount если есть maxRows
       rowCount: maxRows || totalRowsRef.current || undefined,
     }),
     [fetchData, forceUpdate, updateColumns, maxRows]
@@ -262,6 +276,11 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         onGridReady={onGridReady}
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
+        onSortChanged={() => {
+          console.log("onSortChanged TRIGGERRED");
+          gridApiRef.current?.purgeInfiniteCache();
+          gridApiRef.current?.refreshInfiniteCache();
+        }}
         autoSizePadding={20}
         className="flex-1"
         overlayNoRowsTemplate="Нет данных для отображения"

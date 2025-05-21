@@ -2,7 +2,7 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useCallback, useState, type FC } from "react";
+import { useCallback, useRef, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { ReportCard } from "./report-card";
@@ -28,7 +28,9 @@ interface TableVersionState {
   setDataVersion: (version: number) => void;
   bumpDataVersion: () => void; // <— новый экшен
 }
-
+interface RequestCache {
+  [key: string]: Promise<{ data: any[]; totalRows: number }>;
+}
 export const useTableVersionStore = create<TableVersionState>((set) => ({
   dataVersion: 0,
   setDataVersion: (version: number) => set({ dataVersion: version }),
@@ -36,6 +38,9 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
     set((state) => ({ dataVersion: state.dataVersion + 1 })),
 }));
 const Report: FC = () => {
+  const requestCache = useRef<RequestCache>({});
+  const lastRequestKey = useRef<string>("");
+
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph, error } = useReportStore();
   const { getGraph, getTable } = useReport();
@@ -74,18 +79,61 @@ const Report: FC = () => {
   };
 
   const fetchData = useCallback(
-    ({ startRow, endRow }: { startRow: number; endRow: number }) => {
-      // Если есть начальные данные и это первая загрузка - используем их
-      if (startRow === 0 && initialRows && initialRows.data.length > 0) {
-        return Promise.resolve({
-          data: initialRows.data.slice(startRow, endRow),
-          totalRows: initialTotalRows,
-        });
+    async ({
+      startRow,
+      endRow,
+      sortModel = [],
+    }: {
+      startRow: number;
+      endRow: number;
+      sortModel?: { colId: string; sort: "asc" | "desc" }[];
+    }) => {
+      // Генерируем уникальный ключ для запроса
+      const requestKey = JSON.stringify({
+        startRow,
+        endRow,
+        sortModel,
+        // Добавляем другие параметры, которые влияют на запрос
+        values: getApiPayload().values,
+        groups: getApiPayload().groups,
+      });
+
+      // Если это тот же самый запрос, что и предыдущий - возвращаем кеш
+      if (
+        requestKey === lastRequestKey.current &&
+        (await requestCache.current[requestKey])
+      ) {
+        return requestCache.current[requestKey];
       }
 
-      // Иначе делаем запрос к API
+      // Если это первая загрузка и есть initialData
+      if (
+        startRow === 0 &&
+        initialRows &&
+        initialRows.data.length > 0 &&
+        sortModel.length === 0
+      ) {
+        const result = {
+          data: initialRows.data.slice(startRow, endRow),
+          totalRows: initialTotalRows,
+        };
+
+        const cachedPromise = Promise.resolve(result);
+        requestCache.current[requestKey] = (await cachedPromise) as any;
+        lastRequestKey.current = requestKey;
+
+        return cachedPromise;
+      }
+
+      // Для API запросов
       const payload = getApiPayload();
-      return getTable({
+      const sorts =
+        sortModel.length > 0
+          ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
+          : { colId: [payload.values[0]], sort: "desc" as "asc" | "desc" };
+
+      // Создаем промис для запроса
+      const requestPromise = getTable({
         ...payload,
         filterDate: {
           dateStart: payload.filterDate.dateStart,
@@ -93,17 +141,26 @@ const Report: FC = () => {
         },
         offset: startRow,
         limit: endRow - startRow,
-        sorts: { colId: [payload.values[0]], sort: "desc" },
+        sorts: sorts,
         groups: payload.groups,
       });
+
+      // Кешируем промис
+      requestCache.current[requestKey] = requestPromise;
+      lastRequestKey.current = requestKey;
+
+      return requestPromise;
     },
-    [getTable, getApiPayload, initialRows, initialTotalRows]
+    [getTable, initialRows, initialTotalRows, getApiPayload]
   );
 
+  // Очищаем кеш при изменении фильтров
   const handleClearFilters = () => {
     resetAllFilters();
     clearAll();
-    bumpDataVersion(); // Принудительно обновляем таблицу
+    requestCache.current = {};
+    lastRequestKey.current = "";
+    bumpDataVersion();
   };
 
   return (

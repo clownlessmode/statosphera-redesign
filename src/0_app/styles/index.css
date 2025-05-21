@@ -28,6 +28,9 @@ body {
   background: transparent;
 }
 
+.ag-filler-cell {
+  flex-grow: 1;
+}
 /* Стилизация горизонтального скроллбара в стиле macOS */
 ::-webkit-scrollbar {
   height: 6px; /* Только горизонтальный скроллбар */
