@@ -5,36 +5,65 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Основные стили для body */
 body {
   scroll-behavior: smooth;
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: hidden; /* Полностью отключаем вертикальный скролл */
 }
 
+/* Стили для скрытия скроллбаров (общие) */
 .scrollbar-hide {
   /* Firefox */
   scrollbar-width: none;
-
   /* IE и Edge */
   -ms-overflow-style: none;
 }
 
-/* Webkit-браузеры (Chrome, Safari и др.) */
+/* Webkit-браузеры (Chrome, Safari) - скрытие */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
   width: 0;
   background: transparent;
 }
 
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+/* Стилизация горизонтального скроллбара в стиле macOS */
+::-webkit-scrollbar {
+  height: 6px; /* Только горизонтальный скроллбар */
+  width: 0; /* Вертикальный скроллбар полностью скрыт */
 }
 
-*::-webkit-scrollbar {
-  display: none;
-  width: 0;
+::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox стилизация */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 :root {
   --background: #ffffff;
