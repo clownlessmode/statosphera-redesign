@@ -48,15 +48,18 @@ export const TYPE_QR = [
     label: "Все",
     value: null,
     icon: Badge, // Общая иконка
+    disabled: true,
   },
   {
     label: "C QR",
     value: true,
     icon: QrCode, // Иконка QR-кода
+    disabled: true,
   },
   {
     label: "Без QR",
     value: false,
     icon: Slash,
+    disabled: true,
   },
 ];

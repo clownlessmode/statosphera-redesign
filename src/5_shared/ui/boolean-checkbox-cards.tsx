@@ -18,7 +18,6 @@ interface Props
   disableCheck?: boolean;
   value?: any;
   onChange?: (value: any) => void;
-
 }
 
 const BooleanCheckboxCard: FC<Props> = ({

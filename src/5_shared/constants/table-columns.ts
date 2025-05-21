@@ -64,7 +64,7 @@ export enum COLUMN_KEY {
   MARKUP_DISCOUNT_PERCENT_MOM = "markupDiscountPercentMoM",
   MARKUP_DISCOUNT_PERCENT_MOM_PERCENT = "markupDiscountPercentMoMPercent",
   MARKUP_DISCOUNT_PERCENT_LY = "markupDiscountPercentLY",
-  MARKUP_DISCOUNT_PERCENT_YOY = "markupDiscountPercentYoY",
+  MARKUP_DISCOUNT_PERCENT_YOY = "markupDiscountPercentYoYPercent",
 
   // ----------------- Маржа в процентах без скидки -----------------
   GROUP_MARGIN_PERCENT_DISCOUNT = "groupMarginDiscountPercent",
