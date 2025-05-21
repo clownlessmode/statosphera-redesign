@@ -47,13 +47,13 @@ export const TYPE_QR = [
   {
     label: "Все",
     value: null,
-    icon: Badge, // Общая иконка
+    icon: Badge,
     disabled: true,
   },
   {
     label: "C QR",
     value: true,
-    icon: QrCode, // Иконка QR-кода
+    icon: QrCode,
     disabled: true,
   },
   {
