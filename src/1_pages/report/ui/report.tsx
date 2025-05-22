@@ -55,32 +55,51 @@ const Report: FC = () => {
   const { value } = useDateFilterStore();
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
-  const values = [...indicators, ...uniques];
-  const topLevelValues = getTopLevelValues(values);
   const { dataVersion, bumpDataVersion } = useTableVersionStore();
 
   const onCellClick = async (params: any) => {
-    // Определяем выбранное значение
-    const selectedValue = topLevelValues.includes(params.field.toLowerCase())
-      ? params.field
-      : allData.values[0];
+    // Функция для нахождения родительского топ-уровневого значения
+    const getTopLevelParent = (value: string): string => {
+      // Ищем в indicators
+      for (const group of indicators) {
+        // Проверяем саму группу
+        if (group.value === value) return value;
 
-    // Если значение не изменилось или это не топ-уровневое значение - выходим
-    if (
-      selectedValue === selectedIndicator ||
-      !topLevelValues.includes(params.field.toLowerCase())
-    ) {
+        // Ищем среди детей
+        const child = group.children.find((child) => child.value === value);
+        if (child) return group.value;
+      }
+
+      // Ищем в uniques
+      for (const group of uniques) {
+        if (group.value === value) return value;
+        const child = group.children?.find((child) => child.value === value);
+        if (child) return group.value;
+      }
+
+      return value; // Если не нашли, возвращаем как есть
+    };
+
+    // Получаем топ-уровневого родителя для кликнутого значения
+    const clickedTopParent = getTopLevelParent(params.field);
+
+    // Получаем топ-уровневого родителя для текущего выбранного значения
+    const currentTopParent = getTopLevelParent(selectedIndicator);
+
+    // Если топ-родители совпадают - не делаем запрос
+    if (clickedTopParent === currentTopParent) {
       return;
     }
 
-    // Обновляем состояние выбранного индикатора
-    setSelectedIndicator(selectedValue);
+    // Обновляем состояние выбранного индикатора (сохраняем оригинальное значение)
+    setSelectedIndicator(params.field);
 
     try {
       const [graph] = await Promise.all([
         getGraph({
           ...allData,
-          values: [selectedValue],
+          // Используем оригинальное значение, не нормализованное
+          values: [params.field],
           groups: [value],
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
@@ -193,6 +212,27 @@ const Report: FC = () => {
     setSelectedIndicator(allData.values[0]); // Сбрасываем к первоначальному значению
   };
   const [selectedIndicator, setSelectedIndicator] = useState(allData.values[0]);
+
+  const getFullLabelByValue = (value: string): string => {
+    // Ищем во всех группах indicators
+    for (const group of indicators) {
+      // Проверяем саму группу
+      if (group.value === value) return group.label;
+
+      // Ищем среди детей
+      const child = group.children.find((child) => child.value === value);
+      if (child) return child.label;
+    }
+
+    // Ищем в uniques
+    for (const group of uniques) {
+      if (group.value === value) return group.label;
+      const child = group.children?.find((child) => child.value === value);
+      if (child) return child.label;
+    }
+
+    return value; // Если не нашли, возвращаем как есть
+  };
   return (
     <>
       <Sheet />
@@ -255,7 +295,7 @@ const Report: FC = () => {
                 <StackedLine
                   option={{
                     title: {
-                      text: getLabelByValue(indicators, selectedIndicator), // Используем selectedIndicator вместо allData.values[0]
+                      text: getFullLabelByValue(selectedIndicator), // Используем новую функцию
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],

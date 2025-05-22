@@ -10,7 +10,7 @@ body {
   scroll-behavior: smooth;
   max-width: 100vw;
   overflow-x: hidden;
-  overflow-y: hidden; /* Полностью отключаем вертикальный скролл */
+  /* overflow-y: hidden; Полностью отключаем вертикальный скролл */
 }
 
 /* Стили для скрытия скроллбаров (общие) */

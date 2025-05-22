@@ -3,7 +3,7 @@ import { Store } from "../types";
 
 export class StoresService {
   static async getStores() {
-    const response = await api.get<Store[]>("store");
+    const response = await api.get<Store[]>("store/all");
     return response.data;
   }
   static async getStore(id: number) {
