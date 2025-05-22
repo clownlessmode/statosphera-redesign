@@ -280,6 +280,7 @@ const MultipleSelector = React.forwardRef<
         document.addEventListener("touchend", handleClickOutside);
       } else {
         document.removeEventListener("mousedown", handleClickOutside);
+        
         document.removeEventListener("touchend", handleClickOutside);
       }
 

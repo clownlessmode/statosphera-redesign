@@ -57,6 +57,18 @@ const Report: FC = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(
     !graph || !table || !total
   );
+  const all_indicators = useIndicatorList(tab);
+  const all_uniques = useIndicatorList(tab);
+  const all_values = [...all_indicators, ...all_uniques];
+  function getGroupRootIndicator(selected: string): string {
+    for (const group of all_values) {
+      if (group.children.some((child) => child.id === selected)) {
+        return group.children[0].id;
+      }
+    }
+    return selected;
+  }
+
   const { resetAllFilters } = useFiltersStore();
   const { value } = useDateFilterStore();
   const indicators = useIndicatorList(tab);
@@ -259,14 +271,14 @@ const Report: FC = () => {
           )
         ),
       },
-      // Аналогично для остальных фильтров
     };
 
     // Определяем, нужно ли менять индикатор
-    let indicatorToSet = selectedIndicator;
+    let indicatorToSet = getGroupRootIndicator(selectedIndicator);
     if (isIndicatorField(field)) {
-      indicatorToSet = field;
-      setSelectedIndicator(field);
+      const rootIndicator = getGroupRootIndicator(field);
+      indicatorToSet = rootIndicator;
+      setSelectedIndicator(rootIndicator);
     }
 
     try {
@@ -304,11 +316,29 @@ const Report: FC = () => {
   };
 
   const onCellClick = async (params: any) => {
-    // Добавляем/удаляем строку из выбранных
-    toggleRowSelection(params.rowData);
+    const clickedField = params.field;
 
-    // Применяем фильтры из всех выбранных строк
-    await applyFiltersFromSelectedRows(params.field);
+    // Определяем корневой показатель для выбранного поля (если нужно)
+    const rootIndicator = getGroupRootIndicator(clickedField);
+
+    // Меняем выбранный индикатор в состоянии
+    setSelectedIndicator(rootIndicator);
+
+    try {
+      // Запрашиваем новый график с новым индикатором
+      const [graph] = await Promise.all([
+        getGraph({
+          ...allData,
+          values: [rootIndicator],
+          groups: [value], // value — выбранный период из DateDropdown
+          filters: allData.filters, // если хочешь, можно изменить фильтры
+          sorts: { colId: [rootIndicator], sort: "desc" },
+        }),
+      ]);
+      setGraph(graph);
+    } catch (error) {
+      console.error("Error fetching report:", error);
+    }
   };
 
   const fetchData = useCallback(
@@ -464,7 +494,7 @@ const Report: FC = () => {
                   <Button
                     size="sm"
                     onClick={() => {
-                      handleClearFilters;
+                      handleClearFilters();
                       setIsFiltersOpen(true);
                     }}
                     variant="outline"

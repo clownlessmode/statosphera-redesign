@@ -46,7 +46,8 @@ const DownloadReport = ({ rows }: { rows: number }) => {
         <DialogHeader>
           <DialogTitle>Скачать отчет</DialogTitle>
           <DialogDescription>
-            Выберите формат и тип отчета <br /> Кол-во строк: {formatNumber(rows)}
+            Выберите формат и тип отчета <br /> Кол-во строк:{" "}
+            {rows.toLocaleString("ru-RU", { maximumFractionDigits: 0 })}
           </DialogDescription>
         </DialogHeader>
 
