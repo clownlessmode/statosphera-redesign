@@ -1,5 +1,5 @@
 import { Button } from "@shared/ui/button";
-import { Download } from "lucide-react";
+import { Download, Sparkles } from "lucide-react";
 import { useDownloadReportController } from "../model/api/controller";
 import {
   Dialog,
@@ -12,7 +12,8 @@ import {
 } from "@shared/ui/dialog";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
-const DownloadReport = () => {
+import { CardContent, CardDescription, CardTitle } from "@shared/ui/card";
+const DownloadReport = ({ rows }: { rows: number }) => {
   const { downloadReport } = useDownloadReportController();
   const { getApiPayload } = useFiltersStore();
   const [isOpen, setIsOpen] = useState(false);
@@ -39,8 +40,10 @@ const DownloadReport = () => {
           <DialogTitle>Скачать отчет</DialogTitle>
           <DialogDescription>Выберите формат и тип отчета</DialogDescription>
         </DialogHeader>
+
         <DialogFooter className="flex flex-row gap-2 w-full">
           <Button
+            disabled={rows > 500000}
             className="w-full bg-green-500"
             onClick={() => handleDownloadReport("excel")}
           >
@@ -53,6 +56,27 @@ const DownloadReport = () => {
             CSV
           </Button>
         </DialogFooter>
+        {rows > 500000 && (
+          <CardContent className="bg-background p-0 m-0 border-none">
+            <CardTitle className="mb-1 flex flex-row items-center gap-1">
+              Ограничение на экспорт в Excel
+              <Sparkles className="size-4 text-primary" />
+            </CardTitle>
+            <CardDescription>
+              В текущей выборке содержится более 500 000 строк данных. Экспорт
+              таких объёмов в Excel невозможен из-за технических ограничений
+              формата.
+              <br />
+              <br />
+              Для работы с большими данными рекомендуем:
+              <ul className="list-disc pl-5 mt-2 space-y-1">
+                <li>Применить дополнительные фильтры для уменьшения выборки</li>
+                <li>Использовать группировку данных перед экспортом</li>
+                <li>Экспортировать данные частями по определённым периодам</li>
+              </ul>
+            </CardDescription>
+          </CardContent>
+        )}
       </DialogContent>
     </Dialog>
   );

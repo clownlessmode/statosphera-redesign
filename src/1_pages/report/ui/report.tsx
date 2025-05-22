@@ -25,6 +25,7 @@ import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 import { create } from "zustand";
+import { useCountStore } from "../model/usCountStore";
 
 interface TableVersionState {
   dataVersion: number;
@@ -44,7 +45,7 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
 const Report: FC = () => {
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
-
+  const { count, decrement, increment, reset, setCount } = useCountStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph, error } = useReportStore();
   const { getGraph, getTable } = useReport();
@@ -389,7 +390,7 @@ const Report: FC = () => {
 
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
-
+      setCount((await requestPromise).totalRows);
       return requestPromise;
     },
     [getTable, initialRows, initialTotalRows, getApiPayload]
@@ -403,6 +404,7 @@ const Report: FC = () => {
     bumpDataVersion();
     setSelectedIndicator(allData.values[0]);
     setSelectedRows([]);
+    reset();
   };
 
   return (
@@ -413,7 +415,7 @@ const Report: FC = () => {
           actions={{
             right: (
               <div className="flex flex-row gap-2">
-                <DownloadReport />
+                <DownloadReport rows={count || 0} />
                 <Button variant="outline">
                   <Save />
                 </Button>

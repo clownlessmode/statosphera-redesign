@@ -7,6 +7,7 @@ import { useDateFilterStore } from "@pages/report/ui/date-dropdown";
 import { ApiError } from "@shared/api/types";
 import { useCallback } from "react";
 import { useTableVersionStore } from "@pages/report/ui/report";
+import { useCountStore } from "@pages/report/model/usCountStore";
 
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,7 @@ export const CombinedSubmitButton = () => {
   const { getApiPayload } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError, clearAll } = useReportStore();
   const { getGraph, getTable, getTotal } = useReport();
+  const { setCount } = useCountStore();
   const { value } = useDateFilterStore();
 
   // 🔄 Всегда актуальные данные для disabled
@@ -99,6 +101,7 @@ export const CombinedSubmitButton = () => {
       setGraph(graph);
       setTotal(total);
       setTable(table);
+      setCount(table.totalRows);
       bumpDataVersion();
     } catch (error) {
       console.error("Error fetching report:", error);
