@@ -117,7 +117,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       }
       return params.valueFormatted ?? params.value;
     },
-    valueFormatter: (params) => (params.value == null ? "––" : params.value),
+    // valueFormatter: (params) => (params.value == null ? "––" : params.value),
   });
 
   const updateColumns = useCallback(

@@ -53,7 +53,9 @@ const Report: FC = () => {
   const { table: initialRows, total: initialTotalRows } = useReportStore();
   const { tab } = useTabStore();
   const isCompleted = graph && table && total;
-  const [isFiltersOpen, setIsFiltersOpen] = useState(!isCompleted);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(
+    !graph || !table || !total
+  );
   const { resetAllFilters } = useFiltersStore();
   const { value } = useDateFilterStore();
   const indicators = useIndicatorList(tab);
@@ -273,6 +275,21 @@ const Report: FC = () => {
           filters: {
             ...allData.filters,
             ...newFilters,
+
+            loyal: {
+              ...newFilters.loyal,
+
+              ageStart:
+                newFilters.loyal.ageStart === 0 &&
+                allData.filters.loyal.ageEnd === 100
+                  ? null
+                  : newFilters.loyal.ageStart,
+              ageEnd:
+                newFilters.loyal.ageStart === 0 &&
+                allData.filters.loyal.ageEnd === 100
+                  ? null
+                  : newFilters.loyal.ageEnd,
+            },
           },
           values: [indicatorToSet],
           groups: [value],
@@ -444,14 +461,17 @@ const Report: FC = () => {
                   </Button>
                   <Button
                     size="sm"
-                    onClick={handleClearFilters}
+                    onClick={() => {
+                      handleClearFilters;
+                      setIsFiltersOpen(true);
+                    }}
                     variant="outline"
                   >
                     Очистить фильтры <Eraser className="text-primary/80" />
                   </Button>
                 </div>
               </div>
-              {isCompleted && !isFiltersOpen ? (
+              {graph && !isFiltersOpen ? (
                 <StackedLine
                   option={{
                     title: {
@@ -478,7 +498,7 @@ const Report: FC = () => {
                 isFiltersOpen ? "flex-row" : "flex-col"
               )}
             >
-              {isCompleted && !isFiltersOpen && (
+              {graph && !isFiltersOpen && (
                 <>
                   <ReportCard
                     value={graph.card1.value1}
@@ -505,7 +525,7 @@ const Report: FC = () => {
               )}
             </div>
           </div>
-          {isCompleted ? (
+          {table && total ? (
             <InfinityTable
               maxRows={table.totalRows}
               fetchData={fetchData as any}

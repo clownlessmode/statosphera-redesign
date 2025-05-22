@@ -434,8 +434,24 @@ export enum COLUMN_KEY {
   DISCOUNT_TYPE = "discountType",
 }
 
-export const formatNumber = (value: number) =>
-  value ? divideNumberSpaces(value) : "-";
+export const formatNumber = (
+  value: number | string | null | undefined
+): string => {
+  if (value === null || value === undefined || value === "") return "-";
+
+  const num =
+    typeof value === "string"
+      ? parseFloat(value.replace(/[^\d.-]/g, ""))
+      : value;
+
+  if (isNaN(num)) return "-";
+
+  // Ручное форматирование с пробелами
+  const parts = num.toFixed(2).split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+  return parts.join(",");
+};
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
@@ -655,9 +671,11 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.WRITEOFF_COUNT,
     headerName: "Списания, кол-во",
     headerTooltip: "Списания, кол-во",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
+    type: "numericColumn",
+    valueFormatter: (params: any) => {
+      if (params.value == null) return "";
+      return params.value.toLocaleString("ru-RU");
+    },
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_LM,
