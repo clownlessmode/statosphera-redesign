@@ -45,7 +45,7 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
 const Report: FC = () => {
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
-  const { count, decrement, increment, reset, setCount } = useCountStore();
+  const { count, reset, setCount } = useCountStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, setGraph, error } = useReportStore();
   const { getGraph, getTable } = useReport();
