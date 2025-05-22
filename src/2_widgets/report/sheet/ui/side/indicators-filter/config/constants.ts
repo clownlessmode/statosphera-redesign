@@ -969,3 +969,30 @@ export const useIndicatorList = (type: "check" | "commerce") => {
   }
   return COMMERCE;
 };
+
+interface LabelValue {
+  label: string;
+  value: string;
+}
+
+export function getFirstIndicatorFromGroup(
+  indicators: IndicatorGroup[],
+  searchId: string
+): LabelValue | null {
+  // Находим группу, в которой есть искомый показатель
+  const group = indicators.find(
+    (group) =>
+      group.id === searchId ||
+      group.children.some((child) => child.id === searchId)
+  );
+
+  if (!group) {
+    return null;
+  }
+
+  // Возвращаем label и value первого элемента группы
+  return {
+    label: group.children[0].label,
+    value: group.children[0].value,
+  };
+}

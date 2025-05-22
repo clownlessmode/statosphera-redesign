@@ -324,8 +324,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         theme={agTheme}
         getRowStyle={getRowStyle}
         rowSelection={rowSelection}
-        rowMultiSelectWithClick={rowSelection === "multiple"}
-        suppressRowClickSelection={false}
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {

@@ -39,7 +39,7 @@ interface Props {
 }
 const Feedback: FC<Props> = ({ description, id }) => {
   const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const form = useForm();
   const [activeTab, setActiveTab] = useState<
     "personal" | "impressions" | "content" | "suggestions"

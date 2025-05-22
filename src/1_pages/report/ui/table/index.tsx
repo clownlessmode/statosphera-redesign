@@ -29,7 +29,6 @@ export default function UniversalTable({
   onSelectionChange,
 
   selectionType = "single",
-  multiSelectWithoutCtrl = true,
 }: Props) {
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -137,7 +136,6 @@ export default function UniversalTable({
         pinnedTopRowData={pinnedTopData}
         loadThemeGoogleFonts
         rowSelection={selectionType}
-        rowMultiSelectWithClick={multiSelectWithoutCtrl}
         animateRows
         enableCellTextSelection
         domLayout="normal"
