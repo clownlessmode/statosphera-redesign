@@ -14,7 +14,7 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown, { useDateFilterStore } from "./date-dropdown";
 import {
-  FiltersState,
+  // FiltersState,
   useFiltersStore,
 } from "@widgets/report/sheet/model/filters-store";
 import { DownloadReport } from "@features/reports/download";
@@ -93,227 +93,227 @@ const Report: FC = () => {
     return value;
   };
 
-  const isIndicatorField = (field: string): boolean => {
-    // Проверяем, является ли поле показателем (из indicators)
-    for (const group of indicators) {
-      if (group.value === field) return true;
-      if (group.children.some((child) => child.value === field)) return true;
-    }
-    return false;
-  };
+  // const isIndicatorField = (field: string): boolean => {
+  //   // Проверяем, является ли поле показателем (из indicators)
+  //   for (const group of indicators) {
+  //     if (group.value === field) return true;
+  //     if (group.children.some((child) => child.value === field)) return true;
+  //   }
+  //   return false;
+  // };
 
-  const toggleRowSelection = (rowData: any) => {
-    setSelectedRows((prev) => {
-      const isSelected = prev.some(
-        (row) => JSON.stringify(row) === JSON.stringify(rowData)
-      );
-      if (isSelected) {
-        return prev.filter(
-          (row) => JSON.stringify(row) !== JSON.stringify(rowData)
-        );
-      } else {
-        return [...prev, rowData];
-      }
-    });
-  };
+  // const toggleRowSelection = (rowData: any) => {
+  //   setSelectedRows((prev) => {
+  //     const isSelected = prev.some(
+  //       (row) => JSON.stringify(row) === JSON.stringify(rowData)
+  //     );
+  //     if (isSelected) {
+  //       return prev.filter(
+  //         (row) => JSON.stringify(row) !== JSON.stringify(rowData)
+  //       );
+  //     } else {
+  //       return [...prev, rowData];
+  //     }
+  //   });
+  // };
 
-  const applyFiltersFromSelectedRows = async (field: string) => {
-    if (selectedRows.length === 0) return;
+  // const applyFiltersFromSelectedRows = async (field: string) => {
+  //   if (selectedRows.length === 0) return;
 
-    // Собираем все уникальные значения из выбранных строк
-    const newFilters: FiltersState["filters"] = {
-      ...allData.filters,
-      store: {
-        idStore: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.id_store)
-              .map((row) => row.id_store)
-          )
-        ),
-        idCity: Array.from(
-          new Set(
-            selectedRows.filter((row) => row.id_city).map((row) => row.id_city)
-          )
-        ),
-        idRegion: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.id_region)
-              .map((row) => row.id_region)
-          )
-        ),
-        idManager: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.id_manager)
-              .map((row) => row.id_manager)
-          )
-        ),
-        storeCondition: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.storeCondition)
-              .map((row) => row.storeCondition)
-          )
-        ),
-        ageGroup: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.ageGroup)
-              .map((row) => row.ageGroup)
-          )
-        ),
-        idLegalEntity: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.id_legal_entity)
-              .map((row) => row.id_legal_entity)
-          )
-        ),
-        channel: Array.from(
-          new Set(
-            selectedRows.filter((row) => row.channel).map((row) => row.channel)
-          )
-        ),
-        district: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.district)
-              .map((row) => row.district)
-          )
-        ),
-      },
-      product: {
-        groupFranchise: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.groupsFranchise)
-              .map((row) => row.groupsFranchise)
-          )
-        ),
-        ppProducts: null,
-        subDivisionProducts: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.subDivisionProducts)
-              .map((row) => row.subDivisionProducts)
-          )
-        ),
-        subGroups: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.subGroups)
-              .map((row) => row.subGroups)
-          )
-        ),
-        subSubGroups: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.subSubGroups)
-              .map((row) => row.subSubGroups)
-          )
-        ),
-        typeProducts: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.typeProducts)
-              .map((row) => row.typeProducts)
-          )
-        ),
-        teamProducts: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.teamProducts)
-              .map((row) => row.teamProducts)
-          )
-        ),
-        directionProducts: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.directionProducts)
-              .map((row) => row.directionProducts)
-          )
-        ),
-        groupsEconomist: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.groupsEconomist)
-              .map((row) => row.groupsEconomist)
-          )
-        ),
-        idGroupMain: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.group_id)
-              .map((row) => row.group_id)
-          )
-        ),
-        idProduct: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.idProduct)
-              .map((row) => row.idProduct)
-          )
-        ),
-        seasonalityProducts: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.seasonalityProducts)
-              .map((row) => row.seasonalityProducts)
-          )
-        ),
-        managerAuto: Array.from(
-          new Set(
-            selectedRows
-              .filter((row) => row.managerAuto)
-              .map((row) => row.managerAuto)
-          )
-        ),
-      },
-    };
+  //   // Собираем все уникальные значения из выбранных строк
+  //   const newFilters: FiltersState["filters"] = {
+  //     ...allData.filters,
+  //     store: {
+  //       idStore: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.id_store)
+  //             .map((row) => row.id_store)
+  //         )
+  //       ),
+  //       idCity: Array.from(
+  //         new Set(
+  //           selectedRows.filter((row) => row.id_city).map((row) => row.id_city)
+  //         )
+  //       ),
+  //       idRegion: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.id_region)
+  //             .map((row) => row.id_region)
+  //         )
+  //       ),
+  //       idManager: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.id_manager)
+  //             .map((row) => row.id_manager)
+  //         )
+  //       ),
+  //       storeCondition: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.storeCondition)
+  //             .map((row) => row.storeCondition)
+  //         )
+  //       ),
+  //       ageGroup: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.ageGroup)
+  //             .map((row) => row.ageGroup)
+  //         )
+  //       ),
+  //       idLegalEntity: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.id_legal_entity)
+  //             .map((row) => row.id_legal_entity)
+  //         )
+  //       ),
+  //       channel: Array.from(
+  //         new Set(
+  //           selectedRows.filter((row) => row.channel).map((row) => row.channel)
+  //         )
+  //       ),
+  //       district: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.district)
+  //             .map((row) => row.district)
+  //         )
+  //       ),
+  //     },
+  //     product: {
+  //       groupFranchise: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.groupsFranchise)
+  //             .map((row) => row.groupsFranchise)
+  //         )
+  //       ),
+  //       ppProducts: null,
+  //       subDivisionProducts: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.subDivisionProducts)
+  //             .map((row) => row.subDivisionProducts)
+  //         )
+  //       ),
+  //       subGroups: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.subGroups)
+  //             .map((row) => row.subGroups)
+  //         )
+  //       ),
+  //       subSubGroups: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.subSubGroups)
+  //             .map((row) => row.subSubGroups)
+  //         )
+  //       ),
+  //       typeProducts: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.typeProducts)
+  //             .map((row) => row.typeProducts)
+  //         )
+  //       ),
+  //       teamProducts: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.teamProducts)
+  //             .map((row) => row.teamProducts)
+  //         )
+  //       ),
+  //       directionProducts: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.directionProducts)
+  //             .map((row) => row.directionProducts)
+  //         )
+  //       ),
+  //       groupsEconomist: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.groupsEconomist)
+  //             .map((row) => row.groupsEconomist)
+  //         )
+  //       ),
+  //       idGroupMain: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.group_id)
+  //             .map((row) => row.group_id)
+  //         )
+  //       ),
+  //       idProduct: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.idProduct)
+  //             .map((row) => row.idProduct)
+  //         )
+  //       ),
+  //       seasonalityProducts: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.seasonalityProducts)
+  //             .map((row) => row.seasonalityProducts)
+  //         )
+  //       ),
+  //       managerAuto: Array.from(
+  //         new Set(
+  //           selectedRows
+  //             .filter((row) => row.managerAuto)
+  //             .map((row) => row.managerAuto)
+  //         )
+  //       ),
+  //     },
+  //   };
 
-    // Определяем, нужно ли менять индикатор
-    let indicatorToSet = getGroupRootIndicator(selectedIndicator);
-    if (isIndicatorField(field)) {
-      const rootIndicator = getGroupRootIndicator(field);
-      indicatorToSet = rootIndicator;
-      setSelectedIndicator(rootIndicator);
-    }
+  //   // Определяем, нужно ли менять индикатор
+  //   let indicatorToSet = getGroupRootIndicator(selectedIndicator);
+  //   if (isIndicatorField(field)) {
+  //     const rootIndicator = getGroupRootIndicator(field);
+  //     indicatorToSet = rootIndicator;
+  //     setSelectedIndicator(rootIndicator);
+  //   }
 
-    try {
-      const [graph] = await Promise.all([
-        getGraph({
-          ...allData,
-          filters: {
-            ...allData.filters,
-            ...newFilters,
+  //   try {
+  //     const [graph] = await Promise.all([
+  //       getGraph({
+  //         ...allData,
+  //         filters: {
+  //           ...allData.filters,
+  //           ...newFilters,
 
-            loyal: {
-              ...newFilters.loyal,
+  //           loyal: {
+  //             ...newFilters.loyal,
 
-              ageStart:
-                newFilters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : newFilters.loyal.ageStart,
-              ageEnd:
-                newFilters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : newFilters.loyal.ageEnd,
-            },
-          },
-          values: [indicatorToSet],
-          groups: [value],
-          sorts: { colId: [allData.values[0]], sort: "desc" },
-        }),
-      ]);
-      setGraph(graph);
-    } catch (error) {
-      console.error("Error fetching report:", error);
-    }
-  };
+  //             ageStart:
+  //               newFilters.loyal.ageStart === 0 &&
+  //               allData.filters.loyal.ageEnd === 100
+  //                 ? null
+  //                 : newFilters.loyal.ageStart,
+  //             ageEnd:
+  //               newFilters.loyal.ageStart === 0 &&
+  //               allData.filters.loyal.ageEnd === 100
+  //                 ? null
+  //                 : newFilters.loyal.ageEnd,
+  //           },
+  //         },
+  //         values: [indicatorToSet],
+  //         groups: [value],
+  //         sorts: { colId: [allData.values[0]], sort: "desc" },
+  //       }),
+  //     ]);
+  //     setGraph(graph);
+  //   } catch (error) {
+  //     console.error("Error fetching report:", error);
+  //   }
+  // };
 
   const onCellClick = async (params: any) => {
     const clickedField = params.field;

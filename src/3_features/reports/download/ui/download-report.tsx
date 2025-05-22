@@ -13,7 +13,6 @@ import {
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
 import { CardContent, CardDescription, CardTitle } from "@shared/ui/card";
-import { formatNumber } from "@shared/constants/table-columns";
 
 const DownloadReport = ({ rows }: { rows: number }) => {
   const { downloadReport } = useDownloadReportController();
