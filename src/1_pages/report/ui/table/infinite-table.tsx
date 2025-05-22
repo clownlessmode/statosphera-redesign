@@ -12,6 +12,8 @@ import {
   GridReadyEvent,
   ColDef,
   GridApi,
+  RowClassParams,
+  RowStyle,
 } from "ag-grid-community";
 import { columnDefs as masterColumnDefs } from "@shared/constants/table-columns";
 import { useTheme } from "@app/providers/theme-provider";
@@ -35,6 +37,8 @@ export interface InfinityTableProps {
   onSelectionChange?: (selectedRows: any[]) => void;
   dataVersion?: number;
   maxRows?: number;
+  selectedRows?: any[]; // Добавляем пропс для выбранных строк
+  rowSelection?: "single" | "multiple"; // Опционально: тип выделения
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -50,7 +54,10 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   onSelectionChange,
   dataVersion = 0,
   maxRows,
+  selectedRows = [],
+  rowSelection = "multiple",
 }) => {
+  const selectedRowsRef = useRef(selectedRows);
   const gridRef = useRef<AgGridReact>(null);
   const gridApiRef = useRef<GridApi | null>(null);
   const columnsSetRef = useRef(false);
@@ -62,7 +69,13 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   }, [maxRows, cacheBlockSize]);
   const { theme } = useTheme();
   const isLight = theme === "light";
-
+  // Добавьте этот эффект в компонент InfinityTable
+  useEffect(() => {
+    if (gridApiRef.current) {
+      // Принудительно обновляем все видимые строки
+      gridApiRef.current.redrawRows();
+    }
+  }, [selectedRows]);
   const [pinnedTopData, setPinnedTopData] = useState<any[]>([]);
 
   const defaultColDef = useMemo<ColDef>(
@@ -244,7 +257,40 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   );
 
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
+  useEffect(() => {
+    selectedRowsRef.current = selectedRows;
+  }, [selectedRows]);
 
+  const isEqual = useCallback((obj1: any, obj2: any) => {
+    if (!obj1 || !obj2) return false;
+
+    if ("id" in obj1 && "id" in obj2) {
+      return obj1.id === obj2.id;
+    }
+
+    try {
+      return JSON.stringify(obj1) === JSON.stringify(obj2);
+    } catch {
+      const keys = Object.keys(obj1);
+      return keys.every((key) => obj1[key] === obj2[key]);
+    }
+  }, []);
+
+  const getRowStyle = useCallback(
+    (params: RowClassParams): RowStyle => {
+      if (!params.data || !selectedRowsRef.current?.length) {
+        return {};
+      }
+
+      // Используем текущее значение из ref
+      const isSelected = selectedRowsRef.current.some((selectedRow) =>
+        isEqual(selectedRow, params.data)
+      );
+
+      return isSelected ? { backgroundColor: "rgba(0, 0, 0, 0)" } : {};
+    },
+    [isEqual]
+  ); // Убираем selectedRows из зависимостей
   return (
     <div
       className={`rounded-[16px] overflow-hidden border border-border h-full w-full flex-1 ${
@@ -276,6 +322,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         onGridReady={onGridReady}
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
+        getRowStyle={getRowStyle}
+        rowSelection={rowSelection}
+        rowMultiSelectWithClick={rowSelection === "multiple"}
+        suppressRowClickSelection={false}
+        onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
+        getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
           console.log("onSortChanged TRIGGERRED");
           gridApiRef.current?.purgeInfiniteCache();
@@ -293,7 +345,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
             value: e.value,
           })
         }
-        onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
       />
     </div>
   );

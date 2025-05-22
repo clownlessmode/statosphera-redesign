@@ -13,7 +13,10 @@ import { Cog, Eraser, Save, Star } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown, { useDateFilterStore } from "./date-dropdown";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import {
+  FiltersState,
+  useFiltersStore,
+} from "@widgets/report/sheet/model/filters-store";
 import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
@@ -23,11 +26,10 @@ import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 import { create } from "zustand";
 
-
 interface TableVersionState {
   dataVersion: number;
   setDataVersion: (version: number) => void;
-  bumpDataVersion: () => void; // <— новый экшен
+  bumpDataVersion: () => void;
 }
 interface RequestCache {
   [key: string]: Promise<{ data: any[]; totalRows: number }>;
@@ -38,6 +40,7 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
   bumpDataVersion: () =>
     set((state) => ({ dataVersion: state.dataVersion + 1 })),
 }));
+
 const Report: FC = () => {
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
@@ -56,50 +59,222 @@ const Report: FC = () => {
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
   const { dataVersion, bumpDataVersion } = useTableVersionStore();
+  const [selectedIndicator, setSelectedIndicator] = useState(allData.values[0]);
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
-  const onCellClick = async (params: any) => {
-    // Функция для нахождения родительского топ-уровневого значения
-    const getTopLevelParent = (value: string): string => {
-      // Ищем в indicators
-      for (const group of indicators) {
-        // Проверяем саму группу
-        if (group.value === value) return value;
-
-        // Ищем среди детей
-        const child = group.children.find((child) => child.value === value);
-        if (child) return group.value;
-      }
-
-      // Ищем в uniques
-      for (const group of uniques) {
-        if (group.value === value) return value;
-        const child = group.children?.find((child) => child.value === value);
-        if (child) return group.value;
-      }
-
-      return value; // Если не нашли, возвращаем как есть
-    };
-
-    // Получаем топ-уровневого родителя для кликнутого значения
-    const clickedTopParent = getTopLevelParent(params.field);
-
-    // Получаем топ-уровневого родителя для текущего выбранного значения
-    const currentTopParent = getTopLevelParent(selectedIndicator);
-
-    // Если топ-родители совпадают - не делаем запрос
-    if (clickedTopParent === currentTopParent) {
-      return;
+  const getTopLevelLabelByValue = (value: string): string => {
+    for (const group of indicators) {
+      if (group.value === value) return group.label;
+      const child = group.children.find((child) => child.value === value);
+      if (child) return group.label;
     }
 
-    // Обновляем состояние выбранного индикатора (сохраняем оригинальное значение)
-    setSelectedIndicator(params.field);
+    for (const group of uniques) {
+      if (group.value === value) return group.label;
+      const child = group.children?.find((child) => child.value === value);
+      if (child) return group.label;
+    }
+
+    return value;
+  };
+
+  const isIndicatorField = (field: string): boolean => {
+    // Проверяем, является ли поле показателем (из indicators)
+    for (const group of indicators) {
+      if (group.value === field) return true;
+      if (group.children.some((child) => child.value === field)) return true;
+    }
+    return false;
+  };
+
+  const toggleRowSelection = (rowData: any) => {
+    setSelectedRows((prev) => {
+      const isSelected = prev.some(
+        (row) => JSON.stringify(row) === JSON.stringify(rowData)
+      );
+      if (isSelected) {
+        return prev.filter(
+          (row) => JSON.stringify(row) !== JSON.stringify(rowData)
+        );
+      } else {
+        return [...prev, rowData];
+      }
+    });
+  };
+
+  const applyFiltersFromSelectedRows = async (field: string) => {
+    if (selectedRows.length === 0) return;
+
+    // Собираем все уникальные значения из выбранных строк
+    const newFilters: FiltersState["filters"] = {
+      ...allData.filters,
+      store: {
+        idStore: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.id_store)
+              .map((row) => row.id_store)
+          )
+        ),
+        idCity: Array.from(
+          new Set(
+            selectedRows.filter((row) => row.id_city).map((row) => row.id_city)
+          )
+        ),
+        idRegion: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.id_region)
+              .map((row) => row.id_region)
+          )
+        ),
+        idManager: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.id_manager)
+              .map((row) => row.id_manager)
+          )
+        ),
+        storeCondition: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.storeCondition)
+              .map((row) => row.storeCondition)
+          )
+        ),
+        ageGroup: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.ageGroup)
+              .map((row) => row.ageGroup)
+          )
+        ),
+        idLegalEntity: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.id_legal_entity)
+              .map((row) => row.id_legal_entity)
+          )
+        ),
+        channel: Array.from(
+          new Set(
+            selectedRows.filter((row) => row.channel).map((row) => row.channel)
+          )
+        ),
+        district: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.district)
+              .map((row) => row.district)
+          )
+        ),
+      },
+      product: {
+        groupFranchise: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.groupsFranchise)
+              .map((row) => row.groupsFranchise)
+          )
+        ),
+        ppProducts: null,
+        subDivisionProducts: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.subDivisionProducts)
+              .map((row) => row.subDivisionProducts)
+          )
+        ),
+        subGroups: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.subGroups)
+              .map((row) => row.subGroups)
+          )
+        ),
+        subSubGroups: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.subSubGroups)
+              .map((row) => row.subSubGroups)
+          )
+        ),
+        typeProducts: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.typeProducts)
+              .map((row) => row.typeProducts)
+          )
+        ),
+        teamProducts: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.teamProducts)
+              .map((row) => row.teamProducts)
+          )
+        ),
+        directionProducts: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.directionProducts)
+              .map((row) => row.directionProducts)
+          )
+        ),
+        groupsEconomist: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.groupsEconomist)
+              .map((row) => row.groupsEconomist)
+          )
+        ),
+        idGroupMain: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.group_id)
+              .map((row) => row.group_id)
+          )
+        ),
+        idProduct: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.idProduct)
+              .map((row) => row.idProduct)
+          )
+        ),
+        seasonalityProducts: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.seasonalityProducts)
+              .map((row) => row.seasonalityProducts)
+          )
+        ),
+        managerAuto: Array.from(
+          new Set(
+            selectedRows
+              .filter((row) => row.managerAuto)
+              .map((row) => row.managerAuto)
+          )
+        ),
+      },
+      // Аналогично для остальных фильтров
+    };
+
+    // Определяем, нужно ли менять индикатор
+    let indicatorToSet = selectedIndicator;
+    if (isIndicatorField(field)) {
+      indicatorToSet = field;
+      setSelectedIndicator(field);
+    }
 
     try {
       const [graph] = await Promise.all([
         getGraph({
           ...allData,
-          // Используем оригинальное значение, не нормализованное
-          values: [params.field],
+          filters: {
+            ...allData.filters,
+            ...newFilters,
+          },
+          values: [indicatorToSet],
           groups: [value],
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
@@ -108,6 +283,14 @@ const Report: FC = () => {
     } catch (error) {
       console.error("Error fetching report:", error);
     }
+  };
+
+  const onCellClick = async (params: any) => {
+    // Добавляем/удаляем строку из выбранных
+    toggleRowSelection(params.rowData);
+
+    // Применяем фильтры из всех выбранных строк
+    await applyFiltersFromSelectedRows(params.field);
   };
 
   const fetchData = useCallback(
@@ -120,17 +303,14 @@ const Report: FC = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
-      // Генерируем уникальный ключ для запроса
       const requestKey = JSON.stringify({
         startRow,
         endRow,
         sortModel,
-        // Добавляем другие параметры, которые влияют на запрос
         values: getApiPayload().values,
         groups: getApiPayload().groups,
       });
 
-      // Если это тот же самый запрос, что и предыдущий - возвращаем кеш
       if (
         requestKey === lastRequestKey.current &&
         (await requestCache.current[requestKey])
@@ -138,7 +318,6 @@ const Report: FC = () => {
         return requestCache.current[requestKey];
       }
 
-      // Если это первая загрузка и есть initialData
       if (
         startRow === 0 &&
         initialRows &&
@@ -157,14 +336,12 @@ const Report: FC = () => {
         return cachedPromise;
       }
 
-      // Для API запросов
       const payload = getApiPayload();
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
           : { colId: [payload.values[0]], sort: "desc" as "asc" | "desc" };
 
-      // Создаем промис для запроса
       const requestPromise = getTable({
         ...payload,
         filterDate: {
@@ -193,7 +370,6 @@ const Report: FC = () => {
         groups: payload.groups,
       });
 
-      // Кешируем промис
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
@@ -202,37 +378,16 @@ const Report: FC = () => {
     [getTable, initialRows, initialTotalRows, getApiPayload]
   );
 
-  // Очищаем кеш при изменении фильтров
   const handleClearFilters = () => {
     resetAllFilters();
     clearAll();
     requestCache.current = {};
     lastRequestKey.current = "";
     bumpDataVersion();
-    setSelectedIndicator(allData.values[0]); // Сбрасываем к первоначальному значению
+    setSelectedIndicator(allData.values[0]);
+    setSelectedRows([]);
   };
-  const [selectedIndicator, setSelectedIndicator] = useState(allData.values[0]);
 
-  const getFullLabelByValue = (value: string): string => {
-    // Ищем во всех группах indicators
-    for (const group of indicators) {
-      // Проверяем саму группу
-      if (group.value === value) return group.label;
-
-      // Ищем среди детей
-      const child = group.children.find((child) => child.value === value);
-      if (child) return child.label;
-    }
-
-    // Ищем в uniques
-    for (const group of uniques) {
-      if (group.value === value) return group.label;
-      const child = group.children?.find((child) => child.value === value);
-      if (child) return child.label;
-    }
-
-    return value; // Если не нашли, возвращаем как есть
-  };
   return (
     <>
       <Sheet />
@@ -261,8 +416,13 @@ const Report: FC = () => {
           >
             <div className="flex flex-col gap-2 w-full">
               <div className="flex flex-row gap-1 items-center justify-between ">
-                <h1 className="font-bold leading-none md:text-xl text-md tracking-tight">
+                <h1 className="font-bold leading-none md:text-xl text-md tracking-tight flex flex-row gap-2 items-start">
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
+                  <p className="flex flex-row gap-2 text-sm font-medium">
+                    {selectedRows.length > 0 && (
+                      <>Выбрано строк: {selectedRows.length}</>
+                    )}
+                  </p>
                 </h1>
                 <div className="flex flex-row gap-1 items-center">
                   <DateDropdown />
@@ -295,7 +455,7 @@ const Report: FC = () => {
                 <StackedLine
                   option={{
                     title: {
-                      text: getFullLabelByValue(selectedIndicator), // Используем новую функцию
+                      text: getTopLevelLabelByValue(selectedIndicator),
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],
@@ -352,6 +512,7 @@ const Report: FC = () => {
               totalData={total as any}
               onCellClick={onCellClick}
               dataVersion={dataVersion}
+              selectedRows={selectedRows}
             />
           ) : (
             <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">

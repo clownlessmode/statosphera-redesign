@@ -12,7 +12,10 @@ body {
   overflow-x: hidden;
   /* overflow-y: hidden; Полностью отключаем вертикальный скролл */
 }
-
+.ag-theme-alpine .selected-row,
+.ag-theme-alpine-dark .selected-row {
+  background-color: rgba(255, 0, 0, 0.9) !important;
+}
 /* Стили для скрытия скроллбаров (общие) */
 .scrollbar-hide {
   /* Firefox */
@@ -80,6 +83,7 @@ body {
 
   --secondary: #ffadc6;
   --secondary-foreground: #e50046;
+  /* --secondary-asdsadasd: #00000027; */
 
   --primary: #e50046;
   --primary-foreground: #ebe8fc;

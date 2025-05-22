@@ -211,7 +211,7 @@ if (today.getDate() === 1) {
   dateStart = format(startOfMonth(today), "yyyy-MM-dd");
   dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
 }
-type FiltersState = {
+export type FiltersState = {
   // Основная структура данных
   filters: {
     store: {
