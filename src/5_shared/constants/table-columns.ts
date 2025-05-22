@@ -1,4 +1,3 @@
-import { divideNumberSpaces } from "@shared/ui/graphs/stacked-line/formatter-tooltip";
 import { ColDef } from "ag-grid-community";
 
 export enum COLUMN_KEY {
