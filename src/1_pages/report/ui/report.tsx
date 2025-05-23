@@ -2,7 +2,7 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useCallback, useRef, useState, type FC } from "react";
+import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 
@@ -71,6 +71,7 @@ const Report: FC = () => {
         sortModel,
         values: getApiPayload().values,
         groups: getApiPayload().groups,
+        filters: getApiPayload().filters,
       });
 
       if (
@@ -137,17 +138,22 @@ const Report: FC = () => {
 
       return requestPromise;
     },
-    [getTable, initialRows, initialTotalRows, getApiPayload]
+    [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters]
   );
 
   const handleClearFilters = () => {
     resetAllFilters();
     clearAll();
-    requestCache.current = {};
+    requestCache.current = {}; // Полная очистка кэша
     lastRequestKey.current = "";
     bumpDataVersion();
   };
-
+  useEffect(() => {
+    // Сбрасываем кэш при изменении фильтров
+    requestCache.current = {};
+    lastRequestKey.current = "";
+    bumpDataVersion();
+  }, [allData.filters, bumpDataVersion]);
   return (
     <>
       <Sheet />
