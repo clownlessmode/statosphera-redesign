@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence } from "motion/react";
 interface Props {
   size?: "sm" | "md" | "lg";
 }
