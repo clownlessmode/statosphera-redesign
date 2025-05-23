@@ -456,7 +456,7 @@ export const formatPercent = (value: number) => (value ? value + "%" : "-");
 export const tableColumns: ColDef<any>[] = [
   {
     field: COLUMN_KEY.ITR,
-    headerName: "Коэффициент оборачиваемости ITR",
+    headerName: "Коэффициент оборачиваемости ",
     headerTooltip: "Коэффициент оборачиваемости ITR",
     cellDataType: "number",
     valueFormatter: (params: any) =>
@@ -464,48 +464,48 @@ export const tableColumns: ColDef<any>[] = [
   },
   {
     field: COLUMN_KEY.ITR_LM,
-    headerName: "Коэффициент оборачиваемости ITR PM",
-    headerTooltip: "Коэффициент оборачиваемости ITR PM",
+    headerName: "Коэффициент оборачиваемости PM",
+    headerTooltip: "Коэффициент оборачиваемости PM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_MOM,
-    headerName: "Коэффициент оборачиваемости ITR MOM",
-    headerTooltip: "Коэффициент оборачиваемости ITR MOM",
+    headerName: "Коэффициент оборачиваемости MOM",
+    headerTooltip: "Коэффициент оборачиваемости MOM",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_MOM_PERCENT,
-    headerName: "Коэффициент оборачиваемости ITR MOM%",
-    headerTooltip: "Коэффициент оборачиваемости ITR MOM%",
+    headerName: "Коэффициент оборачиваемости MOM%",
+    headerTooltip: "Коэффициент оборачиваемости MOM%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_LY,
-    headerName: "Коэффициент оборачиваемости ITR PY",
-    headerTooltip: "Коэффициент оборачиваемости ITR PY",
+    headerName: "Коэффициент оборачиваемости PY",
+    headerTooltip: "Коэффициент оборачиваемости PY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_YOY,
-    headerName: "Коэффициент оборачиваемости ITR YOY",
-    headerTooltip: "Коэффициент оборачиваемости ITR YOY",
+    headerName: "Коэффициент оборачиваемости YOY",
+    headerTooltip: "Коэффициент оборачиваемости YOY",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_YOY_PERCENT,
-    headerName: "Коэффициент оборачиваемости ITR YOY%",
-    headerTooltip: "Коэффициент оборачиваемости ITR YOY%",
+    headerName: "Коэффициент оборачиваемости YOY%",
+    headerTooltip: "Коэффициент оборачиваемости YOY%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
@@ -3955,7 +3955,7 @@ export const tableConfig: ColDef<any>[] = [
     field: ColumnsKeyGroupings.GROUPS_ECONOMIST,
   },
   { headerName: "Юр. лицо", field: ColumnsKeyGroupings.LEGAL_ENTITY },
-  { headerName: "Территориал", field: ColumnsKeyGroupings.NAME_MANAGER },
+  { headerName: "Партнер", field: ColumnsKeyGroupings.NAME_MANAGER },
   {
     field: ColumnsKeyGroupings.SEX_LOYAL,
     headerName: "Пол",

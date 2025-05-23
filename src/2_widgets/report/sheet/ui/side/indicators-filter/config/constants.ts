@@ -876,43 +876,43 @@ const all_indicators = [
   },
   {
     id: COLUMN_KEY.ITR_GROUP,
-    label: "Коэффициент оборачиваемости ITR",
+    label: "Коэффициент оборачиваемости",
     value: COLUMN_KEY.ITR_GROUP,
     icon: MinusCircle,
     children: [
       {
         id: COLUMN_KEY.ITR,
-        label: "Коэффициент оборачиваемости ITR",
+        label: "Коэффициент оборачиваемости",
         value: COLUMN_KEY.ITR,
       },
       {
         id: COLUMN_KEY.ITR_LM,
-        label: "Коэффициент оборачиваемости ITR PM",
+        label: "Коэффициент оборачиваемости PM",
         value: COLUMN_KEY.ITR_LM,
       },
       {
         id: COLUMN_KEY.ITR_MOM,
-        label: "Коэффициент оборачиваемости ITR MOM",
+        label: "Коэффициент оборачиваемости MOM",
         value: COLUMN_KEY.ITR_MOM,
       },
       {
         id: COLUMN_KEY.ITR_MOM_PERCENT,
-        label: "Коэффициент оборачиваемости ITR MOM%",
+        label: "Коэффициент оборачиваемости MOM%",
         value: COLUMN_KEY.ITR_MOM_PERCENT,
       },
       {
         id: COLUMN_KEY.ITR_LY,
-        label: "Коэффициент оборачиваемости ITR PY",
+        label: "Коэффициент оборачиваемости PY",
         value: COLUMN_KEY.ITR_LY,
       },
       {
         id: COLUMN_KEY.ITR_YOY,
-        label: "Коэффициент оборачиваемости ITR YOY",
+        label: "Коэффициент оборачиваемости YOY",
         value: COLUMN_KEY.ITR_YOY,
       },
       {
         id: COLUMN_KEY.ITR_YOY_PERCENT,
-        label: "Коэффициент оборачиваемости ITR YOY%",
+        label: "Коэффициент оборачиваемости YOY%",
         value: COLUMN_KEY.ITR_YOY_PERCENT,
       },
     ],

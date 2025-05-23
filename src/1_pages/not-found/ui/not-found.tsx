@@ -1,3 +1,4 @@
+import { Feedback } from "@features/header/feedback";
 import { Button } from "@shared/ui/button";
 import { SidebarProvider } from "@shared/ui/sidebar";
 import { Link } from "react-router";
@@ -17,9 +18,7 @@ const NotFound = () => {
             <Button asChild>
               <Link to="/">Вернуться на главную</Link>
             </Button>
-            <Button variant="outline" asChild>
-              <Link to="/support">Связаться с поддержкой</Link>
-            </Button>
+            <Feedback />
           </div>
         </div>
       </div>

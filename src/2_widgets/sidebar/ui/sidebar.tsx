@@ -41,6 +41,11 @@ const Sidebar = ({
         icon: DollarSign,
       },
       {
+        title: "Отчёты",
+        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+        icon: FileChartColumn,
+      },
+      {
         title: "Дайджесты",
         url: ROUTES_PATH.DIGESTS,
         icon: FileChartPieIcon,
@@ -50,30 +55,30 @@ const Sidebar = ({
         url: ROUTES_PATH.STANDARTS,
         icon: FileQuestion,
       },
-      {
-        title: "Отчёты",
-        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
-        icon: FileChartColumn,
-      },
-      {
-        title: "Номенклатура",
-        url: ROUTES_PATH.PRODUCTS,
-        icon: PanelsTopLeft,
-      },
-      {
-        title: "Гриль",
-        url: ROUTES_PATH.GRILL,
-        icon: Ham,
-      },
+
       {
         title: "Справочник магазинов",
         url: ROUTES_PATH.STORES,
         icon: Store,
       },
       {
+        title: "Номенклатура",
+        url: "#", //ROUTES_PATH.PRODUCTS,
+        icon: PanelsTopLeft,
+        disabled: true,
+      },
+      {
+        title: "Гриль",
+        url: "#", //ROUTES_PATH.GRILL,
+        icon: Ham,
+        disabled: true,
+      },
+
+      {
         title: "Настройки",
         url: "#",
         icon: SettingsIcon,
+        disabled: true,
       },
       {
         title: "Прибыль ФРС",
@@ -106,6 +111,7 @@ const Sidebar = ({
         title: "Обучение",
         url: ROUTES_PATH.LESSONS,
         icon: BookOpenIcon,
+        disabled: true,
       },
       {
         title: "Дорожка карта",

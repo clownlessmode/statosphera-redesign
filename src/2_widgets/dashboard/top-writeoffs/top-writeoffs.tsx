@@ -15,7 +15,7 @@ const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
       {!isLoading && data && data.data ? (
         <Card className="w-full h-[400px] flex flex-col">
           <CardHeader>
-            <CardTitle>Топ по группам списаний</CardTitle>
+            <CardTitle>Аутсайдеры по группам списаний</CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
             <DoubleHorizontalBarChart

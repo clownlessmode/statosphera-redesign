@@ -9,7 +9,7 @@ import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
-import { Cog, Eraser, Save, Star } from "lucide-react";
+import { Cog, Eraser, Save } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
@@ -22,6 +22,10 @@ import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 
 import { create } from "zustand";
 import ReportCards from "./report-cards";
+import { getLabelByValue } from "./values-badges";
+import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
+import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
+import { SavedReports } from "@features/reports/saved-reports";
 
 interface TableVersionState {
   dataVersion: number;
@@ -42,7 +46,6 @@ const Report: FC = () => {
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
   const { getApiPayload } = useFiltersStore();
-
   const allData = getApiPayload();
 
   const prepareLine = usePreparedStackedLine();
@@ -50,6 +53,9 @@ const Report: FC = () => {
   const { getTable } = useReport();
   const { table: initialRows, total: initialTotalRows } = useReportStore();
   const { tab } = useTabStore();
+  const indicators = useIndicatorList(tab);
+  const uniques = useUniqueValues(tab);
+
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!graph);
   const { resetAllFilters } = useFiltersStore();
@@ -163,12 +169,10 @@ const Report: FC = () => {
             right: (
               <div className="flex flex-row gap-2">
                 <DownloadReport rows={table?.totalRows || 0} />
-                <Button variant="outline">
+                <Button variant="outline" disabled>
                   <Save />
                 </Button>
-                <Button variant="outline">
-                  <Star /> Сохраненные отчеты
-                </Button>
+                <SavedReports />
               </div>
             ),
           }}
@@ -219,7 +223,9 @@ const Report: FC = () => {
                 <StackedLine
                   option={{
                     title: {
-                      text: allData.values[0],
+                      text:
+                        getLabelByValue(indicators, allData.values[0]) ||
+                        getLabelByValue(uniques, allData.values[0]),
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],

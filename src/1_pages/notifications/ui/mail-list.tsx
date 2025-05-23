@@ -7,7 +7,6 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import useMail from "../use-mail";
 
 import { Notification } from "@entities/notifications/model/api/types";
-import ReactMarkdown from "react-markdown";
 
 interface MailListProps {
   items: Notification[];
