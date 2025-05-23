@@ -7,22 +7,25 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import { Notification } from "@entities/notifications/model/api/types";
 import { useNotifications } from "@entities/notifications/model/api/controller";
 import { useEffect } from "react";
+
 interface MailDisplayProps {
   mail: Notification | null;
 }
 
 export function MailDisplay({ mail }: MailDisplayProps) {
   const { readNotification } = useNotifications();
+
   useEffect(() => {
     if (mail?.id && !mail.is_read) {
       readNotification(mail.id);
     }
   }, [mail]);
+
   return (
     <div className="flex h-full flex-col">
       {mail ? (
-        <div className="flex flex-1 flex-col justify-center">
-          <div className="flex items-center px-4 h-[68px] gap-4">
+        <div className="flex flex-col h-full">
+          <div className="flex items-center px-4 h-[68px] gap-4 shrink-0">
             <div className="flex items-center gap-4 text-sm">
               <div className="grid gap-1">
                 <div className="font-semibold">{mail.title}</div>
@@ -36,11 +39,16 @@ export function MailDisplay({ mail }: MailDisplayProps) {
             )}
           </div>
           <Separator />
-          <div className="flex-1  p-4 text-base w-full prose dark:prose-invert prose-base max-w-none">
-            <ScrollArea className="h-full">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} unwrapDisallowed>
-                {mail.message}
-              </ReactMarkdown>
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <ScrollArea className="h-full p-4">
+              <div className="prose dark:prose-invert prose-base max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]} unwrapDisallowed>
+                  {mail.message
+                    .replace(/^ +/gm, "")
+                    .replace(/([^\n])\n([^\n])/g, "$1  \n$2")
+                    .trim()}
+                </ReactMarkdown>
+              </div>
             </ScrollArea>
           </div>
         </div>

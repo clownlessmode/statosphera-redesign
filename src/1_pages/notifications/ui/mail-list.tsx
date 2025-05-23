@@ -48,7 +48,7 @@ export function MailList({ items }: MailListProps) {
                 </div>
               </div>
               <div className="text-xs font-medium line-clamp-1">
-                {item.description}
+                {item.description.replace(/[#_*`~>\[\]()\-+!|\\]/g, "")}
               </div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
