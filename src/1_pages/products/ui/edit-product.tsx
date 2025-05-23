@@ -291,11 +291,11 @@ const EditProduct: FC<Props> = ({ product }) => {
                         render={() => {
                           return (
                             <FormItem>
-                              <FormLabel>Поставщик</FormLabel>
+                              <FormLabel>Тип поставщика</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   options={[]}
-                                  placeholder="Выберите поставщика"
+                                  placeholder="Выберите тип поставщика"
                                 />
                               </FormControl>
                             </FormItem>

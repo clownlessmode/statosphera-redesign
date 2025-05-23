@@ -3828,7 +3828,7 @@ export const groupingColumns: ColumnGroup[] = [
   { label: "Структура продаж", value: ColumnsKeyGroupings.GROUPS_FRANCHISE },
   { label: "Подгруппа", value: ColumnsKeyGroupings.SUB_GROUPS },
   { label: "Подподгруппа", value: ColumnsKeyGroupings.SUB_SUB_GROUPS },
-  { label: "Поставщик", value: ColumnsKeyGroupings.TYPE_PRODUCTS },
+  { label: "Тип поставщика", value: ColumnsKeyGroupings.TYPE_PRODUCTS },
   { label: "Сезоность", value: ColumnsKeyGroupings.SEASONALITY_PRODUCTS },
   {
     label: "Структурное подразделение",
