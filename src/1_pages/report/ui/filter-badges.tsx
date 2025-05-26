@@ -3,16 +3,68 @@ import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { JSX } from "react";
 import { formatDate } from "date-fns";
+import {
+  useLoyalAction,
+  useLoyalBonus,
+} from "@widgets/report/sheet/ui/side/loyalty-filter";
+import {
+  useInterval,
+  usePromo,
+  useStatusOrder,
+} from "@widgets/report/sheet/ui/side/online-filter";
+import {
+  useAutoManager,
+  useDirection,
+  useEconomist,
+  useFranchise,
+  useGroup,
+  useProduct,
+  useSeason,
+  useSubdivision,
+  useSubgroup,
+  useSubsubgroup,
+  useTeam,
+  useTypeSender,
+} from "@widgets/report/sheet/ui/side/products-filter";
+import { useEmployeeName } from "@widgets/report/sheet/ui/side/reciepts-filter";
+import {
+  useCities,
+  usePartners,
+  useRegions,
+  useShops,
+} from "@widgets/report/sheet/ui/side/shops-filter";
+
+// Импортируем все необходимые хуки для получения сохраненных лейблов
+
+// Добавьте импорты для других хуков аналогично
 
 // Вспомогательные функции для форматирования
-const formatFilterValue = (value: any): string => {
+const formatFilterValue = (
+  value: any,
+  sectionKey: string,
+  filterKey: string,
+  savedLabels: Record<string, any>
+): string => {
   if (Array.isArray(value)) {
-    return value.join(", ");
+    // Получаем соответствующие лейблы для массива ID
+    const labels = value.map((id) => {
+      const labelKey = `${sectionKey}_${filterKey}`;
+      const savedOptions = savedLabels[labelKey] || [];
+      const option = savedOptions.find((opt: any) => opt.value === String(id));
+      return option ? option.label : String(id);
+    });
+    return labels.join(", ");
   }
+
   if (typeof value === "boolean") {
     return value ? "Да" : "Нет";
   }
-  return String(value);
+
+  // Для одиночных значений также ищем лейбл
+  const labelKey = `${sectionKey}_${filterKey}`;
+  const savedOptions = savedLabels[labelKey] || [];
+  const option = savedOptions.find((opt: any) => opt.value === String(value));
+  return option ? option.label : String(value);
 };
 
 const getSectionLabel = (sectionKey: string): string => {
@@ -33,7 +85,7 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       idStore: "Магазин",
       idCity: "Город",
       idRegion: "Регион",
-      idManager: "Менеджер",
+      idManager: "Партнер",
       storeCondition: "Состояние",
       ageGroup: "Возрастная группа",
       idLegalEntity: "Юр. лицо",
@@ -41,8 +93,8 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       district: "Район",
     },
     product: {
-      groupFranchise: "Франшиза",
-      ppProducts: "PP-продукты",
+      groupFranchise: "Структура продаж",
+      ppProducts: "ПП-продукты",
       subDivisionProducts: "Подразделение",
       subGroups: "Подгруппы",
       subSubGroups: "Подподгруппы",
@@ -96,6 +148,73 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
 export function FilterBadges({ tab }: { tab: string }) {
   const { filters, filterDate, filterTime } = useFiltersStore();
 
+  // LOYAL
+  const { savedLoyalBonusLabels } = useLoyalBonus({});
+  const { savedLoyalActionLabels } = useLoyalAction({});
+
+  //ONLINE
+  const { savedIntervalLabels } = useInterval({});
+  const { savedPromoLabels } = usePromo({});
+  const { savedStatusOrderLabels } = useStatusOrder({});
+
+  //PRODUCTS
+  const { savedAutoManagerLabels } = useAutoManager({});
+  const { savedDirectionLabels } = useDirection({});
+  const { savedEconomistLabels } = useEconomist({});
+  const { savedFranchiseLabels } = useFranchise({});
+  const { savedGroupLabels } = useGroup({});
+  const { savedProductLabels } = useProduct({});
+  const { savedSeasonLabels } = useSeason({});
+  const { savedSubdivisionLabels } = useSubdivision({});
+  const { savedSubgroupLabels } = useSubgroup({});
+  const { savedSubsubgroupLabels } = useSubsubgroup({});
+  const { savedTeamLabels } = useTeam({});
+  const { savedTypeSenderLabels } = useTypeSender({});
+
+  //RECIEPTS
+  const { savedEmployeeNameLabels } = useEmployeeName({});
+
+  //SHOPS
+  const { savedCityLabels } = useCities({});
+  const { savedPartnerLabels } = usePartners({});
+  const { savedRegionLabels } = useRegions({});
+  const { savedShopLabels } = useShops({});
+
+  // Создаем объект с сохраненными лейблами для удобного доступа
+  const savedLabels = {
+    // LOYAL
+    loyal_guidDiscount: savedLoyalActionLabels,
+    loyal_guidBonus: savedLoyalBonusLabels,
+
+    // ONLINE
+    onlineStore_imReceiveInterval: savedIntervalLabels,
+    onlineStore_imPromo: savedPromoLabels,
+    onlineStore_imStatusOrder: savedStatusOrderLabels,
+
+    // PRODUCTS
+    product_managerAuto: savedAutoManagerLabels,
+    product_directionProducts: savedDirectionLabels,
+    product_groupsEconomist: savedEconomistLabels,
+    product_groupFranchise: savedFranchiseLabels,
+    product_idGroupMain: savedGroupLabels,
+    product_idProduct: savedProductLabels,
+    product_seasonalityProducts: savedSeasonLabels,
+    product_subDivisionProducts: savedSubdivisionLabels,
+    product_subGroups: savedSubgroupLabels,
+    product_subSubGroups: savedSubsubgroupLabels,
+    product_teamProducts: savedTeamLabels,
+    product_typeProducts: savedTypeSenderLabels,
+
+    // RECEIPTS/CHECK
+    check_tabNumber: savedEmployeeNameLabels,
+
+    // SHOPS/STORE
+    store_idCity: savedCityLabels,
+    store_idManager: savedPartnerLabels,
+    store_idRegion: savedRegionLabels,
+    store_idStore: savedShopLabels,
+  };
+
   const renderBadges = () => {
     const badges: JSX.Element[] = [];
 
@@ -113,7 +232,7 @@ export function FilterBadges({ tab }: { tab: string }) {
       if (activeFilters.length === 0) return;
 
       // Для магазинов выводим количество выбранных значений
-      if (sectionKey === "store") {
+      if (sectionKey === "фыоивафыгивагфрыи") {
         const totalSelected = activeFilters.reduce((sum, [_, value]) => {
           return sum + (Array.isArray(value) ? value.length : 1);
         }, 0);
@@ -129,7 +248,10 @@ export function FilterBadges({ tab }: { tab: string }) {
           badges.push(
             <Badge key={`${sectionKey}-${filterKey}`}>
               {`${getFilterLabel(sectionKey, filterKey)}: ${formatFilterValue(
-                value
+                value,
+                sectionKey,
+                filterKey,
+                savedLabels
               )}`}
             </Badge>
           );
