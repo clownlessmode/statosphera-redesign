@@ -99,14 +99,14 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: ROUTES_PATH.DIGESTS,
-    variant: "private",
+    variant: "public",
     element: <Digests />,
     layout: Sidebar,
     label: "Дайджесты",
   },
   {
     path: ROUTES_PATH.DIGEST,
-    variant: "private",
+    variant: "public",
     element: <Digest />,
     layout: Sidebar,
     label: "Дайджест",

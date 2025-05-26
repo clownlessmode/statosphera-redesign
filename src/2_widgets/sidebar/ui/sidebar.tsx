@@ -28,10 +28,12 @@ import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useSession } from "@entities/session";
 const Sidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
+  const { session } = useSession();
   const { tab } = useTabStore();
   const data = {
     navMain: [
@@ -123,25 +125,28 @@ const Sidebar = ({
   };
   const { toggleSidebar, state } = useSidebar();
   const isCollapsed = state === "collapsed";
+
   return (
     <>
-      <SidebarComponent collapsible="icon" {...props}>
-        <Link to="/" className="py-2 pl-2">
-          <Logotype size={isCollapsed ? "sm" : "md"} />
-        </Link>
-        <SidebarContent>
-          <NavMain items={data.navMain} />
-        </SidebarContent>
-        <SidebarRail />
-        <SidebarMenu>
-          <NavSecondary
-            items={data.navSecondary}
-            isCollapsed={isCollapsed}
-            toggleSidebar={toggleSidebar}
-            className="mt-auto"
-          />
-        </SidebarMenu>
-      </SidebarComponent>
+      {session && (
+        <SidebarComponent collapsible="icon" {...props}>
+          <Link to="/" className="py-2 pl-2">
+            <Logotype size={isCollapsed ? "sm" : "md"} />
+          </Link>
+          <SidebarContent>
+            <NavMain items={data.navMain} />
+          </SidebarContent>
+          <SidebarRail />
+          <SidebarMenu>
+            <NavSecondary
+              items={data.navSecondary}
+              isCollapsed={isCollapsed}
+              toggleSidebar={toggleSidebar}
+              className="mt-auto"
+            />
+          </SidebarMenu>
+        </SidebarComponent>
+      )}
 
       {children}
     </>
