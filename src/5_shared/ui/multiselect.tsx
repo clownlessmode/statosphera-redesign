@@ -35,11 +35,13 @@ const multiSelectVariants = cva(
     },
   }
 );
+
 export interface MultiSelectOption {
   label: string;
   value: string;
   icon?: React.ComponentType<{ className?: string }>;
 }
+
 interface MultiSelectProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof multiSelectVariants> {
@@ -52,10 +54,9 @@ interface MultiSelectProps
   maxCount?: number;
   modalPopover?: boolean;
   className?: string;
-  onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
+  onOpenChange?: (open: boolean) => void;
   isLoading?: boolean;
   side?: "top" | "bottom";
-  externalLabels?: { value: string; label: string }[];
 }
 
 export const MultiSelect = React.forwardRef<
@@ -77,7 +78,6 @@ export const MultiSelect = React.forwardRef<
       isLoading = false,
       onOpenChange,
       side,
-      externalLabels,
       ...props
     },
     ref
@@ -92,6 +92,23 @@ export const MultiSelect = React.forwardRef<
         setSelectedValues(value);
       }
     }, [value]);
+
+    // Добавляем эффект для фокуса на поиске
+    React.useEffect(() => {
+      if (isPopoverOpen && !isLoading && options && options.length > 0) {
+        // Небольшая задержка для того, чтобы DOM успел обновиться
+        const timer = setTimeout(() => {
+          const searchInput = document.querySelector(
+            "[cmdk-input]"
+          ) as HTMLInputElement;
+          if (searchInput) {
+            searchInput.focus();
+          }
+        }, 100);
+
+        return () => clearTimeout(timer);
+      }
+    }, [isPopoverOpen, isLoading, options]);
 
     const handleValueChange = (newValues: string[]) => {
       setSelectedValues(newValues);
@@ -118,10 +135,12 @@ export const MultiSelect = React.forwardRef<
           : options.map((o) => o.value)
       );
     };
+
     const handlePopoverOpenChange = (open: boolean) => {
       setIsPopoverOpen(open);
-      onOpenChange?.(open); // Пробрасываем событие наружу
+      onOpenChange?.(open);
     };
+
     return (
       <Popover
         open={isPopoverOpen}
@@ -141,14 +160,8 @@ export const MultiSelect = React.forwardRef<
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
-                    const IconComponent = options.find(
-                      (o) => o.value === value
-                    )?.icon;
-                    const getLabel = (val: string) =>
-                      options.find((o) => o.value === val)?.label ??
-                      externalLabels?.find((o) => o.value === val)?.label ??
-                      val;
-
+                    const option = options.find((o) => o.value === value);
+                    const IconComponent = option?.icon;
                     return (
                       <Badge
                         key={value}
@@ -162,12 +175,11 @@ export const MultiSelect = React.forwardRef<
                         {IconComponent && (
                           <IconComponent className="h-4 w-4 mr-2" />
                         )}
-                        {getLabel(value)}
+                        {option?.label}
                         <XCircle className="ml-2 h-4 w-4 cursor-pointer" />
                       </Badge>
                     );
                   })}
-
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={cn(
