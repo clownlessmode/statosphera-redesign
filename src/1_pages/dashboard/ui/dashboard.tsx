@@ -79,7 +79,7 @@ const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
-
+  console.log(dashboard?.salesHours.data);
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
@@ -224,7 +224,7 @@ const Dashboard = () => {
         <Suspense fallback={<HoursRevenueSkeleton />}>
           <HoursRevenue
             isLoading={isDashboardLoading}
-            data={dashboard?.salesHours.data.graph}
+            data={dashboard?.salesHours.data?.graph}
           />
         </Suspense>
         <Suspense fallback={<PlanPercentSkeleton />}>
