@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/shops/controller";
 import { CitiesFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -23,10 +24,10 @@ export const useCities = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getCities(allData);
+      const response = await getCities(processFiltersDto(allData));
       const apiOptions = response.map((city: CitiesFilterResponse) => ({
         label: city.storeCity,
-        value: String(city.cityId || ""),
+        value: String(JSON.stringify(city.cityId || [])),
       }));
 
       setCitiesOptions(apiOptions);

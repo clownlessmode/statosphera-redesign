@@ -6,13 +6,13 @@ import {
 import { z } from "zod";
 
 export const schema = z.object({
-  idStore: z.array(z.number()),
-  idCity: z.array(z.number()),
-  idRegion: z.array(z.number()),
-  idManager: z.array(z.number()),
+  idStore: z.array(z.string()),
+  idCity: z.array(z.string()),
+  idRegion: z.array(z.string()),
+  idManager: z.array(z.string()),
   storeCondition: z.array(z.string()),
   ageGroup: z.array(ageGroupSchema),
-  idLegalEntity: z.array(z.number()),
+  idLegalEntity: z.array(z.string()),
   channel: z.array(frsChannelSchema),
   district: z.array(z.string()),
 });

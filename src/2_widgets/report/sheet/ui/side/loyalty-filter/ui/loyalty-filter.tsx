@@ -131,7 +131,7 @@ const LoyaltyFilter: FC = () => {
                       isLoading={isLoyalActionLoading}
                       onOpenChange={handleOpenLoyalActionSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateLoyalFilter("guidDiscount", numeric);
                       }}
@@ -158,7 +158,7 @@ const LoyaltyFilter: FC = () => {
                       isLoading={isLoyalBonusLoading}
                       onOpenChange={handleOpenLoyalBonusSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateLoyalFilter("guidBonus", numeric);
                       }}

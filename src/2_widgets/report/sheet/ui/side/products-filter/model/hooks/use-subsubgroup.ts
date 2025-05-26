@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { SubSubGroupFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -26,11 +27,11 @@ export const useSubsubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubSubGroups(allData);
+      const response = await getSubSubGroups(processFiltersDto(allData));
       const apiOptions = response.map(
         (subsubgroup: SubSubGroupFilterResponse) => ({
           label: subsubgroup.subSubGroups,
-          value: String(subsubgroup.idSubSubGroups?.[0] || ""),
+          value: String(JSON.stringify(subsubgroup.idSubSubGroups || [])),
         })
       );
       setSubsubgroupOptions(apiOptions);

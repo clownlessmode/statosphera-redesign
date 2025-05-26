@@ -4,6 +4,7 @@ import { useFilters } from "@entities/report/model/api/filters/loyality/controll
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 interface LoyalActionStore {
   savedLoyalActionLabels: MultiSelectOption[];
@@ -27,13 +28,13 @@ export const useLoyalAction = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getLoyalAction(allData);
+      const response = await getLoyalAction(processFiltersDto(allData));
       const apiOptions = response.map(
         (loyalAction: LoyalActionFilterResponse) => ({
           label:
             loyalAction.nameDiscount ||
             "Название не указано (ID: " + loyalAction.guid?.[0] + ")",
-          value: String(loyalAction.guid?.[0] || ""),
+          value: String(JSON.stringify(loyalAction.guid || [])),
         })
       );
       setLoyalActionOptions(apiOptions);

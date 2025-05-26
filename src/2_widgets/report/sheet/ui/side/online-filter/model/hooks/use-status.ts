@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useFilters } from "@entities/report/model/api/filters/online-store/controller";
 import { StatusOrderFilterResponse } from "@entities/report/model/api/filters/online-store/types";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 // Zustand store
 interface StatusOrderStore {
@@ -29,7 +30,7 @@ export const useStatusOrder = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getStatusOrder(allData);
+      const response = await getStatusOrder(processFiltersDto(allData));
       const apiOptions = response.map(
         (statusOrder: StatusOrderFilterResponse) => ({
           label:
@@ -37,7 +38,7 @@ export const useStatusOrder = (allData: any) => {
             "Статус заказа не указан (ID: " +
               statusOrder.im_status_order?.[0] +
               ")",
-          value: String(statusOrder.im_status_order?.[0] || ""),
+          value: String(JSON.stringify(statusOrder.im_status_order || [])),
         })
       );
       setStatusOrderOptions(apiOptions);

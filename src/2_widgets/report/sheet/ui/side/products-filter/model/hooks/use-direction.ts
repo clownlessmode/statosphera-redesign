@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { DirectionFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -25,10 +26,10 @@ export const useDirection = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getDirection(allData);
+      const response = await getDirection(processFiltersDto(allData));
       const apiOptions = response.map((direction: DirectionFilterResponse) => ({
         label: direction.directionProducts,
-        value: String(direction.idDirectionProducts?.[0] || ""),
+        value: String(JSON.stringify(direction.idDirectionProducts || [])),
       }));
       setDirectionOptions(apiOptions);
       setDirectionLabels(apiOptions);

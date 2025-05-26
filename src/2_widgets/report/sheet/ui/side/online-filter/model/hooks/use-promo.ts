@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useFilters } from "@entities/report/model/api/filters/online-store/controller";
 import { PromoFilterResponse } from "@entities/report/model/api/filters/online-store/types";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 // Zustand store
 interface PromoStore {
@@ -26,10 +27,10 @@ export const usePromo = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getPromo(allData);
+      const response = await getPromo(processFiltersDto(allData));
       const apiOptions = response.map((promo: PromoFilterResponse) => ({
         label: promo.im_promo,
-        value: String(promo.im_promo || ""),
+        value: String(JSON.stringify(promo.im_promo || [])),
       }));
       setPromoOptions(apiOptions);
       setPromoLabels(apiOptions);

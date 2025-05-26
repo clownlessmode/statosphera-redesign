@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { GroupEconomistFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -25,11 +26,11 @@ export const useEconomist = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getEconomist(allData);
+      const response = await getEconomist(processFiltersDto(allData));
       const apiOptions = response.map(
         (economist: GroupEconomistFilterResponse) => ({
           label: economist.groupsEconomist,
-          value: String(economist.idGroupsEconomist?.[0] || ""),
+          value: String(JSON.stringify(economist.idGroupsEconomist || [])),
         })
       );
       setEconomistOptions(apiOptions);

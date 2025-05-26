@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { FranchiseFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -25,10 +26,10 @@ export const useFranchise = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getFranchise(allData);
+      const response = await getFranchise(processFiltersDto(allData));
       const apiOptions = response.map((franchise: FranchiseFilterResponse) => ({
         label: franchise.groupsFranchise,
-        value: String(franchise.idGroupsFranchise?.[0] || ""),
+        value: String(JSON.stringify(franchise.idGroupsFranchise || [])),
       }));
       setFranchiseOptions(apiOptions);
       setFranchiseLabels(apiOptions);

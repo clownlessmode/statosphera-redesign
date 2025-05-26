@@ -3,6 +3,7 @@ import { useFilters } from "@entities/report/model/api/filters/loyality/controll
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 interface LoyalBonusStore {
   savedLoyalBonusLabels: MultiSelectOption[];
@@ -25,13 +26,13 @@ export const useLoyalBonus = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getLoyalBonus(allData);
+      const response = await getLoyalBonus(processFiltersDto(allData));
       const apiOptions = response.map(
         (loyalBonus: LoyalBonusFilterResponse) => ({
           label:
             loyalBonus.nameBonus ||
             "Название не указано (ID: " + loyalBonus.guid?.[0] + ")",
-          value: String(loyalBonus.guid?.[0] || ""),
+          value: String(JSON.stringify(loyalBonus.guid || [])),
         })
       );
       setLoyalBonusOptions(apiOptions);

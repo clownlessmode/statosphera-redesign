@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { EmployeeNameFilterResponse } from "@entities/report/model/api/filters/check/types";
 import { useFilters } from "@entities/report/model/api/filters/check/controller";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 // Zustand store
 interface EmployeeNameStore {
@@ -29,13 +30,13 @@ export const useEmployeeName = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getEmployeeName(allData);
+      const response = await getEmployeeName(processFiltersDto(allData));
       const apiOptions = response.map(
         (employeeName: EmployeeNameFilterResponse) => ({
           label:
             employeeName.employeeName ||
             "Сотрудник не указан (ID: " + employeeName.tabNum?.[0] + ")",
-          value: String(employeeName.tabNum?.[0] || ""),
+          value: String(JSON.stringify(employeeName.tabNum || [])),
         })
       );
       setEmployeeNameOptions(apiOptions);
