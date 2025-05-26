@@ -24,6 +24,21 @@ import useForm from "../model/hook";
 import CheckboxCard from "@shared/ui/checkbox-card";
 
 import { MultiSelect } from "@shared/ui/multiselect";
+;
+import { useFranchise } from "../hooks/use-franchise";
+import { useSubgroup } from "../hooks/use-subgroup";
+import { useSubsubgroup } from "../hooks/use-subsubgroup";
+import { useAutoManager } from "../hooks/use-automanager";
+import { useSubdivision } from "../hooks/use-subdivision";
+import { useTeam } from "../hooks/use-team";
+import { useDirection } from "../hooks/use-direction";
+import { useTypeSender } from "../hooks/use-typesender";
+import { useSeason } from "../hooks/use-season";
+import { useEconomist } from "../hooks/use-economist";
+import { useProduct } from "../hooks/use-product";
+import { useGroup } from "../hooks/use-group";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+
 
 export interface Product {
   idProduct: number;
@@ -61,7 +76,110 @@ interface Props {
   product: Product;
 }
 const EditProduct: FC<Props> = ({ product }) => {
-  const form = useForm(product);
+  const { updateProductFilter, updateOnlineStoreFilter } = useFiltersStore();
+  const form = useForm(
+product
+  );
+
+  const {
+    savedFranchiseLabels,
+    franchiseOptions,
+    handleOpenFranchiseSelect,
+    isFranchiseLoading,
+  } = useFranchise();
+
+  const {
+    groupOptions,
+    handleOpenGroupsSelect,
+    isGroupsLoading,
+    savedGroupLabels
+  } = useGroup();
+
+  const {
+    handleOpenSubgroupsSelect,
+    isSubGroupsLoading,
+    savedSubgroupLabels, 
+    subgroupOptions
+  } = useSubgroup();
+
+  const {
+    handleOpenSubsubgroupsSelect,
+    isSubsubgroupsLoading,
+    savedSubsubgroupLabels,
+    subsubgroupOptions,
+  } = useSubsubgroup();
+
+  const {
+    autoManagerOptions,
+    handleOpenAutoManagerSelect,
+    isAutoManagerLoading,
+    savedAutoManagerLabels,
+  } = useAutoManager();
+
+  const {
+   handleOpenSubdivisionsSelect,
+   isSubdivisionsLoading,
+   savedSubdivisionLabels,
+   subdivisionOptions,
+  } = useSubdivision();
+
+  const {
+    handleOpenTeamsSelect,
+    isTeamLoading,
+    savedTeamLabels,
+    teamOptions
+   } = useTeam();
+
+   const {
+    directionOptions,
+    handleOpenDirectionsSelect,
+    isDirectionLoading,
+    savedDirectionLabels,
+   } = useDirection();
+
+   const {
+    handleOpenTypeSenderSelect,
+    isTypeSenderLoading,
+    savedTypeSenderLabels,
+    typeSenderOptions
+   } = useTypeSender();
+
+   const {
+    handleOpenSeasonsSelect,
+    isSeasonsLoading,
+    savedSeasonLabels,
+    seasonsOptions,
+   } = useSeason();
+
+   const {
+   economistOptions,
+   handleOpenEconomistsSelect,
+   isEconomistLoading,
+   savedEconomistLabels
+   } = useEconomist();
+
+   const handleSave = () => {
+    const filters = useFiltersStore.getState().filters;
+  
+    const payload = {
+      groupFranchise: filters.product.groupFranchise,
+      ppProducts: filters.product.ppProducts,
+      isImProducts: filters.onlineStore.isIm, // из onlineStore
+      subDivisionProducts: filters.product.subDivisionProducts,
+      subGroups: filters.product.subGroups,
+      subSubGroups: filters.product.subSubGroups,
+      typeProducts: filters.product.typeProducts,
+      teamProducts: filters.product.teamProducts,
+      directionProducts: filters.product.directionProducts,
+      groupsEconomist: filters.product.groupsEconomist,
+      idGroupMain: filters.product.idGroupMain,
+      idProduct: filters.product.idProduct,
+      seasonalityProducts: filters.product.seasonalityProducts,
+      managerAuto: filters.product.managerAuto,
+    };
+  
+    console.log("Сохраняемый payload:", payload);
+  };
 
   return (
     <Dialog>
@@ -89,53 +207,66 @@ const EditProduct: FC<Props> = ({ product }) => {
               <form className="flex flex-col gap-2 w-full">
                 <Card className="bg-background">
                   <CardContent className="grid grid-cols-2 gap-2">
-                    <FormField
+                  <FormField
                       control={form.control}
                       name="ppProducts"
-                      render={({ field }) => {
-                        return (
-                          <FormItem>
-                            <CheckboxCard
-                              label="ПП  Продукт"
-                              onChange={field.onChange}
-                              value={field.value as boolean}
-                            />
-                          </FormItem>
-                        );
-                      }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <CheckboxCard
+                            label="ПП Продукт"
+                            value={field.value as boolean}
+                            onChange={(value: boolean) => {
+                              field.onChange(value);
+                              updateProductFilter("ppProducts", value);
+                            }}
+                          />
+                        </FormItem>
+                      )}
                     />
-                    <FormField
-                      control={form.control}
-                      name="isIm"
-                      render={({ field }) => {
-                        return (
-                          <FormItem>
-                            <CheckboxCard
-                              label="Интернет магазин"
-                              onChange={field.onChange}
-                              value={field.value as boolean}
-                            />
-                          </FormItem>
-                        );
-                      }}
-                    />
+                   <FormField
+                    control={form.control}
+                    name="isIm"
+                    render={({ field }) => (
+                      <FormItem>
+                        <CheckboxCard
+                          label="Интернет магазин"
+                          value={field.value as boolean}
+                          onChange={(value: boolean) => {
+                            field.onChange(value);
+                            updateOnlineStoreFilter("isIm", value);
+                          }}
+                        />
+                      </FormItem>
+                    )}
+                  />
                   </CardContent>
                 </Card>
                 <div className="grid grid-cols-2 gap-2">
+                  
                   <Card className="bg-background gap-2">
                     <CardContent className="flex flex-col gap-3">
                       <FormField
                         control={form.control}
                         name="groupsFranchise"
-                        render={() => {
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Структура продаж</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите структуру продаж"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={franchiseOptions}
+                                isLoading={isFranchiseLoading}
+                                onOpenChange={handleOpenFranchiseSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("groupFranchise", value);
+                                }}
+                                externalLabels={savedFranchiseLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите структуру продаж"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -143,16 +274,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                       />
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        render={() => {
+                        name="groupsMain"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Группа</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите группу"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={groupOptions}
+                                isLoading={isGroupsLoading}
+                                onOpenChange={handleOpenGroupsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("groupsMain", value);
+                                }}
+                                externalLabels={savedGroupLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите группу"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -160,42 +301,65 @@ const EditProduct: FC<Props> = ({ product }) => {
                       />
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        render={() => {
+                        name="subGroups"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Подгруппа</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите подгруппу"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={subgroupOptions}
+                                isLoading={isSubGroupsLoading}
+                                onOpenChange={handleOpenSubgroupsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("subGroups", value);
+                                }}
+                                externalLabels={savedSubgroupLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите подгруппу"
+                              />
                               </FormControl>
                             </FormItem>
                           );
                         }}
                       />
+
+                      {/* Заблокировать */}
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        disabled
-                        render={() => {
+                        name="subSubGroups"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Подподгруппа</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите подподгруппу"
-                                />
+                              <MultiSelect
+                              disabled
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={subsubgroupOptions}
+                                isLoading={isSubsubgroupsLoading}
+                                onOpenChange={handleOpenSubsubgroupsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("subSubGroups", value);
+                                }}
+                                externalLabels={savedSubsubgroupLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите подподгруппу"
+                              />
                               </FormControl>
                             </FormItem>
                           );
                         }}
                       />
+
+                      {/* Заблокировать */}
                       <FormField
                         control={form.control}
-                        disabled
                         name="groupsFranchise"
                         render={() => {
                           return (
@@ -203,6 +367,7 @@ const EditProduct: FC<Props> = ({ product }) => {
                               <FormLabel>Номенклатура</FormLabel>
                               <FormControl>
                                 <MultiSelect
+                                disabled
                                   options={[]}
                                   placeholder="Выберите номенклатуру"
                                 />
@@ -211,19 +376,31 @@ const EditProduct: FC<Props> = ({ product }) => {
                           );
                         }}
                       />
+                      
+                      {/* Заблокировать */}
                       <FormField
                         control={form.control}
-                        disabled
-                        name="groupsFranchise"
-                        render={() => {
+                        name="managerAuto"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Менеджер автозаказа</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите менеджера автозаказа"
-                                />
+                              <MultiSelect
+                              disabled
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={autoManagerOptions}
+                                isLoading={isAutoManagerLoading}
+                                onOpenChange={handleOpenAutoManagerSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("managerAuto", value);
+                                }}
+                                externalLabels={savedAutoManagerLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите менеджера автозаказа"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -235,16 +412,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                     <CardContent className="flex flex-col gap-3">
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        render={() => {
+                        name="subDivisionProducts"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Структурное подразделение</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите структурное..."
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={subdivisionOptions}
+                                isLoading={isSubdivisionsLoading}
+                                onOpenChange={handleOpenSubdivisionsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("subDivisionProducts", value);
+                                }}
+                                externalLabels={savedSubdivisionLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите структурное ..."
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -252,16 +439,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                       />
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        render={() => {
+                        name="teamProducts"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Команда</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите команду"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={teamOptions}
+                                isLoading={isTeamLoading}
+                                onOpenChange={handleOpenTeamsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("teamProducts", value);
+                                }}
+                                externalLabels={savedTeamLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите команду"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -269,16 +466,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                       />
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
-                        render={() => {
+                        name="directionProducts"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Направление</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите направление"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={directionOptions}
+                                isLoading={isDirectionLoading}
+                                onOpenChange={handleOpenDirectionsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("directionProducts", value);
+                                }}
+                                externalLabels={savedDirectionLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите направление"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -286,17 +493,27 @@ const EditProduct: FC<Props> = ({ product }) => {
                       />
                       <FormField
                         control={form.control}
-                        name="groupsFranchise"
+                        name="typeProducts"
                         disabled
-                        render={() => {
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Поставщик</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите поставщика"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={typeSenderOptions}
+                                isLoading={isTypeSenderLoading}
+                                onOpenChange={handleOpenTypeSenderSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("typeProducts", value);
+                                }}
+                                externalLabels={savedTypeSenderLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите поставщика"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -305,16 +522,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                       <FormField
                         control={form.control}
                         disabled
-                        name="groupsFranchise"
-                        render={() => {
+                        name="seasonalityProducts"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Сезон</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите сезон"
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={seasonsOptions}
+                                isLoading={isSeasonsLoading}
+                                onOpenChange={handleOpenSeasonsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("seasonalityProducts", value);
+                                }}
+                                externalLabels={savedSeasonLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите сезонность"
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -323,16 +550,26 @@ const EditProduct: FC<Props> = ({ product }) => {
                       <FormField
                         control={form.control}
                         disabled
-                        name="groupsFranchise"
-                        render={() => {
+                        name="groupsEconomist"
+                        render={({field}) => {
                           return (
                             <FormItem>
                               <FormLabel>Справочник экономиста</FormLabel>
                               <FormControl>
-                                <MultiSelect
-                                  options={[]}
-                                  placeholder="Выберите справочник..."
-                                />
+                              <MultiSelect
+                              value={Array.isArray(field.value) ? field.value.map(String) : []}
+
+                                options={economistOptions}
+                                isLoading={isEconomistLoading}
+                                onOpenChange={handleOpenEconomistsSelect}
+                                onValueChange={(value) => {
+                                  field.onChange(value.map(Number));
+                                  updateProductFilter("groupsEconomist", value);
+                                }}
+                                externalLabels={savedEconomistLabels}
+                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
+                                placeholder="Выберите справочник ..."
+                              />
                               </FormControl>
                             </FormItem>
                           );
@@ -342,11 +579,11 @@ const EditProduct: FC<Props> = ({ product }) => {
                   </Card>
                 </div>
                 <Card className="bg-background">
-                  <CardContent className="grid grid-cols-2 gap-2">
-                    <Button variant={"outline"}>Отмена</Button>
-                    <Button>Сохранить</Button>
-                  </CardContent>
-                </Card>
+  <CardContent className="grid grid-cols-2 gap-2">
+    <Button variant="outline">Отмена</Button>
+    <Button onClick={handleSave}>Сохранить</Button>
+  </CardContent>
+</Card>
               </form>
             </Form>
           </CardContent>

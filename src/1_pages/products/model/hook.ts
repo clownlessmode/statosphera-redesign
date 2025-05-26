@@ -11,6 +11,17 @@ const useForm = (product: Product) => {
     defaultValues: {
       ppProducts: product.ppProducts || defaultValues.ppProducts,
       isIm: product.isIm || defaultValues.isIm,
+      groupsFranchise: product.idGroupsFranchise,
+      subGroups: product.subGroups,
+      subSubGroups: product.subSubGroups,
+      typeProducts: product.typeProducts,
+      teamProducts: product.teamProducts,
+      directionProducts: product.directionProducts,
+      groupsMain: product.groupsMain,
+      groupsEconomist: product.groupsEconomist,
+      seasonalityProducts: product.seasonalityProducts,
+      managerAuto: product.managerAuto,
+      subDivisionProducts: product.subDivisionProducts
     },
     mode: "all",
   });
