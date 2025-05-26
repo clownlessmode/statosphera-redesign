@@ -16,6 +16,8 @@ import { Separator } from "@shared/ui/separator";
 import SuggestionForm from "./suggestion-form";
 import OtherForm from "./other-form";
 import { useState } from "react";
+import { VERSION } from "@shared/constants/config";
+
 const Feedback = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -28,7 +30,12 @@ const Feedback = () => {
       </DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>Обратная связь</DialogTitle>
+          <DialogTitle className="justify-between w-full flex">
+            <span>Обратная связь</span>
+            <span className="text-muted-foreground text-xs font-light mr-4">
+              Версия приложения: {VERSION}{" "}
+            </span>
+          </DialogTitle>
           <DialogDescription>
             Свяжитесь с нами, чтобы сообщить о проблеме или предложить
             улучшения.
