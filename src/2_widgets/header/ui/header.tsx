@@ -51,7 +51,6 @@ const Header: FC<Props> = ({ title, actions }) => {
       ) : (
         <div className="flex flex-row gap-1 sm:gap-2">
           <Feedback />
-
           <Link to={ROUTES_PATH.LOGIN}>
             <Button>
               Войти в Статосферу <LogIn />
