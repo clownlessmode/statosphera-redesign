@@ -30,7 +30,9 @@ export const useSubsubgroup = (allData: any) => {
       const response = await getSubSubGroups(processFiltersDto(allData));
       const apiOptions = response.map(
         (subsubgroup: SubSubGroupFilterResponse) => ({
-          label: subsubgroup.subSubGroups,
+          label: `${subsubgroup.subSubGroups} ${JSON.stringify(
+            subsubgroup.idSubSubGroups
+          )}`,
           value: String(JSON.stringify(subsubgroup.idSubSubGroups || [])),
         })
       );

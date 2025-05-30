@@ -22,7 +22,13 @@ export default function WeeklyRevenue({ data, isLoading }: WeeklyRevenueProps) {
         )}
       </CardHeader>
       <CardContent className="flex-1">
-        {isLoading || !data ? (
+        {isLoading ||
+        !data ||
+        !data.data ||
+        !data.data.map ||
+        data.data[0].day ||
+        data.data[0].proceeds ||
+        data.data[0].day_of_week ? (
           <WeeklyRevenueSkeleton />
         ) : (
           <BarChart
