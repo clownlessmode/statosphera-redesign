@@ -25,9 +25,9 @@ export default function WeeklyRevenue({ data, isLoading }: WeeklyRevenueProps) {
         {isLoading ||
         !data ||
         !data.data ||
-        data.data[0].day ||
-        data.data[0].proceeds ||
-        data.data[0].day_of_week ? (
+        !data.data[0].day ||
+        !data.data[0].proceeds ||
+        !data.data[0].day_of_week ? (
           <WeeklyRevenueSkeleton />
         ) : (
           <BarChart
