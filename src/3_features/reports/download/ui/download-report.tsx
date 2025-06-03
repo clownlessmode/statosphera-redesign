@@ -13,6 +13,8 @@ import {
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
 import { CardContent, CardDescription, CardTitle } from "@shared/ui/card";
+import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 
 const DownloadReport = ({ rows }: { rows: number }) => {
   const { downloadReport } = useDownloadReportController();
@@ -33,10 +35,10 @@ const DownloadReport = ({ rows }: { rows: number }) => {
 
   const isExcelDisabled = rows > 500000;
   const isAllDisabled = rows > 7000000;
-
+  const { session } = useSession();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild disabled={session?.role === ROLES.MANAGER_STORE}>
         <Button variant="outline">
           <Download />
         </Button>

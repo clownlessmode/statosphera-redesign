@@ -144,7 +144,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isFranchiseLoading}
                       onOpenChange={handleOpenFranchiseSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("groupFranchise", value);
                       }}
@@ -170,7 +170,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isSubdivisionsLoading}
                       onOpenChange={handleOpenSubdivisionsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("subDivisionProducts", value);
                       }}
@@ -197,7 +197,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isTeamLoading}
                       onOpenChange={handleOpenTeamsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("teamProducts", value);
                       }}
@@ -222,7 +222,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isDirectionLoading}
                       onOpenChange={handleOpenDirectionsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("directionProducts", value);
                       }}
@@ -247,7 +247,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isEconomistLoading}
                       onOpenChange={handleOpenEconomistsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("groupsEconomist", value);
                       }}
@@ -272,7 +272,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isAutoManagerLoading}
                       onOpenChange={handleOpenAutoManagerSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("managerAuto", value);
                       }}
@@ -297,7 +297,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isTypeSenderLoading}
                       onOpenChange={handleOpenTypeSenderSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("typeProducts", value);
                       }}
@@ -338,7 +338,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isSeasonsLoading}
                       onOpenChange={handleOpenSeasonsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("seasonalityProducts", value);
                       }}
@@ -363,7 +363,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isGroupsLoading}
                       onOpenChange={handleOpenGroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("idGroupMain", value);
                       }}
@@ -388,7 +388,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isSubGroupsLoading}
                       onOpenChange={handleOpenSubgroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("subGroups", value);
                       }}
@@ -413,7 +413,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isSubsubgroupsLoading}
                       onOpenChange={handleOpenSubsubgroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("subSubGroups", value);
                       }}
@@ -438,7 +438,7 @@ const ProductsFilter: FC = () => {
                       isLoading={isProductLoading}
                       onOpenChange={handleOpenProductSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
+                        const numeric = value.map(String);
                         field.onChange(numeric);
                         updateProductFilter("idProduct", value);
                       }}

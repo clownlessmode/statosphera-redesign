@@ -498,22 +498,12 @@ product
                         render={({field}) => {
                           return (
                             <FormItem>
-                              <FormLabel>Поставщик</FormLabel>
+                              <FormLabel>Тип поставщика</FormLabel>
                               <FormControl>
-                              <MultiSelect
-                              value={Array.isArray(field.value) ? field.value.map(String) : []}
-
-                                options={typeSenderOptions}
-                                isLoading={isTypeSenderLoading}
-                                onOpenChange={handleOpenTypeSenderSelect}
-                                onValueChange={(value) => {
-                                  field.onChange(value.map(Number));
-                                  updateProductFilter("typeProducts", value);
-                                }}
-                                externalLabels={savedTypeSenderLabels}
-                                defaultValue={Array.isArray(field.value) ? field.value.map(String) : []}
-                                placeholder="Выберите поставщика"
-                              />
+                                <MultiSelect
+                                  options={[]}
+                                  placeholder="Выберите поставщика"
+                                />
                               </FormControl>
                             </FormItem>
                           );

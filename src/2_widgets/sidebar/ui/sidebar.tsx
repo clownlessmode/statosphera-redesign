@@ -28,10 +28,12 @@ import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useSession } from "@entities/session";
 const Sidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
+  const { session } = useSession();
   const { tab } = useTabStore();
   const data = {
     navMain: [
@@ -39,6 +41,11 @@ const Sidebar = ({
         title: "Продажи",
         url: `${ROUTES_PATH.SALES_DYNAMICS}?open=false&tab=${tab}`,
         icon: DollarSign,
+      },
+      {
+        title: "Отчёты",
+        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+        icon: FileChartColumn,
       },
       {
         title: "Дайджесты",
@@ -50,30 +57,30 @@ const Sidebar = ({
         url: ROUTES_PATH.STANDARTS,
         icon: FileQuestion,
       },
-      {
-        title: "Отчёты",
-        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
-        icon: FileChartColumn,
-      },
-      {
-        title: "Номенклатура",
-        url: ROUTES_PATH.PRODUCTS,
-        icon: PanelsTopLeft,
-      },
-      {
-        title: "Гриль",
-        url: ROUTES_PATH.GRILL,
-        icon: Ham,
-      },
+
       {
         title: "Справочник магазинов",
         url: ROUTES_PATH.STORES,
         icon: Store,
       },
       {
+        title: "Номенклатура",
+        url: "#", //ROUTES_PATH.PRODUCTS,
+        icon: PanelsTopLeft,
+        disabled: true,
+      },
+      {
+        title: "Гриль",
+        url: "#", //ROUTES_PATH.GRILL,
+        icon: Ham,
+        disabled: true,
+      },
+
+      {
         title: "Настройки",
         url: "#",
         icon: SettingsIcon,
+        disabled: true,
       },
       {
         title: "Прибыль ФРС",
@@ -106,6 +113,7 @@ const Sidebar = ({
         title: "Обучение",
         url: ROUTES_PATH.LESSONS,
         icon: BookOpenIcon,
+        disabled: true,
       },
       {
         title: "Дорожка карта",
@@ -117,25 +125,28 @@ const Sidebar = ({
   };
   const { toggleSidebar, state } = useSidebar();
   const isCollapsed = state === "collapsed";
+
   return (
     <>
-      <SidebarComponent collapsible="icon" {...props}>
-        <Link to="/" className="py-2 pl-2">
-          <Logotype size={isCollapsed ? "sm" : "md"} />
-        </Link>
-        <SidebarContent>
-          <NavMain items={data.navMain} />
-        </SidebarContent>
-        <SidebarRail />
-        <SidebarMenu>
-          <NavSecondary
-            items={data.navSecondary}
-            isCollapsed={isCollapsed}
-            toggleSidebar={toggleSidebar}
-            className="mt-auto"
-          />
-        </SidebarMenu>
-      </SidebarComponent>
+      {session && (
+        <SidebarComponent collapsible="icon" {...props}>
+          <Link to="/" className="py-2 pl-2">
+            <Logotype size={isCollapsed ? "sm" : "md"} />
+          </Link>
+          <SidebarContent>
+            <NavMain items={data.navMain} />
+          </SidebarContent>
+          <SidebarRail />
+          <SidebarMenu>
+            <NavSecondary
+              items={data.navSecondary}
+              isCollapsed={isCollapsed}
+              toggleSidebar={toggleSidebar}
+              className="mt-auto"
+            />
+          </SidebarMenu>
+        </SidebarComponent>
+      )}
 
       {children}
     </>

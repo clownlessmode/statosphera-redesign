@@ -84,6 +84,7 @@ export const DoubleHorizontalBarChart = ({
       yAxis: {
         type: "category",
         data: data.yAxis,
+        // invert: true,
         axisLine: { show: false },
         axisTick: { show: false },
         axisLabel: { show: false },

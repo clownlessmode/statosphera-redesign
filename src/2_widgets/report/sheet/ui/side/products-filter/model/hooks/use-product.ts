@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { NomenklaturaFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -23,13 +24,13 @@ export const useProduct = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getNomenklatura(allData);
+      const response = await getNomenklatura(processFiltersDto(allData));
       const apiOptions = response.map(
-        (Product: NomenklaturaFilterResponse) => ({
-          label: Product.productName
-            ? Product.productName
-            : `Название не указано (ID: ${Product.idProduct})`,
-          value: String(Product.idProduct?.[0] || ""),
+        (product: NomenklaturaFilterResponse) => ({
+          label: product.productName
+            ? product.productName
+            : `Название не указано (ID: ${product.idProduct})`,
+          value: String(JSON.stringify(product.idProduct || [])),
         })
       );
       setProductOptions(apiOptions);

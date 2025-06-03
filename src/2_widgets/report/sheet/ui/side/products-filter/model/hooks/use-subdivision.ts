@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { SubdivisionFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -26,11 +27,13 @@ export const useSubdivision = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubdivisions(allData);
+      const response = await getSubdivisions(processFiltersDto(allData));
       const apiOptions = response.map(
         (subdivision: SubdivisionFilterResponse) => ({
           label: subdivision.subdivisionProducts,
-          value: String(subdivision.idSubdivisionProducts?.[0] || ""),
+          value: String(
+            JSON.stringify(subdivision.idSubdivisionProducts || [])
+          ),
         })
       );
       setSubdivisionOptions(apiOptions);

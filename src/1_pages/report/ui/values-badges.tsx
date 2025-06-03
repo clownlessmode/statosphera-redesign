@@ -1,6 +1,7 @@
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
+import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
 
 // Компонент для отображения уникальных значений
 
@@ -32,7 +33,7 @@ export function getLabelByValue(
 }
 export function UniqueBadges({ tab }: { tab: string }) {
   const { uniques } = useFiltersStore();
-  const uniqueList = useIndicatorList(tab as any);
+  const uniqueList = useUniqueValues(tab as any);
 
   if (!uniques || uniques.length === 0) return null;
 

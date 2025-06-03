@@ -6,7 +6,7 @@ import { Calendar } from "@shared/ui/calendar";
 import { Input } from "@shared/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@shared/ui/popover";
 import { cn } from "@shared/lib/utils";
-import { format, parse } from "date-fns";
+import { format, parse, isValid, isBefore, isAfter } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { type DateRange } from "react-day-picker";
 
@@ -22,6 +22,8 @@ export const DateRangePicker = React.forwardRef<
   HTMLDivElement,
   DateRangePickerProps
 >(({ className, value, onChange, min, max, ...props }, ref) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const formatRangeValue = (range: DateRange | undefined) => {
     if (!range) return "";
     const from = range.from ? format(range.from, "dd.MM.yyyy") : "";
@@ -35,14 +37,61 @@ export const DateRangePicker = React.forwardRef<
     setInputValue(formatRangeValue(value));
   }, [value]);
 
+  const validateDate = (date: Date): Date | null => {
+    if (!isValid(date)) return null;
+
+    // Проверяем минимальную дату
+    if (min && isBefore(date, min)) {
+      return min;
+    }
+
+    // Проверяем максимальную дату
+    if (max && isAfter(date, max)) {
+      return max;
+    }
+
+    return date;
+  };
+
   const commitRange = () => {
     const parts = inputValue.split(" – ");
     const parsedFrom = parse(parts[0] || "", "dd.MM.yyyy", new Date());
     const parsedTo = parse(parts[1] || "", "dd.MM.yyyy", new Date());
+
     const newRange: DateRange = { from: undefined, to: undefined };
-    if (!isNaN(parsedFrom.getTime())) newRange.from = parsedFrom;
-    if (!isNaN(parsedTo.getTime())) newRange.to = parsedTo;
-    if (newRange.from || newRange.to) onChange?.(newRange);
+
+    // Валидируем и корректируем даты
+    const validatedFrom = validateDate(parsedFrom);
+    const validatedTo = validateDate(parsedTo);
+
+    if (validatedFrom) newRange.from = validatedFrom;
+    if (validatedTo) newRange.to = validatedTo;
+
+    // Проверяем, что from не больше to
+    if (newRange.from && newRange.to && isAfter(newRange.from, newRange.to)) {
+      // Меняем местами даты
+      const temp = newRange.from;
+      newRange.from = newRange.to;
+      newRange.to = temp;
+    }
+
+    if (newRange.from || newRange.to) {
+      onChange?.(newRange);
+      // Обновляем input с исправленными датами
+      setInputValue(formatRangeValue(newRange));
+    } else {
+      // Если обе даты невалидны, очищаем input
+      setInputValue("");
+      onChange?.(undefined);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitRange();
+      setIsOpen(false);
+    }
   };
 
   const mask = [
@@ -71,12 +120,11 @@ export const DateRangePicker = React.forwardRef<
     /\d/,
   ];
 
-  // Регулярка полного ввода диапазона
   const fullPattern = /^\d{2}\.\d{2}\.\d{4} – \d{2}\.\d{2}\.\d{4}$/;
 
   return (
     <div className={cn("grid gap-2", className)} ref={ref} {...props}>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <div className="relative flex items-center w-full">
             <MaskedInput
@@ -90,7 +138,22 @@ export const DateRangePicker = React.forwardRef<
                   const parts = val.split(" – ");
                   const parsedFrom = parse(parts[0], "dd.MM.yyyy", new Date());
                   const parsedTo = parse(parts[1], "dd.MM.yyyy", new Date());
-                  onChange?.({ from: parsedFrom, to: parsedTo });
+
+                  // Валидируем даты при автоматическом обновлении
+                  const validatedFrom = validateDate(parsedFrom);
+                  const validatedTo = validateDate(parsedTo);
+
+                  if (validatedFrom && validatedTo) {
+                    let from = validatedFrom;
+                    let to = validatedTo;
+
+                    // Проверяем порядок дат
+                    if (isAfter(from, to)) {
+                      [from, to] = [to, from];
+                    }
+
+                    onChange?.({ from, to });
+                  }
                 }
               }}
               onBlur={commitRange}
@@ -101,6 +164,7 @@ export const DateRangePicker = React.forwardRef<
                   className="pl-10 border border-input bg-background shadow-xs hover:border-muted-foreground rounded-md text-sm font-medium flex-1 cursor-text"
                   aria-label="Выбор диапазона дат"
                   ref={refInput as React.Ref<HTMLInputElement>}
+                  onKeyDown={handleKeyDown}
                 />
               )}
             />

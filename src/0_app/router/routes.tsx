@@ -44,6 +44,7 @@ import Grill from "@pages/grill/ui/grill";
 import Report from "@pages/report/ui/report";
 import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
 import Products from "@pages/products/ui/products";
+import { ROLES } from "@shared/constants/roles";
 
 export const ROUTES_PATH = {
   // Авторизация
@@ -98,14 +99,14 @@ export const ROUTES: RouteConfig[] = [
   },
   {
     path: ROUTES_PATH.DIGESTS,
-    variant: "private",
+    variant: "public",
     element: <Digests />,
     layout: Sidebar,
     label: "Дайджесты",
   },
   {
     path: ROUTES_PATH.DIGEST,
-    variant: "private",
+    variant: "public",
     element: <Digest />,
     layout: Sidebar,
     label: "Дайджест",
@@ -173,6 +174,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.GRILL,
     variant: "private",
     element: <Grill />,
+    allowedRoles: [ROLES.PARTNER],
     layout: Sidebar,
   },
   {

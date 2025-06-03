@@ -215,13 +215,13 @@ export type FiltersState = {
   // Основная структура данных
   filters: {
     store: {
-      idStore: number[];
-      idCity: number[];
-      idRegion: number[];
-      idManager: number[];
+      idStore: string[];
+      idCity: string[];
+      idRegion: string[];
+      idManager: string[];
       storeCondition: string[];
       ageGroup: AGE_GROUP[];
-      idLegalEntity: number[];
+      idLegalEntity: string[];
       channel: FRS_CHANNEL[];
       district: string[];
     };
@@ -253,10 +253,10 @@ export type FiltersState = {
     };
     loyal: {
       isLoyal: boolean | null;
-      cardNumber: number[];
+      cardNumber: string[];
       sex: "M" | "Ж" | null;
-      guidDiscount: number[];
-      guidBonus: number[];
+      guidDiscount: string[];
+      guidBonus: string[];
       ageStart: number | null;
       ageEnd: number | null;
       groupAge: string[];

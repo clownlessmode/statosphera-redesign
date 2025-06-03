@@ -56,6 +56,7 @@ export const BarHorizontalChart = ({
       type: "category",
       data: labels.map(() => ""), // скрываем текст
       show: false,
+      inverse: true,
     },
     series: [
       {

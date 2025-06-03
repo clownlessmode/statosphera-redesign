@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/shops/controller";
 import { PartnersFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -23,10 +24,10 @@ export const usePartners = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getPartners(allData);
+      const response = await getPartners(processFiltersDto(allData));
       const apiOptions = response.map((partner: PartnersFilterResponse) => ({
         label: partner.nameManager,
-        value: String(partner.idManager?.[0] || ""),
+        value: String(JSON.stringify(partner.idManager || [])),
       }));
 
       setPartnerOptions(apiOptions);

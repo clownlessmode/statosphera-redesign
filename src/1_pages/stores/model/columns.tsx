@@ -31,12 +31,12 @@ export const columns: ColumnDef<Store>[] = [
     },
   },
   {
-    accessorKey: "storeRegion",
+    accessorKey: "region",
     header: ({ column }) => <SortableHeader column={column} title="Регион" />,
     enableColumnFilter: true,
   },
   {
-    accessorKey: "storeCity",
+    accessorKey: "city",
     header: ({ column }) => <SortableHeader column={column} title="Город" />,
     enableColumnFilter: true,
   },

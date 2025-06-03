@@ -7,7 +7,6 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import useMail from "../use-mail";
 
 import { Notification } from "@entities/notifications/model/api/types";
-import ReactMarkdown from "react-markdown";
 
 interface MailListProps {
   items: Notification[];
@@ -15,7 +14,7 @@ interface MailListProps {
 
 export function MailList({ items }: MailListProps) {
   const { selected, setSelected } = useMail();
-  console.log(items);
+
   return (
     <ScrollArea className="h-[calc(100vh-218px)]">
       <div className="flex flex-col gap-2 p-4 pt-0">
@@ -51,9 +50,9 @@ export function MailList({ items }: MailListProps) {
                 {item.description.replace(/[#_*`~>\[\]()\-+!|\\]/g, "")}
               </div>
             </div>
-            <div className="line-clamp-2 text-xs text-muted-foreground">
+            {/* <div className="line-clamp-2 text-xs text-muted-foreground">
               <ReactMarkdown>{item.message?.substring(0, 250)}</ReactMarkdown>
-            </div>
+            </div> */}
 
             {item.emotion?.length ? (
               <div className="flex items-center gap-2">

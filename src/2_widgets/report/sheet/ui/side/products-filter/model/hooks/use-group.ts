@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { GroupMainFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -23,10 +24,10 @@ export const useGroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getGroups(allData);
+      const response = await getGroups(processFiltersDto(allData));
       const apiOptions = response.map((group: GroupMainFilterResponse) => ({
         label: group.groupsMain,
-        value: String(group.idGroupsMain?.[0] || ""),
+        value: String(JSON.stringify(group.idGroupsMain || [])),
       }));
       setGroupOptions(apiOptions);
       setGroupLabels(apiOptions);

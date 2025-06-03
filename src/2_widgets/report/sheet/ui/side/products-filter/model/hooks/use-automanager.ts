@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { AutoManagerFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -26,11 +27,11 @@ export const useAutoManager = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getAutoManager(allData);
+      const response = await getAutoManager(processFiltersDto(allData));
       const apiOptions = response.map(
         (autoManager: AutoManagerFilterResponse) => ({
           label: autoManager.managerAuto,
-          value: String(autoManager.idManagerAuto?.[0] || ""),
+          value: String(JSON.stringify(autoManager.managerAuto || [])),
         })
       );
       setAutoManagerOptions(apiOptions);

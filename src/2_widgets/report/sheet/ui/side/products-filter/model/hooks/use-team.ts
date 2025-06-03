@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { TeamFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -23,10 +24,10 @@ export const useTeam = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getTeam(allData);
+      const response = await getTeam(processFiltersDto(allData));
       const apiOptions = response.map((team: TeamFilterResponse) => ({
         label: team.teamProducts,
-        value: String(team.idTeamProducts?.[0] || ""),
+        value: String(JSON.stringify(team.idTeamProducts || [])),
       }));
       setTeamOptions(apiOptions);
       setTeamLabels(apiOptions);

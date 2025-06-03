@@ -93,7 +93,7 @@ export const PRODUCT = [
     value: GROUPINGS.SUBSUBGROUPS,
   },
   {
-    label: "Поставщик",
+    label: "Тип поставщика",
     value: "typeProducts",
   },
   {

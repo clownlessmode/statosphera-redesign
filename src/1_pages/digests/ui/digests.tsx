@@ -17,10 +17,12 @@ import DigestCard from "@entities/digests/ui/digest-card";
 import { useDigests } from "@entities/digests/model/api/controller";
 import { Skeleton } from "@shared/ui/skeleton";
 import { useMemo } from "react";
+import { useSession } from "@entities/session";
 
 const Digests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentType = searchParams.get("type") || "all";
+  const { session } = useSession();
 
   const updateURL = (value: string) => {
     if (value === "all") {
@@ -33,13 +35,32 @@ const Digests = () => {
   const { digests, isDigestsLoading } = useDigests();
 
   const filteredDigests = useMemo(() => {
-    return {
-      analytics: digests?.filter((digest) => digest.type === "analytics"),
+    // Если нет сессии, показываем только director и groupCompany
+    const allowedTypes = session
+      ? ["analytics", "director", "franchise", "groupCompany"]
+      : ["director", "groupCompany"];
+
+    const filtered = {
+      analytics: session
+        ? digests?.filter((digest) => digest.type === "analytics")
+        : [],
       director: digests?.filter((digest) => digest.type === "director"),
-      franchise: digests?.filter((digest) => digest.type === "franchise"),
+      franchise: session
+        ? digests?.filter((digest) => digest.type === "franchise")
+        : [],
       groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
     };
-  }, [digests, currentType]);
+
+    // Для вкладки "Все" показываем только разрешенные типы
+    const allDigests = session
+      ? digests
+      : digests?.filter((digest) => allowedTypes.includes(digest.type));
+
+    return {
+      ...filtered,
+      all: allDigests,
+    };
+  }, [digests, session]);
 
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
@@ -59,23 +80,27 @@ const Digests = () => {
               {isDigestsLoading ? (
                 <Skeleton className="w-5 h-4" />
               ) : (
-                <Badge>{digests?.length}</Badge>
+                <Badge>{filteredDigests.all?.length}</Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger
-              value="analytics"
-              className="w-full justify-between gap-4"
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <ChartNetwork className="size-4 text-muted-foreground" />
-                Аналитика
-              </div>
-              {isDigestsLoading ? (
-                <Skeleton className="w-5 h-4" />
-              ) : (
-                <Badge>{filteredDigests.analytics?.length}</Badge>
-              )}
-            </TabsTrigger>
+
+            {session && (
+              <TabsTrigger
+                value="analytics"
+                className="w-full justify-between gap-4"
+              >
+                <div className="flex flex-row gap-2 items-center">
+                  <ChartNetwork className="size-4 text-muted-foreground" />
+                  Аналитика
+                </div>
+                {isDigestsLoading ? (
+                  <Skeleton className="w-5 h-4" />
+                ) : (
+                  <Badge>{filteredDigests.analytics?.length}</Badge>
+                )}
+              </TabsTrigger>
+            )}
+
             <TabsTrigger
               value="director"
               className="w-full justify-between gap-4"
@@ -90,19 +115,23 @@ const Digests = () => {
                 <Badge>{filteredDigests.director?.length}</Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger
-              value="franchise"
-              className="w-full justify-between gap-4"
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <Store className="size-4 text-muted-foreground" /> Франчайзинг
-              </div>
-              {isDigestsLoading ? (
-                <Skeleton className="w-5 h-4" />
-              ) : (
-                <Badge>{filteredDigests.franchise?.length}</Badge>
-              )}
-            </TabsTrigger>
+
+            {session && (
+              <TabsTrigger
+                value="franchise"
+                className="w-full justify-between gap-4"
+              >
+                <div className="flex flex-row gap-2 items-center">
+                  <Store className="size-4 text-muted-foreground" /> Франчайзинг
+                </div>
+                {isDigestsLoading ? (
+                  <Skeleton className="w-5 h-4" />
+                ) : (
+                  <Badge>{filteredDigests.franchise?.length}</Badge>
+                )}
+              </TabsTrigger>
+            )}
+
             <TabsTrigger
               value="groupCompany"
               className="w-full justify-between gap-4"
@@ -118,9 +147,10 @@ const Digests = () => {
               )}
             </TabsTrigger>
           </TabsList>
+
           <TabsContent value="all">
             <div className="flex flex-col gap-2 w-full">
-              {digests?.map((item) => (
+              {filteredDigests.all?.map((item) => (
                 <DigestCard
                   description={item.description}
                   key={item.id}
@@ -134,22 +164,26 @@ const Digests = () => {
               ))}
             </div>
           </TabsContent>
-          <TabsContent value="analytics">
-            <div className="flex flex-col gap-2 w-full">
-              {filteredDigests.analytics?.map((item) => (
-                <DigestCard
-                  description={item.description}
-                  key={item.id}
-                  id={item.id}
-                  count={item.count}
-                  cover={item.cover}
-                  title={item.title}
-                  create_add={item.create_add}
-                  type="Аналитика"
-                />
-              ))}
-            </div>
-          </TabsContent>
+
+          {session && (
+            <TabsContent value="analytics">
+              <div className="flex flex-col gap-2 w-full">
+                {filteredDigests.analytics?.map((item) => (
+                  <DigestCard
+                    description={item.description}
+                    key={item.id}
+                    id={item.id}
+                    count={item.count}
+                    cover={item.cover}
+                    title={item.title}
+                    create_add={item.create_add}
+                    type="Аналитика"
+                  />
+                ))}
+              </div>
+            </TabsContent>
+          )}
+
           <TabsContent value="director">
             <div className="flex flex-col gap-2 w-full">
               {filteredDigests.director?.map((item) => (
@@ -166,22 +200,26 @@ const Digests = () => {
               ))}
             </div>
           </TabsContent>
-          <TabsContent value="franchise">
-            <div className="flex flex-col gap-2 w-full">
-              {filteredDigests.franchise?.map((item) => (
-                <DigestCard
-                  description={item.description}
-                  key={item.id}
-                  id={item.id}
-                  count={item.count}
-                  cover={item.cover}
-                  title={item.title}
-                  create_add={item.create_add}
-                  type="Франчайзинг"
-                />
-              ))}
-            </div>
-          </TabsContent>
+
+          {session && (
+            <TabsContent value="franchise">
+              <div className="flex flex-col gap-2 w-full">
+                {filteredDigests.franchise?.map((item) => (
+                  <DigestCard
+                    description={item.description}
+                    key={item.id}
+                    id={item.id}
+                    count={item.count}
+                    cover={item.cover}
+                    title={item.title}
+                    create_add={item.create_add}
+                    type="Франчайзинг"
+                  />
+                ))}
+              </div>
+            </TabsContent>
+          )}
+
           <TabsContent value="groupCompany">
             <div className="flex flex-col gap-2 w-full">
               {filteredDigests.groupCompany?.map((item) => (

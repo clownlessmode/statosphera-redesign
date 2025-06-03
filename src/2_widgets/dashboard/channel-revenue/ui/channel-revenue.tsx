@@ -11,7 +11,7 @@ interface ChannelRevenueProps {
 const ChannelRevenue = ({ isLoading, data }: ChannelRevenueProps) => {
   return (
     <>
-      {!isLoading && data ? (
+      {!isLoading && data && data.data ? (
         <Card className="w-full h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Распределение по каналам продаж</CardTitle>

@@ -22,6 +22,30 @@ export const BarChart = ({
 
   const maxValue = Math.max(...yAxisData);
 
+  // Функция для сокращения дней недели
+  const shortenDayName = (day: string): string => {
+    const dayMap: { [key: string]: string } = {
+      понедельник: "ПН",
+      вторник: "ВТ",
+      среда: "СР",
+      четверг: "ЧТ",
+      пятница: "ПТ",
+      суббота: "СБ",
+      воскресенье: "ВС",
+      // Английские варианты на случай если приходят на английском
+      monday: "ПН",
+      tuesday: "ВТ",
+      wednesday: "СР",
+      thursday: "ЧТ",
+      friday: "ПТ",
+      saturday: "СБ",
+      sunday: "ВС",
+    };
+
+    const lowerDay = day.toLowerCase();
+    return dayMap[lowerDay] || day; // Если не день недели, возвращаем как есть
+  };
+
   const option: EChartsOption = {
     backgroundColor: "transparent",
     title: title
@@ -42,38 +66,40 @@ export const BarChart = ({
       textStyle: { color: colors.text, fontSize: 10 },
       formatter: (params: any) => {
         const value = params[0].value;
-        const label = params[0].name;
+        const label = xAxisData[params[0].dataIndex]; // Используем полное название в тултипе
         const tooltip = tooltipData?.[params[0].dataIndex] || "";
         return `${label} ${tooltip} <br />${value.toLocaleString()} ₽`;
       },
     },
     xAxis: {
       type: "category",
-      data: xAxisData,
+      data: xAxisData.map(shortenDayName), // Применяем сокращение
       axisLabel: {
         color: colors.text,
+        fontSize: 12,
+        interval: 0,
+        rotate: 0,
+        margin: 8,
       },
       axisLine: {
-        lineStyle: {
-          color: colors.text,
-        },
+        show: false,
+      },
+      axisTick: {
+        show: false,
       },
     },
     yAxis: {
       type: "value",
       show: false,
       splitLine: {
-        lineStyle: {
-          type: "dashed",
-          color: colors.gridLine,
-        },
+        show: false,
       },
     },
     grid: {
-      left: 0,
-      right: 0,
-      top: title ? 40 : 0,
-      bottom: 0,
+      left: 10,
+      right: 10,
+      top: title ? 40 : 10,
+      bottom: 30,
       containLabel: false,
     },
     series: [

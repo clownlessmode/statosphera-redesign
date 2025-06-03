@@ -1,3 +1,4 @@
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { TypeSenderFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -25,11 +26,11 @@ export const useTypeSender = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getTypeSender(allData);
+      const response = await getTypeSender(processFiltersDto(allData));
       const apiOptions = response.map(
         (typeSender: TypeSenderFilterResponse) => ({
           label: typeSender.typeProducts,
-          value: String(typeSender.idTypeProducts?.[0] || ""),
+          value: String(JSON.stringify(typeSender.idTypeProducts || [])),
         })
       );
       setTypeSenderOptions(apiOptions);

@@ -3,6 +3,7 @@ import { useFilters } from "@entities/report/model/api/filters/shops/controller"
 import { useState } from "react";
 import { ShopsFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { create } from "zustand";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 interface ShopsStore {
   savedShopLabels: MultiSelectOption[];
@@ -23,10 +24,10 @@ export const useShops = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getShops(allData);
+      const response = await getShops(processFiltersDto(allData));
       const apiOptions = response.map((shop: ShopsFilterResponse) => ({
         label: shop.storeName,
-        value: String(shop.idStore?.[0] || ""),
+        value: String(JSON.stringify(shop.idStore || [])),
       }));
 
       setShopsOptions(apiOptions);

@@ -220,7 +220,7 @@ export const MultiSelect = React.forwardRef<
         >
           <Command>
             {!isLoading && options && options.length > 0 && (
-              <CommandInput placeholder="Поиск..." />
+              <CommandInput placeholder="Поиск..." autoFocus />
             )}
             <CommandList>
               {isLoading ? (

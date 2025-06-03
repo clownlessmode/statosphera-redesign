@@ -29,19 +29,64 @@ export interface ReportGraphResponse {
   card2: GraphCard;
   card3: GraphCard;
 }
+export function processFiltersDto(dto: any): any {
+  const flattenStringArrays = (arr: string[]): number[] => {
+    return arr.flatMap((str) => {
+      try {
+        const parsed = JSON.parse(str);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    });
+  };
 
+  const processFilters = (filters: any): any => {
+    const processed = { ...filters };
+
+    // Обрабатываем все вложенные объекты
+    Object.keys(processed).forEach((category) => {
+      if (processed[category] && typeof processed[category] === "object") {
+        Object.keys(processed[category]).forEach((field) => {
+          const value = processed[category][field];
+          if (
+            Array.isArray(value) &&
+            value.length > 0 &&
+            typeof value[0] === "string" &&
+            value[0].startsWith("[")
+          ) {
+            processed[category][field] = flattenStringArrays(value);
+          }
+        });
+      }
+    });
+
+    return processed;
+  };
+
+  return {
+    ...dto,
+    filters: processFilters(dto.filters),
+  };
+}
 export class ReportService {
   static async getReportTable(
     dto: FilterApiPayload
   ): Promise<ReportTableResponse> {
-    const response = await api.post<any>("report-page/data", dto);
+    const response = await api.post<any>(
+      "report-page/data",
+      processFiltersDto(dto)
+    );
 
     return response.data;
   }
   static async getReportGraph(
     dto: FilterApiPayload
   ): Promise<ReportGraphResponse> {
-    const response = await api.post<any>("report-page/graphic", dto);
+    const response = await api.post<any>(
+      "report-page/graphic",
+      processFiltersDto(dto)
+    );
     return response.data;
   }
   static async getReportTotal(
@@ -49,7 +94,10 @@ export class ReportService {
   ): Promise<ReportTotalResponse> {
     const { limit, offset, ...payload } = dto;
 
-    const response = await api.post<any>("report-page/data_total", payload);
+    const response = await api.post<any>(
+      "report-page/data_total",
+      processFiltersDto(payload)
+    );
     return response.data;
   }
 }
