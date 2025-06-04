@@ -4,15 +4,18 @@ import {
   ArrowUpRight,
   DollarSign,
   Gift,
+  Minus,
   MinusCircle,
   Percent,
   PercentCircle,
+  Plus,
   Receipt,
   ShoppingBag,
   ShoppingCart,
   Tag,
   Tags,
   TicketPercent,
+  TrendingDown,
   TrendingUp,
   Weight,
 } from "lucide-react";
@@ -716,6 +719,181 @@ const all_indicators = [
     ],
   },
   {
+    id: COLUMN_KEY.BONUS_ACCRUAL_GROUP,
+    label: "Бонусы начисление, руб.",
+    value: COLUMN_KEY.BONUS_ACCRUAL_GROUP,
+    icon: Plus, // или другая подходящая иконка
+    children: [
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL,
+        label: "Бонусы начисление, руб.",
+        value: COLUMN_KEY.BONUS_ACCRUAL,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_LM,
+        label: "Бонусы начисление, руб. PM",
+        value: COLUMN_KEY.BONUS_ACCRUAL_LM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_MOM,
+        label: "Бонусы начисление, руб. MOM",
+        value: COLUMN_KEY.BONUS_ACCRUAL_MOM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_MOM_PERCENT,
+        label: "Бонусы начисление, руб. MOM%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_LY,
+        label: "Бонусы начисление, руб. PY",
+        value: COLUMN_KEY.BONUS_ACCRUAL_LY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_YOY,
+        label: "Бонусы начисление, руб. YOY",
+        value: COLUMN_KEY.BONUS_ACCRUAL_YOY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_YOY_PERCENT,
+        label: "Бонусы начисление, руб. YOY%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_YOY_PERCENT,
+      },
+    ],
+  },
+
+  {
+    id: COLUMN_KEY.BONUS_WRITEOFF_GROUP,
+    label: "Бонусы списание, руб.",
+    value: COLUMN_KEY.BONUS_WRITEOFF_GROUP,
+    icon: Minus, // или другая подходящая иконка
+    children: [
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF,
+        label: "Бонусы списание, руб.",
+        value: COLUMN_KEY.BONUS_WRITEOFF,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_LM,
+        label: "Бонусы списание, руб. PM",
+        value: COLUMN_KEY.BONUS_WRITEOFF_LM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_MOM,
+        label: "Бонусы списание, руб. MOM",
+        value: COLUMN_KEY.BONUS_WRITEOFF_MOM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_MOM_PERCENT,
+        label: "Бонусы списание, руб. MOM%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_LY,
+        label: "Бонусы списание, руб. PY",
+        value: COLUMN_KEY.BONUS_WRITEOFF_LY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_YOY,
+        label: "Бонусы списание, руб. YOY",
+        value: COLUMN_KEY.BONUS_WRITEOFF_YOY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_YOY_PERCENT,
+        label: "Бонусы списание, руб. YOY%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_YOY_PERCENT,
+      },
+    ],
+  },
+
+  {
+    id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
+    label: "Бонусы начисление, %",
+    value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
+    icon: TrendingUp, // или другая подходящая иконка
+    children: [
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT,
+        label: "Бонусы начисление, %",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LM,
+        label: "Бонусы начисление, % PM",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM,
+        label: "Бонусы начисление, % MOM",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM_PERCENT,
+        label: "Бонусы начисление, % MOM%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LY,
+        label: "Бонусы начисление, % PY",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY,
+        label: "Бонусы начисление, % YOY",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY_PERCENT,
+        label: "Бонусы начисление, % YOY%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY_PERCENT,
+      },
+    ],
+  },
+
+  {
+    id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
+    label: "Бонусы списание, %",
+    value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
+    icon: TrendingDown, // или другая подходящая иконка
+    children: [
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT,
+        label: "Бонусы списание, %",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LM,
+        label: "Бонусы списание, % PM",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM,
+        label: "Бонусы списание, % MOM",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM_PERCENT,
+        label: "Бонусы списание, % MOM%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM_PERCENT,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LY,
+        label: "Бонусы списание, % PY",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY,
+        label: "Бонусы списание, % YOY",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY,
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY_PERCENT,
+        label: "Бонусы списание, % YOY%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY_PERCENT,
+      },
+    ],
+  },
+  {
     id: COLUMN_KEY.WEIGHT_GROUP,
     label: "Вес",
     value: COLUMN_KEY.WEIGHT_GROUP,
@@ -963,6 +1141,10 @@ export const useIndicatorList = (type: "check" | "commerce") => {
   const COMMERCE = excludeIndicators(all_indicators, [
     "avgCheckGroup",
     "checkGroup",
+    COLUMN_KEY.BONUS_ACCRUAL_GROUP,
+    COLUMN_KEY.BONUS_WRITEOFF_GROUP,
+    COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
+    COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
   ]);
   if (type === "check") {
     return CHECK;
