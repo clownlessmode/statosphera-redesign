@@ -3,11 +3,11 @@ import { COLUMN_KEY } from "@shared/constants/table-columns";
 import {
   ArrowUpRight,
   DollarSign,
-  Gift,
+
   Minus,
   MinusCircle,
   Percent,
-  PercentCircle,
+
   Plus,
   Receipt,
   ShoppingBag,
