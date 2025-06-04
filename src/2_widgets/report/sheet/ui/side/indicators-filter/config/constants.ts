@@ -646,78 +646,7 @@ const all_indicators = [
       },
     ],
   },
-  {
-    id: "bonusGroup",
-    label: "Бонус, руб.",
-    value: "bonusGroup",
-    icon: Gift,
-    children: [
-      { id: COLUMN_KEY.BONUS, label: "Бонус, руб.", value: COLUMN_KEY.BONUS },
-      {
-        id: COLUMN_KEY.BONUS_LM,
-        label: "Бонус, руб. PM",
-        value: COLUMN_KEY.BONUS_LM,
-      },
-      {
-        id: COLUMN_KEY.BONUS_MOM,
-        label: "Бонус, руб. MoM",
-        value: COLUMN_KEY.BONUS_MOM,
-      },
-      {
-        id: COLUMN_KEY.BONUS_MOM_PERCENT,
-        label: "Бонус, руб. MoM %",
-        value: COLUMN_KEY.BONUS_MOM_PERCENT,
-      },
-      {
-        id: COLUMN_KEY.BONUS_LY,
-        label: "Бонус, руб.  PY",
-        value: COLUMN_KEY.BONUS_LY,
-      },
-      {
-        id: COLUMN_KEY.BONUS_YOY,
-        label: "Бонус, руб. YoY",
-        value: COLUMN_KEY.BONUS_YOY,
-      },
-      {
-        id: COLUMN_KEY.BONUS_YOY_PERCENT,
-        label: "Бонус, руб. YoY %",
-        value: COLUMN_KEY.BONUS_YOY_PERCENT,
-      },
-    ],
-  },
-  {
-    id: "bonusPercentGroup",
-    label: "Бонус %",
-    value: "bonusPercentGroup",
-    icon: PercentCircle,
-    children: [
-      {
-        id: COLUMN_KEY.BONUS_PERCENT,
-        label: "Бонус %",
-        value: COLUMN_KEY.BONUS_PERCENT,
-      },
-      {
-        id: COLUMN_KEY.BONUS_PERCENT_LM,
-        label: "Бонус % PM",
-        value: COLUMN_KEY.BONUS_PERCENT_LM,
-      },
-      {
-        id: COLUMN_KEY.BONUS_PERCENT_MOM_PERCENT,
-        label: "Бонус % MoM",
-        value: COLUMN_KEY.BONUS_PERCENT_MOM_PERCENT,
-      },
-      {
-        id: COLUMN_KEY.BONUS_PERCENT_LY,
-        label: "Бонус %  PY",
-        value: COLUMN_KEY.BONUS_PERCENT_LY,
-      },
-      {
-        id: COLUMN_KEY.BONUS_PERCENT_YOY_PERCENT,
-        label: "Бонус % YoY",
-        value: COLUMN_KEY.BONUS_PERCENT_YOY_PERCENT,
-      },
-    ],
-  },
+
   {
     id: COLUMN_KEY.BONUS_ACCRUAL_GROUP,
     label: "Бонусы начисление, руб.",
