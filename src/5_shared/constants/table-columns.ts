@@ -3756,6 +3756,7 @@ export type ColumnPickerProps = {
 };
 
 export enum ColumnsKeyGroupings {
+  FORMAT_STORE = "formatStore",
   DISCOUNT_TYPE = "discountType",
   TYPE = "type",
   IS_IM = "isIm",
@@ -3934,6 +3935,14 @@ export const tableConfig: ColDef<any>[] = [
   {
     field: ColumnsKeyGroupings.MANAGER_AUTO,
     headerName: "Менеджер автозаказа",
+  },
+  {
+    field: ColumnsKeyGroupings.TYPE,
+    headerName: "Тип чека",
+  },
+  {
+    field: ColumnsKeyGroupings.FORMAT_STORE,
+    headerName: "Формат магазина",
   },
   { headerName: "ID чека", field: ColumnsKeyGroupings.ID_CHECK },
   {
