@@ -103,6 +103,9 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
             )
               ? data.report.filters.product.groupsEconomist
               : [],
+            groupsMain: Array.isArray(data.report.filters.product?.groupsMain)
+              ? data.report.filters.product.groupsMain
+              : [],
             idGroupMain: Array.isArray(data.report.filters.product?.idGroupMain)
               ? data.report.filters.product.idGroupMain
               : Array.isArray(data.report.filters.product?.groups)

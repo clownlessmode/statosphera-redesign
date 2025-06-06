@@ -235,6 +235,7 @@ export type FiltersState = {
       teamProducts: string[];
       directionProducts: string[];
       groupsEconomist: string[];
+      groupsMain: string[];
       idGroupMain: string[];
       idProduct: string[];
       seasonalityProducts: string[];
@@ -405,6 +406,7 @@ const initialState: Omit<
       teamProducts: [],
       directionProducts: [],
       groupsEconomist: [],
+      groupsMain: [],
       idGroupMain: [],
       idProduct: [],
       seasonalityProducts: [],
