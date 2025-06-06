@@ -1,4 +1,4 @@
-import { ProductResponse } from "../api/types";
+import { ProductResponse } from "../model/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 
 const fieldMapping: Record<string, string> = {

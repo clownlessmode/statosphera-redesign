@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  ProductFilter,
-  ProductRequestDto,
-  ProductResponse,
-} from "../api/types";
-import { ProductsService } from "../api/service";
+import { ProductFilter, ProductRequestDto, ProductResponse } from "../types";
+import { ProductsService } from "@pages/products/api/service";
 
 export const useProductInfiniteScroll = (
   itemsPerPage: number = 20,

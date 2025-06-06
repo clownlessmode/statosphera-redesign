@@ -1,6 +1,5 @@
 import { api } from "@shared/api/api";
-import { ProductRequestDto, ProductResponse } from "./types";
-// import { mockWeeklyRevenue } from "./mock";
+import { ProductRequestDto, ProductResponse } from "../model/types";
 
 export function processFiltersDto(dto: any): any {
   const flattenStringArrays = (arr: any[]): number[] => {
@@ -46,14 +45,6 @@ export class ProductsService {
   static async getAllData(
     payload: ProductRequestDto,
   ): Promise<ProductResponse[]> {
-    // Возврат мока с задержкой 1 секунда
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(mockWeeklyRevenue);
-    //   }, 1000);
-    // });
-
-    // Если хочешь включать реальные данные — закомментируй return выше и раскомментируй ниже
     const response = await api.post<ProductResponse[]>(
       "products/all-nomenclature",
       processFiltersDto(payload),

@@ -132,14 +132,11 @@ export const EditProduct: FC<Props> = ({
 
   const handleValueChange = (fieldOnChange: (value: any) => void) => {
     return (value: string[]) => {
-      // Если массив пустой (пользователь удалил все значения)
       if (value.length === 0) {
-        // Возвращаем нулевое значение (которое отобразится как "-")
         fieldOnChange(["0"]);
         return;
       }
 
-      // Фильтруем нулевые значения только если есть другие значения
       const filteredValue = value.filter(
         (val: any) =>
           val !== "0" &&
@@ -149,8 +146,6 @@ export const EditProduct: FC<Props> = ({
           val !== undefined,
       );
 
-      // Если после фильтрации массив пустой, но изначально были значения
-      // значит пользователь удалил все валидные значения, возвращаем '0'
       if (filteredValue.length === 0 && value.length > 0) {
         fieldOnChange(["0"]);
       } else {
