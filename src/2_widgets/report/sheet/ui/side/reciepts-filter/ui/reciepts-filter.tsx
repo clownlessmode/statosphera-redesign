@@ -108,7 +108,7 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="checkNumber"
-              render={({}) => {
+              render={() => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера чеков</FormLabel>
@@ -124,7 +124,7 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="numberfield"
-              render={({}) => {
+              render={() => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера касс</FormLabel>
@@ -140,7 +140,7 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="tabNumber"
-              render={({}) => {
+              render={() => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера смен</FormLabel>

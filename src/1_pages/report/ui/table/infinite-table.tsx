@@ -112,7 +112,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         return <Skeleton className="w-full h-[16px]" />;
       }
       if (col.cellRenderer) {
-        // @ts-ignore
         return col.cellRenderer(params);
       }
       return params.valueFormatted ?? params.value;
@@ -125,7 +124,9 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       if (!gridApiRef.current || !firstRow) return;
 
       const baseDefs = masterColumnDefs.filter(
-        (col) => col.field && firstRow.hasOwnProperty(col.field),
+        (col) =>
+          col.field &&
+          Object.prototype.hasOwnProperty.call(firstRow, col.field),
       );
 
       const mergedDefs = baseDefs.map(withSkeleton);
@@ -215,7 +216,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           if (resp.data.length > 0 && !columnsSetRef.current) {
             updateColumns(resp.data[0]);
           }
-        } catch (error) {
+        } catch {
           params.failCallback();
         } finally {
           gridApiRef.current?.setGridOption("loading", false);

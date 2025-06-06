@@ -104,13 +104,12 @@ export function FilterBadges({ tab }: { tab: string }) {
     Object.entries(filters).forEach(([sectionKey, sectionValue]) => {
       if (typeof sectionValue !== "object" || sectionValue === null) return;
 
-      const activeFilters = Object.entries(sectionValue).filter(
-        ([_, value]) => {
-          if (value === null) return false;
-          if (Array.isArray(value)) return value.length > 0;
-          return true;
-        },
-      );
+      const activeFilters = Object.entries(sectionValue).filter(([, value]) => {
+        // Убираем имя для первого параметра
+        if (value === null) return false;
+        if (Array.isArray(value)) return value.length > 0;
+        return true;
+      });
 
       if (activeFilters.length === 0) return;
 

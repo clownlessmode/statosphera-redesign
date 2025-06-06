@@ -52,7 +52,7 @@ export default function UniversalTable({
       }));
 
     const filteredBaseDefs = baseDefs.filter(
-      (d) => d.field && first.hasOwnProperty(d.field),
+      (d) => d.field && Object.prototype.hasOwnProperty.call(first, d.field),
     );
 
     const mergedDefs: ColDef[] = [...filteredBaseDefs];
