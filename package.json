@@ -7,7 +7,7 @@
     "dev": "vite",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
     "build": "tsc -b && vite build",
-    "lint": "eslint src/**/*.{ts,tsx} --fix",
+    "lint": "eslint ./src --ext .ts,.tsx --fix",
     "prepare": "husky install",
     "preview": "vite preview",
     "explore": "source-map-explorer dist/assets/theme-*.js.map",

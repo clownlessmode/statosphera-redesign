@@ -7,7 +7,7 @@ import {
   Store,
 } from "lucide-react";
 
-import Unique from "../../side/unique/ui/unique";
+import { UniqueFilters } from "../../side/uniques-filter";
 import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
@@ -49,6 +49,6 @@ export const indicators = [
   {
     title: "Уникальные значения",
     icon: Combine,
-    component: Unique,
+    component: UniqueFilters,
   },
 ];

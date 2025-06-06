@@ -256,9 +256,8 @@ function CheckboxTreeNode({
               "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
             disabled && "opacity-50 cursor-not-allowed",
           )}
-          ref={(el) => {
+          ref={(el: any) => {
             if (el) {
-              // @ts-ignore - indeterminate is a valid property but not in the types
               el.indeterminate = isIndeterminate;
             }
           }}

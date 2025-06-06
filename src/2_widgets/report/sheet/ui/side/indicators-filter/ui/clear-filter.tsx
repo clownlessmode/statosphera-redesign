@@ -19,9 +19,9 @@ const ClearFilters: FC<Props> = ({ form }) => {
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
-      return; // ⛔ пропускаем первое срабатывание
+      return;
     }
-    handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
+    handleClearFilters();
   }, [resetSignal]);
 
   const handleClearFilters = () => {
