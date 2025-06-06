@@ -36,11 +36,10 @@ import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { cn } from "@shared/lib/utils";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
-const ProductsFilter: FC<Props> = ({className}) => {
-
+const ProductsFilter: FC<Props> = ({ className }) => {
   const { updateProductFilter, getApiPayload } = useFiltersStore();
   const payload = getApiPayload();
   const form = useForm();

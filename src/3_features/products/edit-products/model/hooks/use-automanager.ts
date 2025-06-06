@@ -1,10 +1,7 @@
-
-import { AutoManagerFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api/controller";
-import { defaultValues } from "../../config/default";
 
 interface AutoManagerStore {
   savedAutoManagerLabels: MultiSelectOption[];
@@ -31,7 +28,7 @@ export const useAutoManager = () => {
       const response = await getAutoManager();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.manager_auto,
-        value: String(franchise.id_manager_auto || "")
+        value: String(franchise.id_manager_auto || ""),
       }));
       setAutoManagerOptions(apiOptions);
       setAutoManagerLabels(apiOptions);

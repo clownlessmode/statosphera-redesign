@@ -35,7 +35,6 @@ export interface Product {
   groupsFranchise: string;
 }
 
-
 export interface UpdateProductPayload {
   groupFranchise: string[];
   ppProducts: boolean | null;

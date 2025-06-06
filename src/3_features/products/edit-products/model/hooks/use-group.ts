@@ -1,10 +1,7 @@
-
-import { GroupMainFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface GroupStore {
   savedGroupLabels: MultiSelectOption[];
@@ -28,7 +25,7 @@ export const useGroup = () => {
       const response = await getGroups();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.groups_main,
-        value: String(franchise.id_groups_main || "")
+        value: String(franchise.id_groups_main || ""),
       }));
       setGroupOptions(apiOptions);
       setGroupLabels(apiOptions);

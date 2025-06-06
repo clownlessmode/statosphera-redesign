@@ -1,10 +1,7 @@
-
-import { SeasonFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface SeasonStore {
   savedSeasonLabels: MultiSelectOption[];
@@ -28,7 +25,7 @@ export const useSeason = () => {
       const response = await getSeasons();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.seasonality_products,
-        value: String(franchise.id_seasonality_products || "")
+        value: String(franchise.id_seasonality_products || ""),
       }));
       setSeasonsOptions(apiOptions);
       setSeasonLabels(apiOptions);

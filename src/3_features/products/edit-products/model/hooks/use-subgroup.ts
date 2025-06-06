@@ -1,10 +1,7 @@
-
-import { SubgroupFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface SubgroupStore {
   savedSubgroupLabels: MultiSelectOption[];
@@ -18,7 +15,7 @@ const useSubgroupStore = create<SubgroupStore>((set) => ({
 
 export const useSubgroup = () => {
   const [subgroupOptions, setSubgroupOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getSubGroups, isSubGroupsLoading } = useFilters();
   const { savedSubgroupLabels, setSubgroupLabels } = useSubgroupStore();
@@ -30,7 +27,7 @@ export const useSubgroup = () => {
       const response = await getSubGroups();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.sub_groups,
-        value: String(franchise.id_sub_groups || "")
+        value: String(franchise.id_sub_groups || ""),
       }));
       setSubgroupOptions(apiOptions);
       setSubgroupLabels(apiOptions);

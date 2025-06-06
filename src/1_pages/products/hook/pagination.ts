@@ -1,11 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ProductFilter, ProductRequestDto, ProductResponse } from "../api/types";
+import {
+  ProductFilter,
+  ProductRequestDto,
+  ProductResponse,
+} from "../api/types";
 import { ProductsService } from "../api/service";
 
 export const useProductInfiniteScroll = (
   itemsPerPage: number = 20,
   showWithoutGroups: boolean = false,
-  productFilters: ProductFilter = {}
+  productFilters: ProductFilter = {},
 ) => {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [page, setPage] = useState(0);
@@ -17,14 +21,14 @@ export const useProductInfiniteScroll = (
   const loadProducts = async (pageNumber: number) => {
     try {
       setIsLoading(true);
-      
+
       const payload: ProductRequestDto = {
         filters: productFilters,
         pagination: {
           limit: itemsPerPage,
           offset: pageNumber * itemsPerPage,
-          filter: showWithoutGroups
-        }
+          filter: showWithoutGroups,
+        },
       };
 
       const newProducts = await ProductsService.getAllData(payload);
@@ -36,7 +40,7 @@ export const useProductInfiniteScroll = (
       if (pageNumber === 0) {
         setProducts(newProducts);
       } else {
-        setProducts(prev => [...prev, ...newProducts]);
+        setProducts((prev) => [...prev, ...newProducts]);
       }
     } catch (error) {
       console.error("Ошибка загрузки продуктов:", error);
@@ -69,18 +73,20 @@ export const useProductInfiniteScroll = (
   }, [showWithoutGroups]);
 
   const prevFiltersRef = useRef<ProductFilter | null>(null);
-  
+
   useEffect(() => {
     if (!isFirstLoad && prevFiltersRef.current !== null) {
-      const filtersChanged = JSON.stringify(prevFiltersRef.current) !== JSON.stringify(productFilters);
-      
+      const filtersChanged =
+        JSON.stringify(prevFiltersRef.current) !==
+        JSON.stringify(productFilters);
+
       if (filtersChanged) {
         setPage(0);
         setHasMore(true);
         loadProducts(0);
       }
     }
-    
+
     prevFiltersRef.current = productFilters;
   }, [productFilters]);
 
@@ -98,6 +104,6 @@ export const useProductInfiniteScroll = (
     isLoading,
     hasMore,
     refetch,
-    isInitialLoading
+    isInitialLoading,
   };
 };

@@ -1,37 +1,34 @@
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useProductInfiniteScroll } from "../hook/pagination";
 import { Header } from "@widgets/header";
 import { ProductCardSkeleton } from "./product-skeleton";
 import ProductCard from "@entities/product/product-card";
-import { Dialog, DialogContent } from "@shared/ui/dialog";
-import { ProductFilter, ProductResponse } from "../api/types";
+import { ProductResponse } from "../api/types";
 import { EditProduct } from "@features/products/edit-products";
 import { extractProductLabels } from "../utils/labels";
-import { Switch } from "@shared/ui/switch";
-import { Label } from "@shared/ui/label";
 import { Button } from "@shared/ui/button";
-import { Funnel } from "lucide-react";
 import { FilterModal } from "./filter-modal";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 export const Products = () => {
   const [showWithoutGroups, setShowWithoutGroups] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'new'>('all');
-  
-  const { getApiPayload } = useFiltersStore();
-  const payload = getApiPayload()
-  const { 
-    products, 
-    loadMore, 
-    isLoading, 
-    hasMore, 
-    isInitialLoading,
-    refetch
-  } = useProductInfiniteScroll(20, showWithoutGroups, payload.filters.product as any);
+  const [activeFilter, setActiveFilter] = useState<"all" | "new">("all");
 
-  const [selectedProduct, setSelectedProduct] = useState<ProductResponse | null>(null)
-  const [productLabels, setProductLabels] = useState<ReturnType<typeof extractProductLabels> | null>(null);
-  
+  const { getApiPayload } = useFiltersStore();
+  const payload = getApiPayload();
+  const { products, loadMore, isLoading, hasMore, isInitialLoading, refetch } =
+    useProductInfiniteScroll(
+      20,
+      showWithoutGroups,
+      payload.filters.product as any,
+    );
+
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductResponse | null>(null);
+  const [productLabels, setProductLabels] = useState<ReturnType<
+    typeof extractProductLabels
+  > | null>(null);
+
   const handleProductClick = (product: ProductResponse) => {
     const labels = extractProductLabels(product);
     setProductLabels(labels);
@@ -44,12 +41,12 @@ export const Products = () => {
   };
 
   const handleAllProductsClick = () => {
-    setActiveFilter('all');
+    setActiveFilter("all");
     setShowWithoutGroups(false);
   };
 
   const handleNewProductsClick = () => {
-    setActiveFilter('new');
+    setActiveFilter("new");
     setShowWithoutGroups(true);
   };
 
@@ -71,7 +68,7 @@ export const Products = () => {
       managerAuto: product.idManagerAuto,
     };
   };
-  
+
   const observerTarget = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -80,7 +77,7 @@ export const Products = () => {
           loadMore();
         }
       },
-      { threshold: 0.1, rootMargin: '200px'}
+      { threshold: 0.1, rootMargin: "200px" },
     );
 
     if (observerTarget.current) {
@@ -96,75 +93,76 @@ export const Products = () => {
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
-      <Header 
-        title="Справочник номенклатуры" 
+      <Header
+        title="Справочник номенклатуры"
         actions={{
           left: (
             <div className="flex flex-row gap-4 ml-8">
-              <FilterModal refetch={refetch}/>
-              <Button 
-                variant={activeFilter === 'all' ? 'secondary' : 'outline'}
+              <FilterModal refetch={refetch} />
+              <Button
+                variant={activeFilter === "all" ? "secondary" : "outline"}
                 onClick={handleAllProductsClick}
               >
                 Вся номенклатура
               </Button>
-              <Button 
-                variant={activeFilter === 'new' ? 'secondary' : 'outline'}
+              <Button
+                variant={activeFilter === "new" ? "secondary" : "outline"}
                 onClick={handleNewProductsClick}
               >
                 Новая номенклатура
               </Button>
             </div>
-          )
+          ),
         }}
       />
       <div className="rounded-3xl px-4 py-4 h-full bg-background overflow-y-auto">
-
         {isInitialLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-4 2xl:grid-cols-3 gap-4">
             {[...Array(20)].map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
           </div>
-        ) : 
-        products.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
+        ) : products.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
             <div className="text-muted-foreground space-y-2">
-              <p className="text-lg font-medium">По этим фильтрам номенклатура отсутствует</p>
-              <p className="text-sm">Попробуйте изменить параметры фильтрации</p>
+              <p className="text-lg font-medium">
+                По этим фильтрам номенклатура отсутствует
+              </p>
+              <p className="text-sm">
+                Попробуйте изменить параметры фильтрации
+              </p>
             </div>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="mt-4"
               onClick={() => {
                 setShowWithoutGroups(false);
-                setActiveFilter('all');
+                setActiveFilter("all");
               }}
             >
               Сбросить фильтры
             </Button>
           </div>
-        ) : 
-        (
+        ) : (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
               {products.map((product, index) => (
-               <div 
-               key={`${product.idProduct[0]}-${index}`}
-               onClick={() => handleProductClick(product)}
-               className="cursor-pointer"
-             >
-               <ProductCard
-                 cover={product.path} 
-                 id={product.idProduct[0]} 
-                 title={product.productName} 
-                 productCode={product.productCode}
-                 subGroup={product.subGroups}
-                 article={product.article}
-                 pp={product.ppProducts}
-                 isIm={product.isIm}
-               />
-             </div>
+                <div
+                  key={`${product.idProduct[0]}-${index}`}
+                  onClick={() => handleProductClick(product)}
+                  className="cursor-pointer"
+                >
+                  <ProductCard
+                    cover={product.path}
+                    id={product.idProduct[0]}
+                    title={product.productName}
+                    productCode={product.productCode}
+                    subGroup={product.subGroups}
+                    article={product.article}
+                    pp={product.ppProducts}
+                    isIm={product.isIm}
+                  />
+                </div>
               ))}
             </div>
 
@@ -181,12 +179,11 @@ export const Products = () => {
               <div ref={observerTarget} className="h-20" />
             )}
           </>
-          
         )}
       </div>
       {selectedProduct && (
         <div className="fixed inset-0 z-50">
-          <EditProduct 
+          <EditProduct
             product={productToFormValues(selectedProduct)}
             productName={selectedProduct.productName}
             productCode={selectedProduct.productCode}
@@ -198,7 +195,6 @@ export const Products = () => {
           />
         </div>
       )}
-     
     </div>
   );
 };

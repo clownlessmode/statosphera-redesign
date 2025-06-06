@@ -1,11 +1,7 @@
-
-import { DirectionFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
-
 
 interface DirectionStore {
   savedDirectionLabels: MultiSelectOption[];
@@ -19,7 +15,7 @@ const useDirectionStore = create<DirectionStore>((set) => ({
 
 export const useDirection = () => {
   const [directionOptions, setDirectionOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getDirection, isDirectionLoading } = useFilters();
   const { savedDirectionLabels, setDirectionLabels } = useDirectionStore();
@@ -31,7 +27,7 @@ export const useDirection = () => {
       const response = await getDirection();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.direction_products,
-        value: String(franchise.id_direction_products || "")
+        value: String(franchise.id_direction_products || ""),
       }));
       setDirectionOptions(apiOptions);
       setDirectionLabels(apiOptions);

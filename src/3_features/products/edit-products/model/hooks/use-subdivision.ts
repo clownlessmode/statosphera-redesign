@@ -1,10 +1,7 @@
-
-import { SubdivisionFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface SubdivisionStore {
   savedSubdivisionLabels: MultiSelectOption[];
@@ -30,8 +27,8 @@ export const useSubdivision = () => {
     try {
       const response = await getSubdivisions();
       const apiOptions = response.map((franchise: any) => ({
-        label: franchise.subdivision_products ,
-        value: String(franchise.id_subdivision_products || "")
+        label: franchise.subdivision_products,
+        value: String(franchise.id_subdivision_products || ""),
       }));
       setSubdivisionOptions(apiOptions);
       setSubdivisionLabels(apiOptions);

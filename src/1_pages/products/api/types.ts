@@ -1,43 +1,43 @@
 export type ProductResponse = {
-    idProduct: string[];
-    productCode: string;
-    productName: string;
-    nameImProducts: string;
-    idSubSubGroups: string[];
-    subSubGroups: string;
-    idSubGroups: string[];
-    subGroups: string;
-    idGroupsMain: string[];
-    groupsMain: string;
-    idGroupsEconomist: string[];
-    groupsEconomist: string;
-    idTypeProducts: string[];
-    typeProducts: string;
-    idSeasonalityProducts: string[];
-    seasonalityProducts: string;
-    idSubdivisionProducts: string[];
-    subDivisionProducts: string;
-    idTeamProducts: string[];
-    teamProducts: string;
-    idDirectionProducts: string[];
-    directionProducts: string;
-    ppProducts: boolean;
-    isIm: boolean;
-    article: string;
-    ed: string;
-    path: string;
-    extension: string;
-    idManagerAuto: string[];
-    managerAuto: string;
-    idGroupsFranchise: string[];
-    groupsFranchise: string;
-  }
+  idProduct: string[];
+  productCode: string;
+  productName: string;
+  nameImProducts: string;
+  idSubSubGroups: string[];
+  subSubGroups: string;
+  idSubGroups: string[];
+  subGroups: string;
+  idGroupsMain: string[];
+  groupsMain: string;
+  idGroupsEconomist: string[];
+  groupsEconomist: string;
+  idTypeProducts: string[];
+  typeProducts: string;
+  idSeasonalityProducts: string[];
+  seasonalityProducts: string;
+  idSubdivisionProducts: string[];
+  subDivisionProducts: string;
+  idTeamProducts: string[];
+  teamProducts: string;
+  idDirectionProducts: string[];
+  directionProducts: string;
+  ppProducts: boolean;
+  isIm: boolean;
+  article: string;
+  ed: string;
+  path: string;
+  extension: string;
+  idManagerAuto: string[];
+  managerAuto: string;
+  idGroupsFranchise: string[];
+  groupsFranchise: string;
+};
 
 export type ProductPagination = {
-    limit: number
-    offset: number
-    filter: boolean
-}
+  limit: number;
+  offset: number;
+  filter: boolean;
+};
 
 export interface ProductFilter {
   groupFranchise?: number[];

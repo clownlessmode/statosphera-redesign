@@ -1,10 +1,7 @@
-
-import { GroupEconomistFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface EconomistStore {
   savedEconomistLabels: MultiSelectOption[];
@@ -18,7 +15,7 @@ const useEconomistStore = create<EconomistStore>((set) => ({
 
 export const useEconomist = () => {
   const [economistOptions, setEconomistOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getEconomist, isEconomistLoading } = useFilters();
   const { savedEconomistLabels, setEconomistLabels } = useEconomistStore();
@@ -30,7 +27,7 @@ export const useEconomist = () => {
       const response = await getEconomist();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.groups_economist,
-        value: String(franchise.id_groups_economist || "")
+        value: String(franchise.id_groups_economist || ""),
       }));
       setEconomistOptions(apiOptions);
       setEconomistLabels(apiOptions);

@@ -15,7 +15,9 @@ const fieldMapping: Record<string, string> = {
   idManagerAuto: "managerAuto",
 };
 
-export const extractProductLabels = (product: ProductResponse): Record<string, MultiSelectOption[]> => {
+export const extractProductLabels = (
+  product: ProductResponse,
+): Record<string, MultiSelectOption[]> => {
   const result: Record<string, MultiSelectOption[]> = {};
 
   for (const [idField, labelField] of Object.entries(fieldMapping)) {

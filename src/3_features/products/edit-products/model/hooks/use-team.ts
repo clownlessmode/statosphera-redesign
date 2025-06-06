@@ -1,10 +1,7 @@
-
-import { TeamFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface TeamStore {
   savedTeamLabels: MultiSelectOption[];
@@ -28,7 +25,7 @@ export const useTeam = () => {
       const response = await getTeam();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.team_products,
-        value: String(franchise.id_team_products || "")
+        value: String(franchise.id_team_products || ""),
       }));
       setTeamOptions(apiOptions);
       setTeamLabels(apiOptions);

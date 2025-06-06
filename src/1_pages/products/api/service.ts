@@ -19,16 +19,16 @@ export function processFiltersDto(dto: any): any {
 
   const processObject = (obj: any): any => {
     if (!obj || typeof obj !== "object") return obj;
-    
+
     const processed = Array.isArray(obj) ? [...obj] : { ...obj };
 
     Object.keys(processed).forEach((key) => {
       const value = processed[key];
-      
+
       if (
         Array.isArray(value) &&
         value.length > 0 &&
-        value.some(v => typeof v === "string" && v.startsWith("["))
+        value.some((v) => typeof v === "string" && v.startsWith("["))
       ) {
         processed[key] = flattenStringArrays(value);
       } else if (typeof value === "object" && value !== null) {
@@ -43,7 +43,9 @@ export function processFiltersDto(dto: any): any {
 }
 
 export class ProductsService {
-  static async getAllData(payload: ProductRequestDto): Promise<ProductResponse[]> {
+  static async getAllData(
+    payload: ProductRequestDto,
+  ): Promise<ProductResponse[]> {
     // Возврат мока с задержкой 1 секунда
     // return new Promise((resolve) => {
     //   setTimeout(() => {
@@ -52,7 +54,10 @@ export class ProductsService {
     // });
 
     // Если хочешь включать реальные данные — закомментируй return выше и раскомментируй ниже
-    const response = await api.post<ProductResponse[]>("products/all-nomenclature", processFiltersDto(payload));
+    const response = await api.post<ProductResponse[]>(
+      "products/all-nomenclature",
+      processFiltersDto(payload),
+    );
     return response.data;
   }
 }

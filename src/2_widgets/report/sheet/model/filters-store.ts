@@ -406,7 +406,7 @@ const initialState: Omit<
       teamProducts: [],
       directionProducts: [],
       groupsEconomist: [],
-      groupsMain:[],
+      groupsMain: [],
       idGroupMain: [],
       idProduct: [],
       seasonalityProducts: [],

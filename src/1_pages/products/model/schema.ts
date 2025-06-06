@@ -16,5 +16,5 @@ export const schema = z.object({
   seasonalityProducts: z.any(),
   managerAuto: z.any(),
   subDivisionProducts: z.any(),
-  groupsMain: z.any()
+  groupsMain: z.any(),
 });

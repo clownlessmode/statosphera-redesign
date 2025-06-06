@@ -1,10 +1,7 @@
-
-import { TypeSenderFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 import { useFilters } from "../../api";
-import { defaultValues } from "../../config";
 
 interface TypeSenderStore {
   savedTypeSenderLabels: MultiSelectOption[];
@@ -30,7 +27,7 @@ export const useTypeSender = () => {
       const response = await getTypeSender();
       const apiOptions = response.map((franchise: any) => ({
         label: franchise.type_products,
-        value: String(franchise.id_type_products || "")
+        value: String(franchise.id_type_products || ""),
       }));
       setTypeSenderOptions(apiOptions);
       setTypeSenderLabels(apiOptions);
