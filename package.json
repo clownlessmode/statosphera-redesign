@@ -8,7 +8,7 @@
     "format": "prettier --write \"{src,common}/**/*.ts\"",
     "build": "tsc -b && vite build",
     "lint": "eslint \"{src}/**/*.ts\" --fix",
-    "prepare": "husky",
+    "prepare": "husky install",
     "preview": "vite preview",
     "explore": "source-map-explorer dist/assets/theme-*.js.map",
     "check-unused-deps": "depcheck",
