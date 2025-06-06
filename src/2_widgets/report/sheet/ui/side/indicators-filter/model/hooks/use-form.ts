@@ -24,7 +24,7 @@ export const useForm = () => {
       indicators && indicators.length > 0 ? indicators : defaultValues.proceeds;
 
     form.reset({ proceeds: resolved });
-    updateIndicators(resolved); // ☑️ явно прокидываем в Zustand
+    updateIndicators(resolved);
   }, []);
 
   return form;

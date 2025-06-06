@@ -100,16 +100,16 @@ export const Products = () => {
             <div className="flex flex-row gap-4 ml-8">
               <FilterModal refetch={refetch} />
               <Button
-                variant={activeFilter === "all" ? "secondary" : "outline"}
+                variant={activeFilter === "all" ? "default" : "outline"}
                 onClick={handleAllProductsClick}
               >
-                Вся номенклатура
+                Новая номенклатура
               </Button>
               <Button
-                variant={activeFilter === "new" ? "secondary" : "outline"}
+                variant={activeFilter === "new" ? "default" : "outline"}
                 onClick={handleNewProductsClick}
               >
-                Новая номенклатура
+                Вся номенклатура
               </Button>
             </div>
           ),

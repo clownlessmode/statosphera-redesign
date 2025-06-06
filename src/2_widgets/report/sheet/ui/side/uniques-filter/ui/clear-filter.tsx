@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateIndicators } = useFiltersStore();
+  const { updateUniques } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
   const didMountRef = useRef(false);
@@ -25,7 +25,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
   }, [resetSignal]);
 
   const handleClearFilters = () => {
-    updateIndicators([]);
+    updateUniques([]);
     form.reset({
       proceeds: [],
     });

@@ -35,6 +35,8 @@ import { FormValues, UpdateProductPayload } from "../config";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useUpdateProduct } from "../api";
 import { extractProductLabels } from "@pages/products/utils/labels";
+import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 
 interface Props {
   product: FormValues;
@@ -153,7 +155,7 @@ export const EditProduct: FC<Props> = ({
       }
     };
   };
-
+  const { session } = useSession();
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose?.()}>
       <DialogTrigger asChild>
@@ -743,17 +745,21 @@ export const EditProduct: FC<Props> = ({
                     </CardContent>
                   </Card>
                 </div>
-                <Card className="bg-background">
-                  <CardContent className="grid grid-cols-2 gap-2">
-                    <Button variant="outline"> Отмена </Button>
-                    <Button
-                      disabled={!form.formState.isValid}
-                      loading={isUpdateLoading}
-                    >
-                      Сохранить
-                    </Button>
-                  </CardContent>
-                </Card>
+                {session &&
+                  (session.role === ROLES.ADMIN ||
+                    session.isAdminProduct === true) && (
+                    <Card className="bg-background">
+                      <CardContent className="grid grid-cols-2 gap-2">
+                        <Button variant="outline">Отмена</Button>
+                        <Button
+                          disabled={!form.formState.isValid}
+                          loading={isUpdateLoading}
+                        >
+                          Сохранить
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )}
               </form>
             </Form>
           </CardContent>

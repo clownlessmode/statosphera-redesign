@@ -65,9 +65,8 @@ const Sidebar = ({
       },
       {
         title: "Номенклатура",
-        url: "#", //ROUTES_PATH.PRODUCTS,
+        url: ROUTES_PATH.PRODUCTS,
         icon: PanelsTopLeft,
-        disabled: true,
       },
       {
         title: "Гриль",

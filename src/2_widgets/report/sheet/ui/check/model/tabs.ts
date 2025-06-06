@@ -9,7 +9,7 @@ import {
   ShoppingBasket,
   Store,
 } from "lucide-react";
-import Unique from "../../side/unique/ui/unique";
+
 import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
@@ -18,6 +18,7 @@ import { IndicatorsFilter } from "../../side/indicators-filter";
 import { LoyaltyFilter } from "../../side/loyalty-filter";
 import { RecieptsFilter } from "../../side/reciepts-filter";
 import { OnlineFilter } from "../../side/online-filter";
+import { UniqueFilters } from "../../side/uniques-filter";
 export const filters = [
   {
     title: "Дата",
@@ -68,6 +69,6 @@ export const indicators = [
   {
     title: "Уникальные значения",
     icon: Combine,
-    component: Unique,
+    component: UniqueFilters,
   },
 ];
