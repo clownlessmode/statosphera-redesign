@@ -152,7 +152,7 @@ const ShopsFilter = () => {
                             field.onChange(values);
                             updateFilters(
                               "storeCondition",
-                              values as STORE_CONDITIONS[]
+                              values as STORE_CONDITIONS[],
                             );
                           }}
                           options={status}

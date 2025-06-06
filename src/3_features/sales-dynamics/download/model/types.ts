@@ -1,6 +1,6 @@
 import { SalesDynamicsApiPayload } from "@pages/sales-dynamics/model/filters-store";
 
-export interface DownloadReportRequest extends SalesDynamicsApiPayload {}
+export type DownloadReportRequest = SalesDynamicsApiPayload;
 
 export interface DownloadReportResponse {
   message: string;

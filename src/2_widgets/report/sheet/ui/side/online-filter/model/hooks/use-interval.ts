@@ -19,7 +19,7 @@ const useIntervalStore = create<IntervalStore>((set) => ({
 // Hook
 export const useInterval = (allData: any) => {
   const [intervalOptions, setIntervalOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
 
   const { getInterval, isIntervalLoading } = useFilters();

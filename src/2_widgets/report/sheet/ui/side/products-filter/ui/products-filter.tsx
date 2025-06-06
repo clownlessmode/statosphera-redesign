@@ -33,8 +33,14 @@ import {
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { HEALTHY } from "../config";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
+import { cn } from "@shared/lib/utils";
 
-const ProductsFilter: FC = () => {
+interface Props {
+  className?: string
+}
+
+const ProductsFilter: FC<Props> = ({className}) => {
+
   const { updateProductFilter, getApiPayload } = useFiltersStore();
   const payload = getApiPayload();
   const form = useForm();
@@ -130,7 +136,7 @@ const ProductsFilter: FC = () => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="flex flex-col gap-4 w-full">
+          <form className={cn("flex flex-col gap-4 w-full", className)}>
             <FormField
               control={form.control}
               name="groupFranchise"

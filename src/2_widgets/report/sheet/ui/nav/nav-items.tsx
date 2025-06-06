@@ -28,14 +28,14 @@ const NavItems: FC<Props> = ({ data }) => {
                 <SidebarMenuButton
                   tooltip={item.title}
                   className={cn(
-                    "cursor-pointer group shadow-none! data-[state=active]:bg-muted/50 data-[state=active]:text-foreground justify-start"
+                    "cursor-pointer group shadow-none! data-[state=active]:bg-muted/50 data-[state=active]:text-foreground justify-start",
                   )}
                 >
                   {item.icon && (
                     <item.icon
                       className={cn(
                         "text-muted-foreground transition-all group-hover:text-foreground",
-                        "group-data-[state=active]:text-primary"
+                        "group-data-[state=active]:text-primary",
                       )}
                     />
                   )}

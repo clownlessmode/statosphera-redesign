@@ -42,7 +42,7 @@ const CurrentCheck = ({
                 className={cn(
                   "w-4 h-4",
                   negative ? "text-destructive" : "text-positive",
-                  checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : ""
+                  checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : "",
                 )}
                 fill="currentColor"
               />

@@ -163,5 +163,5 @@ export const useSalesDynamicsFiltersStore = create<SalesDynamicsState>(
       const { filterDate, filters, role, lfl, values, groups } = get();
       return { filterDate, filters, role, lfl, values, groups };
     },
-  })
+  }),
 );

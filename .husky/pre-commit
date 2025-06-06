@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -e  # Прерывает выполнение при первой же ошибке
+
+echo "🛠️ Проверка стандартов проекта перед коммитом..."
+
+# Функция для автоматической очистки зависимостей
+cleanup_dependencies() {
+    echo "🧹 Автоматическая очистка неиспользуемых зависимостей..."
+    
+    # Получаем список неиспользуемых зависимостей из вывода depcheck
+    DEPCHECK_OUTPUT=$(bun run check-unused-deps 2>&1 || true)
+    
+    # Извлекаем неиспользуемые dependencies
+    UNUSED_DEPS=$(echo "$DEPCHECK_OUTPUT" | sed -n '/^Unused dependencies$/,/^Unused devDependencies$/p' | grep '^\*' | sed 's/^\* //' || true)
+    
+    # Извлекаем неиспользуемые devDependencies  
+    UNUSED_DEV_DEPS=$(echo "$DEPCHECK_OUTPUT" | sed -n '/^Unused devDependencies$/,/^Missing dependencies$/p' | grep '^\*' | sed 's/^\* //' || true)
+    
+    if [ ! -z "$UNUSED_DEPS" ]; then
+        echo "🗑️ Удаляем неиспользуемые dependencies:"
+        echo "$UNUSED_DEPS" | while IFS= read -r dep; do
+            if [ ! -z "$dep" ] && [ "$dep" != "tailwindcss" ] && [ "$dep" != "tailwindcss-animate" ]; then
+                echo "  - Удаляем: $dep"
+                bun remove "$dep" 2>/dev/null || true
+            else
+                echo "  - Пропускаем: $dep (нужен для проекта)"
+            fi
+        done
+    fi
+    
+    if [ ! -z "$UNUSED_DEV_DEPS" ]; then
+        echo "🗑️ Удаляем неиспользуемые devDependencies:"
+        echo "$UNUSED_DEV_DEPS" | while IFS= read -r dep; do
+            if [ ! -z "$dep" ] && [ "$dep" != "@vitejs/plugin-react-swc" ]; then
+                echo "  - Удаляем: $dep"
+                bun remove -D "$dep" 2>/dev/null || true
+            else
+                echo "  - Пропускаем: $dep (нужен для Vite)"
+            fi
+        done
+    fi
+}
+
+# Проверка неиспользуемых зависимостей (но не блокируем коммит)
+echo "📦 Проверка неиспользуемых зависимостей..."
+DEPCHECK_RESULT=$(bun run check-unused-deps 2>&1 || true)
+if echo "$DEPCHECK_RESULT" | grep -q "Unused dependencies\|Unused devDependencies"; then
+    # Проверяем, есть ли что-то кроме разрешенных зависимостей
+    REAL_UNUSED=$(echo "$DEPCHECK_RESULT" | grep -v "@vitejs/plugin-react-swc" | grep -E "^\*" || true)
+    if [ ! -z "$REAL_UNUSED" ]; then
+        echo "⚠️ Обнаружены неиспользуемые зависимости!"
+        echo "🤖 Автоматически удаляю неиспользуемые зависимости..."
+        cleanup_dependencies
+        echo "✅ Зависимости очищены!"
+    else
+        echo "✅ Все неиспользуемые зависимости разрешены для проекта"
+    fi
+else
+    echo "✅ Неиспользуемых зависимостей не найдено"
+fi
+
+# Проверка Prettier (форматирование)
+echo "✨ Проверка форматирования с помощью Prettier..."
+if ! bun run check-format 2>/dev/null; then
+    echo "⚠️ Обнаружены проблемы с форматированием!"
+    echo "🔧 Автоматическое исправление..."
+    if bun run format; then
+        echo "✅ Код успешно отформатирован!"
+        git add .
+    else
+        echo "❌ Ошибка форматирования. Исправьте вручную."
+        exit 1
+    fi
+else
+    echo "✅ Форматирование в порядке!"
+fi
+
+# Проверка ESLint (линтинг)
+echo "🔍 Проверка кода с помощью ESLint..."
+if ! bun run lint; then
+    echo "❌ Ошибки линтинга найдены! Исправьте их перед коммитом."
+    exit 1
+fi
+
+# Проверка сборки проекта
+echo "🛠️ Проверка сборки..."
+if ! bun run build; then
+    echo "❌ Ошибка сборки! Проверьте код и исправьте ошибки."
+    exit 1
+fi
+
+echo "✅ Все проверки пройдены. Коммит может быть выполнен."

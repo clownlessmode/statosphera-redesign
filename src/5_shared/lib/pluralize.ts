@@ -7,7 +7,7 @@
  */
 export default function pluralize(
   number: number,
-  forms: [string, string, string]
+  forms: [string, string, string],
 ): string {
   const n = Math.abs(number) % 100;
   const n1 = n % 10;

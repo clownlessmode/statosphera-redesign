@@ -30,7 +30,7 @@ interface Props {
 }
 export function buildSalesDynamics(
   selected: string[],
-  tree: CheckboxTreeItem[]
+  tree: CheckboxTreeItem[],
 ): Group[] {
   const groups: Group[] = tree.map((groupItem, groupIndex) => ({
     name: groupItem.value,

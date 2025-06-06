@@ -23,7 +23,7 @@ export function MailList({ items }: MailListProps) {
             key={item.id}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-muted hover:cursor-pointer",
-              selected === String(item.id) && "bg-muted"
+              selected === String(item.id) && "bg-muted",
             )}
             onClick={() => setSelected(String(item.id))}
           >
@@ -40,7 +40,7 @@ export function MailList({ items }: MailListProps) {
                     "ml-auto text-xs",
                     selected === String(item.id)
                       ? "text-foreground"
-                      : "text-muted-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {new Date(item.created_at).toLocaleString()}
@@ -79,7 +79,7 @@ const EMOTION_LABELS: Record<string, string> = {
 };
 
 function getBadgeVariantFromLabel(
-  label: string
+  label: string,
 ): ComponentProps<typeof Badge>["variant"] {
   if (["work"].includes(label.toLowerCase())) {
     return "default";

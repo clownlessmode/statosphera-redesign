@@ -60,7 +60,7 @@ export function ViewTabs({
         for (const entry of entries) {
           if (entry.isIntersecting) {
             const found = Object.entries(refs.current).find(
-              ([, el]) => el === entry.target
+              ([, el]) => el === entry.target,
             );
             if (found) {
               setActive(found[0]);
@@ -72,7 +72,7 @@ export function ViewTabs({
       {
         rootMargin: "0px 0px -60% 0px",
         threshold: 0.1,
-      }
+      },
     );
 
     const elements = Object.values(refs.current);
@@ -103,7 +103,7 @@ export function ViewTabsList({
       data-slot="tabs-list"
       className={cn(
         "flex flex-col h-fit bg-background px-4 gap-4 border-r border-border",
-        className
+        className,
       )}
       {...props}
     />
@@ -142,7 +142,7 @@ export function ViewTabsTrigger({
         "text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "data-[state=active]:bg-muted/50 data-[state=active]:text-foreground data-[state=active]:shadow-sm",
-        className
+        className,
       )}
     >
       {Icon && (

@@ -85,7 +85,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       cellStyle: { textAlign: "center" },
       valueFormatter: (params) => (params.value == null ? "––" : params.value),
     }),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       if (!gridApiRef.current || !firstRow) return;
 
       const baseDefs = masterColumnDefs.filter(
-        (col) => col.field && firstRow.hasOwnProperty(col.field)
+        (col) => col.field && firstRow.hasOwnProperty(col.field),
       );
 
       const mergedDefs = baseDefs.map(withSkeleton);
@@ -151,7 +151,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
             filter: false,
             lockPosition: true,
             width: 50,
-          })
+          }),
         );
       }
 
@@ -180,7 +180,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
       columnsSetRef.current = true;
     },
-    [actions, actionsIndex]
+    [actions, actionsIndex],
   );
 
   const datasource: IDatasource = useMemo(
@@ -223,7 +223,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       },
       rowCount: maxRows || totalRowsRef.current || undefined,
     }),
-    [fetchData, forceUpdate, updateColumns, maxRows]
+    [fetchData, forceUpdate, updateColumns, maxRows],
   );
 
   const onGridReady = useCallback(
@@ -253,7 +253,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         }
       }, 0);
     },
-    [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData, maxRows]
+    [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData, maxRows],
   );
 
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
@@ -284,12 +284,12 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
       // Используем текущее значение из ref
       const isSelected = selectedRowsRef.current.some((selectedRow) =>
-        isEqual(selectedRow, params.data)
+        isEqual(selectedRow, params.data),
       );
 
       return isSelected ? { backgroundColor: "rgba(0, 0, 0, 0)" } : {};
     },
-    [isEqual]
+    [isEqual],
   ); // Убираем selectedRows из зависимостей
   return (
     <div

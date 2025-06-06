@@ -49,8 +49,8 @@ export const standartsMock: Standart[] = [
     attachedVideo: 1,
     attachedPhoto: 0,
     tagSearch: null,
-        color: "#EB5284",
-    links: links
+    color: "#EB5284",
+    links: links,
   },
   {
     id: 125,

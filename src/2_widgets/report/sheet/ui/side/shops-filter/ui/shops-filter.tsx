@@ -120,7 +120,7 @@ export const ShopsFilter: FC = () => {
                         field.onChange(values);
                         updateStoreFilter(
                           "storeCondition",
-                          values as STORE_CONDITIONS[]
+                          values as STORE_CONDITIONS[],
                         );
                       }}
                       options={STATUS}

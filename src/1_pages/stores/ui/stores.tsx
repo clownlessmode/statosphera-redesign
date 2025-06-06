@@ -23,8 +23,8 @@ const Stores = () => {
 
     return data.filter((store) =>
       Object.values(store).some((value) =>
-        String(value).toLowerCase().includes(lowerSearch)
-      )
+        String(value).toLowerCase().includes(lowerSearch),
+      ),
     );
   }, [search, data]);
 

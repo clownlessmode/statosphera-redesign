@@ -44,7 +44,7 @@ const AverageCheck = ({
                   negative ? "text-destructive" : "text-positive",
                   avgCheckYoYPercent && avgCheckYoYPercent > 0
                     ? "rotate-180"
-                    : ""
+                    : "",
                 )}
                 fill="currentColor"
               />

@@ -16,15 +16,15 @@ const ClearFilters: FC<Props> = ({ form }) => {
 
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
- const didMountRef = useRef(false);
+  const didMountRef = useRef(false);
 
- useEffect(() => {
-   if (!didMountRef.current) {
-     didMountRef.current = true;
-     return; // ⛔ пропускаем первое срабатывание
-   }
-   handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
- }, [resetSignal]);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return; // ⛔ пропускаем первое срабатывание
+    }
+    handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
+  }, [resetSignal]);
   const handleClearFilters = () => {
     updateLoyalFilter("ageEnd", 100);
     updateLoyalFilter("ageStart", 0);

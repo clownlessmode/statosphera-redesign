@@ -41,7 +41,7 @@ export const TimeRangePicker = React.forwardRef<
         const mm = String((idx % 12) * 5).padStart(2, "0");
         return `${hh}:${mm}`;
       }),
-    []
+    [],
   );
 
   // Format Date to "HH:MM"
@@ -56,10 +56,10 @@ export const TimeRangePicker = React.forwardRef<
 
   // Local state for select values
   const [selectedFrom, setSelectedFrom] = React.useState<string>(
-    formatDateToTimeString(from)
+    formatDateToTimeString(from),
   );
   const [selectedTo, setSelectedTo] = React.useState<string>(
-    formatDateToTimeString(to)
+    formatDateToTimeString(to),
   );
 
   // Sync when props change

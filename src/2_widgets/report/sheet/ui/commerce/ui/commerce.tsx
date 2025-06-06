@@ -114,10 +114,10 @@ const Commerce = () => {
     filters.length > 0
       ? filters[0].title
       : grouping.length > 0
-      ? grouping[0].title
-      : indicators.length > 0
-      ? indicators[0].title
-      : "";
+        ? grouping[0].title
+        : indicators.length > 0
+          ? indicators[0].title
+          : "";
 
   return (
     <ViewTabs

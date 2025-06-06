@@ -20,16 +20,16 @@ export const DonutChart = ({
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
 
   const [visibleMap, setVisibleMap] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(data.map((item) => [item.name, true]))
+    Object.fromEntries(data.map((item) => [item.name, true])),
   );
 
   const total = useMemo(
     () =>
       data.reduce(
         (sum, item) => (visibleMap[item.name] ? sum + item.value : sum),
-        0
+        0,
       ),
-    [data, visibleMap]
+    [data, visibleMap],
   );
 
   const option: EChartsOption = useMemo(
@@ -98,7 +98,7 @@ export const DonutChart = ({
         },
       ],
     }),
-    [data, colors, total, title]
+    [data, colors, total, title],
   );
 
   const onEvents = useMemo(() => {

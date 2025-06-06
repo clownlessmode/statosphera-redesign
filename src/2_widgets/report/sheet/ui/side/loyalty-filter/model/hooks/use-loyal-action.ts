@@ -31,11 +31,11 @@ export const useLoyalAction = (allData: any) => {
       const response = await getLoyalAction(processFiltersDto(allData));
       const apiOptions = response.map(
         (loyalAction: LoyalActionFilterResponse) => ({
-          label:
-            `${loyalAction.nameDiscount} ${JSON.stringify(loyalAction.guid)}` ||
-            "Название не указано (ID: " + loyalAction.guid?.[0] + ")",
+          label: loyalAction.nameDiscount
+            ? `${loyalAction.nameDiscount} ${JSON.stringify(loyalAction.guid)}`
+            : "Название не указано (ID: " + loyalAction.guid?.[0] + ")",
           value: String(JSON.stringify(loyalAction.guid || [])),
-        })
+        }),
       );
       setLoyalActionOptions(apiOptions);
       setLoyalActionLabels(apiOptions);

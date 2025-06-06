@@ -52,7 +52,7 @@ export default function UniversalTable({
       }));
 
     const filteredBaseDefs = baseDefs.filter(
-      (d) => d.field && first.hasOwnProperty(d.field)
+      (d) => d.field && first.hasOwnProperty(d.field),
     );
 
     const mergedDefs: ColDef[] = [...filteredBaseDefs];
@@ -106,7 +106,7 @@ export default function UniversalTable({
 
   const defaultColDef = useMemo<ColDef>(
     () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
-    []
+    [],
   );
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
 

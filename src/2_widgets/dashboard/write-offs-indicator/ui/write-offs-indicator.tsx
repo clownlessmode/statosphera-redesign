@@ -50,7 +50,7 @@ const WriteOffIndicator = ({
                   negative ? "text-destructive" : "text-positive",
                   writeOffYoYPercent && writeOffYoYPercent > 0
                     ? "rotate-180"
-                    : ""
+                    : "",
                 )}
                 fill="currentColor"
               />

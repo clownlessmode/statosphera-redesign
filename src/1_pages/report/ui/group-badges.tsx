@@ -36,7 +36,7 @@ const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
     acc[item.value] = item.label;
     return acc;
   },
-  {}
+  {},
 );
 
 export function GroupBadges({ tab }: { tab: string }) {

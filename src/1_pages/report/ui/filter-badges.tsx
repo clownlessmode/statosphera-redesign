@@ -82,21 +82,21 @@ export function FilterBadges({ tab }: { tab: string }) {
         <Badge key="date-range">
           {`Период: ${formatDate(
             filterDate.dateStart,
-            "dd.MM.yyyy"
+            "dd.MM.yyyy",
           )} - ${formatDate(filterDate.dateEnd, "dd.MM.yyyy")}`}
-        </Badge>
+        </Badge>,
       );
     }
 
     // 2. Затем фильтры по времени
     if (filterTime?.timeStart) {
       badges.push(
-        <Badge key="time-start">{`Время от: ${filterTime.timeStart}`}</Badge>
+        <Badge key="time-start">{`Время от: ${filterTime.timeStart}`}</Badge>,
       );
     }
     if (filterTime?.timeEnd) {
       badges.push(
-        <Badge key="time-end">{`Время до: ${filterTime.timeEnd}`}</Badge>
+        <Badge key="time-end">{`Время до: ${filterTime.timeEnd}`}</Badge>,
       );
     }
 
@@ -109,7 +109,7 @@ export function FilterBadges({ tab }: { tab: string }) {
           if (value === null) return false;
           if (Array.isArray(value)) return value.length > 0;
           return true;
-        }
+        },
       );
 
       if (activeFilters.length === 0) return;
@@ -120,7 +120,7 @@ export function FilterBadges({ tab }: { tab: string }) {
         badges.push(
           <Badge key={`${sectionKey}-${filterKey}`}>
             {`${getFilterLabel(sectionKey, filterKey)}: ${count}`}
-          </Badge>
+          </Badge>,
         );
       });
     });

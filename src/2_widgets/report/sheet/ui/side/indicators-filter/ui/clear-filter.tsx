@@ -14,15 +14,15 @@ const ClearFilters: FC<Props> = ({ form }) => {
   const { updateIndicators } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
- const didMountRef = useRef(false);
+  const didMountRef = useRef(false);
 
- useEffect(() => {
-   if (!didMountRef.current) {
-     didMountRef.current = true;
-     return; // ⛔ пропускаем первое срабатывание
-   }
-   handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
- }, [resetSignal]);
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return; // ⛔ пропускаем первое срабатывание
+    }
+    handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
+  }, [resetSignal]);
 
   const handleClearFilters = () => {
     updateIndicators([]);

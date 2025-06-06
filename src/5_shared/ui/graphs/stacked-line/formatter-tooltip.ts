@@ -33,11 +33,10 @@ export const getFormatTooltip = (args: any) => {
       return tooltip;
     }
 
-    // @ts-ignore
-    args.forEach(({ marker, seriesName, value }) => {
+    args.forEach(({ marker, seriesName, value }: any) => {
       if (value[1]) {
         tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
-          value[1]
+          value[1],
         )}</p>`;
       }
     });
@@ -47,10 +46,10 @@ export const getFormatTooltip = (args: any) => {
 
     if (currentValue && prevValue) {
       const deltaPercent = Math.floor(
-        ((currentValue - prevValue) / prevValue) * 100
+        ((currentValue - prevValue) / prevValue) * 100,
       );
       tooltip += `<p>Разница: ${divideNumberSpaces(
-        args[0].value[1] - args[1].value[1]
+        args[0].value[1] - args[1].value[1],
       )} (${deltaPercent}%)</p>`;
     }
 
@@ -77,11 +76,10 @@ export const getBarFormatTooltip = (args: any) => {
       return tooltip;
     }
 
-    // @ts-ignore
-    args.forEach(({ marker, seriesName, data }) => {
+    args.forEach(({ marker, seriesName, data }: any) => {
       if (data) {
         tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
-          data
+          data,
         )}</p>`;
       }
     });
@@ -117,11 +115,10 @@ export const getSalesFormatTooltip = (args: any) => {
       return tooltip;
     }
 
-    // @ts-ignore
-    args.forEach(({ marker, seriesName, data }) => {
+    args.forEach(({ marker, seriesName, data }: any) => {
       if (data[1]) {
         tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
-          data[1]
+          data[1],
         )}</p>`;
       }
     });
@@ -136,7 +133,7 @@ export const getSalesFormatTooltip = (args: any) => {
       ).toFixed(1);
       const deltaValue = Math.floor(currentValue - prevValue);
       tooltip += `<p>Разница: ${divideNumberSpaces(
-        deltaValue
+        deltaValue,
       )} (${deltaPercent}%)</p>`;
     }
 

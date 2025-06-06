@@ -11,14 +11,14 @@ export function getTopLevelValues(items: any[]): string[] {
       (item) =>
         Array.isArray(item.children) &&
         item.children.length > 0 &&
-        item.children.every((child: any) => !Array.isArray(child.children))
+        item.children.every((child: any) => !Array.isArray(child.children)),
     )
     .map((item) =>
       String(item.value)
         // удаляем все вхождения "group" независимо от регистра
         .replace(/group/gi, "")
         // убираем пробелы по краям
-        .trim()
+        .trim(),
     )
     .map((item) => item.toLowerCase());
 }

@@ -43,8 +43,8 @@ import Standart from "@pages/standart/ui/standart";
 import Grill from "@pages/grill/ui/grill";
 import Report from "@pages/report/ui/report";
 import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
-import Products from "@pages/products/ui/products";
 import { ROLES } from "@shared/constants/roles";
+import { Products } from "@pages/products";
 
 export const ROUTES_PATH = {
   // Авторизация

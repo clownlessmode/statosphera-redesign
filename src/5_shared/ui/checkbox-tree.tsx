@@ -42,7 +42,7 @@ const AccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         "group flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
-        className
+        className,
       )}
       {...props}
     >
@@ -68,7 +68,7 @@ function findAllLeafValues(items: CheckboxTreeItem[]): string[] {
 const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
   (
     { value = [], onChange, onBlur, name, disabled = false, data, className },
-    ref
+    ref,
   ) => {
     // Get all possible leaf values
     const allLeafValues = findAllLeafValues(data);
@@ -76,7 +76,7 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
     const handleChange = (newValues: string[]) => {
       // Filter to keep only leaf values (without parent elements)
       const leafValuesOnly = newValues.filter((val) =>
-        allLeafValues.includes(val)
+        allLeafValues.includes(val),
       );
       onChange(leafValuesOnly);
     };
@@ -87,7 +87,7 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
         className={cn(
           "overflow-hidden relative p-2",
           disabled && "cursor-not-allowed!",
-          className
+          className,
         )}
       >
         <CheckboxTreeInner
@@ -101,7 +101,7 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
         />
       </div>
     );
-  }
+  },
 );
 CheckboxTree.displayName = "CheckboxTree";
 
@@ -131,7 +131,7 @@ function CheckboxTreeInner({
       className={cn(
         "list-none m-0 space-y-1",
         level > 0 && "pl-6",
-        disabled && "cursor-not-allowed!"
+        disabled && "cursor-not-allowed!",
       )}
     >
       {items.map((item) => (
@@ -182,15 +182,15 @@ function CheckboxTreeNode({
 
   // Check checkbox state
   const allChildrenSelected = childrenValues.every((val) =>
-    selectedValues.includes(val)
+    selectedValues.includes(val),
   );
   const someChildrenSelected = childrenValues.some((val) =>
-    selectedValues.includes(val)
+    selectedValues.includes(val),
   );
 
   const isIndeterminate = !allChildrenSelected && someChildrenSelected;
   const selectedCount = childrenValues.filter((val) =>
-    selectedValues.includes(val)
+    selectedValues.includes(val),
   ).length;
   const handleChange = (checked: boolean) => {
     let newSelectedValues = [...selectedValues];
@@ -198,13 +198,13 @@ function CheckboxTreeNode({
     if (checked) {
       // If selected, add all child values
       const valuesToAdd = childrenValues.filter(
-        (val) => !newSelectedValues.includes(val)
+        (val) => !newSelectedValues.includes(val),
       );
       newSelectedValues = [...newSelectedValues, ...valuesToAdd];
     } else {
       // If unselected, remove all child values
       newSelectedValues = newSelectedValues.filter(
-        (val) => !childrenValues.includes(val)
+        (val) => !childrenValues.includes(val),
       );
     }
 
@@ -221,7 +221,7 @@ function CheckboxTreeNode({
         className={cn(
           "group gap-0 flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
           treeVariants.item,
-          allChildrenSelected && treeVariants.selected
+          allChildrenSelected && treeVariants.selected,
         )}
       >
         {hasChildren ? (
@@ -234,7 +234,7 @@ function CheckboxTreeNode({
             <ChevronRight
               className={cn(
                 expanded && "rotate-90",
-                "h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1"
+                "h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1",
               )}
             />
           </button>
@@ -254,7 +254,7 @@ function CheckboxTreeNode({
               "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
             allChildrenSelected &&
               "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
-            disabled && "opacity-50 cursor-not-allowed"
+            disabled && "opacity-50 cursor-not-allowed",
           )}
           ref={(el) => {
             if (el) {
@@ -269,7 +269,7 @@ function CheckboxTreeNode({
             "text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none",
             disabled && "cursor-not-allowed opacity-70",
             isIndeterminate && "text-foreground",
-            allChildrenSelected && "text-foreground"
+            allChildrenSelected && "text-foreground",
           )}
         >
           <TreeIcon item={item} />

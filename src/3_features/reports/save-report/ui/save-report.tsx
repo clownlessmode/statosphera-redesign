@@ -1,5 +1,3 @@
 export default function SaveReport() {
-  return (
-    <div>SaveReport</div>
-  )
+  return <div>SaveReport</div>;
 }

@@ -31,7 +31,7 @@ export const useTypeSender = (allData: any) => {
         (typeSender: TypeSenderFilterResponse) => ({
           label: typeSender.typeProducts,
           value: String(JSON.stringify(typeSender.idTypeProducts || [])),
-        })
+        }),
       );
       setTypeSenderOptions(apiOptions);
       setTypeSenderLabels(apiOptions);

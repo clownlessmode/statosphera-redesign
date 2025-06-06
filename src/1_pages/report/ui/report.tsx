@@ -144,7 +144,7 @@ const Report: FC = () => {
 
       return requestPromise;
     },
-    [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters]
+    [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],
   );
 
   const handleClearFilters = () => {
@@ -181,7 +181,7 @@ const Report: FC = () => {
           <div
             className={cn(
               "flex gap-2 max-h-[40vh]",
-              isFiltersOpen ? "flex-col" : "flex-row"
+              isFiltersOpen ? "flex-col" : "flex-row",
             )}
           >
             <div className="flex flex-col gap-2 w-full">

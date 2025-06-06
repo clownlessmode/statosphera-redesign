@@ -119,7 +119,7 @@ export type SalesChannel = {
       center: {
         total: number;
       }[];
-    }
+    },
   ];
 };
 

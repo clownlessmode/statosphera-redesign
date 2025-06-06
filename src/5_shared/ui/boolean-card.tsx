@@ -46,7 +46,7 @@ export const BooleanCard: React.FC<BooleanCardProps> = ({
         "text-sm font-medium cursor-pointer transition active:scale-[0.99]",
         "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
         "disabled:opacity-50 disabled:cursor-not-allowed",
-        className
+        className,
       )}
     >
       {Icon && <Icon />}

@@ -353,9 +353,9 @@ export const useIndicatorList = (): CheckboxTreeItem[] => {
           value: COLUMN_KEY.PROCEEDS_QC,
         },
         {
-          id: COLUMN_KEY.PROCEEDS_QC_LM,
+          id: COLUMN_KEY.PROCEEDS_Q_C_LM,
           label: "Выручка QC PM",
-          value: COLUMN_KEY.PROCEEDS_QC_LM,
+          value: COLUMN_KEY.PROCEEDS_Q_C_LM,
         },
         {
           id: COLUMN_KEY.PROCEEDS_QC_MOM,

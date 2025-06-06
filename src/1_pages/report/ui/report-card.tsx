@@ -29,7 +29,7 @@ export const ReportCard = ({
         // Основной стиль карточки
         "w-full  min-w-[250px] px-4 py-2 flex flex-col justify-between gap-1 h-full",
         // Минимальная высота
-        "min-h-[100px]"
+        "min-h-[100px]",
       )}
     >
       <div className="flex flex-col gap-0.5">
@@ -41,7 +41,7 @@ export const ReportCard = ({
           <Circle
             className={cn(
               "size-3",
-              isNegative ? "text-destructive" : "text-positive"
+              isNegative ? "text-destructive" : "text-positive",
             )}
             fill="currentColor"
           />

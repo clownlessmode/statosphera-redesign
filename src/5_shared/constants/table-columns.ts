@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 import { ColDef } from "ag-grid-community";
 
 export enum COLUMN_KEY {
@@ -10,6 +11,46 @@ export enum COLUMN_KEY {
   ITR_LY = "itrLY",
   ITR_YOY = "itrYoY",
   ITR_YOY_PERCENT = "itrYoYPercent",
+
+  // Бонусы начисление
+  BONUS_ACCRUAL_GROUP = "bonusAccrualGroup",
+  BONUS_ACCRUAL = "bonusAccrual",
+  BONUS_ACCRUAL_LM = "bonusAccrualLM",
+  BONUS_ACCRUAL_MOM = "bonusAccrualMoM",
+  BONUS_ACCRUAL_MOM_PERCENT = "bonusAccrualMoMPercent",
+  BONUS_ACCRUAL_LY = "bonusAccrualLY",
+  BONUS_ACCRUAL_YOY = "bonusAccrualYoY",
+  BONUS_ACCRUAL_YOY_PERCENT = "bonusAccrualYoYPercent",
+
+  //Бонусы Списание
+  BONUS_WRITEOFF_GROUP = "bonusWriteOffGroup",
+  BONUS_WRITEOFF = "bonusWriteOff",
+  BONUS_WRITEOFF_LM = "bonusWriteOffLM",
+  BONUS_WRITEOFF_MOM = "bonusWriteOffMoM",
+  BONUS_WRITEOFF_MOM_PERCENT = "bonusWriteOffMoMPercent",
+  BONUS_WRITEOFF_LY = "bonusWriteOffLY",
+  BONUS_WRITEOFF_YOY = "bonusWriteOffYoY",
+  BONUS_WRITEOFF_YOY_PERCENT = "bonusWriteOffYoYPercent",
+
+  // Бонусы начисление %
+  BONUS_WRITEOFF_PERCENT_GROUP = "bonusWriteOffPercentGroup",
+  BONUS_WRITEOFF_PERCENT = "bonusWriteOffPercent",
+  BONUS_WRITEOFF_PERCENT_LM = "bonusWriteOffPercentLM",
+  BONUS_WRITEOFF_PERCENT_MOM = "bonusWriteOffPercentMoM",
+  BONUS_WRITEOFF_PERCENT_MOM_PERCENT = "bonusWriteOffPercentMoMPercent",
+  BONUS_WRITEOFF_PERCENT_LY = "bonusWriteOffPercentLY",
+  BONUS_WRITEOFF_PERCENT_YOY = "bonusWriteOffPercentYoY",
+  BONUS_WRITEOFF_PERCENT_YOY_PERCENT = "bonusWriteOffPercentYoYPercent",
+
+  // Бонусы списания %
+  BONUS_ACCRUAL_PERCENT_GROUP = "bonusAccrualPercentGroup",
+  BONUS_ACCRUAL_PERCENT = "bonusAccrualPercent",
+  BONUS_ACCRUAL_PERCENT_LM = "bonusAccrualPercentLM",
+  BONUS_ACCRUAL_PERCENT_MOM = "bonusAccrualPercentMoM",
+  BONUS_ACCRUAL_PERCENT_MOM_PERCENT = "bonusAccrualPercentMoMPercent",
+  BONUS_ACCRUAL_PERCENT_LY = "bonusAccrualPercentLY",
+  BONUS_ACCRUAL_PERCENT_YOY = "bonusAccrualPercentYoY",
+  BONUS_ACCRUAL_PERCENT_YOY_PERCENT = "bonusAccrualPercentYoYPercent",
 
   // остатки товара на начало дня
   OPENING_BALANCE_GROUP = "openingBalanceGroup",
@@ -434,7 +475,7 @@ export enum COLUMN_KEY {
 }
 
 export const formatNumber = (
-  value: number | string | null | undefined
+  value: number | string | null | undefined,
 ): string => {
   if (value === null || value === undefined || value === "") return "-";
 
@@ -454,6 +495,237 @@ export const formatNumber = (
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
 export const tableColumns: ColDef<any>[] = [
+  // Бонусы начисление
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL,
+    headerName: "Бонусы начисление",
+    headerTooltip: "Бонусы начисление",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_LM,
+    headerName: "Бонусы начисление PM",
+    headerTooltip: "Бонусы начисление PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_MOM,
+    headerName: "Бонусы начисление MoM",
+    headerTooltip: "Бонусы начисление MoM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_MOM_PERCENT,
+    headerName: "Бонусы начисление MoM %",
+    headerTooltip: "Бонусы начисление MoM %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_LY,
+    headerName: "Бонусы начисление LY",
+    headerTooltip: "Бонусы начисление LY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_YOY,
+    headerName: "Бонусы начисление YoY",
+    headerTooltip: "Бонусы начисление YoY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_YOY_PERCENT,
+    headerName: "Бонусы начисление YoY %",
+    headerTooltip: "Бонусы начисление YoY %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+
+  // Бонусы списание
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF,
+    headerName: "Бонусы списание",
+    headerTooltip: "Бонусы списание",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_LM,
+    headerName: "Бонусы списание PM",
+    headerTooltip: "Бонусы списание PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_MOM,
+    headerName: "Бонусы списание MoM",
+    headerTooltip: "Бонусы списание MoM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_MOM_PERCENT,
+    headerName: "Бонусы списание MoM %",
+    headerTooltip: "Бонусы списание MoM %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_LY,
+    headerName: "Бонусы списание LY",
+    headerTooltip: "Бонусы списание LY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_YOY,
+    headerName: "Бонусы списание YoY",
+    headerTooltip: "Бонусы списание YoY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_YOY_PERCENT,
+    headerName: "Бонусы списание YoY %",
+    headerTooltip: "Бонусы списание YoY %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+
+  // Бонусы списание %
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT,
+    headerName: "Бонусы списание %",
+    headerTooltip: "Бонусы списание %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LM,
+    headerName: "Бонусы списание % PM",
+    headerTooltip: "Бонусы списание % PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM,
+    headerName: "Бонусы списание % MoM",
+    headerTooltip: "Бонусы списание % MoM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_MOM_PERCENT,
+    headerName: "Бонусы списание % MoM %",
+    headerTooltip: "Бонусы списание % MoM %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LY,
+    headerName: "Бонусы списание % LY",
+    headerTooltip: "Бонусы списание % LY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY,
+    headerName: "Бонусы списание % YoY",
+    headerTooltip: "Бонусы списание % YoY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_YOY_PERCENT,
+    headerName: "Бонусы списание % YoY %",
+    headerTooltip: "Бонусы списание % YoY %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+
+  // Бонусы начисление %
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT,
+    headerName: "Бонусы начисление %",
+    headerTooltip: "Бонусы начисление %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LM,
+    headerName: "Бонусы начисление % PM",
+    headerTooltip: "Бонусы начисление % PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM,
+    headerName: "Бонусы начисление % MoM",
+    headerTooltip: "Бонусы начисление % MoM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_MOM_PERCENT,
+    headerName: "Бонусы начисление % MoM %",
+    headerTooltip: "Бонусы начисление % MoM %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LY,
+    headerName: "Бонусы начисление % LY",
+    headerTooltip: "Бонусы начисление % LY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY,
+    headerName: "Бонусы начисление % YoY",
+    headerTooltip: "Бонусы начисление % YoY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_YOY_PERCENT,
+    headerName: "Бонусы начисление % YoY %",
+    headerTooltip: "Бонусы начисление % YoY %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
   {
     field: COLUMN_KEY.ITR,
     headerName: "Коэффициент оборачиваемости ",
@@ -3756,6 +4028,7 @@ export type ColumnPickerProps = {
 };
 
 export enum ColumnsKeyGroupings {
+  FORMAT_STORE = "formatStore",
   DISCOUNT_TYPE = "discountType",
   TYPE = "type",
   IS_IM = "isIm",
@@ -3934,6 +4207,14 @@ export const tableConfig: ColDef<any>[] = [
   {
     field: ColumnsKeyGroupings.MANAGER_AUTO,
     headerName: "Менеджер автозаказа",
+  },
+  {
+    field: ColumnsKeyGroupings.TYPE,
+    headerName: "Тип чека",
+  },
+  {
+    field: ColumnsKeyGroupings.FORMAT_STORE,
+    headerName: "Формат магазина",
   },
   { headerName: "ID чека", field: ColumnsKeyGroupings.ID_CHECK },
   {
@@ -6947,7 +7228,7 @@ export const tableConfig: ColDef<any>[] = [
 
 export function mergeColumnDefsWithPriority(
   primary: ColDef[],
-  secondary: ColDef[]
+  secondary: ColDef[],
 ): ColDef[] {
   const result: Record<string, ColDef> = {};
 
@@ -6970,5 +7251,5 @@ export function mergeColumnDefsWithPriority(
 
 export const columnDefs = mergeColumnDefsWithPriority(
   tableColumns,
-  tableConfig
+  tableConfig,
 );

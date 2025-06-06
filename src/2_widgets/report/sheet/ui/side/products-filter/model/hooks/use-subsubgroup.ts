@@ -31,10 +31,10 @@ export const useSubsubgroup = (allData: any) => {
       const apiOptions = response.map(
         (subsubgroup: SubSubGroupFilterResponse) => ({
           label: `${subsubgroup.subSubGroups} ${JSON.stringify(
-            subsubgroup.idSubSubGroups
+            subsubgroup.idSubSubGroups,
           )}`,
           value: String(JSON.stringify(subsubgroup.idSubSubGroups || [])),
-        })
+        }),
       );
       setSubsubgroupOptions(apiOptions);
       setSubsubgroupLabels(apiOptions);

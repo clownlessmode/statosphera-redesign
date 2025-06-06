@@ -29,7 +29,7 @@ export const RadarChart = ({
         name: `${item.name}\n(${item.value.toFixed(2)}%)`,
         max: maxValue,
       })),
-    [data]
+    [data],
   );
 
   // Только значения в том же порядке
@@ -64,7 +64,7 @@ export const RadarChart = ({
           const indicatorsText = indicators
             .map(
               (ind, i) =>
-                `${ind.name.replace(/\n.*/, "")}: ${values[i].toFixed(2)}%`
+                `${ind.name.replace(/\n.*/, "")}: ${values[i].toFixed(2)}%`,
             )
             .join("<br/>");
 
@@ -128,7 +128,7 @@ export const RadarChart = ({
         },
       ],
     }),
-    [colors, indicators, values, title]
+    [colors, indicators, values, title],
   );
 
   return (

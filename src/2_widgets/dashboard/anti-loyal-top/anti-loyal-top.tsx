@@ -21,7 +21,6 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
           </CardHeader>
           <CardContent className="flex-1">
             <BarHorizontalChart
-              
               labels={data.map((item) => item.storeName)}
               values={data.map((item) => item.appLoyalPercent)}
             />

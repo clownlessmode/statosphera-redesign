@@ -11,8 +11,8 @@ export const useSessionStore = create<SessionStore>()(
     }),
     {
       name: "session",
-    }
-  )
+    },
+  ),
 );
 
 // — опционально, для удобства в компонентах —

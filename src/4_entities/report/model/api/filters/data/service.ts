@@ -71,32 +71,33 @@ export function processFiltersDto(dto: any): any {
 }
 export class ReportService {
   static async getReportTable(
-    dto: FilterApiPayload
+    dto: FilterApiPayload,
   ): Promise<ReportTableResponse> {
     const response = await api.post<any>(
       "report-page/data",
-      processFiltersDto(dto)
+      processFiltersDto(dto),
     );
 
     return response.data;
   }
   static async getReportGraph(
-    dto: FilterApiPayload
+    dto: FilterApiPayload,
   ): Promise<ReportGraphResponse> {
     const response = await api.post<any>(
       "report-page/graphic",
-      processFiltersDto(dto)
+      processFiltersDto(dto),
     );
     return response.data;
   }
   static async getReportTotal(
-    dto: FilterApiPayload
+    dto: FilterApiPayload,
   ): Promise<ReportTotalResponse> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { limit, offset, ...payload } = dto;
 
     const response = await api.post<any>(
       "report-page/data_total",
-      processFiltersDto(payload)
+      processFiltersDto(payload),
     );
     return response.data;
   }

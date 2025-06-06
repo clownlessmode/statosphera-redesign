@@ -48,7 +48,7 @@ const SalesDynamics: FC = () => {
     isGraphLoading,
   } = useSalesDynamicsController();
   const getApiPayload = useSalesDynamicsFiltersStore(
-    (state) => state.getApiPayload
+    (state) => state.getApiPayload,
   );
   const { updateValues } = useSalesDynamicsFiltersStore((state) => state);
   const {
@@ -246,7 +246,7 @@ const SalesDynamics: FC = () => {
                                 thirdLineStyle: { width: 4, type: "solid" },
                                 fourthLineStyle: { width: 3, type: "dashed" },
                               }
-                            : {}
+                            : {},
                         ),
                     }}
                   />
@@ -278,7 +278,7 @@ const SalesDynamics: FC = () => {
                                 thirdLineStyle: { width: 4, type: "solid" },
                                 fourthLineStyle: { width: 3, type: "dashed" },
                               }
-                            : {}
+                            : {},
                         ),
                     }}
                   />
@@ -314,8 +314,8 @@ const SalesDynamics: FC = () => {
                             onClick={() =>
                               setSelectedRows(
                                 selectedRows.filter(
-                                  (r) => r.idStore !== row.idStore
-                                )
+                                  (r) => r.idStore !== row.idStore,
+                                ),
                               )
                             }
                           />

@@ -17,7 +17,7 @@ const useEconomistStore = create<EconomistStore>((set) => ({
 
 export const useEconomist = (allData: any) => {
   const [economistOptions, setEconomistOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getEconomist, isEconomistLoading } = useFilters();
   const { savedEconomistLabels, setEconomistLabels } = useEconomistStore();
@@ -31,7 +31,7 @@ export const useEconomist = (allData: any) => {
         (economist: GroupEconomistFilterResponse) => ({
           label: economist.groupsEconomist,
           value: String(JSON.stringify(economist.idGroupsEconomist || [])),
-        })
+        }),
       );
       setEconomistOptions(apiOptions);
       setEconomistLabels(apiOptions);

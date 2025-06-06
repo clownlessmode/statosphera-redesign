@@ -27,7 +27,7 @@ const IndicatorsFilter: FC = () => {
   useEffect(() => {
     const subscription = form.watch((values) => {
       const indicators = [...(values.proceeds || [])].filter(
-        (item): item is string => item !== undefined
+        (item): item is string => item !== undefined,
       );
       updateIndicators(indicators);
     });
@@ -73,7 +73,7 @@ const IndicatorsFilter: FC = () => {
             className={cn(
               "flex flex-col gap-4 w-full",
               isTypeCheckSelected &&
-                "cursor-not-allowed! opacity-50 hover:none! pointer-events-none"
+                "cursor-not-allowed! opacity-50 hover:none! pointer-events-none",
             )}
           >
             <FormField

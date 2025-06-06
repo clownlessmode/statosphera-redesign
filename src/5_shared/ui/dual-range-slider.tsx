@@ -24,7 +24,7 @@ const DualRangeSlider = React.forwardRef<
       ref={ref}
       className={cn(
         "relative flex w-full touch-none select-none items-center",
-        className
+        className,
       )}
       {...props}
     >
@@ -39,7 +39,7 @@ const DualRangeSlider = React.forwardRef<
                 className={cn(
                   "absolute flex w-full justify-center",
                   labelPosition === "top" && "-top-7",
-                  labelPosition === "bottom" && "top-4"
+                  labelPosition === "bottom" && "top-4",
                 )}
               >
                 {label(value)}

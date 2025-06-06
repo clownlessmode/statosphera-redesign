@@ -52,8 +52,8 @@ export const DoubleHorizontalBarChart = ({
             .map(
               (p) =>
                 `<strong>${p.seriesName}:</strong> ${Number(
-                  p.value
-                ).toLocaleString()}`
+                  p.value,
+                ).toLocaleString()}`,
             )
             .join("<br />");
           return `<div><strong>${category}</strong><br />${details}</div>`;

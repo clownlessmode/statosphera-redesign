@@ -20,59 +20,59 @@ import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
 import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
 import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
 const WeeklyRevenue = lazy(
-  () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue")
+  () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue"),
 );
 const WriteOffIndicator = lazy(
   () =>
-    import("@widgets/dashboard/write-offs-indicator/ui/write-offs-indicator")
+    import("@widgets/dashboard/write-offs-indicator/ui/write-offs-indicator"),
 );
 const WriteOffHouseholds = lazy(
   () =>
-    import("@widgets/dashboard/write-offs-households/ui/write-off-households")
+    import("@widgets/dashboard/write-offs-households/ui/write-off-households"),
 );
 
 const ChannelRevenue = lazy(
-  () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue")
+  () => import("@widgets/dashboard/channel-revenue/ui/channel-revenue"),
 );
 const SalesStructure = lazy(
-  () => import("@widgets/dashboard/sales-structure/sales-structure")
+  () => import("@widgets/dashboard/sales-structure/sales-structure"),
 );
 const CurrentRevenue = lazy(
-  () => import("@widgets/dashboard/current-revenue/current-revenue")
+  () => import("@widgets/dashboard/current-revenue/current-revenue"),
 );
 const CurrentCheck = lazy(
-  () => import("@widgets/dashboard/current-check/current-check")
+  () => import("@widgets/dashboard/current-check/current-check"),
 );
 const AverageCheck = lazy(
-  () => import("@widgets/dashboard/avarage-check/avarage-check")
+  () => import("@widgets/dashboard/avarage-check/avarage-check"),
 );
 const WriteoffsLeaders = lazy(
-  () => import("@widgets/dashboard/writeoffs-leaders/writeoffs-leaders")
+  () => import("@widgets/dashboard/writeoffs-leaders/writeoffs-leaders"),
 );
 const Loyalty = lazy(() => import("@widgets/dashboard/loaylty/loyalty"));
 const ImRevenue = lazy(
-  () => import("@widgets/dashboard/im-revenue/im-revenue")
+  () => import("@widgets/dashboard/im-revenue/im-revenue"),
 );
 const LeaderImSales = lazy(
-  () => import("@widgets/dashboard/leader-im-sales/leader-im-sales")
+  () => import("@widgets/dashboard/leader-im-sales/leader-im-sales"),
 );
 const HoursRevenue = lazy(
-  () => import("@widgets/dashboard/hours-revenue/hours-revenue")
+  () => import("@widgets/dashboard/hours-revenue/hours-revenue"),
 );
 const PlanPercent = lazy(
-  () => import("@widgets/dashboard/plan-percent/plan-percent")
+  () => import("@widgets/dashboard/plan-percent/plan-percent"),
 );
 const TopWriteoffs = lazy(
-  () => import("@widgets/dashboard/top-writeoffs/top-writeoffs")
+  () => import("@widgets/dashboard/top-writeoffs/top-writeoffs"),
 );
 const AntiLoyalTop = lazy(
-  () => import("@widgets/dashboard/anti-loyal-top/anti-loyal-top")
+  () => import("@widgets/dashboard/anti-loyal-top/anti-loyal-top"),
 );
 const TodayRevenue = lazy(
-  () => import("@widgets/dashboard/today-revenue/today-revenue")
+  () => import("@widgets/dashboard/today-revenue/today-revenue"),
 );
 const TodayCheck = lazy(
-  () => import("@widgets/dashboard/today-check/today-check")
+  () => import("@widgets/dashboard/today-check/today-check"),
 );
 
 const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));

@@ -49,7 +49,7 @@ const BooleanCheckboxCard: FC<Props> = ({
             "items-center justify-center gap-1 whitespace-nowrap rounded-md",
             "text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed",
             "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
-            "outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            "outline-none focus-visible:ring-2 focus-visible:ring-ring",
           )}
         >
           {option.icon && <option.icon />}

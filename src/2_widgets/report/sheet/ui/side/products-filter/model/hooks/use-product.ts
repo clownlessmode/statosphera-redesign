@@ -31,7 +31,7 @@ export const useProduct = (allData: any) => {
             ? product.productName
             : `Название не указано (ID: ${product.idProduct})`,
           value: String(JSON.stringify(product.idProduct || [])),
-        })
+        }),
       );
       setProductOptions(apiOptions);
       setProductLabels(apiOptions);

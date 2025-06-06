@@ -39,7 +39,7 @@ export const useStatusOrder = (allData: any) => {
               statusOrder.im_status_order?.[0] +
               ")",
           value: String(JSON.stringify(statusOrder.im_status_order || [])),
-        })
+        }),
       );
       setStatusOrderOptions(apiOptions);
       setStatusOrderLabels(apiOptions);
