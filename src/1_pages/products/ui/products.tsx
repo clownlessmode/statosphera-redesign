@@ -8,7 +8,7 @@ import { extractProductLabels } from "../utils/labels";
 import { Button } from "@shared/ui/button";
 import { FilterModal } from "./filter-modal";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import { useProductInfiniteScroll } from "../model/hook/use-pagination";
+import { useProductInfiniteScroll } from "../model/hook";
 
 export const Products = () => {
   const [showWithoutGroups, setShowWithoutGroups] = useState(false);

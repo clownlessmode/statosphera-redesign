@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { ProductRequestDto, ProductResponse } from "../model/types";
+import { ProductRequestDto, ProductResponse } from "../model";
 
 export function processFiltersDto(dto: any): any {
   const flattenStringArrays = (arr: any[]): number[] => {
