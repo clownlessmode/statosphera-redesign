@@ -78,7 +78,7 @@ export const PieChart = ({ data, tooltipData, title }: PieChartProps) => {
         },
       ],
     }),
-    [colors, data, tooltipData, title]
+    [colors, data, tooltipData, title],
   );
 
   return (

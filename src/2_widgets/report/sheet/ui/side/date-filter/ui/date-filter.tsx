@@ -16,7 +16,6 @@ import { TimeRangePicker } from "@shared/ui/time-range-picker";
 import { useFiltersStore } from "../../../../model/filters-store";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 
-
 // Local imports
 import { useForm } from "../model";
 import { DATE_RANGES, MAX_DATE, MIN_DATE, TIME_RANGES } from "../config";
@@ -146,7 +145,7 @@ const DateFilter: FC = () => {
                             ? parse(
                                 form.getValues("timeEnd"),
                                 "HH:mm",
-                                new Date()
+                                new Date(),
                               )
                             : undefined
                         }

@@ -32,7 +32,7 @@ export const useAutoManager = (allData: any) => {
         (autoManager: AutoManagerFilterResponse) => ({
           label: autoManager.managerAuto,
           value: String(JSON.stringify(autoManager.managerAuto || [])),
-        })
+        }),
       );
       setAutoManagerOptions(apiOptions);
       setAutoManagerLabels(apiOptions);

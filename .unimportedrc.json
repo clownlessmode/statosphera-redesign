@@ -1,0 +1,40 @@
+{
+  "ignores": [
+    "@types/*",
+    "eslint-*",
+    "prettier",
+
+    "tailwindcss",
+    "tailwindcss-animate",
+    "tailwind-scrollbar-hide",
+    "@tailwindcss/*",
+
+    "@dnd-kit/*",
+    "react-dropzone",
+    "recharts",
+    "xlsx",
+
+    "@types/*"
+  ],
+  "skip-missing": false,
+  "ignore-patterns": ["dist", "build", "public", ".next", "coverage"],
+  "parsers": {
+    "**/*.css": "style",
+    "**/*.scss": "sass",
+    "**/*.sass": "sass",
+    "**/*.less": "less",
+    "**/*.config.js": "typescript",
+    "**/*.config.ts": "typescript"
+  },
+  "detectors": ["requireCallExpression", "importDeclaration"],
+  "specials": [
+    "bin",
+    "babel",
+    "eslint",
+    "prettier",
+    "webpack",
+    "jest",
+    "typescript",
+    "vite"
+  ]
+}

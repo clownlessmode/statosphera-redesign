@@ -17,7 +17,6 @@ const defaultStyleRow = {
 export const nomenclatureColumns: ColDef<any>[] = [
   {
     width: 60,
-    // @ts-ignore
     field: "edit",
     headerName: "",
     cellStyle: {

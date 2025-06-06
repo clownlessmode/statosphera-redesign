@@ -43,7 +43,7 @@ export function NavSecondary({
                   disabled={item.disabled}
                   className={cn(
                     "cursor-pointer",
-                    item.disabled && "opacity-30 cursor-not-allowed"
+                    item.disabled && "opacity-30 cursor-not-allowed",
                   )}
                 >
                   {item.disabled ? (
@@ -59,7 +59,7 @@ export function NavSecondary({
                   )}
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            )
+            ),
           )}
           <SidebarMenuItem>
             <SidebarMenuButton>

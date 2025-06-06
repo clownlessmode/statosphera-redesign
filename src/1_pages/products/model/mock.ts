@@ -37,7 +37,7 @@ export const healthy = [
 
 export const useFranchise = (allData: any) => {
   const [franchiseOptions, setFranchiseOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getFranchise, isFranchiseLoading } = useFilters();
 
@@ -73,7 +73,7 @@ export const useSubdivision = (allData: any) => {
         (subdivision: SubdivisionFilterResponse) => ({
           label: subdivision.subdivisionProducts,
           value: String(subdivision.idSubdivisionProducts?.[0] || ""),
-        })
+        }),
       );
       setSubdibisionOptions(apiOptions);
     } catch (error) {
@@ -116,7 +116,7 @@ export const useTeam = (allData: any) => {
 
 export const useDirection = (allData: any) => {
   const [directionOptions, setDirectionOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getDirection, isDirectionLoading } = useFilters();
 
@@ -144,7 +144,7 @@ export const useDirection = (allData: any) => {
 
 export const useEconomist = (allData: any) => {
   const [economistOptions, setEconomistOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getEconomist, isEconomistLoading } = useFilters();
 
@@ -157,7 +157,7 @@ export const useEconomist = (allData: any) => {
         (economist: GroupEconomistFilterResponse) => ({
           label: economist.groupsEconomist,
           value: String(economist.idGroupsEconomist?.[0] || ""),
-        })
+        }),
       );
       setEconomistOptions(apiOptions);
     } catch (error) {
@@ -226,7 +226,7 @@ export const useGroup = (allData: any) => {
 
 export const useSubgroup = (allData: any) => {
   const [subgroupOptions, setSubgroupOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getSubGroups, isSubGroupsLoading } = useFilters();
 
@@ -267,7 +267,7 @@ export const useSubsubgroup = (allData: any) => {
         (subsubgroup: SubSubGroupFilterResponse) => ({
           label: subsubgroup.subSubGroups,
           value: String(subsubgroup.idSubSubGroups?.[0] || ""),
-        })
+        }),
       );
       setSubsubgroupOptions(apiOptions);
     } catch (error) {
@@ -297,7 +297,7 @@ export const useAutoManager = (allData: any) => {
         (autoManager: AutoManagerFilterResponse) => ({
           label: autoManager.managerAuto,
           value: String(autoManager.idManagerAuto?.[0] || ""),
-        })
+        }),
       );
       setAutoManagerOptions(apiOptions);
     } catch (error) {
@@ -327,7 +327,7 @@ export const useTypeSender = (allData: any) => {
         (typeSender: TypeSenderFilterResponse) => ({
           label: typeSender.typeProducts,
           value: String(typeSender.idTypeProducts?.[0] || ""),
-        })
+        }),
       );
       setTypeSenderOptions(apiOptions);
     } catch (error) {
@@ -359,7 +359,7 @@ export const useNomenklatura = (allData: any) => {
             ? nomenklatura.productName
             : "Название не указано (ID: " + nomenklatura.idProduct + ")",
           value: String(nomenklatura.idProduct?.[0] || ""),
-        })
+        }),
       );
       setNomenklaturaOptions(apiOptions);
     } catch (error) {

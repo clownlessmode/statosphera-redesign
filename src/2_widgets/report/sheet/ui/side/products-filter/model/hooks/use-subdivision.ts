@@ -32,9 +32,9 @@ export const useSubdivision = (allData: any) => {
         (subdivision: SubdivisionFilterResponse) => ({
           label: subdivision.subdivisionProducts,
           value: String(
-            JSON.stringify(subdivision.idSubdivisionProducts || [])
+            JSON.stringify(subdivision.idSubdivisionProducts || []),
           ),
-        })
+        }),
       );
       setSubdivisionOptions(apiOptions);
       setSubdivisionLabels(apiOptions);

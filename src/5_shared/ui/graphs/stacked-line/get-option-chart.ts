@@ -4,7 +4,7 @@ import { getFormatTooltip } from "./formatter-tooltip";
 import { graphColors } from "@shared/constants/graph-colors";
 export const getOptionChart = (
   option: EChartsOption,
-  theme: "light" | "dark" | string
+  theme: "light" | "dark" | string,
 ) => {
   const { title, legend, ...otherOption } = option;
   const isLightTheme = theme === "light";

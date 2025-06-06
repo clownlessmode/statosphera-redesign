@@ -1,0 +1,24 @@
+{
+  "ignores": [
+    "tailwindcss",
+    "tailwindcss-animate",
+    "@tailwindcss/typography",
+    "@types/*",
+    "eslint-*",
+    "eslint-import-resolver-typescript",
+    "vitejs/plugin-react-swc",
+    "vite-plugin-webfont-dl",
+    "@tailwindcss/vite"
+  ],
+  "skipMissing": true,
+  "ignore-patterns": ["dist", "build", "public"],
+  "ignorePatterns": ["**/*.d.ts", "**/*.config.{js,ts}", "vite.config.ts"],
+  "modules": [
+    "@shared/*",
+    "@entities/*",
+    "@features/*",
+    "@widgets/*",
+    "@pages/*",
+    "@app/*"
+  ]
+}

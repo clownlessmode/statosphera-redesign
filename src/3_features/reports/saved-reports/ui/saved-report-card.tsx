@@ -63,15 +63,15 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
           },
           product: {
             groupFranchise: Array.isArray(
-              data.report.filters.product?.groupFranchise
+              data.report.filters.product?.groupFranchise,
             )
               ? data.report.filters.product.groupFranchise
               : Array.isArray(data.report.filters.product?.groupsFranchise)
-              ? data.report.filters.product.groupsFranchise
-              : [],
+                ? data.report.filters.product.groupsFranchise
+                : [],
             ppProducts: data.report.filters.product?.ppProducts ?? null,
             subDivisionProducts: Array.isArray(
-              data.report.filters.product?.subDivisionProducts
+              data.report.filters.product?.subDivisionProducts,
             )
               ? data.report.filters.product.subDivisionProducts
               : [],
@@ -79,42 +79,42 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
               ? data.report.filters.product.subGroups
               : [],
             subSubGroups: Array.isArray(
-              data.report.filters.product?.subSubGroups
+              data.report.filters.product?.subSubGroups,
             )
               ? data.report.filters.product.subSubGroups
               : [],
             typeProducts: Array.isArray(
-              data.report.filters.product?.typeProducts
+              data.report.filters.product?.typeProducts,
             )
               ? data.report.filters.product.typeProducts
               : [],
             teamProducts: Array.isArray(
-              data.report.filters.product?.teamProducts
+              data.report.filters.product?.teamProducts,
             )
               ? data.report.filters.product.teamProducts
               : [],
             directionProducts: Array.isArray(
-              data.report.filters.product?.directionProducts
+              data.report.filters.product?.directionProducts,
             )
               ? data.report.filters.product.directionProducts
               : [],
             groupsEconomist: Array.isArray(
-              data.report.filters.product?.groupsEconomist
+              data.report.filters.product?.groupsEconomist,
             )
               ? data.report.filters.product.groupsEconomist
               : [],
             idGroupMain: Array.isArray(data.report.filters.product?.idGroupMain)
               ? data.report.filters.product.idGroupMain
               : Array.isArray(data.report.filters.product?.groups)
-              ? data.report.filters.product.groups
-              : [],
+                ? data.report.filters.product.groups
+                : [],
             idProduct: Array.isArray(data.report.filters.product?.idProduct)
               ? data.report.filters.product.idProduct
               : Array.isArray(data.report.filters.product?.products)
-              ? data.report.filters.product.products
-              : [],
+                ? data.report.filters.product.products
+                : [],
             seasonalityProducts: Array.isArray(
-              data.report.filters.product?.seasonalityProducts
+              data.report.filters.product?.seasonalityProducts,
             )
               ? data.report.filters.product.seasonalityProducts
               : [],
@@ -134,8 +134,8 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
             cashBox: Array.isArray(data.report.filters.check?.cashBox)
               ? data.report.filters.check.cashBox
               : Array.isArray(data.report.filters.check?.cashbox)
-              ? data.report.filters.check.cashbox
-              : [],
+                ? data.report.filters.check.cashbox
+                : [],
             checkNumber: Array.isArray(data.report.filters.check?.checkNumber)
               ? data.report.filters.check.checkNumber
               : [],
@@ -165,27 +165,27 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
           onlineStore: {
             isIm: data.report.filters.onlineStore?.isIm ?? null,
             imTypeOrder: Array.isArray(
-              data.report.filters.onlineStore?.imTypeOrder
+              data.report.filters.onlineStore?.imTypeOrder,
             )
               ? data.report.filters.onlineStore.imTypeOrder
               : [],
             imDeliveryMethod: Array.isArray(
-              data.report.filters.onlineStore?.imDeliveryMethod
+              data.report.filters.onlineStore?.imDeliveryMethod,
             )
               ? data.report.filters.onlineStore.imDeliveryMethod
               : [],
             imPaymentMethod: Array.isArray(
-              data.report.filters.onlineStore?.imPaymentMethod
+              data.report.filters.onlineStore?.imPaymentMethod,
             )
               ? data.report.filters.onlineStore.imPaymentMethod
               : [],
             imStatusOrder: Array.isArray(
-              data.report.filters.onlineStore?.imStatusOrder
+              data.report.filters.onlineStore?.imStatusOrder,
             )
               ? data.report.filters.onlineStore.imStatusOrder
               : [],
             imReceiveInterval: Array.isArray(
-              data.report.filters.onlineStore?.imReceiveInterval
+              data.report.filters.onlineStore?.imReceiveInterval,
             )
               ? data.report.filters.onlineStore.imReceiveInterval
               : [],
@@ -244,7 +244,7 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
       navigate(
         `/report?open=false&tab=${
           data.report.mode === "COMMERCIAL" ? "commerce" : "check"
-        }`
+        }`,
       );
     } catch (error) {
       console.error("Ошибка при загрузке отчета:", error);

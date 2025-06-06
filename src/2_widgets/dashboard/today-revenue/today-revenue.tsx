@@ -44,7 +44,7 @@ const TodayRevenue = ({
               <ArrowBigDownDash
                 className={cn(
                   "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive rotate-180"
+                  negative ? "text-destructive" : "text-positive rotate-180",
                 )}
                 fill="currentColor"
               />

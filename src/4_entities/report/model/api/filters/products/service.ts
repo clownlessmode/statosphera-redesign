@@ -159,7 +159,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getNomenklatura(
-    dto: any
+    dto: any,
   ): Promise<NomenklaturaFilterResponse[]> {
     const response = await api.post<any>("products/filter", {
       ...dto,

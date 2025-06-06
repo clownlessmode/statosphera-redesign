@@ -9,7 +9,7 @@ function extractActiveColumnNames(data?: GetIndicatorsResponse): string[] {
   return data.salesDynamics
     .flat() // Group[][]
     .flatMap((group) =>
-      group.columns.filter((col) => col.active).map((col) => col.name)
+      group.columns.filter((col) => col.active).map((col) => col.name),
     );
 }
 export function useDefaultValues(): {

@@ -64,14 +64,14 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
           p.color
         };margin-right:6px;"></span>
         <strong>${p.seriesName}:</strong> ${
-                        isNaN(value) ? "-" : value.toLocaleString("ru-RU")
-                      } ₽
+          isNaN(value) ? "-" : value.toLocaleString("ru-RU")
+        } ₽
       </div>
     `;
                     });
 
                     return `<div><strong>${label}</strong></div>${lines.join(
-                      ""
+                      "",
                     )}`;
                   },
                 },

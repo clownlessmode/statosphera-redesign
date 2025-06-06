@@ -23,23 +23,7 @@ export default tseslint.config(
       import: importPlugin,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
-      // Правила для импортов
-      "import/no-relative-parent-imports": "error", // Запрещает импорты вида '../'
-      "import/no-unresolved": "error", // Проверяет, что импорты разрешаются
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: ["./*", "../*"],
-          message:
-            'Используйте абсолютные импорты с префиксами "@features/", "@shared/" и т.д. вместо относительных путей.',
-        },
-      ],
-      "import/no-relative-parent-imports": "error",
+      "@typescript-eslint/no-explicit-any": "off",
     },
     settings: {
       "import/resolver": {

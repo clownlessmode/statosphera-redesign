@@ -3,11 +3,9 @@ import { COLUMN_KEY } from "@shared/constants/table-columns";
 import {
   ArrowUpRight,
   DollarSign,
-
   Minus,
   MinusCircle,
   Percent,
-
   Plus,
   Receipt,
   ShoppingBag,
@@ -1035,13 +1033,13 @@ interface IndicatorGroup {
 
 export function excludeIndicators(
   source: IndicatorGroup[],
-  excludeList: string[]
+  excludeList: string[],
 ): IndicatorGroup[] {
   return source
     .filter((group) => !excludeList.includes(group.id))
     .map((group) => {
       const filteredChildren = group.children.filter(
-        (child) => !excludeList.includes(child.id)
+        (child) => !excludeList.includes(child.id),
       );
 
       if (filteredChildren.length === 0) {
@@ -1088,13 +1086,13 @@ interface LabelValue {
 
 export function getFirstIndicatorFromGroup(
   indicators: IndicatorGroup[],
-  searchId: string
+  searchId: string,
 ): LabelValue | null {
   // Находим группу, в которой есть искомый показатель
   const group = indicators.find(
     (group) =>
       group.id === searchId ||
-      group.children.some((child) => child.id === searchId)
+      group.children.some((child) => child.id === searchId),
   );
 
   if (!group) {

@@ -33,7 +33,7 @@ export const useLoyalBonus = (allData: any) => {
             loyalBonus.nameBonus ||
             "Название не указано (ID: " + loyalBonus.guid?.[0] + ")",
           value: String(JSON.stringify(loyalBonus.guid || [])),
-        })
+        }),
       );
       setLoyalBonusOptions(apiOptions);
       setLoyalBonusLabels(apiOptions);

@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [selectedRow, setSelectedRow] = React.useState<TData | null>(null);
 
@@ -85,7 +85,7 @@ export function DataTable<TData, TValue>({
   const hasNonEmptyRows = table
     .getRowModel()
     .rows.some((row) =>
-      row.getVisibleCells().some((cell) => !isEmptyValue(cell.getValue()))
+      row.getVisibleCells().some((cell) => !isEmptyValue(cell.getValue())),
     );
 
   return (
@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -130,7 +130,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

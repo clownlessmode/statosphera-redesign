@@ -52,7 +52,7 @@ const WriteOffHouseholds = ({
                   negative ? "text-destructive" : "text-positive",
                   householdGoodsYoYPercent && householdGoodsYoYPercent > 0
                     ? "rotate-180"
-                    : ""
+                    : "",
                 )}
                 fill="currentColor"
               />

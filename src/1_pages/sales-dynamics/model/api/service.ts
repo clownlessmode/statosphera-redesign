@@ -80,14 +80,14 @@ export class SalesDynamicsService {
     return response.data;
   }
   static async getSalesDynamicsTable(
-    dto: SalesDynamicsApiPayload
+    dto: SalesDynamicsApiPayload,
   ): Promise<SalesTableResponse> {
     const response = await api.post<any>("Sales_dynamics/tbl", dto);
 
     return response.data;
   }
   static async getSalesDynamicsGraph(
-    dto: SalesDynamicsApiPayloadGraph
+    dto: SalesDynamicsApiPayloadGraph,
   ): Promise<GraphSeries[]> {
     const response = await api.post<any>("Sales_dynamics/graphic_sales", {
       ...dto,
@@ -95,7 +95,7 @@ export class SalesDynamicsService {
     return response.data;
   }
   static async getSalesDynamicsTotal(
-    dto: SalesDynamicsApiPayload
+    dto: SalesDynamicsApiPayload,
   ): Promise<SalesTotalResponse> {
     const { ...payload } = dto;
 

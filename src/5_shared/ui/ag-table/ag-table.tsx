@@ -11,7 +11,7 @@ export const AgTable = forwardRef<AgGridReact, AgGridReactProps>(
 
     const localeText = useMemo<Record<string, string>>(
       () => AG_GRID_LOCALE_RU,
-      []
+      [],
     );
 
     const rowStyle = useMemo(() => ({ cursor: "pointer" }), []);
@@ -34,5 +34,5 @@ export const AgTable = forwardRef<AgGridReact, AgGridReactProps>(
         {...props}
       />
     );
-  }
+  },
 );

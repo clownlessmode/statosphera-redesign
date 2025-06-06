@@ -33,7 +33,7 @@ const multiSelectVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 export interface MultiSelectOption {
   label: string;
@@ -80,10 +80,10 @@ export const MultiSelect = React.forwardRef<
       externalLabels,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [selectedValues, setSelectedValues] = React.useState<string[]>(
-      value || defaultValue
+      value || defaultValue,
     );
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
@@ -115,7 +115,7 @@ export const MultiSelect = React.forwardRef<
       handleValueChange(
         selectedValues.length === options.length
           ? []
-          : options.map((o) => o.value)
+          : options.map((o) => o.value),
       );
     };
     const handlePopoverOpenChange = (open: boolean) => {
@@ -134,7 +134,7 @@ export const MultiSelect = React.forwardRef<
             {...props}
             className={cn(
               "flex w-full p-1 rounded-md border min-h-10 h-auto bg-background items-center justify-between hover:border-muted-foreground hover:bg-background [&_svg]:pointer-events-auto",
-              className
+              className,
             )}
           >
             {selectedValues.length > 0 ? (
@@ -142,7 +142,7 @@ export const MultiSelect = React.forwardRef<
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const IconComponent = options.find(
-                      (o) => o.value === value
+                      (o) => o.value === value,
                     )?.icon;
                     const getLabel = (val: string) =>
                       options.find((o) => o.value === val)?.label ??
@@ -172,7 +172,7 @@ export const MultiSelect = React.forwardRef<
                     <Badge
                       className={cn(
                         "bg-transparent text-foreground border-foreground/1 hover:bg-transparent",
-                        multiSelectVariants({ variant })
+                        multiSelectVariants({ variant }),
                       )}
                       style={{ animationDuration: `${animation}s` }}
                     >
@@ -246,7 +246,7 @@ export const MultiSelect = React.forwardRef<
                             "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
                             selectedValues.length === options.length
                               ? "bg-primary text-foreground"
-                              : "opacity-50 [&_svg]:invisible"
+                              : "opacity-50 [&_svg]:invisible",
                           )}
                         >
                           <CheckIcon className="h-4 w-4 text-primary-foreground" />
@@ -265,7 +265,7 @@ export const MultiSelect = React.forwardRef<
                             "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
                             selectedValues.includes(option.value)
                               ? "bg-primary text-foreground"
-                              : "opacity-50 [&_svg]:invisible"
+                              : "opacity-50 [&_svg]:invisible",
                           )}
                         >
                           <CheckIcon className="h-4 w-4 text-primary-foreground" />
@@ -309,7 +309,7 @@ export const MultiSelect = React.forwardRef<
         </PopoverContent>
       </Popover>
     );
-  }
+  },
 );
 
 MultiSelect.displayName = "MultiSelect";

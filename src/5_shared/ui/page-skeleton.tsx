@@ -15,19 +15,19 @@ const PageSkeleton = () => {
           <Skeleton
             className={cn(
               isMobile ? "w-[36px]" : "w-[155px]",
-              "h-[36px] bg-background rounded-md"
+              "h-[36px] bg-background rounded-md",
             )}
           />
           <Skeleton
             className={cn(
               isMobile ? "w-[36px]" : "w-[170px]",
-              "h-[36px] bg-background rounded-md"
+              "h-[36px] bg-background rounded-md",
             )}
           />
           <Skeleton
             className={cn(
               isMobile ? "w-[36px]" : "w-[160px]",
-              "h-[36px] bg-background rounded-md"
+              "h-[36px] bg-background rounded-md",
             )}
           />
         </div>

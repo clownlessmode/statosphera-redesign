@@ -304,34 +304,34 @@ export type FiltersState = {
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
     key: K,
-    value: FiltersState["filters"]["store"][K]
+    value: FiltersState["filters"]["store"][K],
   ) => void;
 
   updateProductFilter: <K extends keyof FiltersState["filters"]["product"]>(
     key: K,
-    value: FiltersState["filters"]["product"][K]
+    value: FiltersState["filters"]["product"][K],
   ) => void;
 
   updateCheckFilter: <K extends keyof FiltersState["filters"]["check"]>(
     key: K,
-    value: FiltersState["filters"]["check"][K]
+    value: FiltersState["filters"]["check"][K],
   ) => void;
 
   updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
     key: K,
-    value: FiltersState["filters"]["loyal"][K]
+    value: FiltersState["filters"]["loyal"][K],
   ) => void;
 
   updateOnlineStoreFilter: <
-    K extends keyof FiltersState["filters"]["onlineStore"]
+    K extends keyof FiltersState["filters"]["onlineStore"],
   >(
     key: K,
-    value: FiltersState["filters"]["onlineStore"][K]
+    value: FiltersState["filters"]["onlineStore"][K],
   ) => void;
 
   updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
     key: K,
-    value: FiltersState["filters"]["writeoff"][K]
+    value: FiltersState["filters"]["writeoff"][K],
   ) => void;
 
   updateDateFilter: (dateStart: string, dateEnd: string) => void;

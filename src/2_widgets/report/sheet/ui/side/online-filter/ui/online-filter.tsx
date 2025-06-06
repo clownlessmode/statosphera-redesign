@@ -162,7 +162,7 @@ const OnlineFilter: FC = () => {
                             | "Собран"
                             | "Принят"
                             | "Создан"
-                          )[]
+                          )[],
                         );
                       }}
                       externalLabels={savedStatusOrderLabels}
@@ -190,7 +190,7 @@ const OnlineFilter: FC = () => {
                         field.onChange(numericValues);
                         updateOnlineStoreFilter(
                           "imReceiveInterval",
-                          numericValues
+                          numericValues,
                         );
                       }}
                       externalLabels={savedIntervalLabels}

@@ -17,7 +17,7 @@ const useDirectionStore = create<DirectionStore>((set) => ({
 
 export const useDirection = (allData: any) => {
   const [directionOptions, setDirectionOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getDirection, isDirectionLoading } = useFilters();
   const { savedDirectionLabels, setDirectionLabels } = useDirectionStore();

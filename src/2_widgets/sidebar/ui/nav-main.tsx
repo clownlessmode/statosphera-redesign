@@ -30,7 +30,7 @@ export function NavMain({
                   tooltip={item.title}
                   className={cn(
                     "cursor-pointer",
-                    item.disabled && "opacity-30 cursor-not-allowed"
+                    item.disabled && "opacity-30 cursor-not-allowed",
                   )}
                 >
                   {item.icon && <item.icon />}

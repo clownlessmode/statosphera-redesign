@@ -17,7 +17,7 @@ const useSubgroupStore = create<SubgroupStore>((set) => ({
 
 export const useSubgroup = (allData: any) => {
   const [subgroupOptions, setSubgroupOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getSubGroups, isSubGroupsLoading } = useFilters();
   const { savedSubgroupLabels, setSubgroupLabels } = useSubgroupStore();

@@ -26,7 +26,7 @@ export default function StackedLine({
   // ② пересчитываем опции при смене option **или** theme
   const optionCharts = useMemo(
     () => getOptionChart(option, theme as string),
-    [option, theme]
+    [option, theme],
   );
   useEffect(() => {
     if (mirror === undefined) return;

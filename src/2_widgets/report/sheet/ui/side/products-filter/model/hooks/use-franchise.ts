@@ -17,7 +17,7 @@ const useFranchiseStore = create<FranchiseStore>((set) => ({
 
 export const useFranchise = (allData: any) => {
   const [franchiseOptions, setFranchiseOptions] = useState<MultiSelectOption[]>(
-    []
+    [],
   );
   const { getFranchise, isFranchiseLoading } = useFilters();
   const { savedFranchiseLabels, setFranchiseLabels } = useFranchiseStore();

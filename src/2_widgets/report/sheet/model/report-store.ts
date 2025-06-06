@@ -47,8 +47,8 @@ export const useReportStore = create<ReportStore>((set) => ({
       error: deepEqual(state.error, data.message)
         ? state.error
         : Array.isArray(data.message)
-        ? data.message.join(", ")
-        : data.message,
+          ? data.message.join(", ")
+          : data.message,
       lastUpdate: Date.now(),
     })),
 

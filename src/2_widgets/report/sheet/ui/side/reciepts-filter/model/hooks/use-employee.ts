@@ -37,7 +37,7 @@ export const useEmployeeName = (allData: any) => {
             employeeName.employeeName ||
             "Сотрудник не указан (ID: " + employeeName.tabNum?.[0] + ")",
           value: String(JSON.stringify(employeeName.tabNum || [])),
-        })
+        }),
       );
       setEmployeeNameOptions(apiOptions);
       setEmployeeNameLabels(apiOptions);

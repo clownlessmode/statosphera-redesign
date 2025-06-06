@@ -44,7 +44,7 @@ const ImRevenue = ({
                   negative ? "text-destructive" : "text-positive",
                   proceedsImYoYPercent && proceedsImYoYPercent > 0
                     ? "rotate-180"
-                    : ""
+                    : "",
                 )}
                 fill="currentColor"
               />

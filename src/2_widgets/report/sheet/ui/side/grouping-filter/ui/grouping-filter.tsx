@@ -136,7 +136,7 @@ const GroupingFilter: FC = () => {
           visible: tab === "check",
         },
       ] as const,
-    [tab, displayedDays]
+    [tab, displayedDays],
   );
 
   return (
@@ -175,7 +175,7 @@ const GroupingFilter: FC = () => {
                       </FormItem>
                     )}
                   />
-                )
+                ),
             )}
           </form>
         </Form>

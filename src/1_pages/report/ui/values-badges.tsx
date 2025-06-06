@@ -16,7 +16,7 @@ type WithChildren<T = any> = {
  */
 export function getLabelByValue(
   list: WithChildren[],
-  value: string
+  value: string,
 ): string | undefined {
   for (const item of list) {
     if (item.value === value) {

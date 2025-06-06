@@ -25,7 +25,7 @@ const Unique: FC = () => {
   useEffect(() => {
     const subscription = form.watch((values) => {
       const unique = [...(values.proceeds || [])].filter(
-        (item): item is string => item !== undefined
+        (item): item is string => item !== undefined,
       );
       updateUniques(unique);
     });

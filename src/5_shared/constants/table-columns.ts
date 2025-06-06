@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 import { ColDef } from "ag-grid-community";
 
 export enum COLUMN_KEY {
@@ -474,7 +475,7 @@ export enum COLUMN_KEY {
 }
 
 export const formatNumber = (
-  value: number | string | null | undefined
+  value: number | string | null | undefined,
 ): string => {
   if (value === null || value === undefined || value === "") return "-";
 
@@ -7227,7 +7228,7 @@ export const tableConfig: ColDef<any>[] = [
 
 export function mergeColumnDefsWithPriority(
   primary: ColDef[],
-  secondary: ColDef[]
+  secondary: ColDef[],
 ): ColDef[] {
   const result: Record<string, ColDef> = {};
 
@@ -7250,5 +7251,5 @@ export function mergeColumnDefsWithPriority(
 
 export const columnDefs = mergeColumnDefsWithPriority(
   tableColumns,
-  tableConfig
+  tableConfig,
 );

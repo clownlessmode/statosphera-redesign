@@ -94,7 +94,7 @@ export const StackedBarChart = ({
         emphasis: { focus: "series" },
       })),
     }),
-    [xAxis, series, colors, title]
+    [xAxis, series, colors, title],
   );
 
   return (

@@ -158,13 +158,13 @@ interface IndicatorGroup {
 }
 export function excludeIndicators(
   source: IndicatorGroup[],
-  excludeList: string[]
+  excludeList: string[],
 ): IndicatorGroup[] {
   return source
     .filter((group) => !excludeList.includes(group.id)) // убираем группы
     .map((group) => {
       const filteredChildren = group.children.filter(
-        (child) => !excludeList.includes(child.id)
+        (child) => !excludeList.includes(child.id),
       );
 
       // Если после удаления детей ничего не осталось, вернем undefined
