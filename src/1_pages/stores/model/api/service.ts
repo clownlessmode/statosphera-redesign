@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { Store } from "../types";
+import { Coordinates, Store } from "../types";
 
 export class StoresService {
   static async getStores() {
@@ -9,5 +9,9 @@ export class StoresService {
   static async getStore(id: number) {
     const response = await api.get<Store[]>(`store/${id}`);
     return response.data[0];
+  }
+  static async getMap() {
+    const response = await api.get<Coordinates[]>(`store/coordinates`);
+    return response.data;
   }
 }

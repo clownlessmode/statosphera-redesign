@@ -67,7 +67,7 @@ const Stores = () => {
                   onRowClick={(row) => console.log("row clicked", row)}
                   renderRowDialog={({ row, isOpen, onClose }) => (
                     <StoreDetails
-                      row={row}
+                      idStore={row.idStore as number}
                       open={isOpen}
                       onOpenChange={(open) => !open && onClose()}
                     />
@@ -78,7 +78,7 @@ const Stores = () => {
           </TabsContent>
 
           <TabsContent value="map">
-            <StoresMap stores={filteredData || []} />
+            <StoresMap />
           </TabsContent>
         </Tabs>
       </div>
