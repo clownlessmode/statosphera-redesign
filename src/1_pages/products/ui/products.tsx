@@ -15,13 +15,15 @@ export const Products = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | "new">("all");
 
   const { getApiPayload } = useFiltersStore();
-  const payload = getApiPayload();
-  const { products, loadMore, isLoading, hasMore, isInitialLoading, refetch } =
-    useProductInfiniteScroll(
-      20,
-      showWithoutGroups,
-      payload.filters.product as any,
-    );
+
+  const [appliedFilters, setAppliedFilters] = useState({});
+  const { products, loadMore, isLoading, hasMore, isInitialLoading } =
+    useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
+
+  const handleApplyFilters = () => {
+    const currentPayload = getApiPayload();
+    setAppliedFilters(currentPayload.filters.product);
+  };
 
   const [selectedProduct, setSelectedProduct] =
     useState<ProductResponse | null>(null);
@@ -98,7 +100,7 @@ export const Products = () => {
         actions={{
           left: (
             <div className="flex flex-row gap-4 ml-8">
-              <FilterModal refetch={refetch} />
+              <FilterModal onApplyFilters={handleApplyFilters} />
               <Button
                 variant={activeFilter === "all" ? "default" : "outline"}
                 onClick={handleAllProductsClick}
@@ -138,6 +140,7 @@ export const Products = () => {
               onClick={() => {
                 setShowWithoutGroups(false);
                 setActiveFilter("all");
+                setAppliedFilters({});
               }}
             >
               Сбросить фильтры
@@ -145,7 +148,7 @@ export const Products = () => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
               {products.map((product, index) => (
                 <div
                   key={`${product.idProduct[0]}-${index}`}
@@ -167,7 +170,7 @@ export const Products = () => {
             </div>
 
             {isLoading && !isInitialLoading && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {[...Array(3)].map((_, i) => (
                   <ProductCardSkeleton key={`loading-${i}`} />
                 ))}

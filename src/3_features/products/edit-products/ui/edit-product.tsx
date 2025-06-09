@@ -132,27 +132,25 @@ export const EditProduct: FC<Props> = ({
     }
   };
 
+  const filterNullValues = (arr: any[]): any[] => {
+    if (!Array.isArray(arr)) return [];
+    return arr.filter(
+      (item) =>
+        item !== null &&
+        item !== undefined &&
+        item !== "" &&
+        item !== "0" &&
+        item !== 0,
+    );
+  };
+
   const handleValueChange = (fieldOnChange: (value: any) => void) => {
     return (value: string[]) => {
       if (value.length === 0) {
         fieldOnChange(["0"]);
         return;
       }
-
-      const filteredValue = value.filter(
-        (val: any) =>
-          val !== "0" &&
-          val !== 0 &&
-          val !== "" &&
-          val !== null &&
-          val !== undefined,
-      );
-
-      if (filteredValue.length === 0 && value.length > 0) {
-        fieldOnChange(["0"]);
-      } else {
-        fieldOnChange(filteredValue.map(String));
-      }
+      fieldOnChange(value);
     };
   };
   const { session } = useSession();
@@ -163,7 +161,7 @@ export const EditProduct: FC<Props> = ({
           <Settings />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none  max-w-[1200px] lg:min-w-[800px] ">
+      <DialogContent className="p-0 rounded-xl border-none sm:min-w-[650px] md:min-w-[750px] lg:min-w-[800px] ">
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="max-w-xs">
@@ -231,25 +229,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={franchiseOptions}
                                   isLoading={isFranchiseLoading}
                                   onOpenChange={handleOpenFranchiseSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.groupsFranchise ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.groupsFranchise ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите структуру продаж"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -280,25 +274,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={groupOptions}
                                   isLoading={isGroupsLoading}
                                   onOpenChange={handleOpenGroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.groupsMain ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.groupsMain ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите группу"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -329,25 +319,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={subgroupOptions}
                                   isLoading={isSubGroupsLoading}
                                   onOpenChange={handleOpenSubgroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.subGroups ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.subGroups ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите подгруппу"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -376,25 +362,21 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   maxCount={1}
                                   disabled
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={subsubgroupOptions}
                                   isLoading={isSubsubgroupsLoading}
                                   onOpenChange={handleOpenSubsubgroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.subSubGroups ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.subSubGroups ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите подподгруппу"
                                 />
                               </FormControl>
@@ -415,25 +397,21 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   maxCount={1}
                                   disabled
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={autoManagerOptions}
                                   isLoading={isAutoManagerLoading}
                                   onOpenChange={handleOpenAutoManagerSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.managerAuto ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.managerAuto ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите менеджера автозаказа"
                                 />
                               </FormControl>
@@ -460,25 +438,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={subdivisionOptions}
                                   isLoading={isSubdivisionsLoading}
                                   onOpenChange={handleOpenSubdivisionsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.subDivisionProducts ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.subDivisionProducts ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите структурное ..."
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -509,25 +483,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={teamOptions}
                                   isLoading={isTeamLoading}
                                   onOpenChange={handleOpenTeamsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.teamProducts ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.teamProducts ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите команду"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -558,25 +528,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={directionOptions}
                                   isLoading={isDirectionLoading}
                                   onOpenChange={handleOpenDirectionsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.directionProducts ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.directionProducts ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите направление"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -608,25 +574,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={typeSenderOptions}
                                   isLoading={isTypeSenderLoading}
                                   onOpenChange={handleOpenTypeSenderSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.typeProducts ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.typeProducts ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите поставщика"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -658,25 +620,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={seasonsOptions}
                                   isLoading={isSeasonsLoading}
                                   onOpenChange={handleOpenSeasonsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.seasonalityProducts ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.seasonalityProducts ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите сезонность"
                                   className={
                                     hasError ? "border-destructive" : ""
@@ -708,25 +666,21 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  value={filterNullValues(field.value).map(
+                                    String,
+                                  )}
                                   options={economistOptions}
                                   isLoading={isEconomistLoading}
                                   onOpenChange={handleOpenEconomistsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={
-                                    productLabels?.groupsEconomist ?? []
-                                  }
-                                  defaultValue={
-                                    Array.isArray(field.value)
-                                      ? field.value.map(String)
-                                      : []
-                                  }
+                                  externalLabels={filterNullValues(
+                                    productLabels?.groupsEconomist ?? [],
+                                  )}
+                                  defaultValue={filterNullValues(
+                                    field.value,
+                                  ).map(String)}
                                   placeholder="Выберите справочник ..."
                                   className={
                                     hasError ? "border-destructive" : ""
