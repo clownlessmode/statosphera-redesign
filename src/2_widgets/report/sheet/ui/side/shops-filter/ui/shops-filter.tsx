@@ -1,3 +1,4 @@
+// ShopsFilter.tsx
 import {
   Card,
   CardContent,
@@ -20,7 +21,7 @@ import {
   useRegions,
   useShops,
 } from "../model";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useCallback, useRef } from "react";
 import ClearFilters from "./clear-filter";
 import { SelectMyShops } from "./select-my-shops";
 import {
@@ -40,6 +41,9 @@ export const ShopsFilter: FC = () => {
   const { isMyShopsMode } = useMyShopsStore();
   const { session } = useSession();
   const payload = getApiPayload();
+
+  // Флаг для предотвращения повторных запросов
+  const isShopsLoadedRef = useRef(false);
 
   const {
     savedPartnerLabels,
@@ -66,12 +70,66 @@ export const ShopsFilter: FC = () => {
     isShopsLoading,
   } = useShops(payload);
 
-  useEffect(() => {
-    if (isMyShopsMode && !savedShopLabels.length) {
-      handleOpenShopsSelect(true);
-    }
-  }, [isMyShopsMode]);
+  // Мемоизированная функция для загрузки магазинов
+  const loadShops = useCallback(() => {
+    console.log("🏪 Загружаем магазины...", {
+      isMyShopsMode,
+      savedShopLabelsLength: savedShopLabels.length,
+      isShopsLoadedRef: isShopsLoadedRef.current,
+    });
 
+    if (!isShopsLoadedRef.current) {
+      handleOpenShopsSelect(true);
+      isShopsLoadedRef.current = true;
+    }
+  }, [handleOpenShopsSelect, savedShopLabels.length, isMyShopsMode]);
+
+  // Загрузка данных магазинов при необходимости
+  useEffect(() => {
+    console.log("🔄 Effect для загрузки магазинов:", {
+      isMyShopsMode,
+      savedShopLabelsLength: savedShopLabels.length,
+      shouldLoad: isMyShopsMode && !savedShopLabels.length,
+    });
+
+    if (isMyShopsMode && !savedShopLabels.length && !isShopsLoading) {
+      loadShops();
+    }
+
+    // Сброс флага при выходе из режима "мои магазины"
+    if (!isMyShopsMode) {
+      isShopsLoadedRef.current = false;
+    }
+  }, [isMyShopsMode, savedShopLabels.length, isShopsLoading, loadShops]);
+
+  // Обновление формы при изменении режима "мои магазины"
+  useEffect(() => {
+    console.log("🔧 Effect для обновления формы:", {
+      isMyShopsMode,
+      sessionIdStore: session?.idStore,
+      sessionIdStoreLength: session?.idStore?.length,
+    });
+
+    if (isMyShopsMode && session?.idStore?.length) {
+      const storeIds = session.idStore.map(String);
+      console.log(storeIds, shopsOptions);
+
+      console.log("✅ Устанавливаем магазины из сессии:", storeIds);
+      form.setValue(
+        "idStore",
+        storeIds.map((id) => `[${id}]`),
+      );
+      updateStoreFilter(
+        "idStore",
+        storeIds.map((id) => `[${id}]`),
+      );
+      console.log(savedShopLabels);
+    } else if (!isMyShopsMode) {
+      console.log("🗑️ Очищаем магазины");
+      form.setValue("idStore", []);
+      updateStoreFilter("idStore", []);
+    }
+  }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -241,18 +299,29 @@ export const ShopsFilter: FC = () => {
                   <FormControl>
                     <MultiSelect
                       maxCount={1}
-                      value={
-                        isMyShopsMode
-                          ? session?.idStore.map(String)
-                          : field.value?.map(String) || []
-                      }
-                      options={isMyShopsMode ? [] : shopsOptions}
+                      disabled={isMyShopsMode}
+                      value={field.value?.map(String) || []}
+                      options={shopsOptions}
                       isLoading={isShopsLoading}
-                      onOpenChange={handleOpenShopsSelect}
+                      onOpenChange={(isOpen) => {
+                        console.log("🏪 MultiSelect onOpenChange:", {
+                          isOpen,
+                          isMyShopsMode,
+                        });
+                        if (!isMyShopsMode) {
+                          handleOpenShopsSelect(isOpen);
+                        }
+                      }}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
-                        field.onChange(numeric);
-                        updateStoreFilter("idStore", numeric);
+                        console.log("🏪 MultiSelect onValueChange:", {
+                          value,
+                          isMyShopsMode,
+                        });
+                        if (!isMyShopsMode) {
+                          const numeric = value.map(String);
+                          field.onChange(numeric);
+                          updateStoreFilter("idStore", numeric);
+                        }
                       }}
                       externalLabels={savedShopLabels}
                       defaultValue={field.value?.map(String)}
