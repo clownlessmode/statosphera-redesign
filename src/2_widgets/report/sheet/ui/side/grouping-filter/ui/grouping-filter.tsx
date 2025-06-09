@@ -41,10 +41,6 @@ import { useTypeCheckStore } from "../model/hooks/use-type-checked";
 
 const GroupingFilter: FC = () => {
   const { tab } = useTabStore();
-  const form = useForm();
-  const { updateGroups } = useFiltersStore();
-  const { setIsTypeCheckSelected } = useTypeCheckStore();
-
   const displayedDays = useMemo(() => {
     const baseDays = [...DAYS];
     if (tab === "check" && !baseDays.some((d) => d.value === GROUPINGS.HOUR)) {
@@ -52,6 +48,11 @@ const GroupingFilter: FC = () => {
     }
     return baseDays;
   }, [tab]);
+
+  const form = useForm({ tab, daysOptions: displayedDays });
+
+  const { updateGroups } = useFiltersStore();
+  const { setIsTypeCheckSelected } = useTypeCheckStore();
 
   useEffect(() => {
     const subscription = form.watch((values) => {
@@ -136,7 +137,7 @@ const GroupingFilter: FC = () => {
           visible: tab === "check",
         },
       ] as const,
-    [tab, displayedDays],
+    [tab],
   );
 
   return (
