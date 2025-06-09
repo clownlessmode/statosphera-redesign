@@ -7,7 +7,8 @@ import {
 
 export class FiltersLoyalityService {
   static async getStatusOrder(dto: any): Promise<StatusOrderFilterResponse[]> {
-    const response = await api.post<any>("filters/im-status-source", dto);
+    console.log(dto);
+    const response = await api.post<any>("filters/im-status-source");
     return response.data;
   }
   static async getInterval(dto: any): Promise<IntervalFilterResponse[]> {
