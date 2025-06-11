@@ -1,80 +1,98 @@
+export const divideNumberSpaces = (number: number) => {
+  return number.toLocaleString("ru-RU");
+};
+
 const getWeek = (dateStr: string): string => {
-  // Разбиваем "YY-MM-DD"
   const [yy, mm, dd] = dateStr.split("-");
-  // Собираем в ISO-формат с четырёхзначным годом
   const iso = `20${yy}-${mm}-${dd}`;
   const d = new Date(iso);
   if (isNaN(d.getTime())) {
     return "";
   }
-  // Получаем день недели по-русски, с маленькой буквы
   return d.toLocaleDateString("ru-RU", { weekday: "long" });
 };
 
-export const divideNumberSpaces = (number: number) => {
-  return number.toLocaleString("ru-RU");
+const formatDateByGroupType = (dateStr: string, groupType?: string): string => {
+  switch (groupType) {
+    case "hour":
+      return `${dateStr}:00`;
+    case "day": {
+      const weekday = getWeek(dateStr);
+      if (weekday) {
+        const weekdayCapitalized = weekday[0].toUpperCase() + weekday.slice(1);
+        return `${dateStr} (${weekdayCapitalized})`;
+      }
+      return dateStr;
+    }
+    case "week":
+      return `Неделя ${dateStr}`;
+    case "month": {
+      const months = [
+        "Январь",
+        "Февраль",
+        "Март",
+        "Апрель",
+        "Май",
+        "Июнь",
+        "Июль",
+        "Август",
+        "Сентябрь",
+        "Октябрь",
+        "Ноябрь",
+        "Декабрь",
+      ];
+      const monthNum = parseInt(dateStr);
+      return months[monthNum - 1] || `Месяц ${dateStr}`;
+    }
+    case "quarter":
+      return `${dateStr} квартал`;
+    case "year":
+      return `${dateStr} год`;
+    default:
+      return dateStr;
+  }
 };
 
-// Общая логика: если дата невалидна, возвращаем только строку без (дата)
-export const getFormatTooltip = (args: any) => {
+export const getFormatTooltip = (args: any, groupType?: string) => {
   try {
     const dateStr = args[0].axisValue as string;
-    const weekday = getWeek(dateStr);
-    const isValidDate = Boolean(weekday);
-    const weekdayCapitalized = isValidDate
-      ? weekday[0].toUpperCase() + weekday.slice(1)
-      : "";
+    const formattedDate = formatDateByGroupType(dateStr, groupType);
 
-    const dateLine = isValidDate
-      ? `<p>${dateStr} (${weekdayCapitalized})</p>`
-      : `<p>${dateStr}</p>`;
-    let tooltip = dateLine;
-    if (!isValidDate) {
-      return tooltip;
-    }
+    let tooltip = `<p>${formattedDate}</p>`;
 
     args.forEach(({ marker, seriesName, value }: any) => {
-      if (value[1]) {
+      if (value && value[1]) {
         tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
           value[1],
         )}</p>`;
       }
     });
 
-    const currentValue = args[0].value[1];
-    const prevValue = args[1].value[1];
+    const currentValue = args[0]?.value?.[1];
+    const prevValue = args[1]?.value?.[1];
 
     if (currentValue && prevValue) {
       const deltaPercent = Math.floor(
         ((currentValue - prevValue) / prevValue) * 100,
       );
       tooltip += `<p>Разница: ${divideNumberSpaces(
-        args[0].value[1] - args[1].value[1],
+        currentValue - prevValue,
       )} (${deltaPercent}%)</p>`;
     }
 
     return tooltip;
   } catch (e) {
     console.log(e);
+    return "";
   }
 };
 
-export const getBarFormatTooltip = (args: any) => {
+export const getBarFormatTooltip = (args: any, groupType?: string) => {
   try {
     const dateStr = args[0].axisValue as string;
-    const weekday = getWeek(dateStr);
-    const isValidDate = Boolean(weekday);
-    const weekdayCapitalized = isValidDate
-      ? weekday[0].toUpperCase() + weekday.slice(1)
-      : "";
+    const formattedDate = formatDateByGroupType(dateStr, groupType);
 
-    const dateLine = isValidDate
-      ? `<p>${dateStr} (${weekdayCapitalized})</p>`
-      : `<p>${dateStr}</p>`;
-    let tooltip = dateLine;
-    if (!isValidDate) {
-      return tooltip;
-    }
+    let tooltip = `<p>${formattedDate}</p>`;
 
     args.forEach(({ marker, seriesName, data }: any) => {
       if (data) {
@@ -84,8 +102,8 @@ export const getBarFormatTooltip = (args: any) => {
       }
     });
 
-    const currentValue = args[0].value;
-    const prevValue = args[1].value;
+    const currentValue = args[0]?.value;
+    const prevValue = args[1]?.value;
 
     if (currentValue && prevValue) {
       const deltaPercent = Math.floor((prevValue / currentValue) * 100);
@@ -95,36 +113,27 @@ export const getBarFormatTooltip = (args: any) => {
     return tooltip;
   } catch (e) {
     console.log(e);
+    return "";
   }
 };
 
-export const getSalesFormatTooltip = (args: any) => {
+export const getSalesFormatTooltip = (args: any, groupType?: string) => {
   try {
     const dateStr = args[0].axisValue as string;
-    const weekday = getWeek(dateStr);
-    const isValidDate = Boolean(weekday);
-    const weekdayCapitalized = isValidDate
-      ? weekday[0].toUpperCase() + weekday.slice(1)
-      : "";
+    const formattedDate = formatDateByGroupType(dateStr, groupType);
 
-    const dateLine = isValidDate
-      ? `<p>${dateStr} часов (${weekdayCapitalized})</p>`
-      : `<p>${dateStr}</p>`;
-    let tooltip = dateLine;
-    if (!isValidDate) {
-      return tooltip;
-    }
+    let tooltip = `<p>${formattedDate}</p>`;
 
     args.forEach(({ marker, seriesName, data }: any) => {
-      if (data[1]) {
+      if (data && data[1]) {
         tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
           data[1],
         )}</p>`;
       }
     });
 
-    const currentValue = args[0].data[1];
-    const prevValue = args[1].data[1];
+    const currentValue = args[0]?.data?.[1];
+    const prevValue = args[1]?.data?.[1];
 
     if (currentValue && prevValue) {
       const deltaPercent = (
@@ -140,5 +149,6 @@ export const getSalesFormatTooltip = (args: any) => {
     return tooltip;
   } catch (e) {
     console.log(e);
+    return "";
   }
 };
