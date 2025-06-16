@@ -263,18 +263,10 @@ export type FiltersState = {
     };
     onlineStore: {
       isIm: boolean | null;
-      imTypeOrder: Array<"Мобилка" | "Сайт">;
-      imDeliveryMethod: Array<"Курьер" | "Самовывоз">;
-      imPaymentMethod: Array<"Онлайн" | "Офлайн" | "Картой курьера">;
-      imStatusOrder: Array<
-        | "Завершен"
-        | "Отменен_клиентом"
-        | "Отменен"
-        | "Сборка"
-        | "Собран"
-        | "Принят"
-        | "Создан"
-      >;
+      imTypeOrder: string[];
+      imDeliveryMethod: string[];
+      imPaymentMethod: string[];
+      imStatusOrder: string[];
       imReceiveInterval: string[];
       imPromo: string[];
     };

@@ -29,11 +29,6 @@ export const TYPE = [
 
 export const TYPE_ORDER = [
   {
-    label: "Все",
-    value: "all",
-    icon: Badge,
-  },
-  {
     label: "Приложение",
     value: "Мобилка",
     icon: Smartphone,
@@ -47,11 +42,6 @@ export const TYPE_ORDER = [
 
 export const TYPE_DELIVERY = [
   {
-    label: "Все",
-    value: "all",
-    icon: Badge,
-  },
-  {
     label: "Доставка",
     value: "Курьер",
     icon: Truck,
@@ -64,11 +54,6 @@ export const TYPE_DELIVERY = [
 ];
 
 export const TYPE_PAYMENT = [
-  {
-    label: "Все",
-    value: "all",
-    icon: Badge,
-  },
   {
     label: "Онлайн",
     value: "Онлайн",

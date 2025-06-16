@@ -1,6 +1,6 @@
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { cn } from "@shared/lib/utils";
-import { Check, LucideIcon } from "lucide-react";
+import { Badge, Check, LucideIcon } from "lucide-react";
 import type { FC } from "react";
 
 interface Option {
@@ -19,31 +19,61 @@ interface Props extends Omit<CheckboxPrimitive.CheckboxProps, "onChange"> {
   value?: string[];
   onChange?: (value: string[]) => void;
   disabled?: boolean;
+  selectAll?: boolean;
+  defaultSelectAllValue?: string;
 }
 
 const CheckboxCards: FC<Props> = ({
   options,
   className,
   disableCheck = false,
-  value = [],
+  value,
   onChange,
   disabled = false,
+  selectAll = false,
+  defaultSelectAllValue = "all",
 }) => {
   const handleClick = (optionValue: string) => {
-    const newValue = value.includes(optionValue)
-      ? value.filter((v) => v !== optionValue)
-      : [...value, optionValue];
+    if (optionValue === defaultSelectAllValue) {
+      onChange?.([]);
+      return;
+    }
+
+    const currentValue = value || [];
+    const newValue = currentValue.includes(optionValue)
+      ? currentValue.filter((v) => v !== optionValue)
+      : [...currentValue, optionValue];
 
     onChange?.(newValue);
   };
 
+  const allOptions = selectAll
+    ? [
+        {
+          label: "Все",
+          value: defaultSelectAllValue,
+          icon: Badge,
+        },
+        ...options,
+      ]
+    : options;
+
+  // Set default value to empty array if selectAll is true and no value is provided
+  const defaultValue = value || [];
+
+  const isAllSelected = selectAll && defaultValue.length === 0;
+
   return (
     <div className={cn("w-full grid grid-cols-2 gap-2", className)}>
-      {options.map((option) => (
+      {allOptions.map((option) => (
         <CheckboxPrimitive.Root
           disabled={option.disabled || disabled}
           key={option.value}
-          checked={value.includes(option.value)}
+          checked={
+            option.value === defaultSelectAllValue
+              ? isAllSelected
+              : defaultValue.includes(option.value)
+          }
           onCheckedChange={() => handleClick(option.value)}
           className={cn(
             "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:shadow-xs data-[state=checked]:hover:bg-primary/90",

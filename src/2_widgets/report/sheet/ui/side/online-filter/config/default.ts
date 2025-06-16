@@ -2,9 +2,9 @@ import { FormValues } from "./types";
 
 export const defaultValues: FormValues = {
   isIm: null,
-  imTypeOrder: ["all"] as any,
-  imDeliveryMethod: ["all"] as any,
-  imPaymentMethod: ["all"] as any,
+  imTypeOrder: [],
+  imDeliveryMethod: [],
+  imPaymentMethod: [] as any,
   imStatusOrder: [],
   imReceiveInterval: [],
   imPromo: [],
