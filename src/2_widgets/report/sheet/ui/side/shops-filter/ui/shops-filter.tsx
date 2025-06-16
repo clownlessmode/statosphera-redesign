@@ -76,7 +76,7 @@ export const ShopsFilter: FC = () => {
       handleOpenShopsSelect(true);
       isShopsLoadedRef.current = true;
     }
-  }, [handleOpenShopsSelect, savedShopLabels.length, isMyShopsMode]);
+  }, [handleOpenShopsSelect]);
 
   // Загрузка данных магазинов при необходимости
   useEffect(() => {
@@ -93,21 +93,23 @@ export const ShopsFilter: FC = () => {
   // Обновление формы при изменении режима "мои магазины"
   useEffect(() => {
     if (isMyShopsMode && session?.idStore?.length) {
-      const storeIds = session.idStore.map(String);
+      // Преобразуем idStore в формат JSON строки, как в API
+      const storeValues = session.idStore.map((id) => JSON.stringify([id]));
 
-      form.setValue(
-        "idStore",
-        storeIds.map((id) => `[${id}]`),
-      );
-      updateStoreFilter(
-        "idStore",
-        storeIds.map((id) => `[${id}]`),
-      );
+      form.setValue("idStore", storeValues);
+      updateStoreFilter("idStore", storeValues);
     } else if (!isMyShopsMode) {
+      // Очищаем только если выходим из режима "мои магазины"
+      const currentValues = form.getValues("idStore");
+      if (currentValues?.length > 0) {
+        // Сохраняем текущие значения если они есть
+        return;
+      }
       form.setValue("idStore", []);
       updateStoreFilter("idStore", []);
     }
   }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
+
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -276,9 +278,8 @@ export const ShopsFilter: FC = () => {
                   <FormLabel>Магазины</FormLabel>
                   <FormControl>
                     <MultiSelect
-                      maxCount={1}
                       disabled={isMyShopsMode}
-                      value={field.value?.map(String) || []}
+                      value={field.value || []}
                       options={shopsOptions}
                       isLoading={isShopsLoading}
                       onOpenChange={(isOpen) => {
@@ -288,14 +289,14 @@ export const ShopsFilter: FC = () => {
                       }}
                       onValueChange={(value) => {
                         if (!isMyShopsMode) {
-                          const numeric = value.map(String);
-                          field.onChange(numeric);
-                          updateStoreFilter("idStore", numeric);
+                          field.onChange(value);
+                          updateStoreFilter("idStore", value);
                         }
                       }}
                       externalLabels={savedShopLabels}
-                      defaultValue={field.value?.map(String)}
+                      defaultValue={field.value}
                       placeholder="Выберите магазины"
+                      maxCount={1}
                     />
                   </FormControl>
                 </FormItem>

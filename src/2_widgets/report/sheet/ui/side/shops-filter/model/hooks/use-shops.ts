@@ -43,6 +43,6 @@ export const useShops = (allData: any) => {
     shopsOptions,
     handleOpenShopsSelect,
     isShopsLoading,
-    savedShopLabels, // ← доступен в компоненте
+    savedShopLabels,
   };
 };
