@@ -81,8 +81,7 @@ export const getFormatTooltip = (args: any, groupType?: string) => {
     }
 
     return tooltip;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return "";
   }
 };
@@ -111,8 +110,7 @@ export const getBarFormatTooltip = (args: any, groupType?: string) => {
     }
 
     return tooltip;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return "";
   }
 };
@@ -147,8 +145,7 @@ export const getSalesFormatTooltip = (args: any, groupType?: string) => {
     }
 
     return tooltip;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return "";
   }
 };

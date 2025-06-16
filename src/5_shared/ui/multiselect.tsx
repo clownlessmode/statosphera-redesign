@@ -52,7 +52,7 @@ interface MultiSelectProps
   maxCount?: number;
   modalPopover?: boolean;
   className?: string;
-  onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
+  onOpenChange?: (open: boolean) => void;
   isLoading?: boolean;
   side?: "top" | "bottom";
   externalLabels?: { value: string; label: string }[];

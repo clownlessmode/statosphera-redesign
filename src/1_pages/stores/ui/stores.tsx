@@ -15,7 +15,7 @@ import Spinner from "@shared/ui/spinner";
 const Stores = () => {
   const [search, setSearch] = useState("");
   const { stores: data, isStoresLoading } = useStoresController();
-  console.log(data);
+
   const filteredData = useMemo(() => {
     if (!search.trim() || !data) return data;
 

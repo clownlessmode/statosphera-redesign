@@ -1,8 +1,7 @@
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
-import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
-
+import { useUniqueValues } from "@widgets/report/sheet/ui/side/uniques-filter";
 // Компонент для отображения уникальных значений
 
 type WithChildren<T = any> = {

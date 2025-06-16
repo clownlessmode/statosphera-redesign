@@ -24,7 +24,7 @@ import { create } from "zustand";
 import ReportCards from "./report-cards";
 import { getLabelByValue } from "./values-badges";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
-import { useUniqueValues } from "@widgets/report/sheet/ui/side/unique/model/list";
+import { useUniqueValues } from "@widgets/report/sheet/ui/side/uniques-filter";
 import { SavedReports } from "@features/reports/saved-reports";
 
 interface TableVersionState {

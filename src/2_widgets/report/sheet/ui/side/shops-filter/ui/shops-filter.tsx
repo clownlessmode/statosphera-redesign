@@ -72,12 +72,6 @@ export const ShopsFilter: FC = () => {
 
   // Мемоизированная функция для загрузки магазинов
   const loadShops = useCallback(() => {
-    console.log("🏪 Загружаем магазины...", {
-      isMyShopsMode,
-      savedShopLabelsLength: savedShopLabels.length,
-      isShopsLoadedRef: isShopsLoadedRef.current,
-    });
-
     if (!isShopsLoadedRef.current) {
       handleOpenShopsSelect(true);
       isShopsLoadedRef.current = true;
@@ -86,12 +80,6 @@ export const ShopsFilter: FC = () => {
 
   // Загрузка данных магазинов при необходимости
   useEffect(() => {
-    console.log("🔄 Effect для загрузки магазинов:", {
-      isMyShopsMode,
-      savedShopLabelsLength: savedShopLabels.length,
-      shouldLoad: isMyShopsMode && !savedShopLabels.length,
-    });
-
     if (isMyShopsMode && !savedShopLabels.length && !isShopsLoading) {
       loadShops();
     }
@@ -104,17 +92,9 @@ export const ShopsFilter: FC = () => {
 
   // Обновление формы при изменении режима "мои магазины"
   useEffect(() => {
-    console.log("🔧 Effect для обновления формы:", {
-      isMyShopsMode,
-      sessionIdStore: session?.idStore,
-      sessionIdStoreLength: session?.idStore?.length,
-    });
-
     if (isMyShopsMode && session?.idStore?.length) {
       const storeIds = session.idStore.map(String);
-      console.log(storeIds, shopsOptions);
 
-      console.log("✅ Устанавливаем магазины из сессии:", storeIds);
       form.setValue(
         "idStore",
         storeIds.map((id) => `[${id}]`),
@@ -123,9 +103,7 @@ export const ShopsFilter: FC = () => {
         "idStore",
         storeIds.map((id) => `[${id}]`),
       );
-      console.log(savedShopLabels);
     } else if (!isMyShopsMode) {
-      console.log("🗑️ Очищаем магазины");
       form.setValue("idStore", []);
       updateStoreFilter("idStore", []);
     }
@@ -304,19 +282,11 @@ export const ShopsFilter: FC = () => {
                       options={shopsOptions}
                       isLoading={isShopsLoading}
                       onOpenChange={(isOpen) => {
-                        console.log("🏪 MultiSelect onOpenChange:", {
-                          isOpen,
-                          isMyShopsMode,
-                        });
                         if (!isMyShopsMode) {
                           handleOpenShopsSelect(isOpen);
                         }
                       }}
                       onValueChange={(value) => {
-                        console.log("🏪 MultiSelect onValueChange:", {
-                          value,
-                          isMyShopsMode,
-                        });
                         if (!isMyShopsMode) {
                           const numeric = value.map(String);
                           field.onChange(numeric);

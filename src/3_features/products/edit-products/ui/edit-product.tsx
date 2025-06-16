@@ -57,7 +57,7 @@ export const EditProduct: FC<Props> = ({
 }) => {
   const form = useForm({ product });
   const { isFormValid, getFieldError, fieldsWithErrors } = form;
-  console.log(product);
+
   const { franchiseOptions, handleOpenFranchiseSelect, isFranchiseLoading } =
     useFranchise();
 
@@ -124,7 +124,7 @@ export const EditProduct: FC<Props> = ({
 
     try {
       const payload = mapFormToPayload(data);
-      console.log("Payload для update:", payload);
+
       await update(payload);
       onSuccess?.();
     } catch (error) {

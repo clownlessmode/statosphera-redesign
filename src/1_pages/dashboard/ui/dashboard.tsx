@@ -79,7 +79,6 @@ const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
-  console.log(dashboard?.salesHours.data);
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />

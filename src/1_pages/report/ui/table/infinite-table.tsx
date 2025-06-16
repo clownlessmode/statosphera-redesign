@@ -328,7 +328,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
-          console.log("onSortChanged TRIGGERRED");
           gridApiRef.current?.purgeInfiniteCache();
           gridApiRef.current?.refreshInfiniteCache();
         }}
