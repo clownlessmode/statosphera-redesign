@@ -42,7 +42,7 @@ export const TYPE_ORDER = [
 
 export const TYPE_DELIVERY = [
   {
-    label: "Доставка",
+    label: "Курьер",
     value: "Курьер",
     icon: Truck,
   },
@@ -50,6 +50,11 @@ export const TYPE_DELIVERY = [
     label: "Самовывоз",
     value: "Самовывоз",
     icon: Store,
+  },
+  {
+    label: "Сбермаркет",
+    value: "Сбермаркет",
+    icon: Globe,
   },
 ];
 

@@ -111,7 +111,7 @@ const OnlineFilter: FC = () => {
                       {...field}
                       selectAll
                       options={TYPE_DELIVERY}
-                      className="grid-cols-3"
+                      className="grid-cols-4"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("imDeliveryMethod", value);
