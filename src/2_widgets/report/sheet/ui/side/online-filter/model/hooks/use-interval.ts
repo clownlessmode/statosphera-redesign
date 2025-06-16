@@ -34,10 +34,10 @@ export const useInterval = (allData: any) => {
         label:
           interval.im_receive_interval ||
           "Интервал не указан (ID: " + interval.im_receive_interval?.[0] + ")",
-        value: String(JSON.stringify(interval.im_receive_interval || [])),
+        value: interval.im_receive_interval || [],
       }));
-      setIntervalOptions(apiOptions);
-      setIntervalLabels(apiOptions);
+      setIntervalOptions(apiOptions as any);
+      setIntervalLabels(apiOptions as any);
     } catch (error) {
       setIntervalOptions([]);
       setIntervalLabels([]);

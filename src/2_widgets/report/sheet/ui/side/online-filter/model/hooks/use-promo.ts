@@ -30,10 +30,10 @@ export const usePromo = (allData: any) => {
       const response = await getPromo(processFiltersDto(allData));
       const apiOptions = response.map((promo: PromoFilterResponse) => ({
         label: promo.im_promo,
-        value: String(JSON.stringify(promo.im_promo || [])),
+        value: promo.im_promo || [],
       }));
-      setPromoOptions(apiOptions);
-      setPromoLabels(apiOptions);
+      setPromoOptions(apiOptions as any);
+      setPromoLabels(apiOptions as any);
     } catch (error) {
       setPromoOptions([]);
       setPromoLabels([]);
