@@ -242,7 +242,7 @@ export type FiltersState = {
       managerAuto: string[];
     };
     check: {
-      tabNumber: string[];
+      tabNumber: number[];
       containsBankQr: boolean | null;
       paymentClass: "Безналичный" | "Наличный" | null;
       shift: number[];
