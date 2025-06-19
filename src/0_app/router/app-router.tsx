@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AnimatePresence } from "framer-motion";
-
 import RouteGuard from "./route-guard";
 import { ROUTES } from "./routes";
 import { Suspense } from "react";

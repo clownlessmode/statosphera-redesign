@@ -1,4 +1,5 @@
 export type Store = {
+  ipNightStore: string[];
   storeName: string;
   idStore: number;
   idPartner: number[]; // UInt32[]

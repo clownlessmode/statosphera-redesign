@@ -1,7 +1,5 @@
 import { Header } from "@widgets/header";
-
-import { DataTable } from "../../../5_shared/ui/table/data-table";
-
+import { DataTable } from "@shared/ui/table/data-table";
 import StoreDetails from "./store-details";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import StoresMap from "./stores-map";
@@ -11,6 +9,7 @@ import { useMemo, useState } from "react";
 import { columns } from "../model/columns";
 import { useStoresController } from "../model/api/controller";
 import Spinner from "@shared/ui/spinner";
+import { Store } from "../model/types";
 
 const Stores = () => {
   const [search, setSearch] = useState("");
@@ -64,7 +63,9 @@ const Stores = () => {
                 <DataTable
                   columns={columns}
                   data={filteredData || []}
-                  onRowClick={(row) => console.log("row clicked", row)}
+                  onRowClick={(row: Store) => {
+                    console.log("row clicked", row);
+                  }}
                   renderRowDialog={({ row, isOpen, onClose }) => (
                     <StoreDetails
                       idStore={row.idStore as number}
@@ -76,7 +77,6 @@ const Stores = () => {
               )}
             </div>
           </TabsContent>
-
           <TabsContent value="map">
             <StoresMap />
           </TabsContent>
