@@ -285,6 +285,7 @@ export const MultiSelect = React.forwardRef<
               {selectedValues.length > 0 && (
                 <>
                   <Button
+                    type="button"
                     variant="ghost"
                     className="flex-1 justify-center cursor-pointer"
                     onClick={handleClear}
@@ -298,6 +299,7 @@ export const MultiSelect = React.forwardRef<
                 </>
               )}
               <Button
+                type="button"
                 variant="ghost"
                 className="flex-1 justify-center cursor-pointer"
                 onClick={() => handlePopoverOpenChange(false)}
