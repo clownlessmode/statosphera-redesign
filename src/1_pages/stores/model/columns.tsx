@@ -15,7 +15,7 @@ export const columns: ColumnDef<Store>[] = [
     cell: ({ row }) => {
       const { session } = useSession();
       const isAdmin = session?.role === ROLES.ADMIN;
-      const isNightStore = row.original.nightStore;
+      const isNightStore = row.original.ipNightStore.length > 0;
       const store = row.original;
 
       if (!isAdmin || !isNightStore) return null;
@@ -60,6 +60,11 @@ export const columns: ColumnDef<Store>[] = [
   {
     accessorKey: "city",
     header: ({ column }) => <SortableHeader column={column} title="Город" />,
+    enableColumnFilter: true,
+  },
+  {
+    accessorKey: "formatStore",
+    header: ({ column }) => <SortableHeader column={column} title="Формат" />,
     enableColumnFilter: true,
   },
 ];
