@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Badge } from "@shared/ui/badge";
+import { cn } from "@shared/lib/utils";
+import { Circle } from "lucide-react";
 
 interface StatusBadgeProps {
   status: string | null | undefined;
@@ -27,9 +28,14 @@ const StatusBadge: FC<StatusBadgeProps> = ({
   }
 
   return (
-    <Badge variant={variant} className={`capitalize ${className}`}>
-      {normalizedStatus || "неизвестно"}
-    </Badge>
+    <Circle
+      fill="currentColor"
+      className={cn(
+        "size-2 rounded-full block",
+        variant === "positive" ? "text-positive" : "text-destructive",
+        className,
+      )}
+    />
   );
 };
 
