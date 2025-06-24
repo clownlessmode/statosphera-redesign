@@ -28,11 +28,7 @@ const WriteOffIndicator = ({
 }: Props) => {
   return (
     <>
-      {isLoading ||
-      !writeOff ||
-      !writeOffPercent ||
-      !writeOffYoY ||
-      !writeOffYoYPercent ? (
+      {isLoading ? (
         <WriteOffIndicatorSkeleton />
       ) : (
         <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
@@ -42,24 +38,28 @@ const WriteOffIndicator = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {writeOff?.toLocaleString()}₽ ({writeOffPercent}%)
+                {writeOff ? `${writeOff.toLocaleString()}₽` : null}{" "}
+                {writeOffPercent ? `(${writeOffPercent}%)` : null}
               </p>
-              <ArrowBigDownDash
-                className={cn(
-                  "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive",
-                  writeOffYoYPercent && writeOffYoYPercent > 0
-                    ? "rotate-180"
-                    : "",
-                )}
-                fill="currentColor"
-              />
+              {writeOffYoYPercent && negative !== undefined && (
+                <ArrowBigDownDash
+                  className={cn(
+                    "w-4 h-4",
+                    negative ? "text-destructive" : "text-positive",
+                    writeOffYoYPercent && writeOffYoYPercent > 0
+                      ? "rotate-180"
+                      : "",
+                  )}
+                  fill="currentColor"
+                />
+              )}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {writeOffYoY?.toLocaleString()}₽ ({writeOffYoYPercent}%)
+              {writeOffYoY ? `${writeOffYoY.toLocaleString()}₽` : null}{" "}
+              {writeOffYoYPercent ? `(${writeOffYoYPercent}%)` : null}
             </p>
           </CardFooter>
         </Card>

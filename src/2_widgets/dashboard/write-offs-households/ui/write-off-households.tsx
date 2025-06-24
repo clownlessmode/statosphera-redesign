@@ -38,31 +38,35 @@ const WriteOffHouseholds = ({
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Списания (ХОЗ-ы)</CardTitle>
-              {/* <Link to="/dashboard/margin" className="p-0">
-                <ExternalLink className="w-4 h-4" />
-              </Link> */}
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {householdGoods?.toLocaleString()}₽ ({householdGoodsPercent}%)
+                {householdGoods ? `${householdGoods.toLocaleString()}₽` : null}{" "}
+                {householdGoodsPercent ? `(${householdGoodsPercent}%)` : null}
               </p>
-              <ArrowBigDownDash
-                className={cn(
-                  "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive",
-                  householdGoodsYoYPercent && householdGoodsYoYPercent > 0
-                    ? "rotate-180"
-                    : "",
-                )}
-                fill="currentColor"
-              />
+              {householdGoodsYoYPercent && negative !== undefined && (
+                <ArrowBigDownDash
+                  className={cn(
+                    "w-4 h-4",
+                    negative ? "text-destructive" : "text-positive",
+                    householdGoodsYoYPercent && householdGoodsYoYPercent > 0
+                      ? "rotate-180"
+                      : "",
+                  )}
+                  fill="currentColor"
+                />
+              )}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {householdGoodsYoY?.toLocaleString()}₽ ({householdGoodsYoYPercent}
-              %)
+              {householdGoodsYoY
+                ? `${householdGoodsYoY.toLocaleString()}₽`
+                : null}{" "}
+              {householdGoodsYoYPercent
+                ? `(${householdGoodsYoYPercent}%)`
+                : null}
             </p>
           </CardFooter>
         </Card>

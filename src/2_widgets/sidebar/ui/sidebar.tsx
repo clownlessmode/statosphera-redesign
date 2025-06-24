@@ -29,6 +29,7 @@ import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 const Sidebar = ({
   children,
   ...props
@@ -39,13 +40,21 @@ const Sidebar = ({
     navMain: [
       {
         title: "Продажи",
-        url: `${ROUTES_PATH.SALES_DYNAMICS}?open=false&tab=${tab}`,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : `${ROUTES_PATH.SALES_DYNAMICS}?open=false&tab=${tab}`,
         icon: DollarSign,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
         title: "Отчёты",
-        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
         icon: FileChartColumn,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
         title: "Дайджесты",
@@ -54,8 +63,12 @@ const Sidebar = ({
       },
       {
         title: "Стандарты",
-        url: ROUTES_PATH.STANDARTS,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : ROUTES_PATH.STANDARTS,
         icon: FileQuestion,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
 
       {
@@ -65,8 +78,12 @@ const Sidebar = ({
       },
       {
         title: "Номенклатура",
-        url: ROUTES_PATH.PRODUCTS,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : ROUTES_PATH.PRODUCTS,
         icon: PanelsTopLeft,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
         title: "Гриль",

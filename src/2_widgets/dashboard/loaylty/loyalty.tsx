@@ -16,7 +16,7 @@ interface Props {
 const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading }: Props) => {
   return (
     <>
-      {isLoading || !appLoyalPercent || !checkLoyal ? (
+      {isLoading ? (
         <LoyaltySkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between py-2">
@@ -25,13 +25,15 @@ const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading }: Props) => {
               <CardTitle>Применение карт лояльности</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">{checkLoyal} раз</p>
+              <p className=" text-xl font-bold">
+                {checkLoyal ? `${checkLoyal} раз` : null}
+              </p>
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Доля в процентах</p>
             <p className="w-full text-muted-foreground font-bold">
-              {appLoyalPercent?.toLocaleString()}%
+              {appLoyalPercent ? `${appLoyalPercent.toLocaleString()}%` : null}
             </p>
           </CardFooter>
         </Card>

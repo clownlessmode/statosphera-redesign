@@ -26,7 +26,7 @@ const AverageCheck = ({
 }: Props) => {
   return (
     <>
-      {isLoading || !avgCheck || !avgCheckYoY || !avgCheckYoYPercent ? (
+      {isLoading ? (
         <AverageCheckSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between">
@@ -36,24 +36,28 @@ const AverageCheck = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {avgCheck?.toLocaleString()}₽ ({avgCheckYoYPercent}%)
+                {avgCheck ? `${avgCheck.toLocaleString()}₽` : null}{" "}
+                {avgCheckYoYPercent ? `(${avgCheckYoYPercent}%)` : null}
               </p>
-              <ArrowBigDownDash
-                className={cn(
-                  "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive",
-                  avgCheckYoYPercent && avgCheckYoYPercent > 0
-                    ? "rotate-180"
-                    : "",
-                )}
-                fill="currentColor"
-              />
+              {avgCheckYoYPercent && negative !== undefined && (
+                <ArrowBigDownDash
+                  className={cn(
+                    "w-4 h-4",
+                    negative ? "text-destructive" : "text-positive",
+                    avgCheckYoYPercent && avgCheckYoYPercent > 0
+                      ? "rotate-180"
+                      : "",
+                  )}
+                  fill="currentColor"
+                />
+              )}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {avgCheckYoY?.toLocaleString()}₽ ({avgCheckYoYPercent}%)
+              {avgCheckYoY ? `${avgCheckYoY.toLocaleString()}₽` : null}{" "}
+              {avgCheckYoYPercent ? `(${avgCheckYoYPercent}%)` : null}
             </p>
           </CardFooter>
         </Card>

@@ -14,7 +14,7 @@ interface MarginProps {
 const Margin = ({ data, isLoading }: MarginProps) => {
   return (
     <>
-      {isLoading || !data ? (
+      {isLoading ? (
         <MarginSkeleton />
       ) : (
         <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
@@ -27,7 +27,7 @@ const Margin = ({ data, isLoading }: MarginProps) => {
             </CardContent>
           </div>
           <CardFooter className="text-3xl font-bold items-start flex flex-row text-left w-fit">
-            <span>{data}%</span>
+            {!data ? <span>Нет данных</span> : <span>{data}%</span>}
           </CardFooter>
         </Card>
       )}

@@ -30,10 +30,11 @@ import {
   STORE_CONDITIONS,
   useFiltersStore,
 } from "@widgets/report/sheet/model/filters-store";
-import { CHANNEL_SHOP, STATUS, TIME } from "../config";
+import { STATUS, TIME } from "../config";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
+import { useChannel } from "../model/hooks/use-channel";
 
 export const ShopsFilter: FC = () => {
   const form = useForm();
@@ -109,7 +110,7 @@ export const ShopsFilter: FC = () => {
       updateStoreFilter("idStore", []);
     }
   }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
-
+  const { CHANNEL_SHOP } = useChannel();
   return (
     <Card className="w-full mr-4">
       <CardHeader>

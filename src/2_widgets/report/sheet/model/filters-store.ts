@@ -113,12 +113,12 @@ export enum GROUP_COLUMN_CHECK_GRAPH {
   YEAR = FULL_GROUPS_SERVER.YEAR,
 }
 export enum CHANNEL {
-  WENDING = "Вендинг",
-  RENT = "Франшиза в аренду",
-  INVEST = "Франшиза инвестиционная",
   FRS = "ФРС",
+  INVEST = "Франшиза инвестиционная",
+  RENT = "Франшиза в аренду",
+  FOODTRUCK = "Фудтрак",
   MICROMARKET = "Микромаркет",
-  OTHER = "",
+  WENDING = "Вендинг",
   SERVICES_STORE = "Служебный магазин ООО Волков",
   TRADING_NETWORK = "Отдел торговой сети",
 }
@@ -127,6 +127,11 @@ export enum FRS_CHANNEL {
   FRS = "ФРС",
   INVEST = "Франшиза инвестиционная",
   RENT = "Франшиза в аренду",
+  FOODTRUCK = "Фудтрак",
+  MICROMARKET = "Микромаркет",
+  WENDING = "Вендинг",
+  SERVICES_STORE = "Служебный магазин ООО Волков",
+  TRADING_NETWORK = "Отдел торговой сети",
 }
 export enum STORE_CONDITIONS {
   OPEN = "Действующие",

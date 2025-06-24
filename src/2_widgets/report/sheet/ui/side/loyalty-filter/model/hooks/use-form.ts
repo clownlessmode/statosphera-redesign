@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import { defaultValues, FormValues, schema } from "../../config";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { processArrayableValue } from "@shared/lib/arrayable-string";
 
 export const useForm = () => {
   const {
@@ -24,8 +25,11 @@ export const useForm = () => {
           : [ageStart || 0, ageEnd || 100],
       cardNumber: cardNumber || defaultValues.cardNumber,
       groupAge: groupAge || defaultValues.groupAge,
-      guidBonus: guidBonus || defaultValues.guidBonus,
-      guidDiscount: guidDiscount || defaultValues.guidDiscount,
+      guidBonus: processArrayableValue(guidBonus, defaultValues.guidBonus),
+      guidDiscount: processArrayableValue(
+        guidDiscount,
+        defaultValues.guidDiscount,
+      ),
       isLoyal: isLoyal || defaultValues.isLoyal,
       sex: sex || defaultValues.sex,
     },

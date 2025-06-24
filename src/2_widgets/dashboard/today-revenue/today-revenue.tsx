@@ -39,26 +39,35 @@ const TodayRevenue = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {proceedsTotal?.toLocaleString()}₽ ({proceedsWoYPercent})
+                {proceedsTotal ? `${proceedsTotal.toLocaleString()}₽` : null}{" "}
+                {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
               </p>
-              <ArrowBigDownDash
-                className={cn(
-                  "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive rotate-180",
-                )}
-                fill="currentColor"
-              />
+              {proceedsWoYPercent && negative !== undefined && (
+                <ArrowBigDownDash
+                  className={cn(
+                    "w-4 h-4",
+                    negative ? "text-destructive" : "text-positive rotate-180",
+                  )}
+                  fill="currentColor"
+                />
+              )}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Выручка на прошлой неделе</p>
-            <p className="w-full text-primary-foreground font-bold">
-              {weekAgoProceedsTotal?.toLocaleString()}₽ ({proceedsWoYPercent})
+            <p className="w-full text-muted-foreground font-bold">
+              {weekAgoProceedsTotal
+                ? `${weekAgoProceedsTotal.toLocaleString()}₽`
+                : null}{" "}
+              {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
 
             <p className="w-full">Изменения к последнему закрытому часу</p>
             <p className="w-full text-muted-foreground font-bold">
-              {weekAgoProceedsTotal?.toLocaleString()}₽ ({proceedsWoYPercent})
+              {weekAgoProceedsTotal
+                ? `${weekAgoProceedsTotal.toLocaleString()}₽`
+                : null}{" "}
+              {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
           </CardFooter>
         </Card>

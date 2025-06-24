@@ -26,7 +26,7 @@ const CurrentCheck = ({
 }: Props) => {
   return (
     <>
-      {isLoading || !check || !checkYoY || !checkYoYPercent ? (
+      {isLoading ? (
         <CurrentCheckSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between">
@@ -36,22 +36,26 @@ const CurrentCheck = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {check?.toLocaleString()}₽ ({checkYoYPercent}%)
+                {check ? `${check.toLocaleString()}` : null}{" "}
+                {checkYoYPercent ? `(${checkYoYPercent}%)` : null}
               </p>
-              <ArrowBigDownDash
-                className={cn(
-                  "w-4 h-4",
-                  negative ? "text-destructive" : "text-positive",
-                  checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : "",
-                )}
-                fill="currentColor"
-              />
+              {checkYoYPercent && negative !== undefined && (
+                <ArrowBigDownDash
+                  className={cn(
+                    "w-4 h-4",
+                    negative ? "text-destructive" : "text-positive",
+                    checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : "",
+                  )}
+                  fill="currentColor"
+                />
+              )}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {checkYoY?.toLocaleString()}₽ ({checkYoYPercent}%)
+              {checkYoY ? `${checkYoY.toLocaleString()}` : null}{" "}
+              {checkYoYPercent ? `(${checkYoYPercent}%)` : null}
             </p>
           </CardFooter>
         </Card>

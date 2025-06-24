@@ -1,33 +1,8 @@
 import {
   AGE_GROUP,
-  CHANNEL,
   STORE_CONDITIONS,
 } from "@widgets/report/sheet/model/filters-store";
-import {
-  BarChart3,
-  KeySquare,
-  Lock,
-  LockOpen,
-  ShoppingBag,
-} from "lucide-react";
-export const CHANNEL_SHOP = [
-  {
-    label: "В аренду",
-    value: CHANNEL.RENT,
-    icon: KeySquare,
-  },
-  {
-    label: "Инвестиционная",
-    value: CHANNEL.INVEST,
-    icon: BarChart3,
-    disableCheck: true,
-  },
-  {
-    label: "ФРС",
-    value: CHANNEL.FRS,
-    icon: ShoppingBag,
-  },
-];
+import { Lock, LockOpen } from "lucide-react";
 
 export const TIME = [
   {
