@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { defaultValues, FormValues, schema } from "../../config";
+import { processArrayableValue } from "@shared/lib/arrayable-string";
 
 export const useForm = () => {
   const {
@@ -22,21 +23,46 @@ export const useForm = () => {
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      directionProducts: directionProducts || defaultValues.directionProducts,
-      groupFranchise: groupFranchise || defaultValues.groupFranchise,
-      groupsEconomist: groupsEconomist || defaultValues.groupsEconomist,
-      idGroupMain: idGroupMain || defaultValues.idGroupMain,
-      idProduct: idProduct || defaultValues.idProduct,
+      directionProducts: processArrayableValue(
+        directionProducts,
+        defaultValues.directionProducts,
+      ),
+      groupFranchise: processArrayableValue(
+        groupFranchise,
+        defaultValues.groupFranchise,
+      ),
+      groupsEconomist: processArrayableValue(
+        groupsEconomist,
+        defaultValues.groupsEconomist,
+      ),
+      idGroupMain: processArrayableValue(
+        idGroupMain,
+        defaultValues.idGroupMain,
+      ),
+      idProduct: processArrayableValue(idProduct, defaultValues.idProduct),
       managerAuto: managerAuto || defaultValues.managerAuto,
       ppProducts: ppProducts || defaultValues.ppProducts,
-      seasonalityProducts:
-        seasonalityProducts || defaultValues.seasonalityProducts,
-      subDivisionProducts:
-        subDivisionProducts || defaultValues.subDivisionProducts,
-      subGroups: subGroups || defaultValues.subGroups,
-      subSubGroups: subSubGroups || defaultValues.subSubGroups,
-      teamProducts: teamProducts || defaultValues.teamProducts,
-      typeProducts: typeProducts || defaultValues.typeProducts,
+      seasonalityProducts: processArrayableValue(
+        seasonalityProducts,
+        defaultValues.seasonalityProducts,
+      ),
+      subDivisionProducts: processArrayableValue(
+        subDivisionProducts,
+        defaultValues.subDivisionProducts,
+      ),
+      subGroups: processArrayableValue(subGroups, defaultValues.subGroups),
+      subSubGroups: processArrayableValue(
+        subSubGroups,
+        defaultValues.subSubGroups,
+      ),
+      teamProducts: processArrayableValue(
+        teamProducts,
+        defaultValues.teamProducts,
+      ),
+      typeProducts: processArrayableValue(
+        typeProducts,
+        defaultValues.typeProducts,
+      ),
     },
     mode: "onSubmit",
   });

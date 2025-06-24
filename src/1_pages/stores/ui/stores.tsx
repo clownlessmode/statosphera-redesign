@@ -16,15 +16,22 @@ const Stores = () => {
   const { stores: data, isStoresLoading } = useStoresController();
 
   const filteredData = useMemo(() => {
-    if (!search.trim() || !data) return data;
-
-    const lowerSearch = search.toLowerCase();
-
-    return data.filter((store) =>
-      Object.values(store).some((value) =>
-        String(value).toLowerCase().includes(lowerSearch),
-      ),
-    );
+    let result = data || [];
+    if (search.trim()) {
+      const lowerSearch = search.toLowerCase();
+      result = result.filter((store) =>
+        Object.values(store).some((value) =>
+          String(value).toLowerCase().includes(lowerSearch),
+        ),
+      );
+    }
+    return result.sort((a, b) => {
+      const aIsNight = a.nightStore || a.ipNightStore.length > 0;
+      const bIsNight = b.nightStore || b.ipNightStore.length > 0;
+      if (aIsNight && !bIsNight) return -1;
+      if (!aIsNight && bIsNight) return 1;
+      return a.idStore - b.idStore;
+    });
   }, [search, data]);
 
   return (

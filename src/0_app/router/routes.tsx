@@ -67,6 +67,9 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.DASHBOARD,
     variant: "private",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.SERVICE_MANAGER),
+    ],
     element: <Dashboard />,
     layout: Sidebar,
     label: "Главная",

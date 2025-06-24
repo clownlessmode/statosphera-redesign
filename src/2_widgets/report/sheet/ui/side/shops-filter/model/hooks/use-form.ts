@@ -3,12 +3,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { FormValues, schema, defaultValues } from "../../config";
+import { processArrayableValue } from "@shared/lib/arrayable-string";
 
 export const useForm = () => {
   const {
     ageGroup,
     channel,
-    district,
+
     idCity,
     idLegalEntity,
     idManager,
@@ -21,12 +22,14 @@ export const useForm = () => {
     defaultValues: {
       ageGroup: ageGroup || defaultValues.ageGroup,
       channel: channel || defaultValues.channel,
-      district: district || defaultValues.district,
-      idCity: idCity || defaultValues.idCity,
-      idLegalEntity: idLegalEntity || defaultValues.idLegalEntity,
-      idManager: idManager || defaultValues.idManager,
-      idRegion: idRegion || defaultValues.idRegion,
-      idStore: idStore || defaultValues.idStore,
+      idCity: processArrayableValue(idCity, defaultValues.idCity),
+      idLegalEntity: processArrayableValue(
+        idLegalEntity,
+        defaultValues.idLegalEntity,
+      ),
+      idManager: processArrayableValue(idManager, defaultValues.idManager),
+      idRegion: processArrayableValue(idRegion, defaultValues.idRegion),
+      idStore: processArrayableValue(idStore, defaultValues.idStore),
       storeCondition: storeCondition || defaultValues.storeCondition,
     },
     mode: "all",

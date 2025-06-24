@@ -56,6 +56,7 @@ interface MultiSelectProps
   isLoading?: boolean;
   side?: "top" | "bottom";
   externalLabels?: { value: string; label: string }[];
+  wrapDefaultInArray?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<

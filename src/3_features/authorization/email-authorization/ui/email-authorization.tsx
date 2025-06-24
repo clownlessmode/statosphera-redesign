@@ -15,6 +15,7 @@ import { FormValues } from "../model/types";
 import { useAuthorizationController } from "../model/api/controller";
 import { useSession } from "@entities/session";
 import { useNavigate } from "react-router";
+import { ROLES } from "@shared/constants/roles";
 export const EmailAuthorization: FC = () => {
   const form = useForm();
   const { authorize, isAuthorizationLoading } = useAuthorizationController();
@@ -23,19 +24,11 @@ export const EmailAuthorization: FC = () => {
   const handleSubmit = async (data: FormValues) => {
     const session = await authorize(data);
     setSession(session);
-
-    // {
-    // auth: true,
-    // idRole: 1,
-    // idStore: [1],
-    // idUser: 1,
-    // isAdminProduct: true,
-    // isGrillProject: true,
-    // role: "ADMIN",
-    // school: false,
-    // userName: "Тестовый Юзер Обрабатывающий",
-    // }
-    navigate("/");
+    if (session.role == ROLES.SERVICE_MANAGER) {
+      navigate("/stores");
+    } else {
+      navigate("/");
+    }
   };
   return (
     <Form {...form}>
