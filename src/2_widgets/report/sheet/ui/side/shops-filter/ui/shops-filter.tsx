@@ -135,7 +135,7 @@ export const ShopsFilter: FC = () => {
                       {...field}
                       disabled={isMyShopsMode}
                       onChange={(values) => {
-                        field.onChange(values);
+                        field.onChange(values as FRS_CHANNEL[]);
                         updateStoreFilter("channel", values as FRS_CHANNEL[]);
                       }}
                       options={CHANNEL_SHOP}

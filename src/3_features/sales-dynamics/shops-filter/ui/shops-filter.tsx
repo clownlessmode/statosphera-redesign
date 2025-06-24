@@ -129,7 +129,7 @@ const ShopsFilter = () => {
                           disabled={selectedMyShops}
                           {...field}
                           onChange={(values) => {
-                            field.onChange(values);
+                            field.onChange(values as FRS_CHANNEL[]);
                             updateFilters("channel", values as FRS_CHANNEL[]);
                           }}
                           options={CHANNEL_SHOP}
