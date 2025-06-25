@@ -4,7 +4,7 @@ export enum ROLES {
   ANALITIK = "analyst",
   PARTNER = "partner",
   ADMIN = "admin",
-  MANAGER_STORE = "store_manager",
+  MANAGER_STORE = "store",
   OFFICE_MM = "office_mm",
   OFFICE_UNION = "office_union",
   SERVICE_MANAGER = "service",
