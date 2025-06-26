@@ -178,6 +178,51 @@ export default function SaveReport() {
       // Получаем текущие данные из store
       const currentData = getApiPayload();
 
+      // Детальное логирование для диагностики структуры отчета
+      console.log("=== ДИАГНОСТИКА СТРУКТУРЫ ОТЧЕТА ===");
+      console.log(
+        "Полные данные из getApiPayload:",
+        JSON.stringify(currentData, null, 2),
+      );
+      console.log("Тип отчета:", tab);
+      console.log("Режим отчета:", tab === "commerce" ? "COMMERCIAL" : "CHECK");
+
+      // Проверяем фильтры
+      console.log("=== ФИЛЬТРЫ ===");
+      console.log("Фильтры магазинов:", currentData.filters.store);
+      console.log("Фильтры товаров:", currentData.filters.product);
+      console.log("Фильтры чеков:", currentData.filters.check);
+      console.log("Фильтры лояльности:", currentData.filters.loyal);
+      console.log(
+        "Фильтры интернет-магазина:",
+        currentData.filters.onlineStore,
+      );
+
+      // Проверяем показатели и группировки
+      console.log("=== ПОКАЗАТЕЛИ И ГРУППИРОВКИ ===");
+      console.log("Показатели (values):", currentData.values);
+      console.log("Группировки (groups):", currentData.groups);
+      console.log("Тип группировок:", typeof currentData.groups);
+      console.log("Является ли массивом:", Array.isArray(currentData.groups));
+
+      // Проверяем даты
+      console.log("=== ДАТЫ ===");
+      console.log("Дата начала:", currentData.filterDate.dateStart);
+      console.log("Дата окончания:", currentData.filterDate.dateEnd);
+      console.log("Время начала:", currentData.filterTime.timeStart);
+      console.log("Время окончания:", currentData.filterTime.timeEnd);
+
+      // Проверяем сортировку
+      console.log("=== СОРТИРОВКА ===");
+      console.log("Сортировка:", currentData.sorts);
+
+      // Проверяем пагинацию
+      console.log("=== ПАГИНАЦИЯ ===");
+      console.log("Лимит:", currentData.limit);
+      console.log("Смещение:", currentData.offset);
+
+      console.log("=== КОНЕЦ ДИАГНОСТИКИ ===");
+
       // Формируем запрос для сохранения
       const saveRequest: SaveReportRequest = {
         filters: currentData.filters,
@@ -187,6 +232,13 @@ export default function SaveReport() {
         reportName: reportName.trim(),
         mode: tab === "commerce" ? "COMMERCIAL" : "CHECK",
       };
+
+      console.log(
+        "Запрос на сохранение:",
+        JSON.stringify(saveRequest, null, 2),
+      );
+
+      // Используем функцию валидации для проверки структуры
 
       // Сохраняем отчет
       const result = await saveReport(saveRequest);

@@ -7,7 +7,7 @@ import {
 } from "@shared/ui/card";
 import { SavedReport } from "../config";
 import { Button } from "@shared/ui/button";
-import { CheckCircle2, Share2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import {
@@ -44,53 +44,62 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
     updateUniques,
     updateIndicators,
     resetAllFilters,
+    getApiPayload,
   } = useFiltersStore();
 
   const applyFiltersToStore = () => {
     // Сначала сброс всех фильтров
     resetAllFilters();
 
+    console.log("=== ПРИМЕНЕНИЕ СОХРАНЕННОГО ОТЧЕТА ===");
+    console.log("Применяем сохраненный отчет:", data);
+    console.log("Группировки из отчета:", data.report.groups);
+    console.log("Тип группировок:", typeof data.report.groups);
+    console.log("Является ли массивом:", Array.isArray(data.report.groups));
+    console.log("Показатели из отчета:", data.report.values);
+    console.log("Уникальные значения из отчета:", data.report.uniqueValues);
+
     // Применяем фильтры магазинов
     updateStoreFilter(
       "idStore",
-      Array.isArray(data.report.filters.stores)
-        ? data.report.filters.stores
+      Array.isArray(data.report.filters.store?.idStore)
+        ? data.report.filters.store.idStore
         : [],
     );
     updateStoreFilter(
       "idCity",
-      Array.isArray(data.report.filters.cities)
-        ? data.report.filters.cities
+      Array.isArray(data.report.filters.store?.idCity)
+        ? data.report.filters.store.idCity
         : [],
     );
     updateStoreFilter(
       "idRegion",
-      Array.isArray(data.report.filters.regions)
-        ? data.report.filters.regions
+      Array.isArray(data.report.filters.store?.idRegion)
+        ? data.report.filters.store.idRegion
         : [],
     );
     updateStoreFilter(
       "idManager",
-      Array.isArray(data.report.filters.managers)
-        ? data.report.filters.managers
+      Array.isArray(data.report.filters.store?.idManager)
+        ? data.report.filters.store.idManager
         : [],
     );
     updateStoreFilter(
       "storeCondition",
-      Array.isArray(data.report.filters.storeStatus)
-        ? data.report.filters.storeStatus
+      Array.isArray(data.report.filters.store?.storeCondition)
+        ? data.report.filters.store.storeCondition
         : [],
     );
     updateStoreFilter(
       "ageGroup",
-      Array.isArray(data.report.filters.ageStatus)
-        ? data.report.filters.ageStatus
+      Array.isArray(data.report.filters.store?.ageGroup)
+        ? data.report.filters.store.ageGroup
         : [],
     );
     updateStoreFilter(
       "channel",
-      Array.isArray(data.report.filters.channel)
-        ? data.report.filters.channel
+      Array.isArray(data.report.filters.store?.channel)
+        ? data.report.filters.store.channel
         : [],
     );
 
@@ -100,9 +109,7 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
         "groupFranchise",
         Array.isArray(data.report.filters.product.groupFranchise)
           ? data.report.filters.product.groupFranchise
-          : Array.isArray(data.report.filters.product.groupsFranchise)
-            ? data.report.filters.product.groupsFranchise
-            : [],
+          : [],
       );
       updateProductFilter(
         "ppProducts",
@@ -160,17 +167,13 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
         "idGroupMain",
         Array.isArray(data.report.filters.product.idGroupMain)
           ? data.report.filters.product.idGroupMain
-          : Array.isArray(data.report.filters.product.groups)
-            ? data.report.filters.product.groups
-            : [],
+          : [],
       );
       updateProductFilter(
         "idProduct",
         Array.isArray(data.report.filters.product.idProduct)
           ? data.report.filters.product.idProduct
-          : Array.isArray(data.report.filters.product.products)
-            ? data.report.filters.product.products
-            : [],
+          : [],
       );
       updateProductFilter(
         "seasonalityProducts",
@@ -212,9 +215,7 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
         "cashBox",
         Array.isArray(data.report.filters.check.cashBox)
           ? data.report.filters.check.cashBox
-          : Array.isArray(data.report.filters.check.cashbox)
-            ? data.report.filters.check.cashbox
-            : [],
+          : [],
       );
       updateCheckFilter(
         "checkNumber",
@@ -308,24 +309,121 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
 
     // Применяем даты
     updateDateFilter(
-      new Date(data.report.filters.startDate).toISOString().split("T")[0],
-      new Date(data.report.filters.endDate).toISOString().split("T")[0],
+      data.report.filterDate.dateStart,
+      data.report.filterDate.dateEnd,
     );
 
-    // Применяем время
-    updateTimeFilter(
-      data.report.filters.timeStart || "",
-      data.report.filters.timeEnd || "",
-    );
+    // Применяем время (если есть)
+    updateTimeFilter("", "");
 
     // Применяем группировки, уникальные значения и показатели
-    updateGroups(data.report.groupingColumns);
-    updateUniques(data.report.uniqueValues);
-    updateIndicators(data.report.indicators);
+    console.log("=== ПРИМЕНЕНИЕ ГРУППИРОВОК И ПОКАЗАТЕЛЕЙ ===");
+    console.log("Применяем группировки:", data.report.groups);
+    updateGroups(data.report.groups);
+    console.log("Группировки применены:", data.report.groups);
+
+    console.log(
+      "Применяем уникальные значения:",
+      data.report.uniqueValues || [],
+    );
+    updateUniques(data.report.uniqueValues || []);
+    console.log("Уникальные значения применены");
+
+    console.log("Применяем показатели:", data.report.values);
+    updateIndicators(data.report.values);
+    console.log("Показатели применены");
+
+    // Проверяем состояние store после применения
+    const currentState = getApiPayload();
+    console.log("=== СОСТОЯНИЕ STORE ПОСЛЕ ПРИМЕНЕНИЯ ===");
+    console.log("Текущие группировки в store:", currentState.groups);
+    console.log("Текущие values в store:", currentState.values);
+    console.log("=== КОНЕЦ ПРИМЕНЕНИЯ ===");
   };
 
   const handleApplyReport = async () => {
     try {
+      console.log("=== ДИАГНОСТИКА СОХРАНЕННОГО ОТЧЕТА ===");
+      console.log(
+        "Полные данные сохраненного отчета:",
+        JSON.stringify(data, null, 2),
+      );
+      console.log("Структура report:", JSON.stringify(data.report, null, 2));
+
+      // Проверяем основные поля
+      console.log("=== ОСНОВНЫЕ ПОЛЯ ===");
+      console.log("ID отчета:", data.idReport);
+      console.log("Название отчета:", data.nameReport);
+      console.log("Дата создания:", data.dateAdd);
+      console.log("Режим отчета:", data.report.mode);
+
+      // Проверяем показатели и группировки
+      console.log("=== ПОКАЗАТЕЛИ И ГРУППИРОВКИ ===");
+      console.log("Показатели:", data.report.values);
+      console.log("Уникальные значения:", data.report.uniqueValues);
+      console.log("Группировки:", data.report.groups);
+      console.log("Тип группировок:", typeof data.report.groups);
+      console.log("Является ли массивом:", Array.isArray(data.report.groups));
+
+      // Проверяем фильтры
+      console.log("=== ФИЛЬТРЫ ===");
+      console.log("Все фильтры:", JSON.stringify(data.report.filters, null, 2));
+
+      if (data.report.filters.stores) {
+        console.log("Магазины:", data.report.filters.stores);
+        console.log("Тип магазинов:", typeof data.report.filters.stores);
+        console.log(
+          "Является ли массивом:",
+          Array.isArray(data.report.filters.stores),
+        );
+      }
+
+      if (data.report.filters.cities) {
+        console.log("Города:", data.report.filters.cities);
+        console.log("Тип городов:", typeof data.report.filters.cities);
+        console.log(
+          "Является ли массивом:",
+          Array.isArray(data.report.filters.cities),
+        );
+      }
+
+      if (data.report.filters.product) {
+        console.log(
+          "Фильтры товаров:",
+          JSON.stringify(data.report.filters.product, null, 2),
+        );
+      }
+
+      if (data.report.filters.check) {
+        console.log(
+          "Фильтры чеков:",
+          JSON.stringify(data.report.filters.check, null, 2),
+        );
+      }
+
+      if (data.report.filters.loyal) {
+        console.log(
+          "Фильтры лояльности:",
+          JSON.stringify(data.report.filters.loyal, null, 2),
+        );
+      }
+
+      if (data.report.filters.onlineStore) {
+        console.log(
+          "Фильтры интернет-магазина:",
+          JSON.stringify(data.report.filters.onlineStore, null, 2),
+        );
+      }
+
+      // Проверяем даты
+      console.log("=== ДАТЫ ===");
+      console.log("Дата начала:", data.report.filters.startDate);
+      console.log("Дата окончания:", data.report.filters.endDate);
+      console.log("Время начала:", data.report.filters.timeStart);
+      console.log("Время окончания:", data.report.filters.timeEnd);
+
+      console.log("=== КОНЕЦ ДИАГНОСТИКИ СОХРАНЕННОГО ОТЧЕТА ===");
+
       onOpenChange(false);
       clearAll();
 
@@ -435,9 +533,7 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
               : [],
             cashBox: Array.isArray(data.report.filters.check?.cashBox)
               ? data.report.filters.check.cashBox
-              : Array.isArray(data.report.filters.check?.cashbox)
-                ? data.report.filters.check.cashbox
-                : [],
+              : [],
             checkNumber: Array.isArray(data.report.filters.check?.checkNumber)
               ? data.report.filters.check.checkNumber
               : [],
@@ -500,27 +596,32 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
             article: [],
           },
         },
-        values: [...data.report.indicators, ...data.report.uniqueValues],
-        groups: data.report.groupingColumns,
+        values: [...data.report.values, ...(data.report.uniqueValues || [])],
+        groups: data.report.groups,
         filterDate: {
-          dateStart: new Date(data.report.filters.startDate)
-            .toISOString()
-            .split("T")[0],
-          dateEnd: new Date(data.report.filters.endDate)
-            .toISOString()
-            .split("T")[0],
+          dateStart: data.report.filterDate.dateStart,
+          dateEnd: data.report.filterDate.dateEnd,
         },
         filterTime: {
-          timeStart: data.report.filters.timeStart || "",
-          timeEnd: data.report.filters.timeEnd || "",
+          timeStart: "",
+          timeEnd: "",
         },
         sorts: {
-          colId: [data.report.indicators[0]], // Берем первый показатель
+          colId: [data.report.values[0]], // Берем первый показатель
           sort: "desc",
         },
         limit: 100,
         offset: 0,
       };
+
+      console.log("=== API ЗАПРОС ===");
+      console.log("API Payload для графика:", {
+        ...apiPayload,
+        values: [apiPayload.values[0]],
+        groups: ["day"],
+      });
+      console.log("API Payload для таблицы:", apiPayload);
+      console.log("API Payload для итогов:", apiPayload);
 
       // Загружаем данные параллельно
       const [graph, total, table] = await Promise.all([
@@ -534,6 +635,11 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
         getTotal(apiPayload),
         getTable(apiPayload),
       ]);
+
+      console.log("=== РЕЗУЛЬТАТЫ API ===");
+      console.log("График:", graph);
+      console.log("Итоги:", total);
+      console.log("Таблица:", table);
 
       // Устанавливаем полученные данные
       setGraph(graph);
@@ -561,15 +667,15 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
           {new Date(data.dateAdd).toLocaleDateString()}
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-2">
+      <CardContent className="grid grid-cols-1 gap-2">
         <Button size="sm" onClick={handleApplyReport}>
           Применить отчет
           <CheckCircle2 className="w-4 h-4" />
         </Button>
-        <Button disabled variant="outline" size="sm">
+        {/* <Button disabled variant="outline" size="sm">
           Поделиться отчетом
           <Share2 className="w-4 h-4" />
-        </Button>
+        </Button> */}
       </CardContent>
     </Card>
   );
