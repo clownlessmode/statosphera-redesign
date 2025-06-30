@@ -19,7 +19,7 @@ import HoursRevenueSkeleton from "@widgets/dashboard/hours-revenue/hours-revenue
 import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
 import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
 import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
-import NPS from "@widgets/dashboard/nps/nps";
+import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
 const WeeklyRevenue = lazy(
@@ -93,7 +93,7 @@ const Dashboard = () => {
             isLoading={isDashboardLoading}
           />
         </Suspense>
-        <NPS />
+        <Nps />
 
         <Suspense fallback={<ChannelRevenueSkeleton />}>
           <ChannelRevenue
