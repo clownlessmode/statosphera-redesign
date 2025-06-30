@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 
 import { NpsSkeleton } from "./nps-skeleton";
 import { useNpsController } from "../api";
+import { Modal } from "./modal/modal";
 
 export const Nps = () => {
   const { summaryNps, isSummaryNpsLoading, isSummaryNpsError } =
@@ -13,7 +14,7 @@ export const Nps = () => {
   }
 
   return (
-    <Card className="w-full items-center justify-center">
+    <Card className="w-full items-center justify-center px-8">
       <div className="relative inline-block">
         <motion.h1
           className="text-9xl  font-extrabold text-primary leading-none relative z-10"
@@ -59,6 +60,7 @@ export const Nps = () => {
         ))}
       </div>
       <h2 className="text-2xl font-bold mb-4">Общий NPS</h2>
+      <Modal />
     </Card>
   );
 };
