@@ -1,9 +1,20 @@
 import { Card } from "@shared/ui/card";
 import { motion } from "motion/react";
 
-const NPS = () => {
+import { NpsSkeleton } from "./nps-skeleton";
+import { useNpsController } from "../api";
+import { Modal } from "./modal/modal";
+
+export const Nps = () => {
+  const { summaryNps, isSummaryNpsLoading, isSummaryNpsError } =
+    useNpsController();
+
+  if (isSummaryNpsLoading || isSummaryNpsError) {
+    return <NpsSkeleton />;
+  }
+
   return (
-    <Card className="w-full items-center justify-center">
+    <Card className="w-full items-center justify-center px-8">
       <div className="relative inline-block">
         <motion.h1
           className="text-9xl  font-extrabold text-primary leading-none relative z-10"
@@ -16,11 +27,11 @@ const NPS = () => {
             repeat: Infinity,
           }}
         >
-          NPS
+          {summaryNps}
         </motion.h1>
 
         {/* Фоновые частицы */}
-        {[...Array(20)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-primary rounded-full"
@@ -48,9 +59,8 @@ const NPS = () => {
           />
         ))}
       </div>
-      <h2 className="text-2xl font-bold mb-4">В разработке</h2>
+      <h2 className="text-2xl font-bold mb-4">Общий NPS</h2>
+      <Modal />
     </Card>
   );
 };
-
-export default NPS;

@@ -22,7 +22,6 @@ export const BarChart = ({
 
   const maxValue = Math.max(...yAxisData);
 
-  // Функция для сокращения дней недели
   const shortenDayName = (day: string): string => {
     const dayMap: { [key: string]: string } = {
       понедельник: "ПН",
@@ -32,7 +31,7 @@ export const BarChart = ({
       пятница: "ПТ",
       суббота: "СБ",
       воскресенье: "ВС",
-      // Английские варианты на случай если приходят на английском
+
       monday: "ПН",
       tuesday: "ВТ",
       wednesday: "СР",
@@ -43,7 +42,7 @@ export const BarChart = ({
     };
 
     const lowerDay = day.toLowerCase();
-    return dayMap[lowerDay] || day; // Если не день недели, возвращаем как есть
+    return dayMap[lowerDay] || day;
   };
 
   const option: EChartsOption = {
@@ -66,14 +65,14 @@ export const BarChart = ({
       textStyle: { color: colors.text, fontSize: 10 },
       formatter: (params: any) => {
         const value = params[0].value;
-        const label = xAxisData[params[0].dataIndex]; // Используем полное название в тултипе
+        const label = xAxisData[params[0].dataIndex];
         const tooltip = tooltipData?.[params[0].dataIndex] || "";
         return `${label} ${tooltip} <br />${value.toLocaleString()} ₽`;
       },
     },
     xAxis: {
       type: "category",
-      data: xAxisData.map(shortenDayName), // Применяем сокращение
+      data: xAxisData.map(shortenDayName),
       axisLabel: {
         color: colors.text,
         fontSize: 12,
@@ -98,7 +97,7 @@ export const BarChart = ({
     grid: {
       left: 10,
       right: 10,
-      top: title ? 40 : 10,
+      top: title ? 40 : 30,
       bottom: 30,
       containLabel: false,
     },
