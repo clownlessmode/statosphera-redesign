@@ -29,9 +29,9 @@ export interface WriteOffGraphRequest {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
-    writeOff: {
+    writeoff: {
+      indicator: string[];
       article: string[];
-      household: boolean | null;
     };
   };
   filterDate: {
@@ -75,6 +75,10 @@ export interface WriteOffTableRequest {
       idProduct: string[];
       seasonalityProducts: string[];
       managerAuto: string[];
+    };
+    writeoff: {
+      indicator: string[];
+      article: string[];
     };
     check?: {
       tabNumber: number[];
@@ -151,6 +155,10 @@ export interface WriteOffTotalRequest {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
+    writeoff: {
+      indicator: string[];
+      article: string[];
+    };
     check?: {
       tabNumber: number[];
       containsBankQr: boolean | null;
@@ -196,13 +204,13 @@ export interface WriteOffTotalRequest {
 export interface WriteOffReasonsRequest {
   filters: {
     store: {
-      idStore: number[];
-      idCity: number[];
-      idRegion: number[];
-      idManager: number[];
+      idStore: string[];
+      idCity: string[];
+      idRegion: string[];
+      idManager: string[];
       storeCondition: string[];
       ageGroup: string[];
-      idLegalEntity: number[];
+      idLegalEntity: string[];
       channel: string[];
       district: string[];
     };
@@ -217,10 +225,14 @@ export interface WriteOffReasonsRequest {
       teamProducts: string[];
       directionProducts: string[];
       groupsEconomist: string[];
-      idGroupMain: number[];
-      idProduct: number[];
+      idGroupMain: string[];
+      idProduct: string[];
       seasonalityProducts: string[];
       managerAuto: string[];
+    };
+    writeoff: {
+      indicator: string[];
+      article: string[];
     };
   };
   filterDate: {
@@ -230,6 +242,5 @@ export interface WriteOffReasonsRequest {
     };
   };
   role: boolean;
-  storeId: (number | null)[];
   household: boolean;
 }

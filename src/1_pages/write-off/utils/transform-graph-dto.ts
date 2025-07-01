@@ -27,12 +27,16 @@ export function transformToGraphDto(
           .filter((id) => !isNaN(id))
           .map((id) => id.toString()),
         storeCondition: payload.filters.store.storeCondition || [],
-        ageGroup: payload.filters.store.ageGroup || [],
+        ageGroup: (payload.filters.store.ageGroup || []).map((age) =>
+          age.toString(),
+        ),
         idLegalEntity: (payload.filters.store.idLegalEntity || [])
           .map((id) => parseInt(id.toString().replace(/[[\]]/g, "")))
           .filter((id) => !isNaN(id))
           .map((id) => id.toString()),
-        channel: payload.filters.store.channel || [],
+        channel: (payload.filters.store.channel || []).map((ch) =>
+          ch.toString(),
+        ),
         district: payload.filters.store.district || [],
       },
       product: {
@@ -57,9 +61,11 @@ export function transformToGraphDto(
         seasonalityProducts: payload.filters.product.seasonalityProducts || [],
         managerAuto: payload.filters.product.managerAuto || [],
       },
-      writeOff: {
-        article: payload.filters.writeoff?.article || [],
-        household: payload.filters.writeoff?.household || null,
+      writeoff: {
+        indicator: payload.filters.writeoff?.indicator || [],
+        article: (payload.filters.writeoff?.article || []).map((article) =>
+          article.toString(),
+        ),
       },
     },
     filterDate: {
@@ -69,10 +75,10 @@ export function transformToGraphDto(
       },
     },
     role: false,
-    group: payload.groups[0] || "day", // Используем группировку из payload
+    group: payload.groups[0] || "month", // Используем группировку из payload (по умолчанию "month")
     value: payload.values[0] || "writeOff", // Используем значение из payload
     type: type, // Используем определенный тип
-    household: payload.filters.writeoff?.household === true,
+    household: false,
   };
 
   return result;

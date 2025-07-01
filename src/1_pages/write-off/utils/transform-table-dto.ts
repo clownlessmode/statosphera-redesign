@@ -57,6 +57,12 @@ export function transformToTableDto(
         seasonalityProducts: payload.filters.product.seasonalityProducts || [],
         managerAuto: payload.filters.product.managerAuto || [],
       },
+      writeoff: {
+        indicator: payload.filters.writeoff?.indicator || [],
+        article: (payload.filters.writeoff?.article || []).map((article) =>
+          article.toString(),
+        ),
+      },
     },
     filterDate: {
       filterDate: {
@@ -71,7 +77,7 @@ export function transformToTableDto(
     role: false,
     group: payload.groups || [],
     type: type,
-    household: payload.filters.writeoff?.household === true,
+    household: false,
   };
 
   // Добавляем опциональные фильтры если они есть
@@ -145,6 +151,12 @@ export function transformToTotalDto(
         seasonalityProducts: payload.filters.product.seasonalityProducts || [],
         managerAuto: payload.filters.product.managerAuto || [],
       },
+      writeoff: {
+        indicator: payload.filters.writeoff?.indicator || [],
+        article: (payload.filters.writeoff?.article || []).map((article) =>
+          article.toString(),
+        ),
+      },
     },
     filterDate: {
       dateStart: payload.filterDate.dateStart,
@@ -155,7 +167,7 @@ export function transformToTotalDto(
     role: false,
     group: payload.groups || [],
     type: type,
-    household: payload.filters.writeoff?.household === true,
+    household: false,
   };
 
   // Добавляем опциональные фильтры если они есть

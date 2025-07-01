@@ -263,6 +263,7 @@ export type FiltersState = {
     writeoff: {
       household: boolean | null;
       article: ARTICLE_WRITE_OFF[];
+      indicator: string[];
     };
   };
   uniques: string[];
@@ -410,6 +411,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
     writeoff: {
       household: null,
       article: [],
+      indicator: [],
     },
   },
   uniques: [],
@@ -614,6 +616,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
         writeoff: {
           household: null,
           article: [],
+          indicator: [],
         },
       },
       uniques: [],
@@ -717,6 +720,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
     writeoff: {
       household: null,
       article: [],
+      indicator: [],
     },
   },
   uniques: [],
@@ -921,6 +925,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
         writeoff: {
           household: null,
           article: [],
+          indicator: [],
         },
       },
       uniques: [],
