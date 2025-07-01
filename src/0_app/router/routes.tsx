@@ -139,6 +139,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <WriteOff />,
     layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
     label: "Списания",
   },
   {

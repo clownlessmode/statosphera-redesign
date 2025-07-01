@@ -90,6 +90,7 @@ const Sidebar = ({
         title: "Списания",
         url: ROUTES_PATH.WRITE_OFF,
         icon: ChartLine,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Гриль",
