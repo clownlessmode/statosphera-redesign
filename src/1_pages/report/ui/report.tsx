@@ -8,7 +8,7 @@ import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
-import { Cog, Eraser, Save, X } from "lucide-react";
+import { Cog, Eraser, X } from "lucide-react";
 import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
@@ -23,6 +23,7 @@ import { getLabelByValue } from "./values-badges";
 import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filter";
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/uniques-filter";
 import { SavedReports } from "@features/reports/saved-reports";
+import { SaveReport } from "@features/reports/save-report";
 import { GROUPINGS } from "@widgets/report/sheet/model/filters-store";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -624,9 +625,7 @@ const Report: FC = () => {
             right: (
               <div className="flex flex-row gap-2">
                 <DownloadReport rows={table?.totalRows || 0} />
-                <Button variant="outline" disabled>
-                  <Save />
-                </Button>
+                <SaveReport />
                 <SavedReports />
               </div>
             ),

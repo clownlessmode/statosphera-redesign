@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 import AntiLoyalTopSkeleton from "./anti-loyal-top-skeleton";
+import { useSession } from "@entities/session";
 interface ItemData {
   appLoyalPercent: number;
   idStore: number;
@@ -12,6 +13,15 @@ interface AntiLoyalTopProps {
   data: ItemData[] | undefined;
 }
 const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
+  const { session } = useSession();
+
+  const getItemColors = () => {
+    if (!data || !session?.idStore) return [];
+    return data.map((item) => {
+      return session.idStore.includes(item.idStore) ? "#e50046" : "#7f7f7f74";
+    });
+  };
+
   return (
     <>
       {!isLoading && data ? (
@@ -23,6 +33,7 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
             <BarHorizontalChart
               labels={data.map((item) => item.storeName)}
               values={data.map((item) => item.appLoyalPercent)}
+              itemColors={getItemColors()}
             />
           </CardContent>
         </Card>

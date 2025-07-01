@@ -1,8 +1,12 @@
 export type Report = {
   mode: "COMMERCIAL" | "CHECK";
-  indicators: string[];
+  values: string[];
   uniqueValues: any[];
-  groupingColumns: string[];
+  groups: string[];
+  filterDate: {
+    dateStart: string;
+    dateEnd: string;
+  };
   filterModel: any[];
   selectedIndicatorForGraph: string;
 };
