@@ -1,6 +1,7 @@
 import { Logotype } from "@shared/ui/logotype";
 import {
   BookOpenIcon,
+  ChartLine,
   ChartPie,
   DollarSign,
   FileChartColumn,
@@ -27,8 +28,8 @@ import { NavMain } from "./nav-main";
 
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
-import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useSession } from "@entities/session";
+import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
 import { ROLES } from "@shared/constants/roles";
 const Sidebar = ({
   children,
@@ -84,6 +85,11 @@ const Sidebar = ({
             : ROUTES_PATH.PRODUCTS,
         icon: PanelsTopLeft,
         disabled: session?.role === ROLES.SERVICE_MANAGER,
+      },
+      {
+        title: "Списания",
+        url: ROUTES_PATH.WRITE_OFF,
+        icon: ChartLine,
       },
       {
         title: "Гриль",
