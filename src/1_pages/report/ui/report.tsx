@@ -25,7 +25,7 @@ import { useUniqueValues } from "@widgets/report/sheet/ui/side/uniques-filter";
 import { SavedReports } from "@features/reports/saved-reports";
 import { SaveReport } from "@features/reports/save-report";
 import { GROUPINGS } from "@widgets/report/sheet/model/filters-store";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
     store: {
@@ -618,7 +618,7 @@ const Report: FC = () => {
     bumpDataVersion();
   }, [allData.filters, bumpDataVersion]);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <>
       <Sheet />
@@ -635,7 +635,7 @@ const Report: FC = () => {
           }}
         />
 
-        <div className="ml-6 flex flex-row gap-0 -mb-2">
+        {/* <div className="ml-6 flex flex-row gap-0 -mb-2">
           <div className="flex items-center justify-center bg-background text-white rounded-t-2xl p-2">
             <p>
               {tab === "commerce" ? "Отчет (коммерческая)" : "Отчет (чековая)"}
@@ -647,7 +647,7 @@ const Report: FC = () => {
           >
             <p>Списания</p>
           </button>
-        </div>
+        </div> */}
         <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
           <div
             className={cn(
@@ -657,9 +657,9 @@ const Report: FC = () => {
           >
             <div className="flex flex-col gap-2 w-full">
               <div className="flex flex-row gap-1 items-center justify-between flex-1 w-full! shrink-0">
-                {/* <h1 className="font-bold leading-none md:text-xl text-md tracking-tight flex flex-row gap-2 items-start">
+                <h1 className="font-bold leading-none md:text-xl text-md tracking-tight flex flex-row gap-2 items-start">
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
-                </h1> */}
+                </h1>
                 <div className="flex flex-row gap-1 items-center justify-end w-full">
                   <DateDropdown />
                   <Button
