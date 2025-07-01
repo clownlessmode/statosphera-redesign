@@ -19,6 +19,8 @@ import Report from "@pages/report/ui/report";
 import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
 import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
+import { WriteOff } from "@pages/write-off/ui/write-off";
+// import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
   // Авторизация
@@ -48,6 +50,9 @@ export const ROUTES_PATH = {
   PRODUCTS: "/products",
 
   GRILL: "/grill",
+
+  // Списания
+  WRITE_OFF: "/write-off",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -128,6 +133,13 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Stores />,
     layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.WRITE_OFF,
+    variant: "private",
+    element: <WriteOff />,
+    layout: Sidebar,
+    label: "Списания",
   },
   {
     path: ROUTES_PATH.REPORT,

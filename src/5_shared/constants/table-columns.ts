@@ -12,6 +12,9 @@ export enum COLUMN_KEY {
   ITR_YOY = "itrYoY",
   ITR_YOY_PERCENT = "itrYoYPercent",
 
+  //Причины списания
+  OPS = "ops",
+
   // Бонусы начисление
   BONUS_ACCRUAL_GROUP = "bonusAccrualGroup",
   BONUS_ACCRUAL = "bonusAccrual",
@@ -3948,6 +3951,15 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       }
     },
+  },
+  {
+    field: COLUMN_KEY.OPS,
+    headerName: "Причина списания",
+    headerTooltip: "Причина списания",
+    minWidth: 180,
+    pinned: "left",
+    cellDataType: "string",
+    valueGetter: (params) => params.data?.ops,
   },
   {
     field: COLUMN_KEY.PROCEEDS_IM_LM,

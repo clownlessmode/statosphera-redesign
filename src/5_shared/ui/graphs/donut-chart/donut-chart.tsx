@@ -36,6 +36,7 @@ export const DonutChart = ({
     () => ({
       backgroundColor: "transparent",
       title: {
+        //перекидывать пропсами целое/дробное число
         text: `${total}`,
         left: "center",
         top: "53%",
