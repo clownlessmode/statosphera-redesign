@@ -10,7 +10,7 @@ import { FC, Fragment, useState } from "react";
 import { useTheme } from "@app/providers/theme-provider";
 import { Card, CardContent } from "@shared/ui/card";
 import StoreDetails from "./store-details";
-import { Coordinates } from "../model/types";
+import { Coordinates } from "@entities/store/config";
 import { useStoresController } from "../model/api/controller";
 import { Checkbox } from "@shared/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";

@@ -15,7 +15,7 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import { Map, Placemark, Polygon } from "@pbe/react-yandex-maps";
 
 import { useTheme } from "@app/providers/theme-provider";
-import { Store } from "../model/types";
+import { Store } from "@entities/store/config";
 
 import { useStoresController } from "../model/api/controller";
 import Spinner from "@shared/ui/spinner";

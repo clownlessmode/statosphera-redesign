@@ -19,7 +19,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card";
 import { Separator } from "@shared/ui/separator";
 import { useState, useEffect } from "react";
 import { cn } from "@shared/lib/utils";
-import { Store } from "@pages/stores/model/types";
+import { Store } from "@entities/store/config";
 import { useStoreSettingsController } from "../api";
 
 export const StoreSettings = ({ store }: { store: Store }) => {

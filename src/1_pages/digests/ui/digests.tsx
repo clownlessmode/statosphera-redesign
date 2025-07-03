@@ -37,17 +37,17 @@ const Digests = () => {
 
   const filteredDigests = useMemo(() => {
     // Для сервисников только аналитика
-    if (session?.role === ROLES.SERVICE_MANAGER) {
-      const analyticsDigests =
-        digests?.filter((digest) => digest.type === "analytics") || [];
-      return {
-        analytics: analyticsDigests,
-        director: [],
-        franchise: [],
-        groupCompany: [],
-        all: analyticsDigests,
-      };
-    }
+    // if (session?.role === ROLES.SERVICE_MANAGER) {
+    //   const analyticsDigests =
+    //     digests?.filter((digest) => digest.type === "groupCompany") || [];
+    //   return {
+    //     analytics: [],
+    //     director: [],
+    //     franchise: [],
+    //     groupCompany: analyticsDigests,
+    //     all: analyticsDigests,
+    //   };
+    // }
 
     // Если нет сессии, показываем только director и groupCompany
     const allowedTypes = session

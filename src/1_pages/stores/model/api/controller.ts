@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { StoresService } from "./service";
-import { Store } from "../types";
+import { Store } from "@entities/store/config";
 import { ApiError } from "@shared/api/types";
 
 export const useStoresController = (id?: number) => {

@@ -6,7 +6,7 @@ interface Props {
 
 export const Logotype: FC<Props> = ({ size = "md" }) => {
   return (
-    <div>
+    <div className="overflow-hidden">
       <svg
         height="32"
         viewBox="0 0 908 155"

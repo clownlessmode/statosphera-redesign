@@ -12,6 +12,7 @@ import { useShopsStore } from "@widgets/write-off/sheet/ui/side/shops-filter/mod
 import { useProduct } from "@widgets/write-off/sheet/ui/side/products-filter/model/hooks/use-product";
 import { ARTICLE_WRITE_OFF } from "@widgets/write-off/sheet/model/filters-store";
 import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
+import { Badge } from "@shared/ui/badge";
 
 const animationVariants = {
   hidden: { opacity: 0, y: -10 },
@@ -234,7 +235,7 @@ export const WriteOffFilters = ({
         >
           <Card
             onClick={() => onOpenSheet("date")}
-            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2 cursor-pointer hover:bg-muted/50 transition-colors"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
           >
             <div className="flex items-center gap-1">
               <Filter className="size-4 flex-shrink-0" />
@@ -242,20 +243,10 @@ export const WriteOffFilters = ({
             </div>
             <div className="min-w-0 overflow-hidden">
               <div className="flex flex-wrap gap-1">
-                {selectedFilters.length > 0 ? (
+                {selectedFilters.length > 0 &&
                   selectedFilters.map((filter, index) => (
-                    <span
-                      key={index}
-                      className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md"
-                    >
-                      {filter}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-sm text-muted-foreground">
-                    не выбрано
-                  </span>
-                )}
+                    <Badge key={`${filter}-${index}`}>{filter}</Badge>
+                  ))}
               </div>
             </div>
             <Button
@@ -268,7 +259,7 @@ export const WriteOffFilters = ({
 
           <Card
             onClick={() => onOpenSheet("type")}
-            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2 cursor-pointer hover:bg-muted/50 transition-colors"
+            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
           >
             <div className="flex items-center gap-1">
               <Layers3 className="size-4 flex-shrink-0" />
@@ -277,12 +268,7 @@ export const WriteOffFilters = ({
             <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
               <div className="inline-flex gap-1">
                 {selectedGroupings.map((grouping, index) => (
-                  <span
-                    key={index}
-                    className="text-xs bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-md"
-                  >
-                    {grouping}
-                  </span>
+                  <Badge key={`${grouping}-${index}`}>{grouping}</Badge>
                 ))}
               </div>
             </div>

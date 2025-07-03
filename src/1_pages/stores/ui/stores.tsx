@@ -9,7 +9,7 @@ import { useMemo, useState } from "react";
 import { columns } from "../model/columns";
 import { useStoresController } from "../model/api/controller";
 import Spinner from "@shared/ui/spinner";
-import { Store } from "../model/types";
+import { Store } from "@entities/store/config";
 
 const Stores = () => {
   const [search, setSearch] = useState("");

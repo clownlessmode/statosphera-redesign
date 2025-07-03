@@ -8,13 +8,13 @@ import {
   FileChartPieIcon,
   FileQuestion,
   Ham,
+  Heart,
   MapIcon,
   PanelsTopLeft,
   SettingsIcon,
   ShoppingBag,
   SlidersHorizontal,
   Store,
-  UsersIcon,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -87,23 +87,30 @@ const Sidebar = ({
         disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
+        title: "Лояльность",
+        url: ROUTES_PATH.LOYALTY,
+        icon: Heart,
+        disabled: session?.role !== ROLES.ADMIN,
+      },
+      {
         title: "Списания",
         url: ROUTES_PATH.WRITE_OFF,
         icon: ChartLine,
         disabled: session?.role !== ROLES.ADMIN,
       },
+
       {
         title: "Гриль",
-        url: "#", //ROUTES_PATH.GRILL,
+        url: ROUTES_PATH.GRILL,
         icon: Ham,
-        disabled: true,
+        disabled: session?.role !== ROLES.ADMIN,
       },
 
       {
-        title: "Настройки",
-        url: "#",
+        title: "Админ панель",
+        url: ROUTES_PATH.ADMIN_STORES,
         icon: SettingsIcon,
-        disabled: true,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Прибыль ФРС",
@@ -115,12 +122,6 @@ const Sidebar = ({
         title: "ABC анализ",
         url: "#",
         icon: ChartPie,
-        disabled: true,
-      },
-      {
-        title: "Персонал",
-        url: "#",
-        icon: UsersIcon,
         disabled: true,
       },
       {

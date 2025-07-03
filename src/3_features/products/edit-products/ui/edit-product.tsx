@@ -36,7 +36,6 @@ import { MultiSelect } from "@shared/ui/multiselect";
 import { useUpdateProduct } from "../api";
 import { extractProductLabels } from "@pages/products/utils/labels";
 import { useSession } from "@entities/session";
-import { ROLES } from "@shared/constants/roles";
 
 interface Props {
   product: FormValues;
@@ -187,10 +186,7 @@ export const EditProduct: FC<Props> = ({
                       render={({ field }) => (
                         <FormItem>
                           <CheckboxCard
-                            disabled={
-                              session?.role !== ROLES.ADMIN ||
-                              session?.isAdminProduct !== true
-                            }
+                            disabled={session?.isAdminProduct !== true}
                             label="ПП Продукт"
                             value={field.value as boolean}
                             onChange={(value: boolean) => {
@@ -206,10 +202,7 @@ export const EditProduct: FC<Props> = ({
                       render={({ field }) => (
                         <FormItem>
                           <CheckboxCard
-                            disabled={
-                              session?.role !== ROLES.ADMIN ||
-                              session?.isAdminProduct !== true
-                            }
+                            disabled={session?.isAdminProduct !== true}
                             label="Интернет магазин"
                             value={field.value as boolean}
                             onChange={(value: boolean) => {
@@ -238,10 +231,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={
                                     Array.isArray(field.value)
@@ -291,10 +281,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={
                                     Array.isArray(field.value)
@@ -344,10 +331,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={
                                     Array.isArray(field.value)
@@ -395,10 +379,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -437,10 +418,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -486,10 +464,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -539,10 +514,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -592,10 +564,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -646,10 +615,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -700,10 +666,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -754,10 +717,7 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled={
-                                    session?.role !== ROLES.ADMIN ||
-                                    session?.isAdminProduct !== true
-                                  }
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -795,21 +755,19 @@ export const EditProduct: FC<Props> = ({
                     </CardContent>
                   </Card>
                 </div>
-                {session &&
-                  (session.role === ROLES.ADMIN ||
-                    session.isAdminProduct === true) && (
-                    <Card className="bg-background">
-                      <CardContent className="grid grid-cols-2 gap-2">
-                        <Button variant="outline">Отмена</Button>
-                        <Button
-                          disabled={!form.formState.isValid}
-                          loading={isUpdateLoading}
-                        >
-                          Сохранить
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )}
+                {session && session.isAdminProduct === true && (
+                  <Card className="bg-background">
+                    <CardContent className="grid grid-cols-2 gap-2">
+                      <Button variant="outline">Отмена</Button>
+                      <Button
+                        disabled={!form.formState.isValid}
+                        loading={isUpdateLoading}
+                      >
+                        Сохранить
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </form>
             </Form>
           </CardContent>
