@@ -145,7 +145,10 @@ export const EditProduct: FC<Props> = ({
 
   const handleValueChange = (fieldOnChange: (value: any) => void) => {
     return (value: string[]) => {
-      if (value.length === 0) {
+      if (
+        value.length === 0 &&
+        !Object.prototype.hasOwnProperty.call(value, "fromSingleSelect")
+      ) {
         fieldOnChange(["0"]);
         return;
       }
@@ -153,6 +156,20 @@ export const EditProduct: FC<Props> = ({
     };
   };
   const { session } = useSession();
+  const truncateText = (text: any, maxLength = 20) => {
+    if (typeof text !== "string") return text;
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
+  const truncateOptions = (options: any, maxLength = 20) => {
+    if (!Array.isArray(options)) return options;
+    return options.map((option) => ({
+      ...option,
+      label: truncateText(option.label, maxLength),
+    }));
+  };
+
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose?.()}>
       <DialogTrigger asChild>
@@ -160,7 +177,7 @@ export const EditProduct: FC<Props> = ({
           <Settings />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none sm:min-w-[650px] md:min-w-[750px] lg:min-w-[800px] ">
+      <DialogContent className="p-0 rounded-xl border-none sm:min-w-[700px] md:min-w-[800px] lg:min-w-[1000px] ">
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="max-w-xs">
@@ -231,17 +248,24 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
+                                  singleSelect={true}
                                   value={filterNullValues(field.value).map(
                                     String,
                                   )}
-                                  options={franchiseOptions}
+                                  options={truncateOptions(
+                                    franchiseOptions,
+                                    45,
+                                  )}
                                   isLoading={isFranchiseLoading}
                                   onOpenChange={handleOpenFranchiseSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.groupsFranchise ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.groupsFranchise ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -277,17 +301,21 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
+                                  singleSelect={true}
                                   value={filterNullValues(field.value).map(
                                     String,
                                   )}
-                                  options={groupOptions}
+                                  options={truncateOptions(groupOptions, 45)}
                                   isLoading={isGroupsLoading}
                                   onOpenChange={handleOpenGroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.groupsMain ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.groupsMain ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -323,17 +351,21 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
+                                  singleSelect={true}
                                   value={filterNullValues(field.value).map(
                                     String,
                                   )}
-                                  options={subgroupOptions}
+                                  options={truncateOptions(subgroupOptions, 45)}
                                   isLoading={isSubGroupsLoading}
                                   onOpenChange={handleOpenSubgroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.subGroups ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.subGroups ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -359,33 +391,53 @@ export const EditProduct: FC<Props> = ({
                         control={form.control}
                         name="subSubGroups"
                         render={({ field }) => {
+                          const hasError = getFieldError("subSubGroups");
                           return (
                             <FormItem>
-                              <FormLabel>Подподгруппа</FormLabel>
+                              <FormLabel
+                                className={hasError ? "text-destructive" : ""}
+                              >
+                                Подподгруппа
+                              </FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={subsubgroupOptions}
+                                  options={truncateOptions(
+                                    subsubgroupOptions,
+                                    45,
+                                  )}
                                   isLoading={isSubsubgroupsLoading}
                                   onOpenChange={handleOpenSubsubgroupsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.subSubGroups ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.subSubGroups ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
                                   ).map(String)}
                                   placeholder="Выберите подподгруппу"
+                                  className={
+                                    hasError ? "border-destructive" : ""
+                                  }
                                 />
                               </FormControl>
+                              {hasError && (
+                                <p className="text-[12px] text-destructive">
+                                  Обязательно для заполнения
+                                </p>
+                              )}
                             </FormItem>
                           );
                         }}
@@ -396,33 +448,53 @@ export const EditProduct: FC<Props> = ({
                         control={form.control}
                         name="managerAuto"
                         render={({ field }) => {
+                          const hasError = getFieldError("managerAuto");
                           return (
                             <FormItem>
-                              <FormLabel>Менеджер автозаказа</FormLabel>
+                              <FormLabel
+                                className={hasError ? "text-destructive" : ""}
+                              >
+                                Менеджер автозаказа
+                              </FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={autoManagerOptions}
+                                  options={truncateOptions(
+                                    autoManagerOptions,
+                                    45,
+                                  )}
                                   isLoading={isAutoManagerLoading}
                                   onOpenChange={handleOpenAutoManagerSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.managerAuto ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.managerAuto ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
                                   ).map(String)}
                                   placeholder="Выберите менеджера автозаказа"
+                                  className={
+                                    hasError ? "border-destructive" : ""
+                                  }
                                 />
                               </FormControl>
+                              {hasError && (
+                                <p className="text-[12px] text-destructive">
+                                  Обязательно для заполнения
+                                </p>
+                              )}
                             </FormItem>
                           );
                         }}
@@ -446,20 +518,27 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={subdivisionOptions}
+                                  options={truncateOptions(
+                                    subdivisionOptions,
+                                    45,
+                                  )}
                                   isLoading={isSubdivisionsLoading}
                                   onOpenChange={handleOpenSubdivisionsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.subDivisionProducts ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.subDivisionProducts ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -494,20 +573,24 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={teamOptions}
+                                  options={truncateOptions(teamOptions, 45)}
                                   isLoading={isTeamLoading}
                                   onOpenChange={handleOpenTeamsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.teamProducts ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.teamProducts ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -542,20 +625,27 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={directionOptions}
+                                  options={truncateOptions(
+                                    directionOptions,
+                                    45,
+                                  )}
                                   isLoading={isDirectionLoading}
                                   onOpenChange={handleOpenDirectionsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.directionProducts ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.directionProducts ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -591,20 +681,27 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={typeSenderOptions}
+                                  options={truncateOptions(
+                                    typeSenderOptions,
+                                    45,
+                                  )}
                                   isLoading={isTypeSenderLoading}
                                   onOpenChange={handleOpenTypeSenderSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.typeProducts ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.typeProducts ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -640,20 +737,24 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={seasonsOptions}
+                                  options={truncateOptions(seasonsOptions, 45)}
                                   isLoading={isSeasonsLoading}
                                   onOpenChange={handleOpenSeasonsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.seasonalityProducts ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.seasonalityProducts ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,
@@ -689,20 +790,27 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
+                                  singleSelect={true}
                                   disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
                                       : []
                                   }
-                                  options={economistOptions}
+                                  options={truncateOptions(
+                                    economistOptions,
+                                    45,
+                                  )}
                                   isLoading={isEconomistLoading}
                                   onOpenChange={handleOpenEconomistsSelect}
                                   onValueChange={handleValueChange(
                                     field.onChange,
                                   )}
-                                  externalLabels={filterNullValues(
-                                    productLabels?.groupsEconomist ?? [],
+                                  externalLabels={truncateOptions(
+                                    filterNullValues(
+                                      productLabels?.groupsEconomist ?? [],
+                                    ),
+                                    20,
                                   )}
                                   defaultValue={filterNullValues(
                                     field.value,

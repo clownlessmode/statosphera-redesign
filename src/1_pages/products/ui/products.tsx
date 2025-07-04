@@ -44,12 +44,12 @@ export const Products = () => {
 
   const handleAllProductsClick = () => {
     setActiveFilter("all");
-    setShowWithoutGroups(false);
+    setShowWithoutGroups(true);
   };
 
   const handleNewProductsClick = () => {
     setActiveFilter("new");
-    setShowWithoutGroups(true);
+    setShowWithoutGroups(false);
   };
 
   const productToFormValues = (product: ProductResponse) => {
