@@ -28,8 +28,7 @@ export default function SavedReports() {
               <Star className="h-5 w-5" /> Сохраненные отчеты
             </CardTitle>
             <CardDescription>
-              Применяйте сохраненные отчеты по клику, делитесь с коллегами,
-              просматривайте детали отчета.
+              Применяйте сохраненные отчеты по клику
             </CardDescription>
           </CardHeader>
           <CardContent className="max-h-[400px] overflow-y-auto h-full flex flex-col gap-2 ">

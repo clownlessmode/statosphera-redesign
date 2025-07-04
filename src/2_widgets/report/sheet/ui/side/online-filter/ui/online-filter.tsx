@@ -19,6 +19,7 @@ import ClearFilters from "./clear-filter";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { TYPE, TYPE_DELIVERY, TYPE_ORDER, TYPE_PAYMENT } from "../config";
 import { MultiSelect } from "@shared/ui/multiselect";
+import CheckboxCards from "@shared/ui/checkbox-cards";
 
 const OnlineFilter: FC = () => {
   const form = useForm();
@@ -85,8 +86,9 @@ const OnlineFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Источник заказа</FormLabel>
-                    <BooleanCheckboxCard
+                    <CheckboxCards
                       {...field}
+                      selectAll
                       options={TYPE_ORDER}
                       className="grid-cols-3"
                       onChange={(value) => {
@@ -105,10 +107,11 @@ const OnlineFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Способ доставки</FormLabel>
-                    <BooleanCheckboxCard
+                    <CheckboxCards
                       {...field}
+                      selectAll
                       options={TYPE_DELIVERY}
-                      className="grid-cols-3"
+                      className="grid-cols-4"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("imDeliveryMethod", value);

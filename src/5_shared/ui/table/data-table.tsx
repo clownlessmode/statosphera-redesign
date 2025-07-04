@@ -72,7 +72,16 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const handleRowClick = (row: TData) => {
+  const handleRowClick = (row: TData, event: React.MouseEvent) => {
+    // Проверяем, был ли клик по кнопке настроек или другим элементам управления
+    const target = event.target as HTMLElement;
+    if (
+      target.closest("button") ||
+      target.closest('[data-slot="dialog-trigger"]')
+    ) {
+      return;
+    }
+
     onRowClick?.(row);
     if (renderRowDialog) setSelectedRow(row);
   };
@@ -124,7 +133,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   className="cursor-pointer hover:bg-muted transition"
-                  onClick={() => handleRowClick(row.original)}
+                  onClick={(event) => handleRowClick(row.original, event)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

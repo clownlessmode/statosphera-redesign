@@ -1,19 +1,20 @@
 import { Logotype } from "@shared/ui/logotype";
 import {
   BookOpenIcon,
+  ChartLine,
   ChartPie,
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
   FileQuestion,
   Ham,
+  Heart,
   MapIcon,
   PanelsTopLeft,
   SettingsIcon,
   ShoppingBag,
   SlidersHorizontal,
   Store,
-  UsersIcon,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -27,8 +28,9 @@ import { NavMain } from "./nav-main";
 
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
-import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useSession } from "@entities/session";
+import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
+import { ROLES } from "@shared/constants/roles";
 const Sidebar = ({
   children,
   ...props
@@ -39,13 +41,21 @@ const Sidebar = ({
     navMain: [
       {
         title: "Продажи",
-        url: `${ROUTES_PATH.SALES_DYNAMICS}?open=false&tab=${tab}`,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : `${ROUTES_PATH.SALES_DYNAMICS}?open=false&tab=${tab}`,
         icon: DollarSign,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
         title: "Отчёты",
-        url: `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
         icon: FileChartColumn,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
         title: "Дайджесты",
@@ -54,8 +64,12 @@ const Sidebar = ({
       },
       {
         title: "Стандарты",
-        url: ROUTES_PATH.STANDARTS,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : ROUTES_PATH.STANDARTS,
         icon: FileQuestion,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
 
       {
@@ -65,21 +79,38 @@ const Sidebar = ({
       },
       {
         title: "Номенклатура",
-        url: ROUTES_PATH.PRODUCTS,
+        url:
+          session?.role === ROLES.SERVICE_MANAGER
+            ? ROUTES_PATH.DASHBOARD
+            : ROUTES_PATH.PRODUCTS,
         icon: PanelsTopLeft,
+        disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
       {
-        title: "Гриль",
-        url: "#", //ROUTES_PATH.GRILL,
-        icon: Ham,
-        disabled: true,
+        title: "Лояльность",
+        url: ROUTES_PATH.LOYALTY,
+        icon: Heart,
+        disabled: session?.role !== ROLES.ADMIN,
+      },
+      {
+        title: "Списания",
+        url: ROUTES_PATH.WRITE_OFF,
+        icon: ChartLine,
+        disabled: session?.role !== ROLES.ADMIN,
       },
 
       {
-        title: "Настройки",
-        url: "#",
+        title: "Гриль",
+        url: ROUTES_PATH.GRILL,
+        icon: Ham,
+        disabled: session?.role !== ROLES.ADMIN,
+      },
+
+      {
+        title: "Админ панель",
+        url: ROUTES_PATH.ADMIN_STORES,
         icon: SettingsIcon,
-        disabled: true,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Прибыль ФРС",
@@ -91,12 +122,6 @@ const Sidebar = ({
         title: "ABC анализ",
         url: "#",
         icon: ChartPie,
-        disabled: true,
-      },
-      {
-        title: "Персонал",
-        url: "#",
-        icon: UsersIcon,
         disabled: true,
       },
       {

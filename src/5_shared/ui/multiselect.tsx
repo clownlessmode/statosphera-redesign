@@ -52,10 +52,11 @@ interface MultiSelectProps
   maxCount?: number;
   modalPopover?: boolean;
   className?: string;
-  onOpenChange?: (open: boolean) => void; // Добавляем новый пропс
+  onOpenChange?: (open: boolean) => void;
   isLoading?: boolean;
   side?: "top" | "bottom";
   externalLabels?: { value: string; label: string }[];
+  wrapDefaultInArray?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -281,30 +282,32 @@ export const MultiSelect = React.forwardRef<
               )}
             </CommandList>
             <CommandSeparator />
-            <CommandGroup>
-              <div className="flex items-center justify-between">
-                {selectedValues.length > 0 && (
-                  <>
-                    <CommandItem
-                      onSelect={handleClear}
-                      className="flex-1 justify-center cursor-pointer"
-                    >
-                      Очистить
-                    </CommandItem>
-                    <Separator
-                      orientation="vertical"
-                      className="flex min-h-6 h-full"
-                    />
-                  </>
-                )}
-                <CommandItem
-                  onSelect={() => handlePopoverOpenChange(false)}
-                  className="flex-1 justify-center cursor-pointer max-w-full"
-                >
-                  Закрыть
-                </CommandItem>
-              </div>
-            </CommandGroup>
+            <div className="flex items-center justify-between p-2">
+              {selectedValues.length > 0 && (
+                <>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="flex-1 justify-center cursor-pointer"
+                    onClick={handleClear}
+                  >
+                    Очистить
+                  </Button>
+                  <Separator
+                    orientation="vertical"
+                    className="flex min-h-6 h-full"
+                  />
+                </>
+              )}
+              <Button
+                type="button"
+                variant="ghost"
+                className="flex-1 justify-center cursor-pointer"
+                onClick={() => handlePopoverOpenChange(false)}
+              >
+                Закрыть
+              </Button>
+            </div>
           </Command>
         </PopoverContent>
       </Popover>

@@ -1,7 +1,5 @@
 import { Header } from "@widgets/header";
-
-import { DataTable } from "../../../5_shared/ui/table/data-table";
-
+import { DataTable } from "@shared/ui/table/data-table";
 import StoreDetails from "./store-details";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import StoresMap from "./stores-map";
@@ -11,21 +9,29 @@ import { useMemo, useState } from "react";
 import { columns } from "../model/columns";
 import { useStoresController } from "../model/api/controller";
 import Spinner from "@shared/ui/spinner";
+import { Store } from "@entities/store/config";
 
 const Stores = () => {
   const [search, setSearch] = useState("");
   const { stores: data, isStoresLoading } = useStoresController();
-  console.log(data);
+
   const filteredData = useMemo(() => {
-    if (!search.trim() || !data) return data;
-
-    const lowerSearch = search.toLowerCase();
-
-    return data.filter((store) =>
-      Object.values(store).some((value) =>
-        String(value).toLowerCase().includes(lowerSearch),
-      ),
-    );
+    let result = data || [];
+    if (search.trim()) {
+      const lowerSearch = search.toLowerCase();
+      result = result.filter((store) =>
+        Object.values(store).some((value) =>
+          String(value).toLowerCase().includes(lowerSearch),
+        ),
+      );
+    }
+    return result.sort((a, b) => {
+      const aIsNight = a.nightStore || a.ipNightStore.length > 0;
+      const bIsNight = b.nightStore || b.ipNightStore.length > 0;
+      if (aIsNight && !bIsNight) return -1;
+      if (!aIsNight && bIsNight) return 1;
+      return a.idStore - b.idStore;
+    });
   }, [search, data]);
 
   return (
@@ -64,10 +70,12 @@ const Stores = () => {
                 <DataTable
                   columns={columns}
                   data={filteredData || []}
-                  onRowClick={(row) => console.log("row clicked", row)}
+                  onRowClick={(row: Store) => {
+                    console.log("row clicked", row);
+                  }}
                   renderRowDialog={({ row, isOpen, onClose }) => (
                     <StoreDetails
-                      row={row}
+                      idStore={row.idStore as number}
                       open={isOpen}
                       onOpenChange={(open) => !open && onClose()}
                     />
@@ -76,9 +84,8 @@ const Stores = () => {
               )}
             </div>
           </TabsContent>
-
           <TabsContent value="map">
-            <StoresMap stores={filteredData || []} />
+            <StoresMap />
           </TabsContent>
         </Tabs>
       </div>

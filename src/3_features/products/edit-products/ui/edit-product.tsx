@@ -36,7 +36,6 @@ import { MultiSelect } from "@shared/ui/multiselect";
 import { useUpdateProduct } from "../api";
 import { extractProductLabels } from "@pages/products/utils/labels";
 import { useSession } from "@entities/session";
-import { ROLES } from "@shared/constants/roles";
 
 interface Props {
   product: FormValues;
@@ -57,7 +56,7 @@ export const EditProduct: FC<Props> = ({
 }) => {
   const form = useForm({ product });
   const { isFormValid, getFieldError, fieldsWithErrors } = form;
-  console.log(product);
+
   const { franchiseOptions, handleOpenFranchiseSelect, isFranchiseLoading } =
     useFranchise();
 
@@ -124,7 +123,7 @@ export const EditProduct: FC<Props> = ({
 
     try {
       const payload = mapFormToPayload(data);
-      console.log("Payload для update:", payload);
+
       await update(payload);
       onSuccess?.();
     } catch (error) {
@@ -185,6 +184,7 @@ export const EditProduct: FC<Props> = ({
                       render={({ field }) => (
                         <FormItem>
                           <CheckboxCard
+                            disabled={session?.isAdminProduct !== true}
                             label="ПП Продукт"
                             value={field.value as boolean}
                             onChange={(value: boolean) => {
@@ -200,6 +200,7 @@ export const EditProduct: FC<Props> = ({
                       render={({ field }) => (
                         <FormItem>
                           <CheckboxCard
+                            disabled={session?.isAdminProduct !== true}
                             label="Интернет магазин"
                             value={field.value as boolean}
                             onChange={(value: boolean) => {
@@ -228,6 +229,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={filterNullValues(field.value).map(
                                     String,
@@ -273,6 +275,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={filterNullValues(field.value).map(
                                     String,
@@ -318,6 +321,7 @@ export const EditProduct: FC<Props> = ({
                               </FormLabel>
                               <FormControl>
                                 <MultiSelect
+                                  disabled={session?.isAdminProduct !== true}
                                   maxCount={1}
                                   value={filterNullValues(field.value).map(
                                     String,
@@ -361,10 +365,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={subsubgroupOptions}
                                   isLoading={isSubsubgroupsLoading}
                                   onOpenChange={handleOpenSubsubgroupsSelect}
@@ -396,10 +402,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  disabled
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={autoManagerOptions}
                                   isLoading={isAutoManagerLoading}
                                   onOpenChange={handleOpenAutoManagerSelect}
@@ -438,9 +446,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={subdivisionOptions}
                                   isLoading={isSubdivisionsLoading}
                                   onOpenChange={handleOpenSubdivisionsSelect}
@@ -483,9 +494,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={teamOptions}
                                   isLoading={isTeamLoading}
                                   onOpenChange={handleOpenTeamsSelect}
@@ -528,9 +542,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={directionOptions}
                                   isLoading={isDirectionLoading}
                                   onOpenChange={handleOpenDirectionsSelect}
@@ -574,9 +591,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={typeSenderOptions}
                                   isLoading={isTypeSenderLoading}
                                   onOpenChange={handleOpenTypeSenderSelect}
@@ -620,9 +640,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={seasonsOptions}
                                   isLoading={isSeasonsLoading}
                                   onOpenChange={handleOpenSeasonsSelect}
@@ -666,9 +689,12 @@ export const EditProduct: FC<Props> = ({
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
-                                  value={filterNullValues(field.value).map(
-                                    String,
-                                  )}
+                                  disabled={session?.isAdminProduct !== true}
+                                  value={
+                                    Array.isArray(field.value)
+                                      ? field.value.map(String)
+                                      : []
+                                  }
                                   options={economistOptions}
                                   isLoading={isEconomistLoading}
                                   onOpenChange={handleOpenEconomistsSelect}
@@ -699,21 +725,19 @@ export const EditProduct: FC<Props> = ({
                     </CardContent>
                   </Card>
                 </div>
-                {session &&
-                  (session.role === ROLES.ADMIN ||
-                    session.isAdminProduct === true) && (
-                    <Card className="bg-background">
-                      <CardContent className="grid grid-cols-2 gap-2">
-                        <Button variant="outline">Отмена</Button>
-                        <Button
-                          disabled={!form.formState.isValid}
-                          loading={isUpdateLoading}
-                        >
-                          Сохранить
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )}
+                {session && session.isAdminProduct === true && (
+                  <Card className="bg-background">
+                    <CardContent className="grid grid-cols-2 gap-2">
+                      <Button variant="outline">Отмена</Button>
+                      <Button
+                        disabled={!form.formState.isValid}
+                        loading={isUpdateLoading}
+                      >
+                        Сохранить
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
               </form>
             </Form>
           </CardContent>

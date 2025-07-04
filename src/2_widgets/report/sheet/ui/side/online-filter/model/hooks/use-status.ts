@@ -34,11 +34,11 @@ export const useStatusOrder = (allData: any) => {
       const apiOptions = response.map(
         (statusOrder: StatusOrderFilterResponse) => ({
           label:
-            statusOrder.im_status_order ||
+            `${statusOrder.im_status_order}` ||
             "Статус заказа не указан (ID: " +
               statusOrder.im_status_order?.[0] +
               ")",
-          value: String(JSON.stringify(statusOrder.im_status_order || [])),
+          value: statusOrder.im_status_order || "",
         }),
       );
       setStatusOrderOptions(apiOptions);

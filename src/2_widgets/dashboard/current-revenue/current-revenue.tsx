@@ -22,28 +22,26 @@ const CurrentRevenue = ({
 }: Props) => {
   return (
     <>
-      {isLoading || !proceeds || !proceedsYoY || !proceedsYoYPercent ? (
+      {isLoading ? (
         <CurrentRevenueSkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between bg-primary py-2">
+        <Card className="w-full h-full gap-1 flex flex-col justify-between bg-primary py-2 text-primary-foreground">
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Выручка (за текущий месяц)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {proceeds?.toLocaleString()}₽ ({proceedsYoYPercent}%)
+                {proceeds ? `${proceeds.toLocaleString()}₽` : null}{" "}
+                {proceedsYoYPercent ? `(${proceedsYoYPercent}%)` : null}
               </p>
-              {/* <ArrowBigDownDash
-                className="w-4 h-4 text-destructive"
-                fill="currentColor"
-              /> */}
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Изменения к прошлому году</p>
-            <p className="w-full text-primary-foreground font-bold">
-              {proceedsYoY?.toLocaleString()}₽ ({proceedsYoYPercent}%)
+            <p className="w-full  font-bold">
+              {proceedsYoY ? `${proceedsYoY.toLocaleString()}₽` : null}{" "}
+              {proceedsYoYPercent ? `(${proceedsYoYPercent}%)` : null}
             </p>
           </CardFooter>
         </Card>

@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 
 import {
-  DAYS,
   GEO,
   SHOP,
   PRODUCT,
@@ -15,20 +14,16 @@ import {
 } from "../../config";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
-const extractValues = (options: { value: string }[]) =>
-  options.map((opt) => opt.value);
-
-const daysOptions = extractValues(DAYS);
-const geoOptions = extractValues(GEO);
-const storeOptions = extractValues(SHOP);
-const productOptions = extractValues(PRODUCT);
-const loyalOptions = extractValues(LOYAL);
-const personalOptions = extractValues(PERSONAL);
-const onlineOptions = extractValues(ONLINE);
-const idOptions = extractValues(ID);
-
-export const useForm = () => {
+export const useForm = ({
+  daysOptions,
+}: {
+  tab: string;
+  daysOptions: { value: string }[];
+}) => {
   const selectedGroupings = useFiltersStore((state) => state.groups);
+
+  const extractValues = (options: { value: string }[]) =>
+    options.map((opt) => opt.value);
 
   const match = (options: string[]) =>
     selectedGroupings?.filter((item) => options.includes(item)) || [];
@@ -36,14 +31,14 @@ export const useForm = () => {
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      days: match(daysOptions),
-      geo: match(geoOptions),
-      store: match(storeOptions),
-      product: match(productOptions),
-      loyal: match(loyalOptions),
-      personal: match(personalOptions),
-      online: match(onlineOptions),
-      id: match(idOptions),
+      days: match(extractValues(daysOptions)), // <= сюда передаётся динамический список
+      geo: match(extractValues(GEO)),
+      store: match(extractValues(SHOP)),
+      product: match(extractValues(PRODUCT)),
+      loyal: match(extractValues(LOYAL)),
+      personal: match(extractValues(PERSONAL)),
+      online: match(extractValues(ONLINE)),
+      id: match(extractValues(ID)),
     },
     mode: "all",
   });

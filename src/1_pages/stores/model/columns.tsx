@@ -2,9 +2,31 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { SortableHeader } from "@shared/ui/sortable-header";
 import StatusBadge from "@shared/ui/status-badge";
-import { Store } from "./types";
+import { Store } from "@entities/store/config";
+import { ROLES } from "@shared/constants/roles";
+import { useSession } from "@entities/session";
+import { StoreSettings } from "@features/store-settings";
 
 export const columns: ColumnDef<Store>[] = [
+  {
+    id: "actions",
+    size: 32,
+    maxSize: 32,
+    cell: ({ row }) => {
+      const { session } = useSession();
+      const isAdmin = session?.role === ROLES.SERVICE_MANAGER;
+      const isNightStore = row.original.ipNightStore.length > 0;
+      const store = row.original;
+
+      if (!isAdmin || !isNightStore) return null;
+
+      return (
+        <div onClick={(e) => e.stopPropagation()}>
+          <StoreSettings store={store} />
+        </div>
+      );
+    },
+  },
   {
     accessorKey: "idStore",
     header: ({ column }) => <SortableHeader column={column} title="ID" />,
@@ -40,52 +62,9 @@ export const columns: ColumnDef<Store>[] = [
     header: ({ column }) => <SortableHeader column={column} title="Город" />,
     enableColumnFilter: true,
   },
-  // {
-  //   accessorKey: "nameManager",
-  //   header: ({ column }) => (
-  //     <SortableHeader column={column} title="Управляющий" />
-  //   ),
-  //   enableColumnFilter: true,
-  // },
-  // {
-  //   accessorKey: "storeEmail",
-  //   header: ({ column }) => <SortableHeader column={column} title="Почта" />,
-  //   enableColumnFilter: true,
-  // },
-  // {
-  //   accessorKey: "startDate",
-  //   header: ({ column }) => <SortableHeader column={column} title="Открытие" />,
-  //   cell: ({ row }) => {
-  //     const date = new Date(row.getValue("startDate"));
-  //     return (
-  //       <div>
-  //         {new Intl.DateTimeFormat("ru-RU", {
-  //           day: "numeric",
-  //           month: "long",
-  //           year: "numeric",
-  //         }).format(date)}
-  //       </div>
-  //     );
-  //   },
-  //   enableColumnFilter: true,
-  // },
-  // {
-  //   accessorKey: "endDate",
-  //   header: ({ column }) => (
-  //     <SortableHeader column={column} title="Последняя продажа" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const date = new Date(row.getValue("endDate"));
-  //     return (
-  //       <div>
-  //         {new Intl.DateTimeFormat("ru-RU", {
-  //           day: "numeric",
-  //           month: "long",
-  //           year: "numeric",
-  //         }).format(date)}
-  //       </div>
-  //     );
-  //   },
-  //   enableColumnFilter: true,
-  // },
+  {
+    accessorKey: "formatStore",
+    header: ({ column }) => <SortableHeader column={column} title="Формат" />,
+    enableColumnFilter: true,
+  },
 ];

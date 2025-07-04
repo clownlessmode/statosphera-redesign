@@ -1,31 +1,5 @@
-// import { lazy } from "react";
 import { RouteConfig } from "./types";
 import { Sidebar } from "@widgets/sidebar";
-
-// const Authorization = lazy(
-//   () => import("@pages/authorization/ui/authorization")
-// );
-// const Dashboard = lazy(() => import("@pages/dashboard/ui/dashboard"));
-// const Forbidden = lazy(() => import("@pages/forbidden/ui/forbidden"));
-// const NotFound = lazy(() => import("@pages/not-found/ui/not-found"));
-
-// const Notifications = lazy(
-//   () => import("@pages/notifications/ui/notifications")
-// );
-// const Digests = lazy(() => import("@pages/digests/ui/digests"));
-// const Lessons = lazy(() => import("@pages/lessons/ui/lessons"));
-// const Roadmap = lazy(() => import("@pages/roadmap/ui/roadmap"));
-// const Digest = lazy(() => import("@pages/digest/ui/digest"));
-// const Stores = lazy(() => import("@pages/stores/ui/stores"));
-// const Standarts = lazy(() => import("@pages/standarts/ui/standarts"));
-// const Standart = lazy(() => import("@pages/standart/ui/standart"));
-// const Grill = lazy(() => import("@pages/grill/ui/grill"));
-// const Report = lazy(() => import("@pages/report/ui/report"));
-// const SalesDynamics = lazy(
-//   () => import("@pages/sales-dynamics/ui/sales-dynamics")
-// );
-// const Products = lazy(() => import("@pages/products/ui/products"));
-// import { lazy } from "react";  // больше не нужен
 
 import Authorization from "@pages/authorization/ui/authorization";
 import Dashboard from "@pages/dashboard/ui/dashboard";
@@ -45,6 +19,10 @@ import Report from "@pages/report/ui/report";
 import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
 import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
+import { WriteOff } from "@pages/write-off/ui/write-off";
+import { Loyalty } from "@pages/loyalty";
+// import { AdminStores } from "@pages/admin/admin-stores";
+// import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
   // Авторизация
@@ -66,14 +44,27 @@ export const ROUTES_PATH = {
   STANDARTS: "/standarts",
   STANDART: "/standarts/:id",
 
+  //Админ панель
+  ADMIN_STORES: "/admin/stores",
+  ADMIN_PRODUCTS: "/admin/products",
+  ADMIN_USERS: "/admin/users",
+  ADMIN_ROLES: "/admin/roles",
+  ADMIN_PERMISSIONS: "/admin/permissions",
+  ADMIN_SETTINGS: "/admin/settings",
+  ADMIN_LOGS: "/admin/logs",
+  ADMIN_NOTIFICATIONS: "/admin/notifications",
+
   // Магазины и доходы
   STORES: "/stores",
   REPORT: "/report",
   SALES_DYNAMICS: "/sales-dynamics",
   ROADMAP: "/roadmap",
   PRODUCTS: "/products",
-
+  LOYALTY: "/loyalty",
   GRILL: "/grill",
+
+  // Списания
+  WRITE_OFF: "/write-off",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -93,6 +84,9 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.DASHBOARD,
     variant: "private",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.SERVICE_MANAGER),
+    ],
     element: <Dashboard />,
     layout: Sidebar,
     label: "Главная",
@@ -153,6 +147,14 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
   },
   {
+    path: ROUTES_PATH.WRITE_OFF,
+    variant: "private",
+    element: <WriteOff />,
+    layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
+    label: "Списания",
+  },
+  {
     path: ROUTES_PATH.REPORT,
     variant: "private",
     element: <Report />,
@@ -174,7 +176,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.GRILL,
     variant: "private",
     element: <Grill />,
-    allowedRoles: [ROLES.PARTNER],
+    allowedRoles: [ROLES.ADMIN],
     layout: Sidebar,
   },
   {
@@ -189,4 +191,18 @@ export const ROUTES: RouteConfig[] = [
     element: <Standart />,
     layout: Sidebar,
   },
+  {
+    path: ROUTES_PATH.LOYALTY,
+    variant: "private",
+    element: <Loyalty />,
+    allowedRoles: [ROLES.ADMIN],
+    layout: Sidebar,
+  },
+  // {
+  //   path: ROUTES_PATH.ADMIN_STORES,
+  //   variant: "private",
+  //   element: <AdminStores />,
+  //   allowedRoles: [ROLES.ADMIN],
+  //   layout: Sidebar,
+  // },
 ];

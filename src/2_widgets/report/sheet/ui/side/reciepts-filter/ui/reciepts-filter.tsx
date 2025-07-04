@@ -16,11 +16,11 @@ import ClearFilters from "./clear-filter";
 import { useForm } from "../model";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { TYPE_CHECK, TYPE_PAYMENTS, TYPE_QR } from "../config";
-import { Input } from "@shared/ui/input";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useEmployeeName } from "../model/hooks/use-employee";
 import { FC } from "react";
+import { MultipleInput } from "@shared/ui/multiple-input";
 
 const RecieptsFilter: FC = () => {
   const form = useForm();
@@ -108,14 +108,18 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="checkNumber"
-              render={() => {
+              render={({ field }) => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера чеков</FormLabel>
-                    <Input
-                      type="number"
-                      disabled
-                      placeholder="Импортируйте номера чеков из excel (скоро...)"
+                    <MultipleInput
+                      placeholder="Введите номера чеков"
+                      value={field.value?.map(Number) || []}
+                      onValueChange={(value) => {
+                        const numericValues = value.map(Number);
+                        field.onChange(numericValues);
+                        updateCheckFilter("checkNumber", numericValues);
+                      }}
                     />
                   </FormItem>
                 );
@@ -124,14 +128,18 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="numberfield"
-              render={() => {
+              render={({ field }) => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера касс</FormLabel>
-                    <Input
-                      type="number"
-                      disabled
-                      placeholder="Импортируйте номера касс из excel (скоро...)"
+                    <MultipleInput
+                      placeholder="Введите номера касс"
+                      value={field.value?.map(Number) || []}
+                      onValueChange={(value) => {
+                        const numericValues = value.map(Number);
+                        field.onChange(numericValues);
+                        updateCheckFilter("numberfield", numericValues);
+                      }}
                     />
                   </FormItem>
                 );
@@ -140,14 +148,18 @@ const RecieptsFilter: FC = () => {
             <FormField
               control={form.control}
               name="tabNumber"
-              render={() => {
+              render={({ field }) => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Номера смен</FormLabel>
-                    <Input
-                      type="number"
-                      disabled
-                      placeholder="Импортируйте номера смен из excel (скоро...)"
+                    <MultipleInput
+                      placeholder="Введите номера смен"
+                      value={field.value?.map(Number) || []}
+                      onValueChange={(value) => {
+                        const numericValues = value.map(Number);
+                        field.onChange(numericValues);
+                        updateCheckFilter("tabNumber", numericValues);
+                      }}
                     />
                   </FormItem>
                 );

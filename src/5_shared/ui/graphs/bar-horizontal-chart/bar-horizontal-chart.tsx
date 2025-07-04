@@ -7,12 +7,14 @@ import BarHorizontalChartSkeleton from "./bar-horizontal-chart-skeleton";
 type BarHorizontalChartProps = {
   labels: string[]; // адреса для тултипа
   values: number[];
+  itemColors?: (string | undefined)[]; // массив цветов для каждого элемента
   isLoading?: boolean;
 };
 
 export const BarHorizontalChart = ({
   labels,
   values,
+  itemColors,
   isLoading = false,
 }: BarHorizontalChartProps) => {
   const { theme } = useTheme();
@@ -65,7 +67,14 @@ export const BarHorizontalChart = ({
         barCategoryGap: "30%",
         itemStyle: {
           borderRadius: 10,
-          color: colors.series[0],
+          color: (params: any) => {
+            // Если передан массив цветов и есть цвет для этого элемента, используем его
+            if (itemColors && itemColors[params.dataIndex]) {
+              return itemColors[params.dataIndex] || colors.series[0];
+            }
+            // Иначе используем стандартный цвет
+            return colors.series[0];
+          },
         },
         label: {
           show: true,

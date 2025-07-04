@@ -22,7 +22,7 @@ const LeaderImSales = ({
 }: Props) => {
   return (
     <>
-      {isLoading || !proceedsIm || !storeName ? (
+      {isLoading ? (
         <LeaderImSalesSkeleton />
       ) : (
         <Card className="w-full h-full gap-1 flex flex-col justify-between py-2">
@@ -31,13 +31,15 @@ const LeaderImSales = ({
               <CardTitle>Лидер интернет продаж</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">{storeName}</p>
+              <p className=" text-xl font-bold">
+                {storeName ? storeName : null}
+              </p>
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
             <p className="w-full">Выручка (за текущий месяц)</p>
             <p className="w-full text-muted-foreground font-bold">
-              {proceedsIm?.toLocaleString()}₽
+              {proceedsIm ? `${proceedsIm.toLocaleString()}₽` : null}
             </p>
           </CardFooter>
         </Card>

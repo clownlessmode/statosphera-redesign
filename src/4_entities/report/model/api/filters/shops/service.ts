@@ -56,7 +56,10 @@ export class FiltersShopsService {
     return response.data;
   }
   static async getShops(dto: any): Promise<ShopsFilterResponse[]> {
-    const response = await api.post<any>("store/shop", dto.filters.store);
+    const response = await api.post<any>("store/shop", {
+      ...dto.filters.store,
+      idStore: [],
+    });
     return response.data;
   }
 }

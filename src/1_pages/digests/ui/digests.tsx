@@ -18,6 +18,7 @@ import { useDigests } from "@entities/digests/model/api/controller";
 import { Skeleton } from "@shared/ui/skeleton";
 import { useMemo } from "react";
 import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 
 const Digests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,6 +36,19 @@ const Digests = () => {
   const { digests, isDigestsLoading } = useDigests();
 
   const filteredDigests = useMemo(() => {
+    // Для сервисников только аналитика
+    // if (session?.role === ROLES.SERVICE_MANAGER) {
+    //   const analyticsDigests =
+    //     digests?.filter((digest) => digest.type === "groupCompany") || [];
+    //   return {
+    //     analytics: [],
+    //     director: [],
+    //     franchise: [],
+    //     groupCompany: analyticsDigests,
+    //     all: analyticsDigests,
+    //   };
+    // }
+
     // Если нет сессии, показываем только director и groupCompany
     const allowedTypes = session
       ? ["analytics", "director", "franchise", "groupCompany"]
@@ -72,23 +86,9 @@ const Digests = () => {
         <Header title="Дайджесты" />
         <div className="rounded-3xl bg-background p-4 gap-4 h-full flex flex-col lg:flex-row-reverse">
           <TabsList className="flex flex-col static lg:sticky top-4 text-start items-start h-fit w-full lg:w-fit">
-            <TabsTrigger value="all" className="w-full justify-between gap-4">
-              <div className="flex flex-row gap-2 items-center">
-                <GalleryHorizontalEnd className="size-4 text-muted-foreground" />
-                Все
-              </div>
-              {isDigestsLoading ? (
-                <Skeleton className="w-5 h-4" />
-              ) : (
-                <Badge>{filteredDigests.all?.length}</Badge>
-              )}
-            </TabsTrigger>
-
-            {session && (
-              <TabsTrigger
-                value="analytics"
-                className="w-full justify-between gap-4"
-              >
+            {/* Для сервисников показываем только вкладку "Все" с аналитикой */}
+            {session?.role === ROLES.SERVICE_MANAGER ? (
+              <TabsTrigger value="all" className="w-full justify-between gap-4">
                 <div className="flex flex-row gap-2 items-center">
                   <ChartNetwork className="size-4 text-muted-foreground" />
                   Аналитика
@@ -96,56 +96,91 @@ const Digests = () => {
                 {isDigestsLoading ? (
                   <Skeleton className="w-5 h-4" />
                 ) : (
-                  <Badge>{filteredDigests.analytics?.length}</Badge>
+                  <Badge>{filteredDigests.all?.length}</Badge>
                 )}
               </TabsTrigger>
-            )}
+            ) : (
+              <>
+                <TabsTrigger
+                  value="all"
+                  className="w-full justify-between gap-4"
+                >
+                  <div className="flex flex-row gap-2 items-center">
+                    <GalleryHorizontalEnd className="size-4 text-muted-foreground" />
+                    Все
+                  </div>
+                  {isDigestsLoading ? (
+                    <Skeleton className="w-5 h-4" />
+                  ) : (
+                    <Badge>{filteredDigests.all?.length}</Badge>
+                  )}
+                </TabsTrigger>
 
-            <TabsTrigger
-              value="director"
-              className="w-full justify-between gap-4"
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <ShieldUser className="size-4 text-muted-foreground" /> Совет
-                директоров
-              </div>
-              {isDigestsLoading ? (
-                <Skeleton className="w-5 h-4" />
-              ) : (
-                <Badge>{filteredDigests.director?.length}</Badge>
-              )}
-            </TabsTrigger>
-
-            {session && (
-              <TabsTrigger
-                value="franchise"
-                className="w-full justify-between gap-4"
-              >
-                <div className="flex flex-row gap-2 items-center">
-                  <Store className="size-4 text-muted-foreground" /> Франчайзинг
-                </div>
-                {isDigestsLoading ? (
-                  <Skeleton className="w-5 h-4" />
-                ) : (
-                  <Badge>{filteredDigests.franchise?.length}</Badge>
+                {session && (
+                  <TabsTrigger
+                    value="analytics"
+                    className="w-full justify-between gap-4"
+                  >
+                    <div className="flex flex-row gap-2 items-center">
+                      <ChartNetwork className="size-4 text-muted-foreground" />
+                      Аналитика
+                    </div>
+                    {isDigestsLoading ? (
+                      <Skeleton className="w-5 h-4" />
+                    ) : (
+                      <Badge>{filteredDigests.analytics?.length}</Badge>
+                    )}
+                  </TabsTrigger>
                 )}
-              </TabsTrigger>
-            )}
 
-            <TabsTrigger
-              value="groupCompany"
-              className="w-full justify-between gap-4"
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <Boxes className="size-4 text-muted-foreground" /> Группа
-                компаний
-              </div>
-              {isDigestsLoading ? (
-                <Skeleton className="w-5 h-4" />
-              ) : (
-                <Badge>{filteredDigests.groupCompany?.length}</Badge>
-              )}
-            </TabsTrigger>
+                <TabsTrigger
+                  value="director"
+                  className="w-full justify-between gap-4"
+                >
+                  <div className="flex flex-row gap-2 items-center">
+                    <ShieldUser className="size-4 text-muted-foreground" />{" "}
+                    Совет директоров
+                  </div>
+                  {isDigestsLoading ? (
+                    <Skeleton className="w-5 h-4" />
+                  ) : (
+                    <Badge>{filteredDigests.director?.length}</Badge>
+                  )}
+                </TabsTrigger>
+
+                {session && (
+                  <TabsTrigger
+                    value="franchise"
+                    className="w-full justify-between gap-4"
+                  >
+                    <div className="flex flex-row gap-2 items-center">
+                      <Store className="size-4 text-muted-foreground" />{" "}
+                      Франчайзинг
+                    </div>
+                    {isDigestsLoading ? (
+                      <Skeleton className="w-5 h-4" />
+                    ) : (
+                      <Badge>{filteredDigests.franchise?.length}</Badge>
+                    )}
+                  </TabsTrigger>
+                )}
+
+                <TabsTrigger
+                  value="groupCompany"
+                  className="w-full justify-between gap-4"
+                >
+                  <div className="flex flex-row gap-2 items-center">
+                    <Boxes className="size-4 text-muted-foreground" /> Группа
+                    компаний
+                  </div>
+                  {isDigestsLoading ? (
+                    <Skeleton className="w-5 h-4" />
+                  ) : (
+                    <Badge>{filteredDigests.groupCompany?.length}</Badge>
+                  )}
+                </TabsTrigger>
+              </>
+            )}
           </TabsList>
 
           <TabsContent value="all">

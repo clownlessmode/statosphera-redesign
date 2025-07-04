@@ -1,12 +1,12 @@
 import { EChartsOption } from "echarts";
-
 import { getFormatTooltip } from "./formatter-tooltip";
 import { graphColors } from "@shared/constants/graph-colors";
+
 export const getOptionChart = (
-  option: EChartsOption,
+  option: EChartsOption & { groupType?: string },
   theme: "light" | "dark" | string,
 ) => {
-  const { title, legend, ...otherOption } = option;
+  const { title, legend, groupType, ...otherOption } = option;
   const isLightTheme = theme === "light";
   const colors = isLightTheme ? graphColors.light : graphColors.dark;
 
@@ -59,7 +59,7 @@ export const getOptionChart = (
     },
     tooltip: {
       trigger: "axis",
-      formatter: (args: unknown) => getFormatTooltip(args),
+      formatter: (args: unknown) => getFormatTooltip(args, groupType),
       backgroundColor: colors.tooltipBg,
       borderColor: colors.tooltipBorder,
       textStyle: {
@@ -71,7 +71,6 @@ export const getOptionChart = (
     xAxis: {
       type: "category",
       boundaryGap: false,
-
       axisLine: {
         lineStyle: {
           color: colors.text,
@@ -86,7 +85,6 @@ export const getOptionChart = (
       boundaryGap: false,
       min: (value: any) => value.min * 0.9,
       max: (value: any) => value.max * 1.1,
-
       axisLine: {
         show: false,
       },
@@ -102,7 +100,6 @@ export const getOptionChart = (
         },
       },
     },
-
     grid: {
       left: "5%",
       right: "5%",

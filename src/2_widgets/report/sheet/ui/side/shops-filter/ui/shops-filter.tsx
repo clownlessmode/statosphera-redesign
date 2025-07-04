@@ -1,3 +1,4 @@
+// ShopsFilter.tsx
 import {
   Card,
   CardContent,
@@ -20,7 +21,7 @@ import {
   useRegions,
   useShops,
 } from "../model";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useCallback, useRef } from "react";
 import ClearFilters from "./clear-filter";
 import { SelectMyShops } from "./select-my-shops";
 import {
@@ -29,10 +30,11 @@ import {
   STORE_CONDITIONS,
   useFiltersStore,
 } from "@widgets/report/sheet/model/filters-store";
-import { CHANNEL_SHOP, STATUS, TIME } from "../config";
+import { STATUS, TIME } from "../config";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
+import { useChannel } from "../model/hooks/use-channel";
 
 export const ShopsFilter: FC = () => {
   const form = useForm();
@@ -40,6 +42,9 @@ export const ShopsFilter: FC = () => {
   const { isMyShopsMode } = useMyShopsStore();
   const { session } = useSession();
   const payload = getApiPayload();
+
+  // Флаг для предотвращения повторных запросов
+  const isShopsLoadedRef = useRef(false);
 
   const {
     savedPartnerLabels,
@@ -66,12 +71,46 @@ export const ShopsFilter: FC = () => {
     isShopsLoading,
   } = useShops(payload);
 
-  useEffect(() => {
-    if (isMyShopsMode && !savedShopLabels.length) {
+  // Мемоизированная функция для загрузки магазинов
+  const loadShops = useCallback(() => {
+    if (!isShopsLoadedRef.current) {
       handleOpenShopsSelect(true);
+      isShopsLoadedRef.current = true;
     }
-  }, [isMyShopsMode]);
+  }, [handleOpenShopsSelect]);
 
+  // Загрузка данных магазинов при необходимости
+  useEffect(() => {
+    if (isMyShopsMode && !savedShopLabels.length && !isShopsLoading) {
+      loadShops();
+    }
+
+    // Сброс флага при выходе из режима "мои магазины"
+    if (!isMyShopsMode) {
+      isShopsLoadedRef.current = false;
+    }
+  }, [isMyShopsMode, savedShopLabels.length, isShopsLoading, loadShops]);
+
+  // Обновление формы при изменении режима "мои магазины"
+  useEffect(() => {
+    if (isMyShopsMode && session?.idStore?.length) {
+      // Преобразуем idStore в формат JSON строки, как в API
+      const storeValues = session.idStore.map((id) => JSON.stringify([id]));
+
+      form.setValue("idStore", storeValues);
+      updateStoreFilter("idStore", storeValues);
+    } else if (!isMyShopsMode) {
+      // Очищаем только если выходим из режима "мои магазины"
+      const currentValues = form.getValues("idStore");
+      if (currentValues?.length > 0) {
+        // Сохраняем текущие значения если они есть
+        return;
+      }
+      form.setValue("idStore", []);
+      updateStoreFilter("idStore", []);
+    }
+  }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
+  const { CHANNEL_SHOP } = useChannel();
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -96,7 +135,7 @@ export const ShopsFilter: FC = () => {
                       {...field}
                       disabled={isMyShopsMode}
                       onChange={(values) => {
-                        field.onChange(values);
+                        field.onChange(values as FRS_CHANNEL[]);
                         updateStoreFilter("channel", values as FRS_CHANNEL[]);
                       }}
                       options={CHANNEL_SHOP}
@@ -240,23 +279,25 @@ export const ShopsFilter: FC = () => {
                   <FormLabel>Магазины</FormLabel>
                   <FormControl>
                     <MultiSelect
-                      maxCount={1}
-                      value={
-                        isMyShopsMode
-                          ? session?.idStore.map(String)
-                          : field.value?.map(String) || []
-                      }
-                      options={isMyShopsMode ? [] : shopsOptions}
+                      disabled={isMyShopsMode}
+                      value={field.value || []}
+                      options={shopsOptions}
                       isLoading={isShopsLoading}
-                      onOpenChange={handleOpenShopsSelect}
+                      onOpenChange={(isOpen) => {
+                        if (!isMyShopsMode) {
+                          handleOpenShopsSelect(isOpen);
+                        }
+                      }}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
-                        field.onChange(numeric);
-                        updateStoreFilter("idStore", numeric);
+                        if (!isMyShopsMode) {
+                          field.onChange(value);
+                          updateStoreFilter("idStore", value);
+                        }
                       }}
                       externalLabels={savedShopLabels}
-                      defaultValue={field.value?.map(String)}
+                      defaultValue={field.value}
                       placeholder="Выберите магазины"
+                      maxCount={1}
                     />
                   </FormControl>
                 </FormItem>

@@ -36,9 +36,10 @@ export const DonutChart = ({
     () => ({
       backgroundColor: "transparent",
       title: {
+        //перекидывать пропсами целое/дробное число
         text: `${total}`,
         left: "center",
-        top: "center",
+        top: "53%",
         textStyle: {
           fontSize: 28,
           fontWeight: "bold",
@@ -76,6 +77,7 @@ export const DonutChart = ({
           name: title,
           type: "pie",
           radius: ["50%", "80%"],
+          center: ["50%", "60%"],
           avoidLabelOverlap: false,
           label: {
             show: true,

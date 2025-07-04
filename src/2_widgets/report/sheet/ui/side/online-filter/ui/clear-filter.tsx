@@ -35,9 +35,9 @@ const ClearFilters: FC<Props> = ({ form }) => {
     updateOnlineStoreFilter("imPromo", []);
     form.reset({
       isIm: null,
-      imTypeOrder: "all",
-      imDeliveryMethod: "all",
-      imPaymentMethod: "all",
+      imTypeOrder: [],
+      imDeliveryMethod: [],
+      imPaymentMethod: [],
       imStatusOrder: [],
       imReceiveInterval: [],
       imPromo: [],

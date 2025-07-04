@@ -61,7 +61,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupDirection: [],
+          directionProducts: [],
         },
       },
     });
@@ -74,7 +74,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupEconomist: [],
+          groupsEconomist: [],
         },
       },
     });
@@ -100,7 +100,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupTypeSender: [],
+          typeProducts: [],
         },
       },
     });
@@ -113,7 +113,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupSeasonality: [],
+          seasonalityProducts: [],
         },
       },
     });
@@ -126,7 +126,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupMain: [],
+          idGroupMain: [],
         },
       },
     });
@@ -139,7 +139,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupSub: [],
+          subGroups: [],
         },
       },
     });
@@ -152,7 +152,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupSubSub: [],
+          subSubGroups: [],
         },
       },
     });
@@ -167,7 +167,7 @@ export class FiltersProductsService {
         ...dto.filters,
         product: {
           ...dto.filters.product,
-          groupNomenklatura: [],
+          idProduct: [],
         },
       },
     });

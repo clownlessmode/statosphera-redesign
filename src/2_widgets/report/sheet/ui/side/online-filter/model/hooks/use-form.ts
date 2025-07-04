@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import { defaultValues, FormValues, schema } from "../../config";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { processArrayableValue } from "@shared/lib/arrayable-string";
 
 export const useForm = () => {
   const {
@@ -19,9 +20,15 @@ export const useForm = () => {
     defaultValues: {
       imDeliveryMethod: imDeliveryMethod || defaultValues.imDeliveryMethod,
       imPaymentMethod: imPaymentMethod || defaultValues.imPaymentMethod,
-      imPromo: imPromo || defaultValues.imPromo,
-      imReceiveInterval: imReceiveInterval || defaultValues.imReceiveInterval,
-      imStatusOrder: imStatusOrder || defaultValues.imStatusOrder,
+      imPromo: processArrayableValue(imPromo, defaultValues.imPromo),
+      imReceiveInterval: processArrayableValue(
+        imReceiveInterval,
+        defaultValues.imReceiveInterval,
+      ),
+      imStatusOrder: processArrayableValue(
+        imStatusOrder,
+        defaultValues.imStatusOrder,
+      ),
       imTypeOrder: imTypeOrder || defaultValues.imTypeOrder,
       isIm: isIm || defaultValues.isIm,
     },

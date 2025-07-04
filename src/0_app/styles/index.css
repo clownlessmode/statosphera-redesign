@@ -83,7 +83,7 @@ body {
 
   --secondary: #ffadc6;
   --secondary-foreground: #e50046;
-  /* --secondary-asdsadasd: #00000027; */
+  --secondary-asdsadasd: #7f7f7f74;
 
   --primary: #e50046;
   --primary-foreground: #ebe8fc;
@@ -119,7 +119,6 @@ body {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.87 0 0);
 }
-
 .dark {
   --background: #191919;
   --foreground: #d4d4d4;

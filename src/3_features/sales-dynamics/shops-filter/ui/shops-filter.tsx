@@ -31,12 +31,13 @@ import {
   STORE_CONDITIONS,
   useSalesDynamicsFiltersStore,
 } from "@pages/sales-dynamics/model/filters-store";
-import { channel, status, time } from "../model/mock";
+import { status, time } from "../model/mock";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
 import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
 import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 import { Badge } from "@shared/ui/badge";
+import { useChannel } from "@widgets/report/sheet/ui/side/shops-filter/model/hooks/use-channel";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +81,7 @@ const ShopsFilter = () => {
       updateFilters("idStore", []);
     }
   }, [selectedMyShops]);
-
+  const { CHANNEL_SHOP } = useChannel();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -128,10 +129,10 @@ const ShopsFilter = () => {
                           disabled={selectedMyShops}
                           {...field}
                           onChange={(values) => {
-                            field.onChange(values);
+                            field.onChange(values as FRS_CHANNEL[]);
                             updateFilters("channel", values as FRS_CHANNEL[]);
                           }}
-                          options={channel}
+                          options={CHANNEL_SHOP}
                           className="grid-cols-3"
                         />
                       </FormItem>

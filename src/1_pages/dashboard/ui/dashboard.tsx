@@ -19,6 +19,9 @@ import HoursRevenueSkeleton from "@widgets/dashboard/hours-revenue/hours-revenue
 import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
 import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
 import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
+import { Nps } from "@widgets/dashboard/nps";
+import { ROLES } from "@shared/constants/roles";
+import { useSession } from "@entities/session";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue"),
 );
@@ -79,7 +82,7 @@ const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
-  console.log(dashboard?.salesHours.data);
+  const { session } = useSession();
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
@@ -88,6 +91,14 @@ const Dashboard = () => {
           <WeeklyRevenue
             data={dashboard?.salesSevenDays}
             isLoading={isDashboardLoading}
+          />
+        </Suspense>
+        <Nps />
+
+        <Suspense fallback={<ChannelRevenueSkeleton />}>
+          <ChannelRevenue
+            isLoading={isDashboardLoading}
+            data={dashboard?.salesChannel}
           />
         </Suspense>
         <div className="flex flex-col gap-2 h-fit ">
@@ -120,31 +131,38 @@ const Dashboard = () => {
               }
             />
           </Suspense>
-          <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-            <WriteOffHouseholds
-              negative={dashboard?.curentHouseHold.data?.[0]?.negative}
-              isLoading={isDashboardLoading}
-              householdGoods={
-                dashboard?.curentHouseHold.data?.[0]?.householdGoods
-              }
-              householdGoodsPercent={
-                dashboard?.curentHouseHold.data?.[0]?.householdGoodsPercent
-              }
-              householdGoodsYoY={
-                dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoY
-              }
-              householdGoodsYoYPercent={
-                dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
-              }
-            />
-          </Suspense>
+          {session?.role == ROLES.OFFICE_MM && (
+            <Suspense fallback={<LoyaltySkeleton />}>
+              <Loyalty
+                isLoading={isDashboardLoading}
+                appLoyalPercent={
+                  dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
+                }
+                checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
+              />
+            </Suspense>
+          )}
+          {session?.role !== ROLES.OFFICE_MM && (
+            <Suspense fallback={<WriteOffIndicatorSkeleton />}>
+              <WriteOffHouseholds
+                negative={dashboard?.curentHouseHold.data?.[0]?.negative}
+                isLoading={isDashboardLoading}
+                householdGoods={
+                  dashboard?.curentHouseHold.data?.[0]?.householdGoods
+                }
+                householdGoodsPercent={
+                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsPercent
+                }
+                householdGoodsYoY={
+                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoY
+                }
+                householdGoodsYoYPercent={
+                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
+                }
+              />
+            </Suspense>
+          )}
         </div>
-        <Suspense fallback={<ChannelRevenueSkeleton />}>
-          <ChannelRevenue
-            isLoading={isDashboardLoading}
-            data={dashboard?.salesChannel}
-          />
-        </Suspense>
         <Suspense fallback={<SalesStructureSkeleton />}>
           <SalesStructure
             isLoading={isDashboardLoading}
@@ -191,64 +209,71 @@ const Dashboard = () => {
             isLoading={isDashboardLoading}
           />
         </Suspense>
-        <div className="flex flex-col gap-2 max-h-[400px]">
-          <Suspense fallback={<LoyaltySkeleton />}>
-            <Loyalty
-              isLoading={isDashboardLoading}
-              appLoyalPercent={
-                dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
-              }
-              checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
-            />
-          </Suspense>
-          <Suspense fallback={<ImRevenueSkeleton />}>
-            <ImRevenue
-              negative={dashboard?.currentCardIm.data?.[0]?.negative}
-              isLoading={isDashboardLoading}
-              proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
-              proceedsImYoY={dashboard?.currentCardIm.data?.[0]?.proceedsImYoY}
-              proceedsImYoYPercent={
-                dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
-              }
-            />
-          </Suspense>
-          <Suspense fallback={<LeaderImSalesSkeleton />}>
-            <LeaderImSales
-              isLoading={isDashboardLoading}
-              idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
-              proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
-              storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
-            />
-          </Suspense>
-        </div>
+        {session?.role !== ROLES.OFFICE_MM && (
+          <div className="flex flex-col gap-2 max-h-[400px]">
+            <Suspense fallback={<LoyaltySkeleton />}>
+              <Loyalty
+                isLoading={isDashboardLoading}
+                appLoyalPercent={
+                  dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
+                }
+                checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
+              />
+            </Suspense>
+            <Suspense fallback={<ImRevenueSkeleton />}>
+              <ImRevenue
+                negative={dashboard?.currentCardIm.data?.[0]?.negative}
+                isLoading={isDashboardLoading}
+                proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
+                proceedsImYoY={
+                  dashboard?.currentCardIm.data?.[0]?.proceedsImYoY
+                }
+                proceedsImYoYPercent={
+                  dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
+                }
+              />
+            </Suspense>
+            <Suspense fallback={<LeaderImSalesSkeleton />}>
+              <LeaderImSales
+                isLoading={isDashboardLoading}
+                idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
+                proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
+                storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
+              />
+            </Suspense>
+          </div>
+        )}
+
         <Suspense fallback={<HoursRevenueSkeleton />}>
           <HoursRevenue
             isLoading={isDashboardLoading}
             data={dashboard?.salesHours.data?.graph}
           />
         </Suspense>
-        <Suspense fallback={<PlanPercentSkeleton />}>
-          <PlanPercent
-            isLoading={isDashboardLoading}
-            planAvgCheckForecastPercent={
-              dashboard?.cardOneExe.data?.[0]?.planAvgCheckForecastPercent
-            }
-            planCheckForecastPercent={
-              dashboard?.cardOneExe.data?.[0]?.planCheckForecastPercent
-            }
-            planProceedsForecastPercent={
-              dashboard?.cardOneExe.data?.[0]?.planProceedsForecastPercent
-            }
-            planProceedsQcForecastPercent={
-              dashboard?.cardOneExe.data?.[0]?.planProceedsQcForecastPercent ||
-              null
-            }
-            planShareOfPaymentsQcForecastPercent={
-              dashboard?.cardOneExe.data?.[0]
-                ?.planShareOfPaymentsQcForecastPercent || null
-            }
-          />
-        </Suspense>
+        {session?.role !== ROLES.OFFICE_MM && (
+          <Suspense fallback={<PlanPercentSkeleton />}>
+            <PlanPercent
+              isLoading={isDashboardLoading}
+              planAvgCheckForecastPercent={
+                dashboard?.cardOneExe.data?.[0]?.planAvgCheckForecastPercent
+              }
+              planCheckForecastPercent={
+                dashboard?.cardOneExe.data?.[0]?.planCheckForecastPercent
+              }
+              planProceedsForecastPercent={
+                dashboard?.cardOneExe.data?.[0]?.planProceedsForecastPercent
+              }
+              planProceedsQcForecastPercent={
+                dashboard?.cardOneExe.data?.[0]
+                  ?.planProceedsQcForecastPercent || null
+              }
+              planShareOfPaymentsQcForecastPercent={
+                dashboard?.cardOneExe.data?.[0]
+                  ?.planShareOfPaymentsQcForecastPercent || null
+              }
+            />
+          </Suspense>
+        )}
         <Suspense fallback={<TopWriteOffSkeleton />}>
           <TopWriteoffs
             isLoading={isDashboardLoading}

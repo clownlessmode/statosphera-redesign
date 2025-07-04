@@ -15,51 +15,64 @@ interface Props {
     center?: React.ReactNode;
     right?: React.ReactNode;
   };
+  isAdmin?: boolean;
 }
-const Header: FC<Props> = ({ title, actions }) => {
+const Header: FC<Props> = ({ title, actions, isAdmin }) => {
   const { isMobile } = useSidebar();
   const { session } = useSession();
   return (
-    <div className="flex flex-row justify-between items-center gap-2">
-      <div className="flex flex-row items-center gap-1 sm:gap-2">
-        {session && <> {isMobile && <SidebarTrigger size="icon" />}</>}
-        {title && (
-          <h1 className="font-bold leading-none md:text-xl text-md tracking-tight">
-            {title}
-          </h1>
-        )}
-        {session && <>{actions?.left && actions.left}</>}
-      </div>
-      {session && (
-        <>
-          {actions?.center && (
-            <div className="flex flex-row items-center gap-1 sm:gap-2">
-              {actions.center}
-            </div>
+    <>
+      {isAdmin && (
+        <div
+          className="h-2 -mt-2 -ml-2 w-[calc(100vw)] shadow-md"
+          style={{
+            background:
+              "repeating-linear-gradient(45deg, var(--background) 0, var(--background) 10px, var(--secondary-foreground) 10px, var(--secondary-foreground) 20px)",
+            backgroundBlendMode: "normal",
+            opacity: 1,
+          }}
+        />
+      )}
+      <div className="flex flex-row justify-between items-center gap-2">
+        <div className="flex flex-row items-center gap-1 sm:gap-2">
+          {session && <> {isMobile && <SidebarTrigger size="icon" />}</>}
+          {title && (
+            <h1 className="font-bold leading-none md:text-xl text-md tracking-tight">
+              {title}
+            </h1>
           )}
-        </>
-      )}
-      {session ? (
-        <>
-          <div className="flex flex-row gap-1 sm:gap-2">
-            {actions?.right && actions.right}
-            <Feedback />
-            <NotificationsBadge />
-            <ProfileBadge />
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-row gap-1 sm:gap-2">
-          <Feedback />
-          <Link to={ROUTES_PATH.LOGIN}>
-            <Button>
-              Войти в Статосферу <LogIn />
-            </Button>
-          </Link>
+          {session && <>{actions?.left && actions.left}</>}
         </div>
-      )}
-    </div>
+        {session && (
+          <>
+            {actions?.center && (
+              <div className="flex flex-row items-center gap-1 sm:gap-2">
+                {actions.center}
+              </div>
+            )}
+          </>
+        )}
+        {session ? (
+          <>
+            <div className="flex flex-row gap-1 sm:gap-2">
+              {actions?.right && actions.right}
+              <Feedback />
+              <NotificationsBadge />
+              <ProfileBadge />
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-row gap-1 sm:gap-2">
+            <Feedback />
+            <Link to={ROUTES_PATH.LOGIN}>
+              <Button>
+                Войти в Статосферу <LogIn />
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
-
 export default Header;

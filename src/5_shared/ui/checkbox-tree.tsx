@@ -1,15 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { ChevronRight, LucideIcon } from "lucide-react";
+import { ChevronRight, Info, LucideIcon } from "lucide-react";
 import { cn } from "@shared/lib/utils";
 import { Checkbox } from "@shared/ui/checkbox";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { Badge } from "./badge";
+import { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
 export interface CheckboxTreeItem {
   id: string;
   label: string;
   icon?: LucideIcon;
+  tooltip?: string;
   selectedIcon?: LucideIcon;
   openIcon?: LucideIcon;
   value: string;
@@ -273,6 +275,22 @@ function CheckboxTreeNode({
         >
           <TreeIcon item={item} />
           {item.label}
+          <div className="ml-2">
+            {item.tooltip && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={10}
+                  className="w-[300px] h-fit p-2 text-center"
+                  side="right"
+                >
+                  {item.tooltip}
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
           {hasChildren && selectedCount > 0 && (
             <Badge className="ml-1 text-[10px] rounded-sm px-1.5">
               {selectedCount}

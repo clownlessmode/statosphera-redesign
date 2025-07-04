@@ -16,7 +16,7 @@ interface MarkupProps {
 const Markup = ({ percent, proceeds, isLoading }: MarkupProps) => {
   return (
     <>
-      {isLoading || !percent ? (
+      {isLoading ? (
         <MarkupSkeleton />
       ) : (
         <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
@@ -29,9 +29,9 @@ const Markup = ({ percent, proceeds, isLoading }: MarkupProps) => {
             </CardContent>
           </div>
           <CardFooter className="text-xl font-bold items-end flex flex-col text-left w-full">
-            <p className="w-full">{percent}%</p>
+            <p className="w-full">{percent ? `${percent}%` : null}</p>
             <p className="w-full text-xs text-muted-foreground">
-              {proceeds?.toLocaleString()}₽
+              {proceeds ? `${proceeds.toLocaleString()}₽` : null}
             </p>
           </CardFooter>
         </Card>

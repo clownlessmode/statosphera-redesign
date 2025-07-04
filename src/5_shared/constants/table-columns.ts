@@ -12,6 +12,9 @@ export enum COLUMN_KEY {
   ITR_YOY = "itrYoY",
   ITR_YOY_PERCENT = "itrYoYPercent",
 
+  //Причины списания
+  OPS = "ops",
+
   // Бонусы начисление
   BONUS_ACCRUAL_GROUP = "bonusAccrualGroup",
   BONUS_ACCRUAL = "bonusAccrual",
@@ -486,11 +489,31 @@ export const formatNumber = (
 
   if (isNaN(num)) return "-";
 
-  // Ручное форматирование с пробелами
-  const parts = num.toFixed(2).split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  // Проверяем, есть ли дробная часть
+  const hasDecimals = num % 1 !== 0;
 
-  return parts.join(",");
+  // Форматируем число
+  let formatted: string;
+
+  if (hasDecimals) {
+    // Если есть дробная часть, оставляем до 2 знаков после запятой
+    const parts = num.toFixed(2).split(".");
+    // Убираем лишние нули в конце дробной части
+    parts[1] = parts[1].replace(/0+$/, "");
+
+    // Добавляем пробелы для разделения тысяч
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+    // Если дробная часть стала пустой после удаления нулей, возвращаем только целую часть
+    formatted = parts[1] ? parts.join(",") : parts[0];
+  } else {
+    // Если число целое, просто добавляем пробелы
+    formatted = Math.floor(num)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+
+  return formatted;
 };
 export const formatPercent = (value: number) => (value ? value + "%" : "-");
 
@@ -3928,6 +3951,15 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       }
     },
+  },
+  {
+    field: COLUMN_KEY.OPS,
+    headerName: "Причина списания",
+    headerTooltip: "Причина списания",
+    minWidth: 180,
+    pinned: "left",
+    cellDataType: "string",
+    valueGetter: (params) => params.data?.ops,
   },
   {
     field: COLUMN_KEY.PROCEEDS_IM_LM,

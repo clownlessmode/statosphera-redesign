@@ -32,7 +32,7 @@ export const useLoyalAction = (allData: any) => {
       const apiOptions = response.map(
         (loyalAction: LoyalActionFilterResponse) => ({
           label: loyalAction.nameDiscount
-            ? `${loyalAction.nameDiscount} ${JSON.stringify(loyalAction.guid)}`
+            ? `${loyalAction.nameDiscount}`
             : "Название не указано (ID: " + loyalAction.guid?.[0] + ")",
           value: String(JSON.stringify(loyalAction.guid || [])),
         }),

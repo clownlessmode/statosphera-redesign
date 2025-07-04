@@ -37,8 +37,8 @@ export interface InfinityTableProps {
   onSelectionChange?: (selectedRows: any[]) => void;
   dataVersion?: number;
   maxRows?: number;
-  selectedRows?: any[]; // Добавляем пропс для выбранных строк
-  rowSelection?: "single" | "multiple"; // Опционально: тип выделения
+  selectedRows?: any[];
+  rowSelection?: "single" | "multiple";
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -288,7 +288,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         isEqual(selectedRow, params.data),
       );
 
-      return isSelected ? { backgroundColor: "rgba(0, 0, 0, 0)" } : {};
+      return isSelected ? { backgroundColor: "rgba(59, 130, 246, 0.1)" } : {};
     },
     [isEqual],
   ); // Убираем selectedRows из зависимостей
@@ -328,7 +328,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
-          console.log("onSortChanged TRIGGERRED");
           gridApiRef.current?.purgeInfiniteCache();
           gridApiRef.current?.refreshInfiniteCache();
         }}
