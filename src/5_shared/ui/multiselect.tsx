@@ -57,6 +57,7 @@ interface MultiSelectProps
   side?: "top" | "bottom";
   externalLabels?: { value: string; label: string }[];
   wrapDefaultInArray?: boolean;
+  singleSelect?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -79,6 +80,7 @@ export const MultiSelect = React.forwardRef<
       onOpenChange,
       side,
       externalLabels,
+      singleSelect = false,
       ...props
     },
     ref,
@@ -100,13 +102,34 @@ export const MultiSelect = React.forwardRef<
     };
 
     const toggleOption = (option: string) => {
-      const newValues = selectedValues.includes(option)
-        ? selectedValues.filter((v) => v !== option)
-        : [...selectedValues, option];
-      handleValueChange(newValues);
+      if (singleSelect) {
+        if (selectedValues.includes(option)) {
+          const newValues = selectedValues.filter((v) => v !== option);
+          const emptyArray: string[] & { fromSingleSelect?: boolean } =
+            newValues;
+          if (newValues.length === 0) {
+            emptyArray.fromSingleSelect = true;
+          }
+          handleValueChange(emptyArray);
+        } else {
+          handleValueChange([option]);
+        }
+        setIsPopoverOpen(false);
+      } else {
+        const newValues = selectedValues.includes(option)
+          ? selectedValues.filter((v) => v !== option)
+          : [...selectedValues.filter((v) => v !== "0"), option];
+        handleValueChange(newValues);
+      }
     };
 
-    const handleClear = () => handleValueChange([]);
+    const handleClear = () => {
+      const emptyArray: string[] & { fromSingleSelect?: boolean } = [];
+      if (singleSelect) {
+        emptyArray.fromSingleSelect = true;
+      }
+      handleValueChange(emptyArray);
+    };
 
     const clearExtraOptions = () => {
       handleValueChange(selectedValues.slice(0, maxCount));

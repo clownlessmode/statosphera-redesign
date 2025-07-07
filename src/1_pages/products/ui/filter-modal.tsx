@@ -5,13 +5,13 @@ import { Funnel } from "lucide-react";
 import { FC, useState } from "react";
 
 interface Props {
-  refetch: () => void;
+  onApplyFilters: () => void;
 }
 
-export const FilterModal: FC<Props> = ({ refetch }) => {
+export const FilterModal: FC<Props> = ({ onApplyFilters }) => {
   const [open, setOpen] = useState(false);
   const handleClick = () => {
-    refetch();
+    onApplyFilters();
     setOpen(false);
   };
   return (
