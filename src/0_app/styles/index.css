@@ -119,7 +119,6 @@ body {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.87 0 0);
 }
-
 .dark {
   --background: #191919;
   --foreground: #d4d4d4;

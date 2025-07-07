@@ -16,16 +16,13 @@ import { WriteOffFilters } from "./write-off-filters";
 import DateDropdown, { useWriteOffDateFilterStore } from "./date-dropdown";
 import { useWriteOffController } from "@pages/write-off/api/controller";
 import UniversalTable from "@pages/report/ui/table";
-import {
-  columnDefs as defaultColumnDefs,
-  ColumnsKeyGroupings,
-} from "@shared/constants/table-columns";
+import { columnDefs } from "@shared/constants/table-columns";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Input } from "@shared/ui/input";
-import { ColDef } from "ag-grid-community";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { AnimatePresence } from "motion/react";
 import FiltersAccordeon from "@pages/report/ui/filters";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 
 // Функция для умного извлечения фильтров на основе текущих группировок
 function extractFiltersBasedOnGrouping(
@@ -466,419 +463,6 @@ function extractFiltersBasedOnGrouping(
 // Функция для глубокого сравнения фильтров
 
 // Функция для создания кастомных колонок на основе группировки
-function createWriteOffColumnDefs(
-  groups: string[],
-  firstRowData?: any,
-  tableData?: any[],
-): ColDef[] {
-  if (!firstRowData) return defaultColumnDefs;
-
-  const customCols: ColDef[] = [];
-
-  // Маппинг группировок к их отображаемым названиям и полям
-  const groupingMap: Record<
-    string,
-    { headerName: string; field: string; displayField?: string }
-  > = {
-    //Группировка по местоположению
-    city: {
-      headerName: "Город",
-      field: ColumnsKeyGroupings.CITY,
-      displayField: "city",
-    },
-    region: {
-      headerName: "Регион",
-      field: ColumnsKeyGroupings.REGION,
-      displayField: "region",
-    },
-
-    //Группировка по магазину
-    store: { headerName: "Магазин", field: "store", displayField: "store" },
-    channel: {
-      headerName: "Канал",
-      field: ColumnsKeyGroupings.CHANNEL,
-      displayField: "channel",
-    },
-    ageGroup: {
-      headerName: "Возраст магазина",
-      field: ColumnsKeyGroupings.AGE_GROUP,
-      displayField: "ageGroup",
-    },
-    storeCondition: {
-      headerName: "Статус магазина",
-      field: ColumnsKeyGroupings.STORE_CONDITION,
-      displayField: "storeCondition",
-    },
-    legalEntity: {
-      headerName: "Юр. лицо",
-      field: ColumnsKeyGroupings.LEGAL_ENTITY,
-      displayField: "legalEntity",
-    },
-    nameManager: {
-      headerName: "Партнер",
-      field: ColumnsKeyGroupings.NAME_MANAGER,
-      displayField: "nameManager",
-    },
-    formatStore: {
-      headerName: "Формат магазина",
-      field: ColumnsKeyGroupings.FORMAT_STORE,
-      displayField: "formatStore",
-    },
-
-    //Группировка по продукту
-    groupsFranchise: {
-      headerName: "Структура продаж",
-      field: ColumnsKeyGroupings.GROUPS_FRANCHISE,
-      displayField: "groupsFranchise",
-    },
-    group: {
-      headerName: "Группа",
-      field: ColumnsKeyGroupings.GROUP,
-      displayField: "group",
-    },
-    subGroups: {
-      headerName: "Подгруппа",
-      field: ColumnsKeyGroupings.SUB_GROUPS,
-      displayField: "groupsSub",
-    },
-    directionProducts: {
-      headerName: "Направление",
-      field: ColumnsKeyGroupings.DIRECTION_PRODUCTS,
-      displayField: "directionProducts",
-    },
-    subSubGroups: {
-      headerName: "Подподгруппа",
-      field: ColumnsKeyGroupings.SUB_SUB_GROUPS,
-      displayField: "groupsSubSub",
-    },
-    typeProducts: {
-      headerName: "Тип поставщика",
-      field: ColumnsKeyGroupings.TYPE_PRODUCTS,
-      displayField: "typeProducts",
-    },
-    product: {
-      headerName: "Продукт",
-      field: ColumnsKeyGroupings.PRODUCT,
-      displayField: "product",
-    },
-    seasonalityProducts: {
-      headerName: "Сезонность",
-      field: ColumnsKeyGroupings.SEASONALITY_PRODUCTS,
-      displayField: "seasonalityProducts",
-    },
-    managerAuto: {
-      headerName: "Менеджер автозаказа",
-      field: ColumnsKeyGroupings.MANAGER_AUTO,
-      displayField: "managerAuto",
-    },
-    groupsEconomist: {
-      headerName: "Справочник экономистов",
-      field: ColumnsKeyGroupings.GROUPS_ECONOMIST,
-      displayField: "groupsEconomist",
-    },
-    // "teamProducts": { headerName: "Команда", field: ColumnsKeyGroupings.TEAM_PRODUCTS, displayField: "teamProducts" },
-    // "tabNumber": { headerName: "Кассир", field: ColumnsKeyGroupings.TAB_NUMBER, displayField: "tabNumber" },
-
-    // Группировка по типу списания
-    writeOffType: {
-      headerName: "Тип списания",
-      field: "ops",
-      displayField: "ops",
-    },
-    ops: { headerName: "Тип списания", field: "ops", displayField: "ops" },
-
-    // Временные группировки
-    day: {
-      headerName: "День",
-      field: ColumnsKeyGroupings.DAY,
-      displayField: "date_group",
-    },
-    week: {
-      headerName: "Неделя",
-      field: ColumnsKeyGroupings.WEEK,
-      displayField: "date_group",
-    },
-    month: {
-      headerName: "Месяц",
-      field: ColumnsKeyGroupings.MONTH,
-      displayField: "date_group",
-    },
-    quarter: {
-      headerName: "Квартал",
-      field: ColumnsKeyGroupings.QUARTER,
-      displayField: "date_group",
-    },
-    year: {
-      headerName: "Год",
-      field: ColumnsKeyGroupings.YEAR,
-      displayField: "date_group",
-    },
-  };
-
-  // Обрабатываем все выбранные группировки, а не только первую
-  if (groups && groups.length > 0) {
-    groups.forEach((groupName, index) => {
-      const groupConfig = groupingMap[groupName];
-      if (groupConfig) {
-        // Проверяем, есть ли поле хотя бы в одной строке данных (не только в первой)
-        const fieldName = groupConfig.displayField || groupConfig.field;
-        // Специальные поля, которые должны всегда отображаться
-        const alwaysShowFields = [
-          "nameManager",
-          "legalEntity",
-          "writeOffType",
-          "ops",
-          "formatStore",
-          "managerAuto",
-        ];
-        const shouldAlwaysShow = alwaysShowFields.includes(groupName);
-
-        // Для специальных полей всегда показываем колонку
-        const hasFieldInData =
-          shouldAlwaysShow ||
-          tableData?.some((row: any) => {
-            const value = row[fieldName];
-
-            // Для обычных полей
-            if (value === null || value === undefined) {
-              return false;
-            }
-
-            // Для строковых полей проверяем, что есть содержимое (даже с пробелами)
-            if (typeof value === "string") {
-              return value.length > 0; // Даже пробелы считаем валидными
-            }
-
-            // Для числовых полей - любое число валидно
-            if (typeof value === "number") {
-              return true;
-            }
-
-            // Для остальных типов - просто проверяем на существование
-            return true;
-          });
-
-        if (hasFieldInData) {
-          // Специальная обработка для дат
-          const isDateField = groupConfig.displayField === "date_group";
-
-          customCols.push({
-            field: groupConfig.displayField || groupConfig.field,
-            headerName: groupConfig.headerName,
-            cellStyle: { textAlign: "left" },
-            pinned: "left",
-            width: index === 0 ? 340 : 220, // Первая колонка шире, остальные уже
-            suppressHeaderMenuButton: true,
-            valueFormatter: isDateField
-              ? (params: any) => {
-                  // Для закрепленной строки (total) показываем "Итого"
-                  if (params.node?.rowPinned === "top") {
-                    return "-";
-                  }
-                  if (!params.value) return "";
-                  // Просто возвращаем дату как есть, если это строка в формате даты
-                  if (typeof params.value === "string") {
-                    return params.value;
-                  }
-                  // Если это Date объект, конвертируем в ISO строку без времени
-                  const date = new Date(params.value);
-                  if (!isNaN(date.getTime())) {
-                    return date.toISOString().split("T")[0];
-                  }
-                  return params.value;
-                }
-              : (params: any) => {
-                  // Для закрепленной строки (total) показываем "Итого"
-                  if (params.node?.rowPinned === "top") {
-                    return "-";
-                  }
-                  // Обработка для всех остальных полей (включая nameManager)
-                  if (params.value === null || params.value === undefined) {
-                    return "";
-                  }
-
-                  // Если это число 0 или другие числовые значения, которые должны быть текстом
-                  if (typeof params.value === "number") {
-                    // Для nameManager и legalEntity, где 0 означает отсутствие данных
-                    if (
-                      (groupName === "nameManager" ||
-                        groupName === "legalEntity") &&
-                      params.value === 0
-                    ) {
-                      return "Не указано";
-                    }
-                    // Для остальных числовых значений просто конвертируем в строку
-                    return params.value.toString();
-                  }
-
-                  // Для строковых значений возвращаем как есть
-                  return params.value.toString();
-                },
-          });
-        }
-      }
-    });
-  }
-
-  // Добавляем колонки для данных списаний (все доступные)
-  const writeOffColumns: ColDef[] = [];
-
-  // Определяем какие колонки есть в данных
-  const availableFields = Object.keys(firstRowData || {});
-
-  // Базовые колонки списаний
-  const baseColumns = [
-    { field: "writeOff", headerName: "Списания, руб.", isAmount: true },
-    { field: "writeOffCount", headerName: "Списания, кол-во", isAmount: false },
-    { field: "writeOffWeight", headerName: "Списания, вес", isAmount: false },
-  ];
-
-  // Дополнительные колонки (прошлый месяц, прошлый год, изменения)
-  const additionalColumns = [
-    { field: "writeOffLM", headerName: "Списания, руб. PM", isAmount: true },
-    {
-      field: "writeOffCountLM",
-      headerName: "Списания, кол-во PM",
-      isAmount: false,
-    },
-    {
-      field: "writeOffWeightLM",
-      headerName: "Списания, вес PM",
-      isAmount: false,
-    },
-    { field: "writeOffLY", headerName: "Списания, руб. PY", isAmount: true },
-    {
-      field: "writeOffCountLY",
-      headerName: "Списания, кол-во PY",
-      isAmount: false,
-    },
-    {
-      field: "writeOffWeightLY",
-      headerName: "Списания, вес PY",
-      isAmount: false,
-    },
-    { field: "writeOffMoM", headerName: "Списания MoM", isAmount: true },
-    {
-      field: "writeOffCountMoM",
-      headerName: "Списания, кол-во MoM",
-      isAmount: false,
-    },
-    {
-      field: "writeOffWeightMoM",
-      headerName: "Списания, вес MoM",
-      isAmount: false,
-    },
-    {
-      field: "writeOffMoMPercent",
-      headerName: "Списания MoM %",
-      isPercent: true,
-    },
-    {
-      field: "writeOffCountMoMPercent",
-      headerName: "Списания, кол-во MoM %",
-      isPercent: true,
-    },
-    {
-      field: "writeOffWeightMoMPercent",
-      headerName: "Списания, вес MoM %",
-      isPercent: true,
-    },
-    { field: "writeOffYoY", headerName: "Списания YoY", isAmount: true },
-    {
-      field: "writeOffCountYoY",
-      headerName: "Списания, кол-во YoY",
-      isAmount: false,
-    },
-    {
-      field: "writeOffWeightYoY",
-      headerName: "Списания, вес YoY",
-      isAmount: false,
-    },
-    {
-      field: "writeOffYoYPercent",
-      headerName: "Списания YoY %",
-      isPercent: true,
-    },
-    {
-      field: "writeOffCountYoYPercent",
-      headerName: "Списания, кол-во YoY %",
-      isPercent: true,
-    },
-    {
-      field: "writeOffWeightYoYPercent",
-      headerName: "Списания, вес YoY %",
-      isPercent: true,
-    },
-  ];
-
-  // Добавляем базовые колонки
-  baseColumns.forEach((col) => {
-    if (availableFields.includes(col.field)) {
-      writeOffColumns.push({
-        field: col.field,
-        headerName: col.headerName,
-        valueFormatter: (params: any) =>
-          params.value != null ? params.value.toLocaleString("ru-RU") : "",
-        cellStyle: (params: any) => ({
-          color:
-            col.isAmount && params.value > 0
-              ? "#DE5656"
-              : col.isAmount && params.value < 0
-                ? "#71DE56"
-                : "inherit",
-          textAlign: "right",
-        }),
-      });
-    }
-  });
-
-  // Добавляем дополнительные колонки если они есть в данных
-  additionalColumns.forEach((col) => {
-    if (availableFields.includes(col.field)) {
-      writeOffColumns.push({
-        field: col.field,
-        headerName: col.headerName,
-        valueFormatter: (params: any) => {
-          if (params.value == null) return "";
-          if (col.isPercent) {
-            return `${params.value}%`;
-          }
-          return params.value.toLocaleString("ru-RU");
-        },
-        cellStyle: (params: any) => ({
-          color:
-            (col.isAmount ||
-              col.field.includes("MoM") ||
-              col.field.includes("YoY")) &&
-            params.value > 0
-              ? "#DE5656"
-              : (col.isAmount ||
-                    col.field.includes("MoM") ||
-                    col.field.includes("YoY")) &&
-                  params.value < 0
-                ? "#71DE56"
-                : "inherit",
-          textAlign: "right",
-        }),
-      });
-    }
-  });
-
-  // Добавляем колонки списаний
-  customCols.push(...writeOffColumns);
-
-  // Если нет группировки, используем стандартные колонки
-  if (customCols.length === 0) {
-    return defaultColumnDefs.filter(
-      (col) =>
-        col.field &&
-        firstRowData &&
-        Object.prototype.hasOwnProperty.call(firstRowData, col.field),
-    );
-  }
-
-  return customCols;
-}
 
 // Функция для агрегации дублирующихся записей
 function aggregateDuplicateRows(data: any[], groups: string[]): any[] {
@@ -985,7 +569,7 @@ export const AllWriteOffs = ({
   const { resetAllFilters, getApiPayload, groups } = useFiltersStore();
 
   // Stores
-  const { graph, table, total, clearAll, setGraph } = useWriteOffStore();
+  const { graph, table, total, clearAll, setGraph, error } = useWriteOffStore();
   const { bumpDataVersion } = useWriteOffVersionStore();
   const { reasons, isLoading: isReasonsLoading } = useWriteOffReasonsStore();
 
@@ -1136,29 +720,6 @@ export const AllWriteOffs = ({
 
     return groupLabels[priorityGroup] || "элементы";
   }, []);
-
-  // Мемоизированные колонки для таблицы на основе группировки
-  const tableColumnDefs = useMemo(() => {
-    if (!table?.data || table.data.length === 0) return defaultColumnDefs;
-
-    // Проверяем конкретные поля для отладки
-
-    // Используем первую строку данных для определения колонок
-    // Также учитываем поля из total если они есть
-    const firstRowData = table.data[0];
-    const combinedFields = { ...firstRowData };
-
-    // Добавляем поля из total если они есть
-    if (total) {
-      Object.keys(total).forEach((key) => {
-        if (!(key in combinedFields)) {
-          combinedFields[key] = (total as any)[key];
-        }
-      });
-    }
-
-    return createWriteOffColumnDefs(groups, combinedFields, table.data);
-  }, [groups, table?.data, total]);
 
   // Placeholder для поиска на основе группировки
   const searchPlaceholder = useMemo(() => {
@@ -1648,18 +1209,15 @@ export const AllWriteOffs = ({
           </Button>
         </div>
 
-        {isFiltersOpen ? (
+        {isFiltersOpen && (
           <WriteOffFilters
             isOpen={isFiltersOpen}
             onOpenSheet={handleOpenSheet}
           />
-        ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="flex flex-col items-center justify-center h-full dark:opacity-70">
-              <NotSelectedFilters />
-            </div>
-          </div>
         )}
+        <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
+          {error ? <NotFoundFilters /> : <NotSelectedFilters />}
+        </div>
       </div>
     );
   }
@@ -1732,7 +1290,6 @@ export const AllWriteOffs = ({
           )}
         </div>
 
-        {/* Нижний ряд: Таблица + Круговой график (кроме списаний по поломкам) */}
         <div
           className={tab === "write-off-equip" ? "flex" : "flex gap-4"}
           style={{
@@ -1788,14 +1345,19 @@ export const AllWriteOffs = ({
                 )}
               </div>
             )}
-
-            <UniversalTable
-              selectionType="multiple"
-              onSelectionChange={handleSelectionChange}
-              data={filteredTable as any}
-              totalData={total ? [total] : undefined}
-              columnDefs={tableColumnDefs}
-            />
+            {table && total ? (
+              <UniversalTable
+                selectionType="multiple"
+                onSelectionChange={handleSelectionChange}
+                data={filteredTable as any}
+                totalData={total ? [total] : undefined}
+                columnDefs={columnDefs}
+              />
+            ) : (
+              <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
+                {error ? <NotFoundFilters /> : <NotSelectedFilters />}
+              </div>
+            )}
           </div>
 
           {/* Круговой график - только для обычных списаний */}
@@ -1811,15 +1373,6 @@ export const AllWriteOffs = ({
                 forceResize={isFiltersOpen}
                 currentGroups={groups}
               />
-            </div>
-          )}
-
-          {/* Для других табов (если будут) */}
-          {tab !== "write-off" && tab !== "write-off-equip" && (
-            <div className="w-110 flex-shrink-0">
-              <div className="flex items-center justify-center h-full dark:opacity-70">
-                <NotSelectedFilters />
-              </div>
             </div>
           )}
         </div>

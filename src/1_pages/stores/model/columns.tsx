@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { SortableHeader } from "@shared/ui/sortable-header";
 import StatusBadge from "@shared/ui/status-badge";
-import { Store } from "./types";
+import { Store } from "@entities/store/config";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
 import { StoreSettings } from "@features/store-settings";

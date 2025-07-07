@@ -1,5 +1,6 @@
 import { api } from "@shared/api/api";
-import { Coordinates, Store } from "../types";
+import { Coordinates } from "@entities/store/config";
+import { Store } from "@entities/store/config";
 
 interface StoreFilters {
   idStore: number[];

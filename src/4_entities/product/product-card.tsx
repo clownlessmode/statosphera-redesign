@@ -34,13 +34,13 @@ const ProductCard: FC<Props> = ({
             style={{
               backgroundImage: `url(${imagePath})`,
             }}
-            className="size-[130px] md:size-[150px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
+            className="size-[100px] md:size-[130px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
           />
 
-          <div className="flex flex-col gap-2 justify-between py-4  overflow-hidden">
-            <div className="flex items-center flex-row gap-4 flex-wrap">
-              <Badge className="bg-primary/5 text-primary text-[14px] hover:bg-primary/5 shadow-none">
-                <span className="truncate block max-w-[200px]">{subGroup}</span>
+          <div className="flex flex-col gap-2 justify-between py-0  overflow-hidden">
+            <div className="flex items-center flex-row gap-2 flex-wrap">
+              <Badge className="bg-primary/5 text-primary text-[12px] hover:bg-primary/5 shadow-none">
+                <span className="truncate block max-w-[158px]">{subGroup}</span>
               </Badge>
               <div className="flex items-center gap-2 shrink-0">
                 {pp ? (
@@ -76,18 +76,21 @@ const ProductCard: FC<Props> = ({
             </div>
 
             <div className="flex flex-col gap-[8px] overflow-hidden">
-              <h3 className="text-[22px] font-semibold tracking-tight leading-tight line-clamp-3">
+              <h3 className="text-[18px] font-semibold tracking-tight leading-tight line-clamp-2">
                 {title}
               </h3>
-              <h5 className="text-md font-semibold tracking-tight leading-none truncate">
-                {article}
-              </h5>
             </div>
 
-            <div className="flex flex-col md:flex-row md:items-center items-start gap-1.5 md:gap-6 text-muted-foreground text-sm font-medium leading-tight">
-              <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex flex-col items-start gap-1.5 text-muted-foreground text-[12px] font-medium leading-none">
+              <div className="flex items-center gap-1 overflow-hidden">
                 <span className="shrink-0">Код:</span>
                 <span className="truncate">{productCode}</span>
+              </div>
+              <div className="flex items-center gap-1 overflow-hidden">
+                <span className="shrink-0">Артикул:</span>
+                <span className="truncate">
+                  {article !== "-" ? article : "отсутствует"}
+                </span>
               </div>
             </div>
           </div>

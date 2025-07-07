@@ -20,6 +20,8 @@ import SalesDynamics from "@pages/sales-dynamics/ui/sales-dynamics";
 import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
 import { WriteOff } from "@pages/write-off/ui/write-off";
+import { Loyalty } from "@pages/loyalty";
+// import { AdminStores } from "@pages/admin/admin-stores";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
@@ -42,13 +44,23 @@ export const ROUTES_PATH = {
   STANDARTS: "/standarts",
   STANDART: "/standarts/:id",
 
+  //Админ панель
+  ADMIN_STORES: "/admin/stores",
+  ADMIN_PRODUCTS: "/admin/products",
+  ADMIN_USERS: "/admin/users",
+  ADMIN_ROLES: "/admin/roles",
+  ADMIN_PERMISSIONS: "/admin/permissions",
+  ADMIN_SETTINGS: "/admin/settings",
+  ADMIN_LOGS: "/admin/logs",
+  ADMIN_NOTIFICATIONS: "/admin/notifications",
+
   // Магазины и доходы
   STORES: "/stores",
   REPORT: "/report",
   SALES_DYNAMICS: "/sales-dynamics",
   ROADMAP: "/roadmap",
   PRODUCTS: "/products",
-
+  LOYALTY: "/loyalty",
   GRILL: "/grill",
 
   // Списания
@@ -164,7 +176,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.GRILL,
     variant: "private",
     element: <Grill />,
-    allowedRoles: [ROLES.PARTNER],
+    allowedRoles: [ROLES.ADMIN],
     layout: Sidebar,
   },
   {
@@ -179,4 +191,18 @@ export const ROUTES: RouteConfig[] = [
     element: <Standart />,
     layout: Sidebar,
   },
+  {
+    path: ROUTES_PATH.LOYALTY,
+    variant: "private",
+    element: <Loyalty />,
+    allowedRoles: [ROLES.ADMIN],
+    layout: Sidebar,
+  },
+  // {
+  //   path: ROUTES_PATH.ADMIN_STORES,
+  //   variant: "private",
+  //   element: <AdminStores />,
+  //   allowedRoles: [ROLES.ADMIN],
+  //   layout: Sidebar,
+  // },
 ];
