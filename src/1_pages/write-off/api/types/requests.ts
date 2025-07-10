@@ -29,7 +29,7 @@ export interface WriteOffGraphRequest {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
-    writeOff: {
+    writeoff: {
       article: string[];
       household: boolean | null;
     };
@@ -76,6 +76,14 @@ export interface WriteOffTableRequest {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
+    sorts: {
+      sort: "asc" | "desc";
+      colId: string;
+    };
+    writeoff: {
+      indicator: string[];
+      article: string[];
+    };
     check?: {
       tabNumber: number[];
       containsBankQr: boolean | null;
@@ -116,7 +124,6 @@ export interface WriteOffTableRequest {
     limit: number;
     offset: number;
   };
-  role: boolean;
   group: string[];
   type: string;
   household: boolean;
@@ -181,6 +188,14 @@ export interface WriteOffTotalRequest {
       imPromo: string[];
     };
   };
+  writeoff: {
+    indicator: string[];
+    article: string[];
+  };
+  sorts?: {
+    sort: "asc" | "desc";
+    colId: string[];
+  };
   filterDate: {
     dateStart: string;
     dateEnd: string;
@@ -221,6 +236,10 @@ export interface WriteOffReasonsRequest {
       idProduct: number[];
       seasonalityProducts: string[];
       managerAuto: string[];
+    };
+    writeoff: {
+      indicator: string[];
+      article: string[];
     };
   };
   filterDate: {

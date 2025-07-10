@@ -2798,13 +2798,6 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#71DE56" };
-      } else if (params.value > 0) {
-        return { color: "#DE5656" };
-      }
-    },
   },
   {
     field: COLUMN_KEY.WRITE_OFF_LM,

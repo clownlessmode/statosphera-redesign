@@ -4,7 +4,7 @@ import { FiltersState } from "@widgets/write-off/sheet/model/filters-store";
 export const transformToReasonsDto = (
   filters: FiltersState,
 ): WriteOffReasonsRequest => {
-  return {
+  const result = {
     filters: {
       store: {
         idStore: filters.filters.store.idStore
@@ -75,6 +75,10 @@ export const transformToReasonsDto = (
         seasonalityProducts: filters.filters.product.seasonalityProducts,
         managerAuto: filters.filters.product.managerAuto,
       },
+      writeoff: {
+        indicator: filters.filters.writeoff.indicator || [],
+        article: filters.filters.writeoff.article || [],
+      },
     },
     filterDate: {
       filterDate: {
@@ -86,4 +90,6 @@ export const transformToReasonsDto = (
     storeId: [null],
     household: filters.filters.writeoff.household === true,
   };
+
+  return result;
 };

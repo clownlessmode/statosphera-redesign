@@ -11,7 +11,7 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useProductInfiniteScroll } from "../model/hook";
 
 export const Products = () => {
-  const [showWithoutGroups, setShowWithoutGroups] = useState(false);
+  const [showWithoutGroups, setShowWithoutGroups] = useState(true);
   const [activeFilter, setActiveFilter] = useState<"all" | "new">("all");
 
   const { getApiPayload } = useFiltersStore();
@@ -19,6 +19,12 @@ export const Products = () => {
   const [appliedFilters, setAppliedFilters] = useState({});
   const { products, loadMore, isLoading, hasMore, isInitialLoading } =
     useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
+
+  // Автоматически обновляем фильтры при изменении состояния в store
+  useEffect(() => {
+    const currentPayload = getApiPayload();
+    setAppliedFilters(currentPayload.filters.product);
+  }, [getApiPayload]);
 
   const handleApplyFilters = () => {
     const currentPayload = getApiPayload();
@@ -45,11 +51,17 @@ export const Products = () => {
   const handleAllProductsClick = () => {
     setActiveFilter("all");
     setShowWithoutGroups(true);
+    // Обновляем фильтры при переключении, чтобы они корректно применялись
+    const currentPayload = getApiPayload();
+    setAppliedFilters(currentPayload.filters.product);
   };
 
   const handleNewProductsClick = () => {
     setActiveFilter("new");
     setShowWithoutGroups(false);
+    // Обновляем фильтры при переключении, чтобы они корректно применялись
+    const currentPayload = getApiPayload();
+    setAppliedFilters(currentPayload.filters.product);
   };
 
   const productToFormValues = (product: ProductResponse) => {
@@ -138,7 +150,7 @@ export const Products = () => {
               variant="outline"
               className="mt-4"
               onClick={() => {
-                setShowWithoutGroups(false);
+                setShowWithoutGroups(true);
                 setActiveFilter("all");
                 setAppliedFilters({});
               }}

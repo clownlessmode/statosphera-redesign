@@ -40,23 +40,19 @@ const WriteOffStatsCards: React.FC<WriteOffStatsCardsProps> = ({ data }) => {
 
   const cards = [
     {
-      title: "Списания PM",
       value: `${formatValue(data.writeOffLM)} ₽`,
       subtitle: "Прошлый месяц",
     },
     {
-      title: "Списания PY",
       value: `${formatValue(data.writeOffLY)} ₽`,
       subtitle: "Прошлый год",
     },
     {
-      title: "Списания MoM",
       value: formatPercent(data.writeOffMoMPercent),
       subtitle: "Месяц к месяцу",
       valueColor: getChangeColor(data.writeOffMoMPercent),
     },
     {
-      title: "Списания YoY",
       value: formatPercent(data.writeOffYoYPercent),
       subtitle: "Год к году",
       valueColor: getChangeColor(data.writeOffYoYPercent),
@@ -67,9 +63,8 @@ const WriteOffStatsCards: React.FC<WriteOffStatsCardsProps> = ({ data }) => {
     <div className="grid grid-cols-2 gap-2 h-full">
       {cards.map((card, index) => (
         <Card key={index} className="flex flex-col">
-          <CardContent className="p-3 flex-1 flex flex-col justify-center">
+          <CardContent className="p-2 flex-1 flex flex-col justify-center">
             <div className="flex flex-col justify-between items-center h-full text-center">
-              <div className="text-lg text-muted-foreground">{card.title}</div>
               <div
                 className={`text-xl font-bold leading-none ${card.valueColor || "text-foreground"}`}
               >
