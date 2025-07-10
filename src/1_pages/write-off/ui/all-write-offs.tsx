@@ -23,6 +23,7 @@ import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { AnimatePresence } from "motion/react";
 import FiltersAccordeon from "@pages/report/ui/filters";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
+import { WriteOffTotalResponse } from "@pages/write-off/api/types";
 
 // Функция для умного извлечения фильтров на основе текущих группировок
 function extractFiltersBasedOnGrouping(
@@ -494,11 +495,11 @@ function aggregateDuplicateRows(data: any[], groups: string[]): any[] {
     product: "product_id",
     writeOffType: "ops",
     ops: "ops",
-    day: "date_group",
-    week: "date_group",
-    month: "date_group",
-    quarter: "date_group",
-    year: "date_group",
+    day: "day",
+    week: "week",
+    month: "month",
+    quarter: "quarter",
+    year: "year",
   };
 
   // Создаем составной ключ из всех группировок
@@ -555,6 +556,142 @@ function aggregateDuplicateRows(data: any[], groups: string[]): any[] {
   return result;
 }
 
+// Функция для агрегации данных выбранных строк для статистики
+function aggregateSelectedRowsStats(
+  selectedRows: any[],
+): WriteOffTotalResponse | null {
+  if (!selectedRows || selectedRows.length === 0) {
+    return null;
+  }
+
+  // Инициализируем аккумулятор
+  const aggregated: WriteOffTotalResponse = {
+    writeOff: 0,
+    writeOffCount: 0,
+    writeOffWeight: 0,
+    writeOffLM: 0,
+    writeOffCountLM: 0,
+    writeOffWeightLM: 0,
+    writeOffLY: 0,
+    writeOffCountLY: 0,
+    writeOffWeightLY: 0,
+    writeOffMoM: 0,
+    writeOffCountMoM: 0,
+    writeOffWeightMoM: 0,
+    writeOffMoMPercent: 0,
+    writeOffCountMoMPercent: 0,
+    writeOffWeightMoMPercent: 0,
+    writeOffYoY: 0,
+    writeOffCountYoY: 0,
+    writeOffWeightYoY: 0,
+    writeOffYoYPercent: 0,
+    writeOffCountYoYPercent: 0,
+    writeOffWeightYoYPercent: 0,
+  };
+
+  // Суммируем все абсолютные значения
+  for (const row of selectedRows) {
+    // Основные показатели
+    aggregated.writeOff += row.writeOff || 0;
+    aggregated.writeOffCount += row.writeOffCount || 0;
+    aggregated.writeOffWeight += row.writeOffWeight || 0;
+
+    // Прошлый месяц
+    aggregated.writeOffLM += row.writeOffLM || 0;
+    aggregated.writeOffCountLM += row.writeOffCountLM || 0;
+    aggregated.writeOffWeightLM += row.writeOffWeightLM || 0;
+
+    // Прошлый год
+    aggregated.writeOffLY += row.writeOffLY || 0;
+    aggregated.writeOffCountLY += row.writeOffCountLY || 0;
+    aggregated.writeOffWeightLY += row.writeOffWeightLY || 0;
+
+    // Абсолютные изменения
+    aggregated.writeOffMoM += row.writeOffMoM || 0;
+    aggregated.writeOffCountMoM += row.writeOffCountMoM || 0;
+    aggregated.writeOffWeightMoM += row.writeOffWeightMoM || 0;
+
+    aggregated.writeOffYoY += row.writeOffYoY || 0;
+    aggregated.writeOffCountYoY += row.writeOffCountYoY || 0;
+    aggregated.writeOffWeightYoY += row.writeOffWeightYoY || 0;
+  }
+
+  // Пересчитываем процентные показатели на основе агрегированных данных
+  if (aggregated.writeOffLM > 0) {
+    aggregated.writeOffMoMPercent =
+      Math.round(
+        ((aggregated.writeOff - aggregated.writeOffLM) /
+          aggregated.writeOffLM) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffMoMPercent = 0;
+  }
+
+  if (aggregated.writeOffCountLM > 0) {
+    aggregated.writeOffCountMoMPercent =
+      Math.round(
+        ((aggregated.writeOffCount - aggregated.writeOffCountLM) /
+          aggregated.writeOffCountLM) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffCountMoMPercent = 0;
+  }
+
+  if (aggregated.writeOffWeightLM > 0) {
+    aggregated.writeOffWeightMoMPercent =
+      Math.round(
+        ((aggregated.writeOffWeight - aggregated.writeOffWeightLM) /
+          aggregated.writeOffWeightLM) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffWeightMoMPercent = 0;
+  }
+
+  if (aggregated.writeOffLY > 0) {
+    aggregated.writeOffYoYPercent =
+      Math.round(
+        ((aggregated.writeOff - aggregated.writeOffLY) /
+          aggregated.writeOffLY) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffYoYPercent = 0;
+  }
+
+  if (aggregated.writeOffCountLY > 0) {
+    aggregated.writeOffCountYoYPercent =
+      Math.round(
+        ((aggregated.writeOffCount - aggregated.writeOffCountLY) /
+          aggregated.writeOffCountLY) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffCountYoYPercent = 0;
+  }
+
+  if (aggregated.writeOffWeightLY > 0) {
+    aggregated.writeOffWeightYoYPercent =
+      Math.round(
+        ((aggregated.writeOffWeight - aggregated.writeOffWeightLY) /
+          aggregated.writeOffWeightLY) *
+          100 *
+          10,
+      ) / 10;
+  } else {
+    aggregated.writeOffWeightYoYPercent = 0;
+  }
+
+  return aggregated;
+}
+
 interface AllWriteOffsProps {
   isFiltersOpen: boolean;
   setIsFiltersOpen: (open: boolean) => void;
@@ -569,16 +706,32 @@ export const AllWriteOffs = ({
   const { resetAllFilters, getApiPayload, groups } = useFiltersStore();
 
   // Stores
-  const { graph, table, total, clearAll, setGraph, error } = useWriteOffStore();
+  const { graph, table, total, clearAll, setGraph, setTable, setTotal, error } =
+    useWriteOffStore();
   const { bumpDataVersion } = useWriteOffVersionStore();
   const { reasons, isLoading: isReasonsLoading } = useWriteOffReasonsStore();
 
   // Controllers
   const { fetchReasons } = useWriteOffReasonsController();
-  const { getGraph, isGraphLoading } = useWriteOffController();
+  const { getGraph, getTable, getEquipmentTable, getTotal, isGraphLoading } =
+    useWriteOffController();
 
   // Hooks
   const prepareLine = usePreparedStackedLine();
+
+  //TODO доделать передачу пустых данных ()
+  // if (!graph) {
+  //   return prepareLine([
+  //     {
+  //       name: "Текущий период",
+  //       data: [[0, 1], [1, 0]],
+  //     },
+  //     {
+  //       name: "Прошлый год",
+  //       data: [[0, 1], [1, 0]],
+  //     },
+  //   ])
+  // }
 
   // State
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
@@ -586,6 +739,10 @@ export const AllWriteOffs = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [initialGraph, setInitialGraph] = useState<any>(null);
   const [hasLoadedInitialReasons, setHasLoadedInitialReasons] = useState(false);
+  const [, setCurrentSort] = useState<{
+    sort: "asc" | "desc";
+    colId: string;
+  } | null>(null);
   const isCompleted = graph && table && total;
 
   // Функция для получения отображаемого названия элемента с учетом приоритета
@@ -891,24 +1048,99 @@ export const AllWriteOffs = ({
     setSelectedRows([]);
     setSearchTerm("");
     setInitialGraph(null);
+    setCurrentSort(null);
     bumpDataVersion();
     setIsFiltersOpen(true);
   };
 
+  // Обработчик изменения сортировки
+  const handleSortChange = useCallback(
+    async (sortInfo: { sort: "asc" | "desc"; colId: string }) => {
+      console.log("handleSortChange called with:", sortInfo);
+      console.log("Current tab:", tab);
+      setCurrentSort(sortInfo);
+
+      // Получаем текущий payload и обновляем сортировку
+      const payload = getApiPayload();
+
+      const updatedPayload = {
+        ...payload,
+        sorts: {
+          sort: sortInfo.sort,
+          colId: [sortInfo.colId], // Должен быть массив строк
+        },
+      };
+
+      console.log("Updated payload:", updatedPayload);
+
+      try {
+        console.log("Making table request with sort...");
+        // Обновляем таблицу с новой сортировкой в зависимости от таба
+        let tableRes;
+        if (tab === "write-off-equip") {
+          console.log("Using getEquipmentTable for equipment tab");
+          tableRes = await getEquipmentTable(updatedPayload);
+        } else {
+          console.log("Using getTable for write-off tab");
+          tableRes = await getTable(updatedPayload);
+        }
+
+        if (tableRes) {
+          // Обновляем данные в store
+          setTable(tableRes);
+        }
+
+        console.log("Making total request with sort...");
+        // Также обновляем total данные
+        const totalRes = await getTotal(updatedPayload);
+        if (totalRes) {
+          setTotal(totalRes);
+        }
+      } catch (error) {
+        console.error("Error updating table with sort:", error);
+      }
+    },
+    [
+      getApiPayload,
+      getTable,
+      getEquipmentTable,
+      getTotal,
+      setTable,
+      setTotal,
+      tab,
+    ],
+  );
+
   // Функция для сброса выбранного магазина
-  const handleClearSelectedStore = useCallback(() => {
+  const handleClearSelectedStore = useCallback(async () => {
     setSelectedStore(null);
     setSelectedRows([]); // Очищаем выбор строк
 
-    // Восстанавливаем исходный график
-    if (initialGraph) {
-      setGraph(initialGraph);
+    // Если ничего не выбрано, делаем новый запрос для получения исходного графика
+    const payload = getApiPayload();
+
+    // Получаем текущую группировку из DateDropdown
+    const currentDateGrouping = useWriteOffDateFilterStore.getState().value;
+
+    // Формируем payload для графика с исходными фильтрами
+    const graphPayload = {
+      ...payload,
+      groups: [currentDateGrouping],
+      type: tab === "write-off-equip" ? "equipment" : "write_off",
+    };
+
+    try {
+      const graphRes = await getGraph(graphPayload);
+      if (graphRes) {
+        setGraph(graphRes);
+      }
+    } catch (error) {
+      console.error("Error restoring graph:", error);
     }
 
-    // Загружаем общие reasons
-    const payload = getApiPayload();
+    // Загружаем общие reasons при очистке выбора
     fetchReasons(payload as any);
-  }, [initialGraph, getApiPayload, fetchReasons, setGraph]);
+  }, [getApiPayload, fetchReasons, getGraph, setGraph, tab]);
 
   // Обработчик изменения выбора строк (как в sales-dynamics)
   const handleSelectionChange = useCallback(
@@ -1129,7 +1361,7 @@ export const AllWriteOffs = ({
           console.error("Error updating graph:", error);
         }
 
-        // Загружаем reasons с теми же фильтрами что и график
+        // Загружаем reasons с теми же фильтрами что и график при выборе строк
         const reasonsPayload = {
           ...payload,
           filters: mergedFilters, // Используем те же фильтры что и для графика
@@ -1137,17 +1369,33 @@ export const AllWriteOffs = ({
 
         fetchReasons(reasonsPayload as any);
       } else {
-        // Если ничего не выбрано, восстанавливаем исходный график
-        if (initialGraph) {
-          setGraph(initialGraph);
+        // Если ничего не выбрано, делаем новый запрос для получения исходного графика
+        const payload = getApiPayload();
+
+        // Получаем текущую группировку из DateDropdown
+        const currentDateGrouping = useWriteOffDateFilterStore.getState().value;
+
+        // Формируем payload для графика с исходными фильтрами
+        const graphPayload = {
+          ...payload,
+          groups: [currentDateGrouping],
+          type: tab === "write-off-equip" ? "equipment" : "write_off",
+        };
+
+        try {
+          const graphRes = await getGraph(graphPayload);
+          if (graphRes) {
+            setGraph(graphRes);
+          }
+        } catch (error) {
+          console.error("Error restoring graph:", error);
         }
 
-        // Загружаем общие reasons
-        const payload = getApiPayload();
+        // Загружаем общие reasons при очистке выбора
         fetchReasons(payload as any);
       }
     },
-    [getApiPayload, fetchReasons, getGraph, setGraph, initialGraph, groups],
+    [getApiPayload, fetchReasons, getGraph, setGraph, tab],
   );
 
   // Эффект для подготовки графика
@@ -1161,26 +1409,38 @@ export const AllWriteOffs = ({
     setSelectedRows([]);
     setSelectedStore(null);
     setInitialGraph(null); // Сбрасываем исходный график
-    setHasLoadedInitialReasons(false); // Сбрасываем флаг для перезагрузки reasons
   }, [groups]);
 
-  // Эффект для загрузки начальных reasons и автоскрытия фильтров
+  // Эффект для автоскрытия фильтров после загрузки данных
   useEffect(() => {
-    // Загружаем reasons только один раз при первой загрузке
+    // Автоматически скрываем фильтры после получения данных
     if (isCompleted && !hasLoadedInitialReasons && selectedRows.length === 0) {
-      const payload = getApiPayload();
-      fetchReasons(payload as any);
       setHasLoadedInitialReasons(true);
-
-      // Автоматически скрываем фильтры после получения данных
       setIsFiltersOpen(false);
     }
-  }, [isCompleted, hasLoadedInitialReasons, selectedRows.length]); // При завершении загрузки
+  }, [
+    isCompleted,
+    hasLoadedInitialReasons,
+    selectedRows.length,
+    setIsFiltersOpen,
+  ]); // При завершении загрузки
 
   // Эффект для обработки total данных
   useEffect(() => {
     // Total данные готовы
   }, [total]);
+
+  // Вычисляем данные для карточек статистики
+  // Если есть выбранные строки - показываем агрегированную статистику по ним
+  // Иначе показываем общую статистику
+  const statsData = useMemo(() => {
+    if (selectedRows.length > 0) {
+      // Если есть выбранные строки, агрегируем их данные
+      return aggregateSelectedRowsStats(selectedRows);
+    }
+    // Иначе используем общий total
+    return total;
+  }, [selectedRows, total]);
 
   // Показываем общую заглушку, если нет данных
   if (!isCompleted) {
@@ -1223,65 +1483,66 @@ export const AllWriteOffs = ({
   }
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      <div className="flex flex-row gap-1 items-center justify-end">
-        <DateDropdown />
-        <Button
-          className="w-fit"
-          size="sm"
-          variant="outline"
-          onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-        >
-          {!isFiltersOpen ? (
-            <>
-              Изменить фильтры <Cog className="text-primary/80" />
-            </>
-          ) : (
-            <>
-              Показать график <Cog className="text-primary/80" />
-            </>
-          )}
-        </Button>
-        <Button size="sm" onClick={handleClearFilters} variant="outline">
-          Очистить фильтры <Eraser className="text-primary/80" />
-        </Button>
-      </div>
+    <div className="flex flex-row gap-4 h-full">
+      {/* Левая часть: График и Таблица */}
+      <div className="flex flex-col flex-1 min-h-0">
+        {/* Верхняя панель с кнопками */}
+        <div className="flex flex-row gap-1 justify-end mb-4">
+          <DateDropdown />
+          <Button
+            className="w-fit"
+            size="sm"
+            variant="outline"
+            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+          >
+            {!isFiltersOpen ? (
+              <>
+                Изменить фильтры <Cog className="text-primary/80" />
+              </>
+            ) : (
+              <>
+                Показать график <Cog className="text-primary/80" />
+              </>
+            )}
+          </Button>
+          <Button size="sm" onClick={handleClearFilters} variant="outline">
+            Очистить фильтры <Eraser className="text-primary/80" />
+          </Button>
+        </div>
 
-      <div className="flex flex-col gap-4 h-full overflow-hidden">
-        {/* Верхний ряд: Линейный график + Карточки статистики ИЛИ Фильтры */}
-        <div className={isFiltersOpen ? "flex-shrink-0" : "h-64 flex-shrink-0"}>
+        {/* График или Фильтры */}
+        <div className="flex-shrink-0 mb-4">
           {!isFiltersOpen ? (
-            <div className="flex gap-4 h-full">
-              {/* Линейный график */}
-              <div className="flex-1">
-                {graph ? (
-                  <StackedLine
-                    key={`graph-${JSON.stringify(graph).slice(0, 100)}`}
-                    option={{
-                      title: {
-                        text: getGraphTitle(),
-                      },
-                      legend: {
-                        data: ["Текущий период", "Прошлый год"],
-                      },
-                      series: graph ? prepareLine(graph) : [],
-                    }}
+            graph ? (
+              <div className="h-64 w-full">
+                <StackedLine
+                  key={`graph-${JSON.stringify(graph).slice(0, 100)}`}
+                  option={{
+                    title: {
+                      text: getGraphTitle(),
+                    },
+                    legend: {
+                      data: ["Текущий период", "Прошлый год"],
+                    },
+                    series: graph
+                      ? prepareLine(graph)
+                      : [
+                          [0, 1],
+                          [1, 0],
+                        ],
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="h-64 w-full">
+                <AnimatePresence>
+                  <FiltersAccordeon
+                    defaultOpen={!isCompleted}
+                    isOpen={isFiltersOpen}
                   />
-                ) : (
-                  <AnimatePresence>
-                    <FiltersAccordeon
-                      defaultOpen={!isCompleted}
-                      isOpen={isFiltersOpen}
-                    />
-                  </AnimatePresence>
-                )}
+                </AnimatePresence>
               </div>
-
-              {/* Карточки статистики */}
-              <div className="w-110 flex-shrink-0">
-                <WriteOffStatsCards data={total} />
-              </div>
-            </div>
+            )
           ) : (
             <WriteOffFilters
               isOpen={isFiltersOpen}
@@ -1290,65 +1551,58 @@ export const AllWriteOffs = ({
           )}
         </div>
 
-        <div
-          className={tab === "write-off-equip" ? "flex" : "flex gap-4"}
-          style={{
-            height: isFiltersOpen
-              ? "calc(100% - 160px)"
-              : "calc(100% - 256px - 32px)",
-          }}
-        >
-          {/* Таблица */}
-          <div className="flex-1 min-w-0 flex flex-col gap-2 min-h-0">
-            {table && (
-              <div className="flex flex-row gap-2">
-                <Input
-                  placeholder={searchPlaceholder}
-                  className="w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                {selectedRows.length > 0 && (
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline">
-                        Выбранные {getSelectedItemsLabel(groups)}:{" "}
-                        {selectedRows.length}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <div className="flex flex-col gap-2">
-                        {selectedRows.map((row, index) => (
-                          <div
-                            key={index}
-                            className="grid grid-cols-5 gap-8 w-full"
-                          >
-                            <span className="col-span-4">
-                              {getDisplayName(row, groups)}
-                            </span>
-                            <X
-                              className="cursor-pointer"
-                              onClick={() => {
-                                const newSelectedRows = selectedRows.filter(
-                                  (_, i) => i !== index,
-                                );
-                                setSelectedRows(newSelectedRows);
-                                // Вызываем handleSelectionChange для обновления графиков
-                                handleSelectionChange(newSelectedRows);
-                              }}
-                            />
-                          </div>
-                        ))}
+        {/* Таблица */}
+        <div className="flex-1 min-h-0 flex flex-col">
+          {/* Поиск и фильтры */}
+          <div className="flex-shrink-0 mb-2 h-10 gap-2 flex items-center">
+            <Input
+              placeholder={searchPlaceholder}
+              className="w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {selectedRows.length > 0 && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    Выбранные {getSelectedItemsLabel(groups)}:{" "}
+                    {selectedRows.length}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <div className="flex flex-col gap-2">
+                    {selectedRows.map((row, index) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-5 gap-8 w-full"
+                      >
+                        <span className="col-span-4">
+                          {getDisplayName(row, groups)}
+                        </span>
+                        <X
+                          className="cursor-pointer"
+                          onClick={() => {
+                            const newSelectedRows = selectedRows.filter(
+                              (_, i) => i !== index,
+                            );
+                            setSelectedRows(newSelectedRows);
+                            handleSelectionChange(newSelectedRows);
+                          }}
+                        />
                       </div>
-                    </DialogContent>
-                  </Dialog>
-                )}
-              </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
             )}
+          </div>
+          {/* Таблица */}
+          <div className="flex-1 min-h-0">
             {table && total ? (
               <UniversalTable
                 selectionType="multiple"
                 onSelectionChange={handleSelectionChange}
+                onSortChange={handleSortChange}
                 data={filteredTable as any}
                 totalData={total ? [total] : undefined}
                 columnDefs={columnDefs}
@@ -1359,10 +1613,20 @@ export const AllWriteOffs = ({
               </div>
             )}
           </div>
+        </div>
+      </div>
 
-          {/* Круговой график - только для обычных списаний */}
-          {tab === "write-off" && (
-            <div className="w-110 flex-shrink-0">
+      {/* Правая часть: Карточки и Круговой график */}
+      {tab === "write-off" && (
+        <>
+          <div className="w-110 flex-shrink-0 flex flex-col min-h-0 gap-4">
+            {/* Карточки */}
+            <div>
+              <WriteOffStatsCards data={statsData} />
+            </div>
+
+            {/* Круговой график */}
+            <div className="flex-1 min-h-0">
               <WriteOffReasonsChart
                 key={`reasons-${selectedRows.length}-${groups.join("-")}`}
                 isLoading={isReasonsLoading}
@@ -1374,9 +1638,9 @@ export const AllWriteOffs = ({
                 currentGroups={groups}
               />
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

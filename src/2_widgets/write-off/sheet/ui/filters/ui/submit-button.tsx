@@ -8,11 +8,21 @@ import { useCountStore } from "@pages/report/model/usCountStore";
 import { useTabStore } from "../../../model/url-store";
 import { useWriteOffDateFilterStore } from "@pages/write-off/ui/date-dropdown";
 import { useWriteOffController } from "@pages/write-off/api/controller";
+import { useWriteOffReasonsController } from "@pages/write-off/model/write-off-reasons-controller";
 
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useWriteOffVersionStore();
-  const { getApiPayload } = useFiltersStore();
+  const {
+    getApiPayload,
+    filters,
+    filterDate,
+    groups,
+    values,
+    sorts,
+    limit,
+    offset,
+  } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError, clearAll } =
     useWriteOffStore();
   const { setCount } = useCountStore();
@@ -20,6 +30,7 @@ export const CombinedSubmitButton = () => {
   const { value: dateGrouping } = useWriteOffDateFilterStore();
   const { getGraph, getTable, getEquipmentTable, getTotal } =
     useWriteOffController();
+  const { fetchReasons } = useWriteOffReasonsController();
 
   // Определяем тип на основе выбранного таба
   const getType = () => {
@@ -91,6 +102,43 @@ export const CombinedSubmitButton = () => {
     } catch (error) {
       console.error("❌ Error fetching table:", error);
       // Не устанавливаем ошибку, так как график уже может быть загружен
+    }
+
+    // Загружаем reasons только при нажатии кнопки "Получить отчет по списаниям"
+    try {
+      // Создаем объект с нужными полями для fetchReasons
+      const filtersState = {
+        filters,
+        filterDate,
+        groups,
+        values,
+        sorts,
+        limit,
+        offset,
+        uniques: [],
+        indicators: [],
+        filterTime: { timeStart: "", timeEnd: "" },
+        updateStoreFilter: () => {},
+        updateProductFilter: () => {},
+        updateCheckFilter: () => {},
+        updateLoyalFilter: () => {},
+        updateOnlineStoreFilter: () => {},
+        updateWriteoffFilter: () => {},
+        updateDateFilter: () => {},
+        updateTimeFilter: () => {},
+        updateSorts: () => {},
+        updatePagination: () => {},
+        updateGroups: () => {},
+        updateUniques: () => {},
+        updateIndicators: () => {},
+        resetAllFilters: () => {},
+        getApiPayload: () => allData,
+      };
+
+      await fetchReasons(filtersState);
+    } catch (error) {
+      console.error("❌ Error fetching reasons:", error);
+      // Не устанавливаем ошибку, так как основные данные уже могут быть загружены
     }
 
     bumpDataVersion();

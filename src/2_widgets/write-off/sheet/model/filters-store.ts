@@ -1,7 +1,7 @@
 // features/filters-store/store.ts
 
 import { COLUMN_KEY } from "@shared/constants/table-columns";
-import { endOfMonth, format, startOfMonth } from "date-fns";
+import { format, startOfMonth, subDays } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 import { useTabStore } from "./url-store";
@@ -263,6 +263,7 @@ export type FiltersState = {
     writeoff: {
       household: boolean | null;
       article: ARTICLE_WRITE_OFF[];
+      indicator: OPERATION_WRITE_OFF[];
     };
   };
   uniques: string[];
@@ -410,6 +411,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
     writeoff: {
       household: null,
       article: [],
+      indicator: [],
     },
   },
   uniques: [],
@@ -417,7 +419,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
   values: [],
   filterDate: {
     dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
-    dateEnd: format(endOfMonth(new Date()), "yyyy-MM-dd"),
+    dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
   },
   filterTime: {
     timeStart: "00:00",
@@ -614,6 +616,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
         writeoff: {
           household: null,
           article: [],
+          indicator: [],
         },
       },
       uniques: [],
@@ -621,7 +624,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
       values: [],
       filterDate: {
         dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(new Date()), "yyyy-MM-dd"),
+        dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
       },
       filterTime: {
         timeStart: "00:00",
@@ -717,6 +720,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
     writeoff: {
       household: null,
       article: [],
+      indicator: [],
     },
   },
   uniques: [],
@@ -724,7 +728,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
   values: [],
   filterDate: {
     dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
-    dateEnd: format(endOfMonth(new Date()), "yyyy-MM-dd"),
+    dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
   },
   filterTime: {
     timeStart: "00:00",
@@ -921,6 +925,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
         writeoff: {
           household: null,
           article: [],
+          indicator: [],
         },
       },
       uniques: [],
@@ -928,7 +933,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       values: [],
       filterDate: {
         dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(new Date()), "yyyy-MM-dd"),
+        dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
       },
       filterTime: {
         timeStart: "00:00",

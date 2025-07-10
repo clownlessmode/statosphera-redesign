@@ -15,7 +15,7 @@ import {
   FormControl,
 } from "@shared/ui/form";
 import { Receipt, BarChart3 } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm } from "../model";
 import {
   HOUSEHOLD_GOODS_FILTER,
@@ -28,8 +28,14 @@ import { ClearFilters } from "@features/clear-filters";
 
 export const WriteOffFilter: FC = () => {
   const form = useForm();
-  const { updateWriteoffFilter } = useFiltersStore();
+  const { updateWriteoffFilter, filters } = useFiltersStore();
   const { tab } = useTabStore();
+
+  // Синхронизация формы с zustand store при маунте/открытии
+  useEffect(() => {
+    form.setValue("article", filters.writeoff.article);
+    form.setValue("includeHouseholdGoods", filters.writeoff.household);
+  }, [form, filters.writeoff.article, filters.writeoff.household]);
 
   // Получаем значение фильтра хозяйственных товаров
   const includeHouseholdGoods = form.watch("includeHouseholdGoods");

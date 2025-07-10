@@ -1,6 +1,41 @@
 import { FilterApiPayload } from "@widgets/write-off/sheet/model/filters-store";
 import { WriteOffGraphRequest } from "../api/types";
 
+// Функция для маппинга группировок в значения, которые принимает сервер
+function mapGroupToServerValue(group: string): string {
+  const groupToServerMap: Record<string, string> = {
+    group: "groupsMain",
+    store: "store",
+    city: "city",
+    region: "region",
+    channel: "channel",
+    ageGroup: "ageGroup",
+    storeCondition: "storeCondition",
+    product: "product",
+    subGroups: "subGroups",
+    subSubGroups: "subSubGroups",
+    groupsEconomist: "groupsEconomist",
+    groupsFranchise: "groupsFranchise",
+    typeProducts: "typeProducts",
+    seasonalityProducts: "seasonalityProducts",
+    subDivisionProducts: "subDivisionProducts",
+    teamProducts: "teamProducts",
+    directionProducts: "directionProducts",
+    managerAuto: "managerAuto",
+    tabNumber: "tabNumber",
+    cashBox: "cashBox",
+    cardNumber: "cardNumber",
+    year: "year",
+    quarter: "quarter",
+    month: "month",
+    week: "week",
+    day: "day",
+    hour: "hour",
+  };
+
+  return groupToServerMap[group] || group;
+}
+
 export function transformToGraphDto(
   payload: FilterApiPayload,
 ): WriteOffGraphRequest {
@@ -57,7 +92,8 @@ export function transformToGraphDto(
         seasonalityProducts: payload.filters.product.seasonalityProducts || [],
         managerAuto: payload.filters.product.managerAuto || [],
       },
-      writeOff: {
+      writeoff: {
+        indicator: payload.filters.writeoff?.indicator || [],
         article: payload.filters.writeoff?.article || [],
         household: payload.filters.writeoff?.household || null,
       },
@@ -69,7 +105,7 @@ export function transformToGraphDto(
       },
     },
     role: false,
-    group: payload.groups[0] || "day", // Используем группировку из payload
+    group: mapGroupToServerValue(payload.groups[0] || "day"), // Используем группировку из payload с маппингом
     value: payload.values[0] || "writeOff", // Используем значение из payload
     type: type, // Используем определенный тип
     household: payload.filters.writeoff?.household === true,

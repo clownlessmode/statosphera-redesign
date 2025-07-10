@@ -8,4 +8,5 @@ export enum ROLES {
   OFFICE_MM = "office_mm",
   OFFICE_UNION = "office_union",
   SERVICE_MANAGER = "service",
+  ZAVOD = "zavod_volkov",
 }

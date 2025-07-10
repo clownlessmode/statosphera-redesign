@@ -27,7 +27,7 @@ export default function UniversalTable({
   onRowClick,
   onCellClick,
   onSelectionChange,
-
+  onSortChange,
   selectionType = "single",
 }: Props) {
   const { theme } = useTheme();
@@ -141,16 +141,18 @@ export default function UniversalTable({
         domLayout="normal"
         className="flex-1"
         onRowClicked={(e) => onRowClick?.(e.data)}
-        onCellClicked={(e) =>
+        onCellClicked={(e: any) => {
+          // Обычный клик по ячейке
           onCellClick?.({
             rowData: e.data,
             field: e.colDef.field ?? "",
             value: e.value,
-          })
-        }
+          });
+        }}
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         overlayNoRowsTemplate="Нет данных для отображения"
         onGridReady={(params) => {
+          console.log("onGridReady called");
           const api = params.api;
           const colsToSize = api
             .getAllGridColumns()
@@ -160,6 +162,31 @@ export default function UniversalTable({
             })
             .map((col) => col.getColId());
           api.autoSizeColumns(colsToSize, false);
+
+          // Добавляем обработчик сортировки
+          if (onSortChange) {
+            console.log("Adding sort listener");
+            api.addEventListener("sortChanged", (e: any) => {
+              console.log("sortChanged event fired");
+              try {
+                // Пробуем получить информацию о сортировке из columns
+                if (e.columns && e.columns.length > 0) {
+                  const column = e.columns[0];
+                  const colId = column.getColId();
+                  const sort = column.getSort();
+
+                  console.log("Sort info extracted:", { colId, sort });
+
+                  if (colId && sort) {
+                    console.log("Calling onSortChange with:", { sort, colId });
+                    onSortChange({ sort, colId });
+                  }
+                }
+              } catch (error) {
+                console.error("Error in sort listener:", error);
+              }
+            });
+          }
         }}
       />
     </div>

@@ -1,6 +1,5 @@
-import { useSession } from "@entities/session";
+// import { useSession } from "@entities/session";
 
-import { ROLES } from "@shared/constants/roles";
 import { CHANNEL } from "@widgets/report/sheet/model/filters-store";
 import {
   KeySquare,
@@ -46,21 +45,24 @@ const allChannels = [
 ];
 
 // MM_CHANNEL - фудтрак, микромаркет и вендинг
-const mmChannelValues = [
-  CHANNEL.FOODTRUCK,
-  CHANNEL.MICROMARKET,
-  CHANNEL.WENDING,
-];
+// const mmChannelValues = [
+//   CHANNEL.FOODTRUCK,
+//   CHANNEL.MICROMARKET,
+//   CHANNEL.WENDING,
+// ];
 
 // FRS_CHANNEL - ФРС, инвест, в аренду
-const frsChannelValues = [CHANNEL.FRS, CHANNEL.INVEST, CHANNEL.RENT];
+// const frsChannelValues = [CHANNEL.FRS, CHANNEL.INVEST, CHANNEL.RENT];
 
 export const useChannel = () => {
-  const { session } = useSession();
-  const role = session?.role;
+  // const { session } = useSession();
+  // const role = session?.role;
 
-  let channels;
+  // Временно показываем все каналы для всех ролей
+  const channels = allChannels;
 
+  // Закомментированная логика фильтрации по ролям
+  /*
   if (role === ROLES.OFFICE_MM) {
     // MM_CHANNEL = фудтрак, микромаркет и вендинг
     channels = allChannels.filter((channel) =>
@@ -75,6 +77,7 @@ export const useChannel = () => {
       frsChannelValues.includes(channel.value),
     );
   }
+  */
 
   return {
     CHANNEL_SHOP: channels,

@@ -60,31 +60,32 @@ export const useProductInfiniteScroll = (
     }
   }, []);
 
+  // Объединяем логику обработки изменений showWithoutGroups и productFilters
+  const prevStateRef = useRef<{
+    showWithoutGroups: boolean;
+    productFilters: ProductFilter;
+  } | null>(null);
+
   useEffect(() => {
     if (!isFirstLoad) {
-      setPage(0);
-      setHasMore(true);
-      loadProducts(0);
-    }
-  }, [showWithoutGroups]);
+      const prevState = prevStateRef.current;
+      const currentState = { showWithoutGroups, productFilters };
 
-  const prevFiltersRef = useRef<ProductFilter | null>(null);
+      const shouldRefetch =
+        !prevState ||
+        prevState.showWithoutGroups !== showWithoutGroups ||
+        JSON.stringify(prevState.productFilters) !==
+          JSON.stringify(productFilters);
 
-  useEffect(() => {
-    if (!isFirstLoad && prevFiltersRef.current !== null) {
-      const filtersChanged =
-        JSON.stringify(prevFiltersRef.current) !==
-        JSON.stringify(productFilters);
-
-      if (filtersChanged) {
+      if (shouldRefetch) {
         setPage(0);
         setHasMore(true);
         loadProducts(0);
       }
-    }
 
-    prevFiltersRef.current = productFilters;
-  }, [productFilters]);
+      prevStateRef.current = currentState;
+    }
+  }, [showWithoutGroups, productFilters]);
 
   const loadMore = () => {
     if (!isLoading && hasMore) {

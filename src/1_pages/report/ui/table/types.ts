@@ -12,6 +12,8 @@ export interface UniversalTableProps {
   onRowClick?: (data: any) => void;
   /** Обработчик клика по ячейке */
   onCellClick?: (info: { rowData: any; field: string; value: any }) => void;
+  /** Обработчик изменения сортировки */
+  onSortChange?: (sortInfo: { sort: "asc" | "desc"; colId: string }) => void;
 
   /**
    * Тип выбора строк: "single" — одиночный, "multiple" — множественный.
