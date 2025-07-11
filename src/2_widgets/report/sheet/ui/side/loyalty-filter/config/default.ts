@@ -8,4 +8,5 @@ export const defaultValues: FormValues = {
   guidBonus: [],
   age: [0, 100],
   groupAge: [],
+  colorsDiscount: [],
 };

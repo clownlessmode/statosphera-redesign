@@ -543,6 +543,11 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
             type: [],
           },
           loyal: {
+            colorsDiscount: Array.isArray(
+              data.report.filters.loyal?.colorsDiscount,
+            )
+              ? data.report.filters.loyal.colorsDiscount
+              : [],
             isLoyal: data.report.filters.loyal?.isLoyal ?? null,
             cardNumber: Array.isArray(data.report.filters.loyal?.cardNumber)
               ? data.report.filters.loyal.cardNumber

@@ -51,6 +51,7 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       ageStart: "Возраст от",
       ageEnd: "Возраст до",
       groupAge: "Возрастные группы",
+      colorsDiscount: "Цвета скидок",
     },
     onlineStore: {
       isIm: "Онлайн-заказы",

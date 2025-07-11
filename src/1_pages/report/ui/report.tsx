@@ -201,6 +201,12 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       filters.check.type.push(currentRow.type);
     }
     if (
+      currentRow.colorsDiscount &&
+      !filters.loyal.colorsDiscount.includes(currentRow.colorsDiscount)
+    ) {
+      filters.loyal.colorsDiscount.push(currentRow.colorsDiscount);
+    }
+    if (
       currentRow.cardNumber &&
       !filters.loyal.cardNumber.includes(currentRow.cardNumber)
     ) {

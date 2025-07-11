@@ -18,9 +18,10 @@ import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { DualRangeSlider } from "@shared/ui/dual-range-slider";
 import { useForm, useLoyalAction, useLoyalBonus } from "../model";
 
-import { GENDER, TYPE } from "../config";
+import { COLORS, GENDER, TYPE } from "../config";
 import ClearFilters from "./clear-filter";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import CheckboxCards from "@shared/ui/checkbox-cards";
 const LoyaltyFilter: FC = () => {
   const form = useForm();
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
@@ -111,6 +112,25 @@ const LoyaltyFilter: FC = () => {
                     onChange={(vals) => {
                       field.onChange(vals);
                       updateLoyalFilter("sex", vals);
+                    }}
+                  />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="colorsDiscount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Цвет</FormLabel>
+                  <CheckboxCards
+                    {...field}
+                    selectAll
+                    options={COLORS}
+                    className="grid-cols-3"
+                    onChange={(value) => {
+                      field.onChange(value);
+                      updateLoyalFilter("colorsDiscount", value);
                     }}
                   />
                 </FormItem>

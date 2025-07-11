@@ -1,0 +1,153 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { ApiError } from "@shared/api/types";
+import { LoyaltyService } from "./service";
+import {
+  AvarageCheckResponse,
+  BonusesResponse,
+  GraphResponse,
+  NoSales30DaysUserResponse,
+  RequestDto,
+  TopGroupResponse,
+  TopProductRubResponse,
+  TopStoreLoyalResponse,
+  UniqueGraphResponse,
+  AppLoyalGraphResponse,
+} from "../config";
+
+export const useLoyal = () => {
+  const queryClient = useQueryClient();
+
+  const avarageCheck = useMutation<
+    AvarageCheckResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAvarageCheck(dto);
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      return response;
+    },
+  });
+
+  const noSales30DaysUser = useMutation<
+    NoSales30DaysUserResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getNoSales30DaysUser(dto);
+      queryClient.invalidateQueries({ queryKey: ["noSales30DaysUser"] });
+      return response;
+    },
+  });
+
+  const uniques = useQuery<number, ApiError>({
+    queryKey: ["uniques"],
+    queryFn: async () => {
+      const response = await LoyaltyService.getUniques();
+      return response;
+    },
+  });
+
+  const bonuses = useMutation<BonusesResponse[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getBonuses(dto);
+      queryClient.invalidateQueries({ queryKey: ["bonuses"] });
+      return response;
+    },
+  });
+  const topGroups = useMutation<TopGroupResponse[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getTopGroup(dto);
+      queryClient.invalidateQueries({ queryKey: ["topGroups"] });
+      return response;
+    },
+  });
+  const topProducts = useMutation<
+    TopProductRubResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getTopProductRub(dto);
+      queryClient.invalidateQueries({ queryKey: ["topProducts"] });
+      return response;
+    },
+  });
+  const topProductsCount = useMutation<
+    TopProductRubResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getTopProductCount(dto);
+      queryClient.invalidateQueries({ queryKey: ["topProductsCount"] });
+      return response;
+    },
+  });
+
+  const topStoreLoyal = useMutation<
+    TopStoreLoyalResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getTopStoreLoyal(dto);
+      queryClient.invalidateQueries({ queryKey: ["topStoreLoyal"] });
+      return response;
+    },
+  });
+
+  const bonusGraph = useMutation<GraphResponse[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getBonusGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["bonusGraph"] });
+      return response;
+    },
+  });
+
+  const uniqueGraph = useMutation<UniqueGraphResponse, ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getUniqueGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["uniqueGraph"] });
+      return response;
+    },
+  });
+  const appLoyalGraph = useMutation<
+    AppLoyalGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAppLoyalGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["appLoyalGraph"] });
+      return response;
+    },
+  });
+  return {
+    getUniqueGraph: uniqueGraph.mutateAsync,
+    isUniqueGraphLoading: uniqueGraph.isPending,
+    getBonusGraph: bonusGraph.mutateAsync,
+    isBonusGraphLoading: bonusGraph.isPending,
+    getTopGroups: topGroups.mutateAsync,
+    isTopGroupsLoading: topGroups.isPending,
+    getAvarageCheck: avarageCheck.mutateAsync,
+    isAvarageCheckLoading: avarageCheck.isPending,
+    getNoSales30DaysUser: noSales30DaysUser.mutateAsync,
+    isNoSales30DaysUserLoading: noSales30DaysUser.isPending,
+    getUniques: uniques.refetch,
+    isUniquesLoading: uniques.isPending,
+    uniques: uniques.data,
+    getBonuses: bonuses.mutateAsync,
+    isBonusesLoading: bonuses.isPending,
+    getTopProducts: topProducts.mutateAsync,
+    isTopProductsLoading: topProducts.isPending,
+    getTopProductsCount: topProductsCount.mutateAsync,
+    isTopProductsCountLoading: topProductsCount.isPending,
+    getTopStoreLoyal: topStoreLoyal.mutateAsync,
+    isTopStoreLoyalLoading: topStoreLoyal.isPending,
+    getAppLoyalGraph: appLoyalGraph.mutateAsync,
+    isAppLoyalGraphLoading: appLoyalGraph.isPending,
+  };
+};

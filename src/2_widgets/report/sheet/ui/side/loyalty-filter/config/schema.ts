@@ -10,4 +10,5 @@ export const schema = z.object({
     .tuple([z.number().min(0).max(100), z.number().min(0).max(100)])
     .default([0, 100]),
   groupAge: z.array(z.string()),
+  colorsDiscount: z.array(z.string()),
 });
