@@ -5,10 +5,17 @@ import { graphColors } from "@shared/constants/graph-colors";
 export const getOptionChart = (
   option: EChartsOption & { groupType?: string },
   theme: "light" | "dark" | string,
+  customColors?: string[],
 ) => {
   const { title, legend, groupType, ...otherOption } = option;
   const isLightTheme = theme === "light";
-  const colors = isLightTheme ? graphColors.light : graphColors.dark;
+  const colors =
+    customColors && customColors.length > 0
+      ? {
+          ...graphColors[isLightTheme ? "light" : "dark"],
+          series: customColors,
+        }
+      : graphColors[isLightTheme ? "light" : "dark"];
 
   return {
     backgroundColor: colors.background,
@@ -35,6 +42,11 @@ export const getOptionChart = (
       },
       iconStyle: {
         borderColor: colors.text,
+      },
+      emphasis: {
+        iconStyle: {
+          borderColor: colors.series[0],
+        },
       },
     },
 

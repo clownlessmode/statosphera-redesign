@@ -1,4 +1,12 @@
-import { BadgeCheck, BadgeX, User2, User, Badge, Users } from "lucide-react";
+import {
+  BadgeCheck,
+  BadgeX,
+  User2,
+  User,
+  Badge,
+  Users,
+  Circle,
+} from "lucide-react";
 
 export const TYPE = [
   {
@@ -32,5 +40,18 @@ export const GENDER = [
     label: "Женский",
     value: "Ж",
     icon: User2,
+  },
+];
+
+export const COLORS = [
+  {
+    label: "Остальные",
+    value: "other",
+    icon: Circle,
+  },
+  {
+    label: "Оранжевый",
+    value: "orange",
+    icon: Circle,
   },
 ];

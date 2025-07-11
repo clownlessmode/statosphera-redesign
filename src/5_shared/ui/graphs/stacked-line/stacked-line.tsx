@@ -12,6 +12,7 @@ interface CustomChartComponentProps {
   className?: string;
   /** если передать одно и то же число в mirror у двух графиков, они синхронизируются */
   mirror?: number;
+  customColors?: string[]; // Новый пропс
 }
 
 export default function StackedLine({
@@ -19,14 +20,15 @@ export default function StackedLine({
   style,
   mirror,
   className,
+  customColors,
 }: CustomChartComponentProps) {
   const { theme } = useTheme(); // ① получаем текущую тему
   const chartRef = useRef<ReactECharts>(null);
 
   // ② пересчитываем опции при смене option **или** theme
   const optionCharts = useMemo(
-    () => getOptionChart(option, theme as string),
-    [option, theme],
+    () => getOptionChart(option, theme as string, customColors),
+    [option, theme, customColors],
   );
   useEffect(() => {
     if (mirror === undefined) return;

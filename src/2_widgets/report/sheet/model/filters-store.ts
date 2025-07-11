@@ -265,6 +265,7 @@ export type FiltersState = {
       ageStart: number | null;
       ageEnd: number | null;
       groupAge: string[];
+      colorsDiscount: string[];
     };
     onlineStore: {
       isIm: boolean | null;
@@ -427,6 +428,7 @@ const initialState: Omit<
       guidBonus: [],
       ageStart: null,
       ageEnd: null,
+      colorsDiscount: [],
       groupAge: [],
     },
     onlineStore: {

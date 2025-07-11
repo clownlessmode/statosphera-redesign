@@ -14,6 +14,7 @@ export const useForm = () => {
     guidDiscount,
     isLoyal,
     sex,
+    colorsDiscount,
   } = useFiltersStore((state) => state.filters.loyal);
 
   const form = useHookForm<FormValues>({
@@ -32,6 +33,7 @@ export const useForm = () => {
       ),
       isLoyal: isLoyal || defaultValues.isLoyal,
       sex: sex || defaultValues.sex,
+      colorsDiscount: colorsDiscount || defaultValues.colorsDiscount,
     },
     mode: "all",
   });

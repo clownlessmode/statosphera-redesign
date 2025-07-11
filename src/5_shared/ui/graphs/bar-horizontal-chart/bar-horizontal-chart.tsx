@@ -79,7 +79,8 @@ export const BarHorizontalChart = ({
         label: {
           show: true,
           position: "inside",
-          formatter: (params: any) => `${values[params.dataIndex].toFixed(1)}%`,
+          formatter: (params: any) =>
+            `${labels[params.dataIndex].split(",").slice(1).join(",").trim()} ${values[params.dataIndex].toFixed(1)}%`,
           color: colors.text,
           fontSize: 12,
         },
