@@ -14,7 +14,9 @@ export const columns: ColumnDef<Store>[] = [
     maxSize: 32,
     cell: ({ row }) => {
       const { session } = useSession();
-      const isAdmin = session?.role === ROLES.SERVICE_MANAGER;
+      const isAdmin =
+        session?.role === ROLES.SERVICE_MANAGER ||
+        session?.role === ROLES.ADMIN;
       const isNightStore = row.original.ipNightStore.length > 0;
       const store = row.original;
 

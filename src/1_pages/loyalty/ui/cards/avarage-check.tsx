@@ -1,39 +1,19 @@
-import { useLoyal } from "../../api";
 import { Card, CardTitle, CardContent } from "@shared/ui/card";
 import { Separator } from "@shared/ui/separator";
 import { ArrowBigDownDash, ArrowBigUpDash } from "lucide-react";
-import { useEffect, useState } from "react";
-import { AvarageCheckResponse } from "../../config";
 import { Skeleton } from "@shared/ui/skeleton";
-export const AvarageCheck = () => {
-  const { getAvarageCheck, isAvarageCheckLoading } = useLoyal();
-  const [avarageCheck, setAvarageCheck] = useState<AvarageCheckResponse>();
-  useEffect(() => {
-    getAvarageCheck({
-      store: {
-        idStore: [],
-        idCity: [],
-        idRegion: [],
-        idManager: [],
-        storeCondition: [],
-        ageGroup: [],
-        idLegalEntity: [],
-        channel: [],
-        district: [],
-      },
-      filterDate: {
-        dateStart: "2025-05-01",
-        dateEnd: "2025-05-30",
-      },
-    }).then((data) => {
-      setAvarageCheck(data[0]);
-    });
-  }, []);
-
+import { AvarageCheckResponse } from "@pages/loyalty/config";
+export const AvarageCheck = ({
+  isAvarageCheckLoading,
+  avarageCheck,
+}: {
+  isAvarageCheckLoading: boolean;
+  avarageCheck: AvarageCheckResponse;
+}) => {
   if (isAvarageCheckLoading) return <AvarageCheckSkeleton />;
 
   return (
-    <Card className=" w-[200px] !h-full flex flex-col justify-between grow min-h-[232px]">
+    <Card className="w-[200px] flex flex-col justify-between">
       <CardContent className="gap-2 flex flex-col h-full w-full">
         <CardTitle>Средний чек</CardTitle>
         <div className="flex flex-row gap-2 justify-between w-full">

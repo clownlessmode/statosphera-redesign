@@ -62,3 +62,8 @@ export interface UniqueGraphResponse {
 export interface AppLoyalGraphResponse {
   graph: GraphResponse[];
 }
+
+export interface TopActionsResponse {
+  discountType: string;
+  discount: number;
+}

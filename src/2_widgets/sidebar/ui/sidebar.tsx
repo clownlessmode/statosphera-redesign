@@ -90,15 +90,12 @@ const Sidebar = ({
         title: "Лояльность",
         url: ROUTES_PATH.LOYALTY,
         icon: Heart,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Списания",
         url: ROUTES_PATH.WRITE_OFF,
         icon: ChartLine,
-        disabled: session?.role !== ROLES.ADMIN,
       },
-
       {
         title: "Гриль",
         url: ROUTES_PATH.GRILL,

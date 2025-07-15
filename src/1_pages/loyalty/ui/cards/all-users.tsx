@@ -1,36 +1,14 @@
 import { Card, CardTitle, CardHeader, CardContent } from "@shared/ui/card";
-import { useLoyal } from "../../api/controller";
-import { useEffect, useState } from "react";
 import { NoSales30DaysUserResponse } from "../../config";
 import { Skeleton } from "@shared/ui/skeleton";
 
-export const AllUsers = () => {
-  const { getNoSales30DaysUser, isNoSales30DaysUserLoading } = useLoyal();
-  const [noSales30DaysUser, setNoSales30DaysUser] =
-    useState<NoSales30DaysUserResponse>();
-
-  useEffect(() => {
-    getNoSales30DaysUser({
-      store: {
-        idStore: [],
-        idCity: [],
-        idRegion: [],
-        idManager: [],
-        storeCondition: [],
-        ageGroup: [],
-        idLegalEntity: [],
-        channel: [],
-        district: [],
-      },
-      filterDate: {
-        dateStart: "2025-05-01",
-        dateEnd: "2025-05-30",
-      },
-    }).then((data) => {
-      setNoSales30DaysUser(data);
-    });
-  }, []);
-
+export const AllUsers = ({
+  noSales30DaysUser,
+  isNoSales30DaysUserLoading,
+}: {
+  noSales30DaysUser: NoSales30DaysUserResponse;
+  isNoSales30DaysUserLoading: boolean;
+}) => {
   if (isNoSales30DaysUserLoading) return <AllUsersSkeleton />;
 
   if (!noSales30DaysUser) return <AllUsersSkeleton />;

@@ -42,7 +42,7 @@ export const List: FC<Props> = ({ options, title, isLoading, arrows }) => {
                   : "bg-background",
               )}
             >
-              <div className="flex flex-row gap-3 items-center">
+              <div className="flex flex-row gap-3 items-center px-2">
                 <p
                   className={cn(
                     "text-base font-bold",
@@ -56,7 +56,7 @@ export const List: FC<Props> = ({ options, title, isLoading, arrows }) => {
                 {arrows && <ArrowBigUpDash className="size-4 text-positive" />}
                 <p className="line-clamp-1">{option.name}</p>
               </div>
-              <div className="flex flex-row gap-1 items-center">
+              <div className="flex flex-row gap-1 items-center px-2">
                 {option.count && <p>{option.count}М шт.</p>}
                 <p className="text-base font-semibold text-nowrap">
                   {option.price}

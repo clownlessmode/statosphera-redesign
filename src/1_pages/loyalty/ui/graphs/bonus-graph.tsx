@@ -16,7 +16,7 @@ export const BonusGraph = ({
   return (
     <>
       {isLoading ? (
-        <StackedLineSkeleton />
+        <StackedLineSkeleton className="min-h-[400px]" />
       ) : (
         <StackedLine
           className="min-h-[400px]"

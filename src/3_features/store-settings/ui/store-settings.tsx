@@ -23,6 +23,121 @@ import { Store } from "@entities/store/config";
 import { useStoreSettingsController } from "../api";
 
 export const StoreSettings = ({ store }: { store: Store }) => {
+  const [openDialogs, setOpenDialogs] = useState<Record<string, boolean>>({});
+
+  const handleOpenDialog = (ip: string) => {
+    setOpenDialogs((prev) => ({ ...prev, [ip]: true }));
+  };
+
+  const handleCloseDialog = (ip: string) => {
+    setOpenDialogs((prev) => ({ ...prev, [ip]: false }));
+  };
+
+  // Если только один IP, открываем его диалог
+  const handleSingleIpClick = () => {
+    if (store.ipNightStore?.length === 1) {
+      handleOpenDialog(store.ipNightStore[0]);
+    }
+  };
+
+  // Если несколько IP, показываем меню выбора
+  if (store.ipNightStore?.length > 1) {
+    return (
+      <>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent onClick={(e) => e.stopPropagation()}>
+            <DialogHeader>
+              <DialogTitle>Выберите систему</DialogTitle>
+              <DialogDescription>
+                Доступно несколько систем для управления
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-2">
+              {store.ipNightStore.map((ip, index) => (
+                <Button
+                  key={ip}
+                  variant="outline"
+                  onClick={() => handleOpenDialog(ip)}
+                  className="justify-start"
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Система #{index + 1} - {ip}
+                </Button>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Отдельные диалоги для каждого IP */}
+        {store.ipNightStore.map((ip, index) => (
+          <StoreSettingsDialog
+            key={ip}
+            store={store}
+            ip={ip}
+            index={index}
+            open={openDialogs[ip] || false}
+            onOpenChange={(open) =>
+              open ? handleOpenDialog(ip) : handleCloseDialog(ip)
+            }
+          />
+        ))}
+      </>
+    );
+  }
+
+  // Если только один IP
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSingleIpClick();
+        }}
+      >
+        <Settings className="h-4 w-4" />
+      </Button>
+
+      {store.ipNightStore?.[0] && (
+        <StoreSettingsDialog
+          store={store}
+          ip={store.ipNightStore[0]}
+          index={0}
+          open={openDialogs[store.ipNightStore[0]] || false}
+          onOpenChange={(open) =>
+            open
+              ? handleOpenDialog(store.ipNightStore[0])
+              : handleCloseDialog(store.ipNightStore[0])
+          }
+        />
+      )}
+    </>
+  );
+};
+
+const StoreSettingsDialog = ({
+  store,
+  ip,
+  index,
+  open,
+  onOpenChange,
+}: {
+  store: Store;
+  ip: string;
+  index: number;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) => {
   const {
     getStoreStatusAsync,
     isGetStoreStatusLoading,
@@ -33,13 +148,12 @@ export const StoreSettings = ({ store }: { store: Store }) => {
     emergencyClosure,
     isEmergencyClosureLoading,
   } = useStoreSettingsController();
+
   const [data, setData] = useState<any>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const fetchStoreStatus = async () => {
-    if (!store.ipNightStore?.[0]) return;
     try {
-      const result = await getStoreStatusAsync({ ip: store.ipNightStore[0] });
+      const result = await getStoreStatusAsync({ ip });
       setData(result);
       console.log(result);
     } catch (error) {
@@ -50,8 +164,8 @@ export const StoreSettings = ({ store }: { store: Store }) => {
   const handleOpenDoor = async () => {
     try {
       console.log("Opening door...");
-      openDoor({
-        ip: store.ipNightStore[0],
+      await openDoor({
+        ip,
         open: !data?.status_door,
       });
       await fetchStoreStatus();
@@ -64,29 +178,25 @@ export const StoreSettings = ({ store }: { store: Store }) => {
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (open) {
       fetchStoreStatus();
     }
-  }, [isOpen]);
+  }, [open]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Settings className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle className="flex flex-row gap-2 justify-between">
-            <span>Настройки {store.storeName}</span>
+            <span>
+              Настройки {store.storeName}
+              {store.ipNightStore?.length > 1 && ` - Система #${index + 1}`}
+            </span>
           </DialogTitle>
           <DialogDescription>
-            Здесь вы можете управлять настройками ночного магазина
+            {store.ipNightStore?.length > 1
+              ? `IP: ${ip}`
+              : "Здесь вы можете управлять настройками ночного магазина"}
           </DialogDescription>
         </DialogHeader>
         <CardContent className="flex flex-col gap-3 px-0">
@@ -112,11 +222,7 @@ export const StoreSettings = ({ store }: { store: Store }) => {
               loading={isRebootLoading}
               size={"sm"}
               variant={"outline"}
-              onClick={() =>
-                reboot({
-                  ip: store.ipNightStore[0],
-                })
-              }
+              onClick={() => reboot({ ip })}
             >
               Перезагрузить систему
               <RotateCcw />
@@ -129,7 +235,7 @@ export const StoreSettings = ({ store }: { store: Store }) => {
                 className="col-span-2"
                 onClick={() =>
                   emergencyClosure({
-                    ip: store.ipNightStore[0],
+                    ip,
                     enabled: true,
                   })
                 }

@@ -3,12 +3,16 @@ import { EChartsOption } from "echarts";
 import { useTheme } from "@app/providers/theme-provider";
 import { graphColors } from "@shared/constants/graph-colors";
 import BarHorizontalChartSkeleton from "./bar-horizontal-chart-skeleton";
+import { useMemo } from "react";
 
 type BarHorizontalChartProps = {
-  labels: string[]; // адреса для тултипа
+  unit?: string;
+  labels: string[];
   values: number[];
-  itemColors?: (string | undefined)[]; // массив цветов для каждого элемента
+  itemColors?: (string | undefined)[];
   isLoading?: boolean;
+  barCategoryGap?: string;
+  formatter?: (params: any) => string;
 };
 
 export const BarHorizontalChart = ({
@@ -16,9 +20,53 @@ export const BarHorizontalChart = ({
   values,
   itemColors,
   isLoading = false,
+  unit = "%",
+  barCategoryGap = "30%", // значение по умолчанию
+  formatter,
 }: BarHorizontalChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
+
+  // Вычисляем максимальную длину текста для определения отступа слева
+  const maxLabelWidth = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return 150;
+
+    context.font = "12px sans-serif"; // тот же размер шрифта, что и в графике
+
+    let maxWidth = 0;
+    labels.forEach((label, index) => {
+      const processedLabel = formatter
+        ? formatter({ value: label, dataIndex: index })
+        : label.split(",").slice(1).join(",").trim();
+
+      const metrics = context.measureText(processedLabel);
+      maxWidth = Math.max(maxWidth, metrics.width);
+    });
+
+    // Добавляем отступы: 20px для margin + 10px запас
+    return Math.min(maxWidth + 30, 300); // ограничиваем максимум 300px
+  }, [labels, formatter]);
+
+  // Вычисляем максимальную длину значений для определения отступа справа
+  const maxValueWidth = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return 50;
+
+    context.font = "12px sans-serif"; // тот же размер шрифта, что и в графике
+
+    let maxWidth = 0;
+    values.forEach((value) => {
+      const formattedValue = `${value.toFixed(1)} ${unit}`;
+      const metrics = context.measureText(formattedValue);
+      maxWidth = Math.max(maxWidth, metrics.width);
+    });
+
+    // Добавляем отступы: 10px запас
+    return Math.min(maxWidth + 20, 100); // ограничиваем максимум 100px
+  }, [values, unit]);
 
   if (isLoading) {
     return <BarHorizontalChartSkeleton count={labels.length || 7} />;
@@ -29,11 +77,11 @@ export const BarHorizontalChart = ({
 
   const option: EChartsOption = {
     grid: {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      containLabel: true,
+      top: 10,
+      bottom: 10,
+      left: maxLabelWidth, // используем вычисленную ширину
+      right: maxValueWidth, // используем вычисленную ширину для значений
+      containLabel: false, // меняем на false, чтобы контролировать отступы вручную
     },
     tooltip: {
       trigger: "item",
@@ -44,7 +92,7 @@ export const BarHorizontalChart = ({
       formatter: (params: any) => {
         const value = values[params.dataIndex];
         const name = labels[params.dataIndex];
-        return `<b>${name}</b><br />${value.toFixed(1)}%`;
+        return `<b>${name}</b><br />${value.toFixed(1)} ${unit}`;
       },
     },
 
@@ -56,15 +104,31 @@ export const BarHorizontalChart = ({
     },
     yAxis: {
       type: "category",
-      data: labels.map(() => ""), // скрываем текст
-      show: false,
+      data: labels,
+      show: true, // показываем ось Y
       inverse: true,
+      axisLine: {
+        show: false, // скрываем линию оси
+      },
+      axisTick: {
+        show: false, // скрываем засечки
+      },
+      axisLabel: {
+        color: colors.text,
+        fontSize: 12,
+        margin: 10, // отступ от графика
+        align: "right", // выравнивание по правому краю
+        formatter: formatter
+          ? (value: string, index: number) =>
+              formatter({ value, dataIndex: index })
+          : (value: string) => value.split(",").slice(1).join(",").trim(),
+      },
     },
     series: [
       {
         type: "bar",
         data: normalized,
-        barCategoryGap: "30%",
+        barCategoryGap: barCategoryGap,
         itemStyle: {
           borderRadius: 10,
           color: (params: any) => {
@@ -78,9 +142,9 @@ export const BarHorizontalChart = ({
         },
         label: {
           show: true,
-          position: "inside",
+          position: "right", // показываем значения справа от полосок
           formatter: (params: any) =>
-            `${labels[params.dataIndex].split(",").slice(1).join(",").trim()} ${values[params.dataIndex].toFixed(1)}%`,
+            `${values[params.dataIndex].toFixed(1)} ${unit}`,
           color: colors.text,
           fontSize: 12,
         },
@@ -89,10 +153,7 @@ export const BarHorizontalChart = ({
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ width: "100%", height: `${labels.length * 32}px` }}
-    />
+    <ReactECharts option={option} style={{ width: "100%", height: `100%` }} />
   );
 };
 
