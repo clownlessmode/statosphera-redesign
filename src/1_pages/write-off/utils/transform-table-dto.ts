@@ -248,14 +248,24 @@ export function transformToTotalDto(
     type: type,
     household: payload.filters.writeoff?.household === true,
   };
-
+  result.filters.loyal = {
+    isLoyal: null,
+    cardNumber: [],
+    sex: null,
+    guidDiscount: [],
+    guidBonus: [],
+    ageStart: null,
+    ageEnd: null,
+    groupAge: [],
+    colorsDiscount: [],
+  };
   // Добавляем опциональные фильтры если они есть
   if (payload.filters.check) {
     result.filters.check = payload.filters.check;
   }
-  if (payload.filters.loyal) {
-    result.filters.loyal = payload.filters.loyal;
-  }
+  // if (payload.filters.loyal) {
+  //   result.filters.loyal = payload.filters.loyal;
+  // }
   if (payload.filters.onlineStore) {
     result.filters.onlineStore = payload.filters.onlineStore;
   }
