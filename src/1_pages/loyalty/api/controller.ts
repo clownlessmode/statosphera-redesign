@@ -13,6 +13,7 @@ import {
   TopStoreLoyalResponse,
   UniqueGraphResponse,
   AppLoyalGraphResponse,
+  TopActionsResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -125,6 +126,13 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const topActions = useMutation<TopActionsResponse[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getTopActions(dto);
+      queryClient.invalidateQueries({ queryKey: ["topActions"] });
+      return response;
+    },
+  });
   return {
     getUniqueGraph: uniqueGraph.mutateAsync,
     isUniqueGraphLoading: uniqueGraph.isPending,
@@ -149,5 +157,7 @@ export const useLoyal = () => {
     isTopStoreLoyalLoading: topStoreLoyal.isPending,
     getAppLoyalGraph: appLoyalGraph.mutateAsync,
     isAppLoyalGraphLoading: appLoyalGraph.isPending,
+    getTopActions: topActions.mutateAsync,
+    isTopActionsLoading: topActions.isPending,
   };
 };

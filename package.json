@@ -64,6 +64,7 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.9",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.178.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
@@ -77,6 +78,7 @@
     "@types/react-dom": "^19.0.4",
     "@types/react-input-mask": "^3.0.6",
     "@types/react-text-mask": "^5.4.14",
+    "@types/three": "^0.178.1",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "depcheck": "^1.4.7",
     "eslint": "^9.28.0",

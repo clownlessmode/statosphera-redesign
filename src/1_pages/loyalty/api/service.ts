@@ -54,4 +54,8 @@ export class LoyaltyService {
     const response = await api.post("loyal/app-loyal-graph", dto);
     return response.data;
   }
+  static async getTopActions(dto: RequestDto) {
+    const response = await api.post("loyal/action-app-loyal", dto);
+    return response.data;
+  }
 }

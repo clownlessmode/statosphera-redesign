@@ -1,45 +1,98 @@
-import { useMemo } from "react";
-const generateSmoothPath = (points: number[]) => {
-  const step = 100 / (points.length - 1);
-  let d = `M 0,${100 - points[0]}`;
-  for (let i = 1; i < points.length; i++) {
-    const x = i * step;
-    const prevY = 100 - points[i - 1];
-    const currY = 100 - points[i];
-    const midX = x - step / 2;
-    d += ` C ${midX},${prevY} ${midX},${currY} ${x},${currY}`;
-  }
-  return d;
-};
+// StackedLineSkeleton.tsx
+import { useMemo, useRef, useEffect } from "react";
+import ReactECharts from "echarts-for-react";
+import { useTheme } from "@app/providers/theme-provider";
+import { cn } from "@shared/lib/utils";
+import { Card } from "@shared/ui/card";
 
-const generatePoints = () =>
-  Array.from({ length: 12 }, () => Math.floor(Math.random() * 60) + 30); // от 30% до 90%
+interface StackedLineSkeletonProps {
+  className?: string;
+}
 
-const StackedLineSkeleton = () => {
-  const line1 = useMemo(() => generatePoints(), []);
-  const line2 = useMemo(() => generatePoints(), []);
+export default function StackedLineSkeleton({
+  className,
+}: StackedLineSkeletonProps) {
+  const { theme } = useTheme();
+  const chartRef = useRef<ReactECharts>(null);
+
+  const optionCharts = useMemo(() => {
+    const timeLabels = [];
+    for (let hour = 7; hour <= 20; hour++) {
+      timeLabels.push(hour);
+    }
+
+    const currentData = timeLabels.map(
+      () => Math.floor(Math.random() * 23000) + 2000,
+    );
+    const previousData = timeLabels.map(
+      () => Math.floor(Math.random() * 23000) + 2000,
+    );
+
+    return {
+      backgroundColor: "transparent",
+      color: [
+        theme === "light" ? "#acaaa7" : "#636363",
+        theme === "light" ? "#acaaa7cc" : "#636363cc",
+      ],
+      grid: { top: 50, left: 50, right: 50, bottom: 0, containLabel: true },
+      toolbox: { show: false },
+      xAxis: { type: "category", data: timeLabels, boundaryGap: false },
+      yAxis: {
+        type: "value",
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { show: false },
+        splitLine: { show: false },
+      },
+      series: [
+        {
+          type: "line",
+          data: currentData,
+          smooth: true,
+          lineStyle: { width: 4 },
+        },
+        {
+          type: "line",
+          data: previousData,
+          smooth: true,
+          lineStyle: { width: 2, type: "dashed" },
+        },
+      ],
+    };
+  }, [theme]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const instance = chartRef.current?.getEchartsInstance();
+      if (instance) {
+        const timeLabels = [];
+        for (let hour = 7; hour <= 20; hour++) {
+          timeLabels.push(hour);
+        }
+
+        const currentData = timeLabels.map(
+          () => Math.floor(Math.random() * 23000) + 2000,
+        );
+        const previousData = timeLabels.map(
+          () => Math.floor(Math.random() * 23000) + 2000,
+        );
+
+        instance.setOption({
+          series: [{ data: currentData }, { data: previousData }],
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="w-full h-[300px] relative animate-pulse">
-      <svg
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-        className="w-full h-full text-muted-foreground"
-      >
-        <path
-          d={generateSmoothPath(line1)}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-        />
-        <path
-          d={generateSmoothPath(line2)}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-        />
-      </svg>
-    </div>
+    <Card className={cn("w-full h-full", className)}>
+      <ReactECharts
+        ref={chartRef}
+        option={optionCharts}
+        style={{ height: "100%", backgroundColor: "transparent" }}
+      />
+    </Card>
   );
-};
-
-export default StackedLineSkeleton;
+}

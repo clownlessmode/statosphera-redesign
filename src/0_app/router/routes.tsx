@@ -151,7 +151,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <WriteOff />,
     layout: Sidebar,
-    allowedRoles: [ROLES.ADMIN],
+
     label: "Списания",
   },
   {
@@ -195,7 +195,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.LOYALTY,
     variant: "private",
     element: <Loyalty />,
-    allowedRoles: [ROLES.ADMIN],
+
     layout: Sidebar,
   },
   // {
