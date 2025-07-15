@@ -7,11 +7,11 @@ import {
 } from "@shared/ui/card";
 import CheckboxCards from "@shared/ui/checkbox-cards";
 import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
-import { Calendar, MapPin, Receipt, ShoppingBasket, Store } from "lucide-react";
+import { Calendar, MapPin, ShoppingBasket, Store } from "lucide-react";
 
 import { FC, useEffect, useMemo } from "react";
 
-import { DAYS, GEO, PRODUCT, SHOP, WRITE_OFF } from "../config";
+import { DAYS, GEO, PRODUCT, SHOP } from "../config";
 import {
   GROUPINGS,
   useSummaryFiltersStore,

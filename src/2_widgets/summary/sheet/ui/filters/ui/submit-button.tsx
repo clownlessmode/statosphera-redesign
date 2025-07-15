@@ -4,25 +4,14 @@ import { useSearchParams } from "react-router";
 import { useCallback } from "react";
 import { useSummaryController } from "@pages/summary/api/controller";
 import { useSummaryStore, useSummaryVersionStore } from "@pages/summary/model";
-import { useCountStore } from "@pages/report/model/usCountStore";
 
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useSummaryVersionStore();
-  const {
-    getApiPayload,
-    filters,
-    filterDate,
-    groups,
-    values,
-    sorts,
-    limit,
-    offset,
-  } = useSummaryFiltersStore();
-  const { setCards, setTotal, setTable, setError, clearAll, setNomenklatura } =
-    useSummaryStore();
-  const { setCount } = useCountStore();
-  const { getTable, getNomenklatura } = useSummaryController();
+  const { getApiPayload } = useSummaryFiltersStore();
+  const { clearAll, setNomenklatura } = useSummaryStore();
+  //   const { setCount } = useCountStore();
+  const { getNomenklatura } = useSummaryController();
 
   // 🔄 Всегда актуальные данные для disabled
   const isDisabled = useCallback(() => {

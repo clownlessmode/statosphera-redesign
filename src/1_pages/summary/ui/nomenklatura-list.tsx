@@ -1,8 +1,8 @@
 import { useSummaryStore } from "../model";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
-import { useSummaryController } from "../api/controller";
-import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
-import { useCountStore } from "@pages/report/model/usCountStore";
+// import { useSummaryController } from "../api/controller";
+// import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
+// import { useCountStore } from "@pages/report/model/usCountStore";
 import { useState } from "react";
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
@@ -15,10 +15,10 @@ interface NomenklaturaListProps {
 export const NomenklaturaList = ({
   onSelectedProductsChange,
 }: NomenklaturaListProps) => {
-  const { nomenklatura, setTable } = useSummaryStore();
-  const { getTable } = useSummaryController();
-  const { getApiPayload } = useSummaryFiltersStore();
-  const { setCount } = useCountStore();
+  const { nomenklatura } = useSummaryStore();
+  //   const { getTable } = useSummaryController();
+  //   const { getApiPayload } = useSummaryFiltersStore();
+  //   const { setCount } = useCountStore();
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
 
   if (!nomenklatura || nomenklatura.length === 0) {

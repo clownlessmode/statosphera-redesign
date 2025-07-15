@@ -3,7 +3,7 @@ export type {
   SummaryCardRequest,
   SummaryTableRequest,
   SummaryTotalRequest,
-  SummaryComparisonCardsRequest,
+  //   SummaryComparisonCardsRequest,
 } from "./requests";
 
 // Response types

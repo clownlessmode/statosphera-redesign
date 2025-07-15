@@ -8,8 +8,6 @@ import {
 } from "@shared/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import SummaryIn from "./ui/filters/ui/summary";
-import { useFormResetStore } from "./model/reset-store";
-import { useTabStore } from "./model/url-store";
 
 export default function SummaryFiltersSheet() {
   const [searchParams, setSearchParams] = useSearchParams();

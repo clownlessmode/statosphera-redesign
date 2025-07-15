@@ -1,14 +1,11 @@
 import { api } from "@shared/api/api";
 import {
-  SummaryCardRequest,
-  SummaryCardResponse,
-  SummaryTableData,
   SummaryTableRequest,
   SummaryTableResponse,
   SummaryTotalRequest,
   SummaryTotalResponse,
   SummaryNomenklaturaResponse,
-  SummaryComparisonCardsRequest,
+  // SummaryComparisonCardsRequest,
 } from "./types";
 import { SummaryComparisonCardsResponse } from "./types/responses";
 
@@ -60,7 +57,7 @@ export class SummaryService {
   }
 
   static async getComparisonCards(
-    data: SummaryComparisonCardsRequest,
+    data: any,
   ): Promise<SummaryComparisonCardsResponse> {
     const response = await api.post<SummaryComparisonCardsResponse>(
       "/comparison/cards",

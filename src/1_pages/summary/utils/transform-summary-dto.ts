@@ -3,7 +3,7 @@ import {
   SummaryCardRequest,
   SummaryTableRequest,
   SummaryTotalRequest,
-  SummaryComparisonCardsRequest,
+  //   SummaryComparisonCardsRequest,
 } from "../api/types";
 
 export function transformToSummaryDto(
@@ -120,7 +120,7 @@ export function transformToNomenklaturaDto(payload: FilterApiPayload): any {
 export function transformToComparisonCardsDto(
   payload: FilterApiPayload,
   selectedProductIds: number[] = [],
-): SummaryComparisonCardsRequest {
+) {
   // Функция для правильного преобразования значений
   const parseArrayValues = (arr: any[]): number[] => {
     return arr
@@ -142,7 +142,7 @@ export function transformToComparisonCardsDto(
       .filter((item): item is number => item !== null);
   };
 
-  const result: SummaryComparisonCardsRequest = {
+  const result = {
     filters: {
       store: {
         idStore: (payload.filters.store.idStore || [])

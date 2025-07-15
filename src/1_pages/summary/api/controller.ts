@@ -1,12 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  SummaryCardRequest,
-  SummaryCardResponse,
   SummaryTableRequest,
   SummaryTableResponse,
-  SummaryTotalResponse,
   SummaryNomenklaturaResponse,
-  SummaryComparisonCardsRequest,
+  // SummaryComparisonCardsRequest,
 } from "./types";
 import { ApiError } from "@shared/api/types";
 import { SummaryService } from "./service";
@@ -14,7 +11,6 @@ import { FilterApiPayload } from "@widgets/summary/sheet/model/filters-store";
 import {
   transformToSummaryDto,
   transformToNomenklaturaDto,
-  transformToComparisonCardsDto,
 } from "../utils/transform-summary-dto";
 import { SummaryComparisonCardsResponse } from "./types/responses";
 
@@ -60,9 +56,10 @@ export const useSummaryController = () => {
   const getComparisonCards = useMutation<
     SummaryComparisonCardsResponse,
     ApiError,
-    SummaryComparisonCardsRequest
+    any
+    // SummaryComparisonCardsRequest
   >({
-    mutationFn: (data: SummaryComparisonCardsRequest) => {
+    mutationFn: (data) => {
       queryClient.invalidateQueries({ queryKey: ["comparison-cards"] });
       return SummaryService.getComparisonCards(data);
     },

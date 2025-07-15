@@ -1,4 +1,4 @@
-interface BaseSummaryRequest {
+export interface BaseSummaryRequest {
   filters: {
     store: {
       idStore: number[];
@@ -53,4 +53,4 @@ export interface SummaryTableRequest {
   offset: number;
 }
 
-export interface SummaryTotalRequest extends BaseSummaryRequest {}
+export type SummaryTotalRequest = BaseSummaryRequest;

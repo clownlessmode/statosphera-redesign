@@ -276,10 +276,10 @@ export type FiltersState = {
       imReceiveInterval: string[];
       imPromo: string[];
     };
-    // writeoff: {
-    //   indicator: OPERATION_WRITE_OFF[];
-    //   article: ARTICLE_WRITE_OFF[];
-    // };
+    writeoff: {
+      indicator: OPERATION_WRITE_OFF[];
+      article: ARTICLE_WRITE_OFF[];
+    };
   };
   uniques: string[];
   indicators: string[];
@@ -440,10 +440,10 @@ const initialState: Omit<
       imReceiveInterval: [],
       imPromo: [],
     },
-    // writeoff: {
-    //   indicator: [],
-    //   article: [],
-    // },
+    writeoff: {
+      indicator: [],
+      article: [],
+    },
   },
   values: ["proceeds"],
   uniques: [],

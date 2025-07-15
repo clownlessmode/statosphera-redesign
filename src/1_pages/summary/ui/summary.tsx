@@ -6,21 +6,20 @@ import { useSummaryController } from "../api/controller";
 import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { transformToComparisonCardsDto } from "../utils/transform-summary-dto";
 import { useSummaryStore } from "../model";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { SummaryCard } from "./summary-card";
 import {
   BadgeRussianRuble,
   CircleCheck,
   ReceiptRussianRuble,
   ReceiptText,
-  RussianRuble,
 } from "lucide-react";
 import UniversalTable from "@pages/report/ui/table";
 
 export const Summary = () => {
   const { getComparisonCards } = useSummaryController();
   const { getApiPayload } = useSummaryFiltersStore();
-  const { nomenklatura, cards, table, setCards, setTable } = useSummaryStore();
+  const { cards, table, setCards, setTable } = useSummaryStore();
   const { getTable } = useSummaryController();
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [selectedTableRows, setSelectedTableRows] = useState<any[]>([]);
@@ -125,9 +124,9 @@ export const Summary = () => {
     colId: string;
   } | null>(null);
 
-  const handleClearFilters = () => {
-    setCurrentSort(null);
-  };
+  //   const handleClearFilters = () => {
+  //     setCurrentSort(null);
+  //   };
 
   const handleSortChange = async (sortInfo: {
     sort: "asc" | "desc";

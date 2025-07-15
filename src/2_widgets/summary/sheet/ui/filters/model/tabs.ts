@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  ChartLine,
-  CircleDotDashed,
-  ShoppingBasket,
-  Store,
-} from "lucide-react";
+import { Calendar, CircleDotDashed, ShoppingBasket, Store } from "lucide-react";
 import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
