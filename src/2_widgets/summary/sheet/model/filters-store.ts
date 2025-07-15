@@ -1,9 +1,11 @@
 // features/filters-store/store.ts
 
 import { COLUMN_KEY } from "@shared/constants/table-columns";
-import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
+import { format, startOfMonth, subDays } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
+import { useTabStore } from "./url-store";
+
 export enum FULL_GROUPS_SERVER {
   MONTH = "month",
   YEAR = "year",
@@ -61,6 +63,7 @@ export enum FULL_GROUPS_SERVER {
   TYPE = "type",
   ID_DISCOUNT = "idDiscount",
   DISCOUNT_TYPE = "discountType",
+  WRITE_OFF_TYPE = "ops",
 }
 
 export enum GROUPINGS {
@@ -103,6 +106,7 @@ export enum GROUPINGS {
   IM_STATUS_ORDER = FULL_GROUPS_SERVER.IM_STATUS_ORDER,
   IM_PROMO = FULL_GROUPS_SERVER.IM_PROMO,
   IM_RECEIVE_INTERVAL = FULL_GROUPS_SERVER.IM_RECEIVE_INTERVAL,
+  WRITE_OFF_TYPE = FULL_GROUPS_SERVER.WRITE_OFF_TYPE,
 }
 
 export enum GROUP_COLUMN_CHECK_GRAPH {
@@ -113,12 +117,12 @@ export enum GROUP_COLUMN_CHECK_GRAPH {
   YEAR = FULL_GROUPS_SERVER.YEAR,
 }
 export enum CHANNEL {
-  FRS = "ФРС",
-  INVEST = "Франшиза инвестиционная",
-  RENT = "Франшиза в аренду",
-  FOODTRUCK = "Фудтрак",
-  MICROMARKET = "Микромаркет",
   WENDING = "Вендинг",
+  RENT = "Франшиза в аренду",
+  INVEST = "Франшиза инвестиционная",
+  FRS = "ФРС",
+  MICROMARKET = "Микромаркет",
+  OTHER = "",
   SERVICES_STORE = "Служебный магазин ООО Волков",
   TRADING_NETWORK = "Отдел торговой сети",
 }
@@ -127,11 +131,6 @@ export enum FRS_CHANNEL {
   FRS = "ФРС",
   INVEST = "Франшиза инвестиционная",
   RENT = "Франшиза в аренду",
-  FOODTRUCK = "Фудтрак",
-  MICROMARKET = "Микромаркет",
-  WENDING = "Вендинг",
-  SERVICES_STORE = "Служебный магазин ООО Волков",
-  TRADING_NETWORK = "Отдел торговой сети",
 }
 export enum STORE_CONDITIONS {
   OPEN = "Действующие",
@@ -200,22 +199,9 @@ export enum VALUE_WRITE_OFF {
   WRITEOFF_MOM = COLUMN_KEY.WRITE_OFF_MOM,
   WRITEOFF_MOM_PERCENT = COLUMN_KEY.WRITE_OFF_MOM_PERCENT,
 }
+
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
-const today = new Date();
 
-let dateStart: string;
-let dateEnd: string;
-
-if (today.getDate() === 1) {
-  // Сегодня — первое число месяца → берём весь предыдущий месяц
-  const lastMonth = subMonths(today, 1);
-  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
-  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
-} else {
-  // Иначе → с начала месяца до вчерашнего дня
-  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
-  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
-}
 export type FiltersState = {
   // Основная структура данных
   filters: {
@@ -265,7 +251,6 @@ export type FiltersState = {
       ageStart: number | null;
       ageEnd: number | null;
       groupAge: string[];
-      colorsDiscount: string[];
     };
     onlineStore: {
       isIm: boolean | null;
@@ -276,10 +261,11 @@ export type FiltersState = {
       imReceiveInterval: string[];
       imPromo: string[];
     };
-    // writeoff: {
-    //   indicator: OPERATION_WRITE_OFF[];
-    //   article: ARTICLE_WRITE_OFF[];
-    // };
+    writeoff: {
+      household: boolean | null;
+      article: ARTICLE_WRITE_OFF[];
+      indicator: OPERATION_WRITE_OFF[];
+    };
   };
   uniques: string[];
   indicators: string[];
@@ -328,10 +314,10 @@ export type FiltersState = {
     value: FiltersState["filters"]["onlineStore"][K],
   ) => void;
 
-  // updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
-  //   key: K,
-  //   value: FiltersState["filters"]["writeoff"][K],
-  // ) => void;
+  updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
+    key: K,
+    value: FiltersState["filters"]["writeoff"][K],
+  ) => void;
 
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
   updateTimeFilter: (timeStart: string, timeEnd: string) => void;
@@ -363,25 +349,9 @@ export type FiltersState = {
   >;
 };
 
-// Начальное состояние
-const initialState: Omit<
-  FiltersState,
-  | "updateStoreFilter"
-  | "updateProductFilter"
-  | "updateCheckFilter"
-  | "updateLoyalFilter"
-  | "updateOnlineStoreFilter"
-  | "updateWriteoffFilter"
-  | "updateDateFilter"
-  | "updateTimeFilter"
-  | "updateSorts"
-  | "updatePagination"
-  | "updateGroups"
-  | "updateUniques"
-  | "updateIndicators"
-  | "resetAllFilters"
-  | "getApiPayload"
-> = {
+// Создаем отдельные store'ы для каждого таба
+export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
+  // Основная структура данных
   filters: {
     store: {
       idStore: [],
@@ -428,7 +398,6 @@ const initialState: Omit<
       guidBonus: [],
       ageStart: null,
       ageEnd: null,
-      colorsDiscount: [],
       groupAge: [],
     },
     onlineStore: {
@@ -440,21 +409,22 @@ const initialState: Omit<
       imReceiveInterval: [],
       imPromo: [],
     },
-    // writeoff: {
-    //   indicator: [],
-    //   article: [],
-    // },
+    writeoff: {
+      household: null,
+      article: [],
+      indicator: [],
+    },
   },
-  values: ["proceeds"],
   uniques: [],
-  indicators: ["proceeds"],
+  indicators: [],
+  values: [],
   filterDate: {
-    dateStart,
-    dateEnd,
+    dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+    dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
   },
   filterTime: {
-    timeStart: "",
-    timeEnd: "",
+    timeStart: "00:00",
+    timeEnd: "23:59",
   },
   sorts: {
     sort: "desc",
@@ -463,11 +433,12 @@ const initialState: Omit<
   limit: 100,
   offset: 0,
   groups: [],
-};
 
-export const useFiltersStore = create<FiltersState>((set, get) => ({
-  ...initialState,
-  updateStoreFilter: (key, value) =>
+  // Методы обновления состояния
+  updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
+    key: K,
+    value: FiltersState["filters"]["store"][K],
+  ) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -476,9 +447,13 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
           [key]: value,
         },
       },
-    })),
+    }));
+  },
 
-  updateProductFilter: (key, value) =>
+  updateProductFilter: <K extends keyof FiltersState["filters"]["product"]>(
+    key: K,
+    value: FiltersState["filters"]["product"][K],
+  ) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -487,9 +462,13 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
           [key]: value,
         },
       },
-    })),
+    }));
+  },
 
-  updateCheckFilter: (key, value) =>
+  updateCheckFilter: <K extends keyof FiltersState["filters"]["check"]>(
+    key: K,
+    value: FiltersState["filters"]["check"][K],
+  ) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -498,9 +477,13 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
           [key]: value,
         },
       },
-    })),
+    }));
+  },
 
-  updateLoyalFilter: (key, value) => {
+  updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
+    key: K,
+    value: FiltersState["filters"]["loyal"][K],
+  ) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -512,7 +495,12 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
     }));
   },
 
-  updateOnlineStoreFilter: (key, value) =>
+  updateOnlineStoreFilter: <
+    K extends keyof FiltersState["filters"]["onlineStore"],
+  >(
+    key: K,
+    value: FiltersState["filters"]["onlineStore"][K],
+  ) => {
     set((state) => ({
       filters: {
         ...state.filters,
@@ -521,49 +509,144 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
           [key]: value,
         },
       },
-    })),
+    }));
+  },
 
-  // updateWriteoffFilter: (key, value) =>
-  //   set((state) => ({
-  //     filters: {
-  //       ...state.filters,
-  //       writeoff: {
-  //         ...state.filters.writeoff,
-  //         [key]: value,
-  //       },
-  //     },
-  //   })),
+  updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
+    key: K,
+    value: FiltersState["filters"]["writeoff"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        writeoff: {
+          ...state.filters.writeoff,
+          [key]: value,
+        },
+      },
+    }));
+  },
 
-  updateDateFilter: (dateStart, dateEnd) =>
-    set({ filterDate: { dateStart, dateEnd } }),
+  updateDateFilter: (dateStart: string, dateEnd: string) => {
+    set({ filterDate: { dateStart, dateEnd } });
+  },
 
-  updateTimeFilter: (timeStart, timeEnd) =>
-    set({ filterTime: { timeStart, timeEnd } }),
+  updateTimeFilter: (timeStart: string, timeEnd: string) => {
+    set({ filterTime: { timeStart, timeEnd } });
+  },
 
-  updateSorts: (sort, colId) => set({ sorts: { sort, colId } }),
+  updateSorts: (sort: "asc" | "desc", colId: string[]) => {
+    set({ sorts: { sort, colId } });
+  },
 
-  updatePagination: (limit, offset) => set({ limit, offset }),
+  updatePagination: (limit: number, offset: number) => {
+    set({ limit, offset });
+  },
 
-  updateGroups: (groups) => set({ groups }),
+  updateGroups: (groups: string[]) => {
+    set({ groups });
+  },
 
-  updateUniques: (uniques) =>
+  updateUniques: (uniques: string[]) => {
+    set({ uniques });
+  },
+
+  updateIndicators: (indicators: string[]) => {
+    set({ indicators });
+  },
+
+  resetAllFilters: () => {
     set({
-      uniques,
-      values: [...uniques, ...get().indicators], // Автоматически обновляем values
-    }),
-
-  updateIndicators: (indicators) =>
-    set({
-      indicators,
-      values: [...get().uniques, ...indicators], // Автоматически обновляем values
-    }),
-
-  resetAllFilters: () => set(initialState),
+      filters: {
+        store: {
+          idStore: [],
+          idCity: [],
+          idRegion: [],
+          idManager: [],
+          storeCondition: [],
+          ageGroup: [],
+          idLegalEntity: [],
+          channel: [],
+          district: [],
+        },
+        product: {
+          groupFranchise: [],
+          ppProducts: null,
+          subDivisionProducts: [],
+          subGroups: [],
+          subSubGroups: [],
+          typeProducts: [],
+          teamProducts: [],
+          directionProducts: [],
+          groupsEconomist: [],
+          groupsMain: [],
+          idGroupMain: [],
+          idProduct: [],
+          seasonalityProducts: [],
+          managerAuto: [],
+        },
+        check: {
+          tabNumber: [],
+          containsBankQr: null,
+          paymentClass: null,
+          shift: [],
+          cashBox: [],
+          checkNumber: [],
+          numberfield: [],
+          type: [],
+        },
+        loyal: {
+          isLoyal: null,
+          cardNumber: [],
+          sex: null,
+          guidDiscount: [],
+          guidBonus: [],
+          ageStart: null,
+          ageEnd: null,
+          groupAge: [],
+        },
+        onlineStore: {
+          isIm: null,
+          imTypeOrder: [],
+          imDeliveryMethod: [],
+          imPaymentMethod: [],
+          imStatusOrder: [],
+          imReceiveInterval: [],
+          imPromo: [],
+        },
+        writeoff: {
+          household: null,
+          article: [],
+          indicator: [],
+        },
+      },
+      uniques: [],
+      indicators: [],
+      values: [],
+      filterDate: {
+        dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+        dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+      },
+      filterTime: {
+        timeStart: "00:00",
+        timeEnd: "23:59",
+      },
+      sorts: {
+        sort: "desc",
+        colId: [],
+      },
+      limit: 100,
+      offset: 0,
+      groups: [],
+    });
+  },
 
   getApiPayload: () => {
     const state = get();
     return {
       filters: state.filters,
+      uniques: state.uniques,
+      indicators: state.indicators,
       values: state.values,
       filterDate: state.filterDate,
       filterTime: state.filterTime,
@@ -574,3 +657,323 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
     };
   },
 }));
+
+// Store для списаний по оборудованию (без фильтров списаний)
+export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
+  // Основная структура данных
+  filters: {
+    store: {
+      idStore: [],
+      idCity: [],
+      idRegion: [],
+      idManager: [],
+      storeCondition: [],
+      ageGroup: [],
+      idLegalEntity: [],
+      channel: [],
+      district: [],
+    },
+    product: {
+      groupFranchise: [],
+      ppProducts: null,
+      subDivisionProducts: [],
+      subGroups: [],
+      subSubGroups: [],
+      typeProducts: [],
+      teamProducts: [],
+      directionProducts: [],
+      groupsEconomist: [],
+      groupsMain: [],
+      idGroupMain: [],
+      idProduct: [],
+      seasonalityProducts: [],
+      managerAuto: [],
+    },
+    check: {
+      tabNumber: [],
+      containsBankQr: null,
+      paymentClass: null,
+      shift: [],
+      cashBox: [],
+      checkNumber: [],
+      numberfield: [],
+      type: [],
+    },
+    loyal: {
+      isLoyal: null,
+      cardNumber: [],
+      sex: null,
+      guidDiscount: [],
+      guidBonus: [],
+      ageStart: null,
+      ageEnd: null,
+      groupAge: [],
+    },
+    onlineStore: {
+      isIm: null,
+      imTypeOrder: [],
+      imDeliveryMethod: [],
+      imPaymentMethod: [],
+      imStatusOrder: [],
+      imReceiveInterval: [],
+      imPromo: [],
+    },
+    writeoff: {
+      household: null,
+      article: [],
+      indicator: [],
+    },
+  },
+  uniques: [],
+  indicators: [],
+  values: [],
+  filterDate: {
+    dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+    dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+  },
+  filterTime: {
+    timeStart: "00:00",
+    timeEnd: "23:59",
+  },
+  sorts: {
+    sort: "desc",
+    colId: ["writeOff"],
+  },
+  limit: 100,
+  offset: 0,
+  groups: [],
+
+  // Методы обновления состояния (аналогичные, но для оборудования)
+  updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
+    key: K,
+    value: FiltersState["filters"]["store"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        store: {
+          ...state.filters.store,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateProductFilter: <K extends keyof FiltersState["filters"]["product"]>(
+    key: K,
+    value: FiltersState["filters"]["product"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        product: {
+          ...state.filters.product,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateCheckFilter: <K extends keyof FiltersState["filters"]["check"]>(
+    key: K,
+    value: FiltersState["filters"]["check"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        check: {
+          ...state.filters.check,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
+    key: K,
+    value: FiltersState["filters"]["loyal"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        loyal: {
+          ...state.filters.loyal,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateOnlineStoreFilter: <
+    K extends keyof FiltersState["filters"]["onlineStore"],
+  >(
+    key: K,
+    value: FiltersState["filters"]["onlineStore"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        onlineStore: {
+          ...state.filters.onlineStore,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
+    key: K,
+    value: FiltersState["filters"]["writeoff"][K],
+  ) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        writeoff: {
+          ...state.filters.writeoff,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateDateFilter: (dateStart: string, dateEnd: string) => {
+    set({ filterDate: { dateStart, dateEnd } });
+  },
+
+  updateTimeFilter: (timeStart: string, timeEnd: string) => {
+    set({ filterTime: { timeStart, timeEnd } });
+  },
+
+  updateSorts: (sort: "asc" | "desc", colId: string[]) => {
+    set({ sorts: { sort, colId } });
+  },
+
+  updatePagination: (limit: number, offset: number) => {
+    set({ limit, offset });
+  },
+
+  updateGroups: (groups: string[]) => {
+    set({ groups });
+  },
+
+  updateUniques: (uniques: string[]) => {
+    set({ uniques });
+  },
+
+  updateIndicators: (indicators: string[]) => {
+    set({ indicators });
+  },
+
+  resetAllFilters: () => {
+    set({
+      filters: {
+        store: {
+          idStore: [],
+          idCity: [],
+          idRegion: [],
+          idManager: [],
+          storeCondition: [],
+          ageGroup: [],
+          idLegalEntity: [],
+          channel: [],
+          district: [],
+        },
+        product: {
+          groupFranchise: [],
+          ppProducts: null,
+          subDivisionProducts: [],
+          subGroups: [],
+          subSubGroups: [],
+          typeProducts: [],
+          teamProducts: [],
+          directionProducts: [],
+          groupsEconomist: [],
+          groupsMain: [],
+          idGroupMain: [],
+          idProduct: [],
+          seasonalityProducts: [],
+          managerAuto: [],
+        },
+        check: {
+          tabNumber: [],
+          containsBankQr: null,
+          paymentClass: null,
+          shift: [],
+          cashBox: [],
+          checkNumber: [],
+          numberfield: [],
+          type: [],
+        },
+        loyal: {
+          isLoyal: null,
+          cardNumber: [],
+          sex: null,
+          guidDiscount: [],
+          guidBonus: [],
+          ageStart: null,
+          ageEnd: null,
+          groupAge: [],
+        },
+        onlineStore: {
+          isIm: null,
+          imTypeOrder: [],
+          imDeliveryMethod: [],
+          imPaymentMethod: [],
+          imStatusOrder: [],
+          imReceiveInterval: [],
+          imPromo: [],
+        },
+        writeoff: {
+          household: null,
+          article: [],
+          indicator: [],
+        },
+      },
+      uniques: [],
+      indicators: [],
+      values: [],
+      filterDate: {
+        dateStart: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+        dateEnd: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+      },
+      filterTime: {
+        timeStart: "00:00",
+        timeEnd: "23:59",
+      },
+      sorts: {
+        sort: "desc",
+        colId: ["writeOff"],
+      },
+      limit: 100,
+      offset: 0,
+      groups: [],
+    });
+  },
+
+  getApiPayload: () => {
+    const state = get();
+    return {
+      filters: state.filters,
+      uniques: state.uniques,
+      indicators: state.indicators,
+      values: state.values,
+      filterDate: state.filterDate,
+      filterTime: state.filterTime,
+      sorts: state.sorts,
+      limit: state.limit,
+      offset: state.offset,
+      groups: state.groups,
+    };
+  },
+}));
+
+// Хук для получения правильного store в зависимости от таба
+export const useFiltersStore = () => {
+  const { tab } = useTabStore();
+
+  if (tab === "write-off-equip") {
+    return useEquipmentFiltersStore();
+  } else {
+    return useSummaryFiltersStore();
+  }
+};

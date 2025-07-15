@@ -14,8 +14,8 @@ import { FC, useEffect, useMemo } from "react";
 import { DAYS, GEO, PRODUCT, SHOP, WRITE_OFF } from "../config";
 import {
   GROUPINGS,
-  useFiltersStore,
-} from "@widgets/write-off/sheet/model/filters-store";
+  useSummaryFiltersStore,
+} from "@widgets/summary/sheet/model/filters-store";
 import { useForm } from "../model";
 import ClearFilters from "./clear-filter";
 import { useTypeCheckStore } from "../model/hooks/use-type-checked";
@@ -34,7 +34,7 @@ const GroupingFilter: FC = () => {
 
   const form = useForm({ tab, daysOptions: displayedDays });
 
-  const { updateGroups } = useFiltersStore();
+  const { updateGroups } = useSummaryFiltersStore();
   const { setIsTypeCheckSelected } = useTypeCheckStore();
 
   useEffect(() => {
@@ -90,13 +90,6 @@ const GroupingFilter: FC = () => {
           icon: <ShoppingBasket />,
           options: PRODUCT,
           visible: true,
-        },
-        {
-          name: "writeOff", //изменение
-          label: "Списания",
-          icon: <Receipt />,
-          options: WRITE_OFF,
-          visible: tab === "write-off", // Показываем только для обычных списаний
         },
       ] as const,
     [tab, displayedDays],

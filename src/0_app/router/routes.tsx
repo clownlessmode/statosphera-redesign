@@ -21,6 +21,7 @@ import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
 import { WriteOff } from "@pages/write-off/ui/write-off";
 import { Loyalty } from "@pages/loyalty";
+import { Summary } from "@pages/summary/ui/summary";
 // import { AdminStores } from "@pages/admin/admin-stores";
 // import { WriteOff } from "@pages/write-off";
 
@@ -65,6 +66,9 @@ export const ROUTES_PATH = {
 
   // Списания
   WRITE_OFF: "/write-off",
+
+  // Сводная таблица
+  SUMMARY: "/summary",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -153,6 +157,14 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
 
     label: "Списания",
+  },
+  {
+    path: ROUTES_PATH.SUMMARY,
+    variant: "private",
+    element: <Summary />,
+    layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
+    label: "Сводная таблица",
   },
   {
     path: ROUTES_PATH.REPORT,
