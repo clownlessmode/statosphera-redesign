@@ -1,6 +1,7 @@
 import { memo } from "react";
-import ASCIIText from "./ASCIIText";
+
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import Spinner from "./spinner";
 
 export const DevCard = memo(
   ({ title, className }: { title: string; className?: string }) => {
@@ -9,10 +10,8 @@ export const DevCard = memo(
         <CardHeader>
           <CardTitle>{title} (В разработке)</CardTitle>
         </CardHeader>
-        <CardContent className="relative">
-          <div className="min-h-[500px]">
-            <ASCIIText text="DEV" enableWaves={false} asciiFontSize={8} />
-          </div>
+        <CardContent className="relative min-h-[500px] justify-center items-center flex">
+          <Spinner />
         </CardContent>
       </Card>
     );
