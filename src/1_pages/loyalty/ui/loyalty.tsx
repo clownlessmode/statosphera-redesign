@@ -12,6 +12,8 @@ import {
   TopStoreLoyalResponse,
   UniqueGraphResponse,
   TopActionsResponse,
+  AvarageCheckResponse,
+  NoSales30DaysUserResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -46,6 +48,7 @@ export const Loyalty = () => {
     [store, filters, filterDate, value],
   );
   const [bonuses, setBonuses] = useState<BonusesResponse[]>([]);
+  const [avarageCheck, setAvarageCheck] = useState<AvarageCheckResponse[]>([]);
   const [topGroups, setTopGroups] = useState<TopGroupResponse[]>([]);
   const [topProducts, setTopProducts] = useState<TopProductRubResponse[]>([]);
   const [topProductsCount, setTopProductsCount] = useState<
@@ -62,7 +65,13 @@ export const Loyalty = () => {
     graph: [],
   });
   const [topActions, setTopActions] = useState<TopActionsResponse[]>([]);
+  const [noSales30DaysUser, setNoSales30DaysUser] =
+    useState<NoSales30DaysUserResponse>();
   const {
+    getNoSales30DaysUser,
+    isNoSales30DaysUserLoading,
+    isAvarageCheckLoading,
+    getAvarageCheck,
     uniques,
     isUniquesLoading,
     getBonuses,
@@ -112,6 +121,12 @@ export const Loyalty = () => {
     getTopActions(mock).then((data) => {
       setTopActions(data);
     });
+    getAvarageCheck(mock).then((data) => {
+      setAvarageCheck(data);
+    });
+    getNoSales30DaysUser(mock).then((data) => {
+      setNoSales30DaysUser(data);
+    });
   }, [mock]);
 
   return (
@@ -129,11 +144,17 @@ export const Loyalty = () => {
         }}
       />
       <div className="rounded-3xl px-4 py-4 gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
-        <AllUsers />
+        <AllUsers
+          isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
+          noSales30DaysUser={noSales30DaysUser as any}
+        />
         <div className="flex flex-row gap-2 w-full">
-          <AvarageCheck />
+          <AvarageCheck
+            isAvarageCheckLoading={isAvarageCheckLoading || true}
+            avarageCheck={avarageCheck[0]}
+          />
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-row gap-2 w-full">
+            <div className="flex flex-row gap-2 w-full h-full">
               <ValueCard
                 title="Уникальных"
                 value={uniques ?? 0}
@@ -154,15 +175,34 @@ export const Loyalty = () => {
               />
               <ValueCard
                 title="Остаток бонусов M"
+                isLoading={true}
                 value={400000000 / 1000000}
                 unit="M"
               />
-              <ValueCard title="Бонусы на 1 пользователя M" value={148} />
+              <ValueCard
+                title="Бонусы на 1 пользователя M"
+                isLoading={true}
+                value={148}
+              />
             </div>
             <div className="flex flex-row gap-2 w-full">
-              <ValueCard title="Частота покупок M" value={3.2} />
-              <ValueCard title="Доп. выручка M" value={34.231} unit="M" />
-              <ValueCard title="Доля доп. выручки M" value={30} unit="%" />
+              <ValueCard
+                title="Частота покупок M"
+                value={3.2}
+                isLoading={true}
+              />
+              <ValueCard
+                title="Доп. выручка M"
+                isLoading={true}
+                value={34.231}
+                unit="M"
+              />
+              <ValueCard
+                title="Доля доп. выручки M"
+                isLoading={true}
+                value={30}
+                unit="%"
+              />
               <ValueCard
                 isLoading={isBonusesLoading}
                 title="% списания бонусов"

@@ -7,12 +7,12 @@ import { useMemo } from "react";
 
 type BarHorizontalChartProps = {
   unit?: string;
-  labels: string[]; // адреса для тултипа
+  labels: string[];
   values: number[];
-  itemColors?: (string | undefined)[]; // массив цветов для каждого элемента
+  itemColors?: (string | undefined)[];
   isLoading?: boolean;
-  barCategoryGap?: string; // новый пропс
-  formatter?: (params: any) => string; // новый пропс для кастомного форматирования label
+  barCategoryGap?: string;
+  formatter?: (params: any) => string;
 };
 
 export const BarHorizontalChart = ({
