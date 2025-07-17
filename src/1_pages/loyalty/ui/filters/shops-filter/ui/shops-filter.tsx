@@ -86,7 +86,7 @@ const ShopsFilter = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size={"sm"}>
-          <Store /> Магазины{" "}
+          <Store /> Найти магазины{" "}
           {allData.filters.idStore.length > 0 && (
             <Badge>{allData.filters.idStore.length}</Badge>
           )}

@@ -134,7 +134,7 @@ export const Loyalty = () => {
       <Header
         title={`Лояльность`}
         actions={{
-          center: (
+          left: (
             <div className="flex gap-2">
               <GraphDate />
               <DaysFilter />
