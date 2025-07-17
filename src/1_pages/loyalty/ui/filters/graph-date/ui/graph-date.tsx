@@ -55,27 +55,27 @@ export const GraphDate = () => {
 
   const options = [
     {
-      label: "По дням",
+      label: "по дням",
       icon: <CalendarDays className="w-4 h-4" />,
       value: "day",
     },
     {
-      label: "По неделям",
+      label: "по неделям",
       icon: <Calendar1 className="w-4 h-4" />,
       value: "week",
     },
     {
-      label: "По месяцам",
+      label: "по месяцам",
       icon: <Calendar className="w-4 h-4" />,
       value: "month",
     },
     {
-      label: "По кварталам",
+      label: "по кварталам",
       icon: <BarChart2 className="w-4 h-4" />,
       value: "quarter",
     },
     {
-      label: "По годам",
+      label: "по годам",
       icon: <CalendarCheck className="w-4 h-4" />,
       value: "year",
     },
@@ -88,7 +88,7 @@ export const GraphDate = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <Calendar className="text-primary/80 mr-2" />
-          {selectedLabel}
+          Отображение графиков {selectedLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -30,4 +30,8 @@ export interface UniversalTableProps {
    * Принимает массив выбранных объектов данных.
    */
   onSelectionChange?: (selectedRows: any[]) => void;
+  /**
+   * Массив выбранных строк для синхронизации с внешним состоянием
+   */
+  selectedRows?: any[];
 }

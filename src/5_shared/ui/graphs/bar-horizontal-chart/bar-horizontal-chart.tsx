@@ -59,7 +59,9 @@ export const BarHorizontalChart = ({
 
     let maxWidth = 0;
     values.forEach((value) => {
-      const formattedValue = `${value.toFixed(1)} ${unit}`;
+      // Добавляем проверку на null
+      const formattedValue =
+        value != null ? `${value.toFixed(1)} ${unit}` : `0 ${unit}`;
       const metrics = context.measureText(formattedValue);
       maxWidth = Math.max(maxWidth, metrics.width);
     });
@@ -72,8 +74,10 @@ export const BarHorizontalChart = ({
     return <BarHorizontalChartSkeleton count={labels.length || 7} />;
   }
 
-  const max = Math.max(...values, 1);
-  const normalized = values.map((v) => (v / max) * 100);
+  // Фильтруем null значения для вычисления максимума
+  const validValues = values.filter((v): v is number => v != null);
+  const max = validValues.length > 0 ? Math.max(...validValues, 1) : 1;
+  const normalized = values.map((v) => (v != null ? (v / max) * 100 : 0));
 
   const option: EChartsOption = {
     grid: {
@@ -92,7 +96,8 @@ export const BarHorizontalChart = ({
       formatter: (params: any) => {
         const value = values[params.dataIndex];
         const name = labels[params.dataIndex];
-        return `<b>${name}</b><br />${value.toFixed(1)} ${unit}`;
+        // Добавляем проверку на null
+        return `<b>${name}</b><br />${value != null ? value.toFixed(1) : "0"} ${unit}`;
       },
     },
 
@@ -143,8 +148,11 @@ export const BarHorizontalChart = ({
         label: {
           show: true,
           position: "right", // показываем значения справа от полосок
-          formatter: (params: any) =>
-            `${values[params.dataIndex].toFixed(1)} ${unit}`,
+          formatter: (params: any) => {
+            const value = values[params.dataIndex];
+            // Добавляем проверку на null
+            return `${value != null ? value.toFixed(1) : "0"} ${unit}`;
+          },
           color: colors.text,
           fontSize: 12,
         },

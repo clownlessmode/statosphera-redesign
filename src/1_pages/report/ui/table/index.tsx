@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { useMemo, useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ModuleRegistry, AllCommunityModule, ColDef } from "ag-grid-community";
@@ -29,6 +29,7 @@ export default function UniversalTable({
   onSelectionChange,
   onSortChange,
   selectionType = "single",
+  selectedRows = [],
 }: Props) {
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -109,6 +110,21 @@ export default function UniversalTable({
     [],
   );
   const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
+  const gridApiRef = useRef<any>(null);
+
+  // Синхронизация выделения с внешним состоянием
+  useEffect(() => {
+    if (gridApiRef.current && selectedRows) {
+      const api = gridApiRef.current;
+      api.forEachNode((node: any) => {
+        const isSelected = selectedRows.some((selectedRow) => {
+          // Простое сравнение по всем полям
+          return JSON.stringify(selectedRow) === JSON.stringify(node.data);
+        });
+        node.setSelected(isSelected);
+      });
+    }
+  }, [selectedRows]);
 
   return (
     <div
@@ -154,6 +170,7 @@ export default function UniversalTable({
         onGridReady={(params) => {
           console.log("onGridReady called");
           const api = params.api;
+          gridApiRef.current = api;
           const colsToSize = api
             .getAllGridColumns()
             .filter((col) => {

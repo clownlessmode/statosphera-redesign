@@ -23,6 +23,12 @@ import { Store, X } from "lucide-react";
 import { DialogContent } from "@shared/ui/dialog";
 import { DialogTrigger } from "@shared/ui/dialog";
 import { Dialog } from "@shared/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@shared/ui/tooltip";
 import { Skeleton } from "@shared/ui/skeleton";
 
 const SalesDynamics: FC = () => {
@@ -296,11 +302,23 @@ const SalesDynamics: FC = () => {
               />
               {selectedRows.length > 0 && (
                 <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline">
-                      <Store /> Выбранные магазины: {selectedRows.length}
-                    </Button>
-                  </DialogTrigger>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <DialogTrigger asChild>
+                          <Button variant="outline">
+                            <Store /> Выбранные магазины: {selectedRows.length}
+                          </Button>
+                        </DialogTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>
+                          Для выбора нескольких магазинов зажмите CTRL и
+                          кликайте по строкам
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <DialogContent>
                     <div className="flex flex-col gap-2 ">
                       {selectedRows.map((row) => (
@@ -311,13 +329,13 @@ const SalesDynamics: FC = () => {
                           <span className="col-span-4">{row.storeName}</span>
                           <X
                             className="cursor-pointer"
-                            onClick={() =>
-                              setSelectedRows(
-                                selectedRows.filter(
-                                  (r) => r.idStore !== row.idStore,
-                                ),
-                              )
-                            }
+                            onClick={() => {
+                              const updatedRows = selectedRows.filter(
+                                (r) => r.idStore !== row.idStore,
+                              );
+                              setSelectedRows(updatedRows);
+                              handleSelectionChange(updatedRows);
+                            }}
                           />
                         </div>
                       ))}
@@ -335,6 +353,7 @@ const SalesDynamics: FC = () => {
             {!isAllLoading && isCompleted && (
               <UniversalTable
                 selectionType="multiple"
+                selectedRows={selectedRows}
                 onSelectionChange={(selectedRows) => {
                   setSelectedRows(selectedRows);
                   handleSelectionChange(selectedRows);

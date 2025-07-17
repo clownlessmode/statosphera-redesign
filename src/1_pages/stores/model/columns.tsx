@@ -3,8 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SortableHeader } from "@shared/ui/sortable-header";
 import StatusBadge from "@shared/ui/status-badge";
 import { Store } from "@entities/store/config";
-import { ROLES } from "@shared/constants/roles";
-import { useSession } from "@entities/session";
 import { StoreSettings } from "@features/store-settings";
 
 export const columns: ColumnDef<Store>[] = [
@@ -13,14 +11,10 @@ export const columns: ColumnDef<Store>[] = [
     size: 32,
     maxSize: 32,
     cell: ({ row }) => {
-      const { session } = useSession();
-      const isAdmin =
-        session?.role === ROLES.SERVICE_MANAGER ||
-        session?.role === ROLES.ADMIN;
       const isNightStore = row.original.ipNightStore.length > 0;
       const store = row.original;
 
-      if (!isAdmin || !isNightStore) return null;
+      if (!isNightStore) return null;
 
       return (
         <div onClick={(e) => e.stopPropagation()}>

@@ -24,9 +24,9 @@ import { useIndicatorList } from "@widgets/report/sheet/ui/side/indicators-filte
 import { useUniqueValues } from "@widgets/report/sheet/ui/side/uniques-filter";
 import { SavedReports } from "@features/reports/saved-reports";
 import { SaveReport } from "@features/reports/save-report";
-import { GROUPINGS } from "@widgets/report/sheet/model/filters-store";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
+import { useDateFilterStore } from "./date-dropdown";
 // import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -279,6 +279,7 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
 }));
 
 const Report: FC = () => {
+  const { value: dateFilterValue } = useDateFilterStore();
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
   const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
@@ -304,6 +305,7 @@ const Report: FC = () => {
       initialFiltersRef.current = {
         filters: JSON.parse(JSON.stringify(allData.filters)),
         values: [...allData.values],
+        groups: [dateFilterValue],
         graph: graph,
       };
     }
@@ -342,7 +344,22 @@ const Report: FC = () => {
 
       // Если нет выбранных строк, восстанавливаем начальный график
       if (newSelectedRows.length === 0 && initialFiltersRef.current) {
-        setGraph(initialFiltersRef.current.graph);
+        // Делаем новый запрос с начальными фильтрами, но текущей группировкой
+        const payload = getApiPayload();
+        getGraph({
+          ...payload,
+          filterDate: {
+            dateStart: payload.filterDate.dateStart,
+            dateEnd: payload.filterDate.dateEnd,
+          },
+          filters: initialFiltersRef.current.filters,
+          groups: [dateFilterValue],
+          values: initialFiltersRef.current.values,
+        }).then((response) => {
+          if (response) {
+            setGraph(response);
+          }
+        });
         return;
       }
 
@@ -404,7 +421,7 @@ const Report: FC = () => {
           dateEnd: payload.filterDate.dateEnd,
         },
         filters: mergedFilters,
-        groups: [GROUPINGS.DAY],
+        groups: [dateFilterValue], // Используем значение из DateFilterStore
         values: payload.values,
       }).then((response) => {
         if (response) {
@@ -412,7 +429,7 @@ const Report: FC = () => {
         }
       });
     },
-    [selectedRows, getApiPayload, getGraph, setGraph],
+    [selectedRows, getApiPayload, getGraph, setGraph, dateFilterValue], // Добавляем в зависимости
   );
 
   // Обработчик клика на ячейку для установки показателя
@@ -499,7 +516,7 @@ const Report: FC = () => {
             dateEnd: payload.filterDate.dateEnd,
           },
           filters: preparedFilters,
-          groups: [GROUPINGS.DAY],
+          groups: [dateFilterValue], // Используем значение из DateFilterStore
           values: payload.values,
         }).then((response) => {
           if (response) {
@@ -523,6 +540,7 @@ const Report: FC = () => {
       graph,
       table,
       total,
+      dateFilterValue, // Добавляем в зависимости
     ],
   );
 
