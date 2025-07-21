@@ -21,10 +21,12 @@ import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
 import { WriteOff } from "@pages/write-off/ui/write-off";
 import { Loyalty } from "@pages/loyalty";
-// import { AdminStores } from "@pages/admin/admin-stores";
+
+import { AdminNotifications } from "@pages/admin/admin-notifications";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
+  MESSAGES: "/messages",
   // Авторизация
   LOGIN: "/login",
 
@@ -72,6 +74,13 @@ export const ROUTES_PATH = {
 } as const;
 
 export const ROUTES: RouteConfig[] = [
+  {
+    path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
+    variant: "private",
+    allowedRoles: [ROLES.ADMIN],
+    element: <AdminNotifications />,
+    layout: Sidebar,
+  },
   // Авторизация
   {
     path: ROUTES_PATH.LOGIN,

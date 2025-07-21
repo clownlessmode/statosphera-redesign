@@ -11,7 +11,7 @@ export const AllUsers = ({
 }) => {
   if (isNoSales30DaysUserLoading) return <AllUsersSkeleton />;
 
-  if (!noSales30DaysUser) return <AllUsersSkeleton />;
+  // if () return <AllUsersSkeleton />;
   return (
     <Card className="w-full h-full gap-1 ">
       <CardHeader className="flex flex-row justify-center items-center flex-grow"></CardHeader>

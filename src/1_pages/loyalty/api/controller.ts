@@ -14,6 +14,7 @@ import {
   UniqueGraphResponse,
   AppLoyalGraphResponse,
   TopActionsResponse,
+  LoyalCard2Response,
 } from "../config";
 
 export const useLoyal = () => {
@@ -133,6 +134,12 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const loyalCard2 = useMutation<LoyalCard2Response[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getLoyalCard2(dto);
+      return response;
+    },
+  });
   return {
     getUniqueGraph: uniqueGraph.mutateAsync,
     isUniqueGraphLoading: uniqueGraph.isPending,
@@ -159,5 +166,7 @@ export const useLoyal = () => {
     isAppLoyalGraphLoading: appLoyalGraph.isPending,
     getTopActions: topActions.mutateAsync,
     isTopActionsLoading: topActions.isPending,
+    getLoyalCard2: loyalCard2.mutateAsync,
+    isLoyalCard2Loading: loyalCard2.isPending,
   };
 };

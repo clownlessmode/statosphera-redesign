@@ -14,6 +14,7 @@ import {
   TopActionsResponse,
   AvarageCheckResponse,
   NoSales30DaysUserResponse,
+  LoyalCard2Response,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -67,13 +68,12 @@ export const Loyalty = () => {
   const [topActions, setTopActions] = useState<TopActionsResponse[]>([]);
   const [noSales30DaysUser, setNoSales30DaysUser] =
     useState<NoSales30DaysUserResponse>();
+  const [loyalCard2, setLoyalCard2] = useState<LoyalCard2Response>();
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
     isAvarageCheckLoading,
     getAvarageCheck,
-    uniques,
-    isUniquesLoading,
     getBonuses,
     isBonusesLoading,
     getTopGroups,
@@ -92,6 +92,8 @@ export const Loyalty = () => {
     getAppLoyalGraph,
     getTopActions,
     isTopActionsLoading,
+    getLoyalCard2,
+    isLoyalCard2Loading,
   } = useLoyal();
   useEffect(() => {
     getBonuses(mock).then((data) => {
@@ -127,6 +129,9 @@ export const Loyalty = () => {
     getNoSales30DaysUser(mock).then((data) => {
       setNoSales30DaysUser(data);
     });
+    getLoyalCard2(mock).then((data) => {
+      setLoyalCard2(data[0]);
+    });
   }, [mock]);
 
   return (
@@ -150,28 +155,33 @@ export const Loyalty = () => {
         />
         <div className="flex flex-row gap-2 w-full">
           <AvarageCheck
-            isAvarageCheckLoading={isAvarageCheckLoading || true}
+            isAvarageCheckLoading={isAvarageCheckLoading}
             avarageCheck={avarageCheck[0]}
           />
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-row gap-2 w-full h-full">
               <ValueCard
                 title="Уникальных"
-                value={uniques ?? 0}
-                isLoading={isUniquesLoading}
+                value={loyalCard2?.uniqueCardNumber ?? 0}
+                isLoading={isLoyalCard2Loading}
               />
-              <ValueCard title="Проникновение" value={54.5} unit="%" />
+              <ValueCard
+                title="Проникновение"
+                value={loyalCard2?.appLoyalPercent ?? 0}
+                unit="%"
+                isLoading={isLoyalCard2Loading}
+              />
               <ValueCard
                 title="Начислено бонусов"
                 unit="M"
-                value={bonuses[0]?.bonusAccrual / 1000000}
-                isLoading={isBonusesLoading}
+                value={loyalCard2?.bonusAccrual ?? 0}
+                isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Списано бонусов"
                 unit="M"
-                value={bonuses[0]?.bonusWriteOff / 1000000}
-                isLoading={isBonusesLoading}
+                value={loyalCard2?.bonusWriteOff ?? 0 / 1000000}
+                isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Остаток бонусов M"
@@ -187,20 +197,20 @@ export const Loyalty = () => {
             </div>
             <div className="flex flex-row gap-2 w-full">
               <ValueCard
-                title="Частота покупок M"
-                value={3.2}
-                isLoading={true}
+                title="Частота покупок"
+                value={loyalCard2?.frequencySalesLoyal ?? 0}
+                isLoading={isLoyalCard2Loading}
               />
               <ValueCard
-                title="Доп. выручка M"
-                isLoading={true}
-                value={34.231}
+                title="Доп. выручка"
+                isLoading={isLoyalCard2Loading}
+                value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
                 unit="M"
               />
               <ValueCard
-                title="Доля доп. выручки M"
-                isLoading={true}
-                value={30}
+                title="Доля доп. выручки"
+                isLoading={isLoyalCard2Loading}
+                value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                 unit="%"
               />
               <ValueCard

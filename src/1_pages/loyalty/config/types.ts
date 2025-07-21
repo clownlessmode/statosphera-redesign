@@ -67,3 +67,17 @@ export interface TopActionsResponse {
   discountType: string;
   discount: number;
 }
+
+export interface LoyalCard2Response {
+  uniqueCardNumber: 269510;
+  uniqueCheckLoyal: 776779;
+  uniqueCheck: 1404511;
+  appLoyalPercent: 55.3;
+  bonusWriteOff: 15709236;
+  bonusAccrual: 10944168;
+  frequencySalesLoyal: 2.9;
+  proceedsAdditionalLoyal: 318189279;
+  proceedsAdditionalLoyalPercent: 36.7;
+  proceeds: 867600179;
+  proceedsLoyal: 549410899;
+}

@@ -58,4 +58,9 @@ export class LoyaltyService {
     const response = await api.post("loyal/action-app-loyal", dto);
     return response.data;
   }
+
+  static async getLoyalCard2(dto: RequestDto) {
+    const response = await api.post("loyal/loyal-card-line2", dto);
+    return response.data;
+  }
 }

@@ -30,6 +30,8 @@ import {
   TooltipTrigger,
 } from "@shared/ui/tooltip";
 import { Skeleton } from "@shared/ui/skeleton";
+import { useIsMobile } from "@shared/hooks/use-mobile";
+import { cn } from "@shared/lib/utils";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента
@@ -119,7 +121,7 @@ const SalesDynamics: FC = () => {
       const payload = getApiPayload();
       const tableRes = await getTable({
         ...payload,
-        values: values || defaultValues.indicators_and_groups, // <-- берем из стора, а не из defaultValues
+        values: values || defaultValues.indicators_and_groups,
       });
       setTable(tableRes);
     };
@@ -202,23 +204,24 @@ const SalesDynamics: FC = () => {
     setGraph(graphRes);
     setSecondGraph(secondGraphRes);
   };
+  const isMobile = useIsMobile();
   const isCompleted = !!table && !!total && !!graph && !!secondGraph;
   const isAllLoading = !table || !total || !graph || !secondGraph;
   return (
     <>
       <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
         <Header
-          title="Динамика продаж"
+          title={isMobile ? "" : "Динамика продаж"}
           actions={{
-            left: (
-              <div className="flex flex-row gap-2">
+            left: !isMobile && (
+              <div className={cn("flex flex-row gap-2")}>
                 <DaysFilter />
                 <GraphDate />
                 <ShopsFilter />
                 <Lfl />
               </div>
             ),
-            right: (
+            right: !isMobile && (
               <div className="flex flex-row gap-2">
                 <DownloadSalesDynamics />
               </div>
@@ -230,6 +233,15 @@ const SalesDynamics: FC = () => {
             {isAllLoading && <Skeleton className="w-full h-full" />}
             {!isAllLoading && (
               <div className="flex flex-col gap-2 h-full w-full">
+                {isMobile && (
+                  <div className={cn("flex flex-row gap-2")}>
+                    <DaysFilter />
+                    <GraphDate />
+                    <ShopsFilter />
+                    <Lfl />
+                    <DownloadSalesDynamics />
+                  </div>
+                )}
                 <SalesSelect index={1} />
                 {isCompleted && (
                   <StackedLine
@@ -260,7 +272,7 @@ const SalesDynamics: FC = () => {
               </div>
             )}
             {isAllLoading && <Skeleton className="w-full h-full" />}
-            {!isAllLoading && (
+            {!isAllLoading && !isMobile && (
               <div className="flex flex-col gap-2 h-full w-full">
                 <SalesSelect index={2} />
                 {isCompleted && (
@@ -293,10 +305,10 @@ const SalesDynamics: FC = () => {
             )}
           </div>
           <div className="flex flex-col gap-2 h-full w-full">
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 w-full">
               <Input
                 placeholder="Поиск по магазину"
-                className="w-full"
+                className="w-full! min-w-0"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -343,11 +355,9 @@ const SalesDynamics: FC = () => {
                   </DialogContent>
                 </Dialog>
               )}
-              <div className="w-full flex flex-row gap-2 justify-end">
-                <AddIndicators
-                  defaultValues={defaultValues.indicators_and_groups}
-                />
-              </div>
+              <AddIndicators
+                defaultValues={defaultValues.indicators_and_groups}
+              />
             </div>
             {isAllLoading && <Skeleton className="w-full h-full" />}
             {!isAllLoading && isCompleted && (

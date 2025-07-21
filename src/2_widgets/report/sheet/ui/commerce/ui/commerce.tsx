@@ -30,10 +30,10 @@ const CommerceInner = () => {
   const { triggerReset } = useFormResetStore();
   return (
     <>
-      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-r border-border pt-4 h-full">
+      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4 h-full">
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
-          <ViewTabsGroupContent>
+          <ViewTabsGroupContent className="grid grid-cols-2 md:flex flex-col px-4 ">
             {filters.map((item, index) => (
               <ViewTabsTrigger
                 value={item.title}
@@ -122,7 +122,7 @@ const Commerce = () => {
   return (
     <ViewTabs
       defaultValue={defaultValue}
-      className="flex flex-row gap-4 h-screen"
+      className="flex md:flex-row gap-4 h-screen flex-col"
     >
       <CommerceInner />
     </ViewTabs>

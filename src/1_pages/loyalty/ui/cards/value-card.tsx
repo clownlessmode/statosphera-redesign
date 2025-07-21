@@ -14,7 +14,7 @@ export const ValueCard: FC<Props> = ({ title, value, unit, isLoading }) => {
     <Card className="items-center justify-center text-center gap-2 px-4 w-full">
       <CardTitle>{title}</CardTitle>
       <p className="text-4xl font-bold">
-        {value.toLocaleString()} {unit}
+        {(value / 1000000).toLocaleString()} {unit}
       </p>
     </Card>
   );
