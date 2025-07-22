@@ -63,4 +63,14 @@ export class LoyaltyService {
     const response = await api.post("loyal/loyal-card-line2", dto);
     return response.data;
   }
+
+  static async getAgeGroupsGraph(dto: RequestDto) {
+    const response = await api.post("loyal/frequency-sales-loyal", dto);
+    return response.data;
+  }
+
+  static async getAgeCircleGraph(dto: RequestDto) {
+    const response = await api.post("loyal/check-gender", dto);
+    return response.data;
+  }
 }

@@ -15,6 +15,8 @@ import {
   AvarageCheckResponse,
   NoSales30DaysUserResponse,
   LoyalCard2Response,
+  AgeGroupsGraphResponse,
+  AgeCircleGraphResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -29,6 +31,8 @@ import { DaysFilter } from "./filters/days-filter";
 import { ShopsFilter } from "./filters/shops-filter";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { DevCard } from "@shared/ui/dev-card";
+import { AgeGroupsGraph } from "./graphs/age-groups-graph";
+import { AgeCircleGraph } from "./graphs/age-circle-graph";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -58,7 +62,9 @@ export const Loyalty = () => {
   const [topStoreLoyal, setTopStoreLoyal] = useState<TopStoreLoyalResponse[]>(
     [],
   );
-  const [bonusGraph, setBonusGraph] = useState<GraphResponse[]>([]);
+  const [bonusGraph, setBonusGraph] = useState<{ graph: GraphResponse[] }>({
+    graph: [],
+  });
   const [uniqueGraph, setUniqueGraph] = useState<UniqueGraphResponse>({
     graph: [],
   });
@@ -69,6 +75,15 @@ export const Loyalty = () => {
   const [noSales30DaysUser, setNoSales30DaysUser] =
     useState<NoSales30DaysUserResponse>();
   const [loyalCard2, setLoyalCard2] = useState<LoyalCard2Response>();
+  const [ageGroupsGraph, setAgeGroupsGraph] = useState<AgeGroupsGraphResponse>({
+    xAxis: [],
+    legend: [],
+    series: [],
+  });
+  const [ageCircleGraph, setAgeCircleGraph] = useState<AgeCircleGraphResponse>({
+    circle: [],
+    center: [],
+  });
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
@@ -94,6 +109,10 @@ export const Loyalty = () => {
     isTopActionsLoading,
     getLoyalCard2,
     isLoyalCard2Loading,
+    getAgeGroupsGraph,
+    isAgeGroupsGraphLoading,
+    getAgeCircleGraph,
+    isAgeCircleGraphLoading,
   } = useLoyal();
   useEffect(() => {
     getBonuses(mock).then((data) => {
@@ -131,6 +150,12 @@ export const Loyalty = () => {
     });
     getLoyalCard2(mock).then((data) => {
       setLoyalCard2(data[0]);
+    });
+    getAgeGroupsGraph(mock).then((data) => {
+      setAgeGroupsGraph(data);
+    });
+    getAgeCircleGraph(mock).then((data) => {
+      setAgeCircleGraph(data);
     });
   }, [mock]);
 
@@ -249,7 +274,10 @@ export const Loyalty = () => {
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <BonusGraph graph={bonusGraph} isLoading={isBonusGraphLoading} />
+          <BonusGraph
+            graph={bonusGraph.graph}
+            isLoading={isBonusGraphLoading}
+          />
           <UniqueGraph graph={uniqueGraph} isLoading={isUniqueGraphLoading} />
           <AppLoyalGraph
             graph={appLoyalGraph}
@@ -262,13 +290,20 @@ export const Loyalty = () => {
             topStoreLoyal={topStoreLoyal}
             isLoading={isTopStoreLoyalLoading}
           />
-          <DevCard title="Пол гостей" />
+          <AgeCircleGraph
+            graph={ageCircleGraph}
+            isLoading={isAgeCircleGraphLoading}
+          />
+
           <DevCard
             title="Частота чеков по полу в разрезе возрастной группы"
             className="col-span-2"
           />
           <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Распределение по полу и возрасту" />
+            <AgeGroupsGraph
+              graph={ageGroupsGraph}
+              isLoading={isAgeGroupsGraphLoading}
+            />
             <DevCard title="Распределение выручки по полу и возрасту" />
           </div>
           <div className="grid grid-cols-2 col-span-3 gap-2">

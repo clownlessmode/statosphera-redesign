@@ -81,3 +81,18 @@ export interface LoyalCard2Response {
   proceeds: 867600179;
   proceedsLoyal: 549410899;
 }
+
+export interface AgeGroupsGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
+}
+export interface AgeCircleGraphResponse {
+  circle: {
+    value: number;
+    name: string;
+  }[];
+  center: {
+    total: number;
+  }[];
+}

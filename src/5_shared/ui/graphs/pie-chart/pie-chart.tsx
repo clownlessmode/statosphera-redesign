@@ -9,9 +9,15 @@ type PieChartProps = {
   data: { name: string; value: number }[];
   tooltipData?: string[];
   title?: string;
+  formatter?: (params: any) => string;
 };
 
-export const PieChart = ({ data, tooltipData, title }: PieChartProps) => {
+export const PieChart = ({
+  data,
+  tooltipData,
+  title,
+  formatter,
+}: PieChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
 
@@ -36,11 +42,13 @@ export const PieChart = ({ data, tooltipData, title }: PieChartProps) => {
         textStyle: { color: colors.text, fontSize: 10 },
         formatter: (params: any) => {
           const tooltip = tooltipData?.[params.dataIndex] || "";
-          return `${
-            params.name
-          } ${tooltip}<br />${params.value.toLocaleString()} ₽ (${
-            params.percent
-          }%)`;
+          return formatter
+            ? formatter(params)
+            : `${
+                params.name
+              } ${tooltip}<br />${params.value.toLocaleString()} ₽ (${
+                params.percent
+              }%)`;
         },
       },
       legend: {
@@ -78,7 +86,7 @@ export const PieChart = ({ data, tooltipData, title }: PieChartProps) => {
         },
       ],
     }),
-    [colors, data, tooltipData, title],
+    [colors, data, tooltipData, title, formatter],
   );
 
   return (

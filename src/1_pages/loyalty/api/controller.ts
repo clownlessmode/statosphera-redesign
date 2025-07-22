@@ -15,6 +15,8 @@ import {
   AppLoyalGraphResponse,
   TopActionsResponse,
   LoyalCard2Response,
+  AgeGroupsGraphResponse,
+  AgeCircleGraphResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -101,7 +103,11 @@ export const useLoyal = () => {
     },
   });
 
-  const bonusGraph = useMutation<GraphResponse[], ApiError, RequestDto>({
+  const bonusGraph = useMutation<
+    { graph: GraphResponse[] },
+    ApiError,
+    RequestDto
+  >({
     mutationFn: async (dto: RequestDto) => {
       const response = await LoyaltyService.getBonusGraph(dto);
       queryClient.invalidateQueries({ queryKey: ["bonusGraph"] });
@@ -140,7 +146,30 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const ageGroupsGraph = useMutation<
+    AgeGroupsGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAgeGroupsGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["ageGroupsGraph"] });
+      return response;
+    },
+  });
+  const ageCircleGraph = useMutation<
+    AgeCircleGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAgeCircleGraph(dto);
+      return response;
+    },
+  });
   return {
+    getAgeCircleGraph: ageCircleGraph.mutateAsync,
+    isAgeCircleGraphLoading: ageCircleGraph.isPending,
     getUniqueGraph: uniqueGraph.mutateAsync,
     isUniqueGraphLoading: uniqueGraph.isPending,
     getBonusGraph: bonusGraph.mutateAsync,
@@ -168,5 +197,7 @@ export const useLoyal = () => {
     isTopActionsLoading: topActions.isPending,
     getLoyalCard2: loyalCard2.mutateAsync,
     isLoyalCard2Loading: loyalCard2.isPending,
+    getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
+    isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
   };
 };

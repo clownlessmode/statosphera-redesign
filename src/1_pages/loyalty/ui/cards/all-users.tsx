@@ -28,7 +28,7 @@ export const AllUsers = ({
           <div className="flex flex-col gap-2 items-center justify-center w-full ">
             <div className="w-full bg-primary text-primary-foreground border-border border rounded-lg flex items-center justify-center h-12">
               <CardTitle>
-                Всего пользователей:{" "}
+                Всего клиентов:{" "}
                 {noSales30DaysUser?.total_users.toLocaleString()}
               </CardTitle>{" "}
             </div>

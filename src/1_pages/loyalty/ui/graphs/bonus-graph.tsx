@@ -10,6 +10,7 @@ export const BonusGraph = ({
   graph: GraphResponse[];
   isLoading: boolean;
 }) => {
+  console.log(graph);
   const prepareLine = usePreparedStackedLine();
   // Кастомные цвета: начисления — зелёный, списания — красный
   const customColors = ["#50A253FF", "#E50046", "#50A2537E", "#E5004591"];
