@@ -75,7 +75,7 @@ export class LoyaltyService {
   }
 
   static async ageSalesGraph(dto: RequestDto) {
-    const response = await api.post("loyal/frequency-sales-loyal", dto);
+    const response = await api.post("loyal/check-age-gender", dto);
     return response.data;
   }
 }
