@@ -53,7 +53,8 @@ export interface TopStoreLoyalResponse {
 }
 export interface GraphResponse {
   name: string;
-  data: [string, number][];
+  type: string;
+  data: number[];
 }
 
 export interface UniqueGraphResponse {
@@ -95,4 +96,10 @@ export interface AgeCircleGraphResponse {
   center: {
     total: number;
   }[];
+}
+
+export interface AgeSalesGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
 }

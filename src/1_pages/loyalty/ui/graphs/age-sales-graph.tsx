@@ -1,23 +1,23 @@
-import { AgeGroupsGraphResponse } from "../../config";
+import { AgeSalesGraphResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
 
 import { Card } from "@shared/ui/card";
 
 import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
 
-export const AgeGroupsGraph = ({
+export const AgeSalesGraph = ({
   graph,
   isLoading,
 }: {
-  graph: AgeGroupsGraphResponse;
+  graph: AgeSalesGraphResponse;
   isLoading: boolean;
 }) => {
   return (
     <>
       {isLoading ? (
-        <StackedLineSkeleton className="h-[400px]" />
+        <StackedLineSkeleton className="h-[400px] col-span-2" />
       ) : (
-        <Card className="h-[400px]">
+        <Card className="h-[400px] col-span-2">
           <div style={{ height: 400, width: "100%" }}>
             <BarChartMultiSeries
               xAxisData={graph.xAxis}
@@ -25,7 +25,7 @@ export const AgeGroupsGraph = ({
                 name: item.name,
                 data: item.data,
               }))}
-              title="Распределение по возрастным группам и полу"
+              title="Частота чеков по полу в разрезе возрастной группы"
             />
           </div>
         </Card>

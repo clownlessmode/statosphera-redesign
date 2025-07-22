@@ -9,7 +9,7 @@ export const AgeCircleGraph = ({
   isLoading: boolean;
 }) => {
   return (
-    <Card className="min-h-[400px]">
+    <Card className="h-[400px] px-10">
       <PieChart
         data={graph.circle.map((item) => ({
           name: item.name,

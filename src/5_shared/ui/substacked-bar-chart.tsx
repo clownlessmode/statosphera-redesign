@@ -1,0 +1,119 @@
+import ReactECharts from "echarts-for-react";
+import { useTheme } from "@app/providers/theme-provider";
+import { EChartsOption } from "echarts";
+import { graphColors } from "@shared/constants/graph-colors";
+
+type SeriesData = {
+  name: string;
+  data: number[];
+};
+
+type BarChartMultiSeriesProps = {
+  xAxisData: string[];
+  series: SeriesData[];
+  title?: string;
+};
+
+export const BarChartMultiSeries = ({
+  xAxisData,
+  series,
+  title,
+}: BarChartMultiSeriesProps) => {
+  const { theme } = useTheme();
+  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+
+  // Базовые настройки для label
+  const labelOption = {
+    show: true,
+    position: "insideBottom" as const,
+    distance: 15,
+    align: "top" as const,
+    verticalAlign: "center" as const,
+    rotate: 90,
+    fontSize: 12,
+    color: "#ffffff",
+    textBorderColor: "#383838C2",
+    textBorderWidth: 3,
+    formatter: "{c}  {name|{a}}",
+    rich: {
+      name: {},
+    },
+  };
+
+  const option: EChartsOption = {
+    backgroundColor: "transparent",
+    toolbox: {
+      show: false,
+    },
+    title: title
+      ? {
+          text: title,
+          left: "center",
+          textStyle: {
+            color: colors.text,
+            fontSize: 16,
+          },
+        }
+      : undefined,
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "shadow" },
+      backgroundColor: colors.tooltipBg,
+      borderColor: colors.tooltipBorder,
+      borderRadius: 12,
+      textStyle: { color: colors.text, fontSize: 12 },
+    },
+    legend: {
+      data: series.map((s) => s.name),
+      textStyle: { color: colors.text },
+      top: 40,
+    },
+    xAxis: [
+      {
+        type: "category",
+        axisTick: { show: false },
+        data: xAxisData,
+        axisLabel: {
+          color: colors.text,
+          fontSize: 12,
+          interval: 0,
+        },
+        axisLine: { show: false },
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        show: false,
+      },
+    ],
+    grid: {
+      top: 80,
+      left: 10,
+      right: 10,
+      bottom: 20,
+    },
+    series: series.map((s, idx) => ({
+      name: s.name,
+      type: "bar",
+      barGap: 0,
+      label: labelOption,
+      emphasis: { focus: "series" },
+      data: s.data,
+      itemStyle: {
+        color: colors.series[idx % colors.series.length],
+        borderRadius: 4,
+      },
+    })) as any,
+  };
+
+  return (
+    <div className="w-full h-full">
+      <ReactECharts
+        option={option}
+        style={{ height: "100%", width: "100%" }}
+        className="w-full h-full"
+      />
+    </div>
+  );
+};

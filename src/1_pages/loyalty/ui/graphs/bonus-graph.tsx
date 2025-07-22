@@ -28,7 +28,7 @@ export const BonusGraph = ({
             legend: {
               data: graph.map((item) => item.name),
             },
-            series: graph && prepareLine(graph),
+            series: graph && prepareLine(graph as any),
           }}
           customColors={customColors}
         />

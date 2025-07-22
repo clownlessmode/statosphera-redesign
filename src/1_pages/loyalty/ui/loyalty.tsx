@@ -17,6 +17,7 @@ import {
   LoyalCard2Response,
   AgeGroupsGraphResponse,
   AgeCircleGraphResponse,
+  AgeSalesGraphResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -33,6 +34,7 @@ import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filter
 import { DevCard } from "@shared/ui/dev-card";
 import { AgeGroupsGraph } from "./graphs/age-groups-graph";
 import { AgeCircleGraph } from "./graphs/age-circle-graph";
+import { AgeSalesGraph } from "./graphs/age-sales-graph";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -84,6 +86,11 @@ export const Loyalty = () => {
     circle: [],
     center: [],
   });
+  const [ageSalesGraph, setAgeSalesGraph] = useState<AgeSalesGraphResponse>({
+    xAxis: [],
+    legend: [],
+    series: [],
+  });
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
@@ -113,6 +120,8 @@ export const Loyalty = () => {
     isAgeGroupsGraphLoading,
     getAgeCircleGraph,
     isAgeCircleGraphLoading,
+    getAgeSalesGraph,
+    isAgeSalesGraphLoading,
   } = useLoyal();
   useEffect(() => {
     getBonuses(mock).then((data) => {
@@ -156,6 +165,10 @@ export const Loyalty = () => {
     });
     getAgeCircleGraph(mock).then((data) => {
       setAgeCircleGraph(data);
+    });
+
+    getAgeSalesGraph(mock).then((data) => {
+      setAgeSalesGraph(data);
     });
   }, [mock]);
 
@@ -295,24 +308,16 @@ export const Loyalty = () => {
             isLoading={isAgeCircleGraphLoading}
           />
 
-          <DevCard
-            title="Частота чеков по полу в разрезе возрастной группы"
-            className="col-span-2"
+          <AgeSalesGraph
+            graph={ageSalesGraph}
+            isLoading={isAgeSalesGraphLoading}
           />
           <div className="grid grid-cols-2 col-span-3 gap-2">
             <AgeGroupsGraph
               graph={ageGroupsGraph}
               isLoading={isAgeGroupsGraphLoading}
             />
-            <DevCard title="Распределение выручки по полу и возрасту" />
-          </div>
-          <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Изменение среднего чека по частоте с разделением по полу" />
-            <DevCard title="Изменение среднего чека по частоте с разделением по возрасту" />
-          </div>
-          <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Длина чека по возрасту и полу" />
-            <DevCard title="Часы активности по времени и по возрасту" />
+            <DevCard />
           </div>
         </div>
       </div>

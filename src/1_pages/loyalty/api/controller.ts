@@ -17,6 +17,7 @@ import {
   LoyalCard2Response,
   AgeGroupsGraphResponse,
   AgeCircleGraphResponse,
+  AgeSalesGraphResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -167,6 +168,19 @@ export const useLoyal = () => {
       return response;
     },
   });
+
+  const ageSalesGraph = useMutation<
+    AgeSalesGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.ageSalesGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["ageSalesGraph"] });
+      return response;
+    },
+  });
+
   return {
     getAgeCircleGraph: ageCircleGraph.mutateAsync,
     isAgeCircleGraphLoading: ageCircleGraph.isPending,
@@ -199,5 +213,7 @@ export const useLoyal = () => {
     isLoyalCard2Loading: loyalCard2.isPending,
     getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
     isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
+    getAgeSalesGraph: ageSalesGraph.mutateAsync,
+    isAgeSalesGraphLoading: ageSalesGraph.isPending,
   };
 };
