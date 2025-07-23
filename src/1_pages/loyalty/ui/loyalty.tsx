@@ -18,6 +18,7 @@ import {
   AgeGroupsGraphResponse,
   AgeCircleGraphResponse,
   AgeSalesGraphResponse,
+  AvarageCheckAgeGroupGraphResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -35,6 +36,7 @@ import { AgeGroupsGraph } from "./graphs/age-groups-graph";
 import { AgeCircleGraph } from "./graphs/age-circle-graph";
 import { AgeSalesGraph } from "./graphs/age-sales-graph";
 import { RevenueGroupsGraph } from "./graphs/revenueGroups";
+import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -91,7 +93,10 @@ export const Loyalty = () => {
     legend: [],
     series: [],
   });
-
+  const [averageCheckAgeGroupGraph, setAverageCheckAgeGroupGraph] =
+    useState<AvarageCheckAgeGroupGraphResponse>({
+      graph: [],
+    });
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
@@ -123,6 +128,8 @@ export const Loyalty = () => {
     isAgeCircleGraphLoading,
     getAgeSalesGraph,
     isAgeSalesGraphLoading,
+    getAverageCheckAgeGroupGraph,
+    isAverageCheckAgeGroupGraphLoading,
   } = useLoyal();
   useEffect(() => {
     getBonuses(mock).then((data) => {
@@ -170,6 +177,9 @@ export const Loyalty = () => {
 
     getAgeSalesGraph(mock).then((data) => {
       setAgeSalesGraph(data);
+    });
+    getAverageCheckAgeGroupGraph(mock).then((data) => {
+      setAverageCheckAgeGroupGraph(data);
     });
   }, [mock]);
 
@@ -328,6 +338,10 @@ export const Loyalty = () => {
               graph={ageSalesGraph}
             />
           </div>
+          <AvarageCheckAgeGroupGraph
+            graph={averageCheckAgeGroupGraph}
+            isLoading={isAverageCheckAgeGroupGraphLoading}
+          />
         </div>
       </div>
     </div>

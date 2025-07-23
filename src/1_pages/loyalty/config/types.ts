@@ -109,3 +109,7 @@ export interface RevenueGroupsGraphResponse {
   legend: string[];
   series: GraphResponse[];
 }
+
+export interface AvarageCheckAgeGroupGraphResponse {
+  graph: GraphResponse[];
+}
