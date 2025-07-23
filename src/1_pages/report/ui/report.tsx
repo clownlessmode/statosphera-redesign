@@ -27,6 +27,7 @@ import { SaveReport } from "@features/reports/save-report";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
+import Spinner from "@shared/ui/spinner";
 // import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -643,6 +644,10 @@ const Report: FC = () => {
     bumpDataVersion();
   }, [allData.filters, bumpDataVersion]);
 
+  const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
+
+  const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
+  console.log(isGraphLoading, isTableLoading, isTotalLoading);
   return (
     <>
       <Sheet />
@@ -769,8 +774,21 @@ const Report: FC = () => {
               dataVersion={dataVersion}
             />
           ) : (
-            <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
-              {error ? <NotFoundFilters /> : <NotSelectedFilters />}
+            <div
+              className={cn(
+                isLoading ? "mb-[25%]" : "mb-[10%]",
+                "flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end ",
+              )}
+            >
+              {!isLoading ? (
+                error ? (
+                  <NotFoundFilters />
+                ) : (
+                  <NotSelectedFilters />
+                )
+              ) : (
+                <Spinner />
+              )}
             </div>
           )}
         </div>
