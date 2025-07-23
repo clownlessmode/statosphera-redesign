@@ -33,6 +33,7 @@ import { Input } from "@shared/ui/input";
 import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 import { PackageFilters } from "./package-filters";
 import InfinityTable from "@pages/report/ui/table/infinite-table";
+import pluralize from "@shared/lib/pluralize";
 
 export const Summary = () => {
   const { getComparisonCards, getGraph } = useSummaryController();
@@ -308,7 +309,7 @@ export const Summary = () => {
               <div className="flex-1 flex flex-col gap-2 min-h-0">
                 {isLoadingData ? (
                   <>
-                    <div className="grid grid-cols-2 gap-2 auto-rows-max h-fit">
+                    <div className="flex flex-row gap-2 auto-rows-max h-fit">
                       {Array.from({ length: 4 }).map((_, index) => (
                         <SummaryCardSkeleton key={index} />
                       ))}
@@ -320,7 +321,7 @@ export const Summary = () => {
                   </>
                 ) : hasData ? (
                   <>
-                    <div className="grid grid-cols-2 gap-2 auto-rows-max h-fit">
+                    <div className="flex flex-row gap-2 auto-rows-max h-fit">
                       {cards.flatMap((card) => [
                         <SummaryCard
                           key={`total-${card.totalProceeds}`}
@@ -341,7 +342,7 @@ export const Summary = () => {
                         <SummaryCard
                           key={`count-${card.checkCount}`}
                           title="Количество чеков"
-                          value={card.checkCount}
+                          value={`${pluralize(card.checkCount, ["чек", "чека", "чеков"])}`}
                           icons={<ReceiptText color="#E50046" />}
                           trigger={<Info className="w-4 h-4" />}
                           text="Количество чеков с выбранной номенклатурой"
@@ -359,7 +360,7 @@ export const Summary = () => {
                     {hasGraphData || selectedProduct ? (
                       <>
                         {hasGraphData && (
-                          <Card className="flex-1 px-10 py-0">
+                          <Card className="flex-1 pl-10 pr-20 py-0 max-h-[250px]">
                             <BarHorizontalChart
                               labels={xAxisData}
                               values={yAxisData}

@@ -28,7 +28,7 @@ export class SummaryService {
     data: any,
   ): Promise<SummaryNomenklaturaResponse[]> {
     const response = await api.post<SummaryNomenklaturaResponse[]>(
-      "/products/filter",
+      "/products/current-period",
       data,
     );
     return response.data;

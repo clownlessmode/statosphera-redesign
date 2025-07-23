@@ -21,7 +21,7 @@ export const SummaryCard = ({
 
   let content: React.ReactNode;
   if (value === null || value === undefined || value === "") {
-    content = "Данные отсутствуют";
+    content = "Нет данных";
   } else if (typeof value === "number") {
     const formatted = new Intl.NumberFormat("ru-RU").format(value);
     content = (
@@ -35,15 +35,15 @@ export const SummaryCard = ({
     content = value;
   }
   return (
-    <Card className="p-2 w-full">
-      <CardHeader className="pb-0">
+    <Card className="p-2! w-full gap-3! flex flex-col justify-between">
+      <CardHeader className="pb-0 px-2">
         <CardTitle>
           <div className="flex flex-row gap-4 items-center">
             <Tooltip>
               <TooltipTrigger>{trigger}</TooltipTrigger>
               <TooltipContent>{text}</TooltipContent>
             </Tooltip>
-            <p className="text-lg font-medium text-muted-foreground -ml-2">
+            <p className="text-md font-semibold text-muted-foreground -ml-2">
               {title}
             </p>
             {icons}
@@ -51,7 +51,7 @@ export const SummaryCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="text-3xl font-semibold">{content}</div>
+        <div className="text-2xl font-semibold">{content}</div>
       </CardContent>
     </Card>
   );
