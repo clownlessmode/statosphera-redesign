@@ -28,18 +28,8 @@ const GroupingFilter: FC = () => {
   const displayedDays = useMemo(() => {
     const baseDays = [...DAYS];
 
-    if (tab === "write-off") {
-      // Для обычных списаний - убираем часы
-      return baseDays.filter((day) => day.value !== GROUPINGS.HOUR);
-    } else if (tab === "write-off-equip") {
-      // Для списаний по поломкам - добавляем часы
-      if (!baseDays.some((d) => d.value === GROUPINGS.HOUR)) {
-        baseDays.push({ label: "Час", value: GROUPINGS.HOUR });
-      }
-      return baseDays;
-    }
-
-    return baseDays;
+    // Убираем часы для всех табов
+    return baseDays.filter((day) => day.value !== GROUPINGS.HOUR);
   }, [tab]);
 
   const form = useForm({ tab, daysOptions: displayedDays });

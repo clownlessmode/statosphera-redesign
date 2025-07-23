@@ -1,6 +1,7 @@
 import { Logotype } from "@shared/ui/logotype";
 import {
   BookOpenIcon,
+  ChartBarStacked,
   ChartLine,
   ChartPie,
   DollarSign,
@@ -96,6 +97,14 @@ const Sidebar = ({
         url: ROUTES_PATH.WRITE_OFF,
         icon: ChartLine,
       },
+      // Поменять роль
+      {
+        title: "Парные продажи",
+        url: ROUTES_PATH.SUMMARY,
+        icon: ChartBarStacked,
+        disabled: session?.role !== ROLES.ADMIN,
+      },
+
       {
         title: "Гриль",
         url: ROUTES_PATH.GRILL,

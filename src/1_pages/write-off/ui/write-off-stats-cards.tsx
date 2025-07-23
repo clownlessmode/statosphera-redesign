@@ -41,20 +41,20 @@ const WriteOffStatsCards: React.FC<WriteOffStatsCardsProps> = ({ data }) => {
   const cards = [
     {
       value: `${formatValue(data.writeOffLM)} ₽`,
-      subtitle: "Прошлый месяц",
+      subtitle: "Прошлый месяц (в рублях)",
     },
     {
       value: `${formatValue(data.writeOffLY)} ₽`,
-      subtitle: "Прошлый год",
+      subtitle: "Прошлый год (в рублях)",
     },
     {
       value: formatPercent(data.writeOffMoMPercent),
-      subtitle: "Месяц к месяцу",
+      subtitle: "Месяц к месяцу (в рублях)",
       valueColor: getChangeColor(data.writeOffMoMPercent),
     },
     {
       value: formatPercent(data.writeOffYoYPercent),
-      subtitle: "Год к году",
+      subtitle: "Год к году (в рублях)",
       valueColor: getChangeColor(data.writeOffYoYPercent),
     },
   ];

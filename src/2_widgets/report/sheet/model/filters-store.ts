@@ -328,10 +328,10 @@ export type FiltersState = {
     value: FiltersState["filters"]["onlineStore"][K],
   ) => void;
 
-  updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
-    key: K,
-    value: FiltersState["filters"]["writeoff"][K],
-  ) => void;
+  // updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
+  //   key: K,
+  //   value: FiltersState["filters"]["writeoff"][K],
+  // ) => void;
 
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
   updateTimeFilter: (timeStart: string, timeEnd: string) => void;
@@ -523,16 +523,16 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateWriteoffFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        writeoff: {
-          ...state.filters.writeoff,
-          [key]: value,
-        },
-      },
-    })),
+  // updateWriteoffFilter: (key, value) =>
+  //   set((state) => ({
+  //     filters: {
+  //       ...state.filters,
+  //       writeoff: {
+  //         ...state.filters.writeoff,
+  //         [key]: value,
+  //       },
+  //     },
+  //   })),
 
   updateDateFilter: (dateStart, dateEnd) =>
     set({ filterDate: { dateStart, dateEnd } }),
