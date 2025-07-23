@@ -78,7 +78,7 @@ export const NomenklaturaList = ({
   };
 
   return (
-    <Card className="max-w-[550px] h-full flex flex-col">
+    <Card className="max-w-[550px] h-full flex flex-col gap-3!">
       <CardHeader className="flex-shrink-0 flex flex-col gap-4">
         <div className="flex flex-row w-full justify-between  items-center">
           <CardTitle>Номенклатура</CardTitle>
@@ -94,20 +94,20 @@ export const NomenklaturaList = ({
         />
       </CardHeader>
 
-      <CardContent className="p-2 flex-1 overflow-y-auto min-h-0">
+      <CardContent className="p-3 flex-1 overflow-y-auto min-h-0">
         <div className="space-y-2">
           {filteredNomenklatura.length > 0 ? (
             filteredNomenklatura.map((item) => (
               <div
                 key={item.idProduct}
-                className={`bg-background flex justify-between items-center p-3 border rounded-lg cursor-pointer hover:bg-muted transition-colors ${
+                className={`bg-background flex justify-between items-center px-3 py-2 border rounded-lg cursor-pointer hover:bg-muted transition-colors ${
                   selectedProduct === item.idProduct
-                    ? "border-white bg-muted"
+                    ? "border-white/50 bg-muted"
                     : "border-border"
                 }`}
                 onClick={() => handleProductClick(item.idProduct)}
               >
-                <span className="">{item.productName}</span>
+                <span className="text-xs">{item.productName}</span>
                 {selectedProduct === item.idProduct && (
                   <Check className="w-4 h-4" />
                 )}
