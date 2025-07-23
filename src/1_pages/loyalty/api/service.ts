@@ -78,4 +78,9 @@ export class LoyaltyService {
     const response = await api.post("loyal/check-age-gender", dto);
     return response.data;
   }
+
+  static async revenueGroupsGraph(dto: RequestDto) {
+    const response = await api.post("loyal/check-age-proceeds", dto);
+    return response.data;
+  }
 }

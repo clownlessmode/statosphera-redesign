@@ -15,7 +15,7 @@ export const AgeCircleGraph = ({
           name: item.name,
           value: item.value,
         }))}
-        title="Распределение по полу и возрасту"
+        title="Распределение по полу"
         formatter={(params) => {
           return `${params.name} ${params.percent.toFixed(1)}%`;
         }}

@@ -31,10 +31,10 @@ import { useLoyaltyFiltersStore } from "./filters/filters-store";
 import { DaysFilter } from "./filters/days-filter";
 import { ShopsFilter } from "./filters/shops-filter";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
-import { DevCard } from "@shared/ui/dev-card";
 import { AgeGroupsGraph } from "./graphs/age-groups-graph";
 import { AgeCircleGraph } from "./graphs/age-circle-graph";
 import { AgeSalesGraph } from "./graphs/age-sales-graph";
+import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -91,6 +91,7 @@ export const Loyalty = () => {
     legend: [],
     series: [],
   });
+
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
@@ -202,11 +203,13 @@ export const Loyalty = () => {
                 title="Уникальных"
                 value={loyalCard2?.uniqueCardNumber ?? 0}
                 isLoading={isLoyalCard2Loading}
+                formatter={(value) => value.toLocaleString()}
               />
               <ValueCard
                 title="Проникновение"
                 value={loyalCard2?.appLoyalPercent ?? 0}
                 unit="%"
+                formatter={(value) => value.toFixed(1)}
                 isLoading={isLoyalCard2Loading}
               />
               <ValueCard
@@ -238,6 +241,7 @@ export const Loyalty = () => {
                 title="Частота покупок"
                 value={loyalCard2?.frequencySalesLoyal ?? 0}
                 isLoading={isLoyalCard2Loading}
+                formatter={(value) => value.toFixed(1)}
               />
               <ValueCard
                 title="Доп. выручка"
@@ -247,6 +251,7 @@ export const Loyalty = () => {
               />
               <ValueCard
                 title="Доля доп. выручки"
+                formatter={(value) => value.toFixed(1)}
                 isLoading={isLoyalCard2Loading}
                 value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                 unit="%"
@@ -254,6 +259,7 @@ export const Loyalty = () => {
               <ValueCard
                 isLoading={isBonusesLoading}
                 title="% списания бонусов"
+                formatter={(value) => value.toFixed(1)}
                 value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
                 unit="%"
               />
@@ -266,7 +272,7 @@ export const Loyalty = () => {
             isLoading={isTopGroupsLoading}
             options={topGroups.map((group) => ({
               name: group.subSubGroups,
-              price: `${group.countSales} ₽`,
+              price: `${group.countSales.toLocaleString()} ₽`,
             }))}
           />
           <List
@@ -274,15 +280,15 @@ export const Loyalty = () => {
             isLoading={isTopProductsLoading}
             options={topProducts.map((group) => ({
               name: group.product,
-              price: `${group.countSales} ₽`,
+              price: `${group.proceeds.toLocaleString()} ₽`,
             }))}
           />
           <List
             title="Топ 5 товаров по количеству продаж"
             isLoading={isTopProductsCountLoading}
-            options={topProductsCount.map((group) => ({
+            options={topProductsCount.map((group: any) => ({
               name: group.product,
-              price: `${group.countSales}`,
+              price: `${group.countSales.toLocaleString()}`,
             }))}
           />
         </div>
@@ -317,7 +323,10 @@ export const Loyalty = () => {
               graph={ageGroupsGraph}
               isLoading={isAgeGroupsGraphLoading}
             />
-            <DevCard />
+            <RevenueGroupsGraph
+              isLoading={isAgeSalesGraphLoading}
+              graph={ageSalesGraph}
+            />
           </div>
         </div>
       </div>

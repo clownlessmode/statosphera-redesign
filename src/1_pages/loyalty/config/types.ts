@@ -44,7 +44,7 @@ export interface TopGroupResponse {
 export interface TopProductRubResponse {
   product: string;
   id_product: number;
-  countSales: number;
+  proceeds: number;
 }
 export interface TopStoreLoyalResponse {
   store: string;
@@ -99,6 +99,12 @@ export interface AgeCircleGraphResponse {
 }
 
 export interface AgeSalesGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
+}
+
+export interface RevenueGroupsGraphResponse {
   xAxis: string[];
   legend: string[];
   series: GraphResponse[];

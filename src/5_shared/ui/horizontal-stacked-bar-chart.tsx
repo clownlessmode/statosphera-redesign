@@ -8,45 +8,24 @@ type SeriesData = {
   data: number[];
 };
 
-type BarChartMultiSeriesProps = {
-  xAxisData: string[];
+type HorizontalStackedBarChartProps = {
+  yAxisData: string[];
   series: SeriesData[];
   title?: string;
   formatter?: (params: any) => string;
 };
 
-export const BarChartMultiSeries = ({
-  xAxisData,
+export const HorizontalStackedBarChart = ({
+  yAxisData,
   series,
-  formatter,
   title,
-}: BarChartMultiSeriesProps) => {
+  formatter,
+}: HorizontalStackedBarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
 
-  // Базовые настройки для label
-  const labelOption = {
-    show: true,
-    position: "insideBottom" as const,
-    distance: 15,
-    align: "top" as const,
-    verticalAlign: "center" as const,
-    rotate: 90,
-    fontSize: 12,
-    color: "#ffffff",
-    textBorderColor: "#383838C2",
-    formatter: formatter ? formatter : "{c}  {name|{a}}",
-
-    rich: {
-      name: {},
-    },
-  };
-
   const option: EChartsOption = {
     backgroundColor: "transparent",
-    toolbox: {
-      show: false,
-    },
     title: title
       ? {
           text: title,
@@ -71,43 +50,46 @@ export const BarChartMultiSeries = ({
       textStyle: { color: colors.text },
       top: 40,
     },
-    xAxis: [
-      {
-        type: "category",
-        axisTick: { show: false },
-        data: xAxisData,
-        axisLabel: {
-          color: colors.text,
-          fontSize: 12,
-          interval: 0,
-        },
-        axisLine: { show: false },
-      },
-    ],
-    yAxis: [
-      {
-        type: "value",
-        show: false,
-      },
-    ],
     grid: {
-      top: 80,
-      left: 10,
-      right: 10,
-      bottom: 20,
+      left: "3%",
+      right: "4%",
+      bottom: "3%",
+      containLabel: true,
+    },
+    xAxis: {
+      type: "value",
+      axisLabel: { color: colors.text, fontSize: 12 },
+      splitLine: { show: false },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
+    yAxis: {
+      type: "category",
+      data: yAxisData,
+      axisLabel: { color: colors.text, fontSize: 12 },
+      axisLine: { show: false },
+      axisTick: { show: false },
     },
     series: series.map((s, idx) => ({
       name: s.name,
       type: "bar",
-      barGap: 0,
-      label: labelOption,
+      stack: "total",
+      label: {
+        show: false,
+        color: "#fff",
+        fontSize: 12,
+        textBorderColor: "#383838C2",
+        textBorderWidth: 3,
+        position: "insideRight",
+        formatter: "{c}",
+      },
       emphasis: { focus: "series" },
       data: s.data,
       itemStyle: {
         color: colors.series[idx % colors.series.length],
-        borderRadius: 4,
+        borderRadius: [10, 10, 10, 10], // скругление справа
       },
-    })) as any,
+    })),
   };
 
   return (

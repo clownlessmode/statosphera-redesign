@@ -52,8 +52,9 @@ export const PieChart = ({
         },
       },
       legend: {
-        orient: "vertical",
-        left: "left",
+        orient: "horizontal",
+        left: "center",
+        top: "30",
         textStyle: {
           color: colors.text,
           fontSize: 10,
@@ -64,6 +65,7 @@ export const PieChart = ({
         animationEasingUpdate: "cubicOut",
       },
       color: colors.series,
+
       series: [
         {
           name: title,
