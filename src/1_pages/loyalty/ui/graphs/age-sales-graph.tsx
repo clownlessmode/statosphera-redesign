@@ -1,0 +1,46 @@
+import { AgeSalesGraphResponse } from "../../config";
+import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
+
+import { Card } from "@shared/ui/card";
+
+import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
+
+export const AgeSalesGraph = ({
+  graph,
+  isLoading,
+}: {
+  graph: AgeSalesGraphResponse;
+  isLoading: boolean;
+}) => {
+  return (
+    <>
+      {isLoading ? (
+        <StackedLineSkeleton className="h-[400px] col-span-2" />
+      ) : (
+        <Card className="h-[400px] col-span-2">
+          <div style={{ height: 400, width: "100%" }}>
+            <BarChartMultiSeries
+              xAxisData={graph.xAxis}
+              series={graph.series.map((item) => ({
+                name: item.name,
+                data: item.data,
+              }))}
+              formatter={(params) => {
+                if (Array.isArray(params)) {
+                  return params
+                    .map(
+                      (item) =>
+                        `${item.marker}${item.seriesName}: ${item.value}`,
+                    )
+                    .join("<br/>");
+                }
+                return `${params.value}`;
+              }}
+              title="Количество чеков по полу в разрезе возрастной группы"
+            />
+          </div>
+        </Card>
+      )}
+    </>
+  );
+};

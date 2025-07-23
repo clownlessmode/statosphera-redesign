@@ -167,7 +167,7 @@ const all_indicators = [
       },
       {
         id: COLUMN_KEY.WRITE_OFF_PERCENT_YOY_PERCENT,
-        label: "Списания, руб. YOY",
+        label: "Списания % YOY",
         value: COLUMN_KEY.WRITE_OFF_PERCENT_YOY_PERCENT,
         tooltip:
           "Изменение процента списаний относительно аналогичного периода прошлого года",

@@ -14,6 +14,11 @@ import {
   UniqueGraphResponse,
   AppLoyalGraphResponse,
   TopActionsResponse,
+  LoyalCard2Response,
+  AgeGroupsGraphResponse,
+  AgeCircleGraphResponse,
+  AgeSalesGraphResponse,
+  AvarageCheckAgeGroupGraphResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -100,7 +105,11 @@ export const useLoyal = () => {
     },
   });
 
-  const bonusGraph = useMutation<GraphResponse[], ApiError, RequestDto>({
+  const bonusGraph = useMutation<
+    { graph: GraphResponse[] },
+    ApiError,
+    RequestDto
+  >({
     mutationFn: async (dto: RequestDto) => {
       const response = await LoyaltyService.getBonusGraph(dto);
       queryClient.invalidateQueries({ queryKey: ["bonusGraph"] });
@@ -133,7 +142,62 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const loyalCard2 = useMutation<LoyalCard2Response[], ApiError, RequestDto>({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getLoyalCard2(dto);
+      return response;
+    },
+  });
+  const ageGroupsGraph = useMutation<
+    AgeGroupsGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAgeGroupsGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["ageGroupsGraph"] });
+      return response;
+    },
+  });
+  const ageCircleGraph = useMutation<
+    AgeCircleGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getAgeCircleGraph(dto);
+      return response;
+    },
+  });
+
+  const ageSalesGraph = useMutation<
+    AgeSalesGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.ageSalesGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["ageSalesGraph"] });
+      return response;
+    },
+  });
+
+  const averageCheckAgeGroupGraph = useMutation<
+    AvarageCheckAgeGroupGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.averageCheckAgeGroupGraph(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["averageCheckAgeGroupGraph"],
+      });
+      return response;
+    },
+  });
   return {
+    getAgeCircleGraph: ageCircleGraph.mutateAsync,
+    isAgeCircleGraphLoading: ageCircleGraph.isPending,
     getUniqueGraph: uniqueGraph.mutateAsync,
     isUniqueGraphLoading: uniqueGraph.isPending,
     getBonusGraph: bonusGraph.mutateAsync,
@@ -159,5 +223,13 @@ export const useLoyal = () => {
     isAppLoyalGraphLoading: appLoyalGraph.isPending,
     getTopActions: topActions.mutateAsync,
     isTopActionsLoading: topActions.isPending,
+    getLoyalCard2: loyalCard2.mutateAsync,
+    isLoyalCard2Loading: loyalCard2.isPending,
+    getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
+    isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
+    getAgeSalesGraph: ageSalesGraph.mutateAsync,
+    isAgeSalesGraphLoading: ageSalesGraph.isPending,
+    getAverageCheckAgeGroupGraph: averageCheckAgeGroupGraph.mutateAsync,
+    isAverageCheckAgeGroupGraphLoading: averageCheckAgeGroupGraph.isPending,
   };
 };

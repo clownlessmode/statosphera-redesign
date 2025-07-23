@@ -519,7 +519,7 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   maxCount={1}
                                   singleSelect={true}
-                                  disabled={session?.isAdminProduct !== true}
+                                  disabled={true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)
@@ -574,7 +574,7 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   maxCount={1}
                                   singleSelect={true}
-                                  disabled={session?.isAdminProduct !== true}
+                                  disabled={true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)

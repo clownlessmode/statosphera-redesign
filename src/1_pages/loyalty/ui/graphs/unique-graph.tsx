@@ -25,7 +25,7 @@ export const UniqueGraph = ({
             legend: {
               data: graph.graph.map((item) => item.name),
             },
-            series: graph.graph && prepareLine(graph.graph),
+            series: graph.graph && prepareLine(graph.graph as any),
           }}
         />
       )}

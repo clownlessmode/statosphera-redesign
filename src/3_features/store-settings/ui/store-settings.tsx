@@ -21,6 +21,8 @@ import { useState, useEffect } from "react";
 import { cn } from "@shared/lib/utils";
 import { Store } from "@entities/store/config";
 import { useStoreSettingsController } from "../api";
+import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 
 export const StoreSettings = ({ store }: { store: Store }) => {
   const [openDialogs, setOpenDialogs] = useState<Record<string, boolean>>({});
@@ -149,6 +151,9 @@ const StoreSettingsDialog = ({
     isEmergencyClosureLoading,
   } = useStoreSettingsController();
 
+  const { session } = useSession();
+  const isServiceManager = session?.role === ROLES.SERVICE_MANAGER;
+
   const [data, setData] = useState<any>(null);
 
   const fetchStoreStatus = async () => {
@@ -213,6 +218,7 @@ const StoreSettingsDialog = ({
                 size={"sm"}
                 variant={"outline"}
                 onClick={handleOpenDoor}
+                disabled={!isServiceManager}
               >
                 Открыть дверь на 5 сек
                 <DoorOpen />
@@ -223,6 +229,7 @@ const StoreSettingsDialog = ({
               size={"sm"}
               variant={"outline"}
               onClick={() => reboot({ ip })}
+              disabled={!isServiceManager}
             >
               Перезагрузить систему
               <RotateCcw />
@@ -239,6 +246,7 @@ const StoreSettingsDialog = ({
                     enabled: true,
                   })
                 }
+                disabled={!isServiceManager}
               >
                 Закрыть магазин в аварийном режиме
                 <AlertTriangle />

@@ -14,6 +14,11 @@ import {
   TopActionsResponse,
   AvarageCheckResponse,
   NoSales30DaysUserResponse,
+  LoyalCard2Response,
+  AgeGroupsGraphResponse,
+  AgeCircleGraphResponse,
+  AgeSalesGraphResponse,
+  AvarageCheckAgeGroupGraphResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -27,7 +32,11 @@ import { useLoyaltyFiltersStore } from "./filters/filters-store";
 import { DaysFilter } from "./filters/days-filter";
 import { ShopsFilter } from "./filters/shops-filter";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
-import { DevCard } from "@shared/ui/dev-card";
+import { AgeGroupsGraph } from "./graphs/age-groups-graph";
+import { AgeCircleGraph } from "./graphs/age-circle-graph";
+import { AgeSalesGraph } from "./graphs/age-sales-graph";
+import { RevenueGroupsGraph } from "./graphs/revenueGroups";
+import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -57,7 +66,9 @@ export const Loyalty = () => {
   const [topStoreLoyal, setTopStoreLoyal] = useState<TopStoreLoyalResponse[]>(
     [],
   );
-  const [bonusGraph, setBonusGraph] = useState<GraphResponse[]>([]);
+  const [bonusGraph, setBonusGraph] = useState<{ graph: GraphResponse[] }>({
+    graph: [],
+  });
   const [uniqueGraph, setUniqueGraph] = useState<UniqueGraphResponse>({
     graph: [],
   });
@@ -67,13 +78,30 @@ export const Loyalty = () => {
   const [topActions, setTopActions] = useState<TopActionsResponse[]>([]);
   const [noSales30DaysUser, setNoSales30DaysUser] =
     useState<NoSales30DaysUserResponse>();
+  const [loyalCard2, setLoyalCard2] = useState<LoyalCard2Response>();
+  const [ageGroupsGraph, setAgeGroupsGraph] = useState<AgeGroupsGraphResponse>({
+    xAxis: [],
+    legend: [],
+    series: [],
+  });
+  const [ageCircleGraph, setAgeCircleGraph] = useState<AgeCircleGraphResponse>({
+    circle: [],
+    center: [],
+  });
+  const [ageSalesGraph, setAgeSalesGraph] = useState<AgeSalesGraphResponse>({
+    xAxis: [],
+    legend: [],
+    series: [],
+  });
+  const [averageCheckAgeGroupGraph, setAverageCheckAgeGroupGraph] =
+    useState<AvarageCheckAgeGroupGraphResponse>({
+      graph: [],
+    });
   const {
     getNoSales30DaysUser,
     isNoSales30DaysUserLoading,
     isAvarageCheckLoading,
     getAvarageCheck,
-    uniques,
-    isUniquesLoading,
     getBonuses,
     isBonusesLoading,
     getTopGroups,
@@ -92,6 +120,16 @@ export const Loyalty = () => {
     getAppLoyalGraph,
     getTopActions,
     isTopActionsLoading,
+    getLoyalCard2,
+    isLoyalCard2Loading,
+    getAgeGroupsGraph,
+    isAgeGroupsGraphLoading,
+    getAgeCircleGraph,
+    isAgeCircleGraphLoading,
+    getAgeSalesGraph,
+    isAgeSalesGraphLoading,
+    getAverageCheckAgeGroupGraph,
+    isAverageCheckAgeGroupGraphLoading,
   } = useLoyal();
   useEffect(() => {
     getBonuses(mock).then((data) => {
@@ -127,6 +165,22 @@ export const Loyalty = () => {
     getNoSales30DaysUser(mock).then((data) => {
       setNoSales30DaysUser(data);
     });
+    getLoyalCard2(mock).then((data) => {
+      setLoyalCard2(data[0]);
+    });
+    getAgeGroupsGraph(mock).then((data) => {
+      setAgeGroupsGraph(data);
+    });
+    getAgeCircleGraph(mock).then((data) => {
+      setAgeCircleGraph(data);
+    });
+
+    getAgeSalesGraph(mock).then((data) => {
+      setAgeSalesGraph(data);
+    });
+    getAverageCheckAgeGroupGraph(mock).then((data) => {
+      setAverageCheckAgeGroupGraph(data);
+    });
   }, [mock]);
 
   return (
@@ -134,7 +188,7 @@ export const Loyalty = () => {
       <Header
         title={`Лояльность`}
         actions={{
-          center: (
+          left: (
             <div className="flex gap-2">
               <GraphDate />
               <DaysFilter />
@@ -150,28 +204,35 @@ export const Loyalty = () => {
         />
         <div className="flex flex-row gap-2 w-full">
           <AvarageCheck
-            isAvarageCheckLoading={isAvarageCheckLoading || true}
+            isAvarageCheckLoading={isAvarageCheckLoading}
             avarageCheck={avarageCheck[0]}
           />
           <div className="flex flex-col gap-2 w-full">
             <div className="flex flex-row gap-2 w-full h-full">
               <ValueCard
                 title="Уникальных"
-                value={uniques ?? 0}
-                isLoading={isUniquesLoading}
+                value={loyalCard2?.uniqueCardNumber ?? 0}
+                isLoading={isLoyalCard2Loading}
+                formatter={(value) => value.toLocaleString()}
               />
-              <ValueCard title="Проникновение" value={54.5} unit="%" />
+              <ValueCard
+                title="Проникновение"
+                value={loyalCard2?.appLoyalPercent ?? 0}
+                unit="%"
+                formatter={(value) => value.toFixed(1)}
+                isLoading={isLoyalCard2Loading}
+              />
               <ValueCard
                 title="Начислено бонусов"
                 unit="M"
-                value={bonuses[0]?.bonusAccrual / 1000000}
-                isLoading={isBonusesLoading}
+                value={loyalCard2?.bonusAccrual ?? 0}
+                isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Списано бонусов"
                 unit="M"
-                value={bonuses[0]?.bonusWriteOff / 1000000}
-                isLoading={isBonusesLoading}
+                value={loyalCard2?.bonusWriteOff ?? 0 / 1000000}
+                isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Остаток бонусов M"
@@ -187,25 +248,28 @@ export const Loyalty = () => {
             </div>
             <div className="flex flex-row gap-2 w-full">
               <ValueCard
-                title="Частота покупок M"
-                value={3.2}
-                isLoading={true}
+                title="Частота покупок"
+                value={loyalCard2?.frequencySalesLoyal ?? 0}
+                isLoading={isLoyalCard2Loading}
+                formatter={(value) => value.toFixed(1)}
               />
               <ValueCard
-                title="Доп. выручка M"
-                isLoading={true}
-                value={34.231}
+                title="Доп. выручка"
+                isLoading={isLoyalCard2Loading}
+                value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
                 unit="M"
               />
               <ValueCard
-                title="Доля доп. выручки M"
-                isLoading={true}
-                value={30}
+                title="Доля доп. выручки"
+                formatter={(value) => value.toFixed(1)}
+                isLoading={isLoyalCard2Loading}
+                value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                 unit="%"
               />
               <ValueCard
                 isLoading={isBonusesLoading}
                 title="% списания бонусов"
+                formatter={(value) => value.toFixed(1)}
                 value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
                 unit="%"
               />
@@ -218,7 +282,7 @@ export const Loyalty = () => {
             isLoading={isTopGroupsLoading}
             options={topGroups.map((group) => ({
               name: group.subSubGroups,
-              price: `${group.countSales} ₽`,
+              price: `${group.countSales.toLocaleString()} ₽`,
             }))}
           />
           <List
@@ -226,20 +290,23 @@ export const Loyalty = () => {
             isLoading={isTopProductsLoading}
             options={topProducts.map((group) => ({
               name: group.product,
-              price: `${group.countSales} ₽`,
+              price: `${group.proceeds.toLocaleString()} ₽`,
             }))}
           />
           <List
             title="Топ 5 товаров по количеству продаж"
             isLoading={isTopProductsCountLoading}
-            options={topProductsCount.map((group) => ({
+            options={topProductsCount.map((group: any) => ({
               name: group.product,
-              price: `${group.countSales}`,
+              price: `${group.countSales.toLocaleString()} шт`,
             }))}
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <BonusGraph graph={bonusGraph} isLoading={isBonusGraphLoading} />
+          <BonusGraph
+            graph={bonusGraph.graph}
+            isLoading={isBonusGraphLoading}
+          />
           <UniqueGraph graph={uniqueGraph} isLoading={isUniqueGraphLoading} />
           <AppLoyalGraph
             graph={appLoyalGraph}
@@ -252,23 +319,29 @@ export const Loyalty = () => {
             topStoreLoyal={topStoreLoyal}
             isLoading={isTopStoreLoyalLoading}
           />
-          <DevCard title="Пол гостей" />
-          <DevCard
-            title="Частота чеков по полу в разрезе возрастной группы"
-            className="col-span-2"
+          <AgeCircleGraph
+            graph={ageCircleGraph}
+            isLoading={isAgeCircleGraphLoading}
+          />
+
+          <AgeSalesGraph
+            graph={ageSalesGraph}
+            isLoading={isAgeSalesGraphLoading}
           />
           <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Распределение по полу и возрасту" />
-            <DevCard title="Распределение выручки по полу и возрасту" />
+            <AgeGroupsGraph
+              graph={ageGroupsGraph}
+              isLoading={isAgeGroupsGraphLoading}
+            />
+            <RevenueGroupsGraph
+              isLoading={isAgeSalesGraphLoading}
+              graph={ageSalesGraph}
+            />
           </div>
-          <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Изменение среднего чека по частоте с разделением по полу" />
-            <DevCard title="Изменение среднего чека по частоте с разделением по возрасту" />
-          </div>
-          <div className="grid grid-cols-2 col-span-3 gap-2">
-            <DevCard title="Длина чека по возрасту и полу" />
-            <DevCard title="Часы активности по времени и по возрасту" />
-          </div>
+          <AvarageCheckAgeGroupGraph
+            graph={averageCheckAgeGroupGraph}
+            isLoading={isAverageCheckAgeGroupGraphLoading}
+          />
         </div>
       </div>
     </div>

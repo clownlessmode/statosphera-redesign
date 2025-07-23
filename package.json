@@ -16,6 +16,9 @@
     "check-format": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\""
   },
   "dependencies": {
+    "@blocknote/core": "^0.33.0",
+    "@blocknote/mantine": "^0.33.0",
+    "@blocknote/react": "^0.33.0",
     "@hookform/resolvers": "^4.1.2",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@radix-ui/react-accordion": "^1.2.3",
@@ -50,7 +53,7 @@
     "echarts-for-react": "^3.0.2",
     "lucide-react": "^0.483.0",
     "motion": "^12.5.0",
-    "next-themes": "^0.4.4",
+    "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
@@ -64,7 +67,6 @@
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.9",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.178.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },

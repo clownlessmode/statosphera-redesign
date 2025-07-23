@@ -24,6 +24,8 @@ import { useSalesDynamicsIndicatorsController } from "../model/api/controller";
 import { Group, UpdateIndicatorsRequest } from "../model/api/types";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { Badge } from "@shared/ui/badge";
+import { useIsMobile } from "@shared/hooks/use-mobile";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   defaultValues: string[];
@@ -45,7 +47,7 @@ export function buildSalesDynamics(
 }
 const AddIndicators: FC<Props> = ({ defaultValues }) => {
   const { updateValues } = useSalesDynamicsFiltersStore();
-
+  const isMobile = useIsMobile();
   useSalesDynamicsFiltersStore();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -76,8 +78,9 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="w-4 h-4" /> Добавить группы и показатели
+        <Button className="w-fit">
+          <Plus className="w-4 h-4" />{" "}
+          {!isMobile && "Добавить группы и показатели"}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0 rounded-xl border-none">
@@ -94,7 +97,11 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
             <CardDescription>
               Выберите группы и показатели для добавления в фильтрацию
             </CardDescription>
-            <div className="flex flex-row gap-2">
+            <div
+              className={cn(
+                !isMobile ? "flex flex-row gap-2" : "flex flex-col gap-2",
+              )}
+            >
               <Button
                 size="sm"
                 className="text-muted-foreground"

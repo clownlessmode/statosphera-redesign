@@ -38,6 +38,7 @@ import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/cont
 import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 import { Badge } from "@shared/ui/badge";
 import { useChannel } from "@widgets/report/sheet/ui/side/shops-filter/model/hooks/use-channel";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,12 +83,13 @@ const ShopsFilter = () => {
     }
   }, [selectedMyShops]);
   const { CHANNEL_SHOP } = useChannel();
+  const isMobile = useIsMobile();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Store /> Магазины{" "}
-          {allData.filters.idStore.length > 0 && (
+          <Store /> {!isMobile && "Магазины"}
+          {!isMobile && allData.filters.idStore.length > 0 && (
             <Badge>{allData.filters.idStore.length}</Badge>
           )}
         </Button>
