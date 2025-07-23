@@ -1,4 +1,4 @@
-import { GROUPINGS } from "@widgets/write-off/sheet/model/filters-store";
+import { GROUPINGS } from "@widgets/summary/sheet/model/filters-store";
 
 export const DAYS = [
   {

@@ -1,18 +1,28 @@
+import { Tooltip } from "@radix-ui/react-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 
 interface SummaryCardProps {
   title: string;
-  value: number;
+  value: number | string;
   icons?: React.ReactNode;
+  trigger?: React.ReactNode;
+  text?: string;
 }
 
-export const SummaryCard = ({ title, value, icons }: SummaryCardProps) => {
-  const isRuble = /выручка|proceeds/i.test(title);
+export const SummaryCard = ({
+  title,
+  value,
+  icons,
+  trigger,
+  text,
+}: SummaryCardProps) => {
+  const isRuble = /выручка|proceeds|avgCheck|средний чек/i.test(title);
 
   let content: React.ReactNode;
-  if (value === 0 || value === null || value === undefined) {
+  if (value === null || value === undefined || value === "") {
     content = "Данные отсутствуют";
-  } else {
+  } else if (typeof value === "number") {
     const formatted = new Intl.NumberFormat("ru-RU").format(value);
     content = (
       <>
@@ -20,13 +30,22 @@ export const SummaryCard = ({ title, value, icons }: SummaryCardProps) => {
         {isRuble && " ₽"}
       </>
     );
+  } else {
+    // value — строка
+    content = value;
   }
   return (
-    <Card className="p-4 w-full">
-      <CardHeader className="pb-2">
+    <Card className="p-2 w-full">
+      <CardHeader className="pb-0">
         <CardTitle>
           <div className="flex flex-row gap-4 items-center">
-            <p className="text-lg font-medium text-muted-foreground">{title}</p>
+            <Tooltip>
+              <TooltipTrigger>{trigger}</TooltipTrigger>
+              <TooltipContent>{text}</TooltipContent>
+            </Tooltip>
+            <p className="text-lg font-medium text-muted-foreground -ml-2">
+              {title}
+            </p>
             {icons}
           </div>
         </CardTitle>

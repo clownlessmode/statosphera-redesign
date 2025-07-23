@@ -19,7 +19,7 @@ import {
 import { useForm } from "../model";
 import ClearFilters from "./clear-filter";
 import { useTypeCheckStore } from "../model/hooks/use-type-checked";
-import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
+import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 
 const GroupingFilter: FC = () => {
   const { tab } = useTabStore();

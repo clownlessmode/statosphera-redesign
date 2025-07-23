@@ -3,15 +3,15 @@ import { Eraser } from "lucide-react";
 import { FC, useEffect, useRef } from "react";
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
+import { useFormResetStore } from "@widgets/summary/sheet/model/reset-store";
 
 interface Props {
   form: UseFormReturn<FormValues>;
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateGroups } = useFiltersStore();
+  const { updateGroups } = useSummaryFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
   const didMountRef = useRef(false);

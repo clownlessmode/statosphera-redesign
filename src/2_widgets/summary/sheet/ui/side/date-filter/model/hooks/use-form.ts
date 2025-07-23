@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFiltersStore } from "@widgets/write-off/sheet/model/filters-store";
+import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { useForm as useHookForm } from "react-hook-form";
 import { defaultValues, FormValues, schema } from "../../config";
 
 export const useForm = () => {
-  const filtersStore = useFiltersStore();
+  const filtersStore = useSummaryFiltersStore();
   const { dateStart, dateEnd } = filtersStore.filterDate;
   const { timeStart, timeEnd } = filtersStore.filterTime;
 

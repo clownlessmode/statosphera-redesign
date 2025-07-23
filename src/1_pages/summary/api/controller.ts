@@ -3,7 +3,6 @@ import {
   SummaryTableRequest,
   SummaryTableResponse,
   SummaryNomenklaturaResponse,
-  // SummaryComparisonCardsRequest,
 } from "./types";
 import { ApiError } from "@shared/api/types";
 import { SummaryService } from "./service";
@@ -12,22 +11,13 @@ import {
   transformToSummaryDto,
   transformToNomenklaturaDto,
 } from "../utils/transform-summary-dto";
-import { SummaryComparisonCardsResponse } from "./types/responses";
+import {
+  SummaryComparisonCardsResponse,
+  SummaryGraphResponse,
+} from "./types/responses";
 
 export const useSummaryController = () => {
   const queryClient = useQueryClient();
-
-  // const getCards = useMutation<
-  //   SummaryCardResponse[],
-  //   ApiError,
-  //   FilterApiPayload
-  // >({
-  //   mutationFn: (payload: FilterApiPayload) => {
-  //     const dto = transformToSummaryDto(payload) as SummaryCardRequest;
-  //     queryClient.invalidateQueries({ queryKey: ["cards"] });
-  //     return SummaryService.getCards(dto);
-  //   },
-  // });
 
   const getTable = useMutation<
     SummaryTableResponse,
@@ -38,6 +28,18 @@ export const useSummaryController = () => {
       const dto = transformToSummaryDto(payload) as SummaryTableRequest;
       queryClient.invalidateQueries({ queryKey: ["table"] });
       return SummaryService.getTable(dto);
+    },
+  });
+
+  const getGraph = useMutation<
+    SummaryGraphResponse,
+    ApiError,
+    FilterApiPayload
+  >({
+    mutationFn: (payload: FilterApiPayload) => {
+      const dto = transformToSummaryDto(payload) as SummaryTableRequest;
+      queryClient.invalidateQueries({ queryKey: ["graph"] });
+      return SummaryService.getGraph(dto);
     },
   });
 
@@ -57,7 +59,6 @@ export const useSummaryController = () => {
     SummaryComparisonCardsResponse,
     ApiError,
     any
-    // SummaryComparisonCardsRequest
   >({
     mutationFn: (data) => {
       queryClient.invalidateQueries({ queryKey: ["comparison-cards"] });
@@ -65,26 +66,14 @@ export const useSummaryController = () => {
     },
   });
 
-  //   const getTotal = useMutation<
-  //     SummaryTotalResponse,
-  //     ApiError,
-  //     FilterApiPayload
-  //   >({
-  //     mutationFn: (payload: FilterApiPayload) => {
-  //       const dto = transformToSummaryDto(payload);
-  //       queryClient.invalidateQueries({ queryKey: ["summary-total"] });
-  //       return SummaryService.getTotal(dto);
-  //     },
-  //   });
-
   return {
     getTable: getTable.mutateAsync,
+    getGraph: getGraph.mutateAsync,
     getNomenklatura: getNomenklatura.mutateAsync,
     getComparisonCards: getComparisonCards.mutateAsync,
-    // getTotal: getTotal.mutateAsync,
     isTableLoading: getTable.isPending,
+    isGraphLoading: getGraph.isPending,
     isNomenklaturaLoading: getNomenklatura.isPending,
     isComparisonCardsLoading: getComparisonCards.isPending,
-    // isTotalLoading: getTotal.isPending,
   };
 };

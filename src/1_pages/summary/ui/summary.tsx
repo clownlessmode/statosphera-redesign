@@ -6,40 +6,136 @@ import { useSummaryController } from "../api/controller";
 import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { transformToComparisonCardsDto } from "../utils/transform-summary-dto";
 import { useSummaryStore } from "../model";
-import { useState } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { SummaryCard } from "./summary-card";
+import { SummaryCardSkeleton } from "./skeleton/summary-card-skeleton";
+import { SummaryChartSkeleton } from "./skeleton/summary-chart-skeleton";
+import { SummaryTableSkeleton } from "./skeleton/summary-table-skeleton";
 import {
   BadgeRussianRuble,
   CircleCheck,
+  Funnel,
+  Info,
   ReceiptRussianRuble,
   ReceiptText,
+  X,
 } from "lucide-react";
-import UniversalTable from "@pages/report/ui/table";
+import { Card } from "@shared/ui/card";
+import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { useProduct } from "@widgets/report/sheet/ui/side/products-filter";
+import { useNavigate, useSearchParams } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
+import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
+import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
+import { Input } from "@shared/ui/input";
+import { useTabStore } from "@widgets/summary/sheet/model/url-store";
+import { PackageFilters } from "./package-filters";
+import InfinityTable from "@pages/report/ui/table/infinite-table";
 
 export const Summary = () => {
-  const { getComparisonCards } = useSummaryController();
+  const { getComparisonCards, getGraph } = useSummaryController();
   const { getApiPayload } = useSummaryFiltersStore();
-  const { cards, table, setCards, setTable } = useSummaryStore();
+  const { updateProductFilter, getApiPayload: getApiPayloadFilters } =
+    useFiltersStore();
+  const { cards, graph, setCards, setGraph, nomenklatura } = useSummaryStore();
   const { getTable } = useSummaryController();
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const packageFilter = useSummaryFiltersStore((state) => state.package);
+  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
   const [selectedTableRows, setSelectedTableRows] = useState<any[]>([]);
-  const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]); // ID выбранных продуктов из таблицы
+  const [modalSearchTerm, setModalSearchTerm] = useState<string>("");
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
+  const [dataVersion, setDataVersion] = useState<number>(0);
 
-  console.log("В общем выбранный продукт: ", selectedProducts);
-  console.log("Выбранные строки в таблице: ", selectedTableRows);
-  console.log("ID выбранных продуктов из таблицы: ", selectedProductIds);
+  // Ref для кэширования запросов таблицы
+  const requestCache = useRef<Record<string, Promise<any>>>({});
+  const lastRequestKey = useRef<string>("");
 
-  const handleGetComparisonCards = async () => {
-    if (selectedProducts.length === 0) {
-      return;
-    }
+  const bumpDataVersion = useCallback(() => {
+    setDataVersion((prev) => prev + 1);
+  }, []);
+
+  const handleGetComparisonCards = async (productId: number) => {
     try {
+      setIsLoadingData(true);
+
       const payload = getApiPayload();
-      const dto = transformToComparisonCardsDto(payload, selectedProducts);
+      const dto = transformToComparisonCardsDto(payload, [productId]);
 
       const cardsResponse = await getComparisonCards(dto);
-
       setCards(cardsResponse.total);
+
+      const graphPayload = {
+        ...payload,
+        filters: {
+          ...payload.filters,
+          product: {
+            ...payload.filters.product,
+            idProduct: [productId.toString()],
+          },
+        },
+      };
+
+      const graphResponse = await getGraph(graphPayload);
+      setGraph(graphResponse);
+    } catch (error) {
+      console.error("❌ Error fetching comparison cards:", error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
+
+  // Автоматический вызов запросов при выборе продукта
+  useEffect(() => {
+    // Очищаем данные сразу при смене продукта
+    setCards(null);
+    setGraph(null);
+    setSelectedTableRows([]);
+    setModalSearchTerm("");
+
+    // Очищаем кэш таблицы при смене продукта
+    requestCache.current = {};
+    lastRequestKey.current = "";
+    bumpDataVersion();
+
+    if (selectedProduct) {
+      handleGetComparisonCards(selectedProduct);
+    }
+  }, [selectedProduct, packageFilter]);
+
+  // Функция для получения данных таблицы с пагинацией
+  const fetchTableData = useCallback(
+    async ({
+      startRow,
+      endRow,
+      sortModel = [],
+    }: {
+      startRow: number;
+      endRow: number;
+      sortModel?: { colId: string; sort: "asc" | "desc" }[];
+    }) => {
+      if (!selectedProduct) {
+        return { data: [], totalRows: 0 };
+      }
+
+      const requestKey = JSON.stringify({
+        startRow,
+        endRow,
+        sortModel,
+        selectedProduct,
+        payload: getApiPayload(),
+      });
+
+      // Проверяем кэш
+      if (
+        requestKey === lastRequestKey.current &&
+        requestKey in requestCache.current
+      ) {
+        return await requestCache.current[requestKey];
+      }
+
+      const payload = getApiPayload();
 
       const tablePayload = {
         ...payload,
@@ -47,287 +143,360 @@ export const Summary = () => {
           ...payload.filters,
           product: {
             ...payload.filters.product,
-            idProduct: selectedProducts.map((id) => id.toString()),
+            idProduct: [selectedProduct.toString()],
           },
         },
+        limit: endRow - startRow,
+        offset: startRow,
+        ...(sortModel.length > 0 && {
+          sorts: {
+            sort: sortModel[0].sort,
+            colId: [sortModel[0].colId],
+          },
+        }),
       };
-      console.log("В картах выбранный продукт: ", selectedProducts);
 
-      const tableResponse = await getTable(tablePayload);
-      setTable(tableResponse);
-    } catch (error) {
-      console.error("❌ Error fetching comparison cards:", error);
-    }
-  };
+      const requestPromise = getTable(tablePayload).then((response) => {
+        const actualTotalRows = response.totalRows ?? 10000;
 
-  const columnsTable = [
-    { headerName: "Регион", field: "region", autoSizeCoumn: true },
-    {
-      headerName: "Номенклатура",
-      field: "product_name",
-      autoSizeColumn: true,
-      sortable: true,
+        return {
+          data: response.tbl || [],
+          totalRows: actualTotalRows,
+        };
+      });
+
+      requestCache.current[requestKey] = requestPromise;
+      lastRequestKey.current = requestKey;
+
+      return requestPromise;
     },
-    {
-      headerName: "Структура продаж",
-      field: "groupsFranchise",
-      autoSizeColumn: true,
-    },
-    { headerName: "Группа", field: "group", autoSizeColumn: true },
-    { headerName: "Подгруппа", field: "subGroups", autoSizeColumn: true },
-    {
-      headerName: "Направление",
-      field: "directionProducts",
-      autoSizeColumn: true,
-    },
-    { headerName: "Подподгруппа", field: "subSubGroups", autoSizeColumn: true },
-    {
-      headerName: "Тип поставщика",
-      field: "typeProducts",
-      autoSizeColumn: true,
-    },
-    { headerName: "Сезон", field: "seasonalityProducts", autoSizeColumn: true },
-    {
-      headerName: "Менеджер автозаказа",
-      field: "managerAuto",
-      autoSizeColumn: true,
-    },
-    {
-      headerName: "Справочник экономиста",
-      field: "groupsEconomist",
-      autoSizeColumn: true,
-    },
-    {
-      headerName: "Выручка",
-      field: "relatedProceeds",
-      autoSizeColumn: true,
-      sortable: true,
-    },
-    {
-      headerName: "Кол-во чеков",
-      field: "checkCount",
-      autoSizeColumn: true,
-      sortable: true,
-    },
-    {
-      headerName: "Кол-во продаж",
-      field: "relatedSold",
-      autoSizeColumn: true,
-      sortable: true,
-    },
-  ];
+    [selectedProduct, getApiPayload, getTable],
+  );
 
-  console.log("TABLE", table);
+  const getDisplayName = useCallback((item: any) => {
+    return (
+      item.product || // Основное поле после трансформации
+      item.product_name || // Fallback для обратной совместимости
+      item.productName || // Альтернативное поле
+      `Продукт ${item.id_product || item.idProduct || "без ID"}`
+    );
+  }, []);
 
-  const [, setCurrentSort] = useState<{
-    sort: "asc" | "desc";
-    colId: string;
-  } | null>(null);
-
-  //   const handleClearFilters = () => {
-  //     setCurrentSort(null);
-  //   };
-
-  const handleSortChange = async (sortInfo: {
-    sort: "asc" | "desc";
-    colId: string;
-  }) => {
-    console.log("Sort info from table:", sortInfo);
-    setCurrentSort(sortInfo);
-
-    const payload = getApiPayload();
-
-    console.log("В продуктах выбранный продукт: ", selectedProducts);
-
-    const updatePayload = {
-      ...payload,
-      filters: {
-        ...payload.filters,
-        product: {
-          ...payload.filters.product,
-          idProduct:
-            selectedProducts.length > 0
-              ? selectedProducts.map((id) => id.toString())
-              : payload.filters.product.idProduct,
-        },
-      },
-      sorts: {
-        sort: sortInfo.sort,
-        colId: [sortInfo.colId],
-      },
-      sort: {
-        sort: sortInfo.sort,
-        colId: [sortInfo.colId],
-      },
-    };
-
-    console.log("updatePayload:", updatePayload);
-
-    try {
-      const tableRes = await getTable(updatePayload);
-      if (tableRes) {
-        setTable(tableRes);
-      }
-    } catch (error) {
-      console.error("Error fetching sorted table:", error);
-    }
-  };
+  // Функция для получения названия типа выбранных элементов
+  const getSelectedItemsLabel = useCallback(() => {
+    return "продукты";
+  }, []);
 
   // Обработчик выбора строк в таблице
   const handleTableRowSelection = (selectedRows: any[]) => {
-    console.log("🔥 handleTableRowSelection вызван!");
-    console.log("🔥 Количество выбранных строк:", selectedRows.length);
-    console.log("🔥 Выбранные строки:", selectedRows);
-
     // Сохраняем полные объекты строк
     setSelectedTableRows(selectedRows);
 
-    // Извлекаем ID продуктов
-    const productIds = selectedRows
-      .map((row) => row.id_product)
-      .filter((id) => id !== undefined);
-    console.log("🔥 Извлеченные ID продуктов:", productIds);
-
-    setSelectedProductIds(productIds);
+    // Сбрасываем поиск в модалке при изменении выбора
+    setModalSearchTerm("");
   };
 
-  // Обработчик для кнопки "Получить больше информации"
-  const handleGetMoreInfo = async () => {
-    if (selectedProductIds.length === 0) {
-      console.log("Нет выбранных продуктов");
+  const payload = getApiPayloadFilters();
+  const { handleOpenProductSelect } = useProduct(payload);
+  const navigate = useNavigate();
+
+  const handleGetMoreInfo = async ({ tab }: { tab: string }) => {
+    if (!selectedTableRows || selectedTableRows.length === 0) {
       return;
     }
 
-    try {
-      console.log(
-        "🚀 Получаем больше информации для продуктов:",
-        selectedProductIds,
-      );
-      console.log(
-        "🚀 Названия выбранных продуктов:",
-        selectedTableRows.map((row) => row.product_name),
-      );
+    // Загружаем опции продуктов и устанавливаем фильтр
+    await handleOpenProductSelect(true);
 
-      // Формируем payload для API
-      const payload = getApiPayload();
+    const productValues = selectedTableRows.map((row) => {
+      const id = row.id_product || row.idProduct;
+      return String(JSON.stringify(id));
+    });
 
-      const moreInfoPayload = {
-        ...payload,
-        filters: {
-          ...payload.filters,
-          product: {
-            ...payload.filters.product,
-            idProduct: selectedProductIds.map((id) => id.toString()),
-          },
-        },
-      };
+    updateProductFilter("idProduct", productValues);
 
-      console.log(
-        "📦 Payload для получения дополнительной информации:",
-        moreInfoPayload,
-      );
-
-      // Здесь можете добавить вызов API для получения дополнительной информации
-      // const moreInfoResponse = await getMoreProductInfo(moreInfoPayload);
-
-      // Пока что просто выводим в консоль что у нас есть
-      console.log("✅ Готово! Выбранные ID продуктов:", selectedProductIds);
-    } catch (error) {
-      console.error(
-        "❌ Ошибка при получении дополнительной информации:",
-        error,
-      );
-    }
+    navigate(`${ROUTES_PATH.REPORT}?open=true&tab=${tab}`);
   };
 
-  const tableRows = Array.isArray((table as any)?.tbl)
-    ? (table as any).tbl
-    : [];
+  //Работа с графиком
+  const barChartData = Array.isArray(graph) ? graph : [];
+
+  const xAxisData = barChartData.map((item: any) => String(item.product_name));
+  const yAxisData = barChartData.map((item: any) => item.checkCount);
+
+  // Определяем, есть ли данные
+  const hasNomenklatura = nomenklatura && nomenklatura.length > 0;
+  const hasData = cards && cards.length > 0;
+  const hasGraphData = barChartData && barChartData.length > 0;
+
+  // Фильтрация выбранных продуктов в модалке
+  const filteredSelectedRows = useMemo(() => {
+    if (!selectedTableRows || selectedTableRows.length === 0) return [];
+
+    const term = modalSearchTerm.trim().toLowerCase();
+    if (!term) return selectedTableRows;
+
+    const tokens = term.split(/\s+/).filter((t) => t.length > 1);
+    return selectedTableRows.filter((row: any) => {
+      // Получаем название продукта для поиска
+      const productName = getDisplayName(row).toLowerCase();
+
+      // Если нет токенов (короткий поиск), ищем точное вхождение
+      if (tokens.length === 0) {
+        return productName.includes(term);
+      }
+
+      // Проверяем, что все токены присутствуют
+      const fullMatch = tokens.every((token) => productName.includes(token));
+      if (fullMatch) return true;
+
+      // Нечеткий поиск
+      let idx = 0;
+      for (let i = 0; i < term.length; i++) {
+        const char = term[i];
+        idx = productName.indexOf(char, idx);
+        if (idx === -1) return false;
+        idx++;
+      }
+      return true;
+    });
+  }, [selectedTableRows, modalSearchTerm, getDisplayName]);
+
+  // Вызов таба с фильтрами
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { setTargetViewValue } = useTabStore();
+
+  const handleOpenSheet = () => {
+    setTargetViewValue("summary");
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("open", "true");
+    setSearchParams(newSearchParams, { replace: true });
+  };
 
   return (
     <>
       <SummaryFiltersSheet />
       <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
-        <Header title="Сводная таблица" />
+        <Header
+          title="Парные продажи"
+          actions={{
+            left: <PackageFilters />,
+          }}
+        />
         <div className="rounded-3xl bg-background p-4 flex flex-col gap-4 flex-1 min-h-0">
-          <div className="flex-1 min-h-0 flex flex-row gap-4">
-            {/* Левая колонка: Номенклатура + кнопка */}
-            <div className="flex flex-col gap-4 min-h-0">
-              <div className="flex-1 min-h-0">
-                <NomenklaturaList
-                  onSelectedProductsChange={setSelectedProducts}
-                />
+          {!hasNomenklatura ? (
+            <div className="flex flex-col gap-4 h-full w-full justify-center items-center">
+              <div className="dark:opacity-70">
+                <NotSelectedFilters />
               </div>
-              <Button
-                className="w-full"
-                size={"lg"}
-                onClick={handleGetComparisonCards}
-                disabled={selectedProducts.length === 0}
-              >
-                Получить расчет по выбранной номенклатуре
-              </Button>
+              <div className="opacity-100">
+                <Button onClick={handleOpenSheet}>
+                  Изменить фильтры <Funnel />
+                </Button>
+              </div>
             </div>
-
-            {/* Правая колонка: Карточки + таблица + кнопка */}
-            <div className="flex-1 flex flex-col gap-4 min-h-0">
-              {cards && cards.length > 0 ? (
-                <div className="grid grid-cols-2 gap-4 auto-rows-max h-fit">
-                  {cards.flatMap((card) => [
-                    <SummaryCard
-                      key={`total-${card.totalProceeds}`}
-                      title="Общая выручка"
-                      value={card.totalProceeds}
-                      icons={<BadgeRussianRuble color="#E50046" />}
-                    />,
-                    <SummaryCard
-                      key={`selected-${card.selectedProceeds}`}
-                      title="Выручка по выбранной номенклатуры"
-                      value={card.selectedProceeds}
-                      icons={<CircleCheck color="#E50046" />}
-                    />,
-                    <SummaryCard
-                      key={`count-${card.checkCount}`}
-                      title="Количество чеков"
-                      value={card.checkCount}
-                      icons={<ReceiptText color="#E50046" />}
-                    />,
-                    <SummaryCard
-                      key={`avg-${card.avgCheck}`}
-                      title="Средний чек"
-                      value={card.avgCheck}
-                      icons={<ReceiptRussianRuble color="#E50046" />}
-                    />,
-                  ])}
+          ) : (
+            <div className="flex-1 min-h-0 flex flex-row gap-4">
+              <div className="flex flex-col gap-4 min-h-0">
+                <div className="flex-1 min-h-0">
+                  <NomenklaturaList
+                    onSelectedProductChange={setSelectedProduct}
+                  />
                 </div>
-              ) : (
-                <div className="flex items-center justify-center flex-1 text-muted-foreground">
-                  Выберите номенклатуру и нажмите кнопку для получения расчетов
-                </div>
-              )}
+              </div>
 
-              {tableRows.length > 0 && (
-                <>
-                  <div className="flex-1 min-h-0 overflow-hidden">
-                    <UniversalTable
-                      selectionType="multiple"
-                      data={tableRows}
-                      columnDefs={columnsTable}
-                      onSortChange={handleSortChange}
-                      onSelectionChange={handleTableRowSelection}
-                    />
+              <div className="flex-1 flex flex-col gap-2 min-h-0">
+                {isLoadingData ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-2 auto-rows-max h-fit">
+                      {Array.from({ length: 4 }).map((_, index) => (
+                        <SummaryCardSkeleton key={index} />
+                      ))}
+                    </div>
+
+                    <SummaryChartSkeleton />
+
+                    <SummaryTableSkeleton />
+                  </>
+                ) : hasData ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-2 auto-rows-max h-fit">
+                      {cards.flatMap((card) => [
+                        <SummaryCard
+                          key={`total-${card.totalProceeds}`}
+                          title="Общая выручка"
+                          value={card.totalProceeds}
+                          icons={<BadgeRussianRuble color="#E50046" />}
+                          trigger={<Info className="w-4 h-4" />}
+                          text="Выручка по выбранной номенклатуре с учетом других товаров"
+                        />,
+                        <SummaryCard
+                          key={`selected-${card.selectedProceeds}`}
+                          title="Выручка выбранной номенклатуры"
+                          value={card.selectedProceeds}
+                          icons={<CircleCheck color="#E50046" />}
+                          trigger={<Info className="w-4 h-4" />}
+                          text="Выручка только по выбранной номенклатуре без учета других товаров"
+                        />,
+                        <SummaryCard
+                          key={`count-${card.checkCount}`}
+                          title="Количество чеков"
+                          value={card.checkCount}
+                          icons={<ReceiptText color="#E50046" />}
+                          trigger={<Info className="w-4 h-4" />}
+                          text="Количество чеков с выбранной номенклатурой"
+                        />,
+                        <SummaryCard
+                          key={`avg-${card.avgCheck}`}
+                          title="Средний чек"
+                          value={card.avgCheck}
+                          icons={<ReceiptRussianRuble color="#E50046" />}
+                          trigger={<Info className="w-4 h-4" />}
+                          text="Средний чек по выбранной номенклатуре с входящими продуктами в чек"
+                        />,
+                      ])}
+                    </div>
+                    {hasGraphData || selectedProduct ? (
+                      <>
+                        {hasGraphData && (
+                          <Card className="flex-1 px-10 py-0">
+                            <BarHorizontalChart
+                              labels={xAxisData}
+                              values={yAxisData}
+                              formatNumbers={true}
+                              pluralForms={["Чек", "Чека", "Чеков"]}
+                              formatter={(params: any) => {
+                                return `${params.value}`;
+                              }}
+                            />
+                          </Card>
+                        )}
+
+                        {selectedProduct && (
+                          <>
+                            <div className="flex-shrink-0 mb-0  gap-2 flex items-center">
+                              {selectedTableRows.length > 0 && (
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline">
+                                      Выбранные {getSelectedItemsLabel()}:{" "}
+                                      {selectedTableRows.length}
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="h-[80vh] flex flex-col">
+                                    <div className="flex-shrink-0">
+                                      <h3 className="text-lg font-semibold mb-4">
+                                        Выбранные продукты
+                                      </h3>
+                                      {selectedTableRows.length > 20 && (
+                                        <Input
+                                          placeholder="Поиск по выбранным продуктам"
+                                          className="w-full mb-4"
+                                          value={modalSearchTerm}
+                                          onChange={(e) =>
+                                            setModalSearchTerm(e.target.value)
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto pr-2">
+                                      <div className="space-y-2">
+                                        {filteredSelectedRows.map(
+                                          (row, index) => (
+                                            <div
+                                              key={row.id_product || index}
+                                              className="flex flex-row justify-between items-center p-2 border rounded-lg hover:bg-muted transition-colors"
+                                            >
+                                              <span className="flex-1 pr-2">
+                                                {getDisplayName(row)}
+                                              </span>
+                                              <X
+                                                className="cursor-pointer hover:text-red-500 transition-colors flex-shrink-0"
+                                                size={16}
+                                                onClick={() => {
+                                                  const newSelectedRows =
+                                                    selectedTableRows.filter(
+                                                      (selectedRow) =>
+                                                        selectedRow !== row,
+                                                    );
+                                                  handleTableRowSelection(
+                                                    newSelectedRows,
+                                                  );
+                                                }}
+                                              />
+                                            </div>
+                                          ),
+                                        )}
+                                      </div>
+                                      {filteredSelectedRows.length === 0 &&
+                                        modalSearchTerm && (
+                                          <div className="text-center text-muted-foreground py-4">
+                                            Продукты не найдены
+                                          </div>
+                                        )}
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                              )}
+                            </div>
+
+                            <div className="flex-1 min-h-0 overflow-hidden">
+                              <InfinityTable
+                                fetchData={fetchTableData}
+                                totalData={[]}
+                                onSelectionChange={handleTableRowSelection}
+                                selectedRows={selectedTableRows}
+                                dataVersion={dataVersion}
+                                rowSelection="multiple"
+                                cacheBlockSize={100}
+                                maxBlocksInCache={10}
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 flex-shrink-0">
+                              <Button
+                                className="w-full"
+                                size={"lg"}
+                                disabled={
+                                  !selectedTableRows ||
+                                  selectedTableRows.length === 0
+                                }
+                                onClick={() =>
+                                  handleGetMoreInfo({ tab: "commerce" })
+                                }
+                              >
+                                Перейти в коммерческий отчет
+                              </Button>
+                              <Button
+                                className="w-full"
+                                size={"lg"}
+                                disabled={
+                                  !selectedTableRows ||
+                                  selectedTableRows.length === 0
+                                }
+                                onClick={() =>
+                                  handleGetMoreInfo({ tab: "check" })
+                                }
+                              >
+                                Перейти в чековый отчет
+                              </Button>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <div className="flex flex-row gap-2 flex-1 dark:opacity-70 w-full justify-center items-center">
+                        <NotFoundFilters />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-center">
+                    <NotSelectedFilters />
                   </div>
-                  <Button
-                    className="w-full"
-                    size={"lg"}
-                    disabled={selectedProductIds.length === 0}
-                    onClick={handleGetMoreInfo}
-                  >
-                    Получить больше информации о выбранном продукте
-                  </Button>
-                </>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

@@ -4,16 +4,16 @@ import { FC, useEffect, useRef } from "react";
 
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFiltersStore } from "@widgets/write-off/sheet/model/filters-store";
+import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useFormResetStore } from "@widgets/summary/sheet/model/reset-store";
 
 interface Props {
   form: UseFormReturn<FormValues>;
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateStoreFilter } = useFiltersStore();
+  const { updateStoreFilter } = useSummaryFiltersStore();
   const { toggleMyShopsMode } = useMyShopsStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 

@@ -1,11 +1,11 @@
 // hook.ts
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-import { useFiltersStore } from "@widgets/write-off/sheet/model/filters-store";
+import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { FormValues, schema, defaultValues } from "../../config";
 
 export const useForm = () => {
-  const filtersStore = useFiltersStore();
+  const filtersStore = useSummaryFiltersStore();
   const {
     ageGroup,
     channel,

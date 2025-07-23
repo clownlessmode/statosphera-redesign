@@ -164,7 +164,6 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <WriteOff />,
     layout: Sidebar,
-
     label: "Списания",
   },
   {
@@ -173,7 +172,7 @@ export const ROUTES: RouteConfig[] = [
     element: <Summary />,
     layout: Sidebar,
     allowedRoles: [ROLES.ADMIN],
-    label: "Сводная таблица",
+    label: "Парные продажи",
   },
   {
     path: ROUTES_PATH.REPORT,

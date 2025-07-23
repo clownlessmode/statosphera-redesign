@@ -248,6 +248,7 @@ export function transformToTotalDto(
     type: type,
     household: payload.filters.writeoff?.household === true,
   };
+
   result.filters.loyal = {
     isLoyal: null,
     cardNumber: [],
@@ -259,6 +260,7 @@ export function transformToTotalDto(
     groupAge: [],
     colorsDiscount: [],
   };
+
   // Добавляем опциональные фильтры если они есть
   if (payload.filters.check) {
     result.filters.check = payload.filters.check;

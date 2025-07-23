@@ -1,163 +1,123 @@
 import { useSummaryStore } from "../model";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
-// import { useSummaryController } from "../api/controller";
-// import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
-// import { useCountStore } from "@pages/report/model/usCountStore";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { Check, Funnel } from "lucide-react";
 import { Button } from "@shared/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-import { Check, X } from "lucide-react";
+import { Input } from "@shared/ui/input";
+import { useSearchParams } from "react-router";
+import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 
 interface NomenklaturaListProps {
-  onSelectedProductsChange?: (selectedProducts: number[]) => void;
+  onSelectedProductChange?: (selectedProduct: number | null) => void;
 }
 
 export const NomenklaturaList = ({
-  onSelectedProductsChange,
+  onSelectedProductChange,
 }: NomenklaturaListProps) => {
   const { nomenklatura } = useSummaryStore();
-  //   const { getTable } = useSummaryController();
-  //   const { getApiPayload } = useSummaryFiltersStore();
-  //   const { setCount } = useCountStore();
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // Функция для получения отображаемого названия продукта
+  const getDisplayName = useCallback((item: any) => {
+    return item.productName || `Продукт ${item.idProduct || "без ID"}`;
+  }, []);
+
+  // Фильтрация номенклатуры по поиску
+  const filteredNomenklatura = useMemo(() => {
+    if (!nomenklatura || nomenklatura.length === 0) return [];
+
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return nomenklatura;
+
+    const tokens = term.split(/\s+/).filter((t) => t.length > 1);
+    return nomenklatura.filter((item: any) => {
+      // Получаем название продукта для поиска
+      const productName = getDisplayName(item).toLowerCase();
+
+      // Если нет токенов (короткий поиск), ищем точное вхождение
+      if (tokens.length === 0) {
+        return productName.includes(term);
+      }
+
+      // Проверяем, что все токены присутствуют
+      const fullMatch = tokens.every((token) => productName.includes(token));
+      if (fullMatch) return true;
+
+      // Нечеткий поиск
+      let idx = 0;
+      for (let i = 0; i < term.length; i++) {
+        const char = term[i];
+        idx = productName.indexOf(char, idx);
+        if (idx === -1) return false;
+        idx++;
+      }
+      return true;
+    });
+  }, [nomenklatura, searchTerm, getDisplayName]);
 
   if (!nomenklatura || nomenklatura.length === 0) {
     return <div>Номенклатура по таким фильтрам отсутствует</div>;
   }
 
-  //   const updateTable = async (productIds: number[]) => {
-  //     try {
-  //       const allData = getApiPayload();
-
-  //       if (productIds.length > 0) {
-  //         const dataWithProducts = {
-  //           ...allData,
-  //           filters: {
-  //             ...allData.filters,
-  //             product: {
-  //               ...allData.filters.product,
-  //               idProduct: productIds.map(id => id.toString()),
-  //             },
-  //           },
-  //         };
-
-  //         const tableResponse = await getTable(dataWithProducts);
-  //         setTable(tableResponse);
-  //         // setCount(tableResponse.totalRows);
-  //       } else {
-  //         setTable(null);
-  //         setCount(0);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching table for products:", error);
-  //     }
-  //   };
-
   const handleProductClick = async (productId: number) => {
-    let newSelectedProducts: number[];
+    const newSelectedProduct = selectedProduct === productId ? null : productId;
 
-    if (selectedProducts.includes(productId)) {
-      newSelectedProducts = selectedProducts.filter((id) => id !== productId);
-    } else {
-      newSelectedProducts = [...selectedProducts, productId];
-    }
-
-    setSelectedProducts(newSelectedProducts);
-    onSelectedProductsChange?.(newSelectedProducts);
-    // await updateTable(newSelectedProducts);
+    setSelectedProduct(newSelectedProduct);
+    onSelectedProductChange?.(newSelectedProduct);
   };
 
-  const handleProductAll = async () => {
-    const allIds = nomenklatura.map((item) => item.idProduct);
-    const isAllSelected = selectedProducts.length === allIds.length;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { setTargetViewValue } = useTabStore();
 
-    if (isAllSelected) {
-      setSelectedProducts([]);
-      onSelectedProductsChange?.([]);
-      //   await updateTable([]);
-    } else {
-      setSelectedProducts(allIds);
-      onSelectedProductsChange?.(allIds);
-      //   await updateTable(allIds);
-    }
-  };
-
-  const handleRemoveProduct = async (productId: number) => {
-    const newSelectedProducts = selectedProducts.filter(
-      (id) => id !== productId,
-    );
-    setSelectedProducts(newSelectedProducts);
-    onSelectedProductsChange?.(newSelectedProducts);
-    // await updateTable(newSelectedProducts);
-  };
-
-  const getProductName = (productId: number) => {
-    return (
-      nomenklatura.find((item) => item.idProduct === productId)?.productName ||
-      ""
-    );
+  const handleOpenSheet = () => {
+    setTargetViewValue("summary");
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("open", "true");
+    setSearchParams(newSearchParams, { replace: true });
   };
 
   return (
     <Card className="max-w-[550px] h-full flex flex-col">
-      <CardHeader className="flex-shrink-0">
-        <div className="flex items-center justify-between">
+      <CardHeader className="flex-shrink-0 flex flex-col gap-4">
+        <div className="flex flex-row w-full justify-between  items-center">
           <CardTitle>Номенклатура</CardTitle>
-
-          {selectedProducts.length > 0 && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                  Выбранные: {selectedProducts.length}
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-lg font-semibold mb-2">
-                    Выбранная номенклатура
-                  </h3>
-                  {selectedProducts.map((productId) => (
-                    <div
-                      key={productId}
-                      className="flex flex-row justify-between items-center mb-2 mt-2"
-                    >
-                      <span className="col-span-4">
-                        {getProductName(productId)}
-                      </span>
-                      <X
-                        className="cursor-pointer hover:text-red-500 transition-colors"
-                        size={16}
-                        onClick={() => handleRemoveProduct(productId)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-          <Button variant="outline" size="sm" onClick={handleProductAll}>
-            Выбрать все
+          <Button size={"sm"} className="" onClick={handleOpenSheet}>
+            Изменить фильтры <Funnel />
           </Button>
         </div>
+        <Input
+          placeholder="Поиск по номенклатуре"
+          className="w-full bg-background h-10"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </CardHeader>
+
       <CardContent className="p-2 flex-1 overflow-y-auto min-h-0">
         <div className="space-y-2">
-          {nomenklatura.map((item) => (
-            <div
-              key={item.idProduct}
-              className={`bg-background flex justify-between items-center p-3 border rounded-lg cursor-pointer hover:bg-muted transition-colors ${
-                selectedProducts.includes(item.idProduct)
-                  ? "border-white"
-                  : "border-border"
-              }`}
-              onClick={() => handleProductClick(item.idProduct)}
-            >
-              <span className="">{item.productName}</span>
-              {selectedProducts.includes(item.idProduct) && (
-                <Check className="w-4 h-4" />
-              )}
+          {filteredNomenklatura.length > 0 ? (
+            filteredNomenklatura.map((item) => (
+              <div
+                key={item.idProduct}
+                className={`bg-background flex justify-between items-center p-3 border rounded-lg cursor-pointer hover:bg-muted transition-colors ${
+                  selectedProduct === item.idProduct
+                    ? "border-white bg-muted"
+                    : "border-border"
+                }`}
+                onClick={() => handleProductClick(item.idProduct)}
+              >
+                <span className="">{item.productName}</span>
+                {selectedProduct === item.idProduct && (
+                  <Check className="w-4 h-4" />
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-muted-foreground py-4">
+              Продукты не найдены
             </div>
-          ))}
+          )}
         </div>
       </CardContent>
     </Card>

@@ -18,13 +18,13 @@ import { useForm } from "../model";
 import { DATE_RANGES, MAX_DATE, MIN_DATE } from "../config";
 import ClearFilters from "./clear-filter";
 import { DatePresetButtons } from "./date-presets-buttons";
-import { useFiltersStore } from "@widgets/write-off/sheet/model/filters-store";
+import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 
 const DateFilter: FC = () => {
   // Form and stores initialization
   const form = useForm();
   const today = new Date();
-  const { updateDateFilter, updateTimeFilter } = useFiltersStore();
+  const { updateDateFilter, updateTimeFilter } = useSummaryFiltersStore();
 
   // Form watch effect
   useEffect(() => {

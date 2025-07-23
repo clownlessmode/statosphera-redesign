@@ -43,6 +43,7 @@ export function transformToSummaryDto(
     sort: payload.sorts,
     limit: payload.limit || 100,
     offset: payload.offset || 0,
+    package: payload.package || false,
   };
 
   return result as SummaryTableRequest;
@@ -211,6 +212,7 @@ export function transformToComparisonCardsDto(
     role: false,
     limit: payload.limit || 50,
     offset: payload.offset || 0,
+    package: payload.package || false,
   };
 
   return result;

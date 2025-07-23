@@ -1,18 +1,13 @@
 import { create } from "zustand";
-import {
-  SummaryTableResponse,
-  SummaryTotalResponse,
-  SummaryCardResponse,
-  SummaryNomenklaturaResponse,
-} from "../api/types";
+import { SummaryCardResponse, SummaryNomenklaturaResponse } from "../api/types";
+import { SummaryGraphResponse } from "../api/types/responses";
 
 interface SummaryStore {
   // Данные карточек
   cards: SummaryCardResponse[] | null;
 
-  // Данные таблицы
-  table: SummaryTableResponse | null;
-  total: SummaryTotalResponse | null;
+  // Данные графика
+  graph: SummaryGraphResponse | null;
 
   // Данные номенклатуры
   nomenklatura: SummaryNomenklaturaResponse[] | null;
@@ -23,8 +18,7 @@ interface SummaryStore {
 
   // Методы для обновления состояния
   setCards: (data: SummaryCardResponse[] | null) => void;
-  setTable: (data: SummaryTableResponse | null) => void;
-  setTotal: (data: SummaryTotalResponse | null) => void;
+  setGraph: (data: SummaryGraphResponse | null) => void;
   setNomenklatura: (data: SummaryNomenklaturaResponse[] | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
@@ -32,24 +26,21 @@ interface SummaryStore {
   // Методы для очистки данных
   clearAll: () => void;
   clearCards: () => void;
-  clearTable: () => void;
-  clearTotal: () => void;
+  clearGraph: () => void;
   clearNomenklatura: () => void;
 }
 
 export const useSummaryStore = create<SummaryStore>((set) => ({
   // Начальное состояние
   cards: null,
-  table: null,
-  total: null,
+  graph: null,
   nomenklatura: null,
   isLoading: false,
   error: null,
 
   // Методы для обновления состояния
   setCards: (data) => set({ cards: data }),
-  setTable: (data) => set({ table: data }),
-  setTotal: (data) => set({ total: data }),
+  setGraph: (data) => set({ graph: data }),
   setNomenklatura: (data) => set({ nomenklatura: data }),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
@@ -58,13 +49,11 @@ export const useSummaryStore = create<SummaryStore>((set) => ({
   clearAll: () =>
     set({
       cards: null,
-      table: null,
-      total: null,
+      graph: null,
       nomenklatura: null,
       error: null,
     }),
   clearCards: () => set({ cards: null }),
-  clearTable: () => set({ table: null }),
-  clearTotal: () => set({ total: null }),
+  clearGraph: () => set({ graph: null }),
   clearNomenklatura: () => set({ nomenklatura: null }),
 }));

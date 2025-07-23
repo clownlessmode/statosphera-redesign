@@ -285,6 +285,7 @@ export type FiltersState = {
   limit: number;
   offset: number;
   groups: string[];
+  package: boolean;
 
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -326,6 +327,7 @@ export type FiltersState = {
   updateGroups: (groups: string[]) => void;
   updateUniques: (uniques: string[]) => void;
   updateIndicators: (indicators: string[]) => void;
+  updatePackage: (packageFilter: boolean) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
@@ -344,6 +346,7 @@ export type FiltersState = {
     | "updateGroups"
     | "updateUniques"
     | "updateIndicators"
+    | "updatePackage"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -433,6 +436,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
   limit: 100,
   offset: 0,
   groups: [],
+  package: false,
 
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -555,6 +559,10 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
     set({ indicators });
   },
 
+  updatePackage: (packageFilter: boolean) => {
+    set({ package: packageFilter });
+  },
+
   resetAllFilters: () => {
     set({
       filters: {
@@ -654,6 +662,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
       limit: state.limit,
       offset: state.offset,
       groups: state.groups,
+      package: state.package,
     };
   },
 }));
@@ -742,6 +751,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
   limit: 100,
   offset: 0,
   groups: [],
+  package: false,
 
   // Методы обновления состояния (аналогичные, но для оборудования)
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -864,6 +874,10 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
     set({ indicators });
   },
 
+  updatePackage: (packageFilter: boolean) => {
+    set({ package: packageFilter });
+  },
+
   resetAllFilters: () => {
     set({
       filters: {
@@ -963,6 +977,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       limit: state.limit,
       offset: state.offset,
       groups: state.groups,
+      package: state.package,
     };
   },
 }));

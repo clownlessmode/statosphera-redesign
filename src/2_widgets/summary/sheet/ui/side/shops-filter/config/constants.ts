@@ -2,7 +2,7 @@ import {
   AGE_GROUP,
   CHANNEL,
   STORE_CONDITIONS,
-} from "@widgets/report/sheet/model/filters-store";
+} from "@widgets/summary/sheet/model/filters-store";
 import {
   BarChart3,
   KeySquare,

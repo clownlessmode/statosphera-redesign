@@ -13,16 +13,42 @@ export interface SummaryComparisonCardsResponse {
 }
 
 export interface SummaryTableResponse {
-  data: SummaryTableData;
-  // totalRows: number;
+  tbl: SummaryTableData[];
+  totalRows: number;
 }
+
+export type SummaryGraphResponse = Array<SummaryTotalGraph>;
 
 export interface SummaryTableData {
   id_product: number;
   product_name: string;
   checkCount: number;
-  relatedProceeds: number;
-  relatedSold: number;
+  proceeds: number;
+  countSales: number;
+  // Дополнительные поля для группировки/фильтрации
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  city?: string;
+  region?: string;
+  store?: string;
+  channel?: string;
+  ageGroup?: string;
+  storeCondition?: string;
+  legalEntity?: string;
+  nameManager?: string;
+  formatStore?: string;
+  groupsFranchise?: string;
+  group?: string;
+  subGroups?: string;
+  directionProducts?: string;
+  subSubGroups?: string;
+  typeProducts?: string;
+  seasonalityProducts?: string;
+  managerAuto?: string;
+  groupsEconomist?: string;
 }
 
 export interface SummaryTotalResponse {
@@ -32,8 +58,10 @@ export interface SummaryTotalResponse {
 }
 
 export interface SummaryTotalGraph {
+  id_product: number;
   product_name: string;
   checkCount: number;
+  proceeds: number;
 }
 
 export interface SummaryNomenklaturaResponse {

@@ -2,7 +2,7 @@
 import {
   ageGroupSchema,
   frsChannelSchema,
-} from "@widgets/report/sheet/model/filters-store";
+} from "@widgets/summary/sheet/model/filters-store";
 import { z } from "zod";
 
 export const schema = z.object({

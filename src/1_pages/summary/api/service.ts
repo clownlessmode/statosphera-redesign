@@ -5,36 +5,14 @@ import {
   SummaryTotalRequest,
   SummaryTotalResponse,
   SummaryNomenklaturaResponse,
-  // SummaryComparisonCardsRequest,
 } from "./types";
-import { SummaryComparisonCardsResponse } from "./types/responses";
+import {
+  SummaryComparisonCardsResponse,
+  SummaryGraphResponse,
+} from "./types/responses";
+import { SummaryGraphRequest } from "./types/requests";
 
 export class SummaryService {
-  // static async getCards(
-  //   data: SummaryCardRequest,
-  // ): Promise<SummaryCardResponse[]> {
-  //   const response = await api.post<SummaryCardResponse[]>(
-  //     "/comparison/cards",
-  //     data,
-  //   );
-  //   return response.data;
-  // }
-
-  // static async getTable(
-  //   data: SummaryTableRequest,
-  // ): Promise<SummaryTableResponse> {
-  //   const response = await api.post<SummaryTableData[]>(
-  //     "/comparison/table",
-  //     data,
-  //   );
-
-  //   // API возвращает массив напрямую, преобразуем в нужный формат
-  //   // return {
-  //   //   data: response.data,
-  //   //   // totalRows: response.data.length,
-  //   // };
-  // }
-
   static async getTotal(
     data: SummaryTotalRequest,
   ): Promise<SummaryTotalResponse> {
@@ -71,6 +49,16 @@ export class SummaryService {
   ): Promise<SummaryTableResponse> {
     const response = await api.post<SummaryTableResponse>(
       "/comparison/table",
+      data,
+    );
+    return response.data;
+  }
+
+  static async getGraph(
+    data: SummaryGraphRequest,
+  ): Promise<SummaryGraphResponse> {
+    const response = await api.post<SummaryGraphResponse>(
+      "/comparison/graph",
       data,
     );
     return response.data;

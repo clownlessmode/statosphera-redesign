@@ -53,4 +53,12 @@ export interface SummaryTableRequest {
   offset: number;
 }
 
+export interface SummaryGraphRequest {
+  dateStart: string;
+  dateEnd: string;
+  idProduct: number[];
+  group: string[];
+  role: boolean;
+}
+
 export type SummaryTotalRequest = BaseSummaryRequest;

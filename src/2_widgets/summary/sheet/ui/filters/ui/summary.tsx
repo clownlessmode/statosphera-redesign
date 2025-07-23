@@ -13,8 +13,8 @@ import { Separator } from "@shared/ui/separator";
 import { CombinedSubmitButton } from "./submit-button";
 import { Eraser } from "lucide-react";
 import { Button } from "@shared/ui/button";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
+import { useFormResetStore } from "@widgets/summary/sheet/model/reset-store";
+import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 import { filters, grouping } from "../model/tabs";
 
 const SummaryInner = () => {

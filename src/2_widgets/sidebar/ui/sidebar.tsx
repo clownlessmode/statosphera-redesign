@@ -99,7 +99,7 @@ const Sidebar = ({
       },
       // Поменять роль
       {
-        title: "Сводная таблица",
+        title: "Парные продажи",
         url: ROUTES_PATH.SUMMARY,
         icon: ChartBarStacked,
         disabled: session?.role !== ROLES.ADMIN,

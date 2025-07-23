@@ -4,7 +4,7 @@ import { FC, useEffect, useRef } from "react";
 
 import { defaultValues, FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useFormResetStore } from "@widgets/summary/sheet/model/reset-store";
 
 interface Props {
   form: UseFormReturn<FormValues>;

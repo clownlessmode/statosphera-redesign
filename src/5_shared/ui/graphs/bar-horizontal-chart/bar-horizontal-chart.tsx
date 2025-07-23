@@ -13,6 +13,48 @@ type BarHorizontalChartProps = {
   isLoading?: boolean;
   barCategoryGap?: string;
   formatter?: (params: any) => string;
+  // Новые пропсы
+  formatNumbers?: boolean; // убирает .0 для целых чисел
+  pluralForms?: [string, string, string]; // формы склонения [1, 2-4, 5+]
+};
+
+// Функция для склонения слов
+const getPluralForm = (
+  count: number,
+  forms: [string, string, string],
+): string => {
+  const absCount = Math.abs(count);
+  const lastDigit = absCount % 10;
+  const lastTwoDigits = absCount % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+    return forms[2]; // 11-14 всегда третья форма
+  }
+
+  if (lastDigit === 1) {
+    return forms[0]; // 1, 21, 31...
+  }
+
+  if (lastDigit >= 2 && lastDigit <= 4) {
+    return forms[1]; // 2-4, 22-24, 32-34...
+  }
+
+  return forms[2]; // 0, 5-20, 25-30...
+};
+
+// Функция для форматирования чисел
+const formatNumber = (value: number, shouldFormat: boolean): string => {
+  if (!shouldFormat) {
+    return value.toFixed(1);
+  }
+
+  // Если число целое, показываем без десятичных знаков
+  if (Number.isInteger(value)) {
+    return value.toString();
+  }
+
+  // Иначе показываем с одним знаком после запятой
+  return value.toFixed(1);
 };
 
 export const BarHorizontalChart = ({
@@ -21,11 +63,21 @@ export const BarHorizontalChart = ({
   itemColors,
   isLoading = false,
   unit = "%",
-  barCategoryGap = "30%", // значение по умолчанию
+  barCategoryGap = "30%",
   formatter,
+  formatNumbers = false,
+  pluralForms,
 }: BarHorizontalChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
+
+  // Функция для получения единицы измерения с правильным склонением
+  const getUnitWithPlural = (value: number): string => {
+    if (pluralForms) {
+      return getPluralForm(value, pluralForms);
+    }
+    return unit;
+  };
 
   // Вычисляем максимальную длину текста для определения отступа слева
   const maxLabelWidth = useMemo(() => {
@@ -33,7 +85,7 @@ export const BarHorizontalChart = ({
     const context = canvas.getContext("2d");
     if (!context) return 150;
 
-    context.font = "12px sans-serif"; // тот же размер шрифта, что и в графике
+    context.font = "12px sans-serif";
 
     let maxWidth = 0;
     labels.forEach((label, index) => {
@@ -45,8 +97,7 @@ export const BarHorizontalChart = ({
       maxWidth = Math.max(maxWidth, metrics.width);
     });
 
-    // Добавляем отступы: 20px для margin + 10px запас
-    return Math.min(maxWidth + 30, 300); // ограничиваем максимум 300px
+    return Math.min(maxWidth + 30, 300);
   }, [labels, formatter]);
 
   // Вычисляем максимальную длину значений для определения отступа справа
@@ -55,20 +106,17 @@ export const BarHorizontalChart = ({
     const context = canvas.getContext("2d");
     if (!context) return 50;
 
-    context.font = "12px sans-serif"; // тот же размер шрифта, что и в графике
+    context.font = "12px sans-serif";
 
     let maxWidth = 0;
     values.forEach((value) => {
-      // Добавляем проверку на null
-      const formattedValue =
-        value != null ? `${value.toFixed(1)} ${unit}` : `0 ${unit}`;
+      const formattedValue = `${formatNumber(value, formatNumbers)} ${getUnitWithPlural(value)}`;
       const metrics = context.measureText(formattedValue);
       maxWidth = Math.max(maxWidth, metrics.width);
     });
 
-    // Добавляем отступы: 10px запас
-    return Math.min(maxWidth + 20, 100); // ограничиваем максимум 100px
-  }, [values, unit]);
+    return Math.min(maxWidth + 20, 100);
+  }, [values, unit, formatNumbers, pluralForms]);
 
   if (isLoading) {
     return <BarHorizontalChartSkeleton count={labels.length || 7} />;
@@ -83,9 +131,9 @@ export const BarHorizontalChart = ({
     grid: {
       top: 10,
       bottom: 10,
-      left: maxLabelWidth, // используем вычисленную ширину
-      right: maxValueWidth, // используем вычисленную ширину для значений
-      containLabel: false, // меняем на false, чтобы контролировать отступы вручную
+      left: maxLabelWidth,
+      right: maxValueWidth,
+      containLabel: false,
     },
     tooltip: {
       trigger: "item",
@@ -96,8 +144,9 @@ export const BarHorizontalChart = ({
       formatter: (params: any) => {
         const value = values[params.dataIndex];
         const name = labels[params.dataIndex];
-        // Добавляем проверку на null
-        return `<b>${name}</b><br />${value != null ? value.toFixed(1) : "0"} ${unit}`;
+        const formattedValue = formatNumber(value, formatNumbers);
+        const unitText = getUnitWithPlural(value);
+        return `<b>${name}</b><br />${formattedValue} ${unitText}`;
       },
     },
 
@@ -110,19 +159,19 @@ export const BarHorizontalChart = ({
     yAxis: {
       type: "category",
       data: labels,
-      show: true, // показываем ось Y
+      show: true,
       inverse: true,
       axisLine: {
-        show: false, // скрываем линию оси
+        show: false,
       },
       axisTick: {
-        show: false, // скрываем засечки
+        show: false,
       },
       axisLabel: {
         color: colors.text,
         fontSize: 12,
-        margin: 10, // отступ от графика
-        align: "right", // выравнивание по правому краю
+        margin: 10,
+        align: "right",
         formatter: formatter
           ? (value: string, index: number) =>
               formatter({ value, dataIndex: index })
@@ -137,21 +186,20 @@ export const BarHorizontalChart = ({
         itemStyle: {
           borderRadius: 10,
           color: (params: any) => {
-            // Если передан массив цветов и есть цвет для этого элемента, используем его
             if (itemColors && itemColors[params.dataIndex]) {
               return itemColors[params.dataIndex] || colors.series[0];
             }
-            // Иначе используем стандартный цвет
             return colors.series[0];
           },
         },
         label: {
           show: true,
-          position: "right", // показываем значения справа от полосок
+          position: "right",
           formatter: (params: any) => {
             const value = values[params.dataIndex];
-            // Добавляем проверку на null
-            return `${value != null ? value.toFixed(1) : "0"} ${unit}`;
+            const formattedValue = formatNumber(value, formatNumbers);
+            const unitText = getUnitWithPlural(value);
+            return `${formattedValue} ${unitText}`;
           },
           color: colors.text,
           fontSize: 12,

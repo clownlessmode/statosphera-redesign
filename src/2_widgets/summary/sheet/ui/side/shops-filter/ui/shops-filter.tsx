@@ -28,12 +28,12 @@ import {
   AGE_GROUP,
   FRS_CHANNEL,
   STORE_CONDITIONS,
-  useFiltersStore,
-} from "@widgets/write-off/sheet/model/filters-store";
+} from "@widgets/summary/sheet/model/filters-store";
 import { CHANNEL_SHOP, STATUS, TIME } from "../config";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
+import { useFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 
 export const ShopsFilter: FC = () => {
   const form = useForm();
