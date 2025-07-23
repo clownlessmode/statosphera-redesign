@@ -25,7 +25,7 @@ export const AgeGroupsGraph = ({
                 name: item.name,
                 data: item.data,
               }))}
-              title="Распределение по возрастным группам и полу"
+              title="Частота покупок по возрастным группам и полу"
             />
           </div>
         </Card>

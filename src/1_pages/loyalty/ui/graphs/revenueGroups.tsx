@@ -25,7 +25,7 @@ export const RevenueGroupsGraph = ({
                 name: item.name,
                 data: item.data,
               }))}
-              title="Распределение по возрастным группам и полу"
+              title="Выручка по возрастным группам и полу"
               formatter={(params) => {
                 if (Array.isArray(params)) {
                   return params

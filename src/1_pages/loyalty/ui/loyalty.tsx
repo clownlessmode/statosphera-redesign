@@ -298,7 +298,7 @@ export const Loyalty = () => {
             isLoading={isTopProductsCountLoading}
             options={topProductsCount.map((group: any) => ({
               name: group.product,
-              price: `${group.countSales.toLocaleString()}`,
+              price: `${group.countSales.toLocaleString()} шт`,
             }))}
           />
         </div>

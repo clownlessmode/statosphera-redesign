@@ -36,7 +36,7 @@ export const AgeSalesGraph = ({
                 }
                 return `${params.value}`;
               }}
-              title="Частота чеков по полу в разрезе возрастной группы"
+              title="Количество чеков по полу в разрезе возрастной группы"
             />
           </div>
         </Card>
