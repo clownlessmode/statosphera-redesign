@@ -62,10 +62,10 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       imReceiveInterval: "Интервалы получения",
       imPromo: "Промо",
     },
-    writeoff: {
-      indicator: "Показатели списания",
-      article: "Статьи списания",
-    },
+    // writeoff: {
+    //   indicator: "Показатели списания",
+    //   article: "Статьи списания",
+    // },
   };
 
   return labels[sectionKey]?.[filterKey] || filterKey;

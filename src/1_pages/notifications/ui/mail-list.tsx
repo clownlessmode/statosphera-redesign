@@ -7,6 +7,7 @@ import { ScrollArea } from "@shared/ui/scroll-area";
 import useMail from "../use-mail";
 
 import { Notification } from "@entities/notifications/model/api/types";
+import { ALERT_EMOTIONS } from "@entities/alert-emotions";
 
 interface MailListProps {
   items: Notification[];
@@ -60,7 +61,7 @@ export function MailList({ items }: MailListProps) {
                   key={item.emotion}
                   variant={getBadgeVariantFromLabel(item.emotion)}
                 >
-                  {EMOTION_LABELS[item.emotion] ?? item.emotion}
+                  {ALERT_EMOTIONS[item.emotion] ?? item.emotion}
                 </Badge>
               </div>
             ) : null}
@@ -71,14 +72,7 @@ export function MailList({ items }: MailListProps) {
   );
 }
 
-// где‑то рядом с вашим компонентом
-const EMOTION_LABELS: Record<string, string> = {
-  positive: "Положительное",
-  neutral: "Нейтральное",
-  negative: "Отрицательное",
-};
-
-function getBadgeVariantFromLabel(
+export function getBadgeVariantFromLabel(
   label: string,
 ): ComponentProps<typeof Badge>["variant"] {
   if (["work"].includes(label.toLowerCase())) {

@@ -19,7 +19,7 @@ interface Props {
 export const List: FC<Props> = ({ options, title, isLoading, arrows }) => {
   return (
     <Card className="w-full">
-      <CardHeader>
+      <CardHeader className="text-center">
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="overflow-y-auto max-h-[250px] flex flex-col gap-2">

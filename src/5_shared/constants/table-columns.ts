@@ -4162,7 +4162,6 @@ export enum ColumnsKeyId {
   MANAGER_AUTO_ID = "idManagerAuto",
   GROUPS_FRANCHISE_ID = "idGroupsFranchise",
 }
-
 // Конфиг таблицы
 export const tableConfig: ColDef<any>[] = [
   {

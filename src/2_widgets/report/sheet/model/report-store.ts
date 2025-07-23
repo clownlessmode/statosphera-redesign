@@ -12,10 +12,16 @@ interface ReportStore {
   table: ReportTableResponse | null;
   error: string | null;
   lastUpdate: number;
+  isGraphLoading: boolean;
+  isTableLoading: boolean;
+  isTotalLoading: boolean;
   setGraph: (data: ReportGraphResponse) => void;
   setTotal: (data: ReportTotalResponse) => void;
   setTable: (data: ReportTableResponse) => void;
   setError: (data: ApiError) => void;
+  setGraphLoading: (loading: boolean) => void;
+  setTableLoading: (loading: boolean) => void;
+  setTotalLoading: (loading: boolean) => void;
   clearAll: () => void;
 }
 
@@ -25,6 +31,9 @@ export const useReportStore = create<ReportStore>((set) => ({
   table: null,
   lastUpdate: 0,
   error: null,
+  isGraphLoading: false,
+  isTableLoading: false,
+  isTotalLoading: false,
   setGraph: (data) =>
     set((state) => ({
       graph: deepEqual(state.graph, data) ? state.graph : data,
@@ -52,12 +61,19 @@ export const useReportStore = create<ReportStore>((set) => ({
       lastUpdate: Date.now(),
     })),
 
+  setGraphLoading: (loading) => set({ isGraphLoading: loading }),
+  setTableLoading: (loading) => set({ isTableLoading: loading }),
+  setTotalLoading: (loading) => set({ isTotalLoading: loading }),
+
   clearAll: () =>
     set({
       graph: null,
       total: null,
       table: null,
       lastUpdate: 0,
+      isGraphLoading: false,
+      isTableLoading: false,
+      isTotalLoading: false,
     }),
 }));
 

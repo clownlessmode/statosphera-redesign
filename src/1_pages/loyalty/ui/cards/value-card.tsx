@@ -7,14 +7,23 @@ interface Props {
   value: number;
   unit?: string;
   isLoading?: boolean;
+
+  formatter?: (value: number) => string;
 }
-export const ValueCard: FC<Props> = ({ title, value, unit, isLoading }) => {
+export const ValueCard: FC<Props> = ({
+  title,
+  value,
+  unit,
+  isLoading,
+  formatter,
+}) => {
   if (isLoading) return <ValueCardSkeleton />;
   return (
     <Card className="items-center justify-center text-center gap-2 px-4 w-full">
       <CardTitle>{title}</CardTitle>
       <p className="text-4xl font-bold">
-        {value.toLocaleString()} {unit}
+        {formatter ? formatter(value) : (value / 1000000).toLocaleString()}{" "}
+        {unit}
       </p>
     </Card>
   );

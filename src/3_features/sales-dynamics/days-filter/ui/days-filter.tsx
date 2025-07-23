@@ -17,7 +17,7 @@ import {
   Undo,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-
+import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useEffect, useState } from "react";
 import { ClearFilters } from "@features/clear-filters";
 import { DateRangePicker } from "@shared/ui/date-range-picker";
@@ -27,6 +27,7 @@ import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filter
 import { DateRange } from "react-day-picker";
 import useForm from "../model/hook";
 const DaysFilter = () => {
+  const isMobile = useIsMobile();
   const form = useForm();
   const today = new Date();
   const { updateFilterDate } = useSalesDynamicsFiltersStore();
@@ -75,13 +76,17 @@ const DaysFilter = () => {
       <DialogTrigger asChild>
         <Button variant="outline">
           <CalendarDays />{" "}
-          {form.getValues("dateStart")
-            ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
-            : ""}{" "}
-          –{" "}
-          {form.getValues("dateEnd")
-            ? format(parseISO(form.getValues("dateEnd")), "dd.MM.yyyy")
-            : "Даты"}
+          {!isMobile && (
+            <>
+              {form.getValues("dateStart")
+                ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
+                : ""}{" "}
+              –{" "}
+              {form.getValues("dateEnd")
+                ? format(parseISO(form.getValues("dateEnd")), "dd.MM.yyyy")
+                : "Даты"}
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0 rounded-xl border-none">

@@ -68,10 +68,10 @@ export default function ReportFiltersSheet() {
                 <TabsTrigger value="check">Чековая</TabsTrigger>
               </TabsList>
             </SheetHeader>
-            <TabsContent value="commerce" className="pr-4">
+            <TabsContent value="commerce" className="md:pr-4 px-2">
               <Commerce />
             </TabsContent>
-            <TabsContent value="check" className="pr-4">
+            <TabsContent value="check" className="md:pr-4 px-2">
               <Check />
             </TabsContent>
           </Tabs>

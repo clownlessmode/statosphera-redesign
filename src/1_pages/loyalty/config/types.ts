@@ -44,7 +44,7 @@ export interface TopGroupResponse {
 export interface TopProductRubResponse {
   product: string;
   id_product: number;
-  countSales: number;
+  proceeds: number;
 }
 export interface TopStoreLoyalResponse {
   store: string;
@@ -53,7 +53,8 @@ export interface TopStoreLoyalResponse {
 }
 export interface GraphResponse {
   name: string;
-  data: [string, number][];
+  type: string;
+  data: number[];
 }
 
 export interface UniqueGraphResponse {
@@ -66,4 +67,49 @@ export interface AppLoyalGraphResponse {
 export interface TopActionsResponse {
   discountType: string;
   discount: number;
+}
+
+export interface LoyalCard2Response {
+  uniqueCardNumber: 269510;
+  uniqueCheckLoyal: 776779;
+  uniqueCheck: 1404511;
+  appLoyalPercent: 55.3;
+  bonusWriteOff: 15709236;
+  bonusAccrual: 10944168;
+  frequencySalesLoyal: 2.9;
+  proceedsAdditionalLoyal: 318189279;
+  proceedsAdditionalLoyalPercent: 36.7;
+  proceeds: 867600179;
+  proceedsLoyal: 549410899;
+}
+
+export interface AgeGroupsGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
+}
+export interface AgeCircleGraphResponse {
+  circle: {
+    value: number;
+    name: string;
+  }[];
+  center: {
+    total: number;
+  }[];
+}
+
+export interface AgeSalesGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
+}
+
+export interface RevenueGroupsGraphResponse {
+  xAxis: string[];
+  legend: string[];
+  series: GraphResponse[];
+}
+
+export interface AvarageCheckAgeGroupGraphResponse {
+  graph: GraphResponse[];
 }

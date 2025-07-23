@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { create } from "zustand";
+import { useIsMobile } from "@shared/hooks/use-mobile";
+import { cn } from "@shared/lib/utils";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -29,6 +31,7 @@ export const useDateFilterStore = create<DateFilterState>((set) => ({
 }));
 
 const GraphDate = () => {
+  const isMobile = useIsMobile();
   const { value, setValue } = useDateFilterStore();
   const handleSubmit = async (value: DateFilterValue) => {
     try {
@@ -72,8 +75,8 @@ const GraphDate = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
-          <Calendar className="mr-2" />
-          {selectedLabel}
+          <Calendar className={cn(!isMobile && "mr-2")} />
+          {!isMobile && selectedLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

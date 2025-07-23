@@ -739,7 +739,7 @@ export const AllWriteOffs = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [initialGraph, setInitialGraph] = useState<any>(null);
   const [hasLoadedInitialReasons, setHasLoadedInitialReasons] = useState(false);
-  const [, setCurrentSort] = useState<{
+  const [currentSort, setCurrentSort] = useState<{
     sort: "asc" | "desc";
     colId: string;
   } | null>(null);
@@ -925,8 +925,21 @@ export const AllWriteOffs = ({
     }
   }, [graph, initialGraph, selectedRows.length]);
 
-  // Определяем заголовок графика на основе выбранного таба
+  // Определяем заголовок графика на основе выбранного столбца
   const getGraphTitle = () => {
+    // Маппинг colId к названиям для title
+    const columnTitleMap: Record<string, string> = {
+      writeOff: "Списания, руб.",
+      writeOffWeight: "Списания, вес",
+      writeOffCount: "Списания, кол-во",
+    };
+
+    // Если есть сортировка по определенному столбцу, используем его название
+    if (currentSort && columnTitleMap[currentSort.colId]) {
+      return columnTitleMap[currentSort.colId];
+    }
+
+    // Fallback к базовому названию
     return tab === "write-off-equip" ? "Списания по поломкам" : "Списания";
   };
 
@@ -1516,7 +1529,7 @@ export const AllWriteOffs = ({
             graph ? (
               <div className="h-64 w-full">
                 <StackedLine
-                  key={`graph-${JSON.stringify(graph).slice(0, 100)}`}
+                  key={`graph-${JSON.stringify(graph).slice(0, 100)}-${currentSort?.colId || "default"}`}
                   option={{
                     title: {
                       text: getGraphTitle(),
