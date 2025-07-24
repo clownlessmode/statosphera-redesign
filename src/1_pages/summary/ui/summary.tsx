@@ -158,10 +158,25 @@ export const Summary = () => {
       };
 
       const requestPromise = getTable(tablePayload).then((response) => {
-        const actualTotalRows = response.totalRows ?? 10000;
+        const data = response.tbl || [];
+
+        // Если с сервера пришел totalRows - используем его
+        if (response.totalRows !== undefined && response.totalRows !== null) {
+          return {
+            data,
+            totalRows: response.totalRows,
+          };
+        }
+
+        // Fallback логика: если данных пришло меньше чем запрашивалось - это конец
+        const requestedCount = endRow - startRow;
+        const isLastPage = data.length < requestedCount;
+        const actualTotalRows = isLastPage
+          ? startRow + data.length // Точный конец данных
+          : Math.max(startRow + data.length + 100, 1000); // Небольшой буфер для продолжения загрузки
 
         return {
-          data: response.tbl || [],
+          data,
           totalRows: actualTotalRows,
         };
       });
@@ -327,32 +342,46 @@ export const Summary = () => {
                           key={`total-${card.totalProceeds}`}
                           title="Общая выручка"
                           value={card.totalProceeds}
-                          icons={<BadgeRussianRuble color="#E50046" />}
-                          trigger={<Info className="w-4 h-4" />}
+                          icons={
+                            <BadgeRussianRuble
+                              color="#E50046"
+                              className="w-4 h-4"
+                            />
+                          }
+                          trigger={<Info className="w-3 h-3" />}
                           text="Выручка по выбранной номенклатуре с учетом других товаров"
                         />,
                         <SummaryCard
                           key={`selected-${card.selectedProceeds}`}
                           title="Выручка выбранной номенклатуры"
                           value={card.selectedProceeds}
-                          icons={<CircleCheck color="#E50046" />}
-                          trigger={<Info className="w-4 h-4" />}
+                          icons={
+                            <CircleCheck color="#E50046" className="w-4 h-4" />
+                          }
+                          trigger={<Info className="w-3 h-3" />}
                           text="Выручка только по выбранной номенклатуре без учета других товаров"
                         />,
                         <SummaryCard
                           key={`count-${card.checkCount}`}
                           title="Количество чеков"
                           value={`${pluralize(card.checkCount, ["чек", "чека", "чеков"])}`}
-                          icons={<ReceiptText color="#E50046" />}
-                          trigger={<Info className="w-4 h-4" />}
+                          icons={
+                            <ReceiptText color="#E50046" className="w-4 h-4" />
+                          }
+                          trigger={<Info className="w-3 h-3" />}
                           text="Количество чеков с выбранной номенклатурой"
                         />,
                         <SummaryCard
                           key={`avg-${card.avgCheck}`}
                           title="Средний чек"
                           value={card.avgCheck}
-                          icons={<ReceiptRussianRuble color="#E50046" />}
-                          trigger={<Info className="w-4 h-4" />}
+                          icons={
+                            <ReceiptRussianRuble
+                              color="#E50046"
+                              className="w-4 h-4"
+                            />
+                          }
+                          trigger={<Info className="w-3 h-3" />}
                           text="Средний чек по выбранной номенклатуре с входящими продуктами в чек"
                         />,
                       ])}
@@ -360,7 +389,7 @@ export const Summary = () => {
                     {hasGraphData || selectedProduct ? (
                       <>
                         {hasGraphData && (
-                          <Card className="flex-1 pl-10 pr-20 py-0 max-h-[250px]">
+                          <Card className="flex-1 pl-10 pr-20 py-0 max-h-[300px]">
                             <BarHorizontalChart
                               labels={xAxisData}
                               values={yAxisData}
