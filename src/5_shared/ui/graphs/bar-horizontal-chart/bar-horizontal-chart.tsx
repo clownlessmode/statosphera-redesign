@@ -44,6 +44,10 @@ const getPluralForm = (
 
 // Функция для форматирования чисел
 const formatNumber = (value: number, shouldFormat: boolean): string => {
+  if (value == null || isNaN(value) || !isFinite(value)) {
+    return "0";
+  }
+
   if (!shouldFormat) {
     return value.toFixed(1);
   }
