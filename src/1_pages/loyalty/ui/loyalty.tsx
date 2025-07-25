@@ -219,7 +219,7 @@ export const Loyalty = () => {
                 title="Проникновение"
                 value={loyalCard2?.appLoyalPercent ?? 0}
                 unit="%"
-                formatter={(value) => value.toFixed(1)}
+                formatter={(value) => (value ? value.toFixed(1) : "0")}
                 isLoading={isLoyalCard2Loading}
               />
               <ValueCard
@@ -251,7 +251,7 @@ export const Loyalty = () => {
                 title="Частота покупок"
                 value={loyalCard2?.frequencySalesLoyal ?? 0}
                 isLoading={isLoyalCard2Loading}
-                formatter={(value) => value.toFixed(1)}
+                formatter={(value) => (value ? value.toFixed(1) : "0")}
               />
               <ValueCard
                 title="Доп. выручка"
@@ -261,7 +261,7 @@ export const Loyalty = () => {
               />
               <ValueCard
                 title="Доля доп. выручки"
-                formatter={(value) => value.toFixed(1)}
+                formatter={(value) => (value ? value.toFixed(1) : "0")}
                 isLoading={isLoyalCard2Loading}
                 value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                 unit="%"
@@ -269,7 +269,7 @@ export const Loyalty = () => {
               <ValueCard
                 isLoading={isBonusesLoading}
                 title="% списания бонусов"
-                formatter={(value) => value.toFixed(1)}
+                formatter={(value) => (value ? value.toFixed(1) : "0")}
                 value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
                 unit="%"
               />
