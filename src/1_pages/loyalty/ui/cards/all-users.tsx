@@ -39,10 +39,15 @@ export const AllUsers = ({
           <div className="flex flex-col gap-2 items-center justify-center w-full">
             <div className=" text-xs font-semibold w-full bg-muted-foreground text-primary-foreground border-border border rounded-lg flex items-center justify-center h-8">
               {noSales30DaysUser?.yes_30d.toLocaleString()} (
-              {(
-                (noSales30DaysUser?.yes_30d / noSales30DaysUser?.total_users) *
-                100
-              ).toFixed()}
+              {noSales30DaysUser?.yes_30d &&
+              noSales30DaysUser?.total_users &&
+              noSales30DaysUser.total_users > 0
+                ? (
+                    (noSales30DaysUser.yes_30d /
+                      noSales30DaysUser.total_users) *
+                    100
+                  ).toFixed()
+                : "0"}
               %)
             </div>
             <p className="text-xs text-nowrap">За посл. 30 дней</p>
