@@ -17,7 +17,7 @@ export const AgeCircleGraph = ({
         }))}
         title="Распределение по полу"
         formatter={(params) => {
-          return `${params.name} ${params.percent.toFixed(1)}%`;
+          return `${params.name} ${params.percent ? params.percent.toFixed(1) : "0"}%`;
         }}
       />
     </Card>
