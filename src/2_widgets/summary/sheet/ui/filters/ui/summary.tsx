@@ -10,7 +10,7 @@ import {
   useViewTabs,
 } from "@shared/ui/view-tabs";
 import { Separator } from "@shared/ui/separator";
-import { CombinedSubmitButton } from "./submit-button";
+import { DualSubmitButtons } from "./index";
 import { Eraser } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { useFormResetStore } from "@widgets/summary/sheet/model/reset-store";
@@ -64,7 +64,7 @@ const SummaryInner = () => {
         </ViewTabsGroup>
         <Separator />
 
-        <CombinedSubmitButton />
+        <DualSubmitButtons />
       </ViewTabsList>
       <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
         <Button onClick={() => triggerReset()}>

@@ -5,21 +5,17 @@ import { Button } from "@shared/ui/button";
 import { useSummaryController } from "../api/controller";
 import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-store";
 import { transformToComparisonCardsDto } from "../utils/transform-summary-dto";
-import { useSummaryStore } from "../model";
+import {
+  useSummaryStore,
+  useSelectedProductStore,
+  useSummaryVersionStore,
+} from "../model";
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { SummaryCard } from "./summary-card";
 import { SummaryCardSkeleton } from "./skeleton/summary-card-skeleton";
 import { SummaryChartSkeleton } from "./skeleton/summary-chart-skeleton";
 import { SummaryTableSkeleton } from "./skeleton/summary-table-skeleton";
-import {
-  BadgeRussianRuble,
-  CircleCheck,
-  Funnel,
-  Info,
-  ReceiptRussianRuble,
-  ReceiptText,
-  X,
-} from "lucide-react";
+import { Funnel, Info, X } from "lucide-react";
 import { Card } from "@shared/ui/card";
 import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
@@ -43,19 +39,20 @@ export const Summary = () => {
   const { cards, graph, setCards, setGraph, nomenklatura } = useSummaryStore();
   const { getTable } = useSummaryController();
   const packageFilter = useSummaryFiltersStore((state) => state.package);
-  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const { selectedProduct, setSelectedProduct } = useSelectedProductStore();
   const [selectedTableRows, setSelectedTableRows] = useState<any[]>([]);
   const [modalSearchTerm, setModalSearchTerm] = useState<string>("");
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
-  const [dataVersion, setDataVersion] = useState<number>(0);
+  const { dataVersion, bumpDataVersion } = useSummaryVersionStore();
 
   // Ref для кэширования запросов таблицы
   const requestCache = useRef<Record<string, Promise<any>>>({});
   const lastRequestKey = useRef<string>("");
 
-  const bumpDataVersion = useCallback(() => {
-    setDataVersion((prev) => prev + 1);
-  }, []);
+  // useEffect(() => {
+  //   requestCache.current = {};
+  //   lastRequestKey.current = "";
+  // }, [dataVersion]);
 
   const handleGetComparisonCards = async (productId: number) => {
     try {
@@ -342,32 +339,26 @@ export const Summary = () => {
                           key={`total-${card.totalProceeds}`}
                           title="Общая выручка"
                           value={card.totalProceeds}
-                          icons={
-                            <BadgeRussianRuble
-                              color="#E50046"
-                              className="w-4 h-4"
-                            />
-                          }
+                          // icons={
+                          //   <BadgeRussianRuble
+                          //     color="#E50046"
+                          //     className="w-4 h-4"
+                          //   />
+                          // }
                           trigger={<Info className="w-3 h-3" />}
                           text="Выручка по выбранной номенклатуре с учетом других товаров"
                         />,
                         <SummaryCard
                           key={`selected-${card.selectedProceeds}`}
-                          title="Выручка выбранной номенклатуры"
+                          title="Выбранная номенклатура"
                           value={card.selectedProceeds}
-                          icons={
-                            <CircleCheck color="#E50046" className="w-4 h-4" />
-                          }
                           trigger={<Info className="w-3 h-3" />}
                           text="Выручка только по выбранной номенклатуре без учета других товаров"
                         />,
                         <SummaryCard
                           key={`count-${card.checkCount}`}
                           title="Количество чеков"
-                          value={`${pluralize(card.checkCount, ["чек", "чека", "чеков"])}`}
-                          icons={
-                            <ReceiptText color="#E50046" className="w-4 h-4" />
-                          }
+                          value={`${pluralize(card.checkCount, ["шт", "шт", "шт"])}`}
                           trigger={<Info className="w-3 h-3" />}
                           text="Количество чеков с выбранной номенклатурой"
                         />,
@@ -375,12 +366,6 @@ export const Summary = () => {
                           key={`avg-${card.avgCheck}`}
                           title="Средний чек"
                           value={card.avgCheck}
-                          icons={
-                            <ReceiptRussianRuble
-                              color="#E50046"
-                              className="w-4 h-4"
-                            />
-                          }
                           trigger={<Info className="w-3 h-3" />}
                           text="Средний чек по выбранной номенклатуре с входящими продуктами в чек"
                         />,
@@ -472,6 +457,7 @@ export const Summary = () => {
 
                             <div className="flex-1 min-h-0 overflow-hidden">
                               <InfinityTable
+                                key={dataVersion}
                                 fetchData={fetchTableData}
                                 totalData={[]}
                                 onSelectionChange={handleTableRowSelection}

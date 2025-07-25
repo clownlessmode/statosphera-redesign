@@ -1,4 +1,4 @@
-import { useSummaryStore } from "../model";
+import { useSummaryStore, useSelectedProductStore } from "../model";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { useState, useMemo, useCallback } from "react";
 import { Check, Funnel } from "lucide-react";
@@ -15,7 +15,7 @@ export const NomenklaturaList = ({
   onSelectedProductChange,
 }: NomenklaturaListProps) => {
   const { nomenklatura } = useSummaryStore();
-  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const { selectedProduct, setSelectedProduct } = useSelectedProductStore();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Функция для получения отображаемого названия продукта

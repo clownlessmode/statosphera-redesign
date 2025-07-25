@@ -17,7 +17,9 @@ export const SummaryCard = ({
   trigger,
   text,
 }: SummaryCardProps) => {
-  const isRuble = /выручка|proceeds|avgCheck|средний чек/i.test(title);
+  const isRuble = /выручка|proceeds|avgCheck|средний чек|номенклатура/i.test(
+    title,
+  );
 
   let content: React.ReactNode;
   if (value === null || value === undefined || value === "") {
@@ -36,14 +38,14 @@ export const SummaryCard = ({
   }
   return (
     <Card className="p-2! w-full gap-3! flex flex-col justify-between ">
-      <CardContent className="pt-0 flex flex-col items-center justify-center gap-0">
-        <div className="text-2xl font-semibold">{content}</div>
+      <CardContent className="px-0! pt-0 flex flex-col items-center justify-center gap-0">
+        <div className="text-sm xl:text-xl font-semibold">{content}</div>
         <div className="flex flex-row gap-4 items-center">
           <Tooltip>
             <TooltipTrigger>{trigger}</TooltipTrigger>
             <TooltipContent>{text}</TooltipContent>
           </Tooltip>
-          <p className="text-sm font-semibold text-muted-foreground -ml-2">
+          <p className="text-[8px] xl:text-[10px] font-semibold text-muted-foreground -ml-2">
             {title}
           </p>
           {icons}
