@@ -66,8 +66,8 @@ export class StoresService {
       maxPower: [],
       format: [],
       discountTime: [],
-      startDate: "2009-01-03",
-      endDate: "2025-06-10",
+      startDate: "1800-01-01",
+      endDate: "2030-06-10",
     };
 
     const response = await api.post<Store[]>("store/all", filters);
