@@ -18,16 +18,14 @@ export const AgeGroupsGraph = ({
         <StackedLineSkeleton className="h-[400px]" />
       ) : (
         <Card className="h-[400px]">
-          <div style={{ height: 400, width: "100%" }}>
-            <BarChartMultiSeries
-              xAxisData={graph.xAxis}
-              series={graph.series.map((item) => ({
-                name: item.name,
-                data: item.data,
-              }))}
-              title="Частота покупок по возрастным группам и полу"
-            />
-          </div>
+          <BarChartMultiSeries
+            xAxisData={graph.xAxis}
+            series={graph.series.map((item) => ({
+              name: item.name,
+              data: item.data,
+            }))}
+            title="Частота покупок по возрастным группам и полу"
+          />
         </Card>
       )}
     </>

@@ -4,6 +4,7 @@ import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-ske
 import { Card } from "@shared/ui/card";
 
 import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
+import useSafari from "@shared/hooks/use-safari";
 
 export const AgeSalesGraph = ({
   graph,
@@ -12,6 +13,7 @@ export const AgeSalesGraph = ({
   graph: AgeSalesGraphResponse;
   isLoading: boolean;
 }) => {
+  const isSafari = useSafari();
   return (
     <>
       {isLoading ? (
@@ -25,6 +27,9 @@ export const AgeSalesGraph = ({
                 name: item.name,
                 data: item.data,
               }))}
+              grid={{
+                bottom: isSafari ? 50 : 20,
+              }}
               formatter={(params) => {
                 if (Array.isArray(params)) {
                   return params
