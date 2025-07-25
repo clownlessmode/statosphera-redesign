@@ -13,6 +13,9 @@ type BarChartMultiSeriesProps = {
   series: SeriesData[];
   title?: string;
   formatter?: (params: any) => string;
+  grid?: {
+    bottom?: number;
+  };
 };
 
 export const BarChartMultiSeries = ({
@@ -20,6 +23,7 @@ export const BarChartMultiSeries = ({
   series,
   formatter,
   title,
+  grid,
 }: BarChartMultiSeriesProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
@@ -94,7 +98,7 @@ export const BarChartMultiSeries = ({
       top: 80,
       left: 10,
       right: 10,
-      bottom: 20,
+      bottom: grid?.bottom || 20,
     },
     series: series.map((s, idx) => ({
       name: s.name,

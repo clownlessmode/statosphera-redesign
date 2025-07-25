@@ -4,6 +4,7 @@ import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-ske
 import { Card } from "@shared/ui/card";
 
 import { HorizontalStackedBarChart } from "@shared/ui/horizontal-stacked-bar-chart";
+import useSafari from "@shared/hooks/use-safari";
 
 export const RevenueGroupsGraph = ({
   graph,
@@ -12,6 +13,7 @@ export const RevenueGroupsGraph = ({
   graph: AgeGroupsGraphResponse;
   isLoading: boolean;
 }) => {
+  const isSafari = useSafari();
   return (
     <>
       {isLoading ? (
@@ -25,6 +27,9 @@ export const RevenueGroupsGraph = ({
                 name: item.name,
                 data: item.data,
               }))}
+              grid={{
+                bottom: isSafari ? 50 : 20,
+              }}
               title="Выручка по возрастным группам и полу"
               formatter={(params) => {
                 if (Array.isArray(params)) {

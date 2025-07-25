@@ -13,6 +13,9 @@ type HorizontalStackedBarChartProps = {
   series: SeriesData[];
   title?: string;
   formatter?: (params: any) => string;
+  grid?: {
+    bottom?: number;
+  };
 };
 
 export const HorizontalStackedBarChart = ({
@@ -20,6 +23,7 @@ export const HorizontalStackedBarChart = ({
   series,
   title,
   formatter,
+  grid,
 }: HorizontalStackedBarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
@@ -53,7 +57,7 @@ export const HorizontalStackedBarChart = ({
     grid: {
       left: "3%",
       right: "4%",
-      bottom: "3%",
+      bottom: grid?.bottom || "3%",
       containLabel: true,
     },
     xAxis: {
