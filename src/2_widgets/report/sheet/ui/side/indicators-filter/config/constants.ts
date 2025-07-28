@@ -680,12 +680,12 @@ const all_indicators = [
         value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
         tooltip: "Маржа без скидки за предыдущий месяц",
       },
-      {
-        id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
-        label: "Маржа % без учета скидки MOM%",
-        value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
-        tooltip: "Изменение маржи без скидки по сравнению с предыдущим месяцем",
-      },
+      // {
+      //   id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
+      //   label: "Маржа % без учета скидки MOM%",
+      //   value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
+      //   tooltip: "Изменение маржи без скидки по сравнению с предыдущим месяцем",
+      // },
 
       {
         id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
@@ -1336,6 +1336,7 @@ export function excludeIndicators(
 export const useIndicatorList = (type: "check" | "commerce") => {
   const CHECK = excludeIndicators(all_indicators, [
     COLUMN_KEY.GROUP_TURNOVER_GOODS,
+    COLUMN_KEY.WEIGHT_GROUP,
     "writeOffGroup",
     "writeOffPercentGroup",
     "writeOffWeightGroup",

@@ -4,13 +4,17 @@ import { Toaster } from "@shared/ui/sonner";
 import QueryProvider from "./query-provider";
 import { SidebarProvider } from "@shared/ui/sidebar";
 import { YMaps } from "@pbe/react-yandex-maps";
+import AutoReloadProvider from "./auto-reload-provider";
+
 const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeProvider>
       <QueryProvider>
         <SidebarProvider>
-          <YMaps>{children}</YMaps>
-          <Toaster position="top-center" />
+          <AutoReloadProvider reloadTime="03:00" enabled={true}>
+            <YMaps>{children}</YMaps>
+            <Toaster position="top-center" />
+          </AutoReloadProvider>
         </SidebarProvider>
       </QueryProvider>
     </ThemeProvider>

@@ -8,11 +8,42 @@ import { ApiError } from "@shared/api/types";
 import { useCallback } from "react";
 import { useTableVersionStore } from "@pages/report/ui/report";
 import { useCountStore } from "@pages/report/model/usCountStore";
+import { parseISO, isValid } from "date-fns";
+
+// Константы для валидации дат (аналогично другим модулям)
+const MIN_DATE = new Date(2018, 4, 1); // 1 мая 2018
+const MAX_DATE = new Date(); // Сегодняшняя дата
+
+// Функция для валидации даты
+const isValidDate = (dateString: string): boolean => {
+  if (!dateString || dateString.trim() === "") {
+    return false;
+  }
+
+  // Проверяем формат даты (YYYY-MM-DD)
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(dateString)) {
+    return false;
+  }
+
+  // Парсим дату и проверяем валидность
+  const date = parseISO(dateString);
+  if (!isValid(date)) {
+    return false;
+  }
+
+  // Проверяем диапазон дат
+  if (date < MIN_DATE || date > MAX_DATE) {
+    return false;
+  }
+
+  return true;
+};
 
 export const CombinedSubmitButton = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useTableVersionStore();
-  const { getApiPayload } = useFiltersStore();
+  const { getApiPayload, filterDate } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError, clearAll } = useReportStore();
   const { getGraph, getTable, getTotal } = useReport();
   const { setCount } = useCountStore();
@@ -21,8 +52,13 @@ export const CombinedSubmitButton = () => {
   // 🔄 Всегда актуальные данные для disabled
   const isDisabled = useCallback(() => {
     const { groups, values } = getApiPayload();
-    return groups.length === 0 || values.length === 0;
-  }, [getApiPayload]);
+    return (
+      groups.length === 0 ||
+      values.length === 0 ||
+      !isValidDate(filterDate.dateStart) ||
+      !isValidDate(filterDate.dateEnd)
+    );
+  }, [getApiPayload, filterDate.dateStart, filterDate.dateEnd]);
 
   const handleSubmit = async () => {
     clearAll();

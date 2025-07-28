@@ -114,6 +114,7 @@ export enum COLUMN_KEY {
   MARGIN_PERCENT_DISCOUNT = "marginDiscountPercent",
   MARGIN_PERCENT_DISCOUNT_LM = "marginDiscountPercentLM",
   MARGIN_PERCENT_DISCOUNT_MOM = "marginDiscountPercentMoM",
+
   MARGIN_PERCENT_DISCOUNT_MOM_PERCENT = "marginDiscountPercentMoMPercent", //not
   MARGIN_PERCENT_DISCOUNT_LY = "marginDiscountPercentLY",
   MARGIN_PERCENT_DISCOUNT_YOY = "marginDiscountPercentYoY",

@@ -171,7 +171,6 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Summary />,
     layout: Sidebar,
-    allowedRoles: [ROLES.ADMIN],
     label: "Парные продажи",
   },
   {

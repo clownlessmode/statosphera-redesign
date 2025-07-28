@@ -280,12 +280,6 @@ const Dashboard = () => {
             data={dashboard?.topWriteOff}
           />
         </Suspense>
-        <Suspense fallback={<AntiLoyalTopSkeleton />}>
-          <AntiLoyalTop
-            isLoading={isDashboardLoading}
-            data={dashboard?.antitopLoyalApp.data as any}
-          />
-        </Suspense>
         <div className="flex flex-col gap-2 max-h-[400px]">
           <Suspense fallback={<TodayRevenueSkeleton />}>
             <TodayRevenue
@@ -314,6 +308,12 @@ const Dashboard = () => {
             />
           </Suspense>
         </div>
+        <Suspense fallback={<AntiLoyalTopSkeleton />}>
+          <AntiLoyalTop
+            isLoading={isDashboardLoading}
+            data={dashboard?.antitopLoyalApp.data as any}
+          />
+        </Suspense>
       </div>
     </div>
   );
