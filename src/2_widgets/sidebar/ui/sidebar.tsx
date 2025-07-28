@@ -102,7 +102,6 @@ const Sidebar = ({
         title: "Парные продажи",
         url: ROUTES_PATH.SUMMARY,
         icon: ChartBarStacked,
-        disabled: session?.role !== ROLES.ADMIN,
       },
 
       {
