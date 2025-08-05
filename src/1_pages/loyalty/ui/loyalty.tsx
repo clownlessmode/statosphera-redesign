@@ -282,7 +282,7 @@ export const Loyalty = () => {
             isLoading={isTopGroupsLoading}
             options={topGroups.map((group) => ({
               name: group.subSubGroups,
-              price: `${group.countSales.toLocaleString()} ₽`,
+              price: `${group.countSales.toLocaleString()}`,
             }))}
           />
           <List
