@@ -21,6 +21,7 @@ export class GetProductsService {
       `products/update-nomenclature`,
       payload,
     );
+
     return response.data;
   }
   static async getFranchise(): Promise<FranchiseFilterResponse[]> {
