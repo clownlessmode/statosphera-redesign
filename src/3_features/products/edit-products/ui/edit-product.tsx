@@ -510,11 +510,7 @@ export const EditProduct: FC<Props> = ({
                           const hasError = getFieldError("subDivisionProducts");
                           return (
                             <FormItem>
-                              <FormLabel
-                                className={hasError ? "text-destructive" : ""}
-                              >
-                                Структурное подразделение
-                              </FormLabel>
+                              <FormLabel>Структурное подразделение</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
@@ -560,11 +556,7 @@ export const EditProduct: FC<Props> = ({
                           const hasError = getFieldError("teamProducts");
                           return (
                             <FormItem>
-                              <FormLabel
-                                className={hasError ? "text-destructive" : ""}
-                              >
-                                Команда
-                              </FormLabel>
+                              <FormLabel>Команда</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}

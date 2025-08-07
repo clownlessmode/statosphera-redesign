@@ -83,11 +83,9 @@ export const useForm = ({ product }: { product: FormValues }) => {
 
   const requiredFields = [
     "groupFranchise",
-    "subDivisionProducts",
     "subGroups",
     "subSubGroups",
     "typeProducts",
-    "teamProducts",
     "directionProducts",
     "groupsEconomist",
     "idGroupMain",
