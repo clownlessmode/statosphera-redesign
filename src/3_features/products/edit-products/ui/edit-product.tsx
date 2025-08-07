@@ -103,11 +103,11 @@ export const EditProduct: FC<Props> = ({
     groupFranchise: form.groupFranchise,
     ppProducts: form.ppProducts,
     isImProducts: form.isImProducts,
-    subDivisionProducts: form.subDivisionProducts,
+    subDivisionProducts: form.subDivisionProducts ?? [],
     subGroups: form.subGroups,
     subSubGroups: form.subSubGroups,
     typeProducts: form.typeProducts,
-    teamProducts: form.teamProducts,
+    teamProducts: form.teamProducts ?? [],
     directionProducts: form.directionProducts,
     groupsEconomist: form.groupsEconomist,
     idGroupMain: form.idGroupMain,
@@ -541,7 +541,7 @@ export const EditProduct: FC<Props> = ({
                                     20,
                                   )}
                                   defaultValue={filterNullValues(
-                                    field.value,
+                                    field.value ?? [],
                                   ).map(String)}
                                   placeholder="Выберите структурное ..."
                                   className={
@@ -549,11 +549,6 @@ export const EditProduct: FC<Props> = ({
                                   }
                                 />
                               </FormControl>
-                              {hasError && (
-                                <p className="text-[12px] text-destructive">
-                                  Обязательно для заполнения
-                                </p>
-                              )}
                             </FormItem>
                           );
                         }}
@@ -593,7 +588,7 @@ export const EditProduct: FC<Props> = ({
                                     20,
                                   )}
                                   defaultValue={filterNullValues(
-                                    field.value,
+                                    field.value ?? [],
                                   ).map(String)}
                                   placeholder="Выберите команду"
                                   className={
@@ -601,11 +596,6 @@ export const EditProduct: FC<Props> = ({
                                   }
                                 />
                               </FormControl>
-                              {hasError && (
-                                <p className="text-[12px] text-destructive">
-                                  Обязательно для заполнения
-                                </p>
-                              )}
                             </FormItem>
                           );
                         }}
