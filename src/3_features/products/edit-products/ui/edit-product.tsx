@@ -103,11 +103,11 @@ export const EditProduct: FC<Props> = ({
     groupFranchise: form.groupFranchise,
     ppProducts: form.ppProducts,
     isImProducts: form.isImProducts,
-    subDivisionProducts: form.subDivisionProducts,
+    subDivisionProducts: form.subDivisionProducts ?? [],
     subGroups: form.subGroups,
     subSubGroups: form.subSubGroups,
     typeProducts: form.typeProducts,
-    teamProducts: form.teamProducts,
+    teamProducts: form.teamProducts ?? [],
     directionProducts: form.directionProducts,
     groupsEconomist: form.groupsEconomist,
     idGroupMain: form.idGroupMain,
@@ -510,11 +510,7 @@ export const EditProduct: FC<Props> = ({
                           const hasError = getFieldError("subDivisionProducts");
                           return (
                             <FormItem>
-                              <FormLabel
-                                className={hasError ? "text-destructive" : ""}
-                              >
-                                Структурное подразделение
-                              </FormLabel>
+                              <FormLabel>Структурное подразделение</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
@@ -541,7 +537,7 @@ export const EditProduct: FC<Props> = ({
                                     20,
                                   )}
                                   defaultValue={filterNullValues(
-                                    field.value,
+                                    field.value ?? [],
                                   ).map(String)}
                                   placeholder="Выберите структурное ..."
                                   className={
@@ -549,11 +545,6 @@ export const EditProduct: FC<Props> = ({
                                   }
                                 />
                               </FormControl>
-                              {hasError && (
-                                <p className="text-[12px] text-destructive">
-                                  Обязательно для заполнения
-                                </p>
-                              )}
                             </FormItem>
                           );
                         }}
@@ -565,11 +556,7 @@ export const EditProduct: FC<Props> = ({
                           const hasError = getFieldError("teamProducts");
                           return (
                             <FormItem>
-                              <FormLabel
-                                className={hasError ? "text-destructive" : ""}
-                              >
-                                Команда
-                              </FormLabel>
+                              <FormLabel>Команда</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
@@ -593,7 +580,7 @@ export const EditProduct: FC<Props> = ({
                                     20,
                                   )}
                                   defaultValue={filterNullValues(
-                                    field.value,
+                                    field.value ?? [],
                                   ).map(String)}
                                   placeholder="Выберите команду"
                                   className={
@@ -601,11 +588,6 @@ export const EditProduct: FC<Props> = ({
                                   }
                                 />
                               </FormControl>
-                              {hasError && (
-                                <p className="text-[12px] text-destructive">
-                                  Обязательно для заполнения
-                                </p>
-                              )}
                             </FormItem>
                           );
                         }}

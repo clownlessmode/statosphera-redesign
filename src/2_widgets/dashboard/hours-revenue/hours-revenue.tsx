@@ -23,7 +23,7 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
               className="border-none"
               option={{
                 grid: {
-                  top: 5,
+                  top: 20,
                   left: 10,
                   right: 10,
                   bottom: 0,
@@ -31,6 +31,7 @@ const HoursRevenue = ({ isLoading, data }: HoursRevenueProps) => {
                 },
                 legend: {
                   data: ["Выбранный период", "Прошлый год"],
+                  top: 20,
                 },
                 toolbox: {
                   show: false,

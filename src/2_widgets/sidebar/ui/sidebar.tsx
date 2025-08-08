@@ -30,14 +30,17 @@ import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useSession } from "@entities/session";
-import { useTabStore } from "@widgets/write-off/sheet/model/url-store";
+
 import { ROLES } from "@shared/constants/roles";
+import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
 const Sidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
   const { session } = useSession();
   const { tab } = useTabStore();
+  const { tab: tabWriteOff } = useTabStoreWriteOff();
   const data = {
     navMain: [
       {
@@ -94,7 +97,7 @@ const Sidebar = ({
       },
       {
         title: "Списания",
-        url: ROUTES_PATH.WRITE_OFF,
+        url: `${ROUTES_PATH.WRITE_OFF}?tab=${tabWriteOff}&open=true`,
         icon: ChartLine,
       },
       // Поменять роль
@@ -102,7 +105,6 @@ const Sidebar = ({
         title: "Парные продажи",
         url: ROUTES_PATH.SUMMARY,
         icon: ChartBarStacked,
-        disabled: session?.role !== ROLES.ADMIN,
       },
 
       {

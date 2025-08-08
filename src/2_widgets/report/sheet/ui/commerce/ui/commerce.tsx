@@ -33,7 +33,7 @@ const CommerceInner = () => {
       <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4 h-full">
         <ViewTabsGroup>
           <ViewTabsLabel>Фильтры</ViewTabsLabel>
-          <ViewTabsGroupContent className="grid grid-cols-2 md:flex flex-col px-4 ">
+          <ViewTabsGroupContent className="grid grid-cols-2 md:flex flex-col">
             {filters.map((item, index) => (
               <ViewTabsTrigger
                 value={item.title}
