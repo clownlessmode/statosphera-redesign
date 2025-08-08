@@ -250,6 +250,7 @@ export type FiltersState = {
       ageStart: number | null;
       ageEnd: number | null;
       groupAge: string[];
+      colorsDiscount: string[];
     };
     onlineStore: {
       isIm: boolean | null;
@@ -398,6 +399,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
       ageStart: null,
       ageEnd: null,
       groupAge: [],
+      colorsDiscount: [],
     },
     onlineStore: {
       isIm: null,
@@ -603,6 +605,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
           ageStart: null,
           ageEnd: null,
           groupAge: [],
+          colorsDiscount: [],
         },
         onlineStore: {
           isIm: null,
@@ -707,6 +710,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       ageStart: null,
       ageEnd: null,
       groupAge: [],
+      colorsDiscount: [],
     },
     onlineStore: {
       isIm: null,
@@ -912,6 +916,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
           ageStart: null,
           ageEnd: null,
           groupAge: [],
+          colorsDiscount: [],
         },
         onlineStore: {
           isIm: null,

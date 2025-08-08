@@ -157,12 +157,21 @@ export function transformToTableDto(
     household: payload.filters.writeoff?.household === true,
   };
 
+  result.filters.loyal = {
+    isLoyal: payload.filters.loyal?.isLoyal ?? null,
+    cardNumber: payload.filters.loyal?.cardNumber ?? [],
+    sex: payload.filters.loyal?.sex ?? null,
+    guidDiscount: payload.filters.loyal?.guidDiscount ?? [],
+    guidBonus: payload.filters.loyal?.guidBonus ?? [],
+    ageStart: payload.filters.loyal?.ageStart ?? null,
+    ageEnd: payload.filters.loyal?.ageEnd ?? null,
+    groupAge: payload.filters.loyal?.groupAge ?? [],
+    colorsDiscount: [],
+  };
+
   // Добавляем опциональные фильтры если они есть
   if (payload.filters.check) {
     result.filters.check = payload.filters.check;
-  }
-  if (payload.filters.loyal) {
-    result.filters.loyal = payload.filters.loyal;
   }
   if (payload.filters.onlineStore) {
     result.filters.onlineStore = payload.filters.onlineStore;
