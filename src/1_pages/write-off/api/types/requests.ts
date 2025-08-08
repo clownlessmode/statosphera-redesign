@@ -103,6 +103,7 @@ export interface WriteOffTableRequest {
       ageStart: number | null;
       ageEnd: number | null;
       groupAge: string[];
+      colorsDiscount: string[];
     };
     onlineStore?: {
       isIm: boolean | null;
