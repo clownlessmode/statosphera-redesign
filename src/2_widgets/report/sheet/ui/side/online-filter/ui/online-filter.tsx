@@ -128,7 +128,7 @@ const OnlineFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Способ оплаты</FormLabel>
-                    <BooleanCheckboxCard
+                    <CheckboxCards
                       {...field}
                       options={TYPE_PAYMENT}
                       className="grid-cols-4"
