@@ -52,6 +52,7 @@ export default function StackedLine({
         ref={chartRef}
         option={optionCharts}
         style={style ?? { height: "100%" }}
+        notMerge={true}
       />
     </Card>
   );

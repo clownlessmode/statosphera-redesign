@@ -22,6 +22,7 @@ import { COLORS, GENDER, TYPE } from "../config";
 import ClearFilters from "./clear-filter";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import CheckboxCards from "@shared/ui/checkbox-cards";
+import { MultipleInput } from "@shared/ui/multiple-input";
 const LoyaltyFilter: FC = () => {
   const form = useForm();
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
@@ -117,6 +118,8 @@ const LoyaltyFilter: FC = () => {
                 </FormItem>
               )}
             />
+
+            {/* Цвет */}
             <FormField
               control={form.control}
               name="colorsDiscount"
@@ -137,6 +140,33 @@ const LoyaltyFilter: FC = () => {
               )}
             />
 
+            {/* Номера карт */}
+            <FormField
+              control={form.control}
+              name="cardNumber"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor="">Номера карт</FormLabel>
+                    <MultipleInput
+                      type="number"
+                      min={10}
+                      max={10}
+                      placeholder="Введите номера карт"
+                      value={field.value?.map(Number) || []}
+                      onValueChange={(value) => {
+                        const numericValues = value.map(Number);
+                        field.onChange(numericValues);
+                        updateLoyalFilter(
+                          "cardNumber",
+                          numericValues.map(String),
+                        );
+                      }}
+                    />
+                  </FormItem>
+                );
+              }}
+            />
             {/* Акция */}
             <FormField
               control={form.control}
