@@ -105,7 +105,7 @@ export interface AgeSalesGraphResponse {
 }
 
 export interface RevenueGroupsGraphResponse {
-  xAxis: string[];
+  yAxis: string[];
   legend: string[];
   series: GraphResponse[];
 }
