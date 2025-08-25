@@ -1,4 +1,4 @@
-import { AgeGroupsGraphResponse } from "../../config";
+import { RevenueGroupsGraphResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
 
 import { Card } from "@shared/ui/card";
@@ -10,7 +10,7 @@ export const RevenueGroupsGraph = ({
   graph,
   isLoading,
 }: {
-  graph: AgeGroupsGraphResponse;
+  graph: RevenueGroupsGraphResponse;
   isLoading: boolean;
 }) => {
   const isSafari = useSafari();
@@ -22,7 +22,7 @@ export const RevenueGroupsGraph = ({
         <Card className="h-[400px]">
           <div style={{ height: 400, width: "100%" }}>
             <HorizontalStackedBarChart
-              yAxisData={graph.xAxis}
+              yAxisData={graph.yAxis}
               series={graph.series.map((item) => ({
                 name: item.name,
                 data: item.data,
@@ -36,7 +36,7 @@ export const RevenueGroupsGraph = ({
                   return params
                     .map(
                       (item) =>
-                        `${item.marker}${item.seriesName}: ${item.value}`,
+                        `${item.marker}${item.seriesName}: ${item.value.toLocaleString()} ₽`,
                     )
                     .join("<br/>");
                 }

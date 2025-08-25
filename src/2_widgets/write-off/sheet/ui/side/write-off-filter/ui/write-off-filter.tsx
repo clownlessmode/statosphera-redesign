@@ -45,7 +45,7 @@ export const WriteOffFilter: FC = () => {
     ...option,
     disabled:
       option.value === ARTICLE_WRITE_OFF.HOUSEHOLD_GOODS &&
-      includeHouseholdGoods === false,
+      includeHouseholdGoods !== true,
   }));
 
   // Не показываем фильтр на табе "Списания по поломкам"

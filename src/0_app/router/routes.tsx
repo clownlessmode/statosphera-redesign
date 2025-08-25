@@ -158,6 +158,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Stores />,
     layout: Sidebar,
+    label: "Магазины",
   },
   {
     path: ROUTES_PATH.WRITE_OFF,
@@ -178,18 +179,21 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Report />,
     layout: Sidebar,
+    label: "Отчеты",
   },
   {
     path: ROUTES_PATH.PRODUCTS,
     variant: "private",
     element: <Products />,
     layout: Sidebar,
+    label: "Продукты",
   },
   {
     path: ROUTES_PATH.SALES_DYNAMICS,
     variant: "private",
     element: <SalesDynamics />,
     layout: Sidebar,
+    label: "Динамика продаж",
   },
   {
     path: ROUTES_PATH.GRILL,
@@ -197,25 +201,28 @@ export const ROUTES: RouteConfig[] = [
     element: <Grill />,
     allowedRoles: [ROLES.ADMIN],
     layout: Sidebar,
+    label: "Гриль",
   },
   {
     path: ROUTES_PATH.STANDARTS,
     variant: "private",
     element: <Standarts />,
     layout: Sidebar,
+    label: "Стандарты",
   },
   {
     path: ROUTES_PATH.STANDART,
     variant: "private",
     element: <Standart />,
     layout: Sidebar,
+    label: "Стандарт",
   },
   {
     path: ROUTES_PATH.LOYALTY,
     variant: "private",
     element: <Loyalty />,
-
     layout: Sidebar,
+    label: "Лояльность",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,

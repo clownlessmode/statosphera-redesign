@@ -38,6 +38,8 @@ interface MultipleInputProps
   animation?: number;
   maxCount?: number;
   className?: string;
+  min?: number;
+  max?: number;
   variant?: "default" | "secondary" | "destructive" | "inverted";
   type?: "string" | "number";
 }
@@ -56,6 +58,8 @@ export const MultipleInput = React.forwardRef<
       maxCount = 2,
       className,
       type = "string",
+      min,
+      max,
       ...props
     },
     ref,
@@ -115,6 +119,8 @@ export const MultipleInput = React.forwardRef<
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             type={type}
+            min={min}
+            max={max}
             className="flex-1 border-foreground/10 text-foreground bg-background"
             {...props}
           />
@@ -123,7 +129,11 @@ export const MultipleInput = React.forwardRef<
             variant="outline"
             size="icon"
             onClick={handleAddValue}
-            disabled={!inputValue.trim()}
+            disabled={
+              !inputValue.trim() ||
+              (min !== undefined && inputValue.length < min) ||
+              (max !== undefined && inputValue.length > max)
+            }
           >
             <ArrowRight className="h-4 w-4" />
           </Button>

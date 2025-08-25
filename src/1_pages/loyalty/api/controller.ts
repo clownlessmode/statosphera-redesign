@@ -19,6 +19,7 @@ import {
   AgeCircleGraphResponse,
   AgeSalesGraphResponse,
   AvarageCheckAgeGroupGraphResponse,
+  RevenueGroupsGraphResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -195,6 +196,19 @@ export const useLoyal = () => {
       return response;
     },
   });
+
+  const revenueGroupsGraph = useMutation<
+    RevenueGroupsGraphResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.revenueGroupsGraph(dto);
+      queryClient.invalidateQueries({ queryKey: ["revenueGroupsGraph"] });
+      return response;
+    },
+  });
+
   return {
     getAgeCircleGraph: ageCircleGraph.mutateAsync,
     isAgeCircleGraphLoading: ageCircleGraph.isPending,
@@ -231,5 +245,7 @@ export const useLoyal = () => {
     isAgeSalesGraphLoading: ageSalesGraph.isPending,
     getAverageCheckAgeGroupGraph: averageCheckAgeGroupGraph.mutateAsync,
     isAverageCheckAgeGroupGraphLoading: averageCheckAgeGroupGraph.isPending,
+    getRevenueGroupsGraph: revenueGroupsGraph.mutateAsync,
+    isRevenueGroupsGraphLoading: revenueGroupsGraph.isPending,
   };
 };
