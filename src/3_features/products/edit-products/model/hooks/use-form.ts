@@ -90,7 +90,6 @@ export const useForm = ({ product }: { product: FormValues }) => {
     "groupsEconomist",
     "idGroupMain",
     "seasonalityProducts",
-    "managerAuto",
   ] as const;
 
   const isFormValid = useMemo(() => {

@@ -8,12 +8,12 @@ import {
 import type { FC } from "react";
 interface Props {
   title: string;
-  description: string;
-  number: number;
+  description?: string;
+  number: number | string;
 }
 const StatCard: FC<Props> = ({ description, number, title }) => {
   return (
-    <Card className="w-full h-[128px] gap-1 flex flex-col justify-between min-w-[200px]">
+    <Card className="w-full flex flex-col min-w-[200px]">
       <div className="flex flex-col">
         <CardHeader className="flex justify-between items-center">
           <CardTitle>{title}</CardTitle>

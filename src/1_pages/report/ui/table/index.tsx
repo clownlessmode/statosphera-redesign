@@ -39,6 +39,7 @@ export default function UniversalTable({
   useEffect(() => {
     if (!data?.length) return;
     const first = data[0];
+    console.log(first);
 
     // Основные колонки
     const baseDefs: ColDef[] =
