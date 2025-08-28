@@ -13,7 +13,7 @@ interface Props {
 }
 const StatCard: FC<Props> = ({ description, number, title }) => {
   return (
-    <Card className="w-full flex flex-col min-w-[200px]">
+    <Card className="w-full flex flex-col h-full max-h-[120px]">
       <div className="flex flex-col">
         <CardHeader className="flex justify-between items-center">
           <CardTitle>{title}</CardTitle>

@@ -14,39 +14,49 @@ import { useEffect, useState } from "react";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
 import { GrillProductTblRo } from "../api/types/responses";
+import { preventSpaces } from "@shared/lib/prevent-spaces";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   idProduct: number;
+  idRow: number;
   product: GrillProductTblRo | null;
 }
 
-const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
-  const { addProductLeftover, isAddProductImLoading } = useGrillController();
-
-  // Состояние для выбранных продуктов (один массив чисел)
+const AddCountDialog = ({
+  isOpen,
+  onClose,
+  idProduct,
+  idRow,
+  product,
+}: Props) => {
+  const {
+    addProductLeftover,
+    isAddProductImLoading,
+    deleteProductIm,
+    isDeleteProductImLoading,
+  } = useGrillController();
   const [count, setCount] = useState<number>(0);
-  // Состояние для отображаемого значения в инпуте
   const [inputValue, setInputValue] = useState<string>("");
-  // Состояние для AlertDialog подтверждения
   const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] =
+    useState<boolean>(false);
 
-  // Функция для безопасного сложения/вычитания с учетом единиц измерения
+  //для сложения - вычитания
   const updateCount = (increment: boolean) => {
     if (product?.ed === "ШТ") {
       setCount((prev) => {
-        const newValue = increment ? prev + 1 : prev - 1;
+        const newValue = increment ? prev + 1 : Math.max(0, prev - 1);
         setInputValue(newValue.toString());
         return newValue;
       });
     } else if (product?.ed === "КГ") {
-      // Для КГ используем целые числа (умножаем на 10)
       setCount((prev) => {
         const currentInTenths = Math.round(prev * 10);
         const newInTenths = increment
           ? currentInTenths + 1
-          : currentInTenths - 1;
+          : Math.max(0, currentInTenths - 1);
         const newValue = newInTenths / 10;
         setInputValue(newValue.toFixed(1));
         return newValue;
@@ -54,7 +64,6 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
     }
   };
 
-  // Функция для форматирования отображаемого значения
   const formatDisplayValue = (value: number): string => {
     if (product?.ed === "КГ") {
       return value.toFixed(1);
@@ -62,22 +71,22 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
     return value.toString();
   };
 
-  // Функция для парсинга введенного значения
   const parseInputValue = (value: string): number => {
     const parsed = parseFloat(value);
     if (isNaN(parsed)) return 0;
 
+    const positiveValue = Math.max(0, parsed);
+
     if (product?.ed === "КГ") {
-      // Округляем до одного знака после запятой для КГ
-      return Math.round(parsed * 10) / 10;
+      return Math.round(positiveValue * 10) / 10;
     }
-    return parsed;
+    return positiveValue;
   };
 
-  // Обработчик изменения инпута
   const handleInputChange = (value: string) => {
-    setInputValue(value);
-    const parsedValue = parseInputValue(value);
+    const cleanValue = value.replace(/^-+/, "");
+    setInputValue(cleanValue);
+    const parsedValue = parseInputValue(cleanValue);
     setCount(parsedValue);
   };
 
@@ -88,12 +97,25 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
     setShowConfirmDialog(true);
   };
 
-  const handleAddProduct = () => {
-    addProductLeftover({ id: idProduct, payload: { count: count } });
-    setCount(0);
-    setInputValue("");
-    setShowConfirmDialog(false);
-    onClose();
+  const handleAddProduct = async () => {
+    try {
+      await addProductLeftover({ id: idProduct, payload: { count: count } });
+      setCount(0);
+      setInputValue("");
+      setShowConfirmDialog(false);
+      onClose();
+    } catch {
+      return <></>;
+    }
+  };
+
+  const handleDeleteProduct = async () => {
+    try {
+      await deleteProductIm({ id: idRow || 0 });
+      onClose();
+    } catch {
+      return <></>;
+    }
   };
 
   const handleCancelConfirm = () => {
@@ -125,6 +147,15 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
             <div className="flex flex-col h-full">
               <div className="flex flex-col gap-4">
                 <Input
+                  type="number"
+                  min="0"
+                  step={product?.ed === "КГ" ? "0.1" : "1"}
+                  onKeyDown={(e) => {
+                    preventSpaces(e);
+                    if (e.key === "-") {
+                      e.preventDefault();
+                    }
+                  }}
                   placeholder="Введите количество"
                   value={inputValue}
                   onChange={(e) => handleInputChange(e.target.value)}
@@ -136,6 +167,7 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
                       className="w-full text-xl font-bold hover:bg-red-500"
                       variant="outline"
                       onClick={() => updateCount(false)}
+                      disabled={count <= 0}
                     >
                       -
                     </Button>
@@ -191,6 +223,12 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
                     : `Добавить ${formatDisplayValue(count)} ${product?.ed === "ШТ" ? "шт." : "кг."}`}
                 </Button>
                 <Button
+                  onClick={() => setShowConfirmDeleteDialog(true)}
+                  disabled={isDeleteProductImLoading}
+                >
+                  Удалить продукт
+                </Button>
+                <Button
                   variant="outline"
                   onClick={onClose}
                   disabled={isAddProductImLoading}
@@ -241,6 +279,36 @@ const AddCountDialog = ({ isOpen, onClose, idProduct, product }: Props) => {
               disabled={isAddProductImLoading}
             >
               {isAddProductImLoading ? "Добавление..." : "Добавить"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={showConfirmDeleteDialog}
+        onOpenChange={setShowConfirmDeleteDialog}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">
+              Подтверждение удаления
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white-700">
+              Вы уверены, что хотите удалить{" "}
+              <span className="font-bold">{product?.fullname}</span> ?
+              <br />
+              <br />
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleCancelConfirm}>
+              Отмена
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteProduct}
+              disabled={isDeleteProductImLoading}
+            >
+              {isDeleteProductImLoading ? "Удаление..." : "Удалить"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

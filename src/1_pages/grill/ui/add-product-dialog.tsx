@@ -4,6 +4,7 @@ import { MultiSelect, MultiSelectOption } from "@shared/ui/multiselect";
 import { useState, useMemo } from "react";
 import { Button } from "@shared/ui/button";
 import { XIcon } from "lucide-react";
+import { GrillProductTblRo } from "../api/types/responses";
 
 interface Props {
   isOpen: boolean;
@@ -16,32 +17,90 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     isLoading: isLoadingProducts,
     addProductIm,
     isAddProductImLoading,
+    tableData,
   } = useGrillController();
 
-  // Состояние для выбранных продуктов (один массив чисел)
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
 
-  // Преобразуем данные продуктов в формат для MultiSelect
+  const addedProductIds = useMemo(() => {
+    if (!tableData) return new Set<number>();
+
+    const ids = new Set<number>();
+    tableData.forEach((item: any) => {
+      if (item.idProduct) {
+        ids.add(item.idProduct);
+      }
+    });
+    return ids;
+  }, [tableData]);
+
+  const addedProductsInfo = useMemo(() => {
+    if (!tableData || !products) return [];
+
+    return tableData.map((tableItem: GrillProductTblRo) => {
+      const product = products.find((p) =>
+        p.idProduct.includes(tableItem.idProduct),
+      );
+      return {
+        id: tableItem.idProduct,
+        name:
+          tableItem.fullname ||
+          product?.productName ||
+          `Продукт ${tableItem.idProduct}`,
+        remainder: tableItem.remainder,
+        ed: tableItem.ed,
+      };
+    });
+  }, [tableData, products]);
+
   const productOptions: MultiSelectOption[] = useMemo(() => {
     if (!products) return [];
 
-    return products.map((product) => ({
-      label: product.productName,
-      value: product.idProduct.join(","), // Используем строку для MultiSelect
-    }));
-  }, [products]);
+    return products
+      .filter((product) => {
+        return product.idProduct.some((id) => !addedProductIds.has(id));
+      })
+      .map((product) => {
+        const availableIds = product.idProduct.filter(
+          (id) => !addedProductIds.has(id),
+        );
+        return {
+          label: `${product.productName}${addedProductIds.has(product.idProduct[0]) ? " (частично добавлен)" : ""}`,
+          value: availableIds.join(","),
+        };
+      });
+  }, [products, addedProductIds]);
 
-  // Получаем названия выбранных продуктов
   const selectedProductNames = useMemo(() => {
     return selectedProducts.map((id) => {
       const product = products?.find((p) => p.idProduct.includes(id));
-      return { id, name: product?.productName || `Продукт ${id}` };
+      return {
+        id,
+        name: product?.productName || `Продукт ${id}`,
+        isAdded: false,
+      };
     });
   }, [selectedProducts, products]);
 
-  // Обработчик изменения выбранных продуктов
+  const allDisplayedProducts = useMemo(() => {
+    const selectedProducts = selectedProductNames.map((product: any) => ({
+      id: product.id,
+      name: product.name,
+      isAdded: false,
+    }));
+
+    const addedProducts = addedProductsInfo.map((product: any) => ({
+      id: product.id,
+      name: product.name,
+      isAdded: true,
+      remainder: product.remainder,
+      ed: product.ed,
+    }));
+
+    return [...selectedProducts, ...addedProducts];
+  }, [addedProductsInfo, selectedProductNames]);
+
   const handleProductSelectionChange = (selectedValues: string[]) => {
-    // Преобразуем строки в один массив чисел
     const allProductIds: number[] = [];
 
     selectedValues.forEach((value) => {
@@ -51,7 +110,6 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
 
     setSelectedProducts(allProductIds);
 
-    // Выводим названия выбранных продуктов в консоль
     const selectedProductNames = selectedValues.map((productIdString) => {
       const product = products?.find(
         (p) => p.idProduct.join(",") === productIdString,
@@ -62,7 +120,6 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     console.log("Выбранные ID (массив чисел):", allProductIds);
   };
 
-  // Обработчик удаления продукта
   const handleRemoveProduct = (idToRemove: number) => {
     const newSelectedProducts = selectedProducts.filter(
       (id) => id !== idToRemove,
@@ -70,7 +127,6 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     setSelectedProducts(newSelectedProducts);
   };
 
-  // Обработчик отправки на сервер
   const handleSubmit = async () => {
     if (selectedProducts.length === 0) {
       console.log("Нет выбранных продуктов");
@@ -80,8 +136,8 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     try {
       const result = await addProductIm({ idProduct: selectedProducts });
       console.log("Продукты успешно добавлены:", result);
-      setSelectedProducts([]); // Очищаем выбор после успешной отправки
-      onClose(); // Закрываем модалку после успешной отправки
+      setSelectedProducts([]);
+      onClose();
     } catch (error) {
       console.error("Ошибка при добавлении продуктов:", error);
     }
@@ -95,13 +151,36 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     return <></>;
   }
 
+  if (productOptions.length === 0 && products.length > 0) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogTrigger></DialogTrigger>
+        <DialogContent className="h-[30vh]">
+          <div className="px-2 py-4 space-y-4 h-full flex flex-col justify-center items-center">
+            <p className="text-center">
+              Все доступные продукты уже добавлены в гриль
+            </p>
+            <Button onClick={onClose}>Закрыть</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogTrigger></DialogTrigger>
-        <DialogContent className="h-[65vh]">
+        <DialogContent className="h-[68vh]">
           <div className="px-2 py-4 space-y-4 h-full flex flex-col">
-            <p>Добавить продукты</p>
+            <div className="flex flex-col gap-2">
+              <p>Добавить продукты</p>
+              {addedProductIds.size > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  Уже добавлено в гриль: {addedProductIds.size} продуктов
+                </p>
+              )}
+            </div>
             <div className="flex flex-col h-full">
               <div className="flex flex-col gap-4 flex-1 min-h-0">
                 <MultiSelect
@@ -118,33 +197,50 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
                       : []
                   }
                   onValueChange={handleProductSelectionChange}
-                  placeholder="Выберите продукты"
+                  placeholder="Выберите продукты для добавления"
                   isLoading={isLoadingProducts}
                   maxCount={1}
                 />
 
-                {/* Список выбранных продуктов с скроллом */}
-                {selectedProductNames.length > 0 && (
+                {allDisplayedProducts.length > 0 && (
                   <div className="flex flex-col gap-2 flex-1 min-h-0">
-                    <p className="text-sm text-muted-foreground">
-                      Выбранные продукты:
-                    </p>
-                    <div className="flex-1 overflow-y-auto border rounded-md p-2 max-h-[350px]">
+                    <p className="text-sm text-muted-foreground">Продукты:</p>
+                    <div className="flex-1 overflow-y-auto border rounded-md p-2 max-h-[400px]">
                       <div className="flex flex-col gap-2">
-                        {selectedProductNames.map(({ id, name }) => (
+                        {allDisplayedProducts.map((product: any) => (
                           <div
-                            key={id}
-                            className="flex items-center justify-between gap-2 bg-muted rounded-md p-2"
+                            key={product.id}
+                            className={`flex items-center justify-between gap-2 rounded-md p-2 ${
+                              product.isAdded
+                                ? "bg-muted/60 border border-muted"
+                                : "border "
+                            }`}
                           >
-                            <p className="text-sm">{name}</p>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() => handleRemoveProduct(id)}
-                              className="h-6 w-6"
-                            >
-                              <XIcon className="w-3 h-3" />
-                            </Button>
+                            <div className="flex-1">
+                              <p className="text-sm">{product.name}</p>
+                              {product.isAdded &&
+                                product.remainder !== undefined && (
+                                  <p className="text-xs text-muted-foreground">
+                                    Остаток: {product.remainder || 0}{" "}
+                                    {product.ed}
+                                  </p>
+                                )}
+                            </div>
+
+                            {product.isAdded ? (
+                              <span className="text-xs text-green-600 font-medium px-2 py-1 bg-green-50 rounded">
+                                Добавлен
+                              </span>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => handleRemoveProduct(product.id)}
+                                className="h-6 w-6"
+                              >
+                                <XIcon className="w-3 h-3" />
+                              </Button>
+                            )}
                           </div>
                         ))}
                       </div>
