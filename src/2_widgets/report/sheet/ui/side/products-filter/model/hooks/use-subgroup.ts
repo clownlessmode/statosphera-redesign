@@ -1,4 +1,4 @@
-import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
+import { processFiltersDtoForOptions } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { SubgroupFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -26,17 +26,35 @@ export const useSubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubGroups(processFiltersDto(allData));
-      const apiOptions = response.map((subgroup: SubgroupFilterResponse) => ({
-        label: subgroup.subGroups,
-        value: String(JSON.stringify(subgroup.idSubGroups || [])),
-      }));
+      const response = await getSubGroups(processFiltersDtoForOptions(allData));
+
+      const groupedMap = new Map<string, number[]>();
+
+      response.forEach((subgroup: SubgroupFilterResponse) => {
+        const name = subgroup.subGroups;
+        const ids = subgroup.idSubGroups || [];
+
+        if (groupedMap.has(name)) {
+          const existingIds = groupedMap.get(name)!;
+          const mergedIds = [...new Set([...existingIds, ...ids])];
+          groupedMap.set(name, mergedIds);
+        } else {
+          groupedMap.set(name, [...ids]);
+        }
+      });
+
+      const apiOptions = Array.from(groupedMap.entries()).map(
+        ([name, ids]) => ({
+          label: name,
+          value: String(JSON.stringify(ids)),
+        }),
+      );
+
       setSubgroupOptions(apiOptions);
       setSubgroupLabels(apiOptions);
-    } catch (error) {
+    } catch {
       setSubgroupOptions([]);
       setSubgroupLabels([]);
-      console.error("Ошибка при загрузке подгрупп:", error);
     }
   };
 
