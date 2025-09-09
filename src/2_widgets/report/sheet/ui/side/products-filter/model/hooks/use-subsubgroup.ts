@@ -1,4 +1,4 @@
-import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
+import { processFiltersDtoForOptions } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { SubSubGroupFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -27,15 +27,36 @@ export const useSubsubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubSubGroups(processFiltersDto(allData));
-      const apiOptions = response.map(
-        (subsubgroup: SubSubGroupFilterResponse) => ({
-          label: `${subsubgroup.subSubGroups} ${JSON.stringify(
-            subsubgroup.idSubSubGroups,
-          )}`,
-          value: String(JSON.stringify(subsubgroup.idSubSubGroups || [])),
+      const response = await getSubSubGroups(
+        processFiltersDtoForOptions(allData),
+      );
+
+      // Группируем элементы по названию и объединяем ID
+      const groupedMap = new Map<string, number[]>();
+
+      response.forEach((subsubgroup: SubSubGroupFilterResponse) => {
+        const name = subsubgroup.subSubGroups;
+        const ids = subsubgroup.idSubSubGroups || [];
+
+        if (groupedMap.has(name)) {
+          // Объединяем ID для существующего названия
+          const existingIds = groupedMap.get(name)!;
+          const mergedIds = [...new Set([...existingIds, ...ids])];
+          groupedMap.set(name, mergedIds);
+        } else {
+          // Создаем новую группу
+          groupedMap.set(name, [...ids]);
+        }
+      });
+
+      // Создаем опции из сгруппированных данных
+      const apiOptions = Array.from(groupedMap.entries()).map(
+        ([name, ids]) => ({
+          label: name,
+          value: String(JSON.stringify(ids)),
         }),
       );
+
       setSubsubgroupOptions(apiOptions);
       setSubsubgroupLabels(apiOptions);
     } catch (error) {

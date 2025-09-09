@@ -451,11 +451,7 @@ export const EditProduct: FC<Props> = ({
                           const hasError = getFieldError("managerAuto");
                           return (
                             <FormItem>
-                              <FormLabel
-                                className={hasError ? "text-destructive" : ""}
-                              >
-                                Менеджер автозаказа
-                              </FormLabel>
+                              <FormLabel>Менеджер автозаказа</FormLabel>
                               <FormControl>
                                 <MultiSelect
                                   maxCount={1}
@@ -484,17 +480,12 @@ export const EditProduct: FC<Props> = ({
                                   defaultValue={filterNullValues(
                                     field.value,
                                   ).map(String)}
-                                  placeholder="Не задан"
+                                  placeholder="Выберите менеджера ..."
                                   className={
                                     hasError ? "border-destructive" : ""
                                   }
                                 />
                               </FormControl>
-                              {hasError && (
-                                <p className="text-[12px] text-destructive">
-                                  Обязательно для заполнения
-                                </p>
-                              )}
                             </FormItem>
                           );
                         }}

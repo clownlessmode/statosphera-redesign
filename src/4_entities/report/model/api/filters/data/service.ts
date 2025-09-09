@@ -69,6 +69,11 @@ export function processFiltersDto(dto: any): any {
     filters: processFilters(dto.filters),
   };
 }
+
+// Функция для загрузки опций фильтра без разбиения JSON строк
+export function processFiltersDtoForOptions(dto: any): any {
+  return dto; //возвроащает данные как есть
+}
 export class ReportService {
   static async getReportTable(
     dto: FilterApiPayload,

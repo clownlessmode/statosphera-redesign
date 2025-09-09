@@ -395,7 +395,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       onValueChange={(value) => {
                         const numeric = value.map(String);
                         field.onChange(numeric);
-                        updateProductFilter("subGroups", value);
+                        updateProductFilter("subGroups", numeric);
                       }}
                       externalLabels={savedSubgroupLabels}
                       defaultValue={field.value?.map(String)}
@@ -408,27 +408,80 @@ const ProductsFilter: FC<Props> = ({ className }) => {
             <FormField
               control={form.control}
               name="subSubGroups"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Подподгруппа</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      value={field.value?.map(String) || []}
-                      options={subsubgroupOptions}
-                      isLoading={isSubsubgroupsLoading}
-                      onOpenChange={handleOpenSubsubgroupsSelect}
-                      onValueChange={(value) => {
-                        const numeric = value.map(String);
-                        field.onChange(numeric);
-                        updateProductFilter("subSubGroups", value);
-                      }}
-                      externalLabels={savedSubsubgroupLabels}
-                      defaultValue={field.value?.map(String)}
-                      placeholder="Выберите подподгруппу"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const currentValues = field.value?.map(String) || [];
+
+                // Нормализуем разбитые ID, объединяя их обратно в группы
+                const normalizeValues = (
+                  values: string[],
+                  savedLabels: any[],
+                ): string[] => {
+                  const result: string[] = [];
+
+                  values.forEach((value) => {
+                    // Ищем точное совпадение
+                    if (savedLabels.find((label) => label.value === value)) {
+                      result.push(value);
+                      return;
+                    }
+
+                    // Если точного совпадения нет, ищем одиночные ID в группах
+                    try {
+                      const parsedValue = JSON.parse(value);
+                      if (
+                        Array.isArray(parsedValue) &&
+                        parsedValue.length === 1
+                      ) {
+                        const matchingLabel = savedLabels.find((label) => {
+                          try {
+                            const labelIds = JSON.parse(label.value);
+                            return (
+                              Array.isArray(labelIds) &&
+                              labelIds.includes(parsedValue[0])
+                            );
+                          } catch {
+                            return false;
+                          }
+                        });
+                        if (matchingLabel) {
+                          result.push(matchingLabel.value);
+                        }
+                      }
+                    } catch {
+                      result.push(value);
+                    }
+                  });
+
+                  return [...new Set(result)];
+                };
+
+                const normalizedValues = normalizeValues(
+                  currentValues,
+                  savedSubsubgroupLabels,
+                );
+
+                return (
+                  <FormItem>
+                    <FormLabel>Подподгруппа</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        value={normalizedValues}
+                        options={subsubgroupOptions}
+                        isLoading={isSubsubgroupsLoading}
+                        onOpenChange={handleOpenSubsubgroupsSelect}
+                        onValueChange={(value) => {
+                          const numeric = value.map(String);
+                          field.onChange(numeric);
+                          updateProductFilter("subSubGroups", numeric);
+                        }}
+                        externalLabels={savedSubsubgroupLabels}
+                        defaultValue={normalizedValues}
+                        placeholder="Выберите подподгруппу"
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
             />
             <FormField
               control={form.control}

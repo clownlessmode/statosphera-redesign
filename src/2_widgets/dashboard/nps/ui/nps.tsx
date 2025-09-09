@@ -14,7 +14,7 @@ export const Nps = () => {
   }
 
   return (
-    <Card className="w-full items-center justify-center px-8">
+    <Card className="w-full items-center justify-center px-8 !h-[400px]">
       <div className="relative inline-block">
         <motion.h1
           className="text-9xl  font-extrabold text-primary leading-none relative z-10"
