@@ -24,10 +24,12 @@ import { Loyalty } from "@pages/loyalty";
 
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { Summary } from "@pages/summary";
+import { TV } from "@pages/tv";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
   MESSAGES: "/messages",
+  TV: "/tv",
   // Авторизация
   LOGIN: "/login",
 
@@ -78,6 +80,12 @@ export const ROUTES_PATH = {
 } as const;
 
 export const ROUTES: RouteConfig[] = [
+  {
+    path: ROUTES_PATH.TV,
+    variant: "private",
+    element: <TV />,
+    label: "TV",
+  },
   {
     path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
     variant: "private",
