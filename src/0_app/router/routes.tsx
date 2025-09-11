@@ -24,6 +24,7 @@ import { Loyalty } from "@pages/loyalty";
 
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { Summary } from "@pages/summary";
+import { AdminTerminalPage } from "@pages/admin/admin-terminal";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
@@ -56,6 +57,7 @@ export const ROUTES_PATH = {
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_LOGS: "/admin/logs",
   ADMIN_NOTIFICATIONS: "/admin/notifications",
+  ADMIN_TERMINAL: "/admin/terminal",
 
   // Магазины и доходы
   STORES: "/stores",
@@ -223,6 +225,13 @@ export const ROUTES: RouteConfig[] = [
     element: <Loyalty />,
     layout: Sidebar,
     label: "Лояльность",
+  },
+  {
+    path: ROUTES_PATH.ADMIN_TERMINAL,
+    variant: "private",
+    element: <AdminTerminalPage />,
+    layout: Sidebar,
+    label: "Терминал",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,

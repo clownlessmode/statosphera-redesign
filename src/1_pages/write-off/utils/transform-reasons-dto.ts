@@ -52,8 +52,26 @@ export const transformToReasonsDto = (
         ppProducts: filters.filters.product.ppProducts,
         isImProducts: null, // Не используется в текущей структуре
         subDivisionProducts: filters.filters.product.subDivisionProducts,
-        subGroups: filters.filters.product.subGroups,
-        subSubGroups: filters.filters.product.subSubGroups,
+        subGroups: filters.filters.product.subGroups
+          .flatMap((id) => {
+            const idStr = typeof id === "string" ? id : String(id);
+            return idStr
+              .replace(/[[\]]/g, "")
+              .split(",")
+              .map((singleId) => parseInt(singleId.trim()))
+              .filter((singleId) => !isNaN(singleId));
+          })
+          .map((id) => id.toString()),
+        subSubGroups: filters.filters.product.subSubGroups
+          .flatMap((id) => {
+            const idStr = typeof id === "string" ? id : String(id);
+            return idStr
+              .replace(/[[\]]/g, "")
+              .split(",")
+              .map((singleId) => parseInt(singleId.trim()))
+              .filter((singleId) => !isNaN(singleId));
+          })
+          .map((id) => id.toString()),
         typeProducts: filters.filters.product.typeProducts,
         teamProducts: filters.filters.product.teamProducts,
         directionProducts: filters.filters.product.directionProducts,

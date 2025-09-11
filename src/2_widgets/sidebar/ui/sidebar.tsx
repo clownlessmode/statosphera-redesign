@@ -15,6 +15,7 @@ import {
   SettingsIcon,
   ShoppingBag,
   SlidersHorizontal,
+  SquareTerminal,
   Store,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -118,6 +119,12 @@ const Sidebar = ({
         title: "Админ панель",
         url: ROUTES_PATH.ADMIN_STORES,
         icon: SettingsIcon,
+        disabled: session?.role !== ROLES.ADMIN,
+      },
+      {
+        title: "Терминал",
+        url: ROUTES_PATH.ADMIN_TERMINAL,
+        icon: SquareTerminal,
         disabled: session?.role !== ROLES.ADMIN,
       },
       {
