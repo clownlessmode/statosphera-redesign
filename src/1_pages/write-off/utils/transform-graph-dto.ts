@@ -75,8 +75,26 @@ export function transformToGraphDto(
         ppProducts: payload.filters.product.ppProducts || null,
         isImProducts: null,
         subDivisionProducts: payload.filters.product.subDivisionProducts || [],
-        subGroups: payload.filters.product.subGroups || [],
-        subSubGroups: payload.filters.product.subSubGroups || [],
+        subGroups: (payload.filters.product.subGroups || [])
+          .flatMap((id) =>
+            id
+              .toString()
+              .replace(/[[\]]/g, "")
+              .split(",")
+              .map((singleId) => parseInt(singleId.trim()))
+              .filter((singleId) => !isNaN(singleId)),
+          )
+          .map((id) => id.toString()),
+        subSubGroups: (payload.filters.product.subSubGroups || [])
+          .flatMap((id) =>
+            id
+              .toString()
+              .replace(/[[\]]/g, "")
+              .split(",")
+              .map((singleId) => parseInt(singleId.trim()))
+              .filter((singleId) => !isNaN(singleId)),
+          )
+          .map((id) => id.toString()),
         typeProducts: payload.filters.product.typeProducts || [],
         teamProducts: payload.filters.product.teamProducts || [],
         directionProducts: payload.filters.product.directionProducts || [],
