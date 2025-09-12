@@ -1,6 +1,6 @@
 import { Header } from "@widgets/header";
 import { useDashboard } from "../api/controller";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
 import MarkupSkeleton from "@widgets/dashboard/markup/ui/markup-skeleton";
@@ -22,6 +22,7 @@ import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
+import { test } from "./test";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue"),
 );
@@ -83,10 +84,18 @@ const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
   const { session } = useSession();
+  const randomFromTest = useMemo(() => {
+    return test[Math.floor(Math.random() * test.length)];
+  }, []); // Пустой массив зависимостей означает, что значение будет вычислено только один раз
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
       <div className="rounded-3xl h-full  bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
+        {session?.idUser === 181 && (
+          <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
+            {randomFromTest}
+          </div>
+        )}
         <Suspense fallback={<WeeklyRevenueSkeleton />}>
           <WeeklyRevenue
             data={dashboard?.salesSevenDays}
