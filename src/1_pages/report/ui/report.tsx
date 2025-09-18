@@ -687,7 +687,7 @@ const Report: FC = () => {
         <div
           className={cn(
             "rounded-3xl bg-background flex flex-col h-full gap-4",
-            isMobile ? "pb-4 *:nth-[n+2]:px-4" : "p-4",
+            isMobile ? "pb-4 px-4 *:first:px-0 *:last:px-0" : "p-4",
           )}
         >
           {isMobile && (
