@@ -12,6 +12,8 @@ import Commerce from "./commerce/ui/commerce";
 import { Check } from "./check";
 import { useTabStore } from "../model/url-store";
 import { useFormResetStore } from "../model/reset-store";
+import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export default function ReportFiltersSheet() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,14 +58,24 @@ export default function ReportFiltersSheet() {
       setSearchParams(searchParams, { replace: true });
     }
   };
-
+  const isMobile = useIsMobile();
   return (
     <SheetMain open={open} onOpenChange={handleOpenChange}>
-      <SheetContent side="left" close={false} forceMount className="scrol">
+      <SheetContent
+        side="left"
+        close={false}
+        forceMount
+        className={cn("scrol", isMobile && "w-full")}
+      >
         <div>
           <Tabs value={tab} onValueChange={handleTabChange} className="gap-0">
             <SheetHeader className="p-0 border-b border-border shadow-sm">
-              <TabsList className="w-full rounded-none px-4 py-2 h-fit">
+              <TabsList
+                className={cn(
+                  "w-full rounded-none",
+                  isMobile ? "h-full" : "py-2 px-4 h-fit",
+                )}
+              >
                 <TabsTrigger value="commerce">Коммерческая</TabsTrigger>
                 <TabsTrigger value="check">Чековая</TabsTrigger>
               </TabsList>

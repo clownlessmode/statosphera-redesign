@@ -7,6 +7,7 @@ import { Checkbox } from "@shared/ui/checkbox";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { Badge } from "./badge";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 export interface CheckboxTreeItem {
   id: string;
   label: string;
@@ -82,12 +83,13 @@ const CheckboxTree = React.forwardRef<HTMLDivElement, CheckboxTreeProps>(
       );
       onChange(leafValuesOnly);
     };
-
+    const isMobile = useIsMobile();
     return (
       <div
         ref={ref}
         className={cn(
-          "overflow-hidden relative p-2",
+          "overflow-hidden relative",
+          !isMobile && "p-2",
           disabled && "cursor-not-allowed!",
           className,
         )}
