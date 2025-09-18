@@ -35,6 +35,7 @@ import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
 import { useChannel } from "../model/hooks/use-channel";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const ShopsFilter: FC = () => {
   const form = useForm();
@@ -111,6 +112,7 @@ export const ShopsFilter: FC = () => {
     }
   }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
   const { CHANNEL_SHOP } = useChannel();
+  const isMobile = useIsMobile();
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -139,7 +141,9 @@ export const ShopsFilter: FC = () => {
                         updateStoreFilter("channel", values as FRS_CHANNEL[]);
                       }}
                       options={CHANNEL_SHOP}
-                      className="grid-cols-3"
+                      className={
+                        isMobile ? "grid-cols-1 xs:grid-cols-2" : "grid-cols-3"
+                      }
                     />
                   </FormItem>
                 );
@@ -187,7 +191,9 @@ export const ShopsFilter: FC = () => {
                         updateStoreFilter("ageGroup", values as AGE_GROUP[]);
                       }}
                       options={TIME}
-                      className="grid-cols-4"
+                      className={
+                        isMobile ? "grid-cols-1 xs:grid-cols-2" : "grid-cols-4"
+                      }
                     />
                   </FormItem>
                 );

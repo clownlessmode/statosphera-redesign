@@ -11,14 +11,16 @@ import {
 import { useState } from "react";
 import { useSavedReportsController } from "../api/controller";
 import SavedReportCard from "./saved-report-card";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 export default function SavedReports() {
   const [isOpen, setIsOpen] = useState(false);
   const { saved, isSavedReportsLoading } = useSavedReportsController();
+  const isMobile = useIsMobile();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Star /> Сохраненные отчеты
+          <Star /> {!isMobile && "Сохраненные отчеты"}
         </Button>
       </DialogTrigger>
       <DialogContent className="p-0 rounded-xl border-none">

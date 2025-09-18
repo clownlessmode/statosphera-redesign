@@ -21,6 +21,7 @@ import { useSearchParams } from "react-router";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -100,13 +101,13 @@ const DateDropdown = () => {
   ];
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
-
+  const isMobile = useIsMobile();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Calendar className="text-primary/80 mr-2" />
-          {selectedLabel}
+        <Button variant="outline" size={isMobile ? "default" : "sm"}>
+          <Calendar className="text-primary/80" />
+          {!isMobile && selectedLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
