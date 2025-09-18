@@ -5,6 +5,7 @@ import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface Props {
   form: UseFormReturn<FormValues>;
@@ -38,7 +39,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       id: [],
     });
   };
-
+  const isMobile = useIsMobile();
   return (
     <Button
       size="sm"
@@ -46,7 +47,8 @@ const ClearFilters: FC<Props> = ({ form }) => {
       variant="outline"
       onClick={handleClearFilters}
     >
-      Очистить фильтры <Eraser className="text-primary/80" />
+      {isMobile ? "" : "Очистить фильтры"}{" "}
+      <Eraser className="text-primary/80" />
     </Button>
   );
 };

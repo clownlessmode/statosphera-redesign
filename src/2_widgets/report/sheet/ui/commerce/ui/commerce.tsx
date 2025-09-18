@@ -16,6 +16,8 @@ import { filters, grouping, indicators } from "../model/tabs";
 import { Eraser } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const CommerceInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
@@ -28,63 +30,73 @@ const CommerceInner = () => {
     }
   }, [targetViewValue, scrollTo, setTargetViewValue]);
   const { triggerReset } = useFormResetStore();
+  const isMobile = useIsMobile();
   return (
     <>
-      <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4 h-full">
-        <ViewTabsGroup>
-          <ViewTabsLabel>Фильтры</ViewTabsLabel>
-          <ViewTabsGroupContent className="grid grid-cols-2 md:flex flex-col">
-            {filters.map((item, index) => (
-              <ViewTabsTrigger
-                value={item.title}
-                icon={item.icon}
-                key={`filter-trigger-${index}`}
-              >
-                {item.title}
-              </ViewTabsTrigger>
-            ))}
-          </ViewTabsGroupContent>
-        </ViewTabsGroup>
+      {!isMobile && (
+        <ViewTabsList className="flex flex-col bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4 h-full">
+          <ViewTabsGroup>
+            <ViewTabsLabel>Фильтры</ViewTabsLabel>
+            <ViewTabsGroupContent className="grid grid-cols-2 md:flex flex-col">
+              {filters.map((item, index) => (
+                <ViewTabsTrigger
+                  value={item.title}
+                  icon={item.icon}
+                  key={`filter-trigger-${index}`}
+                >
+                  {item.title}
+                </ViewTabsTrigger>
+              ))}
+            </ViewTabsGroupContent>
+          </ViewTabsGroup>
 
-        <Separator />
+          <Separator />
 
-        <ViewTabsGroup>
-          <ViewTabsLabel>Группировка</ViewTabsLabel>
-          <ViewTabsGroupContent>
-            {grouping.map((item, index) => (
-              <ViewTabsTrigger
-                value={item.title}
-                icon={item.icon}
-                key={`grouping-trigger-${index}`}
-              >
-                {item.title}
-              </ViewTabsTrigger>
-            ))}
-          </ViewTabsGroupContent>
-        </ViewTabsGroup>
-        <Separator />
-        <ViewTabsGroup>
-          <ViewTabsLabel>Показатели</ViewTabsLabel>
-          <ViewTabsGroupContent>
-            {indicators.map((item, index) => (
-              <ViewTabsTrigger
-                value={item.title}
-                icon={item.icon}
-                key={`indicator-trigger-${index}`}
-              >
-                {item.title}
-              </ViewTabsTrigger>
-            ))}
-          </ViewTabsGroupContent>
-        </ViewTabsGroup>
-        <Separator />
-        <CombinedSubmitButton />
-      </ViewTabsList>
-      <div className="flex flex-col gap-8 overflow-auto max-h-screen py-4 pb-96 max-w-xl">
+          <ViewTabsGroup>
+            <ViewTabsLabel>Группировка</ViewTabsLabel>
+            <ViewTabsGroupContent>
+              {grouping.map((item, index) => (
+                <ViewTabsTrigger
+                  value={item.title}
+                  icon={item.icon}
+                  key={`grouping-trigger-${index}`}
+                >
+                  {item.title}
+                </ViewTabsTrigger>
+              ))}
+            </ViewTabsGroupContent>
+          </ViewTabsGroup>
+          <Separator />
+          <ViewTabsGroup>
+            <ViewTabsLabel>Показатели</ViewTabsLabel>
+            <ViewTabsGroupContent>
+              {indicators.map((item, index) => (
+                <ViewTabsTrigger
+                  value={item.title}
+                  icon={item.icon}
+                  key={`indicator-trigger-${index}`}
+                >
+                  {item.title}
+                </ViewTabsTrigger>
+              ))}
+            </ViewTabsGroupContent>
+          </ViewTabsGroup>
+          <Separator />
+          <CombinedSubmitButton />
+        </ViewTabsList>
+      )}
+      <div
+        className={cn(
+          "flex flex-col py-4",
+          !isMobile
+            ? "max-w-xl max-h-screen pb-96 overflow-auto gap-8"
+            : "px-4 w-full gap-4",
+        )}
+      >
         <Button onClick={() => triggerReset()}>
           Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
         </Button>
-        <Separator />
+        {isMobile ? <CombinedSubmitButton /> : <Separator />}
 
         {filters.map((item, index) => (
           <ViewTabsContent value={item.title} key={`filter-content-${index}`}>

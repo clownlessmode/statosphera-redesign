@@ -1,4 +1,5 @@
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 import { cn } from "@shared/lib/utils";
 import { Check, LucideIcon } from "lucide-react";
 import type { FC } from "react";
@@ -32,7 +33,7 @@ const BooleanCheckboxCard: FC<Props> = ({
     const newValue = value === optionValue ? null : optionValue;
     onChange?.(newValue);
   };
-
+  const isMobile = useIsMobile();
   return (
     <div className={cn("w-full grid grid-cols-2 gap-2", className)}>
       {options.map((option) => (
@@ -54,7 +55,7 @@ const BooleanCheckboxCard: FC<Props> = ({
         >
           {option.icon && <option.icon />}
           {option.label}
-          {!disableCheck && !option.disableCheck && (
+          {!disableCheck && !option.disableCheck && !isMobile && (
             <CheckboxPrimitive.Indicator className="absolute top-1/2 -translate-y-1/2 right-4">
               <Check className="text-primary-foreground" strokeWidth={2} />
             </CheckboxPrimitive.Indicator>

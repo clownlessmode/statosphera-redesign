@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { cn } from "@shared/lib/utils";
 import { tableColumns } from "@shared/constants/table-columns";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export default function SaveReport() {
   const [isOpen, setIsOpen] = useState(false);
@@ -298,11 +299,13 @@ export default function SaveReport() {
     }
   };
 
+  const isMobile = useIsMobile();
+
   if (!hasReportData) {
     return (
       <Button variant="outline" disabled>
         <Save className="w-4 h-4" />
-        Сохранить отчет
+        {!isMobile && "Сохранить отчет"}
       </Button>
     );
   }
@@ -312,7 +315,7 @@ export default function SaveReport() {
       <DialogTrigger asChild>
         <Button variant="outline">
           <Save className="w-4 h-4" />
-          Сохранить отчет
+          {!isMobile && "Сохранить отчет"}
         </Button>
       </DialogTrigger>
       <DialogContent className="w-full max-w-sm sm:max-w-xl">

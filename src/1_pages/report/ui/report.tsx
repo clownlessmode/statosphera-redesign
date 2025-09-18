@@ -28,6 +28,7 @@ import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 // import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -645,23 +646,28 @@ const Report: FC = () => {
   }, [allData.filters, bumpDataVersion]);
 
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
-
+  const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
   console.log(isGraphLoading, isTableLoading, isTotalLoading);
   return (
     <>
       <Sheet />
-      <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
+      <div
+        className={cn(
+          "bg-muted w-full p-2 flex flex-col gap-2",
+          !isMobile && "max-h-screen",
+        )}
+      >
         <Header
           actions={{
-            right: (
+            right: !isMobile && (
               <div className="flex flex-row gap-2">
                 <DownloadReport rows={table?.totalRows || 0} />
                 <SaveReport />
                 <SavedReports />
               </div>
             ),
-            left: (
+            left: !isMobile && (
               <div className="ml-6 -mb-4 flex flex-row gap-1">
                 <Button variant="outline" className="border-b-0 rounded-b-none">
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
@@ -678,66 +684,118 @@ const Report: FC = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background p-4 flex flex-col h-full gap-4">
+        <div
+          className={cn(
+            "rounded-3xl bg-background flex flex-col h-full gap-4",
+            isMobile ? "pb-4 px-4 *:first:px-0 *:last:px-0" : "p-4",
+          )}
+        >
+          {isMobile && (
+            <div className="w-full flex flex-col gap-2">
+              <div className="w-full h-full flex flex-row">
+                <Button
+                  variant="outline"
+                  className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1 "
+                >
+                  {tab === "commerce" ? "Коммерческая" : "Чековая"}
+                </Button>
+                <Link to={ROUTES_PATH.WRITE_OFF} className="w-1/2">
+                  <Button
+                    variant="outline"
+                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1 "
+                  >
+                    Списания
+                  </Button>
+                </Link>
+              </div>
+              <div className="w-full flex flex-row gap-2 justify-between px-4">
+                <DownloadReport rows={table?.totalRows || 0} />
+                <SaveReport />
+                <SavedReports />
+                <DateDropdown />
+                <Button
+                  className="w-fit"
+                  size="default"
+                  variant="outline"
+                  onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                >
+                  <Cog className="text-primary/80" />
+                </Button>
+                <Button
+                  size="default"
+                  onClick={() => {
+                    handleClearFilters();
+                    setIsFiltersOpen(true);
+                  }}
+                  variant="outline"
+                >
+                  <Eraser className="text-primary/80" />
+                </Button>
+              </div>
+            </div>
+          )}
           <div
             className={cn(
-              "flex gap-2 max-h-[40vh]",
+              "flex gap-2",
               isFiltersOpen ? "flex-col" : "flex-row",
+              !isMobile && "max-h-[40vh]",
             )}
           >
             <div className="flex flex-col gap-2 w-full">
-              <div className="flex flex-row gap-1 items-center justify-between flex-1 w-full! shrink-0">
-                <div className="flex flex-row gap-1 items-center justify-end w-full">
-                  <DateDropdown />
-                  <Button
-                    className="w-fit"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                  >
-                    {!graph || !isFiltersOpen ? (
-                      <>
-                        Изменить фильтры <Cog className="text-primary/80" />
-                      </>
-                    ) : (
-                      <>
-                        Показать график <Cog className="text-primary/80" />
-                      </>
+              {!isMobile && (
+                <div className="flex flex-row gap-1 items-center justify-between flex-1 w-full! shrink-0">
+                  <div className="flex flex-row gap-1 items-center justify-end w-full">
+                    <DateDropdown />
+                    <Button
+                      className="w-fit"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                    >
+                      {!graph || !isFiltersOpen ? (
+                        <>
+                          Изменить фильтры <Cog className="text-primary/80" />
+                        </>
+                      ) : (
+                        <>
+                          Показать график <Cog className="text-primary/80" />
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        handleClearFilters();
+                        setIsFiltersOpen(true);
+                      }}
+                      variant="outline"
+                    >
+                      Очистить фильтры <Eraser className="text-primary/80" />
+                    </Button>
+                    {selectedRows.length > 0 && (
+                      <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-md">
+                        <span className="text-sm font-medium">
+                          Выбрано: {selectedRows.length}
+                        </span>
+                        <Button
+                          onClick={() => {
+                            setSelectedRows([]);
+                            // Восстанавливаем начальный график
+                            if (initialFiltersRef.current) {
+                              setGraph(initialFiltersRef.current.graph);
+                            }
+                          }}
+                          size="sm"
+                          variant="ghost"
+                          className="p-1 h-6 w-6"
+                        >
+                          <X className="size-3" />
+                        </Button>
+                      </div>
                     )}
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      handleClearFilters();
-                      setIsFiltersOpen(true);
-                    }}
-                    variant="outline"
-                  >
-                    Очистить фильтры <Eraser className="text-primary/80" />
-                  </Button>
-                  {selectedRows.length > 0 && (
-                    <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-md">
-                      <span className="text-sm font-medium">
-                        Выбрано: {selectedRows.length}
-                      </span>
-                      <Button
-                        onClick={() => {
-                          setSelectedRows([]);
-                          // Восстанавливаем начальный график
-                          if (initialFiltersRef.current) {
-                            setGraph(initialFiltersRef.current.graph);
-                          }
-                        }}
-                        size="sm"
-                        variant="ghost"
-                        className="p-1 h-6 w-6"
-                      >
-                        <X className="size-3" />
-                      </Button>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              </div>
+              )}
               {graph && !isFiltersOpen ? (
                 <StackedLine
                   option={{
