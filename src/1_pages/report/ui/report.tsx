@@ -652,12 +652,7 @@ const Report: FC = () => {
   return (
     <>
       <Sheet />
-      <div
-        className={cn(
-          "bg-muted w-full p-2 flex flex-col gap-2",
-          !isMobile && "max-h-screen",
-        )}
-      >
+      <div className="bg-muted w-full p-2 flex flex-col gap-2 md:max-h-screen">
         <Header
           actions={{
             right: !isMobile && (
@@ -684,25 +679,20 @@ const Report: FC = () => {
             ),
           }}
         />
-        <div
-          className={cn(
-            "rounded-3xl bg-background flex flex-col h-full gap-4",
-            isMobile ? "pb-4 px-4 *:first:px-0 *:last:px-0" : "p-4",
-          )}
-        >
+        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
           {isMobile && (
             <div className="w-full flex flex-col gap-2">
               <div className="w-full h-full flex flex-row">
                 <Button
                   variant="outline"
-                  className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1 "
+                  className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1"
                 >
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
                 </Button>
                 <Link to={ROUTES_PATH.WRITE_OFF} className="w-1/2">
                   <Button
                     variant="outline"
-                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1 "
+                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1"
                   >
                     Списания
                   </Button>
@@ -736,9 +726,8 @@ const Report: FC = () => {
           )}
           <div
             className={cn(
-              "flex gap-2",
-              isFiltersOpen ? "flex-col" : "flex-row",
-              !isMobile && "max-h-[40vh]",
+              "flex gap-2 md:max-h-[40vh] max-md:flex-col",
+              isFiltersOpen ? "md:flex-col" : "md:flex-row",
             )}
           >
             <div className="flex flex-col gap-2 w-full">
@@ -798,6 +787,7 @@ const Report: FC = () => {
               )}
               {graph && !isFiltersOpen ? (
                 <StackedLine
+                  className="max-md:min-h-80"
                   option={{
                     title: {
                       text:
@@ -830,12 +820,13 @@ const Report: FC = () => {
               onRowClick={handleRowClick}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
+              className="w-full max-md:mx-4 max-md:mx-auto max-md:w-[calc(100%-32px)]"
             />
           ) : (
             <div
               className={cn(
                 isLoading ? "mb-[25%]" : "mb-[10%]",
-                "flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end ",
+                "flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end",
               )}
             >
               {!isLoading ? (

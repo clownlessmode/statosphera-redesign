@@ -64,7 +64,7 @@ const LoyaltyFilter: FC = () => {
                   <BooleanCheckboxCard
                     {...field}
                     options={TYPE}
-                    className="grid-cols-3"
+                    className="grid-cols-1 md:grid-cols-3"
                     onChange={(vals) => {
                       field.onChange(vals);
                       updateLoyalFilter("isLoyal", vals);
@@ -109,7 +109,7 @@ const LoyaltyFilter: FC = () => {
                   <BooleanCheckboxCard
                     {...field}
                     options={GENDER}
-                    className="grid-cols-3"
+                    className="grid-cols-1 md:grid-cols-3"
                     onChange={(vals) => {
                       field.onChange(vals);
                       updateLoyalFilter("sex", vals);
@@ -130,7 +130,7 @@ const LoyaltyFilter: FC = () => {
                     {...field}
                     selectAll
                     options={COLORS}
-                    className="grid-cols-3"
+                    className="grid-cols-1 md:grid-cols-3"
                     onChange={(value) => {
                       field.onChange(value);
                       updateLoyalFilter("colorsDiscount", value);

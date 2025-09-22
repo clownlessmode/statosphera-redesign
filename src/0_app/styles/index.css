@@ -196,6 +196,7 @@ body {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --breakpoint-xs: 26rem;
+  --breakpoint-xxs: 24rem;
 }
 
 @layer base {

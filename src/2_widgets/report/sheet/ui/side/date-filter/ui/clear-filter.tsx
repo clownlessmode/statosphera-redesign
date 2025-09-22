@@ -35,11 +35,11 @@ const ClearFilters: FC<Props> = ({ form }) => {
   return (
     <Button
       size={isMobile ? "default" : "sm"}
-      className="text-muted-foreground"
+      className="text-muted-foreground flex items-center justify-center"
       variant="outline"
       onClick={handleClearFilters}
     >
-      {isMobile ? "" : "Очистить фильтры"}{" "}
+      {!isMobile && "Очистить фильтры"}
       <Eraser className="text-primary/80" />
     </Button>
   );

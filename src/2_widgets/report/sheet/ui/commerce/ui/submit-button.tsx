@@ -40,7 +40,9 @@ const isValidDate = (dateString: string): boolean => {
   return true;
 };
 
-export const CombinedSubmitButton = () => {
+export const CombinedSubmitButton = ({
+  className,
+}: React.ComponentProps<"button">) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useTableVersionStore();
   const { getApiPayload, filterDate } = useFiltersStore();
@@ -146,7 +148,11 @@ export const CombinedSubmitButton = () => {
   };
 
   return (
-    <Button onClick={handleSubmit} disabled={isDisabled()}>
+    <Button
+      className={className}
+      onClick={handleSubmit}
+      disabled={isDisabled()}
+    >
       Получить отчет
     </Button>
   );

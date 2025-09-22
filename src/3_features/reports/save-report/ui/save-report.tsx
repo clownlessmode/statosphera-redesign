@@ -318,7 +318,12 @@ export default function SaveReport() {
           {!isMobile && "Сохранить отчет"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-w-sm sm:max-w-xl">
+      <DialogContent
+        className={cn(
+          "max-w-sm sm:max-w-xl",
+          isMobile ? "w-[calc(100%-32px)]" : "w-full",
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Save className="w-5 h-5" />
