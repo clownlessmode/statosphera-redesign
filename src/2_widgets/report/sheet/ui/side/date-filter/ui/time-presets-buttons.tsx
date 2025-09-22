@@ -11,7 +11,7 @@ export const TimePresetButtons: FC<TimePresetButtonsProps> = ({
   onPresetSelect,
 }) => {
   return (
-    <div className="w-full grid grid-cols-4 gap-2 mt-2">
+    <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
       <Button type="button" onClick={() => onPresetSelect("morning")}>
         <Sunrise className="h-4 w-4 mr-1" /> Утро
       </Button>

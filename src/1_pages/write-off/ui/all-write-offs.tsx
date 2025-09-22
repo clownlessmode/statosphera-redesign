@@ -24,6 +24,7 @@ import { AnimatePresence } from "motion/react";
 import FiltersAccordeon from "@pages/report/ui/filters";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { WriteOffTotalResponse } from "@pages/write-off/api/types";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 // Функция для умного извлечения фильтров на основе текущих группировок
 function extractFiltersBasedOnGrouping(
@@ -1454,16 +1455,16 @@ export const AllWriteOffs = ({
     // Иначе используем общий total
     return total;
   }, [selectedRows, total]);
-
+  const isMobile = useIsMobile();
   // Показываем общую заглушку, если нет данных
   if (!isCompleted) {
     return (
-      <div className="flex flex-col gap-4 h-full">
-        <div className="flex flex-row gap-1 items-center justify-end">
-          <DateDropdown />
+      <div className="flex flex-col gap-4 h-full mx-4 md:mx-0">
+        <div className="flex flex-row gap-1 items-center justify-between md:justify-end">
+          {!isMobile && <DateDropdown />}
           <Button
             className="w-fit"
-            size="sm"
+            size={isMobile ? "default" : "sm"}
             variant="outline"
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           >
@@ -1477,8 +1478,14 @@ export const AllWriteOffs = ({
               </>
             )}
           </Button>
-          <Button size="sm" onClick={handleClearFilters} variant="outline">
-            Очистить фильтры <Eraser className="text-primary/80" />
+          {isMobile && <DateDropdown />}
+          <Button
+            size={isMobile ? "default" : "sm"}
+            onClick={handleClearFilters}
+            variant="outline"
+          >
+            {!isMobile && "Очистить фильтры"}
+            <Eraser className="text-primary/80" />
           </Button>
         </div>
 
@@ -1496,15 +1503,15 @@ export const AllWriteOffs = ({
   }
 
   return (
-    <div className="flex flex-row gap-4 h-full">
+    <div className="flex gap-4 h-full flex-col mx-4 md:flex-row">
       {/* Левая часть: График и Таблица */}
       <div className="flex flex-col flex-1 min-h-0">
         {/* Верхняя панель с кнопками */}
-        <div className="flex flex-row gap-1 justify-end mb-4">
-          <DateDropdown />
+        <div className="flex flex-row gap-1 mb-4 justify-between md:justify-end">
+          {!isMobile && <DateDropdown />}
           <Button
             className="w-fit"
-            size="sm"
+            size={isMobile ? "default" : "sm"}
             variant="outline"
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           >
@@ -1518,13 +1525,19 @@ export const AllWriteOffs = ({
               </>
             )}
           </Button>
-          <Button size="sm" onClick={handleClearFilters} variant="outline">
-            Очистить фильтры <Eraser className="text-primary/80" />
+          {isMobile && <DateDropdown />}
+          <Button
+            size={isMobile ? "default" : "sm"}
+            onClick={handleClearFilters}
+            variant="outline"
+          >
+            {!isMobile && "Очистить фильтры"}{" "}
+            <Eraser className="text-primary/80" />
           </Button>
         </div>
 
         {/* График или Фильтры */}
-        <div className="flex-shrink-0 mb-4">
+        <div className="flex-shrink-0 mb-4 min-h-60">
           {!isFiltersOpen ? (
             graph ? (
               <div className="h-64 w-full">
@@ -1565,7 +1578,7 @@ export const AllWriteOffs = ({
         </div>
 
         {/* Таблица */}
-        <div className="flex-1 min-h-0 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-80 md:min-h-0">
           {/* Поиск и фильтры */}
           <div className="flex-shrink-0 mb-2 h-10 gap-2 flex items-center">
             <Input
@@ -1632,14 +1645,14 @@ export const AllWriteOffs = ({
       {/* Правая часть: Карточки и Круговой график */}
       {tab === "write-off" && (
         <>
-          <div className="w-110 flex-shrink-0 flex flex-col min-h-0 gap-4">
+          <div className="flex-shrink-0 flex flex-col min-h-0 gap-4 w-full md:w-110">
             {/* Карточки */}
             <div>
               <WriteOffStatsCards data={statsData} />
             </div>
 
             {/* Круговой график */}
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-140 md:min-h-0">
               <WriteOffReasonsChart
                 key={`reasons-${selectedRows.length}-${groups.join("-")}`}
                 isLoading={isReasonsLoading}

@@ -5,6 +5,7 @@ import { FC, useEffect, useRef } from "react";
 import { defaultValues, FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface Props {
   form: UseFormReturn<FormValues>;
@@ -30,15 +31,15 @@ const ClearFilters: FC<Props> = ({ form }) => {
       timeStart: defaultValues.timeStart,
     });
   };
-
+  const isMobile = useIsMobile();
   return (
     <Button
-      size="sm"
-      className="text-muted-foreground"
+      size={isMobile ? "default" : "sm"}
+      className="text-muted-foreground flex items-center justify-center"
       variant="outline"
       onClick={handleClearFilters}
     >
-      Очистить фильтры <Eraser className="text-primary/80" />
+      {!isMobile && "Очистить фильтры"} <Eraser className="text-primary/80" />
     </Button>
   );
 };

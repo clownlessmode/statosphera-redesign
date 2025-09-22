@@ -75,7 +75,7 @@ const RecieptsFilter: FC = () => {
                     <BooleanCheckboxCard
                       {...field}
                       options={TYPE_PAYMENTS}
-                      className="grid-cols-3"
+                      className="grid-cols-1 xs:grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
                         updateCheckFilter("paymentClass", value);
@@ -95,7 +95,7 @@ const RecieptsFilter: FC = () => {
                     <BooleanCheckboxCard
                       {...field}
                       options={TYPE_CHECK}
-                      className="grid-cols-3"
+                      className="grid-cols-1 xs:grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
                         updateCheckFilter("type", [value]);

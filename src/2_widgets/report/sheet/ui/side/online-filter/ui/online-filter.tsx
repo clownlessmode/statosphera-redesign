@@ -69,7 +69,7 @@ const OnlineFilter: FC = () => {
                     <BooleanCheckboxCard
                       {...field}
                       options={TYPE}
-                      className="grid-cols-3"
+                      className="grid-cols-1 md:grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("isIm", value);
@@ -90,7 +90,7 @@ const OnlineFilter: FC = () => {
                       {...field}
                       selectAll
                       options={TYPE_ORDER}
-                      className="grid-cols-3"
+                      className="grid-cols-1 md:grid-cols-3"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("imTypeOrder", value);
@@ -111,7 +111,7 @@ const OnlineFilter: FC = () => {
                       {...field}
                       selectAll
                       options={TYPE_DELIVERY}
-                      className="grid-cols-4"
+                      className="grid-cols-2 md:grid-cols-4"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("imDeliveryMethod", value);
@@ -131,7 +131,7 @@ const OnlineFilter: FC = () => {
                     <CheckboxCards
                       {...field}
                       options={TYPE_PAYMENT}
-                      className="grid-cols-4"
+                      className="grid-cols-2 md:grid-cols-4"
                       onChange={(value) => {
                         field.onChange(value);
                         updateOnlineStoreFilter("imPaymentMethod", value);

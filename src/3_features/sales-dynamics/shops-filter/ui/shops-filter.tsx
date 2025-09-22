@@ -135,7 +135,7 @@ const ShopsFilter = () => {
                             updateFilters("channel", values as FRS_CHANNEL[]);
                           }}
                           options={CHANNEL_SHOP}
-                          className="grid-cols-3"
+                          className="grid-cols-1 xxs:grid-cols-2 md:grid-cols-3"
                         />
                       </FormItem>
                     );
@@ -183,7 +183,7 @@ const ShopsFilter = () => {
                             updateFilters("ageGroup", values as AGE_GROUP[]);
                           }}
                           options={time}
-                          className="grid-cols-4"
+                          className="grid-cols-2 md:grid-cols-4"
                         />
                       </FormItem>
                     );

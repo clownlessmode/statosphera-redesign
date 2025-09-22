@@ -9,8 +9,6 @@ import {
 } from "lucide-react";
 import { DATE_RANGES } from "../config";
 import { FC } from "react";
-import { useIsMobile } from "@shared/hooks/use-mobile";
-import { cn } from "@shared/lib/utils";
 
 interface DatePresetButtonsProps {
   onPresetSelect: (key: keyof typeof DATE_RANGES) => void;
@@ -19,14 +17,8 @@ interface DatePresetButtonsProps {
 export const DatePresetButtons: FC<DatePresetButtonsProps> = ({
   onPresetSelect,
 }) => {
-  const isMobile = useIsMobile();
   return (
-    <div
-      className={cn(
-        "w-full grid gap-2 mt-2",
-        isMobile ? "grid-cols-1 xs:grid-cols-2" : "grid-cols-3",
-      )}
-    >
+    <div className="w-full grid gap-2 mt-2 grid-cols-1 xs:grid-cols-2 md:grid-cols-3">
       <Button type="button" onClick={() => onPresetSelect("halfYear")}>
         <CalendarRange className="h-4 w-4 mr-1" /> Полгода
       </Button>

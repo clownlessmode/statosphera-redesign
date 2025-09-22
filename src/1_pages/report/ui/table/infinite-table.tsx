@@ -294,7 +294,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   ); // Убираем selectedRows из зависимостей
   return (
     <div
-      className={`rounded-[16px] overflow-hidden border border-border h-full w-full flex-1 ${
+      className={`rounded-[16px] overflow-hidden border border-border h-full flex-1 ${
         className || ""
       }`}
       style={
@@ -332,7 +332,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           gridApiRef.current?.refreshInfiniteCache();
         }}
         autoSizePadding={20}
-        className="flex-1"
+        className="flex-1 min-h-80"
         overlayNoRowsTemplate="Нет данных для отображения"
         defaultColDef={defaultColDef}
         onRowClicked={(e) => onRowClick?.(e.data)}
