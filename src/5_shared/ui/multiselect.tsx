@@ -16,7 +16,6 @@ import {
   CommandSeparator,
 } from "@shared/ui/command";
 import { Skeleton } from "./skeleton";
-import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const multiSelectVariants = cva(
   "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -147,7 +146,7 @@ export const MultiSelect = React.forwardRef<
       setIsPopoverOpen(open);
       onOpenChange?.(open); // Пробрасываем событие наружу
     };
-    const isMobile = useIsMobile();
+
     return (
       <Popover
         open={isPopoverOpen}
@@ -230,12 +229,7 @@ export const MultiSelect = React.forwardRef<
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span
-                  className={cn(
-                    "text-sm text-muted-foreground mx-3",
-                    isMobile && "text-balance",
-                  )}
-                >
+                <span className="text-sm text-muted-foreground mx-3 max-md:text-balance">
                   {placeholder}
                 </span>
                 <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />

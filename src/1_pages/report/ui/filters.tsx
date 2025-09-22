@@ -12,8 +12,6 @@ import {
   grouping,
   indicators,
 } from "@widgets/report/sheet/ui/commerce/model/tabs";
-import { useIsMobile } from "@shared/hooks/use-mobile";
-import { cn } from "@shared/lib/utils";
 
 const animationVariants = {
   hidden: { opacity: 0, y: -10 },
@@ -41,7 +39,6 @@ const FiltersAccordeon = ({
   const targetIndicatorValue =
     indicators.length > 0 ? indicators[0].title : null;
   const targetGroupingValue = grouping.length > 0 ? grouping[0].title : null;
-  const isMobile = useIsMobile();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -57,12 +54,7 @@ const FiltersAccordeon = ({
           {/* Фильтры */}
           <Card
             onClick={() => handleOpenSheet(targetFilterValue)}
-            className={cn(
-              "items-center gap-1 p-2",
-              !isMobile
-                ? "grid grid-cols-[auto_1fr_auto]"
-                : "flex flex-row flex-wrap",
-            )}
+            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
               <Filter className="size-4 flex-shrink-0" />
@@ -75,11 +67,7 @@ const FiltersAccordeon = ({
             </div>
             <Button
               size="sm"
-              className={
-                !isMobile
-                  ? "w-[220px] flex-shrink-0 justify-between"
-                  : "w-full mt-2"
-              }
+              className="w-full max-md:mt-2 md:w-[220px] md:flex-shrink-0 md:justify-between"
             >
               Изменить фильтры <Filter className="size-4" />
             </Button>
@@ -88,12 +76,7 @@ const FiltersAccordeon = ({
           {/* Показатели */}
           <Card
             onClick={() => handleOpenSheet(targetIndicatorValue)}
-            className={cn(
-              "items-center gap-1 p-2",
-              !isMobile
-                ? "grid grid-cols-[auto_1fr_auto]"
-                : "flex flex-row flex-wrap",
-            )}
+            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
               <BarChart3 className="size-4 flex-shrink-0" />
@@ -106,11 +89,7 @@ const FiltersAccordeon = ({
             </div>
             <Button
               size="sm"
-              className={
-                !isMobile
-                  ? "w-[220px] flex-shrink-0 justify-between"
-                  : "w-full mt-2"
-              }
+              className="w-full max-md:mt-2 md:w-[220px] md:flex-shrink-0 md:justify-between"
             >
               Изменить показатели <BarChart3 className="size-4" />
             </Button>
@@ -119,12 +98,7 @@ const FiltersAccordeon = ({
           {/* Группировки */}
           <Card
             onClick={() => handleOpenSheet(targetGroupingValue)}
-            className={cn(
-              "items-center gap-1 p-2",
-              !isMobile
-                ? "grid grid-cols-[auto_1fr_auto]"
-                : "flex flex-row flex-wrap",
-            )}
+            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
               <Layers3 className="size-4 flex-shrink-0" />
@@ -137,11 +111,7 @@ const FiltersAccordeon = ({
             </div>
             <Button
               size="sm"
-              className={
-                !isMobile
-                  ? "w-[220px] flex-shrink-0 justify-between"
-                  : "w-full mt-2"
-              }
+              className="w-full max-md:mt-2 md:w-[220px] md:flex-shrink-0 md:justify-between"
             >
               Изменить группировки <Layers3 className="size-4" />
             </Button>

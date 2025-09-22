@@ -1,3 +1,4 @@
+import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
 import { Eraser } from "lucide-react";
 import { UseFormReturn, FieldValues } from "react-hook-form";
@@ -11,15 +12,15 @@ const ClearFilters = <T extends FieldValues>({ form }: Props<T>) => {
   const handleClearFilters = () => {
     form.reset();
   };
-
+  const isMobile = useIsMobile();
   return (
     <Button
-      size="sm"
-      className="text-muted-foreground"
+      size={isMobile ? "default" : "sm"}
+      className="text-muted-foreground flex items-center justify-center"
       variant="outline"
       onClick={handleClearFilters}
     >
-      Очистить фильтры <Eraser className="text-primary/80" />
+      {!isMobile && "Очистить фильтры"} <Eraser className="text-primary/80" />
     </Button>
   );
 };

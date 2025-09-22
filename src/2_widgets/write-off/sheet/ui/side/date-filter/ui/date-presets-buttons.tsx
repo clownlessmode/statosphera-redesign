@@ -18,7 +18,7 @@ export const DatePresetButtons: FC<DatePresetButtonsProps> = ({
   onPresetSelect,
 }) => {
   return (
-    <div className="w-full grid grid-cols-3 gap-2 mt-2">
+    <div className="w-full grid gap-2 mt-2 grid-cols-1 xs:grid-cols-2 md:grid-cols-3">
       <Button type="button" onClick={() => onPresetSelect("halfYear")}>
         <CalendarRange className="h-4 w-4 mr-1" /> Полгода
       </Button>

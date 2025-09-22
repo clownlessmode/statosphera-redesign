@@ -234,7 +234,7 @@ const SalesDynamics: FC = () => {
             {!isAllLoading && (
               <div className="flex flex-col gap-2 h-full w-full">
                 {isMobile && (
-                  <div className={cn("flex flex-row gap-2")}>
+                  <div className="flex flex-row gap-2 justify-between">
                     <DaysFilter />
                     <GraphDate />
                     <ShopsFilter />

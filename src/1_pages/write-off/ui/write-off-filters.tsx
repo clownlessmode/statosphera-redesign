@@ -235,7 +235,7 @@ export const WriteOffFilters = ({
         >
           <Card
             onClick={() => onOpenSheet("date")}
-            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
+            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
               <Filter className="size-4 flex-shrink-0" />
@@ -251,7 +251,7 @@ export const WriteOffFilters = ({
             </div>
             <Button
               size="sm"
-              className="flex-shrink-0 justify-between w-[200px]"
+              className="w-full max-md:mt-2 md:w-[200px] md:flex-shrink-0 md:justify-between"
             >
               Изменить фильтры <Filter className="size-4" />
             </Button>
@@ -259,7 +259,7 @@ export const WriteOffFilters = ({
 
           <Card
             onClick={() => onOpenSheet("type")}
-            className="grid grid-cols-[auto_1fr_auto] items-center gap-1 p-2"
+            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
               <Layers3 className="size-4 flex-shrink-0" />
@@ -274,7 +274,7 @@ export const WriteOffFilters = ({
             </div>
             <Button
               size="sm"
-              className="flex-shrink-0 justify-between w-[200px]"
+              className="w-full max-md:mt-2 md:w-[200px] md:flex-shrink-0 md:justify-between"
             >
               Изменить группировку <Layers3 className="size-4" />
             </Button>

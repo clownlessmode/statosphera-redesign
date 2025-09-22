@@ -21,13 +21,11 @@ function TabsList({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
-  const isMobile = useIsMobile();
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg",
-        !isMobile && "p-[3px]",
+        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg md:p-[3px]",
         className,
       )}
       {...props}

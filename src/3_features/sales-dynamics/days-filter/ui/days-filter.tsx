@@ -119,7 +119,7 @@ const DaysFilter = () => {
                     </FormItem>
                   )}
                 />
-                <div className="w-full grid grid-cols-3 gap-2 mt-2">
+                <div className="w-full grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 gap-2 mt-2">
                   <Button
                     type="button"
                     onClick={() => handleButtonClick("halfYear")}

@@ -16,12 +16,13 @@ import { filters, grouping, indicators } from "../model/tabs";
 import { Eraser } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
-import { cn } from "@shared/lib/utils";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useSearchParams } from "react-router";
 
 const CommerceInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
   const { scrollTo } = useViewTabs();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     if (targetViewValue) {
@@ -31,6 +32,13 @@ const CommerceInner = () => {
   }, [targetViewValue, scrollTo, setTargetViewValue]);
   const { triggerReset } = useFormResetStore();
   const isMobile = useIsMobile();
+
+  const handleCloseChange = () => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("open", "false");
+    setSearchParams(newParams);
+  };
+
   return (
     <>
       {!isMobile && (
@@ -85,18 +93,25 @@ const CommerceInner = () => {
           <CombinedSubmitButton />
         </ViewTabsList>
       )}
-      <div
-        className={cn(
-          "flex flex-col py-4",
-          !isMobile
-            ? "max-w-xl max-h-screen pb-96 overflow-auto gap-8"
-            : "px-4 w-full gap-4",
+      <div className="flex flex-col py-4 gap-4 md:max-w-xl md:max-h-screen md:pb-96 md:overflow-auto md:gap-8 max-md:px-4 max-md:w-full max-md:pb-18">
+        {isMobile ? (
+          <div className="fixed bottom-0 left-0 flex flex-row w-full h-10 mb-4 px-4 z-50">
+            <Button className="w-1/4 h-full" onClick={handleCloseChange}>
+              Закрыть
+            </Button>
+            <CombinedSubmitButton className="w-2/4 h-full mx-2" />
+            <Button className="w-1/4 h-full" onClick={() => triggerReset()}>
+              Очистить <Eraser className="h-4 w-4 not-xs:hidden" />
+            </Button>
+          </div>
+        ) : (
+          <>
+            <Button onClick={() => triggerReset()}>
+              Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
+            </Button>
+            <Separator />
+          </>
         )}
-      >
-        <Button onClick={() => triggerReset()}>
-          Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
-        </Button>
-        {isMobile ? <CombinedSubmitButton /> : <Separator />}
 
         {filters.map((item, index) => (
           <ViewTabsContent value={item.title} key={`filter-content-${index}`}>

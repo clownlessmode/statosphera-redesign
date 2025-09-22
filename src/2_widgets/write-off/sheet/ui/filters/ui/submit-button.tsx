@@ -9,8 +9,11 @@ import { useTabStore } from "../../../model/url-store";
 import { useWriteOffDateFilterStore } from "@pages/write-off/ui/date-dropdown";
 import { useWriteOffController } from "@pages/write-off/api/controller";
 import { useWriteOffReasonsController } from "@pages/write-off/model/write-off-reasons-controller";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
-export const CombinedSubmitButton = () => {
+export const CombinedSubmitButton = ({
+  className,
+}: React.ComponentProps<"button">) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useWriteOffVersionStore();
   const {
@@ -143,10 +146,14 @@ export const CombinedSubmitButton = () => {
 
     bumpDataVersion();
   };
-
+  const isMobile = useIsMobile();
   return (
-    <Button onClick={handleSubmit} disabled={isDisabled()}>
-      Получить отчет по списаниям
+    <Button
+      className={className}
+      onClick={handleSubmit}
+      disabled={isDisabled()}
+    >
+      {isMobile ? "Получить отчет" : "Получить отчет по списаниям"}
     </Button>
   );
 };
