@@ -12,10 +12,17 @@ import { Input } from "@shared/ui/input";
 import AddProductDialog from "./add-product-dialog";
 import AddCountDialog from "./add-count-dialog";
 import { GrillProductTblRo } from "../api/types/responses";
+import { useSession } from "@entities/session";
+import { useNavigate } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
 
 const Grill = () => {
+  const { session } = useSession();
+  const navigate = useNavigate();
+  if (!session?.isGrillProject) {
+    navigate(ROUTES_PATH.FORBIDDEN);
+  }
   const { getGraph, getStatistic } = useGrillController();
-
   const [graphData, setGraphData] = useState<any>(null);
   const [statisticData, setStatisticData] = useState<any>(null);
 
