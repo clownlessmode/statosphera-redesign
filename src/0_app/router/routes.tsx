@@ -207,7 +207,6 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.GRILL,
     variant: "private",
     element: <Grill />,
-    allowedRoles: [ROLES.ADMIN],
     layout: Sidebar,
     label: "Гриль",
   },
