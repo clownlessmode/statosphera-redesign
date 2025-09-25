@@ -30,6 +30,7 @@ import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 import { PackageFilters } from "./package-filters";
 import InfinityTable from "@pages/report/ui/table/infinite-table";
 import pluralize from "@shared/lib/pluralize";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const Summary = () => {
   const { getComparisonCards, getGraph } = useSummaryController();
@@ -286,6 +287,8 @@ export const Summary = () => {
     setSearchParams(newSearchParams, { replace: true });
   };
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       <SummaryFiltersSheet />
@@ -293,15 +296,21 @@ export const Summary = () => {
         <Header
           title="Парные продажи"
           actions={{
-            left: <PackageFilters />,
+            left: !isMobile && <PackageFilters />,
           }}
         />
         <div className="rounded-3xl bg-background p-4 flex flex-col gap-4 flex-1 min-h-0">
+          {isMobile && (
+            <div className="flex flex-row w-full justify-between">
+              <PackageFilters />
+            </div>
+          )}
           {!hasNomenklatura ? (
             <div className="flex flex-col gap-4 h-full w-full justify-center items-center">
               <div className="dark:opacity-70">
                 <NotSelectedFilters />
               </div>
+
               <div className="opacity-100">
                 <Button onClick={handleOpenSheet}>
                   Изменить фильтры <Funnel />
@@ -309,8 +318,8 @@ export const Summary = () => {
               </div>
             </div>
           ) : (
-            <div className="flex-1 min-h-0 flex flex-row gap-4">
-              <div className="flex flex-col gap-4 min-h-0">
+            <div className="flex-1 h-screen overflow-y-auto scrollbar-hide md:min-h-0 flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col gap-4 max-md:h-[50vh] md:min-h-0">
                 <div className="flex-1 min-h-0">
                   <NomenklaturaList
                     onSelectedProductChange={setSelectedProduct}
@@ -318,7 +327,7 @@ export const Summary = () => {
                 </div>
               </div>
 
-              <div className="flex-1 flex flex-col gap-2 min-h-0">
+              <div className="flex-1 flex flex-col gap-2 md:min-h-0">
                 {isLoadingData ? (
                   <>
                     <div className="flex flex-row gap-2 auto-rows-max h-fit">
@@ -333,7 +342,7 @@ export const Summary = () => {
                   </>
                 ) : hasData ? (
                   <>
-                    <div className="flex flex-row gap-2 auto-rows-max h-fit">
+                    <div className="grid grid-cols-2 md:flex md:flex-row gap-2 md:auto-rows-max h-fit">
                       {cards.flatMap((card) => [
                         <SummaryCard
                           key={`total-${card.totalProceeds}`}
@@ -345,7 +354,7 @@ export const Summary = () => {
                           //     className="w-4 h-4"
                           //   />
                           // }
-                          trigger={<Info className="w-3 h-3" />}
+                          trigger={<Info className="w-3 h-7" />}
                           text="Выручка по выбранной номенклатуре с учетом других товаров"
                         />,
                         <SummaryCard
@@ -374,12 +383,16 @@ export const Summary = () => {
                     {hasGraphData || selectedProduct ? (
                       <>
                         {hasGraphData && (
-                          <Card className="flex-1 pl-10 pr-20 py-0 max-h-[300px]">
+                          <Card className="flex-1 md:pl-10 md:pr-20 md:py-0 md:max-h-[300px]">
                             <BarHorizontalChart
+                              title="Количество чеков с продуктом"
                               labels={xAxisData}
                               values={yAxisData}
                               formatNumbers={true}
-                              pluralForms={["Чек", "Чека", "Чеков"]}
+                              pluralForms={
+                                //["Чек", "Чека", "Чеков"]
+                                ["", "", ""]
+                              }
                               formatter={(params: any) => {
                                 return `${params.value}`;
                               }}
@@ -389,7 +402,7 @@ export const Summary = () => {
 
                         {selectedProduct && (
                           <>
-                            <div className="flex-shrink-0 mb-0  gap-2 flex items-center">
+                            <div className="flex-shrink-0 mb-0 gap-2 flex max-md:flex-wrap items-center">
                               {selectedTableRows.length > 0 && (
                                 <Dialog>
                                   <DialogTrigger asChild>
@@ -455,7 +468,7 @@ export const Summary = () => {
                               )}
                             </div>
 
-                            <div className="flex-1 min-h-0 overflow-hidden">
+                            <div className="flex-1 min-h-[300px] md:min-h-0 overflow-hidden">
                               <InfinityTable
                                 key={dataVersion}
                                 fetchData={fetchTableData}
@@ -468,10 +481,10 @@ export const Summary = () => {
                                 maxBlocksInCache={10}
                               />
                             </div>
-                            <div className="grid grid-cols-2 gap-4 flex-shrink-0">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 md:flex-shrink-0">
                               <Button
                                 className="w-full"
-                                size={"lg"}
+                                size={isMobile ? "default" : "lg"}
                                 disabled={
                                   !selectedTableRows ||
                                   selectedTableRows.length === 0
@@ -484,7 +497,7 @@ export const Summary = () => {
                               </Button>
                               <Button
                                 className="w-full"
-                                size={"lg"}
+                                size={isMobile ? "default" : "lg"}
                                 disabled={
                                   !selectedTableRows ||
                                   selectedTableRows.length === 0

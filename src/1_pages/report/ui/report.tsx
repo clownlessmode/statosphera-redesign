@@ -654,6 +654,7 @@ const Report: FC = () => {
       <Sheet />
       <div className="bg-muted w-full p-2 flex flex-col gap-2 md:max-h-screen">
         <Header
+          title="Отчеты"
           actions={{
             right: !isMobile && (
               <div className="flex flex-row gap-2">

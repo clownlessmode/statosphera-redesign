@@ -177,10 +177,10 @@ export const EditProduct: FC<Props> = ({
           <Settings />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none sm:min-w-[700px] md:min-w-[800px] lg:min-w-[1000px] ">
+      <DialogContent className="p-0 rounded-xl border-none max-md:px-2 max-md:w-full max-md:overflow-y-auto scrollbar-hide max-md:h-screen md:min-w-[800px] lg:min-w-[1000px] ">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle className="max-w-xs">
+            <CardTitle className="md:max-w-xs">
               {productName ? productName : "Имя продукта не задано"}
             </CardTitle>
             <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -194,7 +194,7 @@ export const EditProduct: FC<Props> = ({
                 className="flex flex-col gap-2 w-full"
               >
                 <Card className="bg-background">
-                  <CardContent className="grid grid-cols-2 gap-2">
+                  <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <FormField
                       control={form.control}
                       name="ppProducts"
@@ -229,7 +229,7 @@ export const EditProduct: FC<Props> = ({
                     />
                   </CardContent>
                 </Card>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <Card className="bg-background gap-2">
                     <CardContent className="flex flex-col gap-3">
                       <FormField

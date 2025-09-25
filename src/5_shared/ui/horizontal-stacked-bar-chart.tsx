@@ -2,6 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { graphColors } from "@shared/constants/graph-colors";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 type SeriesData = {
   name: string;
@@ -15,6 +16,7 @@ type HorizontalStackedBarChartProps = {
   formatter?: (params: any) => string;
   grid?: {
     bottom?: number;
+    top?: number;
   };
 };
 
@@ -27,6 +29,7 @@ export const HorizontalStackedBarChart = ({
 }: HorizontalStackedBarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const isMobile = useIsMobile();
 
   const option: EChartsOption = {
     backgroundColor: "transparent",
@@ -57,10 +60,12 @@ export const HorizontalStackedBarChart = ({
     grid: {
       left: "3%",
       right: "4%",
+      top: grid?.top || "",
       bottom: grid?.bottom || "3%",
       containLabel: true,
     },
     xAxis: {
+      show: !isMobile,
       type: "value",
       axisLabel: { color: colors.text, fontSize: 12 },
       splitLine: { show: false },

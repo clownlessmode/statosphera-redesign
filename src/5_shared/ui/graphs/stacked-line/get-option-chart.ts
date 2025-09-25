@@ -6,6 +6,7 @@ export const getOptionChart = (
   option: EChartsOption & { groupType?: string },
   theme: "light" | "dark" | string,
   customColors?: string[],
+  show?: boolean,
 ) => {
   const { title, legend, groupType, ...otherOption } = option;
   const isLightTheme = theme === "light";
@@ -20,6 +21,7 @@ export const getOptionChart = (
   return {
     backgroundColor: colors.background,
     toolbox: {
+      show: show,
       feature: {
         dataZoom: {
           yAxisIndex: "none",

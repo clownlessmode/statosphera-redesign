@@ -9,6 +9,7 @@ type BarChartProps = {
   yAxisData: number[];
   tooltipData?: string[];
   title?: string;
+  show?: boolean;
 };
 
 export const BarChart = ({
@@ -16,6 +17,7 @@ export const BarChart = ({
   yAxisData,
   tooltipData,
   title,
+  show = true,
 }: BarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
@@ -71,6 +73,7 @@ export const BarChart = ({
       },
     },
     xAxis: {
+      show: show,
       type: "category",
       data: xAxisData.map(shortenDayName),
       axisLabel: {

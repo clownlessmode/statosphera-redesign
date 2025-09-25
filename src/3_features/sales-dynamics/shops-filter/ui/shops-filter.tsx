@@ -94,7 +94,7 @@ const ShopsFilter = () => {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent className="p-0 rounded-xl border-none max-md:overflow-y-auto scrollbar-hide max-xxs:h-screen max-md:h-max">
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>

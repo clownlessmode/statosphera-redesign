@@ -17,7 +17,7 @@ export const Nps = () => {
     <Card className="w-full items-center justify-center px-8 !h-[400px]">
       <div className="relative inline-block">
         <motion.h1
-          className="text-9xl  font-extrabold text-primary leading-none relative z-10"
+          className="text-8xl xs:text-9xl  font-extrabold text-primary leading-none relative z-10"
           animate={{
             opacity: [0.8, 1, 0.8],
           }}

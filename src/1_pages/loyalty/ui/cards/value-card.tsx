@@ -21,7 +21,7 @@ export const ValueCard: FC<Props> = ({
   return (
     <Card className="items-center justify-center text-center gap-2 px-4 w-full">
       <CardTitle>{title}</CardTitle>
-      <p className="text-4xl font-bold">
+      <p className="text-xl md:text-4xl font-bold">
         {formatter ? formatter(value) : (value / 1000000).toLocaleString()}{" "}
         {unit}
       </p>

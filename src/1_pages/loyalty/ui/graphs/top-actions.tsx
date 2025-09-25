@@ -13,7 +13,7 @@ export const TopActions = ({
   return (
     <>
       {!isLoading && graph ? (
-        <Card className="w-full h-[400px] flex flex-col">
+        <Card className="w-full min-h-[400px] flex flex-col">
           <CardHeader>
             <CardTitle>Топ 5 примененных скидок по карте лояльности</CardTitle>
           </CardHeader>

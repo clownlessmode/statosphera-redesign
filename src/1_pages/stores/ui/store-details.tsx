@@ -30,15 +30,15 @@ const StoreDetails: FC<Props> = ({ open, onOpenChange, idStore }) => {
   const { store, isStoreLoading } = useStoresController(idStore as number);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[80vw]!">
+      <DialogContent className="w-full max-xs:text-xs md:max-w-[80vw]!">
         {isStoreLoading ? (
-          <div className="flex justify-center items-center h-full min-h-[70vh] w-full">
+          <div className="flex justify-center items-center h-full md:min-h-[70vh] w-full">
             <Spinner />
           </div>
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="max-md:grid max-md:grid-col-1">
                 Детали магазина{" "}
                 <NotFoundRow
                   value={store?.storeName}
@@ -50,8 +50,8 @@ const StoreDetails: FC<Props> = ({ open, onOpenChange, idStore }) => {
               </DialogDescription>
             </DialogHeader>
 
-            <DialogBody className="gap-4 grid grid-cols-2 ">
-              <ScrollArea className="max-h-[50vh]">
+            <DialogBody className="gap-4 grid grid-col-1 mt-2 md:grid-cols-2 ">
+              <ScrollArea className="max-h-[30vh] md:max-h-[50vh]">
                 {storeSections.map((section, idx) => (
                   <div key={idx} className="flex flex-col gap-2">
                     <CardHeader className="flex flex-row gap-1 font-medium pl-0">
@@ -72,7 +72,7 @@ const StoreDetails: FC<Props> = ({ open, onOpenChange, idStore }) => {
                   </div>
                 ))}
               </ScrollArea>
-              <Card>
+              <Card className="max-md:min-h-[30vh]">
                 <Map
                   defaultState={{
                     center: [store?.latitude, store?.longitude] as number[],

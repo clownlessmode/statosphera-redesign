@@ -38,6 +38,7 @@ import { AgeCircleGraph } from "./graphs/age-circle-graph";
 import { AgeSalesGraph } from "./graphs/age-sales-graph";
 import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -195,12 +196,14 @@ export const Loyalty = () => {
     });
   }, [mock]);
 
+  const isMobile = useIsMobile();
+
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
         title={`Лояльность`}
         actions={{
-          left: (
+          left: !isMobile && (
             <div className="flex gap-2">
               <GraphDate />
               <DaysFilter />
@@ -209,18 +212,23 @@ export const Loyalty = () => {
           ),
         }}
       />
-      <div className="rounded-3xl px-4 py-4 gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
+      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
+        <div className="flex flex-row justify-between">
+          <DaysFilter />
+          <GraphDate />
+          <ShopsFilter />
+        </div>
         <AllUsers
           isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
           noSales30DaysUser={noSales30DaysUser as any}
         />
-        <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-col md:flex-row gap-2 w-full">
           <AvarageCheck
             isAvarageCheckLoading={isAvarageCheckLoading}
             avarageCheck={avarageCheck[0]}
           />
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex flex-row gap-2 w-full h-full">
+            <div className="flex flex-row max-md:grid max-md:grid-cols-2 gap-2 w-full h-full">
               <ValueCard
                 title="Уникальных"
                 value={loyalCard2?.uniqueCardNumber ?? 0}
@@ -257,38 +265,70 @@ export const Loyalty = () => {
                 isLoading={true}
                 value={148}
               />
+              {isMobile && (
+                <>
+                  <ValueCard
+                    title="Частота покупок"
+                    value={loyalCard2?.frequencySalesLoyal ?? 0}
+                    isLoading={isLoyalCard2Loading}
+                    formatter={(value) => (value ? value.toFixed(1) : "0")}
+                  />
+                  <ValueCard
+                    title="Доп. выручка"
+                    isLoading={isLoyalCard2Loading}
+                    value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
+                    unit="M"
+                  />
+                  <ValueCard
+                    title="Доля доп. выручки"
+                    formatter={(value) => (value ? value.toFixed(1) : "0")}
+                    isLoading={isLoyalCard2Loading}
+                    value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
+                    unit="%"
+                  />
+                  <ValueCard
+                    isLoading={isBonusesLoading}
+                    title="% списания бонусов"
+                    formatter={(value) => (value ? value.toFixed(1) : "0")}
+                    value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
+                    unit="%"
+                  />
+                </>
+              )}
             </div>
-            <div className="flex flex-row gap-2 w-full">
-              <ValueCard
-                title="Частота покупок"
-                value={loyalCard2?.frequencySalesLoyal ?? 0}
-                isLoading={isLoyalCard2Loading}
-                formatter={(value) => (value ? value.toFixed(1) : "0")}
-              />
-              <ValueCard
-                title="Доп. выручка"
-                isLoading={isLoyalCard2Loading}
-                value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
-                unit="M"
-              />
-              <ValueCard
-                title="Доля доп. выручки"
-                formatter={(value) => (value ? value.toFixed(1) : "0")}
-                isLoading={isLoyalCard2Loading}
-                value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
-                unit="%"
-              />
-              <ValueCard
-                isLoading={isBonusesLoading}
-                title="% списания бонусов"
-                formatter={(value) => (value ? value.toFixed(1) : "0")}
-                value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
-                unit="%"
-              />
-            </div>
+            {!isMobile && (
+              <div className="flex flex-row gap-2 w-full">
+                <ValueCard
+                  title="Частота покупок"
+                  value={loyalCard2?.frequencySalesLoyal ?? 0}
+                  isLoading={isLoyalCard2Loading}
+                  formatter={(value) => (value ? value.toFixed(1) : "0")}
+                />
+                <ValueCard
+                  title="Доп. выручка"
+                  isLoading={isLoyalCard2Loading}
+                  value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
+                  unit="M"
+                />
+                <ValueCard
+                  title="Доля доп. выручки"
+                  formatter={(value) => (value ? value.toFixed(1) : "0")}
+                  isLoading={isLoyalCard2Loading}
+                  value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
+                  unit="%"
+                />
+                <ValueCard
+                  isLoading={isBonusesLoading}
+                  title="% списания бонусов"
+                  formatter={(value) => (value ? value.toFixed(1) : "0")}
+                  value={bonuses[0]?.bonusWriteOffFromAccrualPercent ?? 0}
+                  unit="%"
+                />
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-col md:flex-row gap-2 w-full">
           <List
             title="Топ 5 групп по выручке"
             isLoading={isTopGroupsLoading}
@@ -314,7 +354,7 @@ export const Loyalty = () => {
             }))}
           />
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           <BonusGraph
             graph={bonusGraph.graph}
             isLoading={isBonusGraphLoading}
@@ -326,7 +366,7 @@ export const Loyalty = () => {
           />
           <TopActions graph={topActions} isLoading={isTopActionsLoading} />
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-2">
           <TopLoyalStoreCards
             topStoreLoyal={topStoreLoyal}
             isLoading={isTopStoreLoyalLoading}
@@ -340,7 +380,7 @@ export const Loyalty = () => {
             graph={ageSalesGraph}
             isLoading={isAgeSalesGraphLoading}
           />
-          <div className="grid grid-cols-2 col-span-3 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:col-span-3 gap-2">
             <AgeGroupsGraph
               graph={ageGroupsGraph}
               isLoading={isAgeGroupsGraphLoading}

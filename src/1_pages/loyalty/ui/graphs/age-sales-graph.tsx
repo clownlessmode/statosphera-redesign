@@ -5,6 +5,7 @@ import { Card } from "@shared/ui/card";
 
 import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
 import useSafari from "@shared/hooks/use-safari";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const AgeSalesGraph = ({
   graph,
@@ -14,6 +15,7 @@ export const AgeSalesGraph = ({
   isLoading: boolean;
 }) => {
   const isSafari = useSafari();
+  const isMobile = useIsMobile();
   return (
     <>
       {isLoading ? (
@@ -41,7 +43,11 @@ export const AgeSalesGraph = ({
                 }
                 return `${params.value}`;
               }}
-              title="Количество чеков по полу в разрезе возрастной группы"
+              title={
+                isMobile
+                  ? "Чеки по возрастной группе"
+                  : "Количество чеков по полу в разрезе возрастной группы"
+              }
             />
           </div>
         </Card>

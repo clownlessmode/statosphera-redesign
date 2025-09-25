@@ -4,6 +4,7 @@ import { EChartsOption } from "echarts";
 import { useMemo } from "react";
 
 import { graphColors } from "@shared/constants/graph-colors";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 type PieChartProps = {
   data: { name: string; value: number }[];
@@ -19,7 +20,9 @@ export const PieChart = ({
   formatter,
 }: PieChartProps) => {
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const radius = isMobile ? "50" : "70";
 
   const option: EChartsOption = useMemo(
     () => ({
@@ -70,7 +73,7 @@ export const PieChart = ({
         {
           name: title,
           type: "pie",
-          radius: "70%",
+          radius: radius,
           center: ["50%", "60%"],
           data,
           itemStyle: {
@@ -97,7 +100,12 @@ export const PieChart = ({
         option={option}
         notMerge={false}
         lazyUpdate={true}
-        style={{ height: "100%", width: "100%" }}
+        style={{
+          height: "100%",
+          width: "100%",
+          minWidth: "250px",
+          margin: "auto",
+        }}
         className="w-full h-full"
       />
     </div>

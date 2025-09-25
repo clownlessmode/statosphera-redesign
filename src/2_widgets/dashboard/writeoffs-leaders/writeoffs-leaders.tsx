@@ -23,7 +23,7 @@ const WriteoffsLeaders = ({ isLoading, data }: WriteoffsLeadersProps) => {
     });
   };
   return (
-    <Card className="w-full h-[400px] flex flex-col">
+    <Card className="w-full md:h-[400px] flex flex-col">
       <CardHeader>
         {isLoading || !data ? (
           <CardTitle>

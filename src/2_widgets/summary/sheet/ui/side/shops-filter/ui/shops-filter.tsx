@@ -138,7 +138,7 @@ export const ShopsFilter: FC = () => {
                         updateStoreFilter("channel", values as FRS_CHANNEL[]);
                       }}
                       options={CHANNEL_SHOP}
-                      className="grid-cols-3 [&_*]:text-[12px]"
+                      className="grid-cols-1 md:grid-cols-3 [&_*]:text-[12px]"
                     />
                   </FormItem>
                 );
@@ -186,7 +186,7 @@ export const ShopsFilter: FC = () => {
                         updateStoreFilter("ageGroup", values as AGE_GROUP[]);
                       }}
                       options={TIME}
-                      className="grid-cols-4 [&_*]:text-[12px]"
+                      className="grid-cols-2 md:grid-cols-4 [&_*]:text-[12px]"
                     />
                   </FormItem>
                 );

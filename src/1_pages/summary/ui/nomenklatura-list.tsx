@@ -6,6 +6,7 @@ import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
 import { useSearchParams } from "react-router";
 import { useTabStore } from "@widgets/summary/sheet/model/url-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface NomenklaturaListProps {
   onSelectedProductChange?: (selectedProduct: number | null) => void;
@@ -77,13 +78,19 @@ export const NomenklaturaList = ({
     setSearchParams(newSearchParams, { replace: true });
   };
 
+  const isMobile = useIsMobile();
+
   return (
-    <Card className="max-w-[550px] h-full flex flex-col gap-3!">
+    <Card className="w-full md:max-w-[550px] h-full flex flex-col gap-3!">
       <CardHeader className="flex-shrink-0 flex flex-col gap-4">
         <div className="flex flex-row w-full justify-between  items-center">
           <CardTitle>Номенклатура</CardTitle>
-          <Button size={"sm"} className="" onClick={handleOpenSheet}>
-            Изменить фильтры <Funnel />
+          <Button
+            size={isMobile ? "default" : "sm"}
+            className=""
+            onClick={handleOpenSheet}
+          >
+            <span className="max-xxs:hidden">Изменить фильтры</span> <Funnel />
           </Button>
         </div>
         <Input

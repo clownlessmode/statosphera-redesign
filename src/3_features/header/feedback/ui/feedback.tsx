@@ -28,7 +28,7 @@ const Feedback = () => {
           <p className="hidden lg:block">Обратная связь</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="">
+      <DialogContent className="max-md:h-max">
         <DialogHeader>
           <DialogTitle className="justify-between w-full flex">
             <span>Обратная связь</span>
@@ -42,7 +42,7 @@ const Feedback = () => {
           </DialogDescription>
         </DialogHeader>
         <Tabs defaultValue="error" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid h-min w-full rounded-lg grid-cols-1 md:grid-cols-3">
             <TabsTrigger value="error" className="sm:text-sm text-xs">
               Ошибка
             </TabsTrigger>

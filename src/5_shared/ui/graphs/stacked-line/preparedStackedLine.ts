@@ -13,7 +13,7 @@ export type StackedLineOptions = {
   fourthLineStyle?: LineSeriesOption["lineStyle"];
 };
 
-export const usePreparedStackedLine = () => {
+export const usePreparedStackedLine = (isMobile?: boolean) => {
   return (series: SeriesOption[], options?: StackedLineOptions) => {
     return series.map((serie, index) => {
       // Determine if this should be solid (first two) or dashed (rest)
@@ -46,8 +46,15 @@ export const usePreparedStackedLine = () => {
             ? {
                 show: true,
                 formatter: (args: any) => {
-                  if (args.data[1]) {
-                    return divideNumberSpaces(args.data[1]);
+                  if (!isMobile) {
+                    if (args.data[1]) {
+                      return divideNumberSpaces(args.data[1]);
+                    }
+                  } else {
+                    if (args.data[1] % 2 === 0) {
+                      return divideNumberSpaces(args.data[1]);
+                    }
+                    return "";
                   }
                 },
               }

@@ -5,6 +5,7 @@ import { Card } from "@shared/ui/card";
 
 import { HorizontalStackedBarChart } from "@shared/ui/horizontal-stacked-bar-chart";
 import useSafari from "@shared/hooks/use-safari";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const RevenueGroupsGraph = ({
   graph,
@@ -14,13 +15,14 @@ export const RevenueGroupsGraph = ({
   isLoading: boolean;
 }) => {
   const isSafari = useSafari();
+  const isMobile = useIsMobile();
   return (
     <>
       {isLoading ? (
-        <StackedLineSkeleton className="h-[400px]" />
+        <StackedLineSkeleton className="md:h-[400px]" />
       ) : (
-        <Card className="h-[400px]">
-          <div style={{ height: 400, width: "100%" }}>
+        <Card className="md:h-[400px]">
+          <div style={{ height: "450px", width: "100%" }}>
             <HorizontalStackedBarChart
               yAxisData={graph.yAxis}
               series={graph.series.map((item) => ({
@@ -29,8 +31,13 @@ export const RevenueGroupsGraph = ({
               }))}
               grid={{
                 bottom: isSafari ? 50 : 20,
+                top: 80,
               }}
-              title="Выручка по возрастным группам и полу"
+              title={
+                isMobile
+                  ? "Выручка по возрасту и полу"
+                  : "Выручка по возрастным группам и полу"
+              }
               formatter={(params) => {
                 if (Array.isArray(params)) {
                   return params
