@@ -33,7 +33,7 @@ const DownloadReport = ({ rows }: { rows: number }) => {
     setIsOpen(false);
   };
 
-  const isExcelDisabled = rows > 500000;
+  const isExcelDisabled = true; //rows > 500000;
   const isAllDisabled = rows > 7000000;
   const { session } = useSession();
   return (
@@ -99,9 +99,10 @@ const DownloadReport = ({ rows }: { rows: number }) => {
                 </>
               ) : (
                 <>
-                  В текущей выборке содержится более 500 000 строк данных.
+                  В данный момент экспорт в Excel невозможен из-за технических
+                  {/* В текущей выборке содержится более 500 000 строк данных.
                   Экспорт таких объёмов в Excel невозможен из-за технических
-                  ограничений формата.
+                  ограничений формата. */}
                   <br />
                   <br />
                   Для работы с большими данными рекомендуем:
