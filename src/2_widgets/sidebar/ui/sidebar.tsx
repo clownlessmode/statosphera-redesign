@@ -34,6 +34,7 @@ import { useSession } from "@entities/session";
 import { ROLES } from "@shared/constants/roles";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 const Sidebar = ({
   children,
   ...props
@@ -156,15 +157,22 @@ const Sidebar = ({
     ],
   };
   const { toggleSidebar, state } = useSidebar();
+  const isMobile = useIsMobile();
   const isCollapsed = state === "collapsed";
 
   return (
     <>
       {session && (
         <SidebarComponent collapsible="icon" {...props}>
-          <Link to="/" className="py-2 pl-2">
-            <Logotype size={isCollapsed ? "sm" : "md"} />
-          </Link>
+          {isMobile ? (
+            <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </Link>
+          ) : (
+            <Link to="/" className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </Link>
+          )}
           <SidebarContent>
             <NavMain items={data.navMain} />
           </SidebarContent>
