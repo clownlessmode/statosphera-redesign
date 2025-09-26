@@ -39,7 +39,9 @@ export const SummaryCard = ({
   return (
     <Card className="p-2! w-full gap-3! flex flex-col justify-between ">
       <CardContent className="px-0! pt-0 flex flex-col items-center justify-center gap-0">
-        <div className="text-sm xl:text-xl font-semibold">{content}</div>
+        <div className="max-md:text-xl text-sm xl:text-xl font-semibold">
+          {content}
+        </div>
         <div className="flex flex-row gap-4 items-center">
           <Tooltip>
             <TooltipTrigger>{trigger}</TooltipTrigger>

@@ -9,6 +9,7 @@ import { cn } from "@shared/lib/utils";
 import { format, parse, isValid, isBefore, isAfter } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { type DateRange } from "react-day-picker";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface DateRangePickerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -121,6 +122,7 @@ export const DateRangePicker = React.forwardRef<
   ];
 
   const fullPattern = /^\d{2}\.\d{2}\.\d{4} – \d{2}\.\d{2}\.\d{4}$/;
+  const isMobile = useIsMobile();
 
   return (
     <div className={cn("grid gap-2", className)} ref={ref} {...props}>
@@ -182,7 +184,7 @@ export const DateRangePicker = React.forwardRef<
               onChange?.(range);
               setInputValue(formatRangeValue(range));
             }}
-            numberOfMonths={2}
+            numberOfMonths={isMobile ? 1 : 2}
           />
         </PopoverContent>
       </Popover>

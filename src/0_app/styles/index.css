@@ -5,6 +5,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Отключение увелечения текста */
+html {
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  -moz-text-size-adjust: none;
+}
+
 /* Основные стили для body */
 body {
   scroll-behavior: smooth;

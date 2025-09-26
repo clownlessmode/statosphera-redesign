@@ -9,6 +9,7 @@ import { Button } from "@shared/ui/button";
 import { FilterModal } from "./filter-modal";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useProductInfiniteScroll } from "../model/hook";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const Products = () => {
   const [showWithoutGroups, setShowWithoutGroups] = useState(true);
@@ -105,12 +106,14 @@ export const Products = () => {
     };
   }, [loadMore]);
 
+  const isMobile = useIsMobile();
+
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
         title="Справочник номенклатуры"
         actions={{
-          left: (
+          left: !isMobile && (
             <div className="flex flex-row gap-4 ml-8">
               <FilterModal onApplyFilters={handleApplyFilters} />
               <Button
@@ -130,6 +133,23 @@ export const Products = () => {
         }}
       />
       <div className="rounded-3xl px-4 py-4 h-full bg-background overflow-y-auto">
+        {isMobile && (
+          <div className="flex flex-row w-full mb-4 justify-between">
+            <FilterModal onApplyFilters={handleApplyFilters} />
+            <Button
+              variant={activeFilter === "all" ? "default" : "outline"}
+              onClick={handleAllProductsClick}
+            >
+              Новая<span className="max-sm:hidden">номенклатура</span>
+            </Button>
+            <Button
+              variant={activeFilter === "new" ? "default" : "outline"}
+              onClick={handleNewProductsClick}
+            >
+              Вся номенклатура
+            </Button>
+          </div>
+        )}
         {isInitialLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-4 2xl:grid-cols-3 gap-4">
             {[...Array(20)].map((_, i) => (

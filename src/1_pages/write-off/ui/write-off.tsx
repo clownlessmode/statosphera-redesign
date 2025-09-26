@@ -19,6 +19,7 @@ export const WriteOff = () => {
       <WriteOffFiltersSheet />
       <div className="bg-muted w-full p-2 flex flex-col gap-2 md:h-screen md:max-w-full md:overflow-hidden">
         <Header
+          title="Списания"
           actions={{
             left: !isMobile && (
               <div className="ml-6 -mb-4 flex flex-row gap-1">

@@ -125,7 +125,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
   } = useProduct(payload);
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full md:mr-4">
       <CardHeader>
         <CardTitle>Продукты</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">

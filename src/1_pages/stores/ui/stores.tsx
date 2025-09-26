@@ -10,6 +10,7 @@ import { columns } from "../model/columns";
 import { useStoresController } from "../model/api/controller";
 import Spinner from "@shared/ui/spinner";
 import { Store } from "@entities/store/config";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const Stores = () => {
   const [search, setSearch] = useState("");
@@ -34,12 +35,14 @@ const Stores = () => {
     });
   }, [search, data]);
 
+  const isMobile = useIsMobile();
+
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
         title="Справочник магазинов"
         actions={{
-          left: (
+          left: !isMobile && (
             <div className="flex flex-row gap-1 w-full">
               <Input
                 placeholder="Поиск по магазинам"
@@ -54,6 +57,17 @@ const Stores = () => {
       />
 
       <div className="rounded-3xl px-4 pt-4 gap-4 h-fit flex flex-col min-h-[calc(100vh-4rem)] w-full bg-background">
+        {isMobile && (
+          <div className="flex flex-row w-full gap-1">
+            <Input
+              placeholder="Поиск по магазинам"
+              className="w-full"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Button onClick={() => setSearch("")}>Сброс</Button>
+          </div>
+        )}
         <Tabs defaultValue="stores">
           <TabsList className="w-full">
             <TabsTrigger value="stores">Магазины</TabsTrigger>

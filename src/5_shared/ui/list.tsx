@@ -22,7 +22,7 @@ export const List: FC<Props> = ({ options, title, isLoading, arrows }) => {
       <CardHeader className="text-center">
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-y-auto max-h-[250px] flex flex-col gap-2">
+      <CardContent className="overflow-y-auto max-h-[250px] flex flex-col max-xxs:text-xs max-xs:text-sm gap-1 md:gap-2">
         {isLoading ? (
           <>
             <Skeleton className="w-1/2 h-4" />

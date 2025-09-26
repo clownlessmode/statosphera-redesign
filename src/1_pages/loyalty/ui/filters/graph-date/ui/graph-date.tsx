@@ -19,6 +19,7 @@ import { useSearchParams } from "react-router";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import { useGraphDate } from "../model/hooks/use-graph-date";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -82,13 +83,14 @@ export const GraphDate = () => {
   ];
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
+  const isMobile = useIsMobile();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Calendar className="text-primary/80 mr-2" />
-          Отображение графиков {selectedLabel}
+        <Button variant="outline" size={isMobile ? "default" : "sm"}>
+          <Calendar className="text-primary/80 md:mr-2" />
+          {!isMobile && `Отображение графиков ${selectedLabel}`}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

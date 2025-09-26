@@ -38,7 +38,7 @@ const SalesDynamics: FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   // мемоизированный отфильтрованный массив
-
+  const isMobile = useIsMobile();
   const { defaultValues, isLoading } = useDefaultValues();
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const { value: dateGranularity } = useDateFilterStore((state) => state);
@@ -46,7 +46,7 @@ const SalesDynamics: FC = () => {
   const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
   const { values } = useSalesDynamicsFiltersStore((state) => state);
   const { filters } = useSalesDynamicsFiltersStore((state) => state);
-  const prepareLine = usePreparedStackedLine();
+  const prepareLine = usePreparedStackedLine(isMobile);
   const {
     getTable,
     getTotal,
@@ -204,14 +204,14 @@ const SalesDynamics: FC = () => {
     setGraph(graphRes);
     setSecondGraph(secondGraphRes);
   };
-  const isMobile = useIsMobile();
+
   const isCompleted = !!table && !!total && !!graph && !!secondGraph;
   const isAllLoading = !table || !total || !graph || !secondGraph;
   return (
     <>
-      <div className="bg-muted max-h-screen w-full p-2 flex flex-col gap-2">
+      <div className="bg-muted md:max-h-screen w-full p-2 flex flex-col gap-2">
         <Header
-          title={isMobile ? "" : "Динамика продаж"}
+          title="Динамика продаж"
           actions={{
             left: !isMobile && (
               <div className={cn("flex flex-row gap-2")}>

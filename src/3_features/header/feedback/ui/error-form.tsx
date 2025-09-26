@@ -112,14 +112,14 @@ const ErrorForm: FC<Props> = ({ setIsOpen }) => {
                   onValueChange={field.onChange}
                   value={field.value}
                   defaultValue={field.value}
-                  className="flex flex-row  justify-between w-full"
+                  className="flex flex-row justify-between w-full"
                 >
                   <FormItem className="flex items-center justufy-center flex-col text-center w-full">
                     <FormControl className="w-full">
                       <ButtonGroup
                         value={field.value ?? "neutral"} // контролируемое значение
                         onValueChange={field.onChange} // обновляем RHF
-                        className="flex flex-row justify-between w-full"
+                        className="flex flex-row max-md:flex-wrap justify-center md:justify-between w-full"
                       >
                         {importance.map((item) => (
                           <ButtonGroupItem

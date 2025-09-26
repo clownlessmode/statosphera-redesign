@@ -57,15 +57,20 @@ export default function SummaryFiltersSheet() {
 
   return (
     <SheetMain open={open} onOpenChange={handleOpenChange}>
-      <SheetContent side="left" close={false} forceMount className="scrol">
+      <SheetContent
+        side="left"
+        close={false}
+        forceMount
+        className="scrol max-md:w-full"
+      >
         <div>
           <Tabs className="gap-0">
             <SheetHeader className="p-0 border-b border-border shadow-sm">
-              <TabsList className="w-full rounded-none px-4 py-2 h-fit">
+              <TabsList className="w-full rounded-none h-full md:py-2 md:px-4 md:h-fit">
                 <TabsTrigger value="write-off">Сводная</TabsTrigger>
               </TabsList>
             </SheetHeader>
-            <TabsContent value="write-off" className="pr-4">
+            <TabsContent value="write-off" className="md:pr-4">
               <SummaryIn />
             </TabsContent>
           </Tabs>

@@ -2,6 +2,7 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { AvarageCheckAgeGroupGraphResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const AvarageCheckAgeGroupGraph = ({
   graph,
@@ -11,13 +12,15 @@ export const AvarageCheckAgeGroupGraph = ({
   isLoading: boolean;
 }) => {
   const prepareLine = usePreparedStackedLine();
+  const isMobile = useIsMobile();
+  const height = isMobile ? { height: "400px" } : {};
   return (
     <>
       {isLoading ? (
-        <StackedLineSkeleton className="min-h-[400px] col-span-3" />
+        <StackedLineSkeleton className="md:min-h-[400px] col-span-3" />
       ) : (
         <StackedLine
-          className="min-h-[400px] col-span-3"
+          className="md:min-h-[400px] col-span-3"
           customColors={[
             "#e74c3c",
             "#3498db",
@@ -27,6 +30,7 @@ export const AvarageCheckAgeGroupGraph = ({
             "#e91e63",
             "#ff5722",
           ]}
+          style={height}
           option={{
             title: {
               text: "Средний чек по возрастным группам",
