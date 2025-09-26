@@ -22,9 +22,9 @@ export function MailDisplay({ mail }: MailDisplayProps) {
   }, [mail]);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-1/2 md:h-full flex-col">
       {mail ? (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-y-auto scrollbar-hide">
           <div className="flex items-center px-4 h-[68px] gap-4 shrink-0">
             <div className="flex items-center gap-4 text-sm">
               <div className="grid gap-1">
@@ -53,7 +53,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           </div>
         </div>
       ) : (
-        <div className="p-8 text-center text-muted-foreground">
+        <div className="p-8 text-center text-muted-foreground overflow-y-auto scrollbar-hide">
           Выберите уведомление
         </div>
       )}

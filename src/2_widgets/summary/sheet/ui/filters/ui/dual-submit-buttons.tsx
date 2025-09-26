@@ -1,9 +1,12 @@
+import { cn } from "@shared/lib/utils";
 import { DataSubmitButton } from "./data-submit-button";
 import { GroupingSubmitButton } from "./grouping-submit-button";
 
-export const DualSubmitButtons = () => {
+export const DualSubmitButtons = ({
+  className,
+}: React.ComponentProps<"button">) => {
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className={cn("flex flex-col gap-2 w-full", className)}>
       {/* Основная кнопка для обновления данных */}
       <DataSubmitButton />
 

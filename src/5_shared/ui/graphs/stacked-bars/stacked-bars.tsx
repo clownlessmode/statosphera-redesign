@@ -26,7 +26,6 @@ export const StackedBarChart = ({
 }: StackedBarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
-
   const option: EChartsOption = useMemo(
     () => ({
       backgroundColor: "transparent",
@@ -58,6 +57,7 @@ export const StackedBarChart = ({
         textStyle: { color: colors.text, fontSize: 12 },
       },
       grid: {
+        top: 80,
         left: "0",
         right: "0",
         bottom: "0",

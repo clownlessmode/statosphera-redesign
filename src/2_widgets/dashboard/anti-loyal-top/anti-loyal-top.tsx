@@ -25,7 +25,7 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
   return (
     <>
       {!isLoading && data ? (
-        <Card className="w-full h-[400px] flex flex-col">
+        <Card className="w-full md:h-[400px] flex flex-col max-md:mt-5">
           <CardHeader>
             <CardTitle>Анти топ по применению карт лояльности</CardTitle>
           </CardHeader>

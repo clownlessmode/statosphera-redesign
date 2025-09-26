@@ -4,6 +4,7 @@ import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-ske
 import { Card } from "@shared/ui/card";
 
 import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const AgeGroupsGraph = ({
   graph,
@@ -12,6 +13,7 @@ export const AgeGroupsGraph = ({
   graph: AgeGroupsGraphResponse;
   isLoading: boolean;
 }) => {
+  const isMobile = useIsMobile();
   return (
     <>
       {isLoading ? (
@@ -24,7 +26,11 @@ export const AgeGroupsGraph = ({
               name: item.name,
               data: item.data,
             }))}
-            title="Частота покупок по возрастным группам и полу"
+            title={
+              isMobile
+                ? "Покупки по возрасту и полу"
+                : "Частота покупок по возрастным группам и полу"
+            }
           />
         </Card>
       )}

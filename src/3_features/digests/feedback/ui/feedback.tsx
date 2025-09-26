@@ -126,9 +126,9 @@ const Feedback: FC<Props> = ({ description, id }) => {
           Оставить отзыв {!isMobile && "по дайджесту"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="w-full mx-2 md:max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl">
+          <DialogTitle className="text-lg md:text-2xl">
             Оставить отзыв на {description}
           </DialogTitle>
         </DialogHeader>

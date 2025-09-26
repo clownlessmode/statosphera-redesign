@@ -38,7 +38,7 @@ export const Stores = () => {
     <Card
       key={store.id_store}
       className={cn(
-        "w-max-content gap-2",
+        "md:w-max-content gap-2",
         isUserStore && "border-muted-foreground border-2",
       )}
     >
@@ -94,7 +94,7 @@ export const Stores = () => {
             <h3 className="text-lg font-semibold ">Ваши магазины</h3>
             <Badge variant="secondary">{userStores.length}</Badge>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 md::grid-cols-2 gap-2">
             {userStores.map((store) => (
               <StoreCard
                 key={store.id_store}
@@ -114,7 +114,7 @@ export const Stores = () => {
             <h3 className="text-lg font-semibold">Все магазины</h3>
             <Badge variant="outline">{otherStores.length}</Badge>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {otherStores.map((store) => (
               <StoreCard key={store.id_store} store={store} />
             ))}

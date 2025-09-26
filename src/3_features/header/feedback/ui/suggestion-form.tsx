@@ -118,7 +118,7 @@ const SuggestionForm: FC<Props> = ({ setIsOpen }) => {
                       <ButtonGroup
                         value={field.value ?? "neutral"} // контролируемое значение
                         onValueChange={field.onChange} // обновляем RHF
-                        className="flex flex-row justify-between w-full"
+                        className="flex flex-row max-md:flex-wrap justify-center md:justify-between w-fulll"
                       >
                         {importance.map((item) => (
                           <ButtonGroupItem

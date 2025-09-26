@@ -27,6 +27,7 @@ import { DateRange } from "react-day-picker";
 import useForm from "../model/hook";
 import { useLoyaltyFiltersStore } from "../../filters-store";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const DaysFilter = () => {
   const form = useForm();
@@ -74,11 +75,12 @@ const DaysFilter = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size={"sm"}>
+        <Button variant="outline" size={isMobile ? "default" : "sm"}>
           <CalendarDays />{" "}
           {form.getValues("dateStart")
             ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
@@ -119,7 +121,7 @@ const DaysFilter = () => {
                     </FormItem>
                   )}
                 />
-                <div className="w-full grid grid-cols-3 gap-2 mt-2">
+                <div className="w-full grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 gap-2 mt-2">
                   <Button
                     type="button"
                     onClick={() => handleButtonClick("halfYear")}

@@ -90,7 +90,7 @@ const Dashboard = () => {
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
-      <div className="rounded-3xl h-full  bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
+      <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
         {session?.idUser === 181 && (
           <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
             {randomFromTest}

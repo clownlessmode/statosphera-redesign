@@ -18,11 +18,11 @@ export const Cities = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
+    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
       {allNps.city.map((item) => {
         return (
           <Card key={item.id_city} className={cn("w-max-content gap-2")}>
-            <CardHeader className="justify-between w-full flex items-center">
+            <CardHeader className="justify-between w-full flex max-md:flex-wrap items-center">
               <CardTitle className="flex flex-row gap-2 items-center">
                 <div
                   className={cn(

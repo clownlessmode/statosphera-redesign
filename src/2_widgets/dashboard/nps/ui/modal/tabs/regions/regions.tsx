@@ -18,11 +18,11 @@ export const Regions = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
       {allNps.region.map((item) => {
         return (
           <Card key={item.id_region} className={cn("w-max-content gap-2")}>
-            <CardHeader className="justify-between w-full flex items-center">
+            <CardHeader className="justify-between w-full flex max-md:flex-wrap items-center">
               <CardTitle className="flex flex-row gap-2 items-center">
                 <div
                   className={cn(

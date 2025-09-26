@@ -26,7 +26,7 @@ export const Modal = () => {
           Подробнее <ArrowUpRightIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-3xl max-w-none! h-[600px] flex flex-col">
+      <DialogContent className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-[600px] flex flex-col">
         <DialogHeader>
           <DialogTitle>NPS Аналитика</DialogTitle>
           <DialogDescription>
@@ -35,7 +35,7 @@ export const Modal = () => {
         </DialogHeader>
         <Separator />
         <Tabs className="w-full flex-1">
-          <TabsList className="w-full">
+          <TabsList className="w-full max-md:h-max max-md:grid grid-cols-1 xxs:grid-cols-2">
             <TabsTrigger value="summary">
               <ChartBar />
               Сводка

@@ -5,6 +5,7 @@ import { Card } from "@shared/ui/card";
 import { getOptionChart } from "./get-option-chart";
 import { cn } from "@shared/lib/utils";
 import { useTheme } from "@app/providers/theme-provider";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface CustomChartComponentProps {
   option: echarts.EChartsOption | any;
@@ -24,11 +25,11 @@ export default function StackedLine({
 }: CustomChartComponentProps) {
   const { theme } = useTheme(); // ① получаем текущую тему
   const chartRef = useRef<ReactECharts>(null);
-
+  const isMobile = useIsMobile();
   // ② пересчитываем опции при смене option **или** theme
   const optionCharts = useMemo(
-    () => getOptionChart(option, theme as string, customColors),
-    [option, theme, customColors],
+    () => getOptionChart(option, theme as string, customColors, !isMobile),
+    [option, theme, customColors, isMobile],
   );
   useEffect(() => {
     if (mirror === undefined) return;

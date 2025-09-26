@@ -46,7 +46,7 @@ const DigestCard: FC<Props> = ({
             {typeMap[type] ? typeMap[type] : type}
           </Badge>
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight leading-none">
+            <h3 className="text-lg md:text-2xl font-semibold tracking-tight leading-none">
               {title}
             </h3>
             <p className="mt-1 text-muted-foreground line-clamp-1 md:line-clamp-3 text-ellipsis ">
@@ -57,7 +57,7 @@ const DigestCard: FC<Props> = ({
               )}
             </p>
           </div>
-          <div className="flex flex-col md:flex-row md:items-center items-start gap-1.5 md:gap-6 text-muted-foreground text-sm font-medium leading-tight">
+          <div className="flex flex-col md:flex-row md:items-center items-start gap-1.5 md:gap-6 text-muted-foreground text-xs md:text-sm font-medium leading-tight">
             <div className="flex items-center gap-2">
               <ClockIcon className="h-4 w-4" />{" "}
               {(() => {

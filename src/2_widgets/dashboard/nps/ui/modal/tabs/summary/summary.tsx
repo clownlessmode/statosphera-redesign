@@ -6,6 +6,7 @@ import { NpsGraphResponse, useNpsController } from "@widgets/dashboard/nps/api";
 import { getNPSColor } from "@widgets/dashboard/nps/model";
 import { useEffect, useState } from "react";
 import { SummarySkeleton } from "./summary-skeleton";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const Summary = () => {
   const { isSummaryNpsLoading, summaryNps, getNpsGraph, isNpsGraphLoading } =
@@ -18,6 +19,7 @@ export const Summary = () => {
     };
     fetchData();
   }, []);
+  const isMobile = useIsMobile();
 
   if (isSummaryNpsLoading || isNpsGraphLoading) {
     return <SummarySkeleton />;
@@ -42,6 +44,7 @@ export const Summary = () => {
             xAxisData={npsGraph.map((item) => item.date) || []}
             yAxisData={npsGraph.map((item) => item.nps_card) || []}
             tooltipData={npsGraph.map((item) => item.date) || []}
+            show={!isMobile}
           />
         </CardContent>
       </CardContent>

@@ -14,16 +14,17 @@ export const FilterModal: FC<Props> = ({ onApplyFilters }) => {
     onApplyFilters();
     setOpen(false);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button>
           <Funnel />
-          <p>Фильтры</p>
+          <p className="max-xs:hidden">Фильтры</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[800px] ">
-        <ProductsFilter className="grid grid-cols-2" />
+      <DialogContent className="md:min-w-[800px] max-md:overflow-y-auto scrollbar-hide max-md:h-screen">
+        <ProductsFilter className="grid grid-cols-1 md:grid-cols-2" />
         <Button onClick={handleClick}>Сохранить</Button>
       </DialogContent>
     </Dialog>

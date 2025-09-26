@@ -9,7 +9,7 @@ export const PackageFilters: React.FC = () => {
   const updatePackage = useSummaryFiltersStore((state) => state.updatePackage);
 
   return (
-    <Button variant="outline">
+    <Button size={"default"} variant="outline">
       <Switch
         id="package"
         checked={!packageFilter}

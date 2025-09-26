@@ -38,6 +38,7 @@ import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/cont
 import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 import { Badge } from "@shared/ui/badge";
 import { useChannel } from "@widgets/report/sheet/ui/side/shops-filter/model/hooks/use-channel";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,17 +83,24 @@ const ShopsFilter = () => {
     }
   }, [selectedMyShops]);
   const { CHANNEL_SHOP } = useChannel();
+  const isMobile = useIsMobile();
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size={"sm"}>
-          <Store /> Найти магазины{" "}
+        <Button variant="outline" size={isMobile ? "default" : "sm"}>
+          <Store />{" "}
+          {isMobile ? (
+            <span className="max-xs:hidden">Магазины</span>
+          ) : (
+            "Найти магазины"
+          )}
           {allData.filters.idStore.length > 0 && (
             <Badge>{allData.filters.idStore.length}</Badge>
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent className="p-0 max-md:overflow-y-auto scrollbar-hide max-xxs:h-screen max-md:h-max rounded-xl border-none">
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>
@@ -133,7 +141,7 @@ const ShopsFilter = () => {
                             updateFilters("channel", values as FRS_CHANNEL[]);
                           }}
                           options={CHANNEL_SHOP}
-                          className="grid-cols-3"
+                          className="grid-cols-1 xxs:grid-cols-2 md:grid-cols-3"
                         />
                       </FormItem>
                     );
@@ -181,7 +189,7 @@ const ShopsFilter = () => {
                             updateFilters("ageGroup", values as AGE_GROUP[]);
                           }}
                           options={time}
-                          className="grid-cols-4"
+                          className="grid-cols-2 md:grid-cols-4"
                         />
                       </FormItem>
                     );

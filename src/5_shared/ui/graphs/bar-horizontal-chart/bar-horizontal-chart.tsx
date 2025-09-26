@@ -4,11 +4,13 @@ import { useTheme } from "@app/providers/theme-provider";
 import { graphColors } from "@shared/constants/graph-colors";
 import BarHorizontalChartSkeleton from "./bar-horizontal-chart-skeleton";
 import { useMemo } from "react";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 type BarHorizontalChartProps = {
   unit?: string;
   labels: string[];
   values: number[];
+  title?: string;
   itemColors?: (string | undefined)[];
   isLoading?: boolean;
   barCategoryGap?: string;
@@ -71,6 +73,7 @@ export const BarHorizontalChart = ({
   formatter,
   formatNumbers = false,
   pluralForms,
+  title,
 }: BarHorizontalChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
@@ -130,13 +133,25 @@ export const BarHorizontalChart = ({
   const validValues = values.filter((v): v is number => v != null);
   const max = validValues.length > 0 ? Math.max(...validValues, 1) : 1;
   const normalized = values.map((v) => (v != null ? (v / max) * 100 : 0));
+  const isMobile = useIsMobile();
+  const height = isMobile ? "400px" : "100%";
 
   const option: EChartsOption = {
+    title: title
+      ? {
+          text: title,
+          left: "center",
+          textStyle: {
+            color: colors.text,
+            fontSize: 14,
+          },
+        }
+      : undefined,
     grid: {
-      top: 10,
+      top: title ? 40 : 30,
       bottom: 10,
-      left: maxLabelWidth,
-      right: maxValueWidth,
+      left: isMobile ? 30 : maxLabelWidth,
+      right: isMobile ? 80 : maxValueWidth,
       containLabel: false,
     },
     tooltip: {
@@ -172,6 +187,7 @@ export const BarHorizontalChart = ({
         show: false,
       },
       axisLabel: {
+        show: !isMobile,
         color: colors.text,
         fontSize: 12,
         margin: 10,
@@ -213,7 +229,7 @@ export const BarHorizontalChart = ({
   };
 
   return (
-    <ReactECharts option={option} style={{ width: "100%", height: `100%` }} />
+    <ReactECharts option={option} style={{ width: "100%", height: height }} />
   );
 };
 
