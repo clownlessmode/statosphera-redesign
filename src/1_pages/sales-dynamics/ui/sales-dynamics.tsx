@@ -305,30 +305,47 @@ const SalesDynamics: FC = () => {
             )}
           </div>
           <div className="flex flex-col gap-2 h-full w-full">
-            <div className="flex flex-row gap-2 w-full">
-              <Input
-                placeholder="Поиск по магазину"
-                className="w-full! min-w-0"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+            <div className="flex flex-row max-md:flex-col gap-2 w-full">
+              {isMobile ? (
+                <div className="flex flex-row">
+                  <Input
+                    placeholder="Поиск по магазину"
+                    className="w-full! min-w-0"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+
+                  <AddIndicators
+                    defaultValues={defaultValues.indicators_and_groups}
+                  />
+                </div>
+              ) : (
+                <Input
+                  placeholder="Поиск по магазину"
+                  className="w-full! min-w-0"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              )}
               {selectedRows.length > 0 && (
                 <Dialog>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <DialogTrigger asChild>
-                          <Button variant="outline">
+                          <Button className="max-md:w-full" variant="outline">
                             <Store /> Выбранные магазины: {selectedRows.length}
                           </Button>
                         </DialogTrigger>
                       </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          Для выбора нескольких магазинов зажмите CTRL и
-                          кликайте по строкам
-                        </p>
-                      </TooltipContent>
+                      {!isMobile && (
+                        <TooltipContent>
+                          <p>
+                            Для выбора нескольких магазинов зажмите CTRL и
+                            кликайте по строкам
+                          </p>
+                        </TooltipContent>
+                      )}
                     </Tooltip>
                   </TooltipProvider>
                   <DialogContent>
@@ -355,9 +372,11 @@ const SalesDynamics: FC = () => {
                   </DialogContent>
                 </Dialog>
               )}
-              <AddIndicators
-                defaultValues={defaultValues.indicators_and_groups}
-              />
+              {!isMobile && (
+                <AddIndicators
+                  defaultValues={defaultValues.indicators_and_groups}
+                />
+              )}
             </div>
             {isAllLoading && <Skeleton className="w-full h-full" />}
             {!isAllLoading && isCompleted && (
