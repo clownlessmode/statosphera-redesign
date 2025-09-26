@@ -79,7 +79,7 @@ export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
         </ResizablePanelGroup>
       ) : (
         <>
-          <Tabs className="h-1/2" defaultValue="all">
+          <Tabs className="flex flex-col" defaultValue="all">
             <div className="flex items-center px-4 pt-4 pb-2 ">
               <TabsList className="w-full h-full flex items-center">
                 <TabsTrigger value="all">Все</TabsTrigger>
@@ -96,13 +96,13 @@ export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
             </div>
             <TabsContent
               value="all"
-              className="m-0 overflow-y-auto scrollbar-hide"
+              className="m-0 overflow-y-auto max-h-[30vh] scrollbar-hide"
             >
               <MailList items={mails} />
             </TabsContent>
             <TabsContent
               value="unread"
-              className="m-0 overflow-y-auto scrollbar-hide"
+              className="m-0 overflow-y-auto max-h-[30vh] scrollbar-hide"
             >
               <MailList items={mails.filter((item) => !item.is_read)} />
             </TabsContent>

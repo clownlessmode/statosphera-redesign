@@ -22,7 +22,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
   }, [mail]);
 
   return (
-    <div className="flex h-1/2 md:h-full flex-col">
+    <div className="flex md:h-full flex-col">
       {mail ? (
         <div className="flex flex-col h-full overflow-y-auto scrollbar-hide">
           <div className="flex items-center px-4 h-[68px] gap-4 shrink-0">
