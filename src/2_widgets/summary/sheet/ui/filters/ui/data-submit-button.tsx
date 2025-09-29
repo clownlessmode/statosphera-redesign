@@ -13,18 +13,59 @@ export const DataSubmitButton = () => {
   const { clearAll, setNomenklatura } = useSummaryStore();
   const { getNomenklatura } = useSummaryController();
 
+  const parseAllStringArrays = (obj: any): any => {
+    if (Array.isArray(obj)) {
+      return obj.flatMap((item: any): any => {
+        if (
+          typeof item === "string" &&
+          item.startsWith("[") &&
+          item.endsWith("]")
+        ) {
+          try {
+            const parsed = JSON.parse(item);
+            return Array.isArray(parsed) ? parsed : item;
+          } catch (e) {
+            console.warn("Ошибка парсинга строкового массива:", item, e);
+            return item;
+          }
+        }
+        if (item && typeof item === "object") {
+          return parseAllStringArrays(item);
+        }
+        return item;
+      });
+    }
+
+    if (obj && typeof obj === "object" && obj.constructor === Object) {
+      const result: any = {};
+      for (const [key, value] of Object.entries(obj)) {
+        result[key] = parseAllStringArrays(value);
+      }
+      return result;
+    }
+
+    return obj;
+  };
+
   const handleSubmit = async () => {
     clearAll();
     const allData = getApiPayload();
 
-    console.log("🔄 Обновление данных и номенклатуры", allData);
+    console.log("🔄 Обновление данных и номенклатуры (исходные):", allData);
+
+    const processedData = {
+      ...allData,
+      filters: parseAllStringArrays(allData.filters),
+    };
+
+    console.log("Обработанные данные:", processedData);
 
     const newParams = new URLSearchParams(searchParams);
     newParams.set("open", "false");
     setSearchParams(newParams);
 
     try {
-      const nomenklaturaResponse = await getNomenklatura(allData);
+      const nomenklaturaResponse = await getNomenklatura(processedData);
       setNomenklatura(nomenklaturaResponse);
       console.log("✅ Номенклатура обновлена");
     } catch (error) {
