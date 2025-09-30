@@ -70,7 +70,7 @@ export const DoubleHorizontalBarChart = ({
       grid: {
         left: 0,
         right: 60,
-        top: 20,
+        top: 30,
         bottom: 0,
         containLabel: true,
       },

@@ -23,7 +23,7 @@ export const FilterModal: FC<Props> = ({ onApplyFilters }) => {
           <p className="max-xs:hidden">Фильтры</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:min-w-[800px] max-md:overflow-y-auto scrollbar-hide max-md:h-screen">
+      <DialogContent className="md:min-w-[800px] max-md:overflow-y-auto scrollbar-hide max-md:h-[calc(100vh-64px)]">
         <ProductsFilter className="grid grid-cols-1 md:grid-cols-2" />
         <Button onClick={handleClick}>Сохранить</Button>
       </DialogContent>

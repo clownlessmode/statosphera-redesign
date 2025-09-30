@@ -148,7 +148,7 @@ export const BarHorizontalChart = ({
         }
       : undefined,
     grid: {
-      top: title ? 40 : 30,
+      top: title ? 40 : 10,
       bottom: 10,
       left: isMobile ? 30 : maxLabelWidth,
       right: isMobile ? 80 : maxValueWidth,
