@@ -11,6 +11,7 @@ import {
 import { ThemeSwitcher } from "@features/theme-switcher/theme-switcher";
 import { Link } from "react-router";
 import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 export function NavSecondary({
   items,
   isCollapsed,
@@ -26,6 +27,7 @@ export function NavSecondary({
   isCollapsed: boolean;
   toggleSidebar: () => void;
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const isMobile = useIsMobile();
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -66,16 +68,18 @@ export function NavSecondary({
               <ThemeSwitcher size="sm" />
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem onClick={toggleSidebar}>
-            <SidebarMenuButton>
-              {isCollapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronLeft className="h-4 w-4" />
-              )}
-              <p>Скрыть</p>{" "}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {!isMobile && (
+            <SidebarMenuItem onClick={toggleSidebar}>
+              <SidebarMenuButton>
+                {isCollapsed ? (
+                  <ChevronRight className="h-4 w-4" />
+                ) : (
+                  <ChevronLeft className="h-4 w-4" />
+                )}
+                <p>Скрыть</p>{" "}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

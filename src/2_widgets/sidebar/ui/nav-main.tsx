@@ -6,8 +6,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@shared/ui/sidebar";
 import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export function NavMain({
   items,
@@ -19,24 +21,41 @@ export function NavMain({
     icon?: LucideIcon;
   }[];
 }) {
+  const { toggleSidebar } = useSidebar();
+  const isMobile = useIsMobile();
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <Link to={item.url}>
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  className={cn(
-                    "cursor-pointer",
-                    item.disabled && "opacity-30 cursor-not-allowed",
-                  )}
-                >
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-              </Link>
+              {isMobile ? (
+                <Link onClick={toggleSidebar} to={item.url}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={cn(
+                      "cursor-pointer",
+                      item.disabled && "opacity-30 cursor-not-allowed",
+                    )}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </Link>
+              ) : (
+                <Link to={item.url}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={cn(
+                      "cursor-pointer",
+                      item.disabled && "opacity-30 cursor-not-allowed",
+                    )}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </Link>
+              )}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
