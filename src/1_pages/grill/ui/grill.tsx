@@ -11,7 +11,7 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@shared/ui/input";
 import AddProductDialog from "./add-product-dialog";
 import AddCountDialog from "./add-count-dialog";
-import { GrillProductTblRo } from "../api/types/responses";
+import { GraphData, GrillProductTblRo } from "../api/types/responses";
 import { useSession } from "@entities/session";
 import { useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
@@ -23,7 +23,10 @@ const Grill = () => {
     navigate(ROUTES_PATH.FORBIDDEN);
   }
   const { getGraph, getStatistic } = useGrillController();
-  const [graphData, setGraphData] = useState<any>(null);
+  const [graphData, setGraphData] = useState<GraphData>({
+    graph: [],
+    graphCheck: [],
+  });
   const [statisticData, setStatisticData] = useState<any>(null);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -116,7 +119,7 @@ const Grill = () => {
   const tableColumnDefs = useMemo(() => {
     return createGrillColumnDefs(handleSettingsClick);
   }, [handleSettingsClick, tableData]);
-
+  const customColors = ["#E50046", "#50A2537E", "#00BFFF"];
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header title={`Гриль`} />
@@ -133,18 +136,17 @@ const Grill = () => {
                       },
                       legend: {
                         data: [
-                          ...(graphData.graph?.map((item: any) => item.name) ||
+                          ...(graphData.graph?.map((item) => item.name) || []),
+                          ...(graphData.graphCheck?.map((item) => item.name) ||
                             []),
-                          ...(graphData.graphCheck?.map(
-                            (item: any) => item.name,
-                          ) || []),
                         ],
                       },
                       series: prepareLine([
                         ...(graphData.graph || []),
                         ...(graphData.graphCheck || []),
-                      ] as any),
+                      ]),
                     }}
+                    customColors={customColors}
                   />
                 </div>
 

@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { GrillProductRo } from "./types/responses";
+import { GraphData, GrillProductRo } from "./types/responses";
 
 export class GrillService {
   static async getProducts(): Promise<GrillProductRo[]> {
@@ -35,7 +35,7 @@ export class GrillService {
     return response.data;
   }
 
-  static async getGraph(payload: { idProduct: number[] }): Promise<any> {
+  static async getGraph(payload: { idProduct: number[] }): Promise<GraphData> {
     const response = await api.post("/grill/graph", payload);
     return response.data;
   }

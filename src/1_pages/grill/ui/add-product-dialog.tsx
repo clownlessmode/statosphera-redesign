@@ -171,7 +171,7 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogTrigger></DialogTrigger>
-        <DialogContent className="h-[68vh]">
+        <DialogContent className="h-[68vh] sm:max-w-[60vw]! max-w-[50vw]! border-white">
           <div className="px-2 py-4 space-y-4 h-full flex flex-col">
             <div className="flex flex-col gap-2">
               <p>Добавить продукты</p>
