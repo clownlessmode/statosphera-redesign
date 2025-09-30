@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@shared/ui/dropdown-menu";
 import { useTheme } from "@app/providers/theme-provider";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 // Маппинг технических названий на человекочитаемые
 const themeLabels: Record<string, string> = {
@@ -28,6 +29,8 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
     setThemeTitle(themeLabels[theme] || "");
   }, [theme]);
 
+  const isMobile = useIsMobile();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,7 +40,7 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
               <Sun className="size-4 rotate-0 scale-100 transition-all absolute dark:-rotate-90 dark:scale-0" />
               <Moon className="size-4 rotate-90 scale-0 transition-all absolute dark:rotate-0 dark:scale-100" />
             </div>
-            <span>{themeTitle} тема</span>
+            {isMobile ? <span>Тема</span> : <span>{themeTitle} тема</span>}
             <div className="relative size-4">
               <ChevronDown className="size-4 transition-all absolute" />
             </div>
@@ -48,7 +51,7 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
               <Sun className="size-4 rotate-0 scale-100 transition-all absolute dark:-rotate-90 dark:scale-0" />
               <Moon className="size-4 rotate-90 scale-0 transition-all absolute dark:rotate-0 dark:scale-100" />
             </div>
-            <span>{themeTitle} тема</span>
+            {isMobile ? <span>Тема</span> : <span>{themeTitle} тема</span>}
             <div className="relative size-4">
               <ChevronDown className="size-4 transition-all absolute" />
             </div>

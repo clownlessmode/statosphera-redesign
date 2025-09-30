@@ -41,11 +41,14 @@ export default function StackedLine({
       // подключаем синхронизацию по группе
       echarts.connect(groupId);
     }
+
+    if (isMobile) instance?.resize();
+
     return () => {
       // при размонтировании можно отключить эту группу
       echarts.disConnect(groupId);
     };
-  }, [mirror]);
+  }, [mirror, isMobile]);
 
   return (
     <Card className={cn("w-full h-full pt-1", className)}>
