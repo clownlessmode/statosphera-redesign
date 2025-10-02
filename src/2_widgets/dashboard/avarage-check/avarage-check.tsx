@@ -15,6 +15,7 @@ interface Props {
   avgCheckYoYPercent: number | undefined;
   isLoading: boolean;
   negative?: boolean;
+  tv?: boolean;
 }
 
 const AverageCheck = ({
@@ -23,20 +24,28 @@ const AverageCheck = ({
   avgCheckYoYPercent,
   isLoading,
   negative,
+  tv,
 }: Props) => {
   return (
     <>
       {isLoading ? (
         <AverageCheckSkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full h-full gap-1 flex flex-col py-2 justify-between",
+            tv && "py-2",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Средний чек (за текущий месяц)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
-                {avgCheck ? `${avgCheck.toLocaleString()}₽` : null}{" "}
+              <p className={cn(" text-xl font-bold", tv && "text-lg")}>
+                {avgCheck
+                  ? `${avgCheck.toLocaleString().replace(/,/g, " ")}₽`
+                  : null}{" "}
                 {avgCheckYoYPercent ? `(${avgCheckYoYPercent}%)` : null}
               </p>
               {avgCheckYoYPercent && negative !== undefined && (
@@ -53,10 +62,17 @@ const AverageCheck = ({
               )}
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && "text-sm",
+            )}
+          >
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {avgCheckYoY ? `${avgCheckYoY.toLocaleString()}₽` : null}{" "}
+              {avgCheckYoY
+                ? `${Math.round(avgCheckYoY).toLocaleString()}₽`
+                : null}{" "}
               {avgCheckYoYPercent ? `(${avgCheckYoYPercent}%)` : null}
             </p>
           </CardFooter>

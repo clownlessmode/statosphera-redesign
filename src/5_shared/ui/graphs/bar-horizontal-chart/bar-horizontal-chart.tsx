@@ -134,7 +134,6 @@ export const BarHorizontalChart = ({
   const max = validValues.length > 0 ? Math.max(...validValues, 1) : 1;
   const normalized = values.map((v) => (v != null ? (v / max) * 100 : 0));
   const isMobile = useIsMobile();
-  const height = isMobile ? "400px" : "100%";
 
   const option: EChartsOption = {
     title: title
@@ -229,7 +228,10 @@ export const BarHorizontalChart = ({
   };
 
   return (
-    <ReactECharts option={option} style={{ width: "100%", height: height }} />
+    <ReactECharts
+      option={option}
+      style={{ width: "100%", height: isMobile ? "400px" : "100%" }}
+    />
   );
 };
 

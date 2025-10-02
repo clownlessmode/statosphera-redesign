@@ -16,6 +16,7 @@ interface Props {
   writeOffYoYPercent: number | undefined;
   isLoading: boolean;
   negative: boolean | undefined;
+  tv?: boolean;
 }
 
 const WriteOffIndicator = ({
@@ -25,20 +26,28 @@ const WriteOffIndicator = ({
   writeOffYoYPercent,
   isLoading,
   negative,
+  tv,
 }: Props) => {
   return (
     <>
       {isLoading ? (
         <WriteOffIndicatorSkeleton />
       ) : (
-        <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full h-[128px] gap-1 flex flex-col justify-between",
+            tv && "h-full py-2",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Списания (показатель)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
-                {writeOff ? `${writeOff.toLocaleString()}₽` : null}{" "}
+              <p className={cn("text-xl font-bold", tv && "text-lg")}>
+                {writeOff
+                  ? `${writeOff.toLocaleString().replace(/,/g, " ")}₽`
+                  : null}{" "}
                 {writeOffPercent ? `(${writeOffPercent}%)` : null}
               </p>
               {writeOffYoYPercent && negative !== undefined && (
@@ -55,10 +64,17 @@ const WriteOffIndicator = ({
               )}
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && " text-sm",
+            )}
+          >
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {writeOffYoY ? `${writeOffYoY.toLocaleString()}₽` : null}{" "}
+              {writeOffYoY
+                ? `${writeOffYoY.toLocaleString().replace(/,/g, " ")}₽`
+                : null}{" "}
               {writeOffYoYPercent ? `(${writeOffYoYPercent}%)` : null}
             </p>
           </CardFooter>

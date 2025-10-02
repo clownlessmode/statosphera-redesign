@@ -15,6 +15,7 @@ interface Props {
   proceedsWoYPercent: number | string | undefined;
   weekAgoProceedsTotal: number | string | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
 
 const TodayRevenue = ({
@@ -23,6 +24,7 @@ const TodayRevenue = ({
   proceedsWoYPercent,
   weekAgoProceedsTotal,
   isLoading,
+  tv,
 }: Props) => {
   return (
     <>
@@ -32,14 +34,21 @@ const TodayRevenue = ({
       !weekAgoProceedsTotal ? (
         <TodayRevenueSkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full h-full gap-1 flex flex-col justify-between",
+            tv && "py-2",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Выручка (сегодня)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {proceedsTotal ? `${proceedsTotal.toLocaleString()}₽` : null}{" "}
+                {proceedsTotal
+                  ? `${proceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`
+                  : null}{" "}
                 {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
               </p>
               {proceedsWoYPercent && negative !== undefined && (
@@ -57,7 +66,7 @@ const TodayRevenue = ({
             <p className="w-full">Выручка на прошлой неделе</p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
-                ? `${weekAgoProceedsTotal.toLocaleString()}₽`
+                ? `${weekAgoProceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`
                 : null}{" "}
               {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
@@ -65,7 +74,7 @@ const TodayRevenue = ({
             <p className="w-full">Изменения к последнему закрытому часу</p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
-                ? `${weekAgoProceedsTotal.toLocaleString()}₽`
+                ? `${weekAgoProceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`
                 : null}{" "}
               {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
