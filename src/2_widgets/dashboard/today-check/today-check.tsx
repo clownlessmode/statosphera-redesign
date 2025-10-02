@@ -15,6 +15,7 @@ interface Props {
   proceedsWoYPercent: number | string | undefined;
   weekAgoProceedsTotal: number | string | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
 
 const TodayCheck = ({
@@ -23,6 +24,7 @@ const TodayCheck = ({
   proceedsWoYPercent,
   weekAgoProceedsTotal,
   isLoading,
+  tv,
 }: Props) => {
   return (
     <>
@@ -32,7 +34,12 @@ const TodayCheck = ({
       !weekAgoProceedsTotal ? (
         <TodayCheckSkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full h-full gap-1 flex flex-col justify-between",
+            tv && "py-2",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Чеки (сегодня)</CardTitle>

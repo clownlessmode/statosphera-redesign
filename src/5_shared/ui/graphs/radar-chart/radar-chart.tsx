@@ -4,6 +4,7 @@ import { useTheme } from "@app/providers/theme-provider";
 import { useMemo } from "react";
 import { graphColors } from "@shared/constants/graph-colors";
 import RadarChartSkeleton from "./radar-chart-skeleton";
+import { useIsMobile } from "@shared/hooks/use-mobile";
 
 type RadarChartProps = {
   data: { name: string; value: number }[];
@@ -18,7 +19,7 @@ export const RadarChart = ({
 }: RadarChartProps) => {
   const { theme } = useTheme();
   const colors = theme === "light" ? graphColors.light : graphColors.dark;
-
+  const isMobile = useIsMobile();
   // Максимум для всех осей (считаем, что значения в %)
   const maxValue = 100;
 
@@ -74,7 +75,7 @@ export const RadarChart = ({
 
       radar: {
         // радиус и центр настраиваем под пропорции
-        radius: "80%",
+        radius: isMobile ? "45%" : "65%",
         center: ["50%", "55%"],
         shape: "polygon",
         name: {
@@ -128,7 +129,7 @@ export const RadarChart = ({
         },
       ],
     }),
-    [colors, indicators, values, title],
+    [colors, indicators, values, title, isMobile],
   );
 
   return (

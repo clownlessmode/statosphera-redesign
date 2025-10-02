@@ -17,7 +17,7 @@ export function MailList({ items }: MailListProps) {
   const { selected, setSelected } = useMail();
 
   return (
-    <ScrollArea className="h-[40vh] md:h-[calc(100vh-218px)]">
+    <ScrollArea className="max-md:h-[calc(100vh-180px)] h-[calc(100vh-218px)]">
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
           <button
@@ -38,13 +38,13 @@ export function MailList({ items }: MailListProps) {
                 </div>
                 <div
                   className={cn(
-                    "ml-auto text-xs",
+                    "ml-auto text-xs max-md:text-right",
                     selected === String(item.id)
                       ? "text-foreground"
                       : "text-muted-foreground",
                   )}
                 >
-                  {new Date(item.created_at).toLocaleString()}
+                  {new Date(item.created_at).toLocaleString("ru-RU")}
                 </div>
               </div>
               <div className="text-xs font-medium line-clamp-1">

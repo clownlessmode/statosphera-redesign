@@ -6,18 +6,25 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import MarginSkeleton from "./margin-skeleton";
+import { cn } from "@shared/lib/utils";
 
 interface MarginProps {
   data: number | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
-const Margin = ({ data, isLoading }: MarginProps) => {
+const Margin = ({ data, isLoading, tv }: MarginProps) => {
   return (
     <>
       {isLoading ? (
         <MarginSkeleton />
       ) : (
-        <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full gap-1 flex flex-col justify-between",
+            tv && "h-full py-3",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Маржа</CardTitle>

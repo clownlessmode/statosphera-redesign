@@ -8,7 +8,13 @@ import { Badge } from "@shared/ui/badge";
 import { useSession } from "@entities/session";
 import { Separator } from "@shared/ui/separator";
 
-export const Stores = () => {
+interface StoresProps {
+  tv?: boolean;
+  best?: boolean;
+  worst?: boolean;
+}
+
+export const Stores = ({ tv, best, worst }: StoresProps) => {
   const { allNps, isAllNpsLoading } = useNpsController();
   const { session } = useSession();
 
@@ -28,6 +34,9 @@ export const Stores = () => {
     (store) => !session?.idStore?.includes(store.id_store),
   );
 
+  const bestStores = otherStores.slice(0, 5);
+  const worstStores = otherStores.slice(-5).reverse();
+
   const StoreCard = ({
     store,
     isUserStore = false,
@@ -40,6 +49,7 @@ export const Stores = () => {
       className={cn(
         "md:w-max-content gap-2",
         isUserStore && "border-muted-foreground border-2",
+        tv && "border-0 pt-2 pb-2",
       )}
     >
       <CardHeader className="justify-between w-full flex items-center">
@@ -72,19 +82,59 @@ export const Stores = () => {
           {store.nps_card}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <Badge
-          className={cn(
-            "w-full",
-            getNPSColor(store.nps_card).bg,
-            getNPSColor(store.nps_card).text,
-          )}
-        >
-          {getNPSColor(store.nps_card).label}
-        </Badge>
-      </CardContent>
+      {!tv && (
+        <CardContent>
+          <Badge
+            className={cn(
+              "w-full",
+              getNPSColor(store.nps_card).bg,
+              getNPSColor(store.nps_card).text,
+            )}
+          >
+            {getNPSColor(store.nps_card).label}
+          </Badge>
+        </CardContent>
+      )}
     </Card>
   );
+
+  //Лучшие магазины
+
+  if (best) {
+    return (
+      <div className="grid grid-cols-1 gap-2 w-full h-full pb-6">
+        <div className="col-span-full">
+          <h3 className="font-semibold text-center">Лучшие магазины</h3>
+        </div>
+        {bestStores.length > 0 && (
+          <>
+            {bestStores.map((store) => (
+              <StoreCard key={store.id_store} store={store} />
+            ))}
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Худшие магазины
+
+  if (worst) {
+    return (
+      <div className="grid grid-cols-1 gap-2 w-full h-full pb-6">
+        <div className="col-span-full">
+          <h3 className="font-semibold text-center">Худшие магазины</h3>
+        </div>
+        {worstStores.length > 0 && (
+          <>
+            {worstStores.map((store) => (
+              <StoreCard key={store.id_store} store={store} />
+            ))}
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6 space-y-4">

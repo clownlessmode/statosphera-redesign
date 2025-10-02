@@ -177,7 +177,7 @@ export const EditProduct: FC<Props> = ({
           <Settings />
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none max-md:px-2 max-md:w-full max-md:overflow-y-auto scrollbar-hide max-md:h-screen md:min-w-[800px] lg:min-w-[1000px] ">
+      <DialogContent className="p-0 rounded-xl border-none max-md:px-2 max-md:w-full max-md:overflow-y-auto scrollbar-hide max-md:h-[calc(100vh-96px)] md:min-w-[800px] lg:min-w-[1000px] ">
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="md:max-w-xs">

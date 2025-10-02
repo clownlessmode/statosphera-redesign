@@ -1,11 +1,11 @@
 import { Card } from "@shared/ui/card";
 import { motion } from "motion/react";
-
 import { NpsSkeleton } from "./nps-skeleton";
 import { useNpsController } from "../api";
 import { Modal } from "./modal/modal";
+import { cn } from "@shared/lib/utils";
 
-export const Nps = () => {
+export const Nps = ({ tv }: { tv?: boolean }) => {
   const { summaryNps, isSummaryNpsLoading, isSummaryNpsError } =
     useNpsController();
 
@@ -14,10 +14,15 @@ export const Nps = () => {
   }
 
   return (
-    <Card className="w-full items-center justify-center px-8 !h-[400px]">
+    <Card
+      className={cn(
+        "w-full items-center justify-center px-8 h-full",
+        !tv ? "!h-[400px]" : "border-0",
+      )}
+    >
       <div className="relative inline-block">
         <motion.h1
-          className="text-8xl xs:text-9xl  font-extrabold text-primary leading-none relative z-10"
+          className="text-8xl xs:text-9xl font-extrabold text-primary leading-none relative z-10"
           animate={{
             opacity: [0.8, 1, 0.8],
           }}
@@ -60,7 +65,7 @@ export const Nps = () => {
         ))}
       </div>
       <h2 className="text-2xl font-bold mb-4">Общий NPS</h2>
-      <Modal />
+      {!tv && <Modal />}
     </Card>
   );
 };

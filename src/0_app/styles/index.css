@@ -106,6 +106,12 @@ body {
   --positive: #34a853;
   --positive-foreground: #d8f3df;
 
+  --average: #d87110;
+  --average-foreground: rgb(255, 172, 105);
+
+  --height: #e2ae01;
+  --height-foreground: #fff2aa;
+
   --border: #dad9d8;
 
   --input: #dad9d8;
@@ -145,6 +151,10 @@ body {
   --destructive-foreground: #fbe9eb;
   --positive: #34a853;
   --positive-foreground: #d8f3df;
+  --average: #d35d0e;
+  --average-foreground: #fca258;
+  --height: #e2ae01;
+  --height-foreground: #fff2aa;
   --border: #2f2f2f;
   --input: #2f2f2f;
   --ring: #ffadc6;
@@ -182,6 +192,10 @@ body {
   --color-destructive-foreground: var(--destructive-foreground);
   --color-positive: var(--positive);
   --color-positive-foreground: var(--positive-foreground);
+  --color-average: var(--average);
+  --color-average-foreground: var(--average-foreground);
+  --color-height: var(--height);
+  --color-height-foreground: var(--height-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

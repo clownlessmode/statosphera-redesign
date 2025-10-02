@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { RadarChart } from "@shared/ui/graphs/radar-chart/radar-chart";
 import PlanPercentSkeleton from "./plan-precent-skeleton";
+import { cn } from "@shared/lib/utils";
 
 interface PlanPercentProps {
   isLoading: boolean;
@@ -9,6 +10,7 @@ interface PlanPercentProps {
   planProceedsForecastPercent: number | undefined;
   planProceedsQcForecastPercent: number | null;
   planShareOfPaymentsQcForecastPercent: number | null;
+  tv?: boolean;
 }
 const PlanPercent = ({
   isLoading,
@@ -17,6 +19,7 @@ const PlanPercent = ({
   planProceedsForecastPercent,
   planProceedsQcForecastPercent,
   planShareOfPaymentsQcForecastPercent,
+  tv,
 }: PlanPercentProps) => {
   return (
     <>
@@ -26,9 +29,11 @@ const PlanPercent = ({
         planProceedsForecastPercent ||
         planProceedsQcForecastPercent ||
         planShareOfPaymentsQcForecastPercent) ? (
-        <Card className="w-full h-[400px] flex flex-col">
+        <Card className={cn("w-full h-full flex flex-col", !tv && "h-[400px]")}>
           <CardHeader>
-            <CardTitle>Процент выполнения плана</CardTitle>
+            <CardTitle className="text-center">
+              Процент выполнения плана
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
             <RadarChart

@@ -6,12 +6,14 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import LeaderImSalesSkeleton from "./leader-im-sales-skeleton";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   idStore: number | undefined;
   proceedsIm: number | undefined;
   storeName: string | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
 
 const LeaderImSales = ({
@@ -19,6 +21,7 @@ const LeaderImSales = ({
   proceedsIm,
   storeName,
   isLoading,
+  tv,
 }: Props) => {
   return (
     <>
@@ -36,10 +39,17 @@ const LeaderImSales = ({
               </p>
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && "text-sm",
+            )}
+          >
             <p className="w-full">Выручка (за текущий месяц)</p>
             <p className="w-full text-muted-foreground font-bold">
-              {proceedsIm ? `${proceedsIm.toLocaleString()}₽` : null}
+              {proceedsIm
+                ? `${proceedsIm.toLocaleString().replace(/,/g, " ")}₽`
+                : null}
             </p>
           </CardFooter>
         </Card>

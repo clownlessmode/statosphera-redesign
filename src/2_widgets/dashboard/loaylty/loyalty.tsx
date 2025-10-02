@@ -6,14 +6,16 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import LoyaltySkeleton from "./loyalty-skeleton";
+import { cn } from "@shared/lib/utils";
 
 interface Props {
   appLoyalPercent: number | undefined;
   checkLoyal: number | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
 
-const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading }: Props) => {
+const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading, tv }: Props) => {
   return (
     <>
       {isLoading ? (
@@ -30,7 +32,12 @@ const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading }: Props) => {
               </p>
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && "text-sm",
+            )}
+          >
             <p className="w-full">Доля в процентах</p>
             <p className="w-full text-muted-foreground font-bold">
               {appLoyalPercent ? `${appLoyalPercent.toLocaleString()}%` : null}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, XIcon } from "lucide-react";
 
 import { Input } from "@shared/ui/input";
 import {
@@ -27,7 +27,7 @@ interface MailProps {
 }
 
 export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
-  const { selected } = useMail();
+  const { selected, setSelected } = useMail();
   const isMobile = useIsMobile();
   return (
     <TooltipProvider delayDuration={0}>
@@ -94,23 +94,31 @@ export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
                 </div>
               </form>
             </div>
-            <TabsContent
-              value="all"
-              className="m-0 overflow-y-auto max-h-[30vh] scrollbar-hide"
-            >
+            <TabsContent value="all" className="m-0">
               <MailList items={mails} />
             </TabsContent>
-            <TabsContent
-              value="unread"
-              className="m-0 overflow-y-auto max-h-[30vh] scrollbar-hide"
-            >
+            <TabsContent value="unread" className="m-0">
               <MailList items={mails.filter((item) => !item.is_read)} />
             </TabsContent>
           </Tabs>
-          <Separator />
-          <MailDisplay
-            mail={mails.find((item) => item.id === Number(selected)) || null}
-          />
+          {selected && (
+            <div className="fixed inset-0 bg-muted px-2 py-12 w-full min-h-svh">
+              <div
+                onClick={() => setSelected(null)}
+                className="z-50 ring-offset-background focus:ring-ring fixed top-15 right-6 rounded-xs focus:ring-2 focus:ring-offset-2 focus:outline-hidden size-6"
+              >
+                <XIcon />
+                <span className="sr-only">Close</span>
+              </div>
+              <div className="rounded-3xl bg-background py-4 overflow-y-auto h-full scrollbar-hide">
+                <MailDisplay
+                  mail={
+                    mails.find((item) => item.id === Number(selected)) || null
+                  }
+                />
+              </div>
+            </div>
+          )}
         </>
       )}
     </TooltipProvider>

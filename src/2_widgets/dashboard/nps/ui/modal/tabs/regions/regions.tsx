@@ -6,7 +6,7 @@ import { MapPin, Star } from "lucide-react";
 import { getNPSColor } from "@widgets/dashboard/nps/model";
 import { Badge } from "@shared/ui/badge";
 
-export const Regions = () => {
+export const Regions = ({ tv }: { tv?: boolean }) => {
   const { allNps, isAllNpsLoading } = useNpsController();
 
   if (isAllNpsLoading || !allNps) {
@@ -18,10 +18,23 @@ export const Regions = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-2 w-full h-full scrollbar-hide pb-6",
+        !tv && "md:grid-cols-2 max-h-[450px] overflow-y-auto",
+      )}
+    >
+      {tv && (
+        <div className="col-span-full">
+          <h3 className="font-semibold text-center">NPS по регионам</h3>
+        </div>
+      )}
       {allNps.region.map((item) => {
         return (
-          <Card key={item.id_region} className={cn("w-max-content gap-2")}>
+          <Card
+            key={item.id_region}
+            className={cn("w-max-content gap-2", tv && "border-0 pt-2 pb-2")}
+          >
             <CardHeader className="justify-between w-full flex max-md:flex-wrap items-center">
               <CardTitle className="flex flex-row gap-2 items-center">
                 <div
@@ -33,7 +46,11 @@ export const Regions = () => {
                 >
                   <MapPin className="w-4 h-4" />
                 </div>
-                {item.region}
+                {tv ? (
+                  <span className="text-sm font-medium">{item.region}</span>
+                ) : (
+                  item.region
+                )}
               </CardTitle>
               <CardTitle
                 className={cn(
@@ -45,17 +62,19 @@ export const Regions = () => {
                 {item.nps_card}
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <Badge
-                className={cn(
-                  "w-full",
-                  getNPSColor(item.nps_card).bg,
-                  getNPSColor(item.nps_card).text,
-                )}
-              >
-                {getNPSColor(item.nps_card).label}
-              </Badge>
-            </CardContent>
+            {!tv && (
+              <CardContent>
+                <Badge
+                  className={cn(
+                    "w-full",
+                    getNPSColor(item.nps_card).bg,
+                    getNPSColor(item.nps_card).text,
+                  )}
+                >
+                  {getNPSColor(item.nps_card).label}
+                </Badge>
+              </CardContent>
+            )}
           </Card>
         );
       })}

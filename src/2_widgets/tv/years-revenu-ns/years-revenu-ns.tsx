@@ -5,31 +5,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import CurrentCheckSkeleton from "./current-check-skeleton";
 import { ArrowBigDownDash } from "lucide-react";
 import { cn } from "@shared/lib/utils";
+import YearsRevenuNSSkeleton from "./years-revenu-ns-skeleton";
 
 interface Props {
-  check: number | undefined;
-  checkYoY: number | undefined;
-  checkYoYPercent: number | undefined;
+  dataCurrent: { label: string; proceedCurrent: number } | undefined;
+  dataPast: { label: string; proceedCurrent: number } | undefined;
+  dynamic: { isSalesGrowing: boolean; numbers: number } | undefined;
   isLoading: boolean;
-  negative?: boolean;
   tv?: boolean;
 }
 
-const CurrentCheck = ({
-  check,
-  checkYoY,
-  checkYoYPercent,
-  negative,
+const YearsRevenuNS = ({
+  dataCurrent,
+  dataPast,
+  dynamic,
   isLoading,
   tv,
 }: Props) => {
   return (
     <>
       {isLoading ? (
-        <CurrentCheckSkeleton />
+        <YearsRevenuNSSkeleton />
       ) : (
         <Card
           className={cn(
@@ -39,19 +37,27 @@ const CurrentCheck = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Чеки (за текущий месяц)</CardTitle>
+              <CardTitle>
+                Средний чек ночных магазинов (за текущий месяц)
+              </CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className={cn("text-xl font-bold", tv && "text-lg")}>
-                {check ? `${check.toLocaleString().replace(/,/g, " ")}` : null}{" "}
-                {checkYoYPercent ? `(${checkYoYPercent}%)` : null}
+                {dataCurrent?.proceedCurrent
+                  ? `${dataCurrent?.proceedCurrent.toLocaleString().replace(/,/g, " ")}`
+                  : null}{" "}
+                {dynamic?.numbers ? `(${dynamic?.numbers}%)` : null}
               </p>
-              {checkYoYPercent && negative !== undefined && (
+              {dynamic?.numbers && dynamic.isSalesGrowing !== undefined && (
                 <ArrowBigDownDash
                   className={cn(
                     "w-4 h-4",
-                    negative ? "text-destructive" : "text-positive",
-                    checkYoYPercent && checkYoYPercent > 0 ? "rotate-180" : "",
+                    !dynamic.isSalesGrowing
+                      ? "text-destructive"
+                      : "text-positive",
+                    dynamic?.numbers && dynamic?.numbers > 0
+                      ? "rotate-180"
+                      : "",
                   )}
                   fill="currentColor"
                 />
@@ -66,10 +72,10 @@ const CurrentCheck = ({
           >
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {checkYoY
-                ? `${checkYoY.toLocaleString().replace(/,/g, " ")}`
+              {dataPast?.proceedCurrent
+                ? `${dataPast?.proceedCurrent.toLocaleString().replace(/,/g, " ")}`
                 : null}{" "}
-              {checkYoYPercent ? `(${checkYoYPercent}%)` : null}
+              {dynamic?.numbers ? `(${dynamic?.numbers}%)` : null}
             </p>
           </CardFooter>
         </Card>
@@ -78,4 +84,4 @@ const CurrentCheck = ({
   );
 };
 
-export default CurrentCheck;
+export default YearsRevenuNS;
