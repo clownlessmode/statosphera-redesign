@@ -21,7 +21,7 @@ const CountNSRegion = ({ isLoading, data, tv }: CountNSRegionProps) => {
         >
           <CardHeader>
             <CardTitle className="text-center">
-              Распределение по каналам продаж
+              Количество ночных магазинов (по регионам)
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">

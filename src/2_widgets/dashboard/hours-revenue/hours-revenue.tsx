@@ -73,7 +73,7 @@ const HoursRevenue = ({ isLoading, data, tv }: HoursRevenueProps) => {
     },
     series: data && prepareLine(data),
   };
-
+  console.log(data);
   return (
     <>
       {!isLoading && data ? (

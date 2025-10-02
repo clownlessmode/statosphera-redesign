@@ -38,7 +38,7 @@ export const Slider = ({
               index === componentIndex
                 ? "opacity-100"
                 : "absolute opacity-0 inset-0 pointer-events-none",
-              "w-full h-full duration-150 ease-out transition-all",
+              "w-full h-full duration-300 ease-out transition-all",
             )}
           >
             {component}

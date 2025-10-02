@@ -42,7 +42,7 @@ const MonthRevenueNS = ({
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className={cn("text-xl font-bold", tv && "text-lg")}>
                 {dataCurrent?.proceedCurrent
-                  ? `${dataCurrent?.proceedCurrent.toLocaleString().replace(/,/g, " ")}₽`
+                  ? `${Math.round(dataCurrent?.proceedCurrent).toLocaleString().replace(/,/g, " ")}₽`
                   : null}{" "}
                 {dynamic?.numbers ? `(${dynamic?.numbers}%)` : null}
               </p>
@@ -71,7 +71,7 @@ const MonthRevenueNS = ({
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full  font-bold">
               {dataPast
-                ? `${dataPast?.proceedCurrent.toLocaleString().replace(/,/g, " ")}₽`
+                ? `${Math.round(dataPast?.proceedCurrent).toLocaleString().replace(/,/g, " ")}₽`
                 : null}{" "}
               {dynamic?.numbers ? `(${dynamic?.numbers}%)` : null}
             </p>
