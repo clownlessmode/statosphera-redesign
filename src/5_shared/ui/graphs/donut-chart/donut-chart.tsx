@@ -8,12 +8,14 @@ import DonutChartSkeleton from "./donut-chart-skeleton";
 type DonutChartProps = {
   data: { name: string; value: number }[];
   title?: string;
+  rose?: boolean;
   isLoading?: boolean;
 };
 
 export const DonutChart = ({
   data,
   title,
+  rose,
   isLoading = false,
 }: DonutChartProps) => {
   const { theme } = useTheme();
@@ -72,35 +74,64 @@ export const DonutChart = ({
         icon: "roundRect",
       },
       color: colors.series,
-      series: [
-        {
-          name: title,
-          type: "pie",
-          radius: ["50%", "80%"],
-          center: ["50%", "60%"],
-          avoidLabelOverlap: false,
-          label: {
-            show: true,
-            position: "outside",
-            color: colors.text,
-            fontSize: 12,
-            formatter: "{c}",
-          },
-          labelLine: {
-            show: true,
-            smooth: true,
-          },
-          itemStyle: {
-            borderRadius: 12,
-          },
-          data,
-          animation: true,
-          animationDurationUpdate: 500,
-          animationEasingUpdate: "cubicOut",
-        },
-      ],
+      series: rose
+        ? [
+            {
+              name: title,
+              type: "pie",
+              radius: ["30%", "65%"],
+              roseType: "area",
+              center: ["50%", "60%"],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: "outside",
+                color: colors.text,
+                fontSize: 12,
+                formatter: "{c}",
+              },
+              labelLine: {
+                show: true,
+                smooth: true,
+              },
+              itemStyle: {
+                borderRadius: 12,
+              },
+              data,
+              animation: true,
+              animationDurationUpdate: 500,
+              animationEasingUpdate: "cubicOut",
+            },
+          ]
+        : [
+            {
+              name: title,
+              type: "pie",
+              radius: ["40%", "65%"],
+              center: ["50%", "60%"],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: "outside",
+                color: colors.text,
+                fontSize: 12,
+                formatter: "{c}",
+              },
+              labelLine: {
+                show: true,
+                smooth: true,
+              },
+              itemStyle: {
+                borderRadius: 12,
+              },
+              data,
+              animation: true,
+              animationDurationUpdate: 500,
+              animationEasingUpdate: "cubicOut",
+            },
+          ],
     }),
-    [data, colors, total, title],
+    [data, colors, total, title, rose],
   );
 
   const onEvents = useMemo(() => {

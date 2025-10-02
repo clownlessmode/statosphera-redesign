@@ -15,6 +15,7 @@ interface Props {
   proceedsImYoYPercent: number | undefined;
   isLoading: boolean;
   negative?: boolean;
+  tv?: boolean;
 }
 
 const ImRevenue = ({
@@ -23,6 +24,7 @@ const ImRevenue = ({
   proceedsImYoYPercent,
   isLoading,
   negative,
+  tv,
 }: Props) => {
   return (
     <>
@@ -36,7 +38,9 @@ const ImRevenue = ({
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
               <p className=" text-xl font-bold">
-                {proceedsIm ? `${proceedsIm.toLocaleString()}₽` : null}
+                {proceedsIm
+                  ? `${proceedsIm.toLocaleString().replace(/,/g, " ")}₽`
+                  : null}
               </p>
               {proceedsImYoYPercent && negative !== undefined && (
                 <ArrowBigDownDash
@@ -52,10 +56,17 @@ const ImRevenue = ({
               )}
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && "text-sm",
+            )}
+          >
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
-              {proceedsImYoY ? `${proceedsImYoY.toLocaleString()}₽` : null}{" "}
+              {proceedsImYoY
+                ? `${proceedsImYoY.toLocaleString().replace(/,/g, " ")}₽`
+                : null}{" "}
               {proceedsImYoYPercent ? `(${proceedsImYoYPercent}%)` : null}
             </p>
           </CardFooter>

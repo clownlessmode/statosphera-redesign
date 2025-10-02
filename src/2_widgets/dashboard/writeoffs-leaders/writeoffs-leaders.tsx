@@ -5,12 +5,14 @@ import { Skeleton } from "@shared/ui/skeleton";
 import { BarHorizontalChart } from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 import BarHorizontalChartSkeleton from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart-skeleton";
 import { useSession } from "@entities/session";
+import { cn } from "@shared/lib/utils";
 
 interface WriteoffsLeadersProps {
   isLoading: boolean;
   data: LeaderWriteOffs | undefined;
+  tv?: boolean;
 }
-const WriteoffsLeaders = ({ isLoading, data }: WriteoffsLeadersProps) => {
+const WriteoffsLeaders = ({ isLoading, data, tv }: WriteoffsLeadersProps) => {
   const { session } = useSession();
 
   // Создаем массив цветов на основе сравнения с session.idStore
@@ -18,19 +20,20 @@ const WriteoffsLeaders = ({ isLoading, data }: WriteoffsLeadersProps) => {
     if (!data?.data || !session?.idStore) return [];
 
     return data.data.map((item) => {
+      if (tv) return "#e50046";
       // Если idStore магазина есть в массиве session.idStore, то серый цвет
       return session.idStore.includes(item.idStore) ? "#e50046" : "#7f7f7f74";
     });
   };
   return (
-    <Card className="w-full md:h-[400px] flex flex-col">
+    <Card className={cn("w-full h-full flex flex-col", !tv && "md:h-[400px]")}>
       <CardHeader>
         {isLoading || !data ? (
           <CardTitle>
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>
         ) : (
-          <CardTitle>Аутсайдеры по списаниям</CardTitle>
+          <CardTitle className="text-center">Аутсайдеры по списаниям</CardTitle>
         )}
       </CardHeader>
       <CardContent className="flex-1">

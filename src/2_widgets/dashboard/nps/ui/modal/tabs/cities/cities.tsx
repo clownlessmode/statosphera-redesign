@@ -6,7 +6,7 @@ import { Building2, Star } from "lucide-react";
 import { getNPSColor } from "@widgets/dashboard/nps/model";
 import { Badge } from "@shared/ui/badge";
 
-export const Cities = () => {
+export const Cities = ({ tv }: { tv?: boolean }) => {
   const { allNps, isAllNpsLoading } = useNpsController();
 
   if (isAllNpsLoading || !allNps) {
@@ -18,10 +18,23 @@ export const Cities = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 w-full overflow-y-auto h-full max-h-[450px] scrollbar-hide pb-6">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-2 w-full h-full scrollbar-hide pb-6",
+        !tv && "xs:grid-cols-2 overflow-y-auto max-h-[450px]",
+      )}
+    >
+      {tv && (
+        <div className="col-span-full">
+          <h3 className="font-semibold text-center">NPS по городам</h3>
+        </div>
+      )}
       {allNps.city.map((item) => {
         return (
-          <Card key={item.id_city} className={cn("w-max-content gap-2")}>
+          <Card
+            key={item.id_city}
+            className={cn("w-max-content gap-2", tv && "border-0 pt-2 pb-2")}
+          >
             <CardHeader className="justify-between w-full flex max-md:flex-wrap items-center">
               <CardTitle className="flex flex-row gap-2 items-center">
                 <div
@@ -33,7 +46,11 @@ export const Cities = () => {
                 >
                   <Building2 className="w-4 h-4" />
                 </div>
-                {item.city}
+                {tv ? (
+                  <span className="text-sm font-medium">{item.city}</span>
+                ) : (
+                  item.city
+                )}
               </CardTitle>
               <CardTitle
                 className={cn(
@@ -45,17 +62,19 @@ export const Cities = () => {
                 {item.nps_card}
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <Badge
-                className={cn(
-                  "w-full",
-                  getNPSColor(item.nps_card).bg,
-                  getNPSColor(item.nps_card).text,
-                )}
-              >
-                {getNPSColor(item.nps_card).label}
-              </Badge>
-            </CardContent>
+            {!tv && (
+              <CardContent>
+                <Badge
+                  className={cn(
+                    "w-full",
+                    getNPSColor(item.nps_card).bg,
+                    getNPSColor(item.nps_card).text,
+                  )}
+                >
+                  {getNPSColor(item.nps_card).label}
+                </Badge>
+              </CardContent>
+            )}
           </Card>
         );
       })}

@@ -15,6 +15,7 @@ interface Props {
   householdGoodsYoYPercent: number | undefined;
   isLoading: boolean;
   negative?: boolean;
+  tv?: boolean;
 }
 
 const WriteOffHouseholds = ({
@@ -24,6 +25,7 @@ const WriteOffHouseholds = ({
   householdGoodsYoYPercent,
   negative,
   isLoading,
+  tv,
 }: Props) => {
   return (
     <>
@@ -34,14 +36,21 @@ const WriteOffHouseholds = ({
       !householdGoodsYoYPercent ? (
         <WriteOffHouseholds.Skeleton />
       ) : (
-        <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+        <Card
+          className={cn(
+            "w-full h-[128px] gap-1 flex flex-col justify-between",
+            tv && "h-full py-2",
+          )}
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Списания (ХОЗ-ы)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
-                {householdGoods ? `${householdGoods.toLocaleString()}₽` : null}{" "}
+              <p className={cn("text-xl font-bold", tv && "text-lg")}>
+                {householdGoods
+                  ? `${householdGoods.toLocaleString().replace(/,/g, " ")}₽`
+                  : null}{" "}
                 {householdGoodsPercent ? `(${householdGoodsPercent}%)` : null}
               </p>
               {householdGoodsYoYPercent && negative !== undefined && (
@@ -58,11 +67,16 @@ const WriteOffHouseholds = ({
               )}
             </CardContent>
           </div>
-          <CardFooter className=" items-end flex flex-col text-left w-full">
+          <CardFooter
+            className={cn(
+              "items-end flex flex-col text-left w-full",
+              tv && " text-sm",
+            )}
+          >
             <p className="w-full">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
               {householdGoodsYoY
-                ? `${householdGoodsYoY.toLocaleString()}₽`
+                ? `${householdGoodsYoY.toLocaleString().replace(/,/g, " ")}₽`
                 : null}{" "}
               {householdGoodsYoYPercent
                 ? `(${householdGoodsYoYPercent}%)`

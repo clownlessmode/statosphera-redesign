@@ -3,22 +3,35 @@ import { BarChart } from "@shared/ui/graphs/bar-chart/bar-chart";
 import { SalesSevenDays } from "@pages/dashboard/api/types";
 import { Skeleton } from "@shared/ui/skeleton";
 import WeeklyRevenueSkeleton from "./weekly-revenue-skeleton";
+import { cn } from "@shared/lib/utils";
 
 interface WeeklyRevenueProps {
   data: SalesSevenDays | undefined;
   isLoading: boolean;
+  tv?: boolean;
 }
 
-export default function WeeklyRevenue({ data, isLoading }: WeeklyRevenueProps) {
+export default function WeeklyRevenue({
+  data,
+  isLoading,
+  tv,
+}: WeeklyRevenueProps) {
   return (
-    <Card className="w-full h-[400px] flex flex-col">
+    <Card
+      className={cn(
+        "w-full h-[400px] flex flex-col",
+        tv && "h-full border-0 pt-0",
+      )}
+    >
       <CardHeader>
         {isLoading || !data ? (
           <CardTitle>
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>
         ) : (
-          <CardTitle>Выручка за последние 7 дней</CardTitle>
+          <CardTitle className="text-center">
+            Выручка за последние 7 дней
+          </CardTitle>
         )}
       </CardHeader>
       <CardContent className="flex-1">

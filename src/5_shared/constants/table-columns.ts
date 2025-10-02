@@ -1300,7 +1300,9 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Магазин",
     cellStyle: { textAlign: "left" },
     pinned: "left",
-    width: 340,
+    resizable: true,
+    wrapText: true,
+    autoHeight: true,
     suppressHeaderMenuButton: true,
   },
   {

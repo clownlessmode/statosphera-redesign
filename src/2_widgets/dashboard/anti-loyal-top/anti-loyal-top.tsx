@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 import AntiLoyalTopSkeleton from "./anti-loyal-top-skeleton";
 import { useSession } from "@entities/session";
+import { cn } from "@shared/lib/utils";
 interface ItemData {
   appLoyalPercent: number;
   idStore: number;
@@ -11,13 +12,15 @@ interface ItemData {
 interface AntiLoyalTopProps {
   isLoading: boolean;
   data: ItemData[] | undefined;
+  tv?: boolean;
 }
-const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
+const AntiLoyalTop = ({ isLoading, data, tv }: AntiLoyalTopProps) => {
   const { session } = useSession();
 
   const getItemColors = () => {
     if (!data || !session?.idStore) return [];
     return data.map((item) => {
+      if (tv) return "#e50046";
       return session.idStore.includes(item.idStore) ? "#e50046" : "#7f7f7f74";
     });
   };
@@ -25,9 +28,16 @@ const AntiLoyalTop = ({ isLoading, data }: AntiLoyalTopProps) => {
   return (
     <>
       {!isLoading && data ? (
-        <Card className="w-full md:h-[400px] flex flex-col max-md:mt-5">
+        <Card
+          className={cn(
+            "w-full h-full flex flex-col max-md:mt-5",
+            !tv && "md:h-[400px]",
+          )}
+        >
           <CardHeader>
-            <CardTitle>Анти топ по применению карт лояльности</CardTitle>
+            <CardTitle className="text-center">
+              Анти топ по применению карт лояльности
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
             <BarHorizontalChart

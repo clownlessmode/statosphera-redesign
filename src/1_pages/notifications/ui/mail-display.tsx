@@ -25,11 +25,13 @@ export function MailDisplay({ mail }: MailDisplayProps) {
     <div className="flex md:h-full flex-col">
       {mail ? (
         <div className="flex flex-col h-full overflow-y-auto scrollbar-hide">
-          <div className="flex items-center px-4 h-[68px] gap-4 shrink-0">
+          <div className="flex items-center px-4 max-md:mb-2 md:h-[68px] gap-4 shrink-0">
             <div className="flex items-center gap-4 text-sm">
               <div className="grid gap-1">
                 <div className="font-semibold">{mail.title}</div>
-                <div className="line-clamp-1 text-xs">{mail.description}</div>
+                <div className="md:line-clamp-1 text-xs">
+                  {mail.description}
+                </div>
               </div>
             </div>
             {mail.created_at && (
