@@ -31,7 +31,12 @@ export const List: FC<Props> = ({
       <CardHeader className="text-center">
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-y-auto max-h-[250px] flex flex-col max-xxs:text-xs max-xs:text-sm gap-1 md:gap-2">
+      <CardContent
+        className={cn(
+          "overflow-y-auto flex flex-col max-xxs:text-xs max-xs:text-sm gap-1 md:gap-2",
+          !tv ? "max-h-[250px]" : "px-0",
+        )}
+      >
         {isLoading ? (
           <>
             <Skeleton className="w-1/2 h-4" />
