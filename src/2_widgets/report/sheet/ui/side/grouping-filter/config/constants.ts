@@ -72,41 +72,45 @@ export const PRODUCT = [
   //   label: "Структурное подразделение",
   //   value: GROUPINGS.SUBDIVISION_PRODUCT,
   // },
-  {
-    label: "Группа",
-    value: GROUPINGS.GROUP,
-  },
+
   // {
   //   label: "Команда",
   //   value: GROUPINGS.TEAM_PRODUCT,
   // },
+
+  {
+    label: "Направление",
+    value: GROUPINGS.DIRECTION_PRODUCT,
+  },
+  {
+    label: "Группа",
+    value: GROUPINGS.GROUP,
+  },
+
+  {
+    label: "Тип поставщика",
+    value: "typeProducts",
+  },
   {
     label: "Подгруппа",
     value: GROUPINGS.SUBGROUPS,
   },
+
   {
-    label: "Направление",
-    value: GROUPINGS.DIRECTION_PRODUCT,
+    label: "Сезон",
+    value: GROUPINGS.SEASONALITY_PRODUCT,
   },
   {
     label: "Подподгруппа",
     value: GROUPINGS.SUBSUBGROUPS,
   },
   {
-    label: "Тип поставщика",
-    value: "typeProducts",
+    label: "Менеджер автозаказа",
+    value: GROUPINGS.MANAGER_AUTO,
   },
   {
     label: "Номенклатура",
     value: GROUPINGS.PRODUCT,
-  },
-  {
-    label: "Сезон",
-    value: GROUPINGS.SEASONALITY_PRODUCT,
-  },
-  {
-    label: "Менеджер автозаказа",
-    value: GROUPINGS.MANAGER_AUTO,
   },
   {
     label: "Справочник экономиста",
