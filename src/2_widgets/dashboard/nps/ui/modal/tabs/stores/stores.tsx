@@ -34,9 +34,6 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
     (store) => !session?.idStore?.includes(store.id_store),
   );
 
-  const bestStores = otherStores.slice(0, 5);
-  const worstStores = otherStores.slice(-5).reverse();
-
   const StoreCard = ({
     store,
     isUserStore = false,
@@ -104,11 +101,11 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
     return (
       <div className="grid grid-cols-1 gap-2 w-full h-full pb-6">
         <div className="col-span-full">
-          <h3 className="font-semibold text-center">Лучшие магазины</h3>
+          <h3 className="font-semibold text-center">Лучшие магазины по NPS</h3>
         </div>
-        {bestStores.length > 0 && (
+        {otherStores.slice(0, 5).length > 0 && (
           <>
-            {bestStores.map((store) => (
+            {otherStores.slice(0, 5).map((store) => (
               <StoreCard key={store.id_store} store={store} />
             ))}
           </>
@@ -123,13 +120,16 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
     return (
       <div className="grid grid-cols-1 gap-2 w-full h-full pb-6">
         <div className="col-span-full">
-          <h3 className="font-semibold text-center">Худшие магазины</h3>
+          <h3 className="font-semibold text-center">Худшие магазины по NPS</h3>
         </div>
-        {worstStores.length > 0 && (
+        {otherStores.slice(-5).reverse().length > 0 && (
           <>
-            {worstStores.map((store) => (
-              <StoreCard key={store.id_store} store={store} />
-            ))}
+            {otherStores
+              .slice(-5)
+              .reverse()
+              .map((store) => (
+                <StoreCard key={store.id_store} store={store} />
+              ))}
           </>
         )}
       </div>

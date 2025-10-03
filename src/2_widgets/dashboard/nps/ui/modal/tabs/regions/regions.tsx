@@ -33,7 +33,7 @@ export const Regions = ({ tv }: { tv?: boolean }) => {
         return (
           <Card
             key={item.id_region}
-            className={cn("w-max-content gap-2", tv && "border-0 pt-2 pb-2")}
+            className={cn("w-max-content gap-2", tv && "border-0 pt-1 pb-1")}
           >
             <CardHeader className="justify-between w-full flex max-md:flex-wrap items-center">
               <CardTitle className="flex flex-row gap-2 items-center">
