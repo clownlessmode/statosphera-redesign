@@ -46,7 +46,7 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
       className={cn(
         "md:w-max-content gap-2",
         isUserStore && "border-muted-foreground border-2",
-        tv && "border-0 pt-2 pb-2",
+        tv && "border-0 bg-background pt-2 pb-2",
       )}
     >
       <CardHeader className="justify-between w-full flex items-center">

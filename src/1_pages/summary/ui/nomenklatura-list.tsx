@@ -7,6 +7,7 @@ import { Input } from "@shared/ui/input";
 import { useSearchParams } from "react-router";
 import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { cn } from "@shared/lib/utils";
 
 interface NomenklaturaListProps {
   onSelectedProductChange?: (selectedProducts: number[]) => void;
@@ -23,6 +24,7 @@ export const NomenklaturaList = ({
     clearAllSelectedProducts,
   } = useSelectedProductStore();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [allFilters, setAllFilters] = useState<boolean>(true);
 
   // Функция для получения отображаемого названия продукта
   const getDisplayName = useCallback((item: any) => {
@@ -96,6 +98,7 @@ export const NomenklaturaList = ({
       selectAllProducts(allProductIds);
       onSelectedProductChange?.(allProductIds);
     }
+    setAllFilters(!allFilters);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -116,17 +119,11 @@ export const NomenklaturaList = ({
         <div className="flex flex-row w-full justify-between  items-center">
           <CardTitle>Номенклатура</CardTitle>
           <div className="flex gap-2">
-            <Button
-              variant={"outline"}
-              className="h-8"
-              onClick={handleSelectAll}
-            >
-              {filteredNomenklatura.every((item: any) =>
-                selectedProducts.includes(item.idProduct),
-              )
-                ? "Снять все"
-                : "Выбрать все"}
-            </Button>
+            {!isMobile && (
+              <Button variant={"outline"} size="sm" onClick={handleSelectAll}>
+                {allFilters ? "Выбрать все" : "Снять все"}
+              </Button>
+            )}
             <Button
               size={isMobile ? "default" : "sm"}
               className=""
@@ -143,9 +140,24 @@ export const NomenklaturaList = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        {isMobile && (
+          <Button
+            variant={"outline"}
+            size="default"
+            className="w-full"
+            onClick={handleSelectAll}
+          >
+            {allFilters ? "Выбрать все" : "Снять все"}
+          </Button>
+        )}
       </CardHeader>
 
-      <CardContent className="p-3 flex-1 overflow-y-auto min-h-0">
+      <CardContent
+        className={cn(
+          "p-3 flex-1 overflow-y-auto min-h-0",
+          isMobile && "py-0 scrollbar-hide",
+        )}
+      >
         <div className="space-y-2">
           {filteredNomenklatura.length > 0 ? (
             filteredNomenklatura.map((item) => (

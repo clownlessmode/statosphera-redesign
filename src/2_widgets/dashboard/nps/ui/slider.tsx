@@ -36,7 +36,7 @@ export const Slider = ({
             key={index}
             className={cn(
               index === componentIndex
-                ? "opacity-100"
+                ? "opacity-100 shadow-none *:shadow-none"
                 : "absolute opacity-0 inset-0 pointer-events-none",
               "w-full h-full duration-300 ease-out transition-all",
             )}
