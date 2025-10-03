@@ -9,14 +9,19 @@ import { useTabStore } from "@widgets/summary/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface NomenklaturaListProps {
-  onSelectedProductChange?: (selectedProduct: number | null) => void;
+  onSelectedProductChange?: (selectedProducts: number[]) => void;
 }
 
 export const NomenklaturaList = ({
   onSelectedProductChange,
 }: NomenklaturaListProps) => {
   const { nomenklatura } = useSummaryStore();
-  const { selectedProduct, setSelectedProduct } = useSelectedProductStore();
+  const {
+    selectedProducts,
+    toggleProductSelection,
+    selectAllProducts,
+    clearAllSelectedProducts,
+  } = useSelectedProductStore();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   // Функция для получения отображаемого названия продукта
@@ -62,10 +67,35 @@ export const NomenklaturaList = ({
   }
 
   const handleProductClick = async (productId: number) => {
-    const newSelectedProduct = selectedProduct === productId ? null : productId;
+    // Проверяем, что productId является числом, а не массивом
+    const actualProductId = Array.isArray(productId) ? productId[0] : productId;
 
-    setSelectedProduct(newSelectedProduct);
-    onSelectedProductChange?.(newSelectedProduct);
+    toggleProductSelection(actualProductId);
+    // Получаем обновленное состояние после toggle
+    const updatedSelectedProducts =
+      useSelectedProductStore.getState().selectedProducts;
+    onSelectedProductChange?.(updatedSelectedProducts);
+  };
+
+  const handleSelectAll = () => {
+    const allProductIds = filteredNomenklatura.map((item: any) => {
+      const id = item.idProduct;
+      // Проверяем, что id является числом, а не массивом
+      return Array.isArray(id) ? id[0] : id;
+    });
+    const allSelected = allProductIds.every((id: number) =>
+      selectedProducts.includes(Array.isArray(id) ? id[0] : id),
+    );
+
+    if (allSelected) {
+      // Если все выбраны, снимаем выбор со всех
+      clearAllSelectedProducts();
+      onSelectedProductChange?.([]);
+    } else {
+      // Если не все выбраны, выбираем все
+      selectAllProducts(allProductIds);
+      onSelectedProductChange?.(allProductIds);
+    }
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,17 +111,31 @@ export const NomenklaturaList = ({
   const isMobile = useIsMobile();
 
   return (
-    <Card className="w-full md:max-w-[550px] h-full flex flex-col gap-3!">
+    <Card className="w-full md:w-[500px] h-full flex flex-col gap-3!">
       <CardHeader className="flex-shrink-0 flex flex-col gap-4">
         <div className="flex flex-row w-full justify-between  items-center">
           <CardTitle>Номенклатура</CardTitle>
-          <Button
-            size={isMobile ? "default" : "sm"}
-            className=""
-            onClick={handleOpenSheet}
-          >
-            <span className="max-xxs:hidden">Изменить фильтры</span> <Funnel />
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant={"outline"}
+              className="h-8"
+              onClick={handleSelectAll}
+            >
+              {filteredNomenklatura.every((item: any) =>
+                selectedProducts.includes(item.idProduct),
+              )
+                ? "Снять все"
+                : "Выбрать все"}
+            </Button>
+            <Button
+              size={isMobile ? "default" : "sm"}
+              className=""
+              onClick={handleOpenSheet}
+            >
+              <span className="max-xxs:hidden">Изменить фильтры</span>{" "}
+              <Funnel />
+            </Button>
+          </div>
         </div>
         <Input
           placeholder="Поиск по номенклатуре"
@@ -108,16 +152,28 @@ export const NomenklaturaList = ({
               <div
                 key={item.idProduct}
                 className={`bg-background flex justify-between items-center px-3 py-2 border rounded-lg cursor-pointer hover:bg-muted transition-colors ${
-                  selectedProduct === item.idProduct
+                  selectedProducts.includes(
+                    Array.isArray(item.idProduct)
+                      ? item.idProduct[0]
+                      : item.idProduct,
+                  )
                     ? "border-white/50 bg-muted"
                     : "border-border"
                 }`}
-                onClick={() => handleProductClick(item.idProduct)}
+                onClick={() =>
+                  handleProductClick(
+                    Array.isArray(item.idProduct)
+                      ? item.idProduct[0]
+                      : item.idProduct,
+                  )
+                }
               >
                 <span className="text-xs">{item.productName}</span>
-                {selectedProduct === item.idProduct && (
-                  <Check className="w-4 h-4" />
-                )}
+                {selectedProducts.includes(
+                  Array.isArray(item.idProduct)
+                    ? item.idProduct[0]
+                    : item.idProduct,
+                ) && <Check className="w-4 h-4" />}
               </div>
             ))
           ) : (

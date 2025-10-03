@@ -58,7 +58,7 @@ const SummaryInner = () => {
             </ViewTabsGroupContent>
           </ViewTabsGroup>
 
-          <Separator />
+          {/* <Separator />
 
           <ViewTabsGroup>
             <ViewTabsLabel>Группировка</ViewTabsLabel>
@@ -73,7 +73,7 @@ const SummaryInner = () => {
                 </ViewTabsTrigger>
               ))}
             </ViewTabsGroupContent>
-          </ViewTabsGroup>
+          </ViewTabsGroup> */}
           <Separator />
 
           <DualSubmitButtons />
@@ -106,11 +106,11 @@ const SummaryInner = () => {
             <item.component />
           </ViewTabsContent>
         ))}
-        {grouping.map((item, index) => (
+        {/* {grouping.map((item, index) => (
           <ViewTabsContent value={item.title} key={`grouping-content-${index}`}>
             <item.component />
           </ViewTabsContent>
-        ))}
+        ))} */}
       </div>
     </>
   );
