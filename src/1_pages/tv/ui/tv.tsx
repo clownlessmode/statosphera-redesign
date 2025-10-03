@@ -142,7 +142,13 @@ export const TV = () => {
             <Stores worst={true} tv={true} />,
           ]}
         />
-        <Slider components={[<Cities tv={true} />, <Regions tv={true} />]} />
+        <Slider
+          components={[
+            <Cities worst={true} tv={true} />,
+            <Cities best={true} tv={true} />,
+            <Regions tv={true} />,
+          ]}
+        />
         <div className="row-start-2 flex flex-col gap-2 h-full">
           <Slider
             className="border-0 bg-inherit py-0 *:px-0"
