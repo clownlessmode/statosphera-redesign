@@ -106,11 +106,11 @@ body {
   --positive: #34a853;
   --positive-foreground: #d8f3df;
 
-  --average: #d87110;
-  --average-foreground: rgb(255, 172, 105);
-
-  --height: #e2ae01;
-  --height-foreground: #fff2aa;
+  --average: #d35d0e;
+  --average-foreground: #fca258;
+  
+  --height: #d3a304;
+  --height-foreground: #e7d153;
 
   --border: #dad9d8;
 

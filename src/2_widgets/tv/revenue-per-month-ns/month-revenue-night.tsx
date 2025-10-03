@@ -53,7 +53,10 @@ const RevenuePerMonthNight = ({
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
-            <StackedLine className="border-none" option={option} />
+            <StackedLine
+              className={cn("border-none", tv && "shadow-none")}
+              option={option}
+            />
           </CardContent>
         </Card>
       ) : (

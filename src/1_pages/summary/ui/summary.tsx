@@ -40,7 +40,7 @@ export const Summary = () => {
   const { cards, graph, setCards, setGraph, nomenklatura } = useSummaryStore();
   const { getTable } = useSummaryController();
   const packageFilter = useSummaryFiltersStore((state) => state.package);
-  const { selectedProduct, setSelectedProduct } = useSelectedProductStore();
+  const { selectedProducts } = useSelectedProductStore();
   const [selectedTableRows, setSelectedTableRows] = useState<any[]>([]);
   const [modalSearchTerm, setModalSearchTerm] = useState<string>("");
   const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
@@ -55,12 +55,12 @@ export const Summary = () => {
   //   lastRequestKey.current = "";
   // }, [dataVersion]);
 
-  const handleGetComparisonCards = async (productId: number) => {
+  const handleGetComparisonCards = async (productIds: number[]) => {
     try {
       setIsLoadingData(true);
 
       const payload = getApiPayload();
-      const dto = transformToComparisonCardsDto(payload, [productId]);
+      const dto = transformToComparisonCardsDto(payload, productIds);
 
       const cardsResponse = await getComparisonCards(dto);
       setCards(cardsResponse.total);
@@ -71,7 +71,7 @@ export const Summary = () => {
           ...payload.filters,
           product: {
             ...payload.filters.product,
-            idProduct: [productId.toString()],
+            idProduct: productIds.map((id) => id.toString()),
           },
         },
       };
@@ -98,10 +98,10 @@ export const Summary = () => {
     lastRequestKey.current = "";
     bumpDataVersion();
 
-    if (selectedProduct) {
-      handleGetComparisonCards(selectedProduct);
+    if (selectedProducts.length > 0) {
+      handleGetComparisonCards(selectedProducts);
     }
-  }, [selectedProduct, packageFilter]);
+  }, [selectedProducts, packageFilter]);
 
   // Функция для получения данных таблицы с пагинацией
   const fetchTableData = useCallback(
@@ -114,7 +114,7 @@ export const Summary = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
-      if (!selectedProduct) {
+      if (selectedProducts.length === 0) {
         return { data: [], totalRows: 0 };
       }
 
@@ -122,7 +122,7 @@ export const Summary = () => {
         startRow,
         endRow,
         sortModel,
-        selectedProduct,
+        selectedProducts,
         payload: getApiPayload(),
       });
 
@@ -142,7 +142,7 @@ export const Summary = () => {
           ...payload.filters,
           product: {
             ...payload.filters.product,
-            idProduct: [selectedProduct.toString()],
+            idProduct: selectedProducts.map((id) => id.toString()),
           },
         },
         limit: endRow - startRow,
@@ -184,7 +184,7 @@ export const Summary = () => {
 
       return requestPromise;
     },
-    [selectedProduct, getApiPayload, getTable],
+    [selectedProducts, getApiPayload, getTable],
   );
 
   const getDisplayName = useCallback((item: any) => {
@@ -322,7 +322,12 @@ export const Summary = () => {
               <div className="flex flex-col gap-4 max-md:h-[50vh] md:min-h-0">
                 <div className="flex-1 min-h-0">
                   <NomenklaturaList
-                    onSelectedProductChange={setSelectedProduct}
+                    onSelectedProductChange={(selectedProducts) => {
+                      // Обновляем store с массивом выбранных продуктов
+                      useSelectedProductStore
+                        .getState()
+                        .setSelectedProducts(selectedProducts);
+                    }}
                   />
                 </div>
               </div>
@@ -380,7 +385,7 @@ export const Summary = () => {
                         />,
                       ])}
                     </div>
-                    {hasGraphData || selectedProduct ? (
+                    {hasGraphData || selectedProducts.length > 0 ? (
                       <>
                         {hasGraphData && (
                           <Card className="flex-1 md:pl-10 md:pr-20 md:py-0 md:max-h-[300px]">
@@ -400,7 +405,7 @@ export const Summary = () => {
                           </Card>
                         )}
 
-                        {selectedProduct && (
+                        {selectedProducts.length > 0 && (
                           <>
                             <div className="flex-shrink-0 mb-0 gap-2 flex max-md:flex-wrap items-center">
                               {selectedTableRows.length > 0 && (
