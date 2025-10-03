@@ -60,19 +60,16 @@ export const TYPE_DELIVERY = [
 
 export const TYPE_PAYMENT = [
   {
-    label: "Все",
-    value: null,
-    icon: Badge,
-  },
-  {
     label: "Онлайн",
     value: "Онлайн",
     icon: Globe,
+    disableCheck: true,
   },
   {
     label: "Офлайн",
     value: "Офлайн",
     icon: Building,
+    disableCheck: true,
   },
   {
     label: "Картой курьеру",

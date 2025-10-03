@@ -112,7 +112,6 @@ const Sidebar = ({
         title: "Гриль",
         url: ROUTES_PATH.GRILL,
         icon: Ham,
-        disabled: session?.role !== ROLES.ADMIN,
       },
 
       {

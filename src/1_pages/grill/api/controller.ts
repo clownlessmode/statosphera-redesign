@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GrillService } from "./service";
-import { GrillProductRo } from "./types/responses";
+import { GraphData, GrillProductRo } from "./types/responses";
 import { ApiError } from "@shared/api/types";
 
 export const useGrillController = () => {
@@ -55,7 +55,7 @@ export const useGrillController = () => {
     },
   });
 
-  const getGraph = useMutation<any, ApiError, { idProduct: number[] }>({
+  const getGraph = useMutation<GraphData, ApiError, { idProduct: number[] }>({
     mutationFn: (payload: { idProduct: number[] }) => {
       return GrillService.getGraph(payload);
     },

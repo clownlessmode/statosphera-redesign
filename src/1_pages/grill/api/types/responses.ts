@@ -15,3 +15,15 @@ export interface GrillProductTblRo {
   idProduct: number;
   remainder: number;
 }
+
+type DataPoint = [number, number | null];
+
+export interface GraphSeries {
+  name: string;
+  data: DataPoint[];
+}
+
+export interface GraphData {
+  graph: GraphSeries[];
+  graphCheck: GraphSeries[];
+}

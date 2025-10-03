@@ -130,6 +130,7 @@ const OnlineFilter: FC = () => {
                     <FormLabel htmlFor="">Способ оплаты</FormLabel>
                     <CheckboxCards
                       {...field}
+                      selectAll
                       options={TYPE_PAYMENT}
                       className="grid-cols-2 md:grid-cols-4"
                       onChange={(value) => {

@@ -11,12 +11,23 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@shared/ui/input";
 import AddProductDialog from "./add-product-dialog";
 import AddCountDialog from "./add-count-dialog";
-import { GrillProductTblRo } from "../api/types/responses";
+import { GraphData, GrillProductTblRo } from "../api/types/responses";
+import { useSession } from "@entities/session";
+import { useNavigate } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
+import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
 
 const Grill = () => {
+  const { session } = useSession();
+  const navigate = useNavigate();
+  if (!session?.isGrillProject) {
+    navigate(ROUTES_PATH.FORBIDDEN);
+  }
   const { getGraph, getStatistic } = useGrillController();
-
-  const [graphData, setGraphData] = useState<any>(null);
+  const [graphData, setGraphData] = useState<GraphData>({
+    graph: [],
+    graphCheck: [],
+  });
   const [statisticData, setStatisticData] = useState<any>(null);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -27,6 +38,7 @@ const Grill = () => {
   const [selectedProduct, setSelectedProduct] =
     useState<GrillProductTblRo | null>(null);
   const prepareLine = usePreparedStackedLine();
+  const [showLoading, setShowLoading] = useState(false);
 
   const handleSettingsClick = useCallback(async (rowData: any) => {
     const possibleIdFields = ["idProduct", "id", "productId", "product_id"];
@@ -60,6 +72,10 @@ const Grill = () => {
 
       const payload = { idProduct: [productId] };
 
+      const loadingTimeout = setTimeout(() => {
+        setShowLoading(true);
+      }, 300);
+
       try {
         const resultGraph = await getGraph(payload);
         const resultStatistic = await getStatistic(payload);
@@ -68,6 +84,9 @@ const Grill = () => {
       } catch (error: any) {
         console.error("Ошибка при получении данных графика:", error);
         console.error("Детали ошибки:", error.response?.data);
+      } finally {
+        clearTimeout(loadingTimeout);
+        setShowLoading(false);
       }
     },
     [getGraph, getStatistic],
@@ -109,36 +128,43 @@ const Grill = () => {
   const tableColumnDefs = useMemo(() => {
     return createGrillColumnDefs(handleSettingsClick);
   }, [handleSettingsClick, tableData]);
-
+  const customColors = ["#E50046", "#50A2537E", "#00BFFF"];
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header title={`Гриль`} />
       <div className="rounded-3xl px-4 py-4 gap-4 w-full bg-background flex-1 flex flex-col">
         <div className="flex flex-col gap-4 flex-1 min-h-0">
           <div className="flex flex-row gap-4 w-full h-64">
-            {graphData ? (
+            {graphData &&
+            (graphData.graph?.length > 0 ||
+              graphData.graphCheck?.length > 0) ? (
               <>
                 <div className="flex-grow h-full min-w-0">
-                  <StackedLine
-                    option={{
-                      title: {
-                        text: "График продаж",
-                      },
-                      legend: {
-                        data: [
-                          ...(graphData.graph?.map((item: any) => item.name) ||
-                            []),
-                          ...(graphData.graphCheck?.map(
-                            (item: any) => item.name,
-                          ) || []),
-                        ],
-                      },
-                      series: prepareLine([
-                        ...(graphData.graph || []),
-                        ...(graphData.graphCheck || []),
-                      ] as any),
-                    }}
-                  />
+                  {showLoading ? (
+                    <StackedLineSkeleton />
+                  ) : (
+                    <StackedLine
+                      option={{
+                        title: {
+                          text: "График продаж",
+                        },
+                        legend: {
+                          data: [
+                            ...(graphData.graph?.map((item) => item.name) ||
+                              []),
+                            ...(graphData.graphCheck?.map(
+                              (item) => item.name,
+                            ) || []),
+                          ],
+                        },
+                        series: prepareLine([
+                          ...(graphData.graph || []),
+                          ...(graphData.graphCheck || []),
+                        ]),
+                      }}
+                      customColors={customColors}
+                    />
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 w-[550px] flex-shrink-0 h-full overflow-hidden">
@@ -153,10 +179,11 @@ const Grill = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center justify-center h-full w-full">
-                <p className="text-center text-muted-foreground">
-                  Кликните на любую ячейку в таблице для отображения графика и
-                  статистики
+              <div className="flex items-center justify-center h-full w-full border border-dashed border-muted-foreground/30 rounded-lg">
+                <p className="text-center text-muted-foreground text-lg">
+                  {graphData
+                    ? "Нет данных для отображения"
+                    : "Кликните на любую ячейку в таблице для отображения графика и статистики"}
                 </p>
               </div>
             )}
@@ -194,7 +221,7 @@ const Grill = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center flex-1">
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-lg">
                   {searchTerm
                     ? "Продукты не найдены"
                     : "Нет данных для отображения"}
