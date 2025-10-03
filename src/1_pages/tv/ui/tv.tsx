@@ -111,7 +111,6 @@ export const TV = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
   const { nightShops, isNightShopsLoading } = useNightShops();
   const { session } = useSession();
-  //  console.log(dashboard?.salesChannel)
   return (
     <div className="bg-muted min-h-screen w-full flex flex-col">
       <div
@@ -316,7 +315,7 @@ export const TV = () => {
               isLoading={isNightShopsLoading}
               options={nightShops?.antiTopstoreProceed.map((group) => ({
                 name: group.storeName,
-                price: `${group.proceeds.toLocaleString()}₽`,
+                price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
               }))}
               tv={true}
             />,
@@ -326,7 +325,7 @@ export const TV = () => {
               isLoading={isNightShopsLoading}
               options={nightShops?.topStoreProceed.map((group) => ({
                 name: group.storeName,
-                price: `${group.proceeds.toLocaleString()}₽`,
+                price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
               }))}
               tv={true}
             />,
