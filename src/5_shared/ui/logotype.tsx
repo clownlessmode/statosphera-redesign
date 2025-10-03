@@ -237,7 +237,7 @@ export const Logotype: FC<Props> = ({ size = "md" }) => {
         <DialogContent className="!max-w-[90vw] !max-h-[90vh]! w-full !h-full !p-0 !aspect-video">
           <div className="flex-1 !p-0">
             <iframe
-              src="https://admiring-davinci-152c0f.netlify.app/"
+              src="https://js-dos.com/games/doom.exe.html"
               className="w-full h-full border-0 rounded-lg"
               title="Google"
               allowFullScreen
