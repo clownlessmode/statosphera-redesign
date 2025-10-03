@@ -2,7 +2,7 @@ import { Header } from "@widgets/header";
 import { useGrillController } from "../api/controller";
 import { useState, useMemo, useCallback } from "react";
 import { Button } from "@shared/ui/button";
-import UniversalTable from "@pages/report/ui/table";
+import TableWithSelection from "./table-with-selection";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
 import { createGrillColumnDefs } from "./grill-columns";
@@ -37,6 +37,7 @@ const Grill = () => {
   const [selectedProductId, setSelectedProductId] = useState<number>(0);
   const [selectedProduct, setSelectedProduct] =
     useState<GrillProductTblRo | null>(null);
+  const [selectedTableRow, setSelectedTableRow] = useState<any[]>([]);
   const prepareLine = usePreparedStackedLine();
   const [showLoading, setShowLoading] = useState(false);
 
@@ -59,6 +60,9 @@ const Grill = () => {
   const handleColumnClick = useCallback(
     async (cellData: any) => {
       const rowData = cellData.rowData;
+
+      // Сохраняем выделенную строку
+      setSelectedTableRow([rowData]);
 
       const possibleIdFields = ["idProduct", "id", "productId", "product_id"];
       let productId = null;
@@ -128,6 +132,7 @@ const Grill = () => {
   const tableColumnDefs = useMemo(() => {
     return createGrillColumnDefs(handleSettingsClick);
   }, [handleSettingsClick, tableData]);
+
   const customColors = ["#E50046", "#50A2537E", "#00BFFF"];
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -210,12 +215,12 @@ const Grill = () => {
               </div>
             ) : filteredTableData && filteredTableData.length > 0 ? (
               <div className="flex-1 w-full min-h-[400px]">
-                <UniversalTable
-                  key={`table-${filteredTableData.length}-${JSON.stringify(filteredTableData[0]?.id)}`}
+                <TableWithSelection
                   data={filteredTableData}
                   totalData={[]}
                   columnDefs={tableColumnDefs}
                   selectionType="single"
+                  selectedRows={selectedTableRow}
                   onCellClick={handleColumnClick}
                 />
               </div>

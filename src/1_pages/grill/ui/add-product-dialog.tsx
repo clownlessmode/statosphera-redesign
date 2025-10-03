@@ -171,105 +171,103 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogTrigger></DialogTrigger>
-        <DialogContent className="h-[68vh] sm:max-w-[60vw]! max-w-[50vw]! border-white">
-          <div className="px-2 py-4 space-y-4 h-full flex flex-col">
-            <div className="flex flex-col gap-2">
-              <p>Добавить продукты</p>
-              {addedProductIds.size > 0 && (
-                <p className="text-sm text-muted-foreground">
-                  Уже добавлено в гриль: {addedProductIds.size} продуктов
+        <DialogContent className="h-[68vh] sm:max-w-[60vw]! max-w-[50vw]! border-white flex flex-col">
+          <div className="flex flex-col gap-2 flex-shrink-0">
+            <p>Добавить продукты</p>
+            {addedProductIds.size > 0 && (
+              <p className="text-sm text-muted-foreground">
+                Уже добавлено в гриль: {addedProductIds.size} продуктов
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-4 flex-1 min-h-0 overflow-hidden">
+            <div className="flex-shrink-0">
+              <MultiSelect
+                options={productOptions}
+                value={
+                  selectedProducts.length > 0
+                    ? products
+                        ?.filter((p) =>
+                          p.idProduct.some((id) =>
+                            selectedProducts.includes(id),
+                          ),
+                        )
+                        .map((p) => p.idProduct.join(",")) || []
+                    : []
+                }
+                onValueChange={handleProductSelectionChange}
+                placeholder="Выберите продукты для добавления"
+                isLoading={isLoadingProducts}
+                maxCount={1}
+              />
+            </div>
+
+            {allDisplayedProducts.length > 0 && (
+              <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-hidden">
+                <p className="text-sm text-muted-foreground flex-shrink-0">
+                  Продукты:
                 </p>
-              )}
-            </div>
-            <div className="flex flex-col h-full">
-              <div className="flex flex-col gap-4 flex-1 min-h-0">
-                <MultiSelect
-                  options={productOptions}
-                  value={
-                    selectedProducts.length > 0
-                      ? products
-                          ?.filter((p) =>
-                            p.idProduct.some((id) =>
-                              selectedProducts.includes(id),
-                            ),
-                          )
-                          .map((p) => p.idProduct.join(",")) || []
-                      : []
-                  }
-                  onValueChange={handleProductSelectionChange}
-                  placeholder="Выберите продукты для добавления"
-                  isLoading={isLoadingProducts}
-                  maxCount={1}
-                />
-
-                {allDisplayedProducts.length > 0 && (
-                  <div className="flex flex-col gap-2 flex-1 min-h-0">
-                    <p className="text-sm text-muted-foreground">Продукты:</p>
-                    <div className="flex-1 overflow-y-auto border rounded-md p-2 max-h-[400px]">
-                      <div className="flex flex-col gap-2">
-                        {allDisplayedProducts.map((product: any) => (
-                          <div
-                            key={product.id}
-                            className={`flex items-center justify-between gap-2 rounded-md p-2 ${
-                              product.isAdded
-                                ? "bg-muted/60 border border-muted"
-                                : "border "
-                            }`}
-                          >
-                            <div className="flex-1">
-                              <p className="text-sm">{product.name}</p>
-                              {product.isAdded &&
-                                product.remainder !== undefined && (
-                                  <p className="text-xs text-muted-foreground">
-                                    Остаток: {product.remainder || 0}{" "}
-                                    {product.ed}
-                                  </p>
-                                )}
-                            </div>
-
-                            {product.isAdded ? (
-                              <span className="text-xs text-green-600 font-medium px-2 py-1 bg-green-50 rounded">
-                                Добавлен
-                              </span>
-                            ) : (
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                onClick={() => handleRemoveProduct(product.id)}
-                                className="h-6 w-6"
-                              >
-                                <XIcon className="w-3 h-3" />
-                              </Button>
+                <div className="flex-1 min-h-0 overflow-y-auto border rounded-md p-2">
+                  <div className="flex flex-col gap-2">
+                    {allDisplayedProducts.map((product: any) => (
+                      <div
+                        key={product.id}
+                        className={`flex items-center justify-between gap-2 rounded-md p-2 ${
+                          product.isAdded
+                            ? "bg-muted/60 border border-muted"
+                            : "border "
+                        }`}
+                      >
+                        <div className="flex-1">
+                          <p className="text-sm">{product.name}</p>
+                          {product.isAdded &&
+                            product.remainder !== undefined && (
+                              <p className="text-xs text-muted-foreground">
+                                Остаток: {product.remainder || 0} {product.ed}
+                              </p>
                             )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+                        </div>
 
-              <div className="flex gap-2 mt-4 pt-4 border-t flex-shrink-0">
-                <Button
-                  onClick={handleSubmit}
-                  disabled={
-                    selectedProducts.length === 0 || isAddProductImLoading
-                  }
-                  className="w-fit"
-                >
-                  {isAddProductImLoading
-                    ? "Отправка..."
-                    : "Добавить выбранные продукты"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={onClose}
-                  disabled={isAddProductImLoading}
-                >
-                  Отмена
-                </Button>
+                        {product.isAdded ? (
+                          <span className="text-xs text-green-600 font-medium px-2 py-1 bg-green-50 rounded">
+                            Добавлен
+                          </span>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => handleRemoveProduct(product.id)}
+                            className="h-6 w-6"
+                          >
+                            <XIcon className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+
+          <div className="flex gap-2 pt-4 border-t flex-shrink-0">
+            <Button
+              onClick={handleSubmit}
+              disabled={selectedProducts.length === 0 || isAddProductImLoading}
+              className="w-fit"
+            >
+              {isAddProductImLoading
+                ? "Отправка..."
+                : "Добавить выбранные продукты"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={onClose}
+              disabled={isAddProductImLoading}
+            >
+              Отмена
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

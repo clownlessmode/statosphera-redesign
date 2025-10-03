@@ -6,44 +6,85 @@ import {
   //   SummaryComparisonCardsRequest,
 } from "../api/types";
 
+// Функция для обработки строковых массивов (аналогично parseAllStringArrays)
+const parseAllStringArrays = (obj: any): any => {
+  if (Array.isArray(obj)) {
+    return obj.flatMap((item: any): any => {
+      if (
+        typeof item === "string" &&
+        item.startsWith("[") &&
+        item.endsWith("]")
+      ) {
+        try {
+          const parsed = JSON.parse(item);
+          return Array.isArray(parsed) ? parsed : item;
+        } catch (e) {
+          console.warn("Ошибка парсинга строкового массива:", item, e);
+          return item;
+        }
+      }
+      if (item && typeof item === "object") {
+        return parseAllStringArrays(item);
+      }
+      return item;
+    });
+  }
+
+  if (obj && typeof obj === "object" && obj.constructor === Object) {
+    const result: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      result[key] = parseAllStringArrays(value);
+    }
+    return result;
+  }
+
+  return obj;
+};
+
 export function transformToSummaryDto(
   payload: FilterApiPayload,
 ): SummaryCardRequest | SummaryTableRequest | SummaryTotalRequest {
+  // Обрабатываем данные перед преобразованием
+  const processedPayload = {
+    ...payload,
+    filters: parseAllStringArrays(payload.filters),
+  };
+
   const result = {
     filters: {
       store: {
-        idStore: (payload.filters.store.idStore || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idCity: (payload.filters.store.idCity || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idRegion: (payload.filters.store.idRegion || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idManager: (payload.filters.store.idManager || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        storeCondition: payload.filters.store.storeCondition || [],
-        ageGroup: payload.filters.store.ageGroup || [],
-        idLegalEntity: (payload.filters.store.idLegalEntity || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        channel: payload.filters.store.channel || [],
-        district: payload.filters.store.district || [],
+        idStore: (processedPayload.filters.store.idStore || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idCity: (processedPayload.filters.store.idCity || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idRegion: (processedPayload.filters.store.idRegion || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idManager: (processedPayload.filters.store.idManager || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        storeCondition: processedPayload.filters.store.storeCondition || [],
+        ageGroup: processedPayload.filters.store.ageGroup || [],
+        idLegalEntity: (processedPayload.filters.store.idLegalEntity || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        channel: processedPayload.filters.store.channel || [],
+        district: processedPayload.filters.store.district || [],
       },
     },
-    dateStart: payload.filterDate.dateStart,
-    dateEnd: payload.filterDate.dateEnd,
-    idProduct: (payload.filters.product?.idProduct || [])
-      .map((id) => parseInt(id.toString()))
-      .filter((id) => !isNaN(id)),
+    dateStart: processedPayload.filterDate.dateStart,
+    dateEnd: processedPayload.filterDate.dateEnd,
+    idProduct: (processedPayload.filters.product?.idProduct || [])
+      .map((id: any) => parseInt(id.toString()))
+      .filter((id: any) => !isNaN(id)),
     role: false, // По умолчанию false
-    group: payload.groups,
-    sort: payload.sorts,
-    limit: payload.limit || 100,
-    offset: payload.offset || 0,
-    package: payload.package || false,
+    group: processedPayload.groups,
+    sort: processedPayload.sorts,
+    limit: processedPayload.limit || 100,
+    offset: processedPayload.offset || 0,
+    package: processedPayload.package || false,
   };
 
   return result as SummaryTableRequest;
@@ -122,6 +163,12 @@ export function transformToComparisonCardsDto(
   payload: FilterApiPayload,
   selectedProductIds: number[] = [],
 ) {
+  // Обрабатываем данные перед преобразованием
+  const processedPayload = {
+    ...payload,
+    filters: parseAllStringArrays(payload.filters),
+  };
+
   // Функция для правильного преобразования значений
   const parseArrayValues = (arr: any[]): number[] => {
     return arr
@@ -146,73 +193,37 @@ export function transformToComparisonCardsDto(
   const result = {
     filters: {
       store: {
-        idStore: (payload.filters.store.idStore || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idCity: (payload.filters.store.idCity || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idRegion: (payload.filters.store.idRegion || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        idManager: (payload.filters.store.idManager || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        storeCondition: payload.filters.store.storeCondition || [],
-        ageGroup: payload.filters.store.ageGroup || [],
-        idLegalEntity: (payload.filters.store.idLegalEntity || [])
-          .map((id) => parseInt(id.toString()))
-          .filter((id) => !isNaN(id)),
-        channel: payload.filters.store.channel || [],
-        district: payload.filters.store.district || [],
-      },
-      product: {
-        groupFranchise: parseArrayValues(
-          payload.filters.product?.groupFranchise || [],
-        ),
-        ppProducts: payload.filters.product?.ppProducts || null,
-        isImProducts: null,
-        subDivisionProducts: parseArrayValues(
-          payload.filters.product?.subDivisionProducts || [],
-        ),
-        subGroups: parseArrayValues(payload.filters.product?.subGroups || []),
-        subSubGroups: parseArrayValues(
-          payload.filters.product?.subSubGroups || [],
-        ),
-        typeProducts: parseArrayValues(
-          payload.filters.product?.typeProducts || [],
-        ),
-        teamProducts: parseArrayValues(
-          payload.filters.product?.teamProducts || [],
-        ),
-        directionProducts: parseArrayValues(
-          payload.filters.product?.directionProducts || [],
-        ),
-        groupsEconomist: parseArrayValues(
-          payload.filters.product?.groupsEconomist || [],
-        ),
-        idGroupMain: parseArrayValues(
-          payload.filters.product?.idGroupMain || [],
-        ),
-        idProduct: parseArrayValues(payload.filters.product?.idProduct || []),
-        seasonalityProducts: parseArrayValues(
-          payload.filters.product?.seasonalityProducts || [],
-        ),
-        managerAuto: parseArrayValues(
-          payload.filters.product?.managerAuto || [],
-        ),
+        idStore: (processedPayload.filters.store.idStore || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idCity: (processedPayload.filters.store.idCity || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idRegion: (processedPayload.filters.store.idRegion || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        idManager: (processedPayload.filters.store.idManager || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        storeCondition: processedPayload.filters.store.storeCondition || [],
+        ageGroup: processedPayload.filters.store.ageGroup || [],
+        idLegalEntity: (processedPayload.filters.store.idLegalEntity || [])
+          .map((id: any) => parseInt(id.toString()))
+          .filter((id: any) => !isNaN(id)),
+        channel: processedPayload.filters.store.channel || [],
+        district: processedPayload.filters.store.district || [],
       },
     },
-    dateStart: payload.filterDate.dateStart,
-    dateEnd: payload.filterDate.dateEnd,
+    dateStart: processedPayload.filterDate.dateStart,
+    dateEnd: processedPayload.filterDate.dateEnd,
     idProduct:
       selectedProductIds.length > 0
         ? selectedProductIds
-        : parseArrayValues(payload.filters.product?.idProduct || []),
+        : parseArrayValues(processedPayload.filters.product?.idProduct || []),
     role: false,
-    limit: payload.limit || 50,
-    offset: payload.offset || 0,
-    package: payload.package || false,
+    limit: processedPayload.limit || 50,
+    offset: processedPayload.offset || 0,
+    package: processedPayload.package || false,
   };
 
   return result;
