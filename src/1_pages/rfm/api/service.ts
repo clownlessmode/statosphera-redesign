@@ -1,91 +1,92 @@
 import { api } from "@shared/api/api";
 import { RequestDto } from "../config";
 
-export class LoyaltyService {
-  static async getAvarageCheck(dto: RequestDto) {
-    const response = await api.post("loyal/average-check", dto);
+export class RfmService {
+  static async getNameSegment() {
+    const response = await api.get("/rfm/get-name-segment");
     return response.data;
   }
 
-  static async getNoSales30DaysUser(dto: RequestDto) {
-    const response = await api.post("loyal/no-sales-30-days-user", dto);
+  static async getFirstCalculation(dto: RequestDto) {
+    const response = await api.post("rfm/first-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getUniques() {
-    const response = await api.get("loyal/client-total");
+  static async getSecondCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/second-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getBonuses(dto: RequestDto) {
-    const response = await api.post("loyal/bonus", dto);
+  static async getThirdCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/third-calculation-treemap", dto);
     return response.data;
   }
 
-  static async getTopGroup(dto: RequestDto) {
-    const response = await api.post("loyal/top-groups-rub", dto);
+  static async getFourthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/fourth-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getTopProductRub(dto: RequestDto) {
-    const response = await api.post("loyal/top-product-rub", dto);
+  static async getFifthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/fifth-calculation-treemap", dto);
     return response.data;
   }
 
-  static async getTopProductCount(dto: RequestDto) {
-    const response = await api.post("loyal/top-product-count", dto);
+  static async getSixthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/sixth-calculation-radar", dto);
     return response.data;
   }
 
-  static async getTopStoreLoyal(dto: RequestDto) {
-    const response = await api.post("loyal/top-store-loyal", dto);
+  static async getSeventhCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/seventh-calculation-sunburst", dto);
     return response.data;
   }
-  static async getBonusGraph(dto: RequestDto) {
-    const response = await api.post("loyal/bonus-graph", dto);
-    return response.data;
-  }
-
-  static async getUniqueGraph(dto: RequestDto) {
-    const response = await api.post("loyal/unique-user-graph", dto);
-    return response.data;
-  }
-  static async getAppLoyalGraph(dto: RequestDto) {
-    const response = await api.post("loyal/app-loyal-graph", dto);
-    return response.data;
-  }
-  static async getTopActions(dto: RequestDto) {
-    const response = await api.post("loyal/action-app-loyal", dto);
+  static async getEighthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/eighth-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getLoyalCard2(dto: RequestDto) {
-    const response = await api.post("loyal/loyal-card-line2", dto);
+  static async getNinthCalculation(dto: RequestDto) {
+    const response = await api.post(
+      "/rfm/ninth-calculation-drill-down-gistogram",
+      dto,
+    );
+    return response.data;
+  }
+  static async getTenthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/tenth-calculation-gistogram", dto);
+    return response.data;
+  }
+  static async getEleventhCalculation(dto: RequestDto) {
+    const response = await api.post("eleventh-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getAgeGroupsGraph(dto: RequestDto) {
-    const response = await api.post("loyal/frequency-sales-loyal", dto);
+  static async getTwelfthCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/twelfth-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async getAgeCircleGraph(dto: RequestDto) {
-    const response = await api.post("loyal/check-gender", dto);
+  static async getThirteenthCalculation(dto: RequestDto) {
+    const response = await api.post(
+      "/rfm/thirteenth-calculation-gistogram",
+      dto,
+    );
     return response.data;
   }
 
-  static async ageSalesGraph(dto: RequestDto) {
-    const response = await api.post("loyal/check-age-gender", dto);
+  static async getFourteenCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/fourteen-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async revenueGroupsGraph(dto: RequestDto) {
-    const response = await api.post("loyal/check-age-proceeds", dto);
+  static async getFifteenCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/fifteen-calculation-gistogram", dto);
     return response.data;
   }
 
-  static async averageCheckAgeGroupGraph(dto: RequestDto) {
-    const response = await api.post("loyal/average-check-age-group", dto);
+  static async getSixteenCalculation(dto: RequestDto) {
+    const response = await api.post("/rfm/16-calculation-gistogram", dto);
     return response.data;
   }
 }
