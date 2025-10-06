@@ -74,6 +74,9 @@ export const ROUTES_PATH = {
   // Сводная таблица
   SUMMARY: "/summary",
 
+  // Дайджесты
+  RFM: "/rfm",
+
   // Служебные страницы
   NOT_FOUND: "*",
   FORBIDDEN: "/forbidden",
@@ -230,6 +233,13 @@ export const ROUTES: RouteConfig[] = [
     element: <Loyalty />,
     layout: Sidebar,
     label: "Лояльность",
+  },
+  {
+    path: ROUTES_PATH.RFM,
+    variant: "private",
+    element: <Loyalty />,
+    layout: Sidebar,
+    label: "РФМ",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
