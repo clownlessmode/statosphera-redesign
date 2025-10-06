@@ -24,7 +24,6 @@ export const NomenklaturaList = ({
     clearAllSelectedProducts,
   } = useSelectedProductStore();
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [allFilters, setAllFilters] = useState<boolean>(true);
 
   // Функция для получения отображаемого названия продукта
   const getDisplayName = useCallback((item: any) => {
@@ -98,7 +97,6 @@ export const NomenklaturaList = ({
       selectAllProducts(allProductIds);
       onSelectedProductChange?.(allProductIds);
     }
-    setAllFilters(!allFilters);
   };
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -121,7 +119,9 @@ export const NomenklaturaList = ({
           <div className="flex gap-2">
             {!isMobile && (
               <Button variant={"outline"} size="sm" onClick={handleSelectAll}>
-                {allFilters ? "Выбрать все" : "Снять все"}
+                {filteredNomenklatura.length === selectedProducts.length
+                  ? "Снять все"
+                  : "Выбрать все"}
               </Button>
             )}
             <Button
@@ -147,7 +147,9 @@ export const NomenklaturaList = ({
             className="w-full"
             onClick={handleSelectAll}
           >
-            {allFilters ? "Выбрать все" : "Снять все"}
+            {filteredNomenklatura.length === selectedProducts.length
+              ? "Снять все"
+              : "Выбрать все"}
           </Button>
         )}
       </CardHeader>
