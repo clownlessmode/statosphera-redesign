@@ -1,0 +1,32 @@
+export interface StoreFilters {
+  idStore: number[];
+  idCity: number[];
+  idRegion: number[];
+  idManager: number[];
+  ageGroup: string[];
+  idLegalEntity: number[];
+  channel: string[];
+  district: number[];
+  storeCondition: string[];
+  nightStore: boolean | null;
+  shopOnAuto: boolean | null;
+  deliveryIm: boolean | null;
+  walkingDelivery: boolean | null;
+  grill: boolean | null;
+  dopeki: boolean | null;
+  bakehouse: boolean | null;
+  brazier: boolean | null;
+  camera: boolean | null;
+  coffee: boolean | null;
+  typeCoffee: string[];
+  ownershipCoffee: string[];
+  milkRefrigerator: boolean | null;
+  pizzaCm: string[];
+  pizzaDaysSchedule: string[];
+  pizzaHoursSchedule: string[];
+  maxPower: string[];
+  format: string[];
+  discountTime: string[];
+  startDate: string;
+  endDate: string;
+}
