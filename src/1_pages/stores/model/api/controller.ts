@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { StoresService } from "./service";
 import { Store } from "@entities/store/config";
+import { StoreFilters } from "../types";
 import { ApiError } from "@shared/api/types";
 
-export const useStoresController = (id?: number) => {
+export const useStoresController = (id?: number, filters?: StoreFilters) => {
   const stores = useQuery({
-    queryKey: ["stores"],
-    queryFn: StoresService.getStores,
+    queryKey: ["stores", filters],
+    queryFn: () => StoresService.getStores(filters as StoreFilters),
+    enabled: !!filters,
   });
   const store = useQuery<Store, ApiError, Store, [string, number]>({
     queryKey: ["store", id as number],
