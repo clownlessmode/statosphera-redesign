@@ -1,4 +1,4 @@
-import { ChevronDown, Moon, Sun } from "lucide-react";
+import { ChevronDown, Moon, Sun, Palette } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@shared/ui/button";
@@ -15,6 +15,7 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 const themeLabels: Record<string, string> = {
   light: "Светлая",
   dark: "Тёмная",
+  custom: "Своя",
 };
 
 interface ThemeSwitcherProps {
@@ -31,15 +32,24 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
 
   const isMobile = useIsMobile();
 
+  const getIcon = () => {
+    if (theme === "custom") {
+      return <Palette className="size-4" />;
+    }
+    return (
+      <>
+        <Sun className="size-4 rotate-0 scale-100 transition-all absolute dark:-rotate-90 dark:scale-0" />
+        <Moon className="size-4 rotate-90 scale-0 transition-all absolute dark:rotate-0 dark:scale-100" />
+      </>
+    );
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {size === "lg" ? (
           <Button variant="ghost" className="bg-background">
-            <div className="relative size-4 transition-300">
-              <Sun className="size-4 rotate-0 scale-100 transition-all absolute dark:-rotate-90 dark:scale-0" />
-              <Moon className="size-4 rotate-90 scale-0 transition-all absolute dark:rotate-0 dark:scale-100" />
-            </div>
+            <div className="relative size-4 transition-300">{getIcon()}</div>
             {isMobile ? <span>Тема</span> : <span>{themeTitle} тема</span>}
             <div className="relative size-4">
               <ChevronDown className="size-4 transition-all absolute" />
@@ -47,10 +57,7 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
           </Button>
         ) : (
           <div className="flex items-center gap-2 cursor-pointer">
-            <div className="relative size-4 transition-300">
-              <Sun className="size-4 rotate-0 scale-100 transition-all absolute dark:-rotate-90 dark:scale-0" />
-              <Moon className="size-4 rotate-90 scale-0 transition-all absolute dark:rotate-0 dark:scale-100" />
-            </div>
+            <div className="relative size-4 transition-300">{getIcon()}</div>
             {isMobile ? <span>Тема</span> : <span>{themeTitle} тема</span>}
             <div className="relative size-4">
               <ChevronDown className="size-4 transition-all absolute" />
@@ -64,6 +71,7 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
             setTheme("light");
           }}
         >
+          <Sun className="size-4 mr-2" />
           Светлая
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -71,7 +79,16 @@ export function ThemeSwitcher({ size = "lg" }: ThemeSwitcherProps) {
             setTheme("dark");
           }}
         >
+          <Moon className="size-4 mr-2" />
           Тёмная
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("custom");
+          }}
+        >
+          <Palette className="size-4 mr-2" />
+          Своя
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

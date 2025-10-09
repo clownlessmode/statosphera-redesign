@@ -41,14 +41,6 @@ const PlanPercent = ({
                 { name: "Выручка", value: planProceedsForecastPercent || 0 },
                 { name: "Чеки", value: planCheckForecastPercent || 0 },
                 { name: "Ср. чек", value: planAvgCheckForecastPercent || 0 },
-                {
-                  name: "Применение QC",
-                  value: planProceedsQcForecastPercent || 0,
-                },
-                {
-                  name: "Выручка QC",
-                  value: planShareOfPaymentsQcForecastPercent || 0,
-                },
               ]}
             />
           </CardContent>

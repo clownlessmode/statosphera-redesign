@@ -153,6 +153,12 @@ const Sidebar = ({
         icon: MapIcon,
         disabled: true,
       },
+      {
+        title: "Настройки",
+        url: ROUTES_PATH.SETTINGS,
+        icon: SettingsIcon,
+        disabled: false,
+      },
     ],
   };
   const { toggleSidebar, state } = useSidebar();

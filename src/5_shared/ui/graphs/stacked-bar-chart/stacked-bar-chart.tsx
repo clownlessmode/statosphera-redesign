@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import StackedBarChartSkeleton from "../stacked-bars/stacked-bars-skeleton";
 
 type StackedBarChartDemoProps = {
@@ -11,8 +10,7 @@ type StackedBarChartDemoProps = {
 export const StackedBarChartDemo = ({
   isLoading = false,
 }: StackedBarChartDemoProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   // labelOption как в демо
   const labelOption = {

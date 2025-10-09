@@ -25,6 +25,7 @@ import { Loyalty } from "@pages/loyalty";
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
+import { Settings } from "@pages/settings";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
@@ -90,6 +91,14 @@ export const ROUTES: RouteConfig[] = [
     label: "TV",
   },
   {
+    path: ROUTES_PATH.IM,
+    variant: "private",
+    element: <IM />,
+    label: "Интернет-магазин",
+    allowedRoles: [ROLES.ADMIN],
+    layout: Sidebar,
+  },
+  {
     path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
@@ -114,6 +123,13 @@ export const ROUTES: RouteConfig[] = [
     element: <Dashboard />,
     layout: Sidebar,
     label: "Главная",
+  },
+  {
+    path: ROUTES_PATH.SETTINGS,
+    variant: "private",
+    element: <Settings />,
+    layout: Sidebar,
+    label: "Настройки",
   },
   {
     path: ROUTES_PATH.DIGESTS,

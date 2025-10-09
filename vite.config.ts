@@ -2,17 +2,32 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
-import webfontDownload from "vite-plugin-webfont-dl";
+// import webfontDownload from "vite-plugin-webfont-dl";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    webfontDownload([
-      "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-    ]),
+    // Временно отключаем webfontDownload для ускорения билда
+    // webfontDownload([
+    //   "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    // ]),
   ],
+  build: {
+    // Оптимизации для билда
+    target: "esnext",
+    minify: "esbuild",
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          ui: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu"],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@app": path.resolve(__dirname, "./src/0_app"),

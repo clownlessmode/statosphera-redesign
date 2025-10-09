@@ -1,22 +1,29 @@
 import { EChartsOption } from "echarts";
 import { getFormatTooltip } from "./formatter-tooltip";
-import { graphColors } from "@shared/constants/graph-colors";
+
+type GraphColors = {
+  text: string;
+  background: string;
+  gridLine: string;
+  series: string[];
+  tooltipBg: string;
+  tooltipBorder: string;
+};
 
 export const getOptionChart = (
   option: EChartsOption & { groupType?: string },
-  theme: "light" | "dark" | string,
+  graphColors: GraphColors,
   customColors?: string[],
   show?: boolean,
 ) => {
   const { title, legend, groupType, ...otherOption } = option;
-  const isLightTheme = theme === "light";
   const colors =
     customColors && customColors.length > 0
       ? {
-          ...graphColors[isLightTheme ? "light" : "dark"],
+          ...graphColors,
           series: customColors,
         }
-      : graphColors[isLightTheme ? "light" : "dark"];
+      : graphColors;
 
   return {
     backgroundColor: colors.background,
