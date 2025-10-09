@@ -26,6 +26,7 @@ export interface BaseSummaryRequest {
       idProduct: number[];
       seasonalityProducts: number[];
       managerAuto: number[];
+      fastSearch: boolean;
     };
   };
   dateStart: string;
