@@ -40,6 +40,7 @@ export const Summary = () => {
   const { cards, graph, setCards, setGraph, nomenklatura } = useSummaryStore();
   const { getTable } = useSummaryController();
   const packageFilter = useSummaryFiltersStore((state) => state.package);
+  const fastSearch = useSummaryFiltersStore((state) => state.fastSearch);
   const { selectedProducts } = useSelectedProductStore();
   const [selectedTableRows, setSelectedTableRows] = useState<any[]>([]);
   const [modalSearchTerm, setModalSearchTerm] = useState<string>("");
@@ -101,7 +102,7 @@ export const Summary = () => {
     if (selectedProducts.length > 0) {
       handleGetComparisonCards(selectedProducts);
     }
-  }, [selectedProducts, packageFilter]);
+  }, [selectedProducts, packageFilter, fastSearch]);
 
   // Функция для получения данных таблицы с пагинацией
   const fetchTableData = useCallback(

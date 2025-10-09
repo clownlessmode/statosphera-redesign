@@ -22,7 +22,7 @@ import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
-import { test } from "./test";
+import { userMessages } from "./test";
 import { FlyingHearts } from "@widgets/dashboard/flying-hearts";
 import { CursorTrail } from "@widgets/dashboard/cursor-trail";
 const WeeklyRevenue = lazy(
@@ -86,18 +86,32 @@ const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
   const { session } = useSession();
-  const randomFromTest = useMemo(() => {
-    return test[Math.floor(Math.random() * test.length)];
-  }, []); // Пустой массив зависимостей означает, что значение будет вычислено только один раз
+
+  // Проверяем, есть ли для текущего пользователя персональные фразы
+  const userPhrases = session?.idUser
+    ? userMessages[session.idUser]
+    : undefined;
+  const hasPersonalMessages = !!userPhrases;
+
+  const randomMessage = useMemo(() => {
+    if (!userPhrases) return null;
+    return userPhrases[Math.floor(Math.random() * userPhrases.length)];
+  }, [userPhrases]); // Перевычисляем при смене пользователя
+
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Главная" />
-      {session?.idUser === 181 && <FlyingHearts />}
-      {session?.idUser === 181 && <CursorTrail />}
+      {/* Анимации для ID 181 и 2734 */}
+      {(session?.idUser === 181 || session?.idUser === 2734) && (
+        <>
+          <FlyingHearts userId={session?.idUser} />
+          <CursorTrail userId={session?.idUser} />
+        </>
+      )}
       <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-        {session?.idUser === 181 && (
+        {hasPersonalMessages && (
           <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
-            {randomFromTest}
+            {randomMessage}
           </div>
         )}
         <Suspense fallback={<WeeklyRevenueSkeleton />}>

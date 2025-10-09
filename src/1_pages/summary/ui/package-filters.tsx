@@ -7,6 +7,10 @@ import { useSummaryFiltersStore } from "@widgets/summary/sheet/model/filters-sto
 export const PackageFilters: React.FC = () => {
   const packageFilter = useSummaryFiltersStore((state) => state.package);
   const updatePackage = useSummaryFiltersStore((state) => state.updatePackage);
+  const fastSearch = useSummaryFiltersStore((state) => state.fastSearch);
+  const updateFastSearch = useSummaryFiltersStore(
+    (state) => state.updateFastSearch,
+  );
 
   return (
     <Button size={"default"} variant="outline">
@@ -16,6 +20,12 @@ export const PackageFilters: React.FC = () => {
         onCheckedChange={(checked) => updatePackage(!checked)}
       />
       <Label htmlFor="package">Скрыть пакеты</Label>
+      <Switch
+        id="fastSearch"
+        checked={fastSearch}
+        onCheckedChange={(checked) => updateFastSearch(checked)}
+      />
+      <Label htmlFor="fastSearch">Быстрый поиск</Label>
     </Button>
   );
 };

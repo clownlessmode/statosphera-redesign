@@ -287,7 +287,7 @@ export type FiltersState = {
   offset: number;
   groups: string[];
   package: boolean;
-
+  fastSearch: boolean;
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
     key: K,
@@ -329,6 +329,7 @@ export type FiltersState = {
   updateUniques: (uniques: string[]) => void;
   updateIndicators: (indicators: string[]) => void;
   updatePackage: (packageFilter: boolean) => void;
+  updateFastSearch: (fastSearch: boolean) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
@@ -348,6 +349,7 @@ export type FiltersState = {
     | "updateUniques"
     | "updateIndicators"
     | "updatePackage"
+    | "updateFastSearch"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -383,6 +385,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
       idProduct: [],
       seasonalityProducts: [],
       managerAuto: [],
+      fastSearch: false,
     },
     check: {
       tabNumber: [],
@@ -439,6 +442,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
   offset: 0,
   groups: [],
   package: false,
+  fastSearch: false,
 
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -565,6 +569,10 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
     set({ package: packageFilter });
   },
 
+  updateFastSearch: (fastSearch: boolean) => {
+    set({ fastSearch });
+  },
+
   resetAllFilters: () => {
     set({
       filters: {
@@ -649,6 +657,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
       limit: 100,
       offset: 0,
       groups: [],
+      fastSearch: false,
     });
   },
 
@@ -666,6 +675,7 @@ export const useSummaryFiltersStore = create<FiltersState>((set, get) => ({
       offset: state.offset,
       groups: state.groups,
       package: state.package,
+      fastSearch: state.fastSearch,
     };
   },
 }));
@@ -756,7 +766,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
   offset: 0,
   groups: [],
   package: false,
-
+  fastSearch: false,
   // Методы обновления состояния (аналогичные, но для оборудования)
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
     key: K,
@@ -882,6 +892,10 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
     set({ package: packageFilter });
   },
 
+  updateFastSearch: (fastSearch: boolean) => {
+    set({ fastSearch });
+  },
+
   resetAllFilters: () => {
     set({
       filters: {
@@ -966,6 +980,8 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       limit: 100,
       offset: 0,
       groups: [],
+      fastSearch: false,
+      package: false,
     });
   },
 
@@ -983,6 +999,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       offset: state.offset,
       groups: state.groups,
       package: state.package,
+      fastSearch: state.fastSearch,
     };
   },
 }));
