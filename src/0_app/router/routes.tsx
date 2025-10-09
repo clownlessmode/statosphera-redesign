@@ -26,6 +26,9 @@ import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
 import { Settings } from "@pages/settings";
+
+// Заглушка для IM компонента
+const IM = () => <div>Интернет-магазин (в разработке)</div>;
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
@@ -68,6 +71,7 @@ export const ROUTES_PATH = {
   PRODUCTS: "/products",
   LOYALTY: "/loyalty",
   GRILL: "/grill",
+  IM: "/im",
 
   // Списания
   WRITE_OFF: "/write-off",

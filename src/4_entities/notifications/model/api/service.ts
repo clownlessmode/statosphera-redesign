@@ -2,7 +2,6 @@ import { api } from "@shared/api/api";
 import {
   Notification,
   CreateNotificationData,
-  NotificationStats,
 } from "./types";
 
 export class NotificationService {
@@ -53,10 +52,6 @@ export class NotificationService {
     await api.delete(`notifications/${id}`);
   }
 
-  static async getNotificationStats(): Promise<NotificationStats> {
-    const response = await api.get<NotificationStats>(`notifications/stats`);
-    return response.data;
-  }
 
   static async getUserNotifications(data: {
     emotion?: string;

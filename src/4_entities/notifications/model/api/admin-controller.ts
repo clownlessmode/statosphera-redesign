@@ -3,7 +3,6 @@ import { NotificationService } from "./service";
 import {
   Notification,
   CreateNotificationData,
-  NotificationStats,
 } from "./types";
 
 export const useAdminNotifications = () => {
@@ -12,12 +11,6 @@ export const useAdminNotifications = () => {
   const notificationsQuery = useQuery<Notification[]>({
     queryKey: ["admin-notifications", "list"],
     queryFn: () => NotificationService.getNotifications(1000, 0),
-  });
-
-  const notificationStatsQuery = useQuery<NotificationStats>({
-    queryKey: ["admin-notifications", "stats"],
-    queryFn: () => NotificationService.getNotificationStats(),
-    refetchInterval: 30_000,
   });
 
   const createNotification = useMutation<
@@ -61,11 +54,18 @@ export const useAdminNotifications = () => {
     },
   });
 
+  // Вычисляем статистику из списка уведомлений
+  const stats = notificationsQuery.data ? {
+    total_sent: notificationsQuery.data.length,
+    total_read: notificationsQuery.data.filter(n => n.is_read).length,
+    unread_count: notificationsQuery.data.filter(n => !n.is_read).length,
+  } : undefined;
+
   return {
     notifications: notificationsQuery.data,
     isNotificationsLoading: notificationsQuery.isLoading,
-    stats: notificationStatsQuery.data,
-    isStatsLoading: notificationStatsQuery.isLoading,
+    stats,
+    isStatsLoading: notificationsQuery.isLoading,
     createNotification: createNotification.mutateAsync,
     createNotificationForEveryone: createNotificationForEveryone.mutateAsync,
     deleteNotification: deleteNotification.mutateAsync,
