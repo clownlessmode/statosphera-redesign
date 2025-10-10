@@ -115,30 +115,6 @@ const Dashboard = () => {
     return userPhrases[Math.floor(Math.random() * userPhrases.length)];
   }, [userPhrases]); // Перевычисляем при смене пользователя
 
-  return (
-    <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
-      <Header title="Главная" />
-      {/* Анимации для ID 181 и 2734 */}
-      {(session?.idUser === 181 || session?.idUser === 2734) && (
-        <>
-          <FlyingHearts userId={session?.idUser} />
-          <CursorTrail userId={session?.idUser} />
-        </>
-      )}
-      <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-        {hasPersonalMessages && (
-          <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
-            {randomMessage}
-          </div>
-        )}
-        <Suspense fallback={<WeeklyRevenueSkeleton />}>
-          <WeeklyRevenue
-            data={dashboard?.salesSevenDays}
-            isLoading={isDashboardLoading}
-          />
-        </Suspense>
-        <Nps />
-
   // Определяем все виджеты с уникальными ID
   const allWidgets = [
     "weeklyRevenue",
@@ -437,13 +413,18 @@ const Dashboard = () => {
     >
       <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
         <Header title="Главная" />
-        {session?.idUser === 181 && <FlyingHearts />}
-        {session?.idUser === 181 && <CursorTrail />}
+        {/* Анимации для ID 181 и 2734 */}
+        {(session?.idUser === 181 || session?.idUser === 2734) && (
+          <>
+            <FlyingHearts userId={session?.idUser} />
+            <CursorTrail userId={session?.idUser} />
+          </>
+        )}
         <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
           <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-            {session?.idUser === 181 && (
+            {hasPersonalMessages && (
               <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
-                {randomFromTest}
+                {randomMessage}
               </div>
             )}
             {widgetOrder.map((widgetId) => {
