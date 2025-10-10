@@ -85,6 +85,7 @@ export function transformToSummaryDto(
     limit: processedPayload.limit || 100,
     offset: processedPayload.offset || 0,
     package: processedPayload.package || false,
+    fastSearch: processedPayload.fastSearch || false,
   };
 
   return result as SummaryTableRequest;
@@ -224,6 +225,7 @@ export function transformToComparisonCardsDto(
     limit: processedPayload.limit || 50,
     offset: processedPayload.offset || 0,
     package: processedPayload.package || false,
+    fastSearch: processedPayload.fastSearch || false,
   };
 
   return result;

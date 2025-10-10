@@ -9,6 +9,10 @@ interface CursorHeart {
   color: string;
 }
 
+interface CursorTrailProps {
+  userId?: number;
+}
+
 const romanticEmojis = [
   "❤️",
   "💕",
@@ -62,6 +66,26 @@ const romanticEmojis = [
   "🌻",
 ];
 
+// Только сердечки для ID 2734 (без черного и разбитых)
+const heartsOnlyEmojis = [
+  "❤️",
+  "💕",
+  "💖",
+  "💗",
+  "💘",
+  "💙",
+  "💚",
+  "💛",
+  "🧡",
+  "💜",
+  "💝",
+  "💞",
+  "💓",
+  "💟",
+  "❣️",
+  "💌",
+];
+
 const romanticColors = [
   "text-pink-300",
   "text-pink-400",
@@ -87,10 +111,14 @@ const romanticColors = [
   "text-orange-500",
 ];
 
-export const CursorTrail: React.FC = () => {
+export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<CursorHeart[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   console.log(mousePosition);
+
+  // Выбираем набор эмодзи в зависимости от userId
+  const emojiSet = userId === 2734 ? heartsOnlyEmojis : romanticEmojis;
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -100,8 +128,7 @@ export const CursorTrail: React.FC = () => {
         id: Date.now() + Math.random(),
         x: e.clientX,
         y: e.clientY,
-        emoji:
-          romanticEmojis[Math.floor(Math.random() * romanticEmojis.length)],
+        emoji: emojiSet[Math.floor(Math.random() * emojiSet.length)],
         color:
           romanticColors[Math.floor(Math.random() * romanticColors.length)],
       };
@@ -114,7 +141,7 @@ export const CursorTrail: React.FC = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [emojiSet]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
