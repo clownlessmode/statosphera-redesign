@@ -1,7 +1,6 @@
 import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
-import { useTheme } from "@app/providers/theme-provider";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import BarHorizontalChartSkeleton from "./bar-horizontal-chart-skeleton";
 import { useMemo } from "react";
 import { useIsMobile } from "@shared/hooks/use-mobile";
@@ -75,8 +74,7 @@ export const BarHorizontalChart = ({
   pluralForms,
   title,
 }: BarHorizontalChartProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   // Функция для получения единицы измерения с правильным склонением
   const getUnitWithPlural = (value: number): string => {

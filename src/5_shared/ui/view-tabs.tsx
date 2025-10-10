@@ -102,7 +102,7 @@ export function ViewTabsList({
     <div
       data-slot="tabs-list"
       className={cn(
-        "flex flex-col h-fit bg-background px-4 gap-4 border-r border-border",
+        "flex flex-col self-start bg-background px-4 gap-4 border-r border-border",
         className,
       )}
       {...props}

@@ -6,6 +6,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
   useSidebar,
 } from "@shared/ui/sidebar";
 import { cn } from "@shared/lib/utils";
@@ -19,9 +22,10 @@ export function NavMain({
     title: string;
     url: string;
     icon?: LucideIcon;
+    children?: { title: string; url: string; icon?: LucideIcon }[];
   }[];
 }) {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, state, setOpen } = useSidebar();
   const isMobile = useIsMobile();
   return (
     <SidebarGroup>
@@ -43,18 +47,57 @@ export function NavMain({
                   </SidebarMenuButton>
                 </Link>
               ) : (
-                <Link to={item.url}>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    className={cn(
-                      "cursor-pointer",
-                      item.disabled && "opacity-30 cursor-not-allowed",
+                <>
+                  {state === "collapsed" &&
+                  item.children &&
+                  item.children.length > 0 ? (
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      onClick={() => setOpen(true)}
+                      className={cn(
+                        "cursor-pointer",
+                        item.disabled && "opacity-30 cursor-not-allowed",
+                      )}
+                    >
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  ) : (
+                    <Link to={item.url}>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        className={cn(
+                          "cursor-pointer",
+                          item.disabled && "opacity-30 cursor-not-allowed",
+                        )}
+                      >
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </Link>
+                  )}
+                  {!item.disabled &&
+                    state !== "collapsed" &&
+                    item.children &&
+                    item.children.length > 0 && (
+                      <div className="overflow-hidden max-h-0 group-hover/menu-item:max-h-96 transition-all duration-600 ease-in-out">
+                        <SidebarMenuSub>
+                          {item.children.map((child) => (
+                            <SidebarMenuSubItem key={child.title}>
+                              <Link to={child.url}>
+                                <SidebarMenuSubButton asChild>
+                                  <span className="flex items-center gap-2">
+                                    {child.icon && <child.icon />}
+                                    <span>{child.title}</span>
+                                  </span>
+                                </SidebarMenuSubButton>
+                              </Link>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </div>
                     )}
-                  >
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
+                </>
               )}
             </SidebarMenuItem>
           ))}
