@@ -23,16 +23,30 @@ import { MessageEditor } from "@shared/ui/message-editor";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const notificationSchema = z.object({
-  title: z.string().min(1, "Заголовок обязателен"),
-  description: z.string().min(1, "Описание обязательно"),
-  message: z.string().min(1, "Сообщение обязательно"),
-  emotion: z.string().min(1, "Эмоция обязательна"),
-  isSmportant: z.boolean(),
-  type: z.number().min(1, "Тип уведомления обязателен"),
-  users: z.array(z.string()).optional(),
-  sendToEveryone: z.boolean(),
-});
+const notificationSchema = z
+  .object({
+    title: z.string().min(1, "Заголовок обязателен"),
+    description: z.string().min(1, "Описание обязательно"),
+    message: z.string().optional(), // Сделаем опциональным, так как используем MessageEditor
+    emotion: z.string().min(1, "Эмоция обязательна"),
+    isSmportant: z.boolean(),
+    type: z.number().min(1, "Тип уведомления обязателен"),
+    users: z.array(z.string()).optional(),
+    sendToEveryone: z.boolean(),
+  })
+  .refine(
+    (data) => {
+      // Если не отправляем всем, то должны быть выбраны пользователи
+      if (!data.sendToEveryone) {
+        return data.users && data.users.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Выберите пользователей или включите отправку всем",
+      path: ["users"],
+    },
+  );
 
 type NotificationFormData = z.infer<typeof notificationSchema>;
 
@@ -63,31 +77,68 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
 
   const sendToEveryone = form.watch("sendToEveryone");
 
+  // Отладочная информация
+  const formValues = form.watch();
+  const formErrors = form.formState.errors;
+  const isValid = form.formState.isValid;
+
+  // Кастомная валидация для messageContent
+  const hasMessageContent =
+    messageContent && messageContent.trim() !== "" && messageContent !== "[]";
+  const isFormValid = isValid && hasMessageContent;
+
+  console.log("🔍 Состояние формы:", {
+    values: formValues,
+    errors: formErrors,
+    isValid,
+    isCreating,
+    messageContent,
+    hasMessageContent,
+    isFormValid,
+  });
+
   const onSubmit = async (data: NotificationFormData) => {
+    console.log("🚀 Начало отправки формы:", data);
+    console.log("📝 Содержимое сообщения:", messageContent);
+
+    // Дополнительная проверка содержимого сообщения
+    if (!hasMessageContent) {
+      console.log("❌ Нет содержимого сообщения");
+
+      return;
+    }
+
     try {
       const notificationData = {
         title: data.title,
         description: data.description,
-        message: messageContent || data.message,
+        message: messageContent || data.message || "Сообщение",
         emotion: data.emotion,
         isSmportant: data.isSmportant,
         type: data.type,
       };
 
+      console.log("📤 Данные для отправки:", notificationData);
+
       if (data.sendToEveryone) {
+        console.log("🌍 Отправка всем пользователям...");
         await createNotificationForEveryone(notificationData);
+        console.log("✅ Уведомление отправлено всем пользователям");
         toast.success("Уведомление отправлено всем пользователям");
       } else {
         if (!data.users || data.users.length === 0) {
+          console.log("❌ Не выбраны пользователи");
           toast.error("Выберите хотя бы одного пользователя");
           return;
         }
 
+        console.log("👥 Отправка выбранным пользователям:", data.users);
         // Send to multiple users
         const promises = data.users.map((userId) =>
           createNotification({ ...notificationData, user: parseInt(userId) }),
         );
         await Promise.all(promises);
+        console.log("✅ Уведомления отправлены пользователям");
         toast.success(
           `Уведомление отправлено ${data.users.length} пользователям`,
         );
@@ -97,8 +148,8 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
       setMessageContent("");
       onSuccess?.();
     } catch (error) {
+      console.error("❌ Ошибка при создании уведомления:", error);
       toast.error("Ошибка при создании уведомления");
-      console.error(error);
     }
   };
 
@@ -120,7 +171,11 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
                 <FormItem>
                   <FormLabel>Заголовок</FormLabel>
                   <FormControl>
-                    <Input placeholder="Введите заголовок" {...field} />
+                    <Input
+                      placeholder="Введите заголовок"
+                      className="bg-background"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -137,6 +192,7 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
                     <Textarea
                       placeholder="Введите краткое описание"
                       {...field}
+                      className="!bg-background"
                       rows={2}
                     />
                   </FormControl>
@@ -204,7 +260,7 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
               control={form.control}
               name="isSmportant"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <FormItem className="flex flex-row items-center bg-background justify-between rounded-lg border p-3">
                   <div className="space-y-0.5">
                     <FormLabel>Важное уведомление</FormLabel>
                     <div className="text-sm text-muted-foreground">
@@ -225,7 +281,7 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
               control={form.control}
               name="sendToEveryone"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <FormItem className="flex flex-row items-center  bg-background justify-between rounded-lg border p-3">
                   <div className="space-y-0.5">
                     <FormLabel>Отправить всем</FormLabel>
                     <div className="text-sm text-muted-foreground">
@@ -283,7 +339,21 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
               />
             </div>
 
-            <Button type="submit" disabled={isCreating} className="w-full">
+            <Button
+              type="submit"
+              disabled={isCreating || !isFormValid}
+              className="w-full"
+              onClick={() => {
+                console.log("🔘 Клик по кнопке:", {
+                  isCreating,
+                  isValid,
+                  hasMessageContent,
+                  isFormValid,
+                  formErrors,
+                  formValues,
+                });
+              }}
+            >
               {isCreating ? "Создание..." : "Создать уведомление"}
             </Button>
           </form>

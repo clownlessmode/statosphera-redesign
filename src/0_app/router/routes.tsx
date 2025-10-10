@@ -1,5 +1,5 @@
+import React from "react";
 import { RouteConfig } from "./types";
-import { Sidebar } from "@widgets/sidebar";
 
 import Authorization from "@pages/authorization/ui/authorization";
 import Dashboard from "@pages/dashboard/ui/dashboard";
@@ -23,6 +23,7 @@ import { WriteOff } from "@pages/write-off/ui/write-off";
 import { Loyalty } from "@pages/loyalty";
 
 import { AdminNotifications } from "@pages/admin/admin-notifications";
+import { AdminDigests } from "@pages/admin/admin-digests";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
 import { Settings } from "@pages/settings";
@@ -30,6 +31,11 @@ import { Settings } from "@pages/settings";
 // Заглушка для IM компонента
 const IM = () => <div>Интернет-магазин (в разработке)</div>;
 // import { WriteOff } from "@pages/write-off";
+
+// Ленивый импорт Sidebar для избежания циклических зависимостей
+const Sidebar = React.lazy(() =>
+  import("@widgets/sidebar").then((module) => ({ default: module.Sidebar })),
+);
 
 export const ROUTES_PATH = {
   MESSAGES: "/messages",
@@ -62,6 +68,7 @@ export const ROUTES_PATH = {
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_LOGS: "/admin/logs",
   ADMIN_NOTIFICATIONS: "/admin/notifications",
+  ADMIN_DIGESTS: "/admin/digests",
 
   // Магазины и доходы
   STORES: "/stores",
@@ -107,6 +114,13 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
     element: <AdminNotifications />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.ADMIN_DIGESTS,
+    variant: "private",
+    allowedRoles: [ROLES.ADMIN],
+    element: <AdminDigests />,
     layout: Sidebar,
   },
   // Авторизация

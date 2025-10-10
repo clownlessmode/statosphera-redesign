@@ -116,9 +116,13 @@ const Sidebar = ({
 
       {
         title: "Админ панель",
-        url: ROUTES_PATH.ADMIN_STORES,
+        url: ROUTES_PATH.ADMIN_DIGESTS,
         icon: SettingsIcon,
         disabled: session?.role !== ROLES.ADMIN,
+        children: [
+          { title: "Дайджесты", url: ROUTES_PATH.ADMIN_DIGESTS },
+          { title: "Уведомления", url: ROUTES_PATH.ADMIN_NOTIFICATIONS },
+        ],
       },
       {
         title: "Прибыль ФРС",

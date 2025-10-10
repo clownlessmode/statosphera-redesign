@@ -182,9 +182,9 @@ export function MessageEditor({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
       {/* Редактор */}
-      <Card>
+      <Card className="!bg-[#1f1f1f]">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">
             Редактирование сообщения
@@ -202,9 +202,9 @@ export function MessageEditor({
       </Card>
 
       {/* Предпросмотр */}
-      <Card>
+      <Card className="bg-background">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium">Предпросмотр</CardTitle>
+          <CardTitle className="text-sm font-medium ">Предпросмотр</CardTitle>
         </CardHeader>
         <CardContent className="min-h-[200px] p-4">
           {renderNotificationPreview()}

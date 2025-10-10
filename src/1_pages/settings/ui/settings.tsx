@@ -119,9 +119,6 @@ export const Settings = () => {
       if (theme !== "custom") {
         setTheme("custom");
       }
-      toast.success("Пресет применен", {
-        description: `Тема "${preset.name}" успешно применена`,
-      });
     }
   };
 

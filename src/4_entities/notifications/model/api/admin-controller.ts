@@ -3,6 +3,7 @@ import { NotificationService } from "./service";
 import {
   Notification,
   CreateNotificationData,
+  NotificationStats,
 } from "./types";
 
 export const useAdminNotifications = () => {
@@ -13,15 +14,24 @@ export const useAdminNotifications = () => {
     queryFn: () => NotificationService.getNotifications(1000, 0),
   });
 
+  const statsQuery = useQuery<NotificationStats>({
+    queryKey: ["admin-notifications", "stats"],
+    queryFn: () => NotificationService.getNotificationsStats(),
+  });
+
   const createNotification = useMutation<
     Notification,
     Error,
     CreateNotificationData
   >({
     mutationFn: (data) => NotificationService.createNotification(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("✅ createNotification success:", data);
       queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: (error) => {
+      console.error("❌ createNotification error:", error);
     },
   });
 
@@ -32,9 +42,13 @@ export const useAdminNotifications = () => {
   >({
     mutationFn: (data) =>
       NotificationService.createNotificationForEveryone(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("✅ createNotificationForEveryone success:", data);
       queryClient.invalidateQueries({ queryKey: ["admin-notifications"] });
       queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    },
+    onError: (error) => {
+      console.error("❌ createNotificationForEveryone error:", error);
     },
   });
 
@@ -54,23 +68,17 @@ export const useAdminNotifications = () => {
     },
   });
 
-  // Вычисляем статистику из списка уведомлений
-  const stats = notificationsQuery.data ? {
-    total_sent: notificationsQuery.data.length,
-    total_read: notificationsQuery.data.filter(n => n.is_read).length,
-    unread_count: notificationsQuery.data.filter(n => !n.is_read).length,
-  } : undefined;
-
   return {
     notifications: notificationsQuery.data,
     isNotificationsLoading: notificationsQuery.isLoading,
-    stats,
-    isStatsLoading: notificationsQuery.isLoading,
+    stats: statsQuery.data,
+    isStatsLoading: statsQuery.isLoading,
     createNotification: createNotification.mutateAsync,
     createNotificationForEveryone: createNotificationForEveryone.mutateAsync,
     deleteNotification: deleteNotification.mutateAsync,
     readNotification: readNotification.mutateAsync,
-    isCreating: createNotification.isPending,
+    isCreating:
+      createNotification.isPending || createNotificationForEveryone.isPending,
     isDeleting: deleteNotification.isPending,
     isReading: readNotification.isPending,
   };

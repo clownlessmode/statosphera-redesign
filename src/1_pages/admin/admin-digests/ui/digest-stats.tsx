@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Badge } from "@shared/ui/badge";
-import { Send, Eye, EyeOff, AlertTriangle } from "lucide-react";
-import { useAdminNotifications } from "@entities/notifications";
+import { FileText, Eye, EyeOff, AlertTriangle } from "lucide-react";
+import { useDigests } from "@entities/digests";
 import { cn } from "@shared/lib/utils";
 
-export const NotificationStats = () => {
-  const { stats, isStatsLoading } = useAdminNotifications();
+export const DigestStats = () => {
+  const { digests, isDigestsLoading } = useDigests();
 
-  if (isStatsLoading) {
+  if (isDigestsLoading) {
     return (
       <div className="flex flex-row w-full justify-between gap-4">
         {[1, 2, 3, 4].map((i) => (
@@ -26,33 +26,39 @@ export const NotificationStats = () => {
     );
   }
 
+  const typeCounts =
+    digests?.reduce(
+      (acc, digest) => {
+        acc[digest.type] = (acc[digest.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    ) || {};
+
   const statsData = [
     {
-      title: "Всего уведомлений",
-      value: stats?.total_count || 0,
-      icon: Send,
+      title: "Всего дайджестов",
+      value: digests?.length || 0,
+      icon: FileText,
       color: "text-blue-600",
     },
     {
-      title: "Прочитано",
-      value: stats?.read_count || 0,
+      title: "Аналитика",
+      value: typeCounts.analytics || 0,
       icon: Eye,
       color: "text-green-600",
     },
     {
-      title: "Непрочитано",
-      value: stats?.unread_count || 0,
+      title: "Совет директоров",
+      value: typeCounts.director || 0,
       icon: EyeOff,
       color: "text-orange-600",
     },
     {
-      title: "Процент прочтения",
-      value: stats?.total_count
-        ? Math.round((stats.read_count / stats.total_count) * 100)
-        : 0,
+      title: "Группа компаний",
+      value: typeCounts.groupCompany || 0,
       icon: AlertTriangle,
       color: "text-purple-600",
-      suffix: "%",
     },
   ];
 
@@ -67,30 +73,11 @@ export const NotificationStats = () => {
           <CardContent>
             <div className="text-2xl font-bold">
               {stat.value.toLocaleString()}
-              {stat.suffix || ""}
             </div>
             <div className="flex items-center gap-2 mt-1">
-              {stat.title === "Процент прочтения" && (
-                <Badge
-                  variant={
-                    stat.value >= 80
-                      ? "default"
-                      : stat.value >= 60
-                        ? "secondary"
-                        : "destructive"
-                  }
-                  className="text-xs"
-                >
-                  {stat.value >= 80
-                    ? "Отлично"
-                    : stat.value >= 60
-                      ? "Хорошо"
-                      : "Низко"}
-                </Badge>
-              )}
-              {stat.title === "Непрочитано" && stat.value > 0 && (
-                <Badge variant="destructive" className="text-xs">
-                  Требует внимания
+              {stat.value > 0 && (
+                <Badge variant="default" className="text-xs">
+                  Активно
                 </Badge>
               )}
             </div>

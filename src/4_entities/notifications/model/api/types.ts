@@ -22,7 +22,7 @@ export interface CreateNotificationData {
 }
 
 export interface NotificationStats {
-  total_sent: number;
-  total_read: number;
+  total_count: number;
+  read_count: number;
   unread_count: number;
 }

@@ -4,17 +4,17 @@ import { Header } from "@widgets/header";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useState } from "react";
-import { NotificationForm } from "./notification-form";
-import { NotificationList } from "./notification-list";
-import { NotificationStats } from "./notification-stats";
+import { DigestForm } from "./digest-form";
+import { DigestList } from "./digest-list";
+import { DigestStats } from "./digest-stats";
 
-export const AdminNotifications = () => {
+export const AdminDigests = () => {
   const [activeTab, setActiveTab] = useState<"create" | "manage">("create");
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
-        title={`Уведомления`}
+        title={`Дайджесты`}
         isAdmin={true}
         actions={{
           left: (
@@ -43,8 +43,8 @@ export const AdminNotifications = () => {
           ),
           center: (
             <div className="hidden md:flex flex-row gap-2">
-              <Link to={ROUTES_PATH.ADMIN_DIGESTS}>
-                <Button variant={"outline"}>Админ дайджесты</Button>
+              <Link to={ROUTES_PATH.ADMIN_NOTIFICATIONS}>
+                <Button variant={"outline"}>Админ уведомления</Button>
               </Link>
             </div>
           ),
@@ -52,15 +52,15 @@ export const AdminNotifications = () => {
       />
       <div
         className={cn(
-          "rounded-3xl px-4 py-4 gap-4 h-full flex flex-col flex-1 w-full bg-background",
+          "rounded-3xl px-4 py-4 gap-4 flex flex-col flex-1 w-full bg-background overflow-auto",
         )}
       >
-        <NotificationStats />
+        <DigestStats />
 
         {activeTab === "create" ? (
-          <NotificationForm onSuccess={() => setActiveTab("manage")} />
+          <DigestForm onSuccess={() => setActiveTab("manage")} />
         ) : (
-          <NotificationList />
+          <DigestList onEdit={() => setActiveTab("create")} />
         )}
       </div>
     </div>

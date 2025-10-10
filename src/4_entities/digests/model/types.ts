@@ -14,3 +14,25 @@ export type GetDigestResponse = {
   name_daydjest: string;
   type: string;
 };
+
+export type CreateDigestRequest = {
+  title: string;
+  type: string;
+  description: string;
+  files: File[];
+  cover: File;
+};
+
+export type CreateDigestResponse = {
+  id: string;
+  title: string;
+  type: string;
+  description: string;
+  pach_cdn: string[];
+  cover: string;
+  create_add: string;
+};
+
+export type DeleteDigestResponse = {
+  message: string;
+};

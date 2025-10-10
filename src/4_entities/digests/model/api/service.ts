@@ -1,13 +1,53 @@
 import { api } from "@shared/api/api";
-import { GetDigestResponse, GetDigestsResponse } from "../types";
+import {
+  GetDigestResponse,
+  GetDigestsResponse,
+  CreateDigestRequest,
+  CreateDigestResponse,
+  DeleteDigestResponse,
+} from "../types";
 
 export class DigestsService {
   static async getDigests(): Promise<GetDigestsResponse> {
     const response = await api.get<GetDigestsResponse>("daydjest");
     return response.data;
   }
+
   static async getDigest(id: string): Promise<GetDigestResponse> {
     const response = await api.get<GetDigestResponse>(`daydjest/views/${id}`);
+    return response.data;
+  }
+
+  static async createDigest(
+    data: CreateDigestRequest,
+  ): Promise<CreateDigestResponse> {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("type", data.type);
+    formData.append("description", data.description);
+
+    // Добавляем файлы страниц
+    data.files.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    // Добавляем обложку
+    formData.append("cover", data.cover);
+
+    const response = await api.post<CreateDigestResponse>(
+      "daydjest/create",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  }
+
+  static async deleteDigest(id: string): Promise<DeleteDigestResponse> {
+    const response = await api.delete<DeleteDigestResponse>(`daydjest/${id}`);
     return response.data;
   }
 }
