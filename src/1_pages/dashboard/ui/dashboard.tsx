@@ -345,7 +345,7 @@ const Dashboard = () => {
       <Suspense fallback={<HoursRevenueSkeleton />}>
         <HoursRevenue
           isLoading={isDashboardLoading}
-          data={dashboard?.salesHours.data?.graph}
+          data={dashboard?.salesHours?.data?.graph}
         />
       </Suspense>
     ),
@@ -387,26 +387,26 @@ const Dashboard = () => {
         <Suspense fallback={<TodayRevenueSkeleton />}>
           <TodayRevenue
             isLoading={isDashboardLoading}
-            negative={dashboard?.salesHours.data?.card1.negative}
-            proceedsTotal={dashboard?.salesHours.data?.card1.proceedsTotal}
+            negative={dashboard?.salesHours?.data?.card1?.negative}
+            proceedsTotal={dashboard?.salesHours?.data?.card1?.proceedsTotal}
             proceedsWoYPercent={
-              dashboard?.salesHours.data?.card1.proceedsWoWPercent
+              dashboard?.salesHours?.data?.card1?.proceedsWoWPercent
             }
             weekAgoProceedsTotal={
-              dashboard?.salesHours.data?.card1.weekAgoProceedsTotal
+              dashboard?.salesHours?.data?.card1?.weekAgoProceedsTotal
             }
           />
         </Suspense>
         <Suspense fallback={<TodayCheckSkeleton />}>
           <TodayCheck
             isLoading={isDashboardLoading}
-            negative={dashboard?.salesHours.data?.card2.negative}
-            proceedsTotal={dashboard?.salesHours.data?.card2.proceedsTotal}
+            negative={dashboard?.salesHours?.data?.card2?.negative}
+            proceedsTotal={dashboard?.salesHours?.data?.card2?.proceedsTotal}
             proceedsWoYPercent={
-              dashboard?.salesHours.data?.card2.proceedsWoWPercent
+              dashboard?.salesHours?.data?.card2?.proceedsWoWPercent
             }
             weekAgoProceedsTotal={
-              dashboard?.salesHours.data?.card2.weekAgoProceedsTotal
+              dashboard?.salesHours?.data?.card2?.weekAgoProceedsTotal
             }
           />
         </Suspense>
