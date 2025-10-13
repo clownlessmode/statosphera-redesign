@@ -21,27 +21,26 @@ export class NightShopsService {
     //   }, 1000);
     // });
 
-    // Если хочешь включать реальные данные — закомментируй return выше и раскомментируй ниже
-    const proceedPerMonth = await api.get<ProceedPerMonth>(
-      "/tv/data-proceed-per-month",
-    );
-    const countStoreRegion = await api.get<CountStoreRegion>(
-      "/tv/data-count-store-in-region",
-    );
-    const topstoreProceed = await api.get<TopStoreProceed>(
-      "/tv/data-top-5-store-by-proceed",
-    );
-    const antiTopstoreProceed = await api.get<AntiTopstoreProceed>(
-      "/tv/data-antitop-5-store-by-proceed",
-    );
-    const monthProceed = await api.get<MonthProceed>("/tv/data-month-proceed");
-    const lastMonthProceed = await api.get<LastMonthProceed>(
-      "/tv/data-last-month-proceed",
-    );
-    const yearsProceed = await api.get<YearsProceed>("/tv/data-years-proceed");
-    const topProductProfit = await api.get<TopProductProfit>(
-      "/tv/data-top-5-product-by-profit",
-    );
+    // Оптимизация: выполняем все запросы параллельно вместо последовательно
+    const [
+      proceedPerMonth,
+      countStoreRegion,
+      topstoreProceed,
+      antiTopstoreProceed,
+      monthProceed,
+      lastMonthProceed,
+      yearsProceed,
+      topProductProfit,
+    ] = await Promise.all([
+      api.get<ProceedPerMonth>("/tv/data-proceed-per-month"),
+      api.get<CountStoreRegion>("/tv/data-count-store-in-region"),
+      api.get<TopStoreProceed>("/tv/data-top-5-store-by-proceed"),
+      api.get<AntiTopstoreProceed>("/tv/data-antitop-5-store-by-proceed"),
+      api.get<MonthProceed>("/tv/data-month-proceed"),
+      api.get<LastMonthProceed>("/tv/data-last-month-proceed"),
+      api.get<YearsProceed>("/tv/data-years-proceed"),
+      api.get<TopProductProfit>("/tv/data-top-5-product-by-profit"),
+    ]);
 
     return {
       proceedPerMonth: proceedPerMonth.data,
