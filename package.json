@@ -6,14 +6,15 @@
   "scripts": {
     "dev": "vite",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
-    "build": "tsc -b && vite build",
+    "build": "npm run version && tsc -b && vite build",
     "lint": "eslint ./src --ext .ts,.tsx --fix",
     "prepare": "husky install",
     "preview": "vite preview",
     "explore": "source-map-explorer dist/assets/theme-*.js.map",
     "check-unused-deps": "depcheck",
     "check-unused-files": "unimported",
-    "check-format": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\""
+    "check-format": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"",
+    "version": "node scripts/generate-version.js"
   },
   "dependencies": {
     "@blocknote/core": "^0.33.0",

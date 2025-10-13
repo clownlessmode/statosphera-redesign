@@ -16,7 +16,7 @@ import { Separator } from "@shared/ui/separator";
 import SuggestionForm from "./suggestion-form";
 import OtherForm from "./other-form";
 import { useState } from "react";
-import { VERSION } from "@shared/constants/config";
+import { VERSION, VERSION_INFO } from "@shared/constants/config";
 
 const Feedback = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,9 +32,11 @@ const Feedback = () => {
         <DialogHeader>
           <DialogTitle className="justify-between w-full flex">
             <span>Обратная связь</span>
-            <span className="text-muted-foreground text-xs font-light mr-4">
-              Версия приложения: {VERSION}{" "}
-            </span>
+            <div className="text-muted-foreground text-xs font-light mr-4 text-right">
+              <div>Версия: {VERSION}</div>
+              <div>Коммит: {VERSION_INFO.commitHash}</div>
+              <div>Ветка: {VERSION_INFO.branch}</div>
+            </div>
           </DialogTitle>
           <DialogDescription>
             Свяжитесь с нами, чтобы сообщить о проблеме или предложить
