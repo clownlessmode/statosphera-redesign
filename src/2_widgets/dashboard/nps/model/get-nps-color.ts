@@ -14,7 +14,7 @@ export const getNPSColor = (score: number) => {
   if (score >= 30)
     return {
       label: "Средний",
-      text: "text-average-foreground",
+      text: "text-foreground",
       bg: "bg-average",
     };
   return {

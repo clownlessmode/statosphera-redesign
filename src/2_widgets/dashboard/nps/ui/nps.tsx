@@ -35,8 +35,8 @@ export const Nps = ({ tv }: { tv?: boolean }) => {
           {summaryNps}
         </motion.h1>
 
-        {/* Фоновые частицы */}
-        {[...Array(10)].map((_, i) => (
+        {/* Фоновые частицы - оптимизация: уменьшаем количество */}
+        {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-primary rounded-full"
@@ -56,9 +56,9 @@ export const Nps = ({ tv }: { tv?: boolean }) => {
               scale: [0, 2, 0],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 4 + Math.random() * 2, // Увеличиваем длительность анимации
               repeat: Infinity,
-              delay: i * 0.5,
+              delay: i * 1, // Увеличиваем задержку между частицами
               ease: "easeOut",
             }}
           />
