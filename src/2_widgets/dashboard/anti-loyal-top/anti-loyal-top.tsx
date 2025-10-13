@@ -3,6 +3,7 @@ import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horiz
 import AntiLoyalTopSkeleton from "./anti-loyal-top-skeleton";
 import { useSession } from "@entities/session";
 import { cn } from "@shared/lib/utils";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 interface ItemData {
   appLoyalPercent: number;
   idStore: number;
@@ -16,12 +17,15 @@ interface AntiLoyalTopProps {
 }
 const AntiLoyalTop = ({ isLoading, data, tv }: AntiLoyalTopProps) => {
   const { session } = useSession();
+  const colors = useGraphColors();
 
   const getItemColors = () => {
     if (!data || !session?.idStore) return [];
     return data.map((item) => {
-      if (tv) return "#e50046";
-      return session.idStore.includes(item.idStore) ? "#e50046" : "#7f7f7f74";
+      if (tv) return colors.series[0];
+      return session.idStore.includes(item.idStore)
+        ? colors.series[0]
+        : `${colors.series[0]}74`;
     });
   };
 

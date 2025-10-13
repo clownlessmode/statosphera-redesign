@@ -42,6 +42,8 @@ import { useSession } from "@entities/session";
 import { userMessages } from "./test";
 import { FlyingHearts } from "@widgets/dashboard/flying-hearts";
 import { CursorTrail } from "@widgets/dashboard/cursor-trail";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue"),
 );
@@ -103,12 +105,19 @@ const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
   const { session } = useSession();
+  const { settings: effectsSettings } = useEffectsSettings();
+
+  // Проверяем, есть ли доступ к эффектам для текущего пользователя
+  const userHasEffectsAccess = hasEffectsAccess(session?.idUser);
 
   // Проверяем, есть ли для текущего пользователя персональные фразы
   const userPhrases = session?.idUser
     ? userMessages[session.idUser]
     : undefined;
-  const hasPersonalMessages = !!userPhrases;
+  const hasPersonalMessages =
+    !!userPhrases &&
+    userHasEffectsAccess &&
+    effectsSettings.personalMessagesEnabled;
 
   const randomMessage = useMemo(() => {
     if (!userPhrases) return null;
@@ -413,8 +422,8 @@ const Dashboard = () => {
     >
       <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
         <Header title="Главная" />
-        {/* Анимации для ID 181 и 2734 */}
-        {(session?.idUser === 181 || session?.idUser === 2734) && (
+        {/* Анимации для пользователей с доступом к эффектам */}
+        {userHasEffectsAccess && (
           <>
             <FlyingHearts userId={session?.idUser} />
             <CursorTrail userId={session?.idUser} />
@@ -423,7 +432,16 @@ const Dashboard = () => {
         <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
           <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
             {hasPersonalMessages && (
-              <div className="col-span-3 bg-pink-300 border-pink-700 border-2 rounded-3xl p-10 text-pink-700 font black text-center text-balance flex justify-center items-center">
+              <div
+                className={`col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance flex justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
+                style={{
+                  backgroundColor:
+                    effectsSettings.personalMessagesStyle.backgroundColor,
+                  borderColor:
+                    effectsSettings.personalMessagesStyle.borderColor,
+                  color: effectsSettings.personalMessagesStyle.textColor,
+                }}
+              >
                 {randomMessage}
               </div>
             )}

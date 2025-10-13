@@ -38,6 +38,9 @@ import {
   ViewTabsGroupContent,
 } from "@shared/ui/view-tabs";
 import { useDashboardLayout } from "@shared/hooks/use-dashboard-layout";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
+import { useSession } from "@entities/session";
 
 export const Settings = () => {
   const {
@@ -51,11 +54,15 @@ export const Settings = () => {
     setTheme,
     applyFullPreset,
   } = useTheme();
+  const { session } = useSession();
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [selectedFullPreset, setSelectedFullPreset] = useState<string | null>(
     () => localStorage.getItem("applied-theme-preset"),
   );
+
+  // Проверяем, есть ли доступ к эффектам для текущего пользователя
+  const userHasEffectsAccess = hasEffectsAccess(session?.idUser);
 
   // Хук для управления порядком виджетов
   const allWidgets = [
@@ -74,6 +81,11 @@ export const Settings = () => {
     "antiLoyalTop",
   ];
   const { resetLayout } = useDashboardLayout(allWidgets);
+  const {
+    settings: effectsSettings,
+    updateSettings: updateEffectsSettings,
+    resetSettings: resetEffectsSettings,
+  } = useEffectsSettings();
 
   const handlePresetSelect = (presetColor: string, presetId: string) => {
     applyColorScheme(presetColor);
@@ -254,6 +266,11 @@ export const Settings = () => {
                 <ViewTabsTrigger value="notifications" icon={Bell}>
                   Уведомления
                 </ViewTabsTrigger>
+                {userHasEffectsAccess && (
+                  <ViewTabsTrigger value="effects" icon={LayoutGrid}>
+                    Эффекты
+                  </ViewTabsTrigger>
+                )}
               </ViewTabsGroupContent>
             </ViewTabsGroup>
           </ViewTabsList>
@@ -862,6 +879,487 @@ export const Settings = () => {
                   </div>
                 </Card>
               </ViewTabsContent>
+
+              {userHasEffectsAccess && (
+                <ViewTabsContent
+                  value="effects"
+                  className="flex flex-col gap-6"
+                >
+                  {/* Переключатели эффектов */}
+                  <Card className="p-6">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                          <LayoutGrid className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            Управление эффектами
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            Включение и выключение эффектов на дашборде
+                          </p>
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">💖</span>
+                            <div>
+                              <Label className="text-base">
+                                Летающие сердечки
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Анимация сердечек, поднимающихся снизу вверх
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={effectsSettings.flyingHeartsEnabled}
+                            onCheckedChange={(checked) =>
+                              updateEffectsSettings({
+                                flyingHeartsEnabled: checked,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">✨</span>
+                            <div>
+                              <Label className="text-base">След курсора</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Эмодзи следуют за движением мыши
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={effectsSettings.cursorTrailEnabled}
+                            onCheckedChange={(checked) =>
+                              updateEffectsSettings({
+                                cursorTrailEnabled: checked,
+                              })
+                            }
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">💬</span>
+                            <div>
+                              <Label className="text-base">
+                                Персональные сообщения
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Специальные фразы для определенных пользователей
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={effectsSettings.personalMessagesEnabled}
+                            onCheckedChange={(checked) =>
+                              updateEffectsSettings({
+                                personalMessagesEnabled: checked,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Настройки FlyingHearts */}
+                  <Card className="p-6">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                          <span className="text-lg">💖</span>
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            Летающие сердечки
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            Настройка анимации летающих сердечек
+                          </p>
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                          <Label className="text-sm font-semibold">
+                            Эмодзи
+                          </Label>
+                          <div className="flex flex-wrap gap-2">
+                            {effectsSettings.flyingHeartsEmojis.map(
+                              (emoji: string, index: number) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center gap-2 p-2 border rounded-lg"
+                                >
+                                  <span className="text-lg">{emoji}</span>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newEmojis =
+                                        effectsSettings.flyingHeartsEmojis.filter(
+                                          (_: string, i: number) => i !== index,
+                                        );
+                                      updateEffectsSettings({
+                                        flyingHeartsEmojis: newEmojis,
+                                      });
+                                    }}
+                                  >
+                                    <XCircle className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              ),
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newEmoji = prompt("Введите эмодзи:");
+                                if (newEmoji) {
+                                  updateEffectsSettings({
+                                    flyingHeartsEmojis: [
+                                      ...effectsSettings.flyingHeartsEmojis,
+                                      newEmoji,
+                                    ],
+                                  });
+                                }
+                              }}
+                            >
+                              + Добавить
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Минимальный размер
+                            </Label>
+                            <Input
+                              type="number"
+                              value={effectsSettings.flyingHeartsSize.min}
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  flyingHeartsSize: {
+                                    ...effectsSettings.flyingHeartsSize,
+                                    min: parseInt(e.target.value) || 30,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Максимальный размер
+                            </Label>
+                            <Input
+                              type="number"
+                              value={effectsSettings.flyingHeartsSize.max}
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  flyingHeartsSize: {
+                                    ...effectsSettings.flyingHeartsSize,
+                                    max: parseInt(e.target.value) || 50,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <Label className="text-sm font-semibold">
+                            Частота появления (сек)
+                          </Label>
+                          <Input
+                            type="number"
+                            step="0.5"
+                            value={effectsSettings.flyingHeartsFrequency}
+                            onChange={(e) =>
+                              updateEffectsSettings({
+                                flyingHeartsFrequency:
+                                  parseFloat(e.target.value) || 2,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Настройки CursorTrail */}
+                  <Card className="p-6">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                          <span className="text-lg">✨</span>
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            След курсора
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            Настройка анимации следящих за курсором эмодзи
+                          </p>
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                          <Label className="text-sm font-semibold">
+                            Эмодзи
+                          </Label>
+                          <div className="flex flex-wrap gap-2">
+                            {effectsSettings.cursorTrailEmojis.map(
+                              (emoji: string, index: number) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center gap-2 p-2 border rounded-lg"
+                                >
+                                  <span className="text-lg">{emoji}</span>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newEmojis =
+                                        effectsSettings.cursorTrailEmojis.filter(
+                                          (_: string, i: number) => i !== index,
+                                        );
+                                      updateEffectsSettings({
+                                        cursorTrailEmojis: newEmojis,
+                                      });
+                                    }}
+                                  >
+                                    <XCircle className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              ),
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newEmoji = prompt("Введите эмодзи:");
+                                if (newEmoji) {
+                                  updateEffectsSettings({
+                                    cursorTrailEmojis: [
+                                      ...effectsSettings.cursorTrailEmojis,
+                                      newEmoji,
+                                    ],
+                                  });
+                                }
+                              }}
+                            >
+                              + Добавить
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Размер эмодзи (px)
+                            </Label>
+                            <Input
+                              type="number"
+                              value={effectsSettings.cursorTrailSize}
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  cursorTrailSize:
+                                    parseInt(e.target.value) || 20,
+                                })
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Длительность анимации (сек)
+                            </Label>
+                            <Input
+                              type="number"
+                              step="0.5"
+                              value={effectsSettings.cursorTrailDuration}
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  cursorTrailDuration:
+                                    parseFloat(e.target.value) || 2,
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <Label className="text-sm font-semibold">
+                            Максимальное количество эмодзи
+                          </Label>
+                          <Input
+                            type="number"
+                            value={effectsSettings.cursorTrailMaxHearts}
+                            onChange={(e) =>
+                              updateEffectsSettings({
+                                cursorTrailMaxHearts:
+                                  parseInt(e.target.value) || 15,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Настройки персональных сообщений */}
+                  <Card className="p-6">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                          <span className="text-lg">💬</span>
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            Персональные сообщения
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            Настройка стиля отображения персональных фраз
+                          </p>
+                        </div>
+                      </div>
+                      <Separator />
+                      <div className="flex flex-col gap-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Цвет фона
+                            </Label>
+                            <Input
+                              type="color"
+                              value={
+                                effectsSettings.personalMessagesStyle
+                                  .backgroundColor
+                              }
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  personalMessagesStyle: {
+                                    ...effectsSettings.personalMessagesStyle,
+                                    backgroundColor: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Цвет границы
+                            </Label>
+                            <Input
+                              type="color"
+                              value={
+                                effectsSettings.personalMessagesStyle
+                                  .borderColor
+                              }
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  personalMessagesStyle: {
+                                    ...effectsSettings.personalMessagesStyle,
+                                    borderColor: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Цвет текста
+                            </Label>
+                            <Input
+                              type="color"
+                              value={
+                                effectsSettings.personalMessagesStyle.textColor
+                              }
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  personalMessagesStyle: {
+                                    ...effectsSettings.personalMessagesStyle,
+                                    textColor: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Label className="text-sm font-semibold">
+                              Размер шрифта
+                            </Label>
+                            <select
+                              className="px-3 py-2 border rounded-md"
+                              value={
+                                effectsSettings.personalMessagesStyle.fontSize
+                              }
+                              onChange={(e) =>
+                                updateEffectsSettings({
+                                  personalMessagesStyle: {
+                                    ...effectsSettings.personalMessagesStyle,
+                                    fontSize: e.target.value,
+                                  },
+                                })
+                              }
+                            >
+                              <option value="text-sm">Маленький</option>
+                              <option value="text-base">Обычный</option>
+                              <option value="text-lg">Большой</option>
+                              <option value="text-xl">Очень большой</option>
+                              <option value="text-2xl">Огромный</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Кнопка сброса */}
+                  <Card className="p-6">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10">
+                          <RotateCcw className="h-5 w-5 text-destructive" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold">
+                            Сброс настроек
+                          </h2>
+                          <p className="text-sm text-muted-foreground">
+                            Вернуть все настройки эффектов к значениям по
+                            умолчанию
+                          </p>
+                        </div>
+                      </div>
+                      <Separator />
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          resetEffectsSettings();
+                          toast.success("Настройки эффектов сброшены", {
+                            description:
+                              "Все эффекты возвращены к значениям по умолчанию",
+                          });
+                        }}
+                        className="gap-2 self-start"
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                        Сбросить все настройки эффектов
+                      </Button>
+                    </div>
+                  </Card>
+                </ViewTabsContent>
+              )}
             </div>
           </div>
         </ViewTabs>

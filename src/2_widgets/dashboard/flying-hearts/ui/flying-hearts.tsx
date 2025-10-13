@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
 
 interface Heart {
   id: number;
@@ -13,59 +15,6 @@ interface Heart {
 interface FlyingHeartsProps {
   userId?: number;
 }
-
-const romanticEmojis = [
-  "❤️",
-  "💕",
-  "💖",
-  "💗",
-  "💘",
-  "💙",
-  "💚",
-  "💛",
-  "🧡",
-  "💜",
-  "🌹",
-  "🌺",
-  "🌸",
-  "🌻",
-  "🌷",
-  "🌼",
-  "🌿",
-  "🍀",
-  "🌱",
-  "🌾",
-  "✨",
-  "⭐",
-  "🌟",
-  "💫",
-  "🌙",
-  "☀️",
-  "🌈",
-  "🦋",
-  "🐝",
-  "🕊️",
-  "💐",
-  "🎀",
-  "🎁",
-  "🎂",
-  "🍓",
-  "🍒",
-  "🍑",
-  "🥰",
-  "😍",
-  "🥺",
-  "💋",
-  "👑",
-  "🦄",
-  "🎈",
-  "🎊",
-  "🎉",
-  "💎",
-  "🔮",
-  "🌺",
-  "🌻",
-];
 
 // Только цветы для ID 2734
 const flowerEmojis = [
@@ -116,9 +65,15 @@ const romanticColors = [
 
 export const FlyingHearts: React.FC<FlyingHeartsProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<Heart[]>([]);
+  const { settings } = useEffectsSettings();
 
-  // Выбираем набор эмодзи в зависимости от userId
-  const emojiSet = userId === 2734 ? flowerEmojis : romanticEmojis;
+  // Если эффект отключен в настройках или у пользователя нет доступа, не рендерим компонент
+  if (!settings.flyingHeartsEnabled || !hasEffectsAccess(userId)) {
+    return null;
+  }
+
+  // Выбираем набор эмодзи в зависимости от userId или используем настройки
+  const emojiSet = userId === 2734 ? flowerEmojis : settings.flyingHeartsEmojis;
   const isOneTime = userId === 2734; // Для 2734 - одноразовая анимация
 
   useEffect(() => {
@@ -128,7 +83,10 @@ export const FlyingHearts: React.FC<FlyingHeartsProps> = ({ userId }) => {
       // Для 2734 цветы падают сверху вниз, для остальных - снизу вверх
       y: isOneTime ? -50 : window.innerHeight + 50,
       delay: Math.random() * 2,
-      size: Math.random() * 20 + 40, // размер от 30 до 50px
+      size:
+        Math.random() *
+          (settings.flyingHeartsSize.max - settings.flyingHeartsSize.min) +
+        settings.flyingHeartsSize.min,
       emoji: emojiSet[Math.floor(Math.random() * emojiSet.length)],
       color: romanticColors[Math.floor(Math.random() * romanticColors.length)],
     });
@@ -164,7 +122,7 @@ export const FlyingHearts: React.FC<FlyingHeartsProps> = ({ userId }) => {
 
       const interval = setInterval(() => {
         setHearts((prev) => [...prev.slice(-7), createHeart()]);
-      }, 800);
+      }, settings.flyingHeartsFrequency * 1000); // конвертируем секунды в миллисекунды
 
       return () => clearInterval(interval);
     }

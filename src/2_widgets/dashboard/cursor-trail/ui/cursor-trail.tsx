@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
 
 interface CursorHeart {
   id: number;
@@ -12,59 +14,6 @@ interface CursorHeart {
 interface CursorTrailProps {
   userId?: number;
 }
-
-const romanticEmojis = [
-  "❤️",
-  "💕",
-  "💖",
-  "💗",
-  "💘",
-  "💙",
-  "💚",
-  "💛",
-  "🧡",
-  "💜",
-  "🌹",
-  "🌺",
-  "🌸",
-  "🌻",
-  "🌷",
-  "🌼",
-  "🌿",
-  "🍀",
-  "🌱",
-  "🌾",
-  "✨",
-  "⭐",
-  "🌟",
-  "💫",
-  "🌙",
-  "☀️",
-  "🌈",
-  "🦋",
-  "🐝",
-  "🕊️",
-  "💐",
-  "🎀",
-  "🎁",
-  "🎂",
-  "🍓",
-  "🍒",
-  "🍑",
-  "🥰",
-  "😍",
-  "🥺",
-  "💋",
-  "👑",
-  "🦄",
-  "🎈",
-  "🎊",
-  "🎉",
-  "💎",
-  "🔮",
-  "🌺",
-  "🌻",
-];
 
 // Только сердечки для ID 2734 (без черного и разбитых)
 const heartsOnlyEmojis = [
@@ -114,10 +63,16 @@ const romanticColors = [
 export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<CursorHeart[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { settings } = useEffectsSettings();
   console.log(mousePosition);
+  // Если эффект отключен в настройках или у пользователя нет доступа, не рендерим компонент
+  if (!settings.cursorTrailEnabled || !hasEffectsAccess(userId)) {
+    return null;
+  }
 
-  // Выбираем набор эмодзи в зависимости от userId
-  const emojiSet = userId === 2734 ? heartsOnlyEmojis : romanticEmojis;
+  // Выбираем набор эмодзи в зависимости от userId или используем настройки
+  const emojiSet =
+    userId === 2734 ? heartsOnlyEmojis : settings.cursorTrailEmojis;
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -133,7 +88,10 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
           romanticColors[Math.floor(Math.random() * romanticColors.length)],
       };
 
-      setHearts((prev) => [...prev.slice(-15), newHeart]); // Ограничиваем до 15 сердечек
+      setHearts((prev) => [
+        ...prev.slice(-settings.cursorTrailMaxHearts),
+        newHeart,
+      ]); // Используем настройки для ограничения
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -153,7 +111,7 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
             style={{
               left: heart.x - 10,
               top: heart.y - 10,
-              fontSize: "20px",
+              fontSize: `${settings.cursorTrailSize}px`,
             }}
             initial={{
               opacity: 1,
@@ -172,7 +130,7 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
               scale: 0,
             }}
             transition={{
-              duration: 2,
+              duration: settings.cursorTrailDuration,
               ease: "easeOut",
             }}
           >

@@ -6,6 +6,7 @@ import { BarHorizontalChart } from "@shared/ui/graphs/bar-horizontal-chart/bar-h
 import BarHorizontalChartSkeleton from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart-skeleton";
 import { useSession } from "@entities/session";
 import { cn } from "@shared/lib/utils";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 
 interface WriteoffsLeadersProps {
   isLoading: boolean;
@@ -14,15 +15,18 @@ interface WriteoffsLeadersProps {
 }
 const WriteoffsLeaders = ({ isLoading, data, tv }: WriteoffsLeadersProps) => {
   const { session } = useSession();
+  const colors = useGraphColors();
 
   // Создаем массив цветов на основе сравнения с session.idStore
   const getItemColors = () => {
     if (!data?.data || !session?.idStore) return [];
 
     return data.data.map((item) => {
-      if (tv) return "#e50046";
-      // Если idStore магазина есть в массиве session.idStore, то серый цвет
-      return session.idStore.includes(item.idStore) ? "#e50046" : "#7f7f7f74";
+      if (tv) return colors.series[0];
+      // Если idStore магазина есть в массиве session.idStore, то основной цвет
+      return session.idStore.includes(item.idStore)
+        ? colors.series[0]
+        : `${colors.series[0]}74`;
     });
   };
   return (
