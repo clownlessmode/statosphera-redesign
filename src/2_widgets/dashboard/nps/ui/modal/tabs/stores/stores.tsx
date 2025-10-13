@@ -101,7 +101,7 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
     return (
       <div className="grid grid-cols-1 gap-2 w-full h-full pb-6">
         <div className="col-span-full">
-          <h3 className="font-semibold text-center">Лучшие магазины по NPS</h3>
+          <h3 className="font-semibold text-center ">Лучшие магазины по NPS</h3>
         </div>
         {otherStores.slice(0, 5).length > 0 && (
           <>

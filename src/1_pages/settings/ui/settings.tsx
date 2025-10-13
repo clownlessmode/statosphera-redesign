@@ -100,27 +100,14 @@ export const Settings = () => {
   const handleCustomThemeModeToggle = (checked: boolean) => {
     const newMode = checked ? "light" : "dark";
     setCustomThemeMode(newMode);
-    toast.success("Режим изменён", {
-      description: `Переключено на ${newMode === "light" ? "светлую" : "тёмную"} версию`,
-    });
   };
 
-  const handleColorChange = (
-    colorKey: keyof typeof colors,
-    color: string,
-    label: string,
-  ) => {
+  const handleColorChange = (colorKey: keyof typeof colors, color: string) => {
     setColors({ [colorKey]: color });
-    toast.success("Цвет изменен", {
-      description: `${label} установлен на ${color}`,
-    });
   };
 
   const handleResetColors = () => {
     resetColors();
-    toast.success("Цвета сброшены", {
-      description: "Все цвета возвращены к значениям по умолчанию",
-    });
   };
 
   const handleFullPresetSelect = async (presetId: string) => {
@@ -597,7 +584,6 @@ export const Settings = () => {
                                         handleColorChange(
                                           colorInfo.key as keyof typeof colors,
                                           color,
-                                          colorInfo.label,
                                         )
                                       }
                                       label={colorInfo.label}
