@@ -257,7 +257,19 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     [datasource, cacheBlockSize, maxBlocksInCache, pinnedTopData, maxRows],
   );
 
-  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
+  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight, theme]);
+
+  // Принудительно обновляем тему при смене
+  useEffect(() => {
+    if (gridApiRef.current) {
+      setTimeout(() => {
+        const newTheme = getAgGridTheme(isLight);
+        gridApiRef.current?.setGridOption("theme", newTheme);
+        gridApiRef.current?.redrawRows();
+      }, 50);
+    }
+  }, [isLight, theme]);
+
   useEffect(() => {
     selectedRowsRef.current = selectedRows;
   }, [selectedRows]);
