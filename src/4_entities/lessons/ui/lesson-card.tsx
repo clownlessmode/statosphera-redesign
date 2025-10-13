@@ -12,10 +12,26 @@ import { Separator } from "@shared/ui/separator";
 import { Button } from "@shared/ui/button";
 import { Clock } from "lucide-react";
 import { Lesson } from "../config";
+// import { LessonButton } from "./lesson-button";
+import { useLessonProgress } from "../hooks/use-lesson-progress";
+
 interface Props {
   lesson: Lesson;
+  onStartLesson?: (lesson: Lesson) => void;
 }
-export const LessonCard: React.FC<Props> = ({ lesson }) => {
+
+export const LessonCard: React.FC<Props> = ({ lesson, onStartLesson }) => {
+  const { getLessonAction, getLessonBadge, getCompletedCount } =
+    useLessonProgress();
+
+  const action = getLessonAction(lesson.id.toString());
+  const badge = getLessonBadge(lesson.id.toString());
+  const completedCount = getCompletedCount(lesson.id.toString());
+
+  const handleClick = () => {
+    onStartLesson?.(lesson);
+  };
+
   return (
     <Card
       key={lesson.id}
@@ -34,9 +50,17 @@ export const LessonCard: React.FC<Props> = ({ lesson }) => {
             <Clock className="h-3 w-3" /> {lesson.duration}
           </div>
         </div>
-        <CardTitle className="flex items-center gap-2 text-xl mt-4">
-          {lesson.icon}
-          {lesson.title}
+        <CardTitle className="flex items-center justify-between text-xl mt-4">
+          <div className="flex items-center gap-2">
+            {lesson.icon}
+            {lesson.title}
+          </div>
+          {badge && (
+            <Badge variant="secondary" className="text-xs">
+              {badge.text}
+              {badge.showCount && completedCount > 1 && ` x${completedCount}`}
+            </Badge>
+          )}
         </CardTitle>
         <CardDescription className="line-clamp-3">
           {lesson.description}
@@ -61,12 +85,15 @@ export const LessonCard: React.FC<Props> = ({ lesson }) => {
           <Progress value={lesson.progress} className="h-2" />
           <span className="text-xs font-medium">{lesson.progress}%</span>
         </div>
-        <Button
-          variant={lesson.completed ? "outline" : "default"}
-          className="w-full"
-        >
-          {lesson.completed ? "Запустить заново" : "Продолжить обучение"}
-        </Button>
+        <div className="w-full space-y-2">
+          <Button
+            variant={action.type === "restart" ? "outline" : "default"}
+            className="w-full"
+            onClick={handleClick}
+          >
+            {action.label}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

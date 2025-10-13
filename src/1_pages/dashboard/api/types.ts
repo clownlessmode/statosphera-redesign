@@ -153,3 +153,7 @@ export type LeaderWriteOffs = {
     writeOffPercent: number;
   }[];
 };
+
+export type SalesDayResponse = {
+  salesHours: SalesHours;
+};
