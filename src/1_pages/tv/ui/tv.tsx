@@ -136,37 +136,49 @@ export const TV = () => {
   const currentMonthStats = (
     <div className="grid grid-rows-3 gap-2 h-full">
       <Suspense fallback={<CurrentRevenueSkeleton />}>
-        <CurrentRevenue
-          isLoading={isDashboardLoading}
-          proceeds={dashboard?.curentMonth.data?.[0]?.proceeds}
-          proceedsYoY={dashboard?.curentMonth.data?.[0]?.proceedsYoY}
-          proceedsYoYPercent={
-            dashboard?.curentMonth.data?.[0]?.proceedsYoYPercent
-          }
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.curentMonth?.data?.[0] ? (
+          <CurrentRevenue
+            isLoading={isDashboardLoading}
+            proceeds={dashboard.curentMonth.data[0].proceeds}
+            proceedsYoY={dashboard.curentMonth.data[0].proceedsYoY}
+            proceedsYoYPercent={
+              dashboard.curentMonth.data[0].proceedsYoYPercent
+            }
+            tv={true}
+          />
+        ) : (
+          <CurrentRevenueSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<CurrentCheckSkeleton />}>
-        <CurrentCheck
-          negative={dashboard?.curentCheck.data?.[0]?.negative}
-          isLoading={isDashboardLoading}
-          check={dashboard?.curentCheck.data?.[0]?.check}
-          checkYoY={dashboard?.curentCheck.data?.[0]?.checkYoY}
-          checkYoYPercent={dashboard?.curentCheck.data?.[0]?.checkYoYPercent}
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.curentCheck?.data?.[0] ? (
+          <CurrentCheck
+            negative={dashboard.curentCheck.data[0].negative}
+            isLoading={isDashboardLoading}
+            check={dashboard.curentCheck.data[0].check}
+            checkYoY={dashboard.curentCheck.data[0].checkYoY}
+            checkYoYPercent={dashboard.curentCheck.data[0].checkYoYPercent}
+            tv={true}
+          />
+        ) : (
+          <CurrentCheckSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<AverageCheckSkeleton />}>
-        <AverageCheck
-          negative={dashboard?.curentAvgCheck.data?.[0]?.negative}
-          isLoading={isDashboardLoading}
-          avgCheck={dashboard?.curentAvgCheck.data?.[0]?.avgCheck}
-          avgCheckYoY={dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoY}
-          avgCheckYoYPercent={
-            dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoYPercent
-          }
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.curentAvgCheck?.data?.[0] ? (
+          <AverageCheck
+            negative={dashboard.curentAvgCheck.data[0].negative}
+            isLoading={isDashboardLoading}
+            avgCheck={dashboard.curentAvgCheck.data[0].avgCheck}
+            avgCheckYoY={dashboard.curentAvgCheck.data[0].avgCheckYoY}
+            avgCheckYoYPercent={
+              dashboard.curentAvgCheck.data[0].avgCheckYoYPercent
+            }
+            tv={true}
+          />
+        ) : (
+          <AverageCheckSkeleton />
+        )}
       </Suspense>
     </div>
   );
@@ -175,32 +187,40 @@ export const TV = () => {
   const todayStats = (
     <div className="grid grid-rows-2 gap-2 h-full">
       <Suspense fallback={<TodayRevenueSkeleton />}>
-        <TodayRevenue
-          isLoading={isDashboardLoading}
-          negative={dashboard?.salesHours?.data?.card1?.negative}
-          proceedsTotal={dashboard?.salesHours?.data?.card1?.proceedsTotal}
-          proceedsWoYPercent={
-            dashboard?.salesHours?.data?.card1?.proceedsWoWPercent
-          }
-          weekAgoProceedsTotal={
-            dashboard?.salesHours?.data?.card1?.weekAgoProceedsTotal
-          }
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.salesHours?.data?.card1 ? (
+          <TodayRevenue
+            isLoading={isDashboardLoading}
+            negative={dashboard.salesHours.data.card1.negative}
+            proceedsTotal={dashboard.salesHours.data.card1.proceedsTotal}
+            proceedsWoYPercent={
+              dashboard.salesHours.data.card1.proceedsWoWPercent
+            }
+            weekAgoProceedsTotal={
+              dashboard.salesHours.data.card1.weekAgoProceedsTotal
+            }
+            tv={true}
+          />
+        ) : (
+          <TodayRevenueSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<TodayCheckSkeleton />}>
-        <TodayCheck
-          isLoading={isDashboardLoading}
-          negative={dashboard?.salesHours?.data?.card2?.negative}
-          proceedsTotal={dashboard?.salesHours?.data?.card2?.proceedsTotal}
-          proceedsWoYPercent={
-            dashboard?.salesHours?.data?.card2?.proceedsWoWPercent
-          }
-          weekAgoProceedsTotal={
-            dashboard?.salesHours?.data?.card2?.weekAgoProceedsTotal
-          }
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.salesHours?.data?.card2 ? (
+          <TodayCheck
+            isLoading={isDashboardLoading}
+            negative={dashboard.salesHours.data.card2.negative}
+            proceedsTotal={dashboard.salesHours.data.card2.proceedsTotal}
+            proceedsWoYPercent={
+              dashboard.salesHours.data.card2.proceedsWoWPercent
+            }
+            weekAgoProceedsTotal={
+              dashboard.salesHours.data.card2.weekAgoProceedsTotal
+            }
+            tv={true}
+          />
+        ) : (
+          <TodayCheckSkeleton />
+        )}
       </Suspense>
     </div>
   );
@@ -210,53 +230,67 @@ export const TV = () => {
     <div className="grid grid-rows-3 gap-2 h-full">
       <div className="flex flex-row gap-2">
         <Suspense fallback={<MarginSkeleton />}>
-          <Margin
-            isLoading={isDashboardLoading}
-            data={dashboard?.curentMarzha.data?.[0]?.marginPercent}
-            tv={true}
-          />
+          {!isDashboardLoading && dashboard?.curentMarzha?.data?.[0] ? (
+            <Margin
+              isLoading={isDashboardLoading}
+              data={dashboard.curentMarzha.data[0].marginPercent}
+              tv={true}
+            />
+          ) : (
+            <MarginSkeleton />
+          )}
         </Suspense>
         <Suspense fallback={<MarkupSkeleton />}>
-          <Markup
-            isLoading={isDashboardLoading}
-            percent={dashboard?.curentMarkup.data?.[0]?.markupPercent}
-            proceeds={dashboard?.curentMarkup.data?.[0]?.profit}
-            tv={true}
-          />
+          {!isDashboardLoading && dashboard?.curentMarkup?.data?.[0] ? (
+            <Markup
+              isLoading={isDashboardLoading}
+              percent={dashboard.curentMarkup.data[0].markupPercent}
+              proceeds={dashboard.curentMarkup.data[0].profit}
+              tv={true}
+            />
+          ) : (
+            <MarkupSkeleton />
+          )}
         </Suspense>
       </div>
       <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-        <WriteOffIndicator
-          negative={dashboard?.curentWriteOff.data?.[0]?.negative}
-          isLoading={isDashboardLoading}
-          writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
-          writeOffPercent={dashboard?.curentWriteOff.data?.[0]?.writeOffPercent}
-          writeOffYoY={dashboard?.curentWriteOff.data?.[0]?.writeOffYoY}
-          writeOffYoYPercent={
-            dashboard?.curentWriteOff.data?.[0]?.writeOffYoYPercent
-          }
-          tv={true}
-        />
-      </Suspense>
-      {session?.role !== ROLES.OFFICE_MM && (
-        <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-          <WriteOffHouseholds
-            negative={dashboard?.curentHouseHold.data?.[0]?.negative}
+        {!isDashboardLoading && dashboard?.curentWriteOff?.data?.[0] ? (
+          <WriteOffIndicator
+            negative={dashboard.curentWriteOff.data[0].negative}
             isLoading={isDashboardLoading}
-            householdGoods={
-              dashboard?.curentHouseHold.data?.[0]?.householdGoods
-            }
-            householdGoodsPercent={
-              dashboard?.curentHouseHold.data?.[0]?.householdGoodsPercent
-            }
-            householdGoodsYoY={
-              dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoY
-            }
-            householdGoodsYoYPercent={
-              dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
+            writeOff={dashboard.curentWriteOff.data[0].writeOff}
+            writeOffPercent={dashboard.curentWriteOff.data[0].writeOffPercent}
+            writeOffYoY={dashboard.curentWriteOff.data[0].writeOffYoY}
+            writeOffYoYPercent={
+              dashboard.curentWriteOff.data[0].writeOffYoYPercent
             }
             tv={true}
           />
+        ) : (
+          <WriteOffIndicatorSkeleton />
+        )}
+      </Suspense>
+      {session?.role !== ROLES.OFFICE_MM && (
+        <Suspense fallback={<WriteOffIndicatorSkeleton />}>
+          {!isDashboardLoading && dashboard?.curentHouseHold?.data?.[0] ? (
+            <WriteOffHouseholds
+              negative={dashboard.curentHouseHold.data[0].negative}
+              isLoading={isDashboardLoading}
+              householdGoods={dashboard.curentHouseHold.data[0].householdGoods}
+              householdGoodsPercent={
+                dashboard.curentHouseHold.data[0].householdGoodsPercent
+              }
+              householdGoodsYoY={
+                dashboard.curentHouseHold.data[0].householdGoodsYoY
+              }
+              householdGoodsYoYPercent={
+                dashboard.curentHouseHold.data[0].householdGoodsYoYPercent
+              }
+              tv={true}
+            />
+          ) : (
+            <WriteOffIndicatorSkeleton />
+          )}
         </Suspense>
       )}
     </div>
@@ -266,31 +300,43 @@ export const TV = () => {
   const nightShopsStats = (
     <div className="grid grid-rows-3 gap-2 h-full">
       <Suspense fallback={<MonthRevenueNSSkeleton />}>
-        <MonthRevenueNS
-          dataCurrent={nightShops?.monthProceed.dataCurrent}
-          dataPast={nightShops?.monthProceed.dataPast}
-          dynamic={nightShops?.monthProceed.dynamic}
-          isLoading={isNightShopsLoading}
-          tv={true}
-        />
+        {!isNightShopsLoading && nightShops?.monthProceed ? (
+          <MonthRevenueNS
+            dataCurrent={nightShops.monthProceed.dataCurrent}
+            dataPast={nightShops.monthProceed.dataPast}
+            dynamic={nightShops.monthProceed.dynamic}
+            isLoading={isNightShopsLoading}
+            tv={true}
+          />
+        ) : (
+          <MonthRevenueNSSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<LastMonthRevenuNSSkeleton />}>
-        <LastMonthRevenuNS
-          dataCurrent={nightShops?.monthProceed.dataCurrent}
-          dataPast={nightShops?.monthProceed.dataPast}
-          dynamic={nightShops?.monthProceed.dynamic}
-          isLoading={isNightShopsLoading}
-          tv={true}
-        />
+        {!isNightShopsLoading && nightShops?.monthProceed ? (
+          <LastMonthRevenuNS
+            dataCurrent={nightShops.monthProceed.dataCurrent}
+            dataPast={nightShops.monthProceed.dataPast}
+            dynamic={nightShops.monthProceed.dynamic}
+            isLoading={isNightShopsLoading}
+            tv={true}
+          />
+        ) : (
+          <LastMonthRevenuNSSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<MonthRevenueNSSkeleton />}>
-        <YearsRevenuNS
-          dataCurrent={nightShops?.yearsProceed.dataCurrent}
-          dataPast={nightShops?.yearsProceed.dataPast}
-          dynamic={nightShops?.yearsProceed.dynamic}
-          isLoading={isNightShopsLoading}
-          tv={true}
-        />
+        {!isNightShopsLoading && nightShops?.yearsProceed ? (
+          <YearsRevenuNS
+            dataCurrent={nightShops.yearsProceed.dataCurrent}
+            dataPast={nightShops.yearsProceed.dataPast}
+            dynamic={nightShops.yearsProceed.dynamic}
+            isLoading={isNightShopsLoading}
+            tv={true}
+          />
+        ) : (
+          <MonthRevenueNSSkeleton />
+        )}
       </Suspense>
     </div>
   );
@@ -299,33 +345,45 @@ export const TV = () => {
   const loyaltyAndImStats = (
     <div className="grid grid-rows-3 gap-2 h-full">
       <Suspense fallback={<LoyaltySkeleton />}>
-        <Loyalty
-          isLoading={isDashboardLoading}
-          appLoyalPercent={dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent}
-          checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
+          <Loyalty
+            isLoading={isDashboardLoading}
+            appLoyalPercent={dashboard.curentAppLoyal.data[0].appLoyalPercent}
+            checkLoyal={dashboard.curentAppLoyal.data[0].checkLoyal}
+            tv={true}
+          />
+        ) : (
+          <LoyaltySkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<ImRevenueSkeleton />}>
-        <ImRevenue
-          negative={dashboard?.currentCardIm.data?.[0]?.negative}
-          isLoading={isDashboardLoading}
-          proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
-          proceedsImYoY={dashboard?.currentCardIm.data?.[0]?.proceedsImYoY}
-          proceedsImYoYPercent={
-            dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
-          }
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.currentCardIm?.data?.[0] ? (
+          <ImRevenue
+            negative={dashboard.currentCardIm.data[0].negative}
+            isLoading={isDashboardLoading}
+            proceedsIm={dashboard.currentCardIm.data[0].proceedsIm}
+            proceedsImYoY={dashboard.currentCardIm.data[0].proceedsImYoY}
+            proceedsImYoYPercent={
+              dashboard.currentCardIm.data[0].proceedsImYoYPercent
+            }
+            tv={true}
+          />
+        ) : (
+          <ImRevenueSkeleton />
+        )}
       </Suspense>
       <Suspense fallback={<LeaderImSalesSkeleton />}>
-        <LeaderImSales
-          isLoading={isDashboardLoading}
-          idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
-          proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
-          storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
-          tv={true}
-        />
+        {!isDashboardLoading && dashboard?.bestCardIm?.data?.[0] ? (
+          <LeaderImSales
+            isLoading={isDashboardLoading}
+            idStore={dashboard.bestCardIm.data[0].idStore}
+            proceedsIm={dashboard.bestCardIm.data[0].proceedsIm}
+            storeName={dashboard.bestCardIm.data[0].storeName}
+            tv={true}
+          />
+        ) : (
+          <LeaderImSalesSkeleton />
+        )}
       </Suspense>
     </div>
   );
@@ -339,18 +397,26 @@ export const TV = () => {
         <Slider
           components={[
             <Suspense fallback={<WeeklyRevenueSkeleton />}>
-              <WeeklyRevenue
-                data={dashboard?.salesSevenDays}
-                isLoading={isDashboardLoading}
-                tv={true}
-              />
+              {!isDashboardLoading && dashboard?.salesSevenDays ? (
+                <WeeklyRevenue
+                  data={dashboard.salesSevenDays}
+                  isLoading={isDashboardLoading}
+                  tv={true}
+                />
+              ) : (
+                <WeeklyRevenueSkeleton />
+              )}
             </Suspense>,
             <Suspense fallback={<HoursRevenueSkeleton />}>
-              <HoursRevenue
-                isLoading={isDashboardLoading}
-                data={dashboard?.salesHours?.data?.graph}
-                tv={true}
-              />
+              {!isDashboardLoading && dashboard?.salesHours?.data?.graph ? (
+                <HoursRevenue
+                  isLoading={isDashboardLoading}
+                  data={dashboard.salesHours.data.graph}
+                  tv={true}
+                />
+              ) : (
+                <HoursRevenueSkeleton />
+              )}
             </Suspense>,
           ]}
         />
@@ -376,11 +442,15 @@ export const TV = () => {
         </div>
         <div>
           <Suspense fallback={<ChannelRevenueSkeleton />}>
-            <ChannelRevenue
-              isLoading={isDashboardLoading}
-              data={dashboard?.salesChannel}
-              tv={true}
-            />
+            {!isDashboardLoading && dashboard?.salesChannel ? (
+              <ChannelRevenue
+                isLoading={isDashboardLoading}
+                data={dashboard.salesChannel}
+                tv={true}
+              />
+            ) : (
+              <ChannelRevenueSkeleton />
+            )}
           </Suspense>
         </div>
 
@@ -389,75 +459,95 @@ export const TV = () => {
           indexClass={{ class: "border-0 bg-inherit py-0 *:px-0", index: 3 }}
           components={[
             <Suspense fallback={<RevenuePerMonthNightSkeleton />}>
-              <RevenuePerMonthNight
-                isLoading={isNightShopsLoading}
-                data={nightShops?.proceedPerMonth}
-                tv={true}
-              />
+              {!isNightShopsLoading && nightShops?.proceedPerMonth ? (
+                <RevenuePerMonthNight
+                  isLoading={isNightShopsLoading}
+                  data={nightShops.proceedPerMonth}
+                  tv={true}
+                />
+              ) : (
+                <RevenuePerMonthNightSkeleton />
+              )}
             </Suspense>,
             <List
               title="Анти топ ночных магазинов (по выручке)"
               className="border-0 p-0"
               isLoading={isNightShopsLoading}
-              options={nightShops?.antiTopstoreProceed.map((group) => ({
-                name: group.storeName,
-                price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
-              }))}
+              options={
+                nightShops?.antiTopstoreProceed?.map((group) => ({
+                  name: group.storeName,
+                  price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
+                })) || []
+              }
               tv={true}
             />,
             <List
               title="Топ ночных магазинов (по выручке)"
               className="border-0 p-0"
               isLoading={isNightShopsLoading}
-              options={nightShops?.topStoreProceed.map((group) => ({
-                name: group.storeName,
-                price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
-              }))}
+              options={
+                nightShops?.topStoreProceed?.map((group) => ({
+                  name: group.storeName,
+                  price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
+                })) || []
+              }
               tv={true}
             />,
             nightShopsStats,
             <Suspense fallback={<CountNSRegionSkeleton />}>
-              <CountNSRegion
-                data={nightShops?.countStoreRegion}
-                isLoading={isNightShopsLoading}
-                tv={true}
-              />
+              {!isNightShopsLoading && nightShops?.countStoreRegion ? (
+                <CountNSRegion
+                  data={nightShops.countStoreRegion}
+                  isLoading={isNightShopsLoading}
+                  tv={true}
+                />
+              ) : (
+                <CountNSRegionSkeleton />
+              )}
             </Suspense>,
           ]}
         />
 
         <Suspense fallback={<TopWriteOffSkeleton />}>
-          <WriteoffsLeaders
-            data={dashboard?.leaderWriteOffs}
-            isLoading={isDashboardLoading}
-            tv={true}
-          />
+          {!isDashboardLoading && dashboard?.leaderWriteOffs ? (
+            <WriteoffsLeaders
+              data={dashboard.leaderWriteOffs}
+              isLoading={isDashboardLoading}
+              tv={true}
+            />
+          ) : (
+            <TopWriteOffSkeleton />
+          )}
         </Suspense>
         {session?.role !== ROLES.OFFICE_MM && loyaltyAndImStats}
 
         {session?.role !== ROLES.OFFICE_MM && (
           <Suspense fallback={<PlanPercentSkeleton />}>
-            <PlanPercent
-              isLoading={isDashboardLoading}
-              planAvgCheckForecastPercent={
-                dashboard?.cardOneExe.data?.[0]?.planAvgCheckForecastPercent
-              }
-              planCheckForecastPercent={
-                dashboard?.cardOneExe.data?.[0]?.planCheckForecastPercent
-              }
-              planProceedsForecastPercent={
-                dashboard?.cardOneExe.data?.[0]?.planProceedsForecastPercent
-              }
-              planProceedsQcForecastPercent={
-                dashboard?.cardOneExe.data?.[0]
-                  ?.planProceedsQcForecastPercent || null
-              }
-              planShareOfPaymentsQcForecastPercent={
-                dashboard?.cardOneExe.data?.[0]
-                  ?.planShareOfPaymentsQcForecastPercent || null
-              }
-              tv={true}
-            />
+            {!isDashboardLoading && dashboard?.cardOneExe?.data?.[0] ? (
+              <PlanPercent
+                isLoading={isDashboardLoading}
+                planAvgCheckForecastPercent={
+                  dashboard.cardOneExe.data[0].planAvgCheckForecastPercent
+                }
+                planCheckForecastPercent={
+                  dashboard.cardOneExe.data[0].planCheckForecastPercent
+                }
+                planProceedsForecastPercent={
+                  dashboard.cardOneExe.data[0].planProceedsForecastPercent
+                }
+                planProceedsQcForecastPercent={
+                  dashboard.cardOneExe.data[0].planProceedsQcForecastPercent ||
+                  null
+                }
+                planShareOfPaymentsQcForecastPercent={
+                  dashboard.cardOneExe.data[0]
+                    .planShareOfPaymentsQcForecastPercent || null
+                }
+                tv={true}
+              />
+            ) : (
+              <PlanPercentSkeleton />
+            )}
           </Suspense>
         )}
         {/*<Suspense fallback={<TopWriteOffSkeleton />}>
@@ -468,11 +558,15 @@ export const TV = () => {
         </Suspense>*/}
 
         <Suspense fallback={<AntiLoyalTopSkeleton />}>
-          <AntiLoyalTop
-            isLoading={isDashboardLoading}
-            data={dashboard?.antitopLoyalApp.data as any}
-            tv={true}
-          />
+          {!isDashboardLoading && dashboard?.antitopLoyalApp?.data ? (
+            <AntiLoyalTop
+              isLoading={isDashboardLoading}
+              data={dashboard.antitopLoyalApp.data as any}
+              tv={true}
+            />
+          ) : (
+            <AntiLoyalTopSkeleton />
+          )}
         </Suspense>
       </div>
     </div>
