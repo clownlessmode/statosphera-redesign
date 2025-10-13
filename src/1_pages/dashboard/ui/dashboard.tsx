@@ -1,5 +1,5 @@
 import { Header } from "@widgets/header";
-import { useDashboard } from "../api/controller";
+import { useDashboardData } from "../api/controller";
 import { lazy, Suspense, useMemo, ReactNode } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import {
@@ -103,7 +103,7 @@ const TodayCheck = lazy(
 const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 const Dashboard = () => {
-  const { dashboard, isDashboardLoading } = useDashboard();
+  const { dashboard, isDashboardLoading } = useDashboardData();
   const { session } = useSession();
   const { settings: effectsSettings } = useEffectsSettings();
 
@@ -170,21 +170,29 @@ const Dashboard = () => {
   // Создаем маппинг виджетов
   const widgetsMap: Record<string, ReactNode> = {
     weeklyRevenue: (
-      <Suspense fallback={<WeeklyRevenueSkeleton />}>
-        <WeeklyRevenue
-          data={dashboard?.salesSevenDays}
-          isLoading={isDashboardLoading}
-        />
-      </Suspense>
+      <div data-widget="weeklyRevenue">
+        <Suspense fallback={<WeeklyRevenueSkeleton />}>
+          <WeeklyRevenue
+            data={dashboard?.salesSevenDays}
+            isLoading={isDashboardLoading}
+          />
+        </Suspense>
+      </div>
     ),
-    nps: <Nps />,
+    nps: (
+      <div data-widget="nps">
+        <Nps />
+      </div>
+    ),
     channelRevenue: (
-      <Suspense fallback={<ChannelRevenueSkeleton />}>
-        <ChannelRevenue
-          isLoading={isDashboardLoading}
-          data={dashboard?.salesChannel}
-        />
-      </Suspense>
+      <div data-widget="channelRevenue">
+        <Suspense fallback={<ChannelRevenueSkeleton />}>
+          <ChannelRevenue
+            isLoading={isDashboardLoading}
+            data={dashboard?.salesChannel}
+          />
+        </Suspense>
+      </div>
     ),
     stats: (
       <div className="flex flex-col gap-2 h-fit ">
@@ -421,7 +429,9 @@ const Dashboard = () => {
       onDragEnd={handleDragEnd}
     >
       <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
-        <Header title="Главная" />
+        <div className="dashboard-header">
+          <Header title="Главная" />
+        </div>
         {/* Анимации для пользователей с доступом к эффектам */}
         {userHasEffectsAccess && (
           <>

@@ -1,6 +1,6 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
-import { GetWeeklyRevenueResponse } from "./types";
+import { GetWeeklyRevenueResponse, SalesDayResponse } from "./types";
 import { DashboardService } from "./service";
 
 export const useDashboard = () => {
@@ -15,5 +15,51 @@ export const useDashboard = () => {
     dashboard: dashboard.data,
     isDashboardLoading: dashboard.isLoading,
     isDashboardFetching: dashboard.isFetching,
+  };
+};
+
+export const useSalesDay = () => {
+  const salesDay = useQuery<SalesDayResponse>({
+    queryKey: ["salesDay"],
+    queryFn: () => DashboardService.getSalesDayData(),
+    refetchInterval: 10000, // Ревалидация каждую минуту (60 секунд)
+    placeholderData: keepPreviousData, // Показывать старые данные во время обновления
+  });
+
+  return {
+    salesDay: salesDay.data,
+    isSalesDayLoading: salesDay.isLoading,
+    isSalesDayFetching: salesDay.isFetching,
+  };
+};
+
+export const useDashboardData = () => {
+  const dashboardQuery = useQuery<GetWeeklyRevenueResponse>({
+    queryKey: ["dashboard"],
+    queryFn: () => DashboardService.getAllData(),
+    refetchInterval: 10000,
+    placeholderData: keepPreviousData,
+  });
+
+  const salesDayQuery = useQuery<SalesDayResponse>({
+    queryKey: ["salesDay"],
+    queryFn: () => DashboardService.getSalesDayData(),
+    refetchInterval: 10000,
+    placeholderData: keepPreviousData,
+  });
+
+  // Объединяем данные, приоритет отдаем salesDay для salesHours
+  const combinedData =
+    dashboardQuery.data && salesDayQuery.data
+      ? {
+          ...dashboardQuery.data,
+          salesHours: salesDayQuery.data.salesHours, // Используем данные из sales-day API
+        }
+      : dashboardQuery.data;
+
+  return {
+    dashboard: combinedData,
+    isDashboardLoading: dashboardQuery.isLoading || salesDayQuery.isLoading,
+    isDashboardFetching: dashboardQuery.isFetching || salesDayQuery.isFetching,
   };
 };

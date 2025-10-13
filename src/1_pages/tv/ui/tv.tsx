@@ -1,5 +1,5 @@
 import { useDashboard } from "../../dashboard/api/controller";
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
 import MarkupSkeleton from "@widgets/dashboard/markup/ui/markup-skeleton";
@@ -33,6 +33,8 @@ import RevenuePerMonthNightSkeleton from "@widgets/tv/revenue-per-month-ns/reven
 import CountNSRegionSkeleton from "@widgets/tv/count-ns-region/count-ns-region-skeleton";
 import MonthRevenueNSSkeleton from "@widgets/tv/month-revenue-ns/month-revenue-ns-skeleton";
 import LastMonthRevenuNSSkeleton from "@widgets/tv/last-month-revenu/last-month-revenu-skeleton";
+import { useTheme } from "@app/providers/theme-provider";
+import { FULL_THEME_PRESETS } from "@shared/constants/theme-presets";
 
 const CountNSRegion = lazy(
   () => import("@widgets/tv/count-ns-region/count-ns-region"),
@@ -111,6 +113,24 @@ export const TV = () => {
   const { dashboard, isDashboardLoading } = useDashboard();
   const { nightShops, isNightShopsLoading } = useNightShops();
   const { session } = useSession();
+  const { applyFullPreset, setCustomThemeMode, setTheme } = useTheme();
+
+  // Принудительно применяем мягкую светлую тему используя тот же механизм что и в настройках
+  React.useEffect(() => {
+    const applySoftTheme = async () => {
+      const softPreset = FULL_THEME_PRESETS.find((p) => p.id === "soft");
+      if (softPreset) {
+        // Устанавливаем светлый режим для кастомной темы
+        setCustomThemeMode("light");
+        // Переключаем на кастомную тему
+        setTheme("custom");
+        // Применяем пресет
+        await applyFullPreset(softPreset);
+      }
+    };
+
+    applySoftTheme();
+  }, [applyFullPreset, setCustomThemeMode, setTheme]);
   return (
     <div className="bg-muted min-h-screen w-full flex flex-col">
       <div
