@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { TopActionsResponse } from "../../config";
 import BarHorizontalChart from "@shared/ui/graphs/bar-horizontal-chart/bar-horizontal-chart";
 import AntiLoyalTopSkeleton from "@widgets/dashboard/anti-loyal-top/anti-loyal-top-skeleton";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 
 export const TopActions = ({
   graph,
@@ -10,6 +11,8 @@ export const TopActions = ({
   graph: TopActionsResponse[];
   isLoading: boolean;
 }) => {
+  const colors = useGraphColors();
+
   return (
     <>
       {!isLoading && graph ? (
@@ -22,7 +25,7 @@ export const TopActions = ({
               unit={"₽"}
               labels={graph.map((item) => item.discountType)}
               values={graph.map((item) => item.discount)}
-              itemColors={graph.map(() => "#e50046")}
+              itemColors={graph.map(() => colors.series[0])}
               formatter={(params: any) => {
                 const name = graph[params.dataIndex].discountType;
                 return `${name}`;

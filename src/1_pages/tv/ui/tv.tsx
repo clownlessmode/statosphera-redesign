@@ -131,6 +131,205 @@ export const TV = () => {
 
     applySoftTheme();
   }, [applyFullPreset, setCustomThemeMode, setTheme]);
+
+  // Группа статистики за текущий месяц
+  const currentMonthStats = (
+    <div className="grid grid-rows-3 gap-2 h-full">
+      <Suspense fallback={<CurrentRevenueSkeleton />}>
+        <CurrentRevenue
+          isLoading={isDashboardLoading}
+          proceeds={dashboard?.curentMonth.data?.[0]?.proceeds}
+          proceedsYoY={dashboard?.curentMonth.data?.[0]?.proceedsYoY}
+          proceedsYoYPercent={
+            dashboard?.curentMonth.data?.[0]?.proceedsYoYPercent
+          }
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<CurrentCheckSkeleton />}>
+        <CurrentCheck
+          negative={dashboard?.curentCheck.data?.[0]?.negative}
+          isLoading={isDashboardLoading}
+          check={dashboard?.curentCheck.data?.[0]?.check}
+          checkYoY={dashboard?.curentCheck.data?.[0]?.checkYoY}
+          checkYoYPercent={dashboard?.curentCheck.data?.[0]?.checkYoYPercent}
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<AverageCheckSkeleton />}>
+        <AverageCheck
+          negative={dashboard?.curentAvgCheck.data?.[0]?.negative}
+          isLoading={isDashboardLoading}
+          avgCheck={dashboard?.curentAvgCheck.data?.[0]?.avgCheck}
+          avgCheckYoY={dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoY}
+          avgCheckYoYPercent={
+            dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoYPercent
+          }
+          tv={true}
+        />
+      </Suspense>
+    </div>
+  );
+
+  // Группа статистики за сегодня
+  const todayStats = (
+    <div className="grid grid-rows-2 gap-2 h-full">
+      <Suspense fallback={<TodayRevenueSkeleton />}>
+        <TodayRevenue
+          isLoading={isDashboardLoading}
+          negative={dashboard?.salesHours?.data?.card1?.negative}
+          proceedsTotal={dashboard?.salesHours?.data?.card1?.proceedsTotal}
+          proceedsWoYPercent={
+            dashboard?.salesHours?.data?.card1?.proceedsWoWPercent
+          }
+          weekAgoProceedsTotal={
+            dashboard?.salesHours?.data?.card1?.weekAgoProceedsTotal
+          }
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<TodayCheckSkeleton />}>
+        <TodayCheck
+          isLoading={isDashboardLoading}
+          negative={dashboard?.salesHours?.data?.card2?.negative}
+          proceedsTotal={dashboard?.salesHours?.data?.card2?.proceedsTotal}
+          proceedsWoYPercent={
+            dashboard?.salesHours?.data?.card2?.proceedsWoWPercent
+          }
+          weekAgoProceedsTotal={
+            dashboard?.salesHours?.data?.card2?.weekAgoProceedsTotal
+          }
+          tv={true}
+        />
+      </Suspense>
+    </div>
+  );
+
+  // Группа основных показателей
+  const mainStats = (
+    <div className="grid grid-rows-3 gap-2 h-full">
+      <div className="flex flex-row gap-2">
+        <Suspense fallback={<MarginSkeleton />}>
+          <Margin
+            isLoading={isDashboardLoading}
+            data={dashboard?.curentMarzha.data?.[0]?.marginPercent}
+            tv={true}
+          />
+        </Suspense>
+        <Suspense fallback={<MarkupSkeleton />}>
+          <Markup
+            isLoading={isDashboardLoading}
+            percent={dashboard?.curentMarkup.data?.[0]?.markupPercent}
+            proceeds={dashboard?.curentMarkup.data?.[0]?.profit}
+            tv={true}
+          />
+        </Suspense>
+      </div>
+      <Suspense fallback={<WriteOffIndicatorSkeleton />}>
+        <WriteOffIndicator
+          negative={dashboard?.curentWriteOff.data?.[0]?.negative}
+          isLoading={isDashboardLoading}
+          writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
+          writeOffPercent={dashboard?.curentWriteOff.data?.[0]?.writeOffPercent}
+          writeOffYoY={dashboard?.curentWriteOff.data?.[0]?.writeOffYoY}
+          writeOffYoYPercent={
+            dashboard?.curentWriteOff.data?.[0]?.writeOffYoYPercent
+          }
+          tv={true}
+        />
+      </Suspense>
+      {session?.role !== ROLES.OFFICE_MM && (
+        <Suspense fallback={<WriteOffIndicatorSkeleton />}>
+          <WriteOffHouseholds
+            negative={dashboard?.curentHouseHold.data?.[0]?.negative}
+            isLoading={isDashboardLoading}
+            householdGoods={
+              dashboard?.curentHouseHold.data?.[0]?.householdGoods
+            }
+            householdGoodsPercent={
+              dashboard?.curentHouseHold.data?.[0]?.householdGoodsPercent
+            }
+            householdGoodsYoY={
+              dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoY
+            }
+            householdGoodsYoYPercent={
+              dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
+            }
+            tv={true}
+          />
+        </Suspense>
+      )}
+    </div>
+  );
+
+  // Группа статистики ночных магазинов
+  const nightShopsStats = (
+    <div className="grid grid-rows-3 gap-2 h-full">
+      <Suspense fallback={<MonthRevenueNSSkeleton />}>
+        <MonthRevenueNS
+          dataCurrent={nightShops?.monthProceed.dataCurrent}
+          dataPast={nightShops?.monthProceed.dataPast}
+          dynamic={nightShops?.monthProceed.dynamic}
+          isLoading={isNightShopsLoading}
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<LastMonthRevenuNSSkeleton />}>
+        <LastMonthRevenuNS
+          dataCurrent={nightShops?.monthProceed.dataCurrent}
+          dataPast={nightShops?.monthProceed.dataPast}
+          dynamic={nightShops?.monthProceed.dynamic}
+          isLoading={isNightShopsLoading}
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<MonthRevenueNSSkeleton />}>
+        <YearsRevenuNS
+          dataCurrent={nightShops?.yearsProceed.dataCurrent}
+          dataPast={nightShops?.yearsProceed.dataPast}
+          dynamic={nightShops?.yearsProceed.dynamic}
+          isLoading={isNightShopsLoading}
+          tv={true}
+        />
+      </Suspense>
+    </div>
+  );
+
+  // Группа лояльности и ИМ
+  const loyaltyAndImStats = (
+    <div className="grid grid-rows-3 gap-2 h-full">
+      <Suspense fallback={<LoyaltySkeleton />}>
+        <Loyalty
+          isLoading={isDashboardLoading}
+          appLoyalPercent={dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent}
+          checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<ImRevenueSkeleton />}>
+        <ImRevenue
+          negative={dashboard?.currentCardIm.data?.[0]?.negative}
+          isLoading={isDashboardLoading}
+          proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
+          proceedsImYoY={dashboard?.currentCardIm.data?.[0]?.proceedsImYoY}
+          proceedsImYoYPercent={
+            dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
+          }
+          tv={true}
+        />
+      </Suspense>
+      <Suspense fallback={<LeaderImSalesSkeleton />}>
+        <LeaderImSales
+          isLoading={isDashboardLoading}
+          idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
+          proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
+          storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
+          tv={true}
+        />
+      </Suspense>
+    </div>
+  );
+
   return (
     <div className="bg-muted min-h-screen w-full flex flex-col">
       <div
@@ -149,7 +348,7 @@ export const TV = () => {
             <Suspense fallback={<HoursRevenueSkeleton />}>
               <HoursRevenue
                 isLoading={isDashboardLoading}
-                data={dashboard?.salesHours.data?.graph}
+                data={dashboard?.salesHours?.data?.graph}
                 tv={true}
               />
             </Suspense>,
@@ -172,81 +371,7 @@ export const TV = () => {
         <div className="row-start-2 flex flex-col gap-2 h-full">
           <Slider
             className="border-0 bg-inherit py-0 *:px-0"
-            components={[
-              <div className="grid grid-rows-3 gap-2 h-full">
-                <Suspense fallback={<CurrentRevenueSkeleton />}>
-                  <CurrentRevenue
-                    isLoading={isDashboardLoading}
-                    proceeds={dashboard?.curentMonth.data?.[0]?.proceeds}
-                    proceedsYoY={dashboard?.curentMonth.data?.[0]?.proceedsYoY}
-                    proceedsYoYPercent={
-                      dashboard?.curentMonth.data?.[0]?.proceedsYoYPercent
-                    }
-                    tv={true}
-                  />
-                </Suspense>
-                <Suspense fallback={<CurrentCheckSkeleton />}>
-                  <CurrentCheck
-                    negative={dashboard?.curentCheck.data?.[0]?.negative}
-                    isLoading={isDashboardLoading}
-                    check={dashboard?.curentCheck.data?.[0]?.check}
-                    checkYoY={dashboard?.curentCheck.data?.[0]?.checkYoY}
-                    checkYoYPercent={
-                      dashboard?.curentCheck.data?.[0]?.checkYoYPercent
-                    }
-                    tv={true}
-                  />
-                </Suspense>
-                <Suspense fallback={<AverageCheckSkeleton />}>
-                  <AverageCheck
-                    negative={dashboard?.curentAvgCheck.data?.[0]?.negative}
-                    isLoading={isDashboardLoading}
-                    avgCheck={dashboard?.curentAvgCheck.data?.[0]?.avgCheck}
-                    avgCheckYoY={
-                      dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoY
-                    }
-                    avgCheckYoYPercent={
-                      dashboard?.curentAvgCheck.data?.[0]?.avgCheckYoYPercent
-                    }
-                    tv={true}
-                  />
-                </Suspense>
-              </div>,
-              <div className="grid grid-rows-2 gap-2 h-full">
-                <Suspense fallback={<TodayRevenueSkeleton />}>
-                  <TodayRevenue
-                    isLoading={isDashboardLoading}
-                    negative={dashboard?.salesHours.data?.card1.negative}
-                    proceedsTotal={
-                      dashboard?.salesHours.data?.card1.proceedsTotal
-                    }
-                    proceedsWoYPercent={
-                      dashboard?.salesHours.data?.card1.proceedsWoWPercent
-                    }
-                    weekAgoProceedsTotal={
-                      dashboard?.salesHours.data?.card1.weekAgoProceedsTotal
-                    }
-                    tv={true}
-                  />
-                </Suspense>
-                <Suspense fallback={<TodayCheckSkeleton />}>
-                  <TodayCheck
-                    isLoading={isDashboardLoading}
-                    negative={dashboard?.salesHours.data?.card2.negative}
-                    proceedsTotal={
-                      dashboard?.salesHours.data?.card2.proceedsTotal
-                    }
-                    proceedsWoYPercent={
-                      dashboard?.salesHours.data?.card2.proceedsWoWPercent
-                    }
-                    weekAgoProceedsTotal={
-                      dashboard?.salesHours.data?.card2.weekAgoProceedsTotal
-                    }
-                    tv={true}
-                  />
-                </Suspense>
-              </div>,
-            ]}
+            components={[currentMonthStats, todayStats]}
           />
         </div>
         <div>
@@ -259,72 +384,7 @@ export const TV = () => {
           </Suspense>
         </div>
 
-        <div className="grid grid-rows-3 gap-2 h-full">
-          <div className="flex flex-row gap-2">
-            <Suspense fallback={<MarginSkeleton />}>
-              <Margin
-                isLoading={isDashboardLoading}
-                data={dashboard?.curentMarzha.data?.[0]?.marginPercent}
-                tv={true}
-              />
-            </Suspense>
-            <Suspense fallback={<MarkupSkeleton />}>
-              <Markup
-                isLoading={isDashboardLoading}
-                percent={dashboard?.curentMarkup.data?.[0]?.markupPercent}
-                proceeds={dashboard?.curentMarkup.data?.[0]?.profit}
-                tv={true}
-              />
-            </Suspense>
-          </div>
-          <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-            <WriteOffIndicator
-              negative={dashboard?.curentWriteOff.data?.[0]?.negative}
-              isLoading={isDashboardLoading}
-              writeOff={dashboard?.curentWriteOff.data?.[0]?.writeOff}
-              writeOffPercent={
-                dashboard?.curentWriteOff.data?.[0]?.writeOffPercent
-              }
-              writeOffYoY={dashboard?.curentWriteOff.data?.[0]?.writeOffYoY}
-              writeOffYoYPercent={
-                dashboard?.curentWriteOff.data?.[0]?.writeOffYoYPercent
-              }
-              tv={true}
-            />
-          </Suspense>
-          {/*session?.role == ROLES.OFFICE_MM && (
-            <Suspense fallback={<LoyaltySkeleton />}>
-              <Loyalty
-                isLoading={isDashboardLoading}
-                appLoyalPercent={
-                  dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
-                }
-                checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
-              />
-            </Suspense>
-          )*/}
-          {session?.role !== ROLES.OFFICE_MM && (
-            <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-              <WriteOffHouseholds
-                negative={dashboard?.curentHouseHold.data?.[0]?.negative}
-                isLoading={isDashboardLoading}
-                householdGoods={
-                  dashboard?.curentHouseHold.data?.[0]?.householdGoods
-                }
-                householdGoodsPercent={
-                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsPercent
-                }
-                householdGoodsYoY={
-                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoY
-                }
-                householdGoodsYoYPercent={
-                  dashboard?.curentHouseHold.data?.[0]?.householdGoodsYoYPercent
-                }
-                tv={true}
-              />
-            </Suspense>
-          )}
-        </div>
+        {mainStats}
         <Slider
           indexClass={{ class: "border-0 bg-inherit py-0 *:px-0", index: 3 }}
           components={[
@@ -355,35 +415,7 @@ export const TV = () => {
               }))}
               tv={true}
             />,
-            <div className="grid grid-rows-3 gap-2 h-full">
-              <Suspense fallback={<MonthRevenueNSSkeleton />}>
-                <MonthRevenueNS
-                  dataCurrent={nightShops?.monthProceed.dataCurrent}
-                  dataPast={nightShops?.monthProceed.dataPast}
-                  dynamic={nightShops?.monthProceed.dynamic}
-                  isLoading={isNightShopsLoading}
-                  tv={true}
-                />
-              </Suspense>
-              <Suspense fallback={<LastMonthRevenuNSSkeleton />}>
-                <LastMonthRevenuNS
-                  dataCurrent={nightShops?.monthProceed.dataCurrent}
-                  dataPast={nightShops?.monthProceed.dataPast}
-                  dynamic={nightShops?.monthProceed.dynamic}
-                  isLoading={isNightShopsLoading}
-                  tv={true}
-                />
-              </Suspense>
-              <Suspense fallback={<MonthRevenueNSSkeleton />}>
-                <YearsRevenuNS
-                  dataCurrent={nightShops?.yearsProceed.dataCurrent}
-                  dataPast={nightShops?.yearsProceed.dataPast}
-                  dynamic={nightShops?.yearsProceed.dynamic}
-                  isLoading={isNightShopsLoading}
-                  tv={true}
-                />
-              </Suspense>
-            </div>,
+            nightShopsStats,
             <Suspense fallback={<CountNSRegionSkeleton />}>
               <CountNSRegion
                 data={nightShops?.countStoreRegion}
@@ -401,43 +433,7 @@ export const TV = () => {
             tv={true}
           />
         </Suspense>
-        {session?.role !== ROLES.OFFICE_MM && (
-          <div className={"grid grid-rows-3 gap-2 h-full"}>
-            <Suspense fallback={<LoyaltySkeleton />}>
-              <Loyalty
-                isLoading={isDashboardLoading}
-                appLoyalPercent={
-                  dashboard?.curentAppLoyal.data?.[0]?.appLoyalPercent
-                }
-                checkLoyal={dashboard?.curentAppLoyal.data?.[0]?.checkLoyal}
-                tv={true}
-              />
-            </Suspense>
-            <Suspense fallback={<ImRevenueSkeleton />}>
-              <ImRevenue
-                negative={dashboard?.currentCardIm.data?.[0]?.negative}
-                isLoading={isDashboardLoading}
-                proceedsIm={dashboard?.currentCardIm.data?.[0]?.proceedsIm}
-                proceedsImYoY={
-                  dashboard?.currentCardIm.data?.[0]?.proceedsImYoY
-                }
-                proceedsImYoYPercent={
-                  dashboard?.currentCardIm.data?.[0]?.proceedsImYoYPercent
-                }
-                tv={true}
-              />
-            </Suspense>
-            <Suspense fallback={<LeaderImSalesSkeleton />}>
-              <LeaderImSales
-                isLoading={isDashboardLoading}
-                idStore={dashboard?.bestCardIm.data?.[0]?.idStore}
-                proceedsIm={dashboard?.bestCardIm.data?.[0]?.proceedsIm}
-                storeName={dashboard?.bestCardIm.data?.[0]?.storeName}
-                tv={true}
-              />
-            </Suspense>
-          </div>
-        )}
+        {session?.role !== ROLES.OFFICE_MM && loyaltyAndImStats}
 
         {session?.role !== ROLES.OFFICE_MM && (
           <Suspense fallback={<PlanPercentSkeleton />}>
