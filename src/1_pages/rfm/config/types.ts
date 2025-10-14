@@ -18,12 +18,7 @@ export interface FirstCalculationResponse {
 }
 
 export interface SecondCalculationResponse {
-  data: {
-    name: number;
-    value: number;
-    groupId: string;
-    childGroupId: string;
-  }[];
+  data: [number | string, number, string, string | null][][];
 }
 
 export interface ThirdCalculationResponse {

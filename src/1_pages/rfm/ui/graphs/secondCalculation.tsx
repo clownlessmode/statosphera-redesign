@@ -12,7 +12,6 @@
 //  isLoading: boolean;
 //}) => {
 //  const isSafari = useSafari();
-//
 //  return (
 //    <>
 //      {isLoading ? (
@@ -21,7 +20,7 @@
 //        <Card className="h-[400px]">
 //          <div style={{ height: 400, width: "100%" }}>
 //            <BarMultiDrilldownChart
-//              series={graph.data}
+//              allSeries={graph}
 //              grid={{
 //                bottom: isSafari ? 50 : 20,
 //              }}
@@ -30,13 +29,14 @@
 //                  return params
 //                    .map(
 //                      (item) =>
-//                        `${item.marker}${item.seriesName}: ${item.value}`
+//                        `Значение: ${item.value[0]}<br/>
+//                      Выручка: ${item.value[1]}`,
 //                    )
 //                    .join("<br/>");
 //                }
 //                return `${params.value}`;
 //              }}
-//              title={"Количества чеков, выручки и прибыли"}
+//              title={"Количество чеков у сегментов"}
 //            />
 //          </div>
 //        </Card>

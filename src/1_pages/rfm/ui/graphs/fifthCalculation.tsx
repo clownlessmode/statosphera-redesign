@@ -24,7 +24,7 @@ export const FifthCalculation = ({
         <Card className="h-[600px] col-span-2 gap-0">
           <CardHeader className="flex flex-row justify-center items-center gap-1">
             <CardTitle className="text-center text-lg font-semibold">
-              Treemap самых популярных групп продуктов по
+              Treemap самых популярных акций по
             </CardTitle>
             <Button
               variant="outline"
@@ -45,9 +45,11 @@ export const FifthCalculation = ({
               }}
               formatter={(params) => {
                 return `
-                  ${params.marker}Cегмент: ${params.name}<br />
-                  ${params.marker}Группа: ${params.name}<br />
-                  ${params.marker}Прибыль: ${Math.round(params.value)}<br />
+                  ${params.marker}Cегмент: ${params.data.rfmName}<br />
+                  ${params.marker}Группа: ${params.name.replace(/\[[^\]]*\]/g, "")}<br />
+                  ${params.marker}Прибыль: ${Math.round(params.value)
+                    .toLocaleString()
+                    .replace(/,/g, " ")}<br />
                 `;
               }}
             />

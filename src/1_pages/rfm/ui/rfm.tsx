@@ -29,11 +29,10 @@ import { Segments } from "./cards";
 import Spinner from "@shared/ui/spinner";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
-import { FirstCalculation } from "./cards/firstCalculation";
-import { ThirdCalculation } from "./cards/thirdCalculation";
-//import { SecondCalculation } from "./cards/secondCalculation";
-import { FifthCalculation } from "./cards/fifthCalculation";
-//import { SecondCalculation } from "./cards/secondCalculation";
+import { FirstCalculation } from "./graphs/firstCalculation";
+import { ThirdCalculation } from "./graphs/thirdCalculation";
+//import { SecondCalculation } from "./graphs/secondCalculation";
+import { FifthCalculation } from "./graphs/fifthCalculation";
 
 export const Rfm = () => {
   const isMobile = useIsMobile();
@@ -64,10 +63,9 @@ export const Rfm = () => {
       series: [],
       text: [],
     });
-  //const [secondCalculation, setSecondCalculation] =
-  //  useState<SecondCalculationResponse>({
-  //    data: [],
-  //  });
+  //const [secondCalculation, setSecondCalculation] = useState<
+  //  SecondCalculationResponse[]
+  //>([]);
   //const [secondCalculationReverse, setSecondCalculationReverse] =
   //  useState<SecondCalculationResponse>({
   //    data: [],
@@ -198,7 +196,7 @@ export const Rfm = () => {
       //getSecondCalculation(mock.data).then((data) => {
       //  setSecondCalculation(data);
       //});
-      //
+
       //getSecondCalculationReverse(mock.data).then((data) => {
       //  setSecondCalculationReverse(data);
       //});
@@ -218,7 +216,7 @@ export const Rfm = () => {
       //getSixthCalculation(mock.data).then((data) => {
       //  setSixthCalculation(data);
       //});
-      //
+
       //getSeventhCalculation(mock.data).then((data) => {
       //  setSeventhCalculation(data);
       //});

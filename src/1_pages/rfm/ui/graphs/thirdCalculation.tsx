@@ -45,9 +45,11 @@ export const ThirdCalculation = ({
               }}
               formatter={(params) => {
                 return `
-                  ${params.marker}Cегмент: ${params.name}<br />
+                  ${params.marker}Cегмент: ${params.data.rfmName}<br />
                   ${params.marker}Группа: ${params.name}<br />
-                  ${params.marker}Прибыль: ${Math.round(params.value)}<br />
+                  ${params.marker}Прибыль: ${Math.round(params.value)
+                    .toLocaleString()
+                    .replace(/,/g, " ")}<br />
                 `;
               }}
             />

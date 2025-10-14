@@ -19,7 +19,7 @@ export const FirstCalculation = ({
         <StackedLineSkeleton className="h-[400px]" />
       ) : (
         <Card className="h-[400px]">
-          <div style={{ height: 300, width: "100%" }}>
+          <div style={{ height: 400, width: "100%" }}>
             <BarChartMultiSeries
               xAxisData={graph.categories}
               series={graph.series.map((item) => ({
@@ -43,11 +43,11 @@ export const FirstCalculation = ({
               title={"Количества чеков, выручки и прибыли"}
             />
           </div>
-          <div className="flex flex-col px-4">
+          {/*<div className="flex flex-col px-4">
             {graph.text.map((text) => (
               <p>{text}</p>
             ))}
-          </div>
+          </div>*/}
         </Card>
       )}
     </>

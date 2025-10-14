@@ -335,7 +335,7 @@ export const Segments = ({
                         </span>
                         <span className="mt-1">
                           {segment.bonuses[0]
-                            ? segment.bonuses[0].name
+                            ? segment.bonuses[0].name.replace(/\[[^\]]*\]/g, "")
                             : "Нет данных"}{" "}
                           ({segment.bonuses[0] ? segment.bonuses[0].percent : 0}
                           %)

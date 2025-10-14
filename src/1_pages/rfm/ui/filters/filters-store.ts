@@ -47,7 +47,6 @@ export const useRfmFiltersStore = create<RfmFiltersState>((set, get) => ({
   resetAll: () => set(initialFilters),
 
   getApiPayload: () => {
-    // приводим get() к SalesDynamicsFilters
     const { filters } = get();
     return filters;
   },
