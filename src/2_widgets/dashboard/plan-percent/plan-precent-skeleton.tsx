@@ -1,10 +1,11 @@
+import { cn } from "@shared/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import RadarChartSkeleton from "@shared/ui/graphs/radar-chart/radar-chart-skeleton";
 import { Skeleton } from "@shared/ui/skeleton";
 
-const PlanPercentSkeleton = () => {
+const PlanPercentSkeleton = ({ tv }: { tv?: boolean }) => {
   return (
-    <Card className="w-full h-[400px] flex flex-col">
+    <Card className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}>
       <CardHeader>
         <CardTitle>
           <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
