@@ -40,7 +40,7 @@ export function BlockNoteDisplay({
                 return <br key={index} />;
               }
               return (
-                <p key={index} className="mb-2">
+                <p key={index} className="mb-2 last:mb-0">
                   {block.content?.map((item: any, itemIndex: number) => {
                     let textElement = <span key={itemIndex}>{item.text}</span>;
 
@@ -90,7 +90,7 @@ export function BlockNoteDisplay({
               return (
                 <HeadingComponent
                   key={index}
-                  className={`font-semibold mb-2 ${headingStyle}`}
+                  className={`font-semibold mb-2 last:mb-0 ${headingStyle}`}
                 >
                   {block.content?.map((item: any, itemIndex: number) => {
                     let textElement = <span key={itemIndex}>{item.text}</span>;
@@ -120,7 +120,10 @@ export function BlockNoteDisplay({
 
             case "bulletListItem":
               return (
-                <ul key={index} className="list-disc list-inside mb-2">
+                <ul
+                  key={index}
+                  className="list-disc list-inside mb-2 last:mb-0"
+                >
                   <li>
                     {block.content?.map((item: any, itemIndex: number) => {
                       let textElement = (
@@ -152,7 +155,10 @@ export function BlockNoteDisplay({
 
             case "numberedListItem":
               return (
-                <ol key={index} className="list-decimal list-inside mb-2">
+                <ol
+                  key={index}
+                  className="list-decimal list-inside mb-2 last:mb-0"
+                >
                   <li>
                     {block.content?.map((item: any, itemIndex: number) => {
                       let textElement = (
@@ -184,7 +190,7 @@ export function BlockNoteDisplay({
 
             case "checkListItem":
               return (
-                <div key={index} className="flex items-start mb-2">
+                <div key={index} className="flex items-start mb-2 last:mb-0">
                   <input
                     type="checkbox"
                     checked={block.props?.checked || false}
@@ -222,7 +228,7 @@ export function BlockNoteDisplay({
 
             default:
               return (
-                <div key={index} className="mb-2">
+                <div key={index} className="mb-2 last:mb-0">
                   {block.content?.map((item: any, itemIndex: number) => {
                     let textElement = <span key={itemIndex}>{item.text}</span>;
 
@@ -264,23 +270,31 @@ export function BlockNoteDisplay({
           <ReactMarkdown
             components={{
               // Кастомизируем компоненты для лучшего отображения
-              p: ({ children }) => <p className="mb-2">{children}</p>,
+              p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
               h1: ({ children }) => (
-                <h1 className="text-2xl font-bold mb-3">{children}</h1>
+                <h1 className="text-2xl font-bold mb-3 last:mb-0">
+                  {children}
+                </h1>
               ),
               h2: ({ children }) => (
-                <h2 className="text-xl font-bold mb-2">{children}</h2>
+                <h2 className="text-xl font-bold mb-2 last:mb-0">{children}</h2>
               ),
               h3: ({ children }) => (
-                <h3 className="text-lg font-bold mb-2">{children}</h3>
+                <h3 className="text-lg font-bold mb-2 last:mb-0">{children}</h3>
               ),
               ul: ({ children }) => (
-                <ul className="list-disc list-inside mb-2">{children}</ul>
+                <ul className="list-disc list-inside mb-2 last:mb-0">
+                  {children}
+                </ul>
               ),
               ol: ({ children }) => (
-                <ol className="list-decimal list-inside mb-2">{children}</ol>
+                <ol className="list-decimal list-inside mb-2 last:mb-0">
+                  {children}
+                </ol>
               ),
-              li: ({ children }) => <li className="mb-1">{children}</li>,
+              li: ({ children }) => (
+                <li className="mb-1 last:mb-0">{children}</li>
+              ),
               strong: ({ children }) => (
                 <strong className="font-semibold">{children}</strong>
               ),
@@ -291,12 +305,12 @@ export function BlockNoteDisplay({
                 </code>
               ),
               pre: ({ children }) => (
-                <pre className="bg-muted p-3 rounded-lg overflow-x-auto mb-2">
+                <pre className="bg-muted p-3 rounded-lg overflow-x-auto mb-2 last:mb-0">
                   {children}
                 </pre>
               ),
               blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-muted-foreground pl-4 italic mb-2">
+                <blockquote className="border-l-4 border-muted-foreground pl-4 italic mb-2 last:mb-0">
                   {children}
                 </blockquote>
               ),

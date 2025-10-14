@@ -20,17 +20,14 @@ const Lessons = () => {
 
   // Фильтруем тестовые уроки и обновляем прогресс из localStorage
   const visibleLessons = useMemo(() => {
-    console.log("🔄 Пересчитываем visibleLessons, progressData:", progressData);
-
+    console.log("📊 Загружаем страницу уроков...");
     return LESSONS_MOCK.filter((lesson) => !lesson.isTest).map((lesson) => {
       const progressPercentage = getProgressPercentage(lesson.id.toString());
       const completed = isLessonCompleted(lesson.id.toString());
 
-      console.log(`📊 Урок ${lesson.id} (${lesson.title}):`, {
-        progressPercentage,
-        completed,
-        progressData: progressData[lesson.id.toString()],
-      });
+      console.log(
+        `Урок "${lesson.title}": отображается ${progressPercentage}%`,
+      );
 
       return {
         ...lesson,
@@ -57,14 +54,20 @@ const Lessons = () => {
             lessonId: lesson.id.toString(),
             steps: tour.steps,
             onComplete: () => {
+              console.log("🚀 onComplete вызван в lessons.tsx!");
               // Прогресс автоматически обновляется в useLessonTour
               // Возвращаемся на страницу уроков
+              console.log("🚀 Переходим на /lessons...");
               navigate("/lessons");
+              console.log("🚀 navigate выполнен");
             },
             onDestroy: () => {
+              console.log("🚀 onDestroy вызван в lessons.tsx!");
               // Прогресс автоматически сохраняется в useLessonTour
               // Возвращаемся на страницу уроков
+              console.log("🚀 Переходим на /lessons через onDestroy...");
               navigate("/lessons");
+              console.log("🚀 navigate выполнен через onDestroy");
             },
           });
         }, 500);
@@ -74,14 +77,24 @@ const Lessons = () => {
           lessonId: lesson.id.toString(),
           steps: tour.steps,
           onComplete: () => {
+            console.log("🚀 onComplete вызван в lessons.tsx (без targetPath)!");
             // Прогресс автоматически обновляется в useLessonTour
             // Возвращаемся на страницу уроков
+            console.log("🚀 Переходим на /lessons (без targetPath)...");
             navigate("/lessons");
+            console.log("🚀 navigate выполнен (без targetPath)");
           },
           onDestroy: () => {
+            console.log("🚀 onDestroy вызван в lessons.tsx (без targetPath)!");
             // Прогресс автоматически сохраняется в useLessonTour
             // Возвращаемся на страницу уроков
+            console.log(
+              "🚀 Переходим на /lessons через onDestroy (без targetPath)...",
+            );
             navigate("/lessons");
+            console.log(
+              "🚀 navigate выполнен через onDestroy (без targetPath)",
+            );
           },
         });
       }
