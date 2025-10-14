@@ -4,7 +4,7 @@ import * as echarts from "echarts"; // обязательно импортиру
 import { Card } from "@shared/ui/card";
 import { getOptionChart } from "./get-option-chart";
 import { cn } from "@shared/lib/utils";
-import { useTheme } from "@app/providers/theme-provider";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface CustomChartComponentProps {
@@ -23,13 +23,13 @@ export default function StackedLine({
   className,
   customColors,
 }: CustomChartComponentProps) {
-  const { theme } = useTheme(); // ① получаем текущую тему
+  const colors = useGraphColors(); // ① получаем динамические цвета
   const chartRef = useRef<ReactECharts>(null);
   const isMobile = useIsMobile();
-  // ② пересчитываем опции при смене option **или** theme
+  // ② пересчитываем опции при смене option **или** colors
   const optionCharts = useMemo(
-    () => getOptionChart(option, theme as string, customColors, !isMobile),
-    [option, theme, customColors, isMobile],
+    () => getOptionChart(option, colors, customColors, !isMobile),
+    [option, colors, customColors, isMobile],
   );
   useEffect(() => {
     if (mirror === undefined) return;
@@ -51,7 +51,7 @@ export default function StackedLine({
   }, [mirror, isMobile]);
 
   return (
-    <Card className={cn("w-full h-full pt-1", className)}>
+    <Card className={cn("w-full h-full pt-1 rounded-2xl", className)}>
       <ReactECharts
         ref={chartRef}
         option={optionCharts}

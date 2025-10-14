@@ -1,9 +1,8 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { useMemo } from "react";
 
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
 type PieChartProps = {
@@ -19,9 +18,8 @@ export const PieChart = ({
   title,
   formatter,
 }: PieChartProps) => {
-  const { theme } = useTheme();
+  const colors = useGraphColors();
   const isMobile = useIsMobile();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
   const radius = isMobile ? "50" : "70";
 
   const option: EChartsOption = useMemo(

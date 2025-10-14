@@ -110,8 +110,19 @@ export default function UniversalTable({
     () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
     [],
   );
-  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
+  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight, theme]);
   const gridApiRef = useRef<any>(null);
+
+  // Принудительно обновляем тему при смене
+  useEffect(() => {
+    if (gridApiRef.current) {
+      setTimeout(() => {
+        const newTheme = getAgGridTheme(isLight);
+        gridApiRef.current?.setGridOption("theme", newTheme);
+        gridApiRef.current?.redrawRows();
+      }, 1);
+    }
+  }, [isLight, theme]);
 
   // Синхронизация выделения с внешним состоянием
   useEffect(() => {

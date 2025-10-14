@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
 
 interface CursorHeart {
   id: number;
@@ -9,7 +11,12 @@ interface CursorHeart {
   color: string;
 }
 
-const romanticEmojis = [
+interface CursorTrailProps {
+  userId?: number;
+}
+
+// Только сердечки для ID 2734 (без черного и разбитых)
+const heartsOnlyEmojis = [
   "❤️",
   "💕",
   "💖",
@@ -20,46 +27,12 @@ const romanticEmojis = [
   "💛",
   "🧡",
   "💜",
-  "🌹",
-  "🌺",
-  "🌸",
-  "🌻",
-  "🌷",
-  "🌼",
-  "🌿",
-  "🍀",
-  "🌱",
-  "🌾",
-  "✨",
-  "⭐",
-  "🌟",
-  "💫",
-  "🌙",
-  "☀️",
-  "🌈",
-  "🦋",
-  "🐝",
-  "🕊️",
-  "💐",
-  "🎀",
-  "🎁",
-  "🎂",
-  "🍓",
-  "🍒",
-  "🍑",
-  "🥰",
-  "😍",
-  "🥺",
-  "💋",
-  "👑",
-  "🦄",
-  "🎈",
-  "🎊",
-  "🎉",
-  "💎",
-  "🔮",
-  "🌺",
-  "🌻",
+  "💝",
+  "💞",
+  "💓",
+  "💟",
+  "❣️",
+  "💌",
 ];
 
 const romanticColors = [
@@ -87,10 +60,20 @@ const romanticColors = [
   "text-orange-500",
 ];
 
-export const CursorTrail: React.FC = () => {
+export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<CursorHeart[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { settings } = useEffectsSettings();
   console.log(mousePosition);
+  // Если эффект отключен в настройках или у пользователя нет доступа, не рендерим компонент
+  if (!settings.cursorTrailEnabled || !hasEffectsAccess(userId)) {
+    return null;
+  }
+
+  // Выбираем набор эмодзи в зависимости от userId или используем настройки
+  const emojiSet =
+    userId === 2734 ? heartsOnlyEmojis : settings.cursorTrailEmojis;
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -100,13 +83,15 @@ export const CursorTrail: React.FC = () => {
         id: Date.now() + Math.random(),
         x: e.clientX,
         y: e.clientY,
-        emoji:
-          romanticEmojis[Math.floor(Math.random() * romanticEmojis.length)],
+        emoji: emojiSet[Math.floor(Math.random() * emojiSet.length)],
         color:
           romanticColors[Math.floor(Math.random() * romanticColors.length)],
       };
 
-      setHearts((prev) => [...prev.slice(-15), newHeart]); // Ограничиваем до 15 сердечек
+      setHearts((prev) => [
+        ...prev.slice(-settings.cursorTrailMaxHearts),
+        newHeart,
+      ]); // Используем настройки для ограничения
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -114,7 +99,7 @@ export const CursorTrail: React.FC = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [emojiSet]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50">
@@ -126,7 +111,7 @@ export const CursorTrail: React.FC = () => {
             style={{
               left: heart.x - 10,
               top: heart.y - 10,
-              fontSize: "20px",
+              fontSize: `${settings.cursorTrailSize}px`,
             }}
             initial={{
               opacity: 1,
@@ -145,7 +130,7 @@ export const CursorTrail: React.FC = () => {
               scale: 0,
             }}
             transition={{
-              duration: 2,
+              duration: settings.cursorTrailDuration,
               ease: "easeOut",
             }}
           >

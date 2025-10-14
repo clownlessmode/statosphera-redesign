@@ -1,8 +1,7 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 
 import { useMemo } from "react";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 
 import DoubleHorizontalBarChartSkeleton from "./double-horizontal-chart-skeleton";
 
@@ -25,8 +24,7 @@ export const DoubleHorizontalBarChart = ({
   title,
   isLoading = false,
 }: UniversalBarChartProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   const option = useMemo(() => {
     return {

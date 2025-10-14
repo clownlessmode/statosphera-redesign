@@ -1,12 +1,11 @@
 import { Separator } from "@shared/ui/separator";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { ScrollArea } from "@shared/ui/scroll-area";
 import { Notification } from "@entities/notifications/model/api/types";
 import { useNotifications } from "@entities/notifications/model/api/controller";
 import { useEffect } from "react";
+import { BlockNoteDisplay } from "@shared/ui/blocknote-display";
 
 interface MailDisplayProps {
   mail: Notification | null;
@@ -43,14 +42,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           <Separator />
           <div className="flex-1 min-h-0 overflow-hidden">
             <ScrollArea className="h-full p-4">
-              <div className="prose dark:prose-invert prose-base max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]} unwrapDisallowed>
-                  {mail.message
-                    .replace(/^ +/gm, "")
-                    .replace(/([^\n])\n([^\n])/g, "$1  \n$2")
-                    .trim()}
-                </ReactMarkdown>
-              </div>
+              <BlockNoteDisplay content={mail.message} />
             </ScrollArea>
           </div>
         </div>

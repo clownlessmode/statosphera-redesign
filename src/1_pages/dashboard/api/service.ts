@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { GetWeeklyRevenueResponse } from "./types";
+import { GetWeeklyRevenueResponse, SalesDayResponse } from "./types";
 // import { mockWeeklyRevenue } from "./mock";
 
 export class DashboardService {
@@ -13,6 +13,11 @@ export class DashboardService {
 
     // Если хочешь включать реальные данные — закомментируй return выше и раскомментируй ниже
     const response = await api.get<GetWeeklyRevenueResponse>("home-page/all");
+    return response.data;
+  }
+
+  static async getSalesDayData(): Promise<SalesDayResponse> {
+    const response = await api.get<SalesDayResponse>("home-page/sales-day");
     return response.data;
   }
 }

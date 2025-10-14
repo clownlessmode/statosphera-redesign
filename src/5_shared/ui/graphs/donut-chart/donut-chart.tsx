@@ -1,8 +1,7 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
 import { useMemo, useState } from "react";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import DonutChartSkeleton from "./donut-chart-skeleton";
 
 type DonutChartProps = {
@@ -18,8 +17,7 @@ export const DonutChart = ({
   rose,
   isLoading = false,
 }: DonutChartProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   const [visibleMap, setVisibleMap] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(data.map((item) => [item.name, true])),

@@ -14,13 +14,19 @@ export const Slider = ({
   const [componentIndex, setComponentIndex] = useState(0);
 
   useEffect(() => {
+    // Оптимизация: увеличиваем интервал до 8 секунд для TV режима
+    // и добавляем проверку на видимость страницы
     const interval = setInterval(() => {
+      // Не переключаем если страница не видна
+      if (document.hidden) return;
+
       setComponentIndex((prev) => (prev + 1) % components.length);
-    }, 5000);
+    }, 8000);
+
     return () => {
       clearInterval(interval);
     };
-  }, [components]);
+  }, [components]); // Восстанавливаем правильные зависимости для переключения
 
   return (
     <Card
@@ -38,7 +44,7 @@ export const Slider = ({
               index === componentIndex
                 ? "opacity-100 shadow-none *:shadow-none"
                 : "absolute opacity-0 inset-0 pointer-events-none",
-              "w-full h-full duration-300 ease-out transition-all",
+              "w-full h-full duration-500 ease-out transition-all", // Увеличиваем длительность анимации
             )}
           >
             {component}

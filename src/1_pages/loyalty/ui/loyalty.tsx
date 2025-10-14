@@ -39,6 +39,9 @@ import { AgeSalesGraph } from "./graphs/age-sales-graph";
 import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { Button } from "@shared/ui/button";
+import { Link } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -201,23 +204,40 @@ export const Loyalty = () => {
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
-        title={`Лояльность`}
+        title="Лояльность"
         actions={{
-          left: !isMobile && (
+          right: !isMobile && (
             <div className="flex gap-2">
               <GraphDate />
               <DaysFilter />
               <ShopsFilter />
             </div>
           ),
+          left: !isMobile && (
+            <div className="ml-6 -mb-4 flex flex-row gap-1">
+              <Button variant="outline" className="border-b-0 rounded-b-none">
+                Лояльность
+              </Button>
+              <Link to={ROUTES_PATH.RFM}>
+                <Button
+                  variant="outline"
+                  className="border-b-0 rounded-b-none opacity-50"
+                >
+                  RFM-анализ
+                </Button>
+              </Link>
+            </div>
+          ),
         }}
       />
       <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
-        <div className="flex flex-row justify-between">
-          <DaysFilter />
-          <GraphDate />
-          <ShopsFilter />
-        </div>
+        {isMobile && (
+          <div className="flex flex-row justify-between">
+            <DaysFilter />
+            <GraphDate />
+            <ShopsFilter />
+          </div>
+        )}
         <AllUsers
           isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
           noSales30DaysUser={noSales30DaysUser as any}

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
+import { hasEffectsAccess } from "@shared/constants/effects-users";
 
 interface Heart {
   id: number;
@@ -10,57 +12,30 @@ interface Heart {
   color: string;
 }
 
-const romanticEmojis = [
-  "❤️",
-  "💕",
-  "💖",
-  "💗",
-  "💘",
-  "💙",
-  "💚",
-  "💛",
-  "🧡",
-  "💜",
-  "🌹",
-  "🌺",
-  "🌸",
-  "🌻",
-  "🌷",
-  "🌼",
-  "🌿",
-  "🍀",
-  "🌱",
-  "🌾",
-  "✨",
-  "⭐",
-  "🌟",
-  "💫",
-  "🌙",
-  "☀️",
-  "🌈",
-  "🦋",
-  "🐝",
-  "🕊️",
-  "💐",
-  "🎀",
-  "🎁",
-  "🎂",
-  "🍓",
-  "🍒",
-  "🍑",
-  "🥰",
-  "😍",
-  "🥺",
-  "💋",
-  "👑",
-  "🦄",
-  "🎈",
-  "🎊",
-  "🎉",
-  "💎",
-  "🔮",
-  "🌺",
-  "🌻",
+interface FlyingHeartsProps {
+  userId?: number;
+}
+
+// Только цветы для ID 2734
+const flowerEmojis = [
+  "🌹", // красная роза
+  "🌹", // ещё раз, чтобы чаще попадалась
+  "🥀", // увядающая роза (тоже красивая)
+  "🌺", // гибискус
+  "🌸", // сакура
+  "🌸", // ещё раз
+  "🌻", // подсолнух
+  "🌷", // тюльпан
+  "🌷", // ещё раз
+  "🌼", // ромашка
+  "💐", // букет
+  "💐", // ещё раз
+  "🏵️", // розетка
+  "🌿", // веточка
+  "🍀", // клевер
+  "🌱", // росток
+  "🪷", // лотос
+  "🌾", // колосья (оставлю немного для разнообразия)
 ];
 
 const romanticColors = [
@@ -88,31 +63,70 @@ const romanticColors = [
   "text-orange-500",
 ];
 
-export const FlyingHearts: React.FC = () => {
+export const FlyingHearts: React.FC<FlyingHeartsProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<Heart[]>([]);
+  const { settings } = useEffectsSettings();
+
+  // Если эффект отключен в настройках или у пользователя нет доступа, не рендерим компонент
+  if (!settings.flyingHeartsEnabled || !hasEffectsAccess(userId)) {
+    return null;
+  }
+
+  // Выбираем набор эмодзи в зависимости от userId или используем настройки
+  const emojiSet = userId === 2734 ? flowerEmojis : settings.flyingHeartsEmojis;
+  const isOneTime = userId === 2734; // Для 2734 - одноразовая анимация
 
   useEffect(() => {
     const createHeart = (): Heart => ({
       id: Math.random(),
       x: Math.random() * window.innerWidth,
-      y: window.innerHeight + 50,
+      // Для 2734 цветы падают сверху вниз, для остальных - снизу вверх
+      y: isOneTime ? -50 : window.innerHeight + 50,
       delay: Math.random() * 2,
-      size: Math.random() * 20 + 40, // размер от 30 до 50px
-      emoji: romanticEmojis[Math.floor(Math.random() * romanticEmojis.length)],
+      size:
+        Math.random() *
+          (settings.flyingHeartsSize.max - settings.flyingHeartsSize.min) +
+        settings.flyingHeartsSize.min,
+      emoji: emojiSet[Math.floor(Math.random() * emojiSet.length)],
       color: romanticColors[Math.floor(Math.random() * romanticColors.length)],
     });
 
-    // Создаем начальные сердечки
-    const initialHearts = Array.from({ length: 8 }, createHeart);
-    setHearts(initialHearts);
+    if (isOneTime) {
+      // Для одноразовой анимации создаем цветы волнами
+      const initialHearts = Array.from({ length: 15 }, createHeart);
+      setHearts(initialHearts);
 
-    // Создаем новые сердечки каждые 800ms
-    const interval = setInterval(() => {
-      setHearts((prev) => [...prev.slice(-7), createHeart()]);
-    }, 800);
+      // Добавляем ещё цветы через небольшие промежутки
+      const timeout1 = setTimeout(() => {
+        setHearts((prev) => [
+          ...prev,
+          ...Array.from({ length: 10 }, createHeart),
+        ]);
+      }, 300);
 
-    return () => clearInterval(interval);
-  }, []);
+      const timeout2 = setTimeout(() => {
+        setHearts((prev) => [
+          ...prev,
+          ...Array.from({ length: 10 }, createHeart),
+        ]);
+      }, 600);
+
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+      };
+    } else {
+      // Для постоянной анимации (ID 181)
+      const initialHearts = Array.from({ length: 8 }, createHeart);
+      setHearts(initialHearts);
+
+      const interval = setInterval(() => {
+        setHearts((prev) => [...prev.slice(-7), createHeart()]);
+      }, settings.flyingHeartsFrequency * 1000); // конвертируем секунды в миллисекунды
+
+      return () => clearInterval(interval);
+    }
+  }, [emojiSet, isOneTime]);
 
   return (
     <>
@@ -131,28 +145,46 @@ export const FlyingHearts: React.FC = () => {
             opacity: 0;
           }
         }
+        @keyframes fallDown {
+          0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.8;
+          }
+          50% {
+            transform: translateY(50vh) rotate(180deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+          }
+        }
         .heart-float {
           animation: floatUp 4s linear forwards;
+        }
+        .flower-fall {
+          animation: fallDown 4s linear forwards;
         }
       `}</style>
       <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
         {hearts.map((heart) => (
           <div
             key={heart.id}
-            className="absolute animate-bounce"
+            className={isOneTime ? "absolute" : "absolute animate-bounce"}
             style={{
               left: `${heart.x}px`,
               top: `${heart.y}px`,
               animationDelay: `${heart.delay}s`,
-              animationDuration: "3s",
-              animationIterationCount: "infinite",
-              animationTimingFunction: "ease-in-out",
+              animationDuration: isOneTime ? undefined : "3s",
+              animationIterationCount: isOneTime ? undefined : "infinite",
+              animationTimingFunction: isOneTime ? undefined : "ease-in-out",
             }}
           >
             <div
-              className={`${heart.color} opacity-80 heart-float`}
+              className={`${heart.color} opacity-80 ${isOneTime ? "flower-fall" : "heart-float"}`}
               style={{
                 fontSize: `${heart.size}px`,
+                animationDelay: `${heart.delay}s`,
               }}
             >
               {heart.emoji}

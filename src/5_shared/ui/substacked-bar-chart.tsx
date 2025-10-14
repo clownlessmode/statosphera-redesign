@@ -1,7 +1,6 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 
 type SeriesData = {
   name: string;
@@ -25,8 +24,7 @@ export const BarChartMultiSeries = ({
   title,
   grid,
 }: BarChartMultiSeriesProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   // Базовые настройки для label
   const labelOption = {

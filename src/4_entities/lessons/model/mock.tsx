@@ -1,17 +1,18 @@
-import { ChartLine, FileText, Handshake, Home } from "lucide-react";
+import { ChartLine, FileText, Handshake, Home, TestTube } from "lucide-react";
 
 export const LESSONS_MOCK = [
   {
     id: 1,
     title: "Главная страница",
     description:
-      "Вы изучите основные элементы интерфейса: навигацию, меню и информационные виджеты. Это поможет быстро начать работу с системой.",
-    duration: "10 минут",
-    progress: 12,
-    completed: true,
-    to: ["Аналитики"],
+      "Познакомьтесь с основными виджетами главной страницы: выручка, NPS, каналы продаж. Интерактивный тур покажет где находится нужная информация.",
+    duration: "5 минут",
+    progress: 0,
+    completed: false,
+    to: ["Все пользователи"],
     icon: <Home className="size-5" />,
     tags: ["Интерфейс", "Виджеты", "Навигация"],
+    targetPath: "/",
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ export const LESSONS_MOCK = [
     to: ["Специалисты"],
     icon: <FileText className="size-5" />,
     tags: ["Аналитика", "Отчеты", "Визуализация"],
+    targetPath: "/report",
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ export const LESSONS_MOCK = [
     to: ["Руководители"],
     icon: <Handshake className="size-5" />,
     tags: ["Стандарты", "Поиск", "Фильтрация"],
+    targetPath: "/standarts",
   },
   {
     id: 4,
@@ -48,5 +51,21 @@ export const LESSONS_MOCK = [
     to: ["Руководители"],
     icon: <ChartLine className="size-5" />,
     tags: ["Аналитика", "Продажи", "Визуализация"],
+    targetPath: "/sales-dynamics",
+  },
+  // Тестовый урок (не показывается в списке уроков)
+  {
+    id: 999,
+    title: "Тестовый урок",
+    description:
+      "Тестовый урок для проверки работы системы обучения. Проходит на главной странице.",
+    duration: "5 минут",
+    progress: 0,
+    completed: false,
+    to: ["Тестирование"],
+    icon: <TestTube className="size-5" />,
+    tags: ["Тест"],
+    isTest: true,
+    targetPath: "/",
   },
 ];

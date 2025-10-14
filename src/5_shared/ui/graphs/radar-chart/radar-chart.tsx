@@ -1,8 +1,7 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 
 import { useMemo } from "react";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import RadarChartSkeleton from "./radar-chart-skeleton";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
@@ -17,8 +16,7 @@ export const RadarChart = ({
   title = "",
   isLoading = false,
 }: RadarChartProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
   const isMobile = useIsMobile();
   // Максимум для всех осей (считаем, что значения в %)
   const maxValue = 100;
