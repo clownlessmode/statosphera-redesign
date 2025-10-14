@@ -213,11 +213,13 @@ export const Loyalty = () => {
         }}
       />
       <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
-        <div className="flex flex-row justify-between">
-          <DaysFilter />
-          <GraphDate />
-          <ShopsFilter />
-        </div>
+        {isMobile && (
+          <div className="flex flex-row justify-between">
+            <DaysFilter />
+            <GraphDate />
+            <ShopsFilter />
+          </div>
+        )}
         <AllUsers
           isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
           noSales30DaysUser={noSales30DaysUser as any}
