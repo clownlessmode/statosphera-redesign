@@ -25,6 +25,7 @@ import { Loyalty } from "@pages/loyalty";
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
+import { Rfm } from "@pages/rfm/ui/rfm";
 // import { WriteOff } from "@pages/write-off";
 
 export const ROUTES_PATH = {
@@ -237,7 +238,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.RFM,
     variant: "private",
-    element: <Loyalty />,
+    element: <Rfm />,
     layout: Sidebar,
     label: "РФМ",
   },

@@ -8,12 +8,23 @@ export class RfmService {
   }
 
   static async getFirstCalculation(dto: RequestDto) {
-    const response = await api.post("rfm/first-calculation-gistogram", dto);
+    const response = await api.post("/rfm/first-calculation-gistogram", dto);
     return response.data;
   }
 
   static async getSecondCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/second-calculation-gistogram", dto);
+    const response = await api.post(
+      "/rfm/second-calculation-drilldown-gistogram",
+      dto,
+    );
+    return response.data;
+  }
+
+  static async getSecondCalculationReverse(dto: RequestDto) {
+    const response = await api.post(
+      "/rfm/second-calculation-reverse-drilldown-gistogram",
+      dto,
+    );
     return response.data;
   }
 
@@ -58,7 +69,7 @@ export class RfmService {
     return response.data;
   }
   static async getEleventhCalculation(dto: RequestDto) {
-    const response = await api.post("eleventh-calculation-gistogram", dto);
+    const response = await api.post("/rfm/eleventh-calculation-gistogram", dto);
     return response.data;
   }
 

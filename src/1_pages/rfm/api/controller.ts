@@ -1,39 +1,43 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
 import { ApiError } from "@shared/api/types";
 import { RfmService } from "./service";
 import {
-  EighthCalculation,
-  EleventhCalculation,
-  FifteenCalculation,
-  FifthCalculation,
-  FirstCalculation,
-  FourteenCalculation,
-  FourthCalculation,
-  NinthCalculation,
+  EighthCalculationResponse,
+  EleventhCalculationResponse,
+  FifteenCalculationResponse,
+  FifthCalculationResponse,
+  FirstCalculationResponse,
+  FourteenCalculationResponse,
+  FourthCalculationResponse,
+  NameSegmentResponse,
+  NinthCalculationResponse,
   RequestDto,
-  SecondCalculation,
-  SeventhCalculation,
-  SixteenCalculation,
-  SixthCalculation,
-  TenthCalculation,
-  ThirdCalculation,
-  ThirteenthCalculation,
-  TwelfthCalculation,
+  SecondCalculationResponse,
+  SeventhCalculationResponse,
+  SixteenCalculationResponse,
+  SixthCalculationResponse,
+  TenthCalculationResponse,
+  ThirdCalculationResponse,
+  ThirteenthCalculationResponse,
+  TwelfthCalculationResponse,
 } from "../config";
 
 export const useRfm = () => {
   const queryClient = useQueryClient();
 
-  const nameSegment = useQuery<number, ApiError>({
-    queryKey: ["uniques"],
+  const nameSegment = useQuery<NameSegmentResponse[], ApiError>({
+    queryKey: ["nameSegment"],
     queryFn: async () => {
       const response = await RfmService.getNameSegment();
       return response;
     },
   });
 
-  const firstCalculation = useMutation<FirstCalculation, ApiError, RequestDto>({
+  const firstCalculation = useMutation<
+    FirstCalculationResponse,
+    ApiError,
+    RequestDto
+  >({
     mutationFn: async (dto: RequestDto) => {
       const response = await RfmService.getFirstCalculation(dto);
       queryClient.invalidateQueries({ queryKey: ["firstCalculation"] });
@@ -42,7 +46,7 @@ export const useRfm = () => {
   });
 
   const secondCalculation = useMutation<
-    SecondCalculation[],
+    SecondCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -53,8 +57,20 @@ export const useRfm = () => {
     },
   });
 
+  const secondCalculationReverse = useMutation<
+    SecondCalculationResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getSecondCalculationReverse(dto);
+      queryClient.invalidateQueries({ queryKey: ["secondCalculation"] });
+      return response;
+    },
+  });
+
   const thirdCalculation = useMutation<
-    ThirdCalculation[],
+    ThirdCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -65,7 +81,7 @@ export const useRfm = () => {
     },
   });
   const fourthCalculation = useMutation<
-    FourthCalculation[],
+    FourthCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -76,7 +92,7 @@ export const useRfm = () => {
     },
   });
   const fifthCalculation = useMutation<
-    FifthCalculation[],
+    FifthCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -87,7 +103,7 @@ export const useRfm = () => {
     },
   });
   const sixthCalculation = useMutation<
-    SixthCalculation[],
+    SixthCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -99,7 +115,7 @@ export const useRfm = () => {
   });
 
   const seventhCalculation = useMutation<
-    SeventhCalculation[],
+    SeventhCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -111,7 +127,7 @@ export const useRfm = () => {
   });
 
   const eighthCalculation = useMutation<
-    EighthCalculation,
+    EighthCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -122,14 +138,22 @@ export const useRfm = () => {
     },
   });
 
-  const ninthCalculation = useMutation<NinthCalculation, ApiError, RequestDto>({
+  const ninthCalculation = useMutation<
+    NinthCalculationResponse,
+    ApiError,
+    RequestDto
+  >({
     mutationFn: async (dto: RequestDto) => {
       const response = await RfmService.getNinthCalculation(dto);
       queryClient.invalidateQueries({ queryKey: ["ninthCalculation"] });
       return response;
     },
   });
-  const tenthCalculation = useMutation<TenthCalculation, ApiError, RequestDto>({
+  const tenthCalculation = useMutation<
+    TenthCalculationResponse,
+    ApiError,
+    RequestDto
+  >({
     mutationFn: async (dto: RequestDto) => {
       const response = await RfmService.getTenthCalculation(dto);
       queryClient.invalidateQueries({ queryKey: ["tenthCalculation"] });
@@ -137,7 +161,7 @@ export const useRfm = () => {
     },
   });
   const eleventhCalculation = useMutation<
-    EleventhCalculation[],
+    EleventhCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -148,7 +172,7 @@ export const useRfm = () => {
     },
   });
   const twelfthCalculation = useMutation<
-    TwelfthCalculation[],
+    TwelfthCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -159,7 +183,7 @@ export const useRfm = () => {
     },
   });
   const thirteenthCalculation = useMutation<
-    ThirteenthCalculation,
+    ThirteenthCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -170,7 +194,7 @@ export const useRfm = () => {
     },
   });
   const fourteenCalculation = useMutation<
-    FourteenCalculation,
+    FourteenCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -182,7 +206,7 @@ export const useRfm = () => {
   });
 
   const fifteenCalculation = useMutation<
-    FifteenCalculation,
+    FifteenCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -194,7 +218,7 @@ export const useRfm = () => {
   });
 
   const sixteenCalculation = useMutation<
-    SixteenCalculation,
+    SixteenCalculationResponse[],
     ApiError,
     RequestDto
   >({
@@ -215,6 +239,8 @@ export const useRfm = () => {
     isFirstCalculationLoading: firstCalculation.isPending,
     getSecondCalculation: secondCalculation.mutateAsync,
     isSecondCalculationLoading: secondCalculation.isPending,
+    getSecondCalculationReverse: secondCalculationReverse.mutateAsync,
+    isSecondCalculationReverseLoading: secondCalculationReverse.isPending,
     getThirdCalculation: thirdCalculation.mutateAsync,
     isThirdCalculationLoading: thirdCalculation.isPending,
     getFourthCalculation: fourthCalculation.mutateAsync,
