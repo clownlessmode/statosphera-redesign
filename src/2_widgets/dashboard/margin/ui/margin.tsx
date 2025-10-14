@@ -21,7 +21,7 @@ const Margin = ({ data, isLoading, tv }: MarginProps) => {
       ) : (
         <Card
           className={cn(
-            "w-full gap-1 flex flex-col justify-between",
+            "w-full h-[128px] gap-1 flex flex-col justify-between",
             tv && "h-full py-3",
           )}
         >
@@ -33,7 +33,7 @@ const Margin = ({ data, isLoading, tv }: MarginProps) => {
               Текущий месяц
             </CardContent>
           </div>
-          <CardFooter className="text-3xl font-bold items-start flex flex-row text-left w-fit">
+          <CardFooter className="text-3xl font-bold items-start flex flex-row text-left w-full">
             {!data ? <span>Нет данных</span> : <span>{data}%</span>}
           </CardFooter>
         </Card>

@@ -18,7 +18,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
     if (mail?.id && !mail.is_read) {
       readNotification(mail.id);
     }
-  }, [mail]);
+  }, [mail?.id, mail?.is_read, readNotification]);
 
   return (
     <div className="flex md:h-full flex-col">
@@ -28,7 +28,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
             <div className="flex items-center gap-4 text-sm">
               <div className="grid gap-1">
                 <div className="font-semibold">{mail.title}</div>
-                <div className="md:line-clamp-1 text-xs">
+                <div className="text-xs overflow-hidden text-ellipsis whitespace-nowrap md:whitespace-normal md:line-clamp-1">
                   {mail.description}
                 </div>
               </div>

@@ -11,18 +11,45 @@ import { getLessonTour } from "../config";
 const STORAGE_KEY = "statosphera-lesson-progress";
 const OLD_STORAGE_KEY = "lesson-progress"; // Старый ключ из useLessonDriver
 
+// Глобальное хранилище прогресса
+let globalProgressData: LessonProgressData = {};
+
+// Загружаем данные из localStorage при инициализации модуля
+const loadFromStorage = () => {
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  console.log("🔍 Загружаем из localStorage при инициализации:", savedData);
+  if (savedData) {
+    try {
+      globalProgressData = JSON.parse(savedData);
+      console.log("✅ Загружено в глобальное хранилище:", globalProgressData);
+    } catch (error) {
+      console.error("Ошибка при загрузке прогресса уроков:", error);
+      globalProgressData = {};
+    }
+  } else {
+    console.log("⚠️ Данных в localStorage нет при инициализации");
+  }
+};
+
+// Загружаем данные при инициализации модуля
+loadFromStorage();
+
 export const useLessonProgress = () => {
   const [progressData, setProgressData] = useState<LessonProgressData>(() => {
     // Инициализируем данные из localStorage при создании состояния
     const savedData = localStorage.getItem(STORAGE_KEY);
+    console.log("🔍 Загружаем из localStorage:", savedData);
     if (savedData) {
       try {
-        return JSON.parse(savedData);
+        const parsedData = JSON.parse(savedData);
+        console.log("✅ Загружено из localStorage:", parsedData);
+        return parsedData;
       } catch (error) {
         console.error("Ошибка при загрузке прогресса уроков:", error);
         return {};
       }
     }
+    console.log("⚠️ Данных в localStorage нет");
     return {};
   });
 
@@ -83,31 +110,31 @@ export const useLessonProgress = () => {
 
   // Сохраняем данные в localStorage при изменении
   useEffect(() => {
-    console.log("💾 Сохраняем progressData в localStorage:", progressData);
+    console.log("💾 Сохраняем в localStorage:", progressData);
     if (Object.keys(progressData).length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(progressData));
+      console.log("✅ Сохранено в localStorage");
     }
   }, [progressData]);
 
   // Получить прогресс конкретного урока
   const getLessonProgress = useCallback(
     (lessonId: string): LessonProgress | null => {
-      const progress = progressData[lessonId] || null;
-      console.log(`getLessonProgress(${lessonId}):`, progress);
+      const progress = globalProgressData[lessonId] || null;
+      console.log(`📊 getLessonProgress для ${lessonId}:`, progress);
       return progress;
     },
-    [progressData],
+    [],
   );
 
   // Начать новый урок
   const startLesson = useCallback((lessonId: string, totalSteps: number) => {
+    console.log("🚀 startLesson вызван!");
     const now = new Date().toISOString();
 
-    console.log(`startLesson(${lessonId}): начинаем урок`);
-
-    console.log("🚀 startLesson:", lessonId, totalSteps);
-    setProgressData((prev) => ({
-      ...prev,
+    // Обновляем глобальное хранилище
+    globalProgressData = {
+      ...globalProgressData,
       [lessonId]: {
         lessonId,
         currentStep: 0,
@@ -118,90 +145,118 @@ export const useLessonProgress = () => {
         firstStarted: now,
         status: "in_progress" as LessonStatus,
       },
-    }));
+    };
+
+    console.log("🚀 startLesson globalProgressData:", globalProgressData);
+
+    // Сохраняем в localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(globalProgressData));
+    console.log("✅ Сохранено в localStorage");
+
+    // Обновляем состояние
+    setProgressData(globalProgressData);
   }, []);
 
   // Обновить прогресс урока
   const updateLessonProgress = useCallback(
     (lessonId: string, currentStep: number, totalSteps: number) => {
-      const progress = progressData[lessonId];
-      if (!progress) {
-        console.log(
-          `updateLessonProgress(${lessonId}): прогресс не найден, пропускаем`,
-        );
-        return;
-      }
-
+      console.log("🔥 updateLessonProgress вызван!");
       const progressPercentage = Math.round((currentStep / totalSteps) * 100);
-      const now = new Date().toISOString();
-
       console.log(
-        `updateLessonProgress(${lessonId}): шаг ${currentStep}/${totalSteps}, ${progressPercentage}%`,
-        {
-          oldProgress: progress,
-          newProgressPercentage: progressPercentage,
-          newCurrentStep: currentStep,
-        },
+        `Урок ${lessonId}: увеличиваем до ${progressPercentage}% (шаг ${currentStep}/${totalSteps})`,
       );
 
-      setProgressData((prev) => {
-        const newData = {
-          ...prev,
+      const now = new Date().toISOString();
+      const progress = globalProgressData[lessonId];
+
+      if (!progress) {
+        // Если прогресс не найден, инициализируем его
+        globalProgressData = {
+          ...globalProgressData,
+          [lessonId]: {
+            lessonId,
+            currentStep,
+            totalSteps,
+            progressPercentage,
+            completedCount: 0,
+            lastUpdated: now,
+            firstStarted: now,
+            status: "in_progress" as LessonStatus,
+          },
+        };
+        console.log(
+          "🔥 updateLessonProgress globalProgressData (init):",
+          globalProgressData,
+        );
+      } else {
+        // Обновляем существующий прогресс
+        globalProgressData = {
+          ...globalProgressData,
           [lessonId]: {
             ...progress,
             currentStep,
-            totalSteps, // Обновляем totalSteps на случай изменения
+            totalSteps,
             progressPercentage,
             lastUpdated: now,
           },
         };
-        console.log("📝 setProgressData в updateLessonProgress:", newData);
-        return newData;
-      });
+        console.log(
+          "🔥 updateLessonProgress globalProgressData (update):",
+          globalProgressData,
+        );
+      }
+
+      // Сохраняем в localStorage
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(globalProgressData));
+      console.log("✅ Сохранено в localStorage");
+
+      // Обновляем состояние
+      setProgressData(globalProgressData);
     },
-    [progressData],
+    [],
   );
 
   // Завершить урок
-  const completeLesson = useCallback(
-    (lessonId: string) => {
-      const progress = progressData[lessonId];
-      if (!progress) {
-        console.log(`completeLesson(${lessonId}): прогресс не найден`);
-        return;
-      }
+  const completeLesson = useCallback((lessonId: string) => {
+    console.log("🎉 completeLesson вызван для урока:", lessonId);
+    const progress = globalProgressData[lessonId];
+    console.log("🎉 Текущий прогресс:", progress);
 
-      const now = new Date().toISOString();
-      const newCompletedCount = progress.completedCount + 1;
+    if (!progress) {
+      console.log("⚠️ Прогресс не найден для урока:", lessonId);
+      return;
+    }
 
-      console.log(`completeLesson(${lessonId}): завершаем урок`, {
-        oldProgress: progress,
-        newCompletedCount,
-        willSetTo100Percent: true,
-      });
+    const now = new Date().toISOString();
+    const newCompletedCount = progress.completedCount + 1;
+    console.log("🎉 Новое количество прохождений:", newCompletedCount);
 
-      setProgressData((prev) => {
-        const newData = {
-          ...prev,
-          [lessonId]: {
-            ...progress,
-            currentStep: progress.totalSteps,
-            progressPercentage: 100,
-            completedCount: newCompletedCount,
-            lastUpdated: now,
-            lastCompleted: now,
-            status:
-              newCompletedCount === 1
-                ? "completed_once"
-                : ("completed_once" as LessonStatus),
-          },
-        };
-        console.log("✅ setProgressData в completeLesson:", newData);
-        return newData;
-      });
-    },
-    [progressData],
-  );
+    // Обновляем глобальное хранилище
+    globalProgressData = {
+      ...globalProgressData,
+      [lessonId]: {
+        ...progress,
+        currentStep: progress.totalSteps,
+        progressPercentage: 100,
+        completedCount: newCompletedCount,
+        lastUpdated: now,
+        lastCompleted: now,
+        status:
+          newCompletedCount === 1
+            ? "completed_once"
+            : ("completed_once" as LessonStatus),
+      },
+    };
+
+    console.log("🎉 Обновленный globalProgressData:", globalProgressData);
+
+    // Сохраняем в localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(globalProgressData));
+    console.log("✅ Сохранено в localStorage");
+
+    // Обновляем состояние
+    setProgressData(globalProgressData);
+  }, []);
 
   // Запустить урок заново
   const restartLesson = useCallback(
@@ -292,39 +347,28 @@ export const useLessonProgress = () => {
   );
 
   // Получить количество прохождений
-  const getCompletedCount = useCallback(
-    (lessonId: string): number => {
-      const progress = progressData[lessonId];
-      return progress?.completedCount || 0;
-    },
-    [progressData],
-  );
+  const getCompletedCount = useCallback((lessonId: string): number => {
+    const progress = globalProgressData[lessonId];
+    const count = progress?.completedCount || 0;
+    console.log(`📊 getCompletedCount для ${lessonId}: ${count}`);
+    return count;
+  }, []);
 
   // Получить процент прохождения
-  const getProgressPercentage = useCallback(
-    (lessonId: string): number => {
-      const progress = progressData[lessonId];
-      const percentage = progress?.progressPercentage || 0;
-      console.log(
-        `📈 getProgressPercentage(${lessonId}):`,
-        percentage,
-        progress,
-      );
-      return percentage;
-    },
-    [progressData],
-  );
+  const getProgressPercentage = useCallback((lessonId: string): number => {
+    const progress = globalProgressData[lessonId];
+    const percentage = progress?.progressPercentage || 0;
+    console.log(`📊 getProgressPercentage для ${lessonId}: ${percentage}%`);
+    return percentage;
+  }, []);
 
   // Проверить, завершен ли урок
-  const isLessonCompleted = useCallback(
-    (lessonId: string): boolean => {
-      const progress = progressData[lessonId];
-      const completed = progress?.completedCount > 0;
-      console.log(`✅ isLessonCompleted(${lessonId}):`, completed, progress);
-      return completed;
-    },
-    [progressData],
-  );
+  const isLessonCompleted = useCallback((lessonId: string): boolean => {
+    const progress = globalProgressData[lessonId];
+    const completed = progress?.completedCount > 0;
+    console.log(`📊 isLessonCompleted для ${lessonId}: ${completed}`);
+    return completed;
+  }, []);
 
   // Проверить, в процессе ли урок
   const isLessonInProgress = useCallback(
