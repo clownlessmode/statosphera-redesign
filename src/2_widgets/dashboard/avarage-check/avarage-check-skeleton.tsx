@@ -1,3 +1,4 @@
+import { cn } from "@shared/lib/utils";
 import {
   Card,
   CardContent,
@@ -7,9 +8,14 @@ import {
 } from "@shared/ui/card";
 import { Skeleton } from "@shared/ui/skeleton";
 
-const AverageCheckSkeleton = () => {
+const AverageCheckSkeleton = ({ tv }: { tv?: boolean }) => {
   return (
-    <Card className="w-full h-[128px] gap-1 flex flex-col justify-between">
+    <Card
+      className={cn(
+        "w-full content-stretch gap-1 flex flex-col justify-between",
+        tv ? "min-h-[110px]" : "h-[128px]",
+      )}
+    >
       <div className="flex flex-col gap-1">
         <CardHeader className="flex justify-between items-center">
           <CardTitle>

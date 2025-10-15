@@ -26,7 +26,7 @@ export const Modal = () => {
           Подробнее <ArrowUpRightIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-[600px] flex flex-col">
+      <DialogContent className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-[900px] flex flex-col">
         <DialogHeader>
           <DialogTitle>NPS Аналитика</DialogTitle>
           <DialogDescription>

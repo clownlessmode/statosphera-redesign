@@ -16,7 +16,7 @@ import {
   //FourteenCalculationResponse,
   //FourthCalculationResponse,
   //NinthCalculationResponse,
-  //SecondCalculationResponse,
+  SecondCalculationResponse,
   //SeventhCalculationResponse,
   SixteenCalculationResponse,
   //SixthCalculationResponse,
@@ -31,7 +31,7 @@ import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
 import { FirstCalculation } from "./graphs/firstCalculation";
 import { ThirdCalculation } from "./graphs/thirdCalculation";
-//import { SecondCalculation } from "./graphs/secondCalculation";
+import { SecondCalculation } from "./graphs/secondCalculation";
 import { FifthCalculation } from "./graphs/fifthCalculation";
 
 export const Rfm = () => {
@@ -63,9 +63,8 @@ export const Rfm = () => {
       series: [],
       text: [],
     });
-  //const [secondCalculation, setSecondCalculation] = useState<
-  //  SecondCalculationResponse[]
-  //>([]);
+  const [secondCalculation, setSecondCalculation] =
+    useState<SecondCalculationResponse>([]);
   //const [secondCalculationReverse, setSecondCalculationReverse] =
   //  useState<SecondCalculationResponse>({
   //    data: [],
@@ -153,7 +152,7 @@ export const Rfm = () => {
   const {
     getFirstCalculation,
     isFirstCalculationLoading,
-    //getSecondCalculation,
+    getSecondCalculation,
     isSecondCalculationLoading,
     //getSecondCalculationReverse,
     isSecondCalculationReverseLoading,
@@ -193,9 +192,9 @@ export const Rfm = () => {
         setFirstCalculation(data);
       });
 
-      //getSecondCalculation(mock.data).then((data) => {
-      //  setSecondCalculation(data);
-      //});
+      getSecondCalculation(mock.data).then((data) => {
+        setSecondCalculation(data);
+      });
 
       //getSecondCalculationReverse(mock.data).then((data) => {
       //  setSecondCalculationReverse(data);
@@ -324,11 +323,11 @@ export const Rfm = () => {
                 graph={firstCalculation}
                 isLoading={isFirstCalculationLoading}
               />
-              {/*<SecondCalculation
+              <SecondCalculation
                 graph={secondCalculation}
                 isLoading={isSecondCalculationReverseLoading}
               />
-              <SecondCalculation
+              {/*<SecondCalculation
                 graph={secondCalculationReverse}
                 isLoading={isSecondCalculationReverseLoading}
               />*/}

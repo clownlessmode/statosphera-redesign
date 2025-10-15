@@ -17,9 +17,9 @@ export interface FirstCalculationResponse {
   text: string[];
 }
 
-export interface SecondCalculationResponse {
-  data: [number | string, number, string, string | null][][];
-}
+type SecondCalculation = [string | number, number, string, string | null];
+
+export type SecondCalculationResponse = SecondCalculation[][];
 
 export interface ThirdCalculationResponse {
   childrenProceed: {

@@ -203,60 +203,70 @@ const Dashboard = () => {
       </div>
     ),
     stats: (
-      <div className="flex flex-col gap-2 h-fit ">
+      <div data-widget="stats" className="flex flex-col gap-2 h-fit ">
         <div className="flex flex-row gap-2">
-          <Suspense fallback={<MarginSkeleton />}>
-            {!isDashboardLoading && dashboard?.curentMarzha?.data?.[0] ? (
-              <Margin
+          <div data-widget="margin" className="w-full h-full">
+            <Suspense fallback={<MarginSkeleton />}>
+              {!isDashboardLoading && dashboard?.curentMarzha?.data?.[0] ? (
+                <Margin
+                  isLoading={isDashboardLoading}
+                  data={dashboard.curentMarzha.data[0].marginPercent}
+                />
+              ) : (
+                <MarginSkeleton />
+              )}
+            </Suspense>
+          </div>
+          <div data-widget="markup" className="w-full h-full">
+            <Suspense fallback={<MarkupSkeleton />}>
+              {!isDashboardLoading && dashboard?.curentMarkup?.data?.[0] ? (
+                <Markup
+                  isLoading={isDashboardLoading}
+                  percent={dashboard.curentMarkup.data[0].markupPercent}
+                  proceeds={dashboard.curentMarkup.data[0].profit}
+                />
+              ) : (
+                <MarkupSkeleton />
+              )}
+            </Suspense>
+          </div>
+        </div>
+        <div data-widget="writeOffIndicator">
+          <Suspense fallback={<WriteOffIndicatorSkeleton />}>
+            {!isDashboardLoading && dashboard?.curentWriteOff?.data?.[0] ? (
+              <WriteOffIndicator
+                negative={dashboard.curentWriteOff.data[0].negative}
                 isLoading={isDashboardLoading}
-                data={dashboard.curentMarzha.data[0].marginPercent}
+                writeOff={dashboard.curentWriteOff.data[0].writeOff}
+                writeOffPercent={
+                  dashboard.curentWriteOff.data[0].writeOffPercent
+                }
+                writeOffYoY={dashboard.curentWriteOff.data[0].writeOffYoY}
+                writeOffYoYPercent={
+                  dashboard.curentWriteOff.data[0].writeOffYoYPercent
+                }
               />
             ) : (
-              <MarginSkeleton />
-            )}
-          </Suspense>
-          <Suspense fallback={<MarkupSkeleton />}>
-            {!isDashboardLoading && dashboard?.curentMarkup?.data?.[0] ? (
-              <Markup
-                isLoading={isDashboardLoading}
-                percent={dashboard.curentMarkup.data[0].markupPercent}
-                proceeds={dashboard.curentMarkup.data[0].profit}
-              />
-            ) : (
-              <MarkupSkeleton />
+              <WriteOffIndicatorSkeleton />
             )}
           </Suspense>
         </div>
-        <Suspense fallback={<WriteOffIndicatorSkeleton />}>
-          {!isDashboardLoading && dashboard?.curentWriteOff?.data?.[0] ? (
-            <WriteOffIndicator
-              negative={dashboard.curentWriteOff.data[0].negative}
-              isLoading={isDashboardLoading}
-              writeOff={dashboard.curentWriteOff.data[0].writeOff}
-              writeOffPercent={dashboard.curentWriteOff.data[0].writeOffPercent}
-              writeOffYoY={dashboard.curentWriteOff.data[0].writeOffYoY}
-              writeOffYoYPercent={
-                dashboard.curentWriteOff.data[0].writeOffYoYPercent
-              }
-            />
-          ) : (
-            <WriteOffIndicatorSkeleton />
-          )}
-        </Suspense>
         {session?.role == ROLES.OFFICE_MM && (
-          <Suspense fallback={<LoyaltySkeleton />}>
-            {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
-              <Loyalty
-                isLoading={isDashboardLoading}
-                appLoyalPercent={
-                  dashboard.curentAppLoyal.data[0].appLoyalPercent
-                }
-                checkLoyal={dashboard.curentAppLoyal.data[0].checkLoyal}
-              />
-            ) : (
-              <LoyaltySkeleton />
-            )}
-          </Suspense>
+          <div data-widget="loyalty" className="h-full">
+            <Suspense fallback={<LoyaltySkeleton />}>
+              {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
+                <Loyalty
+                  isLoading={isDashboardLoading}
+                  appLoyalPercent={
+                    dashboard.curentAppLoyal.data[0].appLoyalPercent
+                  }
+                  checkLoyal={dashboard.curentAppLoyal.data[0].checkLoyal}
+                />
+              ) : (
+                <LoyaltySkeleton />
+              )}
+            </Suspense>
+          </div>
         )}
         {session?.role !== ROLES.OFFICE_MM && (
           <Suspense fallback={<WriteOffIndicatorSkeleton />}>
@@ -285,16 +295,18 @@ const Dashboard = () => {
       </div>
     ),
     salesStructure: (
-      <Suspense fallback={<SalesStructureSkeleton />}>
-        {!isDashboardLoading && dashboard?.salesStructure ? (
-          <SalesStructure
-            isLoading={isDashboardLoading}
-            data={dashboard.salesStructure}
-          />
-        ) : (
-          <SalesStructureSkeleton />
-        )}
-      </Suspense>
+      <div data-widget="salesStructure">
+        <Suspense fallback={<SalesStructureSkeleton />}>
+          {!isDashboardLoading && dashboard?.salesStructure ? (
+            <SalesStructure
+              isLoading={isDashboardLoading}
+              data={dashboard.salesStructure}
+            />
+          ) : (
+            <SalesStructureSkeleton />
+          )}
+        </Suspense>
+      </div>
     ),
     currentStats: (
       <div className="flex flex-col gap-2 h-full">
@@ -343,117 +355,134 @@ const Dashboard = () => {
       </div>
     ),
     writeoffsLeaders: (
-      <Suspense fallback={<TopWriteOffSkeleton />}>
-        {!isDashboardLoading && dashboard?.leaderWriteOffs ? (
-          <WriteoffsLeaders
-            data={dashboard.leaderWriteOffs}
-            isLoading={isDashboardLoading}
-          />
-        ) : (
-          <TopWriteOffSkeleton />
-        )}
-      </Suspense>
+      <div data-widget="writeoffsLeaders">
+        <Suspense fallback={<TopWriteOffSkeleton />}>
+          {!isDashboardLoading && dashboard?.leaderWriteOffs ? (
+            <WriteoffsLeaders
+              data={dashboard.leaderWriteOffs}
+              isLoading={isDashboardLoading}
+            />
+          ) : (
+            <TopWriteOffSkeleton />
+          )}
+        </Suspense>
+      </div>
     ),
     loyaltyOrWriteOff:
       session?.role !== ROLES.OFFICE_MM ? (
-        <div className="flex flex-col gap-2 h-full">
-          <Suspense fallback={<LoyaltySkeleton />}>
-            {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
-              <Loyalty
+        <div
+          data-widget="loyaltyOrWriteOff"
+          className="flex flex-col gap-2 h-full"
+        >
+          <div data-widget="loyaltyCard" className="h-full">
+            <Suspense fallback={<LoyaltySkeleton />}>
+              {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
+                <Loyalty
+                  isLoading={isDashboardLoading}
+                  appLoyalPercent={
+                    dashboard.curentAppLoyal.data[0].appLoyalPercent
+                  }
+                  checkLoyal={dashboard.curentAppLoyal.data[0].checkLoyal}
+                />
+              ) : (
+                <LoyaltySkeleton />
+              )}
+            </Suspense>
+          </div>
+          <div data-widget="imRevenue" className="h-full">
+            <Suspense fallback={<ImRevenueSkeleton />}>
+              {!isDashboardLoading && dashboard?.currentCardIm?.data?.[0] ? (
+                <ImRevenue
+                  negative={dashboard.currentCardIm.data[0].negative}
+                  isLoading={isDashboardLoading}
+                  proceedsIm={dashboard.currentCardIm.data[0].proceedsIm}
+                  proceedsImYoY={dashboard.currentCardIm.data[0].proceedsImYoY}
+                  proceedsImYoYPercent={
+                    dashboard.currentCardIm.data[0].proceedsImYoYPercent
+                  }
+                />
+              ) : (
+                <ImRevenueSkeleton />
+              )}
+            </Suspense>
+          </div>
+          <div data-widget="leaderImSales" className="h-full">
+            <Suspense fallback={<LeaderImSalesSkeleton />}>
+              {!isDashboardLoading && dashboard?.bestCardIm?.data?.[0] ? (
+                <LeaderImSales
+                  isLoading={isDashboardLoading}
+                  idStore={dashboard.bestCardIm.data[0].idStore}
+                  proceedsIm={dashboard.bestCardIm.data[0].proceedsIm}
+                  storeName={dashboard.bestCardIm.data[0].storeName}
+                />
+              ) : (
+                <LeaderImSalesSkeleton />
+              )}
+            </Suspense>
+          </div>
+        </div>
+      ) : null,
+    hoursRevenue: (
+      <div data-widget="hoursRevenue">
+        <Suspense fallback={<HoursRevenueSkeleton />}>
+          {!isDashboardLoading && dashboard?.salesHours?.data?.graph ? (
+            <HoursRevenue
+              isLoading={isDashboardLoading}
+              data={dashboard.salesHours.data.graph}
+            />
+          ) : (
+            <HoursRevenueSkeleton />
+          )}
+        </Suspense>
+      </div>
+    ),
+    planPercent:
+      session?.role !== ROLES.OFFICE_MM ? (
+        <div data-widget="planPercent">
+          <Suspense fallback={<PlanPercentSkeleton />}>
+            {!isDashboardLoading && dashboard?.cardOneExe?.data?.[0] ? (
+              <PlanPercent
                 isLoading={isDashboardLoading}
-                appLoyalPercent={
-                  dashboard.curentAppLoyal.data[0].appLoyalPercent
+                planAvgCheckForecastPercent={
+                  dashboard.cardOneExe.data[0].planAvgCheckForecastPercent
                 }
-                checkLoyal={dashboard.curentAppLoyal.data[0].checkLoyal}
-              />
-            ) : (
-              <LoyaltySkeleton />
-            )}
-          </Suspense>
-          <Suspense fallback={<ImRevenueSkeleton />}>
-            {!isDashboardLoading && dashboard?.currentCardIm?.data?.[0] ? (
-              <ImRevenue
-                negative={dashboard.currentCardIm.data[0].negative}
-                isLoading={isDashboardLoading}
-                proceedsIm={dashboard.currentCardIm.data[0].proceedsIm}
-                proceedsImYoY={dashboard.currentCardIm.data[0].proceedsImYoY}
-                proceedsImYoYPercent={
-                  dashboard.currentCardIm.data[0].proceedsImYoYPercent
+                planCheckForecastPercent={
+                  dashboard.cardOneExe.data[0].planCheckForecastPercent
+                }
+                planProceedsForecastPercent={
+                  dashboard.cardOneExe.data[0].planProceedsForecastPercent
+                }
+                planProceedsQcForecastPercent={
+                  dashboard.cardOneExe.data[0].planProceedsQcForecastPercent ||
+                  null
+                }
+                planShareOfPaymentsQcForecastPercent={
+                  dashboard.cardOneExe.data[0]
+                    .planShareOfPaymentsQcForecastPercent || null
                 }
               />
             ) : (
-              <ImRevenueSkeleton />
-            )}
-          </Suspense>
-          <Suspense fallback={<LeaderImSalesSkeleton />}>
-            {!isDashboardLoading && dashboard?.bestCardIm?.data?.[0] ? (
-              <LeaderImSales
-                isLoading={isDashboardLoading}
-                idStore={dashboard.bestCardIm.data[0].idStore}
-                proceedsIm={dashboard.bestCardIm.data[0].proceedsIm}
-                storeName={dashboard.bestCardIm.data[0].storeName}
-              />
-            ) : (
-              <LeaderImSalesSkeleton />
+              <PlanPercentSkeleton />
             )}
           </Suspense>
         </div>
       ) : null,
-    hoursRevenue: (
-      <Suspense fallback={<HoursRevenueSkeleton />}>
-        {!isDashboardLoading && dashboard?.salesHours?.data?.graph ? (
-          <HoursRevenue
-            isLoading={isDashboardLoading}
-            data={dashboard.salesHours.data.graph}
-          />
-        ) : (
-          <HoursRevenueSkeleton />
-        )}
-      </Suspense>
-    ),
-    planPercent:
-      session?.role !== ROLES.OFFICE_MM ? (
-        <Suspense fallback={<PlanPercentSkeleton />}>
-          {!isDashboardLoading && dashboard?.cardOneExe?.data?.[0] ? (
-            <PlanPercent
+    topWriteoffs: (
+      <div data-widget="topWriteoffs">
+        <Suspense fallback={<TopWriteOffSkeleton />}>
+          {!isDashboardLoading && dashboard?.topWriteOff ? (
+            <TopWriteoffs
               isLoading={isDashboardLoading}
-              planAvgCheckForecastPercent={
-                dashboard.cardOneExe.data[0].planAvgCheckForecastPercent
-              }
-              planCheckForecastPercent={
-                dashboard.cardOneExe.data[0].planCheckForecastPercent
-              }
-              planProceedsForecastPercent={
-                dashboard.cardOneExe.data[0].planProceedsForecastPercent
-              }
-              planProceedsQcForecastPercent={
-                dashboard.cardOneExe.data[0].planProceedsQcForecastPercent ||
-                null
-              }
-              planShareOfPaymentsQcForecastPercent={
-                dashboard.cardOneExe.data[0]
-                  .planShareOfPaymentsQcForecastPercent || null
-              }
+              data={dashboard.topWriteOff}
             />
           ) : (
-            <PlanPercentSkeleton />
+            <TopWriteOffSkeleton />
           )}
         </Suspense>
-      ) : null,
-    topWriteoffs: (
-      <Suspense fallback={<TopWriteOffSkeleton />}>
-        {!isDashboardLoading && dashboard?.topWriteOff ? (
-          <TopWriteoffs
-            isLoading={isDashboardLoading}
-            data={dashboard.topWriteOff}
-          />
-        ) : (
-          <TopWriteOffSkeleton />
-        )}
-      </Suspense>
+      </div>
     ),
     todayStats: (
-      <div className="flex flex-col gap-2 h-full">
+      <div data-widget="todayStats" className="flex flex-col gap-2 h-full">
         <Suspense fallback={<TodayRevenueSkeleton />}>
           {!isDashboardLoading && dashboard?.salesHours?.data?.card1 ? (
             <TodayRevenue
@@ -491,16 +520,18 @@ const Dashboard = () => {
       </div>
     ),
     antiLoyalTop: (
-      <Suspense fallback={<AntiLoyalTopSkeleton />}>
-        {!isDashboardLoading && dashboard?.antitopLoyalApp?.data ? (
-          <AntiLoyalTop
-            isLoading={isDashboardLoading}
-            data={dashboard.antitopLoyalApp.data as any}
-          />
-        ) : (
-          <AntiLoyalTopSkeleton />
-        )}
-      </Suspense>
+      <div data-widget="antiLoyalTop">
+        <Suspense fallback={<AntiLoyalTopSkeleton />}>
+          {!isDashboardLoading && dashboard?.antitopLoyalApp?.data ? (
+            <AntiLoyalTop
+              isLoading={isDashboardLoading}
+              data={dashboard.antitopLoyalApp.data as any}
+            />
+          ) : (
+            <AntiLoyalTopSkeleton />
+          )}
+        </Suspense>
+      </div>
     ),
   };
 
