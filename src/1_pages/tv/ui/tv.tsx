@@ -1,4 +1,4 @@
-import { useDashboard } from "../../dashboard/api/controller";
+import { useDashboard, useDashboardData } from "../../dashboard/api/controller";
 import { lazy, Suspense, useCallback, useEffect } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
@@ -102,7 +102,7 @@ const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
 
 export const TV = () => {
-  const { dashboard, isDashboardLoading } = useDashboard();
+  const { dashboard, isDashboardLoading } = useDashboardData();
   const { nightShops, isNightShopsLoading } = useNightShops();
   const { applyFullPreset, setCustomThemeMode, setTheme } = useTheme();
 
