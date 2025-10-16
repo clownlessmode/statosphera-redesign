@@ -1,4 +1,4 @@
-import { useDashboard, useDashboardData } from "../../dashboard/api/controller";
+import { useDashboardData } from "../../dashboard/api/controller";
 import { lazy, Suspense, useCallback, useEffect } from "react";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import MarginSkeleton from "@widgets/dashboard/margin/ui/margin-skeleton";
