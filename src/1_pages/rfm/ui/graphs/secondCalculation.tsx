@@ -7,27 +7,31 @@ import { BarMultiDrilldownChart } from "@shared/ui/bar-multi-drilldown-chart";
 export const SecondCalculation = ({
   graph,
   isLoading,
+  rootName,
+  title,
 }: {
   graph: SecondCalculationResponse;
   isLoading: boolean;
+  rootName: string;
+  title: string;
 }) => {
-  console.log(graph);
   const isSafari = useSafari();
   return (
     <>
       {isLoading ? (
         <StackedLineSkeleton className="h-[400px]" />
       ) : (
-        <Card className="w-full h-[400px] flex flex-col">
+        <Card className="w-full h-[400px] flex flex-col gap-0">
           <CardHeader>
-            <CardTitle className="text-center text-xl font-bold">
-              Количество чеков
+            <CardTitle className="text-center text-base font-extrabold">
+              {title}
             </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
             <BarMultiDrilldownChart
-              allSeries={graph}
-              rootLevel="Сегменты"
+              allSeries={graph.data}
+              rootName={rootName}
+              rootId="things"
               grid={{
                 bottom: isSafari ? 50 : 20,
               }}

@@ -1,6 +1,6 @@
 import { ThirdCalculationResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import { Card, CardHeader, CardTitle } from "@shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import useSafari from "@shared/hooks/use-safari";
 import { TreemapChart } from "@shared/ui/treemap-chart";
 import { Button } from "@shared/ui/button";
@@ -34,11 +34,11 @@ export const ThirdCalculation = ({
               {proceed ? "выручке" : "прибыли"}
             </Button>
           </CardHeader>
-          <div style={{ height: 600, width: "100%" }}>
+          <CardContent className="h-full w-full">
             <TreemapChart
               series={{
                 data: proceed ? graph.childrenProceed : graph.childrenProfit,
-                name: "Сегменты",
+                rootLevel: "Сегменты",
               }}
               grid={{
                 bottom: isSafari ? 50 : 20,
@@ -53,7 +53,7 @@ export const ThirdCalculation = ({
                 `;
               }}
             />
-          </div>
+          </CardContent>
         </Card>
       )}
     </>

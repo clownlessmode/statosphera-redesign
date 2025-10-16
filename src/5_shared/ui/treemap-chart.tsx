@@ -1,7 +1,6 @@
 import ReactECharts from "echarts-for-react";
-import { useTheme } from "@app/providers/theme-provider";
 import { EChartsOption } from "echarts";
-import { graphColors } from "@shared/constants/graph-colors";
+import { useGraphColors } from "@shared/hooks";
 
 interface Data {
   name: string;
@@ -13,7 +12,7 @@ interface Data {
 type TreemapCharProps = {
   series: {
     data: Data[];
-    name: string;
+    rootLevel: string;
   };
   title?: string;
   formatter?: (params: any) => string;
@@ -23,8 +22,7 @@ type TreemapCharProps = {
 };
 
 export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
-  const { theme } = useTheme();
-  const colors = theme === "light" ? graphColors.light : graphColors.dark;
+  const colors = useGraphColors();
 
   const option: EChartsOption = {
     backgroundColor: "transparent",
@@ -45,7 +43,7 @@ export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
     },
     series: {
       leafDepth: 2,
-      name: series.name,
+      name: series.rootLevel,
       type: "treemap",
       emphasis: { focus: "series" },
       data: series.data,

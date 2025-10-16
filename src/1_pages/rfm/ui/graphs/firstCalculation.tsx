@@ -18,7 +18,7 @@ export const FirstCalculation = ({
       {isLoading ? (
         <StackedLineSkeleton className="h-[400px]" />
       ) : (
-        <Card className="h-[400px]">
+        <Card className="h-[400px] col-span-2">
           <div style={{ height: 400, width: "100%" }}>
             <BarChartMultiSeries
               xAxisData={graph.categories}
@@ -40,7 +40,7 @@ export const FirstCalculation = ({
                 }
                 return `${params.value}`;
               }}
-              title={"Количества чеков, выручки и прибыли"}
+              title={"Количество выручки и прибыли"}
             />
           </div>
           {/*<div className="flex flex-col px-4">

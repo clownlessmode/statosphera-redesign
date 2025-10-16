@@ -14,7 +14,7 @@ import {
   FifthCalculationResponse,
   FirstCalculationResponse,
   //FourteenCalculationResponse,
-  //FourthCalculationResponse,
+  FourthCalculationResponse,
   //NinthCalculationResponse,
   SecondCalculationResponse,
   //SeventhCalculationResponse,
@@ -64,21 +64,24 @@ export const Rfm = () => {
       text: [],
     });
   const [secondCalculation, setSecondCalculation] =
-    useState<SecondCalculationResponse>([]);
-  //const [secondCalculationReverse, setSecondCalculationReverse] =
-  //  useState<SecondCalculationResponse>({
-  //    data: [],
-  //  });
+    useState<SecondCalculationResponse>({
+      data: [],
+    });
+  const [secondCalculationReverse, setSecondCalculationReverse] =
+    useState<SecondCalculationResponse>({
+      data: [],
+      text: [],
+    });
   const [thirdCalculation, setThirdCalculation] =
     useState<ThirdCalculationResponse>({
       childrenProceed: [],
       childrenProfit: [],
     });
-  //const [fourthCalculation, setFourthCalculation] =
-  //  useState<FourthCalculationResponse>({
-  //    headers: [],
-  //    dataSourceList: [],
-  //  });
+  const [fourthCalculation, setFourthCalculation] =
+    useState<FourthCalculationResponse>({
+      headers: [],
+      dataSourceList: [],
+    });
   const [fifthCalculation, setFifthCalculation] =
     useState<FifthCalculationResponse>({
       childrenProceed: [],
@@ -154,11 +157,11 @@ export const Rfm = () => {
     isFirstCalculationLoading,
     getSecondCalculation,
     isSecondCalculationLoading,
-    //getSecondCalculationReverse,
+    getSecondCalculationReverse,
     isSecondCalculationReverseLoading,
     getThirdCalculation,
     isThirdCalculationLoading,
-    //getFourthCalculation,
+    getFourthCalculation,
     isFourthCalculationLoading,
     getFifthCalculation,
     isFifthCalculationLoading,
@@ -196,17 +199,17 @@ export const Rfm = () => {
         setSecondCalculation(data);
       });
 
-      //getSecondCalculationReverse(mock.data).then((data) => {
-      //  setSecondCalculationReverse(data);
-      //});
+      getSecondCalculationReverse(mock.data).then((data) => {
+        setSecondCalculationReverse(data);
+      });
 
       getThirdCalculation(mock.data).then((data) => {
         setThirdCalculation(data);
       });
 
-      //getFourthCalculation(mock.data).then((data) => {
-      //  setFourthCalculation(data);
-      //});
+      getFourthCalculation(mock.data).then((data) => {
+        setFourthCalculation(data);
+      });
 
       getFifthCalculation(mock.data).then((data) => {
         setFifthCalculation(data);
@@ -277,7 +280,7 @@ export const Rfm = () => {
     isFourteenCalculationLoading ||
     isFifteenCalculationLoading ||
     isSixteenCalculationLoading;
-
+  console.log(fourthCalculation);
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
@@ -326,11 +329,15 @@ export const Rfm = () => {
               <SecondCalculation
                 graph={secondCalculation}
                 isLoading={isSecondCalculationReverseLoading}
+                title="Количество чеков по сегментам"
+                rootName="Сегменты"
               />
-              {/*<SecondCalculation
+              <SecondCalculation
                 graph={secondCalculationReverse}
                 isLoading={isSecondCalculationReverseLoading}
-              />*/}
+                title="Количество чеков по часам"
+                rootName="Часы"
+              />
               <ThirdCalculation
                 graph={thirdCalculation}
                 isLoading={isThirdCalculationLoading}

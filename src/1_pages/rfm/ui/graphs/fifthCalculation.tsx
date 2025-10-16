@@ -38,7 +38,7 @@ export const FifthCalculation = ({
             <TreemapChart
               series={{
                 data: proceed ? graph.childrenProceed : graph.childrenProfit,
-                name: "Сегменты",
+                rootLevel: "Сегменты",
               }}
               grid={{
                 bottom: isSafari ? 50 : 20,

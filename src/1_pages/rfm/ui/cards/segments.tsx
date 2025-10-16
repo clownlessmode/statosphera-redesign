@@ -305,6 +305,30 @@ export const Segments = ({
                             : "Нет данных"}{" "}
                         </span>
                       </div>
+                      <div className="flex flex-col my-2">
+                        <span className="text-md text-muted-foreground font-semibold">
+                          Выручка
+                        </span>
+                        <span className="mt-1">
+                          {segment.proceedNightClient
+                            ? Math.round(segment.proceedNightClient)
+                                .toLocaleString()
+                                .replace(/,/g, " ")
+                            : "Нет данных"}{" "}
+                        </span>
+                      </div>
+                      <div className="flex flex-col my-2">
+                        <span className="text-md text-muted-foreground font-semibold">
+                          Прибыль
+                        </span>
+                        <span className="mt-1">
+                          {segment.profitNightClient
+                            ? Math.round(segment.profitNightClient)
+                                .toLocaleString()
+                                .replace(/,/g, " ")
+                            : "Нет данных"}{" "}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-lg text-primary/90 font-bold">
@@ -355,6 +379,30 @@ export const Segments = ({
                         <span className="mt-1">
                           {segment.countMMClient
                             ? segment.countMMClient
+                            : "Нет данных"}{" "}
+                        </span>
+                      </div>
+                      <div className="flex flex-col my-2">
+                        <span className="text-md text-muted-foreground font-semibold">
+                          Выручка
+                        </span>
+                        <span className="mt-1">
+                          {segment.proceedMMClient
+                            ? Math.round(segment.proceedMMClient)
+                                .toLocaleString()
+                                .replace(/,/g, " ")
+                            : "Нет данных"}{" "}
+                        </span>
+                      </div>
+                      <div className="flex flex-col my-2">
+                        <span className="text-md text-muted-foreground font-semibold">
+                          Прибыль
+                        </span>
+                        <span className="mt-1">
+                          {segment.profitMMClient
+                            ? Math.round(segment.profitMMClient)
+                                .toLocaleString()
+                                .replace(/,/g, " ")
                             : "Нет данных"}{" "}
                         </span>
                       </div>

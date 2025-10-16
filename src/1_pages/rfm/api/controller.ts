@@ -81,7 +81,7 @@ export const useRfm = () => {
     },
   });
   const fourthCalculation = useMutation<
-    FourthCalculationResponse[],
+    FourthCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -103,7 +103,7 @@ export const useRfm = () => {
     },
   });
   const sixthCalculation = useMutation<
-    SixthCalculationResponse[],
+    SixthCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -115,7 +115,7 @@ export const useRfm = () => {
   });
 
   const seventhCalculation = useMutation<
-    SeventhCalculationResponse[],
+    SeventhCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -161,7 +161,7 @@ export const useRfm = () => {
     },
   });
   const eleventhCalculation = useMutation<
-    EleventhCalculationResponse[],
+    EleventhCalculationResponse,
     ApiError,
     RequestDto
   >({
@@ -172,7 +172,7 @@ export const useRfm = () => {
     },
   });
   const twelfthCalculation = useMutation<
-    TwelfthCalculationResponse[],
+    TwelfthCalculationResponse,
     ApiError,
     RequestDto
   >({

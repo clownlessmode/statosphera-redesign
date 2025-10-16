@@ -1,13 +1,14 @@
 import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import { useGraphColors } from "@shared/hooks";
 
 type SeriesData = [number | string, number, string, string | null][];
 
 type BarMultiDrilldownChartProps = {
   allSeries: SeriesData[];
-  rootLevel: string;
+  rootId: string;
+  rootName: string;
   title?: string;
   formatter?: (params: any) => string;
   grid?: {
@@ -17,12 +18,13 @@ type BarMultiDrilldownChartProps = {
 
 export const BarMultiDrilldownChart = ({
   allSeries,
-  rootLevel,
+  rootName,
+  rootId,
   formatter,
   title,
   grid,
 }: BarMultiDrilldownChartProps) => {
-  const [history, setHistory] = useState([{ id: "things", name: rootLevel }]);
+  const [history, setHistory] = useState([{ id: rootId, name: rootName }]); // устанавливаем rootId(третий элемент первого массива), как начальный id
   const current = history[history.length - 1].id; //Устанавливаем верхний уровень, как текущий
   const colors = useGraphColors();
 
@@ -155,7 +157,7 @@ export const BarMultiDrilldownChart = ({
       {/* Блок с "хлебными крошками" */}
       <div className="flex items-center gap-2 p-4 text-sm">
         {history.map((level, index) => (
-          <>
+          <Fragment key={index}>
             {index > 0 && (
               <span className={`text-muted-foreground select-none`}>/</span>
             )}
@@ -173,7 +175,7 @@ export const BarMultiDrilldownChart = ({
             >
               {level.name}
             </button>
-          </>
+          </Fragment>
         ))}
       </div>
 
