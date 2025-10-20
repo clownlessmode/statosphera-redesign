@@ -13,7 +13,10 @@ const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
   return (
     <>
       {!isLoading && data && data.data ? (
-        <Card className="w-full h-[400px] flex flex-col">
+        <Card
+          className="w-full h-[400px] flex flex-col"
+          data-testid="writeoffs-groups-widget"
+        >
           <CardHeader>
             <CardTitle>Аутсайдеры по группам списаний</CardTitle>
           </CardHeader>

@@ -363,7 +363,7 @@ const WriteOffInfinityTable: React.FC<WriteOffInfinityTableProps> = ({
     ],
   );
 
-  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight]);
+  const agTheme = useMemo(() => getAgGridTheme(), [isLight]);
   useEffect(() => {
     selectedRowsRef.current = selectedRows;
   }, [selectedRows]);

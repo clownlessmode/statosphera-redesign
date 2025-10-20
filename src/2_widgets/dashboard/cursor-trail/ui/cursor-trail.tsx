@@ -62,9 +62,9 @@ const romanticColors = [
 
 export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
   const [hearts, setHearts] = useState<CursorHeart[]>([]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   const { settings } = useEffectsSettings();
-  console.log(mousePosition);
+
   // Если эффект отключен в настройках или у пользователя нет доступа, не рендерим компонент
   if (!settings.cursorTrailEnabled || !hasEffectsAccess(userId)) {
     return null;
@@ -76,8 +76,6 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ userId }) => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-
       // Создаем новое сердечко каждые 100ms при движении мыши
       const newHeart: CursorHeart = {
         id: Date.now() + Math.random(),

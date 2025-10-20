@@ -258,6 +258,7 @@ function SidebarTrigger({
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
+      data-testid="sidebar"
       variant="ghost"
       size="icon"
       className={cn("size-7", className)}

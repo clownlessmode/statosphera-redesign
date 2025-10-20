@@ -14,7 +14,10 @@ const ChannelRevenue = ({ isLoading, data, tv }: ChannelRevenueProps) => {
   return (
     <>
       {!isLoading && data && data.data ? (
-        <Card className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}>
+        <Card
+          className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}
+          data-testid="channel-revenue-widget"
+        >
           <CardHeader>
             <CardTitle className="text-center">
               Распределение по каналам продаж

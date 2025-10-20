@@ -1,6 +1,8 @@
 import { Header } from "@widgets/header";
 import { useDashboardData } from "../api/controller";
 import { lazy, Suspense, useMemo, ReactNode } from "react";
+
+import { DashboardJoyride } from "./dashboard-joyride";
 import WeeklyRevenueSkeleton from "@widgets/dashboard/weekly-revenue/ui/weekly-revenue-skeleton";
 import {
   DndContext,
@@ -170,7 +172,7 @@ const Dashboard = () => {
   // Создаем маппинг виджетов
   const widgetsMap: Record<string, ReactNode> = {
     weeklyRevenue: (
-      <div data-widget="weeklyRevenue">
+      <div data-widget="weeklyRevenue" data-testid="widget-revenue">
         <Suspense fallback={<WeeklyRevenueSkeleton />}>
           {!isDashboardLoading && dashboard?.salesSevenDays ? (
             <WeeklyRevenue
@@ -185,7 +187,9 @@ const Dashboard = () => {
     ),
     nps: (
       <div data-widget="nps">
-        <Nps />
+        <div data-testid="widget-nps">
+          <Nps />
+        </div>
       </div>
     ),
     channelRevenue: (
@@ -205,7 +209,11 @@ const Dashboard = () => {
     stats: (
       <div data-widget="stats" className="flex flex-col gap-2 h-fit ">
         <div className="flex flex-row gap-2">
-          <div data-widget="margin" className="w-full h-full">
+          <div
+            data-widget="margin"
+            data-testid="widget-margin"
+            className="w-full h-full"
+          >
             <Suspense fallback={<MarginSkeleton />}>
               {!isDashboardLoading && dashboard?.curentMarzha?.data?.[0] ? (
                 <Margin
@@ -217,7 +225,11 @@ const Dashboard = () => {
               )}
             </Suspense>
           </div>
-          <div data-widget="markup" className="w-full h-full">
+          <div
+            data-widget="markup"
+            data-testid="widget-markup"
+            className="w-full h-full"
+          >
             <Suspense fallback={<MarkupSkeleton />}>
               {!isDashboardLoading && dashboard?.curentMarkup?.data?.[0] ? (
                 <Markup
@@ -231,7 +243,10 @@ const Dashboard = () => {
             </Suspense>
           </div>
         </div>
-        <div data-widget="writeOffIndicator">
+        <div
+          data-widget="writeOffIndicator"
+          data-testid="widget-writeoff-indicator"
+        >
           <Suspense fallback={<WriteOffIndicatorSkeleton />}>
             {!isDashboardLoading && dashboard?.curentWriteOff?.data?.[0] ? (
               <WriteOffIndicator
@@ -252,7 +267,11 @@ const Dashboard = () => {
           </Suspense>
         </div>
         {session?.role == ROLES.OFFICE_MM && (
-          <div data-widget="loyalty" className="h-full">
+          <div
+            data-widget="loyalty"
+            data-testid="widget-loyalty"
+            className="h-full"
+          >
             <Suspense fallback={<LoyaltySkeleton />}>
               {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
                 <Loyalty
@@ -295,7 +314,7 @@ const Dashboard = () => {
       </div>
     ),
     salesStructure: (
-      <div data-widget="salesStructure">
+      <div data-widget="salesStructure" data-testid="widget-sales-structure">
         <Suspense fallback={<SalesStructureSkeleton />}>
           {!isDashboardLoading && dashboard?.salesStructure ? (
             <SalesStructure
@@ -309,7 +328,7 @@ const Dashboard = () => {
       </div>
     ),
     currentStats: (
-      <div className="flex flex-col gap-2 h-full">
+      <div className="flex flex-col gap-2 h-full" data-testid="widget-orders">
         <Suspense fallback={<CurrentRevenueSkeleton />}>
           {!isDashboardLoading && dashboard?.curentMonth?.data?.[0] ? (
             <CurrentRevenue
@@ -355,7 +374,10 @@ const Dashboard = () => {
       </div>
     ),
     writeoffsLeaders: (
-      <div data-widget="writeoffsLeaders">
+      <div
+        data-widget="writeoffsLeaders"
+        data-testid="widget-writeoffs-leaders"
+      >
         <Suspense fallback={<TopWriteOffSkeleton />}>
           {!isDashboardLoading && dashboard?.leaderWriteOffs ? (
             <WriteoffsLeaders
@@ -373,8 +395,13 @@ const Dashboard = () => {
         <div
           data-widget="loyaltyOrWriteOff"
           className="flex flex-col gap-2 h-full"
+          data-testid="widget-customers"
         >
-          <div data-widget="loyaltyCard" className="h-full">
+          <div
+            data-widget="loyaltyCard"
+            data-testid="widget-loyalty"
+            className="h-full"
+          >
             <Suspense fallback={<LoyaltySkeleton />}>
               {!isDashboardLoading && dashboard?.curentAppLoyal?.data?.[0] ? (
                 <Loyalty
@@ -389,7 +416,11 @@ const Dashboard = () => {
               )}
             </Suspense>
           </div>
-          <div data-widget="imRevenue" className="h-full">
+          <div
+            data-widget="imRevenue"
+            data-testid="widget-im-revenue"
+            className="h-full"
+          >
             <Suspense fallback={<ImRevenueSkeleton />}>
               {!isDashboardLoading && dashboard?.currentCardIm?.data?.[0] ? (
                 <ImRevenue
@@ -406,7 +437,11 @@ const Dashboard = () => {
               )}
             </Suspense>
           </div>
-          <div data-widget="leaderImSales" className="h-full">
+          <div
+            data-widget="leaderImSales"
+            data-testid="widget-leader-im-sales"
+            className="h-full"
+          >
             <Suspense fallback={<LeaderImSalesSkeleton />}>
               {!isDashboardLoading && dashboard?.bestCardIm?.data?.[0] ? (
                 <LeaderImSales
@@ -423,7 +458,7 @@ const Dashboard = () => {
         </div>
       ) : null,
     hoursRevenue: (
-      <div data-widget="hoursRevenue">
+      <div data-widget="hoursRevenue" data-testid="chart-widget">
         <Suspense fallback={<HoursRevenueSkeleton />}>
           {!isDashboardLoading && dashboard?.salesHours?.data?.graph ? (
             <HoursRevenue
@@ -438,7 +473,7 @@ const Dashboard = () => {
     ),
     planPercent:
       session?.role !== ROLES.OFFICE_MM ? (
-        <div data-widget="planPercent">
+        <div data-widget="planPercent" data-testid="widget-plan-percent">
           <Suspense fallback={<PlanPercentSkeleton />}>
             {!isDashboardLoading && dashboard?.cardOneExe?.data?.[0] ? (
               <PlanPercent
@@ -468,7 +503,7 @@ const Dashboard = () => {
         </div>
       ) : null,
     topWriteoffs: (
-      <div data-widget="topWriteoffs">
+      <div data-widget="topWriteoffs" data-testid="widget-top-writeoffs">
         <Suspense fallback={<TopWriteOffSkeleton />}>
           {!isDashboardLoading && dashboard?.topWriteOff ? (
             <TopWriteoffs
@@ -482,7 +517,11 @@ const Dashboard = () => {
       </div>
     ),
     todayStats: (
-      <div data-widget="todayStats" className="flex flex-col gap-2 h-full">
+      <div
+        data-widget="todayStats"
+        data-testid="widget-today-stats"
+        className="flex flex-col gap-2 h-full"
+      >
         <Suspense fallback={<TodayRevenueSkeleton />}>
           {!isDashboardLoading && dashboard?.salesHours?.data?.card1 ? (
             <TodayRevenue
@@ -520,7 +559,7 @@ const Dashboard = () => {
       </div>
     ),
     antiLoyalTop: (
-      <div data-widget="antiLoyalTop">
+      <div data-widget="antiLoyalTop" data-testid="widget-anti-loyal-top">
         <Suspense fallback={<AntiLoyalTopSkeleton />}>
           {!isDashboardLoading && dashboard?.antitopLoyalApp?.data ? (
             <AntiLoyalTop
@@ -536,53 +575,58 @@ const Dashboard = () => {
   };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
-        <div className="dashboard-header">
-          <Header title="Главная" />
-        </div>
-        {/* Анимации для пользователей с доступом к эффектам */}
-        {userHasEffectsAccess && (
-          <>
-            <FlyingHearts userId={session?.idUser} />
-            <CursorTrail userId={session?.idUser} />
-          </>
-        )}
-        <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
-          <div className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
-            {hasPersonalMessages && (
-              <div
-                className={`col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance flex justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
-                style={{
-                  backgroundColor:
-                    effectsSettings.personalMessagesStyle.backgroundColor,
-                  borderColor:
-                    effectsSettings.personalMessagesStyle.borderColor,
-                  color: effectsSettings.personalMessagesStyle.textColor,
-                }}
-              >
-                {randomMessage}
-              </div>
-            )}
-            {widgetOrder.map((widgetId) => {
-              const widget = widgetsMap[widgetId];
-              // Пропускаем виджеты которые null (зависят от роли)
-              if (!widget) return null;
-
-              return (
-                <DraggableWidget key={widgetId} id={widgetId}>
-                  {widget}
-                </DraggableWidget>
-              );
-            })}
+    <DashboardJoyride>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
+          <div className="dashboard-header" data-testid="header">
+            <Header title="Главная" />
           </div>
-        </SortableContext>
-      </div>
-    </DndContext>
+          {/* Анимации для пользователей с доступом к эффектам */}
+          {userHasEffectsAccess && (
+            <>
+              <FlyingHearts userId={session?.idUser} />
+              <CursorTrail userId={session?.idUser} />
+            </>
+          )}
+          <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
+            <div
+              className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+              data-testid="widget-grid"
+            >
+              {hasPersonalMessages && (
+                <div
+                  className={`col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance flex justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
+                  style={{
+                    backgroundColor:
+                      effectsSettings.personalMessagesStyle.backgroundColor,
+                    borderColor:
+                      effectsSettings.personalMessagesStyle.borderColor,
+                    color: effectsSettings.personalMessagesStyle.textColor,
+                  }}
+                >
+                  {randomMessage}
+                </div>
+              )}
+              {widgetOrder.map((widgetId) => {
+                const widget = widgetsMap[widgetId];
+                // Пропускаем виджеты которые null (зависят от роли)
+                if (!widget) return null;
+
+                return (
+                  <DraggableWidget key={widgetId} id={widgetId}>
+                    {widget}
+                  </DraggableWidget>
+                );
+              })}
+            </div>
+          </SortableContext>
+        </div>
+      </DndContext>
+    </DashboardJoyride>
   );
 };
 

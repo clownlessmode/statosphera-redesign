@@ -16,17 +16,29 @@ import {
   Map,
   Store,
 } from "lucide-react";
+import { useTourState } from "@entities/lessons";
 import { Cities, Regions, Stores, Summary } from "./tabs";
 
 export const Modal = () => {
+  const isTourActive = useTourState();
+
   return (
-    <Dialog>
+    <Dialog modal={!isTourActive}>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button className="w-full" data-testid="nps-details-button">
           Подробнее <ArrowUpRightIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-[900px] flex flex-col">
+      <DialogContent
+        className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-fit min-h-[600px] flex flex-col"
+        data-testid="nps-modal"
+        onInteractOutside={(e) => {
+          // Предотвращаем закрытие модалки при активном туре
+          if (isTourActive) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>NPS Аналитика</DialogTitle>
           <DialogDescription>
@@ -36,19 +48,19 @@ export const Modal = () => {
         <Separator />
         <Tabs className="w-full flex-1">
           <TabsList className="w-full max-md:h-max max-md:grid grid-cols-1 xxs:grid-cols-2">
-            <TabsTrigger value="summary">
+            <TabsTrigger value="summary" data-testid="nps-tab-summary">
               <ChartBar />
               Сводка
             </TabsTrigger>
-            <TabsTrigger value="cities">
+            <TabsTrigger value="cities" data-testid="nps-tab-cities">
               <Building2 />
               Города
             </TabsTrigger>
-            <TabsTrigger value="regions">
+            <TabsTrigger value="regions" data-testid="nps-tab-regions">
               <Map />
               Регионы
             </TabsTrigger>
-            <TabsTrigger value="stores">
+            <TabsTrigger value="stores" data-testid="nps-tab-stores">
               <Store />
               Магазины
             </TabsTrigger>

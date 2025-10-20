@@ -30,7 +30,10 @@ const WriteoffsLeaders = ({ isLoading, data, tv }: WriteoffsLeadersProps) => {
     });
   };
   return (
-    <Card className={cn("w-full h-full flex flex-col", !tv && "md:h-[400px]")}>
+    <Card
+      className={cn("w-full h-full flex flex-col", !tv && "md:h-[400px]")}
+      data-testid="writeoffs-leaders-widget"
+    >
       <CardHeader>
         {isLoading || !data ? (
           <CardTitle>

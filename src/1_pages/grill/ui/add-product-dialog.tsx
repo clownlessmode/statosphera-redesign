@@ -110,14 +110,12 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
 
     setSelectedProducts(allProductIds);
 
-    const selectedProductNames = selectedValues.map((productIdString) => {
+    selectedValues.map((productIdString) => {
       const product = products?.find(
         (p) => p.idProduct.join(",") === productIdString,
       );
       return product?.productName || productIdString;
     });
-    console.log("Выбранные продукты:", selectedProductNames);
-    console.log("Выбранные ID (массив чисел):", allProductIds);
   };
 
   const handleRemoveProduct = (idToRemove: number) => {
@@ -129,13 +127,11 @@ const AddProductDialog = ({ isOpen, onClose }: Props) => {
 
   const handleSubmit = async () => {
     if (selectedProducts.length === 0) {
-      console.log("Нет выбранных продуктов");
       return;
     }
 
     try {
-      const result = await addProductIm({ idProduct: selectedProducts });
-      console.log("Продукты успешно добавлены:", result);
+      await addProductIm({ idProduct: selectedProducts });
       setSelectedProducts([]);
       onClose();
     } catch (error) {

@@ -21,7 +21,7 @@ const ProfileBadge = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="user-menu">
           <User />
           <p className="hidden lg:block">
             {formatShortName(session?.userName)}

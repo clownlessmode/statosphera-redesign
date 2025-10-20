@@ -39,7 +39,6 @@ export default function UniversalTable({
   useEffect(() => {
     if (!data?.length) return;
     const first = data[0];
-    console.log(first);
 
     // Основные колонки
     const baseDefs: ColDef[] =
@@ -110,14 +109,14 @@ export default function UniversalTable({
     () => ({ resizable: true, cellStyle: { textAlign: "center" } }),
     [],
   );
-  const agTheme = useMemo(() => getAgGridTheme(isLight), [isLight, theme]);
+  const agTheme = useMemo(() => getAgGridTheme(), [theme]);
   const gridApiRef = useRef<any>(null);
 
   // Принудительно обновляем тему при смене
   useEffect(() => {
     if (gridApiRef.current) {
       setTimeout(() => {
-        const newTheme = getAgGridTheme(isLight);
+        const newTheme = getAgGridTheme();
         gridApiRef.current?.setGridOption("theme", newTheme);
         gridApiRef.current?.redrawRows();
       }, 1);
@@ -180,7 +179,6 @@ export default function UniversalTable({
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         overlayNoRowsTemplate="Нет данных для отображения"
         onGridReady={(params) => {
-          console.log("onGridReady called");
           const api = params.api;
           gridApiRef.current = api;
           const colsToSize = api
@@ -194,9 +192,7 @@ export default function UniversalTable({
 
           // Добавляем обработчик сортировки
           if (onSortChange) {
-            console.log("Adding sort listener");
             api.addEventListener("sortChanged", (e: any) => {
-              console.log("sortChanged event fired");
               try {
                 // Пробуем получить информацию о сортировке из columns
                 if (e.columns && e.columns.length > 0) {
@@ -204,10 +200,7 @@ export default function UniversalTable({
                   const colId = column.getColId();
                   const sort = column.getSort();
 
-                  console.log("Sort info extracted:", { colId, sort });
-
                   if (colId && sort) {
-                    console.log("Calling onSortChange with:", { sort, colId });
                     onSortChange({ sort, colId });
                   }
                 }
