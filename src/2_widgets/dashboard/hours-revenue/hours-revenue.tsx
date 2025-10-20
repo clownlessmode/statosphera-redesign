@@ -23,8 +23,7 @@ const HoursRevenue = ({ isLoading, data, tv }: HoursRevenueProps) => {
       containLabel: true,
     },
     legend: {
-      data: ["Выбранный период", "Прошлый год"],
-      top: 20,
+      show: false,
     },
     toolbox: {
       show: false,
@@ -82,6 +81,7 @@ const HoursRevenue = ({ isLoading, data, tv }: HoursRevenueProps) => {
             "w-full h-[400px] flex flex-col",
             tv && "border-0 pt-0 h-full",
           )}
+          data-testid="hours-revenue-widget"
         >
           <CardHeader>
             <CardTitle className="text-center">

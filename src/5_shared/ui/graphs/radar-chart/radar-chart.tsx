@@ -76,7 +76,7 @@ export const RadarChart = ({
         radius: isMobile ? "45%" : "65%",
         center: ["50%", "55%"],
         shape: "polygon",
-        name: {
+        axisName: {
           show: true,
           color: colors.text,
           fontSize: 12,

@@ -78,8 +78,6 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
   const sendToEveryone = form.watch("sendToEveryone");
 
   // Отладочная информация
-  const formValues = form.watch();
-  const formErrors = form.formState.errors;
   const isValid = form.formState.isValid;
 
   // Кастомная валидация для messageContent
@@ -87,24 +85,9 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
     messageContent && messageContent.trim() !== "" && messageContent !== "[]";
   const isFormValid = isValid && hasMessageContent;
 
-  console.log("🔍 Состояние формы:", {
-    values: formValues,
-    errors: formErrors,
-    isValid,
-    isCreating,
-    messageContent,
-    hasMessageContent,
-    isFormValid,
-  });
-
   const onSubmit = async (data: NotificationFormData) => {
-    console.log("🚀 Начало отправки формы:", data);
-    console.log("📝 Содержимое сообщения:", messageContent);
-
     // Дополнительная проверка содержимого сообщения
     if (!hasMessageContent) {
-      console.log("❌ Нет содержимого сообщения");
-
       return;
     }
 
@@ -118,27 +101,20 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
         type: data.type,
       };
 
-      console.log("📤 Данные для отправки:", notificationData);
-
       if (data.sendToEveryone) {
-        console.log("🌍 Отправка всем пользователям...");
         await createNotificationForEveryone(notificationData);
-        console.log("✅ Уведомление отправлено всем пользователям");
         toast.success("Уведомление отправлено всем пользователям");
       } else {
         if (!data.users || data.users.length === 0) {
-          console.log("❌ Не выбраны пользователи");
           toast.error("Выберите хотя бы одного пользователя");
           return;
         }
 
-        console.log("👥 Отправка выбранным пользователям:", data.users);
         // Send to multiple users
         const promises = data.users.map((userId) =>
           createNotification({ ...notificationData, user: parseInt(userId) }),
         );
         await Promise.all(promises);
-        console.log("✅ Уведомления отправлены пользователям");
         toast.success(
           `Уведомление отправлено ${data.users.length} пользователям`,
         );
@@ -343,16 +319,7 @@ export const NotificationForm = ({ onSuccess }: NotificationFormProps) => {
               type="submit"
               disabled={isCreating || !isFormValid}
               className="w-full"
-              onClick={() => {
-                console.log("🔘 Клик по кнопке:", {
-                  isCreating,
-                  isValid,
-                  hasMessageContent,
-                  isFormValid,
-                  formErrors,
-                  formValues,
-                });
-              }}
+              onClick={() => {}}
             >
               {isCreating ? "Создание..." : "Создать уведомление"}
             </Button>

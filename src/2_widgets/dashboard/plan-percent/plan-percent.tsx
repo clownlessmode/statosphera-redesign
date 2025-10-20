@@ -29,7 +29,10 @@ const PlanPercent = ({
         planProceedsForecastPercent ||
         planProceedsQcForecastPercent ||
         planShareOfPaymentsQcForecastPercent) ? (
-        <Card className={cn("w-full h-full flex flex-col", !tv && "h-[400px]")}>
+        <Card
+          className={cn("w-full h-full flex flex-col", !tv && "h-[400px]")}
+          data-testid="plan-percent-widget"
+        >
           <CardHeader>
             <CardTitle className="text-center">
               Процент выполнения плана

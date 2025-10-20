@@ -51,14 +51,10 @@ export const DataSubmitButton = () => {
     clearAll();
     const allData = getApiPayload();
 
-    console.log("🔄 Обновление данных и номенклатуры (исходные):", allData);
-
     const processedData = {
       ...allData,
       filters: parseAllStringArrays(allData.filters),
     };
-
-    console.log("Обработанные данные:", processedData);
 
     const newParams = new URLSearchParams(searchParams);
     newParams.set("open", "false");
@@ -67,7 +63,6 @@ export const DataSubmitButton = () => {
     try {
       const nomenklaturaResponse = await getNomenklatura(processedData);
       setNomenklatura(nomenklaturaResponse);
-      console.log("✅ Номенклатура обновлена");
     } catch (error) {
       console.error("❌ Error fetching nomenklatura:", error);
     }

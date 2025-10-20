@@ -21,7 +21,10 @@ const Loyalty = ({ appLoyalPercent, checkLoyal, isLoading, tv }: Props) => {
       {isLoading ? (
         <LoyaltySkeleton />
       ) : (
-        <Card className="w-full h-full gap-1 flex flex-col justify-between py-2">
+        <Card
+          className="w-full h-full gap-1 flex flex-col justify-between py-2"
+          data-testid="loyalty-widget"
+        >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>Применение карт лояльности</CardTitle>

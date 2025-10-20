@@ -36,6 +36,7 @@ const AverageCheck = ({
             "w-full h-full gap-1 flex flex-col py-2 justify-between",
             tv && "py-2",
           )}
+          data-testid="average-check-widget"
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">

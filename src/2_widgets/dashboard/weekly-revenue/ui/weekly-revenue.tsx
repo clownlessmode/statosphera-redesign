@@ -22,6 +22,7 @@ export default function WeeklyRevenue({
         "w-full h-[400px] flex flex-col",
         tv && "h-full border-0 pt-0",
       )}
+      data-testid="weekly-revenue-widget"
     >
       <CardHeader>
         {isLoading || !data ? (
