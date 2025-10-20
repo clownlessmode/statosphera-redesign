@@ -21,8 +21,11 @@ export const Regions = ({ tv }: { tv?: boolean }) => {
     <div
       className={cn(
         "grid grid-cols-1 gap-2 w-full h-full scrollbar-hide pb-6",
-        !tv && "md:grid-cols-2 max-h-[450px] overflow-y-auto",
+        !tv && "md:grid-cols-2 h-[450px] overflow-y-auto",
       )}
+      style={{
+        gridAutoRows: "max-content",
+      }}
     >
       {tv && (
         <div className="col-span-full">
@@ -34,7 +37,7 @@ export const Regions = ({ tv }: { tv?: boolean }) => {
           <Card
             key={item.id_region}
             className={cn(
-              "w-max-content gap-2",
+              "w-max-content gap-2 h-fit",
               tv && "bg-background border-0 pt-1 pb-1",
             )}
           >
