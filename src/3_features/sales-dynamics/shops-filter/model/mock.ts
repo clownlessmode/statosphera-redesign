@@ -53,6 +53,7 @@ export const status = [
     label: "Открытые",
     value: STORE_CONDITIONS.OPEN,
     icon: LockOpen,
+    "data-testid": "status-open",
   },
   {
     label: "Закрытые",

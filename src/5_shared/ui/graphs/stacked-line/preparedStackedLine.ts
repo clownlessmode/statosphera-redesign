@@ -48,11 +48,15 @@ export const usePreparedStackedLine = (isMobile?: boolean) => {
                 formatter: (args: any) => {
                   if (!isMobile) {
                     if (args.data[1]) {
-                      return divideNumberSpaces(Math.round(args.data[1]));
+                      return divideNumberSpaces(
+                        Math.round(args.data[1] * 10) / 10,
+                      );
                     }
                   } else {
                     if (args.data[1] % 2 === 0) {
-                      return divideNumberSpaces(Math.round(args.data[1]));
+                      return divideNumberSpaces(
+                        Math.round(args.data[1] * 10) / 10,
+                      );
                     }
                     return "";
                   }

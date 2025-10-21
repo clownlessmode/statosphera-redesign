@@ -248,12 +248,18 @@ export const Loyalty = () => {
                 title="Начислено бонусов"
                 unit="M"
                 value={loyalCard2?.bonusAccrual ?? 0}
+                formatter={(value) =>
+                  Math.round(value / 1000).toLocaleString("ru-RU")
+                }
                 isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Списано бонусов"
                 unit="M"
                 value={loyalCard2?.bonusWriteOff ?? 0 / 1000000}
+                formatter={(value) =>
+                  Math.round(value / 1000).toLocaleString("ru-RU")
+                }
                 isLoading={isLoyalCard2Loading}
               />
               <ValueCard
@@ -278,8 +284,11 @@ export const Loyalty = () => {
                   <ValueCard
                     title="Доп. выручка"
                     isLoading={isLoyalCard2Loading}
-                    value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
+                    value={(loyalCard2?.proceedsAdditionalLoyal ?? 0) / 1000000}
                     unit="M"
+                    formatter={(value) =>
+                      Math.round(value * 1000).toLocaleString("ru-RU")
+                    }
                   />
                   <ValueCard
                     title="Доля доп. выручки"
@@ -309,8 +318,11 @@ export const Loyalty = () => {
                 <ValueCard
                   title="Доп. выручка"
                   isLoading={isLoyalCard2Loading}
-                  value={loyalCard2?.proceedsAdditionalLoyal ?? 0 / 1000000}
+                  value={(loyalCard2?.proceedsAdditionalLoyal ?? 0) / 1000000}
                   unit="M"
+                  formatter={(value) =>
+                    Math.round(value * 1000).toLocaleString("ru-RU")
+                  }
                 />
                 <ValueCard
                   title="Доля доп. выручки"
