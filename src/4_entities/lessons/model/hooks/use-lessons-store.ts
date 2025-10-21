@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { LessonProgress, LessonsStore } from "../../config";
 import { LESSONS_MOCK } from "../mock";
 import { TESTS_MOCK } from "../tests-mock";
+import { getTourStepsCount } from "../utils/get-tour-steps-count";
 /**
  * Создает начальный объект прогресса для урока
  */
@@ -61,14 +62,7 @@ export const useLessonsStore = create<LessonsStore>()(
 
       // Получить количество шагов тура для урока
       getTourStepsCount: (lessonId: number) => {
-        // Для урока "Дашборд" (id: 1) - количество шагов из dashboard-joyride.tsx
-        if (lessonId === 1) {
-          return 20; // Реальное количество шагов в туре дашборда (убрали дублирующий шаг)
-        }
-
-        // Для других уроков можно добавить их количество шагов
-        // Пока возвращаем дефолтное значение
-        return 10;
+        return getTourStepsCount(lessonId);
       },
 
       // Получить количество вопросов в тесте для урока

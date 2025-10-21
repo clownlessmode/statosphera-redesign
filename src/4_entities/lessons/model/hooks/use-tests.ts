@@ -87,15 +87,25 @@ export const useTests = () => {
           const correctValue = question.correctAnswers[0] as number;
           const userValue = userAnswer[0] as number;
           isCorrect = correctValue === userValue;
-        } else if (
-          question.type === "order-cards" ||
-          question.type === "drag-drop"
-        ) {
+        } else if (question.type === "order-cards") {
           // Сравниваем массивы строк
           const correctOrder = question.correctAnswers as string[];
           const userOrder = userAnswer as string[];
           isCorrect =
             JSON.stringify(correctOrder) === JSON.stringify(userOrder);
+        } else if (question.type === "drag-drop") {
+          // Для drag-drop извлекаем категории из ответов пользователя
+          const correctCategories = question.correctAnswers as string[];
+          const userCategories = (userAnswer as string[]).map(
+            (answer) => answer.split(":")[0], // Извлекаем категорию до двоеточия
+          );
+
+          // Сортируем массивы для корректного сравнения
+          const sortedCorrect = [...correctCategories].sort();
+          const sortedUser = [...userCategories].sort();
+
+          isCorrect =
+            JSON.stringify(sortedCorrect) === JSON.stringify(sortedUser);
         }
 
         return {
