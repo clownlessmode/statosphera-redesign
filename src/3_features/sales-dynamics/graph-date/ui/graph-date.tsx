@@ -17,6 +17,7 @@ import { Button } from "@shared/ui/button";
 import { create } from "zustand";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { cn } from "@shared/lib/utils";
+import { useDropdownTourStore } from "@pages/sales-dynamics/ui/dropdown-tour-store";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -86,12 +87,14 @@ const GraphDate = () => {
   ];
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
+  const { setIsWaitingForDropdown } = useDropdownTourStore();
 
   return (
     <DropdownMenu
       open={isOpen}
       onOpenChange={(open) => {
         setIsOpen(open);
+        setIsWaitingForDropdown(open);
         console.log("🔄 [DROPDOWN] State changed to:", open);
       }}
     >

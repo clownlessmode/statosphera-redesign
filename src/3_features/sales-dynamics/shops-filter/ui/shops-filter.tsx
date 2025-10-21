@@ -40,12 +40,14 @@ import { Badge } from "@shared/ui/badge";
 import { useChannel } from "@widgets/report/sheet/ui/side/shops-filter/model/hooks/use-channel";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useTourState } from "@entities/lessons";
+import { useShopsFilterTourStore } from "@pages/sales-dynamics/ui/shops-filter-tour-store";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm();
   const { updateFilters, getApiPayload } = useSalesDynamicsFiltersStore();
   const isTourActive = useTourState();
+  const { setIsWaitingForShopsFilter } = useShopsFilterTourStore();
 
   const allData = getApiPayload();
   const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
@@ -87,9 +89,18 @@ const ShopsFilter = () => {
   const { CHANNEL_SHOP } = useChannel();
   const isMobile = useIsMobile();
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={!isTourActive}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (open) {
+          setIsWaitingForShopsFilter(true);
+        }
+      }}
+      modal={!isTourActive}
+    >
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="shops-filter">
           <Store /> {!isMobile && "Магазины"}
           {!isMobile && allData.filters.idStore.length > 0 && (
             <Badge>{allData.filters.idStore.length}</Badge>

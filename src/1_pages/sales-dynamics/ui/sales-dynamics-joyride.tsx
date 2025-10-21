@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTourProvider } from "@entities/lessons";
 import { useDropdownStore } from "@features/sales-dynamics/graph-date/ui/graph-date";
+import { useDropdownTourStore } from "./dropdown-tour-store";
+import { useShopsFilterTourStore } from "./shops-filter-tour-store";
 
 interface SalesDynamicsJoyrideProps {
   children: React.ReactNode;
@@ -48,6 +50,14 @@ export const salesDynamicsSteps = [
     hideNextButton: true,
   },
   {
+    selector: "[data-radix-menu-content]",
+    content:
+      "Выберите группировку данных. Рекомендуем выбрать 'Помесячно' для лучшей визуализации трендов.",
+    position: "left" as const,
+    action: "select-dropdown-option",
+    hideNextButton: true,
+  },
+  {
     selector: '[data-testid="shops-filter"]',
     content:
       "Фильтр по магазинам. Выберите конкретные магазины или регионы для анализа.",
@@ -59,8 +69,16 @@ export const salesDynamicsSteps = [
     selector: '[data-testid="shops-filter-modal"]',
     content:
       "Настройка фильтра магазинов. Выберите каналы продаж и регионы для детального анализа.",
-    position: "center" as const,
+    position: "left" as const,
     action: "select-shops",
+    hideNextButton: true,
+  },
+  {
+    selector: '[data-testid="shops-filter-modal"] [data-testid="status-open"]',
+    content:
+      "Выберите статус 'Открытые' для фильтрации только работающих магазинов.",
+    position: "left" as const,
+    action: "select-status-open",
     hideNextButton: true,
   },
   {
@@ -139,53 +157,20 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
   children,
   onTourComplete,
 }) => {
-  const { isActive, nextStep } = useTourProvider();
+  const { startTour, isActive, nextStep } = useTourProvider();
   const steps = salesDynamicsSteps;
   const [waitingForModal, setWaitingForModal] = useState(false);
   const [modalTourActive, setModalTourActive] = useState(false);
-  const [waitingForDropdown, setWaitingForDropdown] = useState(false);
   const { isOpen: isDropdownOpen } = useDropdownStore();
-
-  // Логируем состояние тура
-  useEffect(() => {
-    // Получаем текущий шаг тура
-    const currentStepElement = document.querySelector('[data-tour="true"]');
-    const currentStep = currentStepElement
-      ? parseInt(currentStepElement.getAttribute("data-current-step") || "0")
-      : -1;
-
-    console.log("🎭 [TOUR STATE] Tour state changed:", {
-      isActive,
-      stepsLength: steps.length,
-      currentStep,
-      waitingForModal,
-      modalTourActive,
-      waitingForDropdown,
-    });
-
-    // Дополнительная отладка для дропдауна
-    if (waitingForDropdown) {
-      console.log(
-        "🔍 [DROPDOWN DEBUG] waitingForDropdown is true, checking dropdown state:",
-      );
-      console.log("🔍 [DROPDOWN DEBUG] Current dropdown store state:", {
-        isDropdownOpen,
-      });
-    }
-  }, [
-    isActive,
-    steps.length,
-    waitingForModal,
-    modalTourActive,
-    waitingForDropdown,
-  ]);
+  const { isWaitingForDropdown, reset } = useDropdownTourStore();
+  const { isWaitingForShopsFilter, reset: resetShopsFilter } =
+    useShopsFilterTourStore();
 
   // Обработка клика по кнопке фильтра дней
   useEffect(() => {
     if (!isActive) return;
 
     const handleDaysFilterClick = () => {
-      console.log("🔘 [DAYS FILTER] Days filter button clicked");
       setWaitingForModal(true);
     };
 
@@ -193,9 +178,6 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
       '[data-testid="days-filter"]',
     );
     if (daysFilterButton) {
-      console.log(
-        "🔘 [DAYS FILTER] Adding click listener to days filter button",
-      );
       daysFilterButton.addEventListener("click", handleDaysFilterClick);
     }
 
@@ -206,71 +188,78 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
     };
   }, [isActive]);
 
-  // Обработка клика по дропдауну группировки данных
+  // Простое отслеживание фильтра магазинов через стор
+  useEffect(() => {
+    if (!isWaitingForShopsFilter) return;
+
+    const checkShopsModal = () => {
+      const shopsModal = document.querySelector(
+        '[data-testid="shops-filter-modal"]',
+      );
+      if (shopsModal) {
+        resetShopsFilter(); // Сбрасываем флаг ожидания
+        setTimeout(() => nextStep(), 500);
+      }
+    };
+
+    const interval = setInterval(checkShopsModal, 100);
+    return () => clearInterval(interval);
+  }, [isWaitingForShopsFilter, nextStep, resetShopsFilter]);
+
+  // Отслеживание клика по статусу "Открытые"
   useEffect(() => {
     if (!isActive) return;
 
-    const handleGraphDateFilterClick = (event: Event) => {
-      console.log("🔥 [GRAPH DATE FILTER] CLICK EVENT TRIGGERED!", event);
-      console.log("📊 [GRAPH DATE FILTER] Graph date filter button clicked");
-      console.log("📊 [GRAPH DATE FILTER] Current tour state:", {
-        isActive,
-        waitingForDropdown,
-      });
-
-      // Проверяем, находимся ли мы на шаге с дропдауном (шаг 4 - группировка данных)
-      const currentStepElement = document.querySelector('[data-tour="true"]');
-      if (currentStepElement) {
-        const currentStep = parseInt(
-          currentStepElement.getAttribute("data-current-step") || "0",
-        );
-        console.log("📊 [GRAPH DATE FILTER] Current step:", currentStep);
-
-        // Обрабатываем клик только на шаге 4 (группировка данных)
-        if (currentStep === 4) {
-          console.log(
-            "📊 [GRAPH DATE FILTER] Graph date filter button clicked on correct step",
-          );
-          console.log(
-            "📊 [GRAPH DATE FILTER] Setting waitingForDropdown to true",
-          );
-          setWaitingForDropdown(true);
-        } else {
-          console.log(
-            "📊 [GRAPH DATE FILTER] Click ignored - not on correct step",
-          );
-        }
-      }
+    const handleStatusOpenClick = () => {
+      setTimeout(() => nextStep(), 500);
     };
 
-    const graphDateFilterButton = document.querySelector(
-      '[data-testid="graph-date-filter"]',
+    const statusOpenButton = document.querySelector(
+      '[data-testid="status-open"]',
     );
-    if (graphDateFilterButton) {
-      console.log(
-        "📊 [GRAPH DATE FILTER] Adding click listener to graph date filter button",
-      );
-      console.log(
-        "📊 [GRAPH DATE FILTER] Button element:",
-        graphDateFilterButton,
-      );
-      graphDateFilterButton.addEventListener(
-        "click",
-        handleGraphDateFilterClick,
-      );
-    } else {
-      console.log("❌ [GRAPH DATE FILTER] Button not found!");
+    if (statusOpenButton) {
+      statusOpenButton.addEventListener("click", handleStatusOpenClick);
     }
 
     return () => {
-      if (graphDateFilterButton) {
-        graphDateFilterButton.removeEventListener(
-          "click",
-          handleGraphDateFilterClick,
-        );
+      if (statusOpenButton) {
+        statusOpenButton.removeEventListener("click", handleStatusOpenClick);
       }
     };
-  }, [isActive]);
+  }, [isActive, nextStep]);
+
+  useEffect(() => {
+    if (!isWaitingForDropdown) return;
+
+    if (isDropdownOpen) {
+      reset(); // Сбрасываем флаг ожидания
+      setTimeout(() => nextStep(), 500);
+    }
+  }, [isWaitingForDropdown, isDropdownOpen, nextStep, isActive, reset]);
+
+  // Отслеживание выбора опции в дропдауне
+  useEffect(() => {
+    if (!isActive || !isDropdownOpen) return;
+
+    const handleDropdownSelection = () => {
+      setTimeout(() => nextStep(), 500);
+    };
+
+    // Слушаем клики по опциям дропдауна только когда он открыт
+    const dropdownOptions = document.querySelectorAll(
+      '[data-radix-menu-content] [role="menuitem"]',
+    );
+
+    dropdownOptions.forEach((option) => {
+      option.addEventListener("click", handleDropdownSelection);
+    });
+
+    return () => {
+      dropdownOptions.forEach((option) => {
+        option.removeEventListener("click", handleDropdownSelection);
+      });
+    };
+  }, [isActive, isDropdownOpen, nextStep]);
 
   // Отслеживание открытия модалки дней
   useEffect(() => {
@@ -279,7 +268,6 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
     const checkModal = () => {
       const modal = document.querySelector('[data-testid="days-filter-modal"]');
       if (modal) {
-        console.log("✅ [DAYS MODAL] Modal opened, advancing to next step");
         setWaitingForModal(false);
         setModalTourActive(true);
         setTimeout(() => nextStep(), 500);
@@ -295,7 +283,6 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
     if (!modalTourActive) return;
 
     const handleDateSelection = () => {
-      console.log("✅ [DATE SELECTION] Date selected, advancing to next step");
       setTimeout(() => nextStep(), 500);
     };
 
@@ -330,7 +317,6 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
     const checkModalClosed = () => {
       const modal = document.querySelector('[data-testid="days-filter-modal"]');
       if (!modal) {
-        console.log("✅ [MODAL CLOSE] Modal closed, advancing to next step");
         setModalTourActive(false);
         setTimeout(() => nextStep(), 300);
       }
@@ -340,52 +326,23 @@ export const SalesDynamicsJoyride: React.FC<SalesDynamicsJoyrideProps> = ({
     return () => clearInterval(interval);
   }, [modalTourActive, nextStep]);
 
-  // Отслеживание открытия дропдауна группировки данных
+  // Автозапуск тура при переходе с урока
   useEffect(() => {
-    if (!waitingForDropdown) return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromLesson = urlParams.get("fromLesson");
 
-    console.log(
-      "🔍 [DROPDOWN] Starting to monitor dropdown opening, waitingForDropdown:",
-      waitingForDropdown,
-    );
-    console.log("🔍 [DROPDOWN] Current dropdown state:", { isDropdownOpen });
+    if (fromLesson === "true" && !isActive) {
+      // Убираем параметр из URL
+      const url = new URL(window.location.href);
+      url.searchParams.delete("fromLesson");
+      window.history.replaceState({}, "", url.toString());
 
-    if (isDropdownOpen) {
-      console.log("✅ [DROPDOWN] Dropdown opened, advancing to next step");
-      setWaitingForDropdown(false);
-      setTimeout(() => nextStep(), 500);
+      // Запускаем тур с задержкой для загрузки элементов
+      setTimeout(() => {
+        startTour(2, steps);
+      }, 1500);
     }
-  }, [waitingForDropdown, isDropdownOpen, nextStep]);
-
-  // Отслеживание выбора опции в дропдауне
-  useEffect(() => {
-    if (!waitingForDropdown || !isDropdownOpen) return;
-
-    const handleDropdownSelection = () => {
-      console.log(
-        "✅ [DROPDOWN SELECTION] Option selected, advancing to next step",
-      );
-      setWaitingForDropdown(false);
-      setTimeout(() => nextStep(), 500);
-    };
-
-    // Слушаем клики по опциям дропдауна только когда он открыт
-    const dropdownOptions = document.querySelectorAll(
-      '[data-radix-menu-content] [role="menuitem"]',
-    );
-
-    dropdownOptions.forEach((option) => {
-      option.addEventListener("click", handleDropdownSelection);
-    });
-
-    return () => {
-      dropdownOptions.forEach((option) => {
-        option.removeEventListener("click", handleDropdownSelection);
-      });
-    };
-  }, [waitingForDropdown, isDropdownOpen, nextStep]);
-
-  // Автоматический запуск тура убран - тур теперь запускается только по требованию пользователя
+  }, [isActive, startTour, steps]);
 
   // Вызываем onTourComplete при завершении тура
   useEffect(() => {

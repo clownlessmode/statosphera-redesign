@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, TrendingUp } from "lucide-react";
 import { Lesson } from "../config/types";
 
 const lessonsBase = [
@@ -16,20 +16,20 @@ const lessonsBase = [
     targetPath: "/",
     testId: 1, // Связываем с тестом
   },
-  // {
-  //   id: 2,
-  //   title: "Динамика продаж",
-  //   description:
-  //     "Освойте анализ продаж: фильтры по магазинам и периодам, сравнение показателей, работа с графиками и таблицами. Интерактивный тур научит эффективно анализировать данные и выявлять тренды.",
-  //   duration: "12 минут",
-  //   progress: 0,
-  //   completed: false,
-  //   to: ["Все пользователи"],
-  //   icon: <TrendingUp className="size-5" />,
-  //   tags: ["Аналитика", "Продажи", "Фильтры", "Графики"],
-  //   targetPath: "/sales-dynamics",
-  //   testId: 2, // Связываем с тестом
-  // },
+  {
+    id: 2,
+    title: "Динамика продаж",
+    description:
+      "Освойте анализ продаж: фильтры по магазинам и периодам, сравнение показателей, работа с графиками и таблицами. Интерактивный тур научит эффективно анализировать данные и выявлять тренды.",
+    duration: "12 минут",
+    progress: 0,
+    completed: false,
+    to: ["Все пользователи"],
+    icon: <TrendingUp className="size-5" />,
+    tags: ["Аналитика", "Продажи", "Фильтры", "Графики"],
+    targetPath: "/sales-dynamics",
+    testId: 2, // Связываем с тестом
+  },
 ];
 
 // Экспортируем уроки

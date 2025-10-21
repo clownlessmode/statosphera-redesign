@@ -22,7 +22,7 @@ export const RevenueGroupsGraph = ({
         <StackedLineSkeleton className="md:h-[400px]" />
       ) : (
         <Card className="md:h-[400px]">
-          <div style={{ height: "450px", width: "100%" }}>
+          <div style={{ height: "400px", width: "100%" }}>
             <HorizontalStackedBarChart
               yAxisData={graph.yAxis}
               series={graph.series.map((item) => ({
