@@ -45,6 +45,17 @@ export const useTour = ({
     const fromLesson = urlParams.get("fromLesson");
 
     if (fromLesson === "true" && !run) {
+      // Проверяем текущий путь - не запускаем тур автоматически на sales-dynamics
+      // если там нет соответствующей логики автозапуска
+      const currentPath = window.location.pathname;
+      if (currentPath === "/sales-dynamics") {
+        // Убираем параметр из URL без запуска тура
+        const url = new URL(window.location.href);
+        url.searchParams.delete("fromLesson");
+        window.history.replaceState({}, "", url.toString());
+        return;
+      }
+
       // Проверяем, есть ли сохраненный прогресс тура
       const progress = getLessonProgress(lessonId);
       const savedStepIndex = progress?.tourStepIndex ?? 0;

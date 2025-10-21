@@ -39,11 +39,13 @@ import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
 import { Badge } from "@shared/ui/badge";
 import { useChannel } from "@widgets/report/sheet/ui/side/shops-filter/model/hooks/use-channel";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useTourState } from "@entities/lessons";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm();
   const { updateFilters, getApiPayload } = useSalesDynamicsFiltersStore();
+  const isTourActive = useTourState();
 
   const allData = getApiPayload();
   const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
@@ -85,7 +87,7 @@ const ShopsFilter = () => {
   const { CHANNEL_SHOP } = useChannel();
   const isMobile = useIsMobile();
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={!isTourActive}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <Store /> {!isMobile && "Магазины"}
@@ -94,7 +96,16 @@ const ShopsFilter = () => {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none max-md:overflow-y-auto scrollbar-hide max-xs:h-[calc(100vh-96px)] max-md:h-max">
+      <DialogContent
+        className="p-0 rounded-xl border-none max-md:overflow-y-auto scrollbar-hide max-xs:h-[calc(100vh-96px)] max-md:h-max"
+        data-testid="shops-filter-modal"
+        onInteractOutside={(e) => {
+          // Предотвращаем закрытие модалки при активном туре
+          if (isTourActive) {
+            e.preventDefault();
+          }
+        }}
+      >
         <Card className="w-full md:mr-4">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>
@@ -226,6 +237,7 @@ const ShopsFilter = () => {
                       <FormLabel>Регионы</FormLabel>
                       <FormControl>
                         <MultiSelect
+                          data-testid="region-select"
                           disabled={selectedMyShops}
                           value={field.value?.map(String) || []}
                           options={regionsOptions}

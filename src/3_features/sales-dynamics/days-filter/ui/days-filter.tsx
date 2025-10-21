@@ -26,11 +26,13 @@ import { dateRanges } from "@shared/lib/date-ranges";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { DateRange } from "react-day-picker";
 import useForm from "../model/hook";
+import { useTourState } from "@entities/lessons";
 const DaysFilter = () => {
   const isMobile = useIsMobile();
   const form = useForm();
   const today = new Date();
   const { updateFilterDate } = useSalesDynamicsFiltersStore();
+  const isTourActive = useTourState();
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
     form.setValue("dateEnd", format(end, "yyyy-MM-dd"));
@@ -72,9 +74,9 @@ const DaysFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={!isTourActive}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="days-filter">
           <CalendarDays />{" "}
           {!isMobile && (
             <>
@@ -89,7 +91,16 @@ const DaysFilter = () => {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent
+        className="p-0 rounded-xl border-none"
+        data-testid="days-filter-modal"
+        onInteractOutside={(e) => {
+          // Предотвращаем закрытие модалки при активном туре
+          if (isTourActive) {
+            e.preventDefault();
+          }
+        }}
+      >
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle>Дата</CardTitle>

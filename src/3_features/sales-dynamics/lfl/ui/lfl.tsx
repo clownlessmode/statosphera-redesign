@@ -10,7 +10,7 @@ export const Lfl: React.FC = () => {
   const updateLfl = useSalesDynamicsFiltersStore((state) => state.updateLfl);
 
   return (
-    <Button variant="outline">
+    <Button variant="outline" data-testid="lfl-filter">
       <Switch id="lfl" checked={lfl} onCheckedChange={updateLfl} />
       <Label htmlFor="lfl">LFL</Label>
     </Button>
