@@ -262,6 +262,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Grill />,
     layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
     label: "Гриль",
   },
   {
