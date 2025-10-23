@@ -1,4 +1,29 @@
-import { Calendar1, CalendarDays, CalendarRange } from "lucide-react";
+import {
+  Bot,
+  Calendar1,
+  CalendarDays,
+  CalendarRange,
+  User,
+  UserRound,
+} from "lucide-react";
+
+export const SEX = [
+  {
+    label: "Мужской",
+    value: "Мужской",
+    icon: User,
+  },
+  {
+    label: "Женский",
+    value: "Женский",
+    icon: UserRound,
+  },
+  {
+    label: "Неизвестный",
+    value: "Не определено",
+    icon: Bot,
+  },
+];
 
 export const PERIOD = [
   {

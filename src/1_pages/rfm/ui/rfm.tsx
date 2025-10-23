@@ -3,290 +3,261 @@ import { useRfm } from "../api";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
-import { RfmFilter } from "../ui/filters/segment-filter";
+import { FilterModal } from "../ui/filter-modal";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import { useRfmFiltersStore } from "./filters/filters-store";
-import { useEffect, useMemo, useState } from "react";
-import {
-  //EighthCalculationResponse,
-  //EleventhCalculationResponse,
-  //FifteenCalculationResponse,
-  FifthCalculationResponse,
-  FirstCalculationResponse,
-  //FourteenCalculationResponse,
-  FourthCalculationResponse,
-  //NinthCalculationResponse,
-  SecondCalculationResponse,
-  //SeventhCalculationResponse,
-  SixteenCalculationResponse,
-  //SixthCalculationResponse,
-  //TenthCalculationResponse,
-  ThirdCalculationResponse,
-  //ThirteenthCalculationResponse,
-  //TwelfthCalculationResponse,
-} from "../config";
-import { Segments } from "./cards";
-import Spinner from "@shared/ui/spinner";
+import { useFiltersStore } from "@widgets/rfm/model/filters-store";
+import { useEffect, useState } from "react";
+import { SegmentsCard } from "./cards";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
-import { FirstCalculation } from "./graphs/firstCalculation";
-import { ThirdCalculation } from "./graphs/thirdCalculation";
-import { SecondCalculation } from "./graphs/secondCalculation";
-import { FifthCalculation } from "./graphs/fifthCalculation";
+import { AllGistogram } from "./graphs/allGistogram";
+import { TreemapTopGroupProduct } from "./graphs/treemapTopGroupProduct";
+import { DrilldownRfmDayWeekTime } from "./graphs/drilldownRfmDayWeekTime";
+import { TreemapTopBonuses } from "./graphs/treemapTopBonuses";
+import { RadarCountUniqGroupAndProduct } from "./graphs/radarCountUniqGroupAndProduct";
+import { DrilldownRfmRegionCityStore } from "./graphs/drilldownRfmRegionCityStore";
+import {
+  AllGistogramResponse,
+  DrilldownRfmDayWeekTimeResponse,
+  DrilldownRfmRegionCityStoreResponse,
+  HeatmapMigrationPerSegmentResponse,
+  MainDataSegmentResponse,
+  RadarCountUniqGroupAndProductResponse,
+  SankeyMigrationClientPerSegmentsResponse,
+  TreemapRfmOrderDeliveryResponse,
+  TreemapTopBonusesResponse,
+  TreemapTopGroupProductResponse,
+} from "../config";
+import { DrilldownTimeDayWeekRfm } from "./graphs/drilldownTimeDayWeekRfm";
+import { SankeyMigrationClientPerSegments } from "./graphs/sankeyMigrationClientPerSegments";
+import { HeatmapMigrationPerSegment } from "./graphs/heatmapMigrationPerSegment";
+import { TreemapRfmOrderDelivery } from "./graphs/treemapRfmOrderDelivery";
+
+interface Filters {
+  data: {
+    period: string;
+    rfmList: number[];
+    sex: string[];
+    age: string[];
+  };
+  dataSankey: {
+    period: string;
+    rfmList: number[];
+    sex: string[];
+    age: string[];
+  };
+  dataHeatMap: {
+    period: string;
+    rfmList: number[];
+    sex: string[];
+    age: string[];
+  };
+}
 
 export const Rfm = () => {
   const isMobile = useIsMobile();
-  const { getApiPayload } = useRfmFiltersStore();
-  const filters = getApiPayload();
+  const { getApiPayload } = useFiltersStore();
+  const [appliedFilters, setAppliedFilters] = useState<Filters>();
+  const [mainDataSegment, setMainDataSegment] = useState<
+    MainDataSegmentResponse[]
+  >([]);
+  const [allGistogram, setAllGistogram] = useState<AllGistogramResponse>({
+    allDataCount: { categories: [], series: [] },
+    allDataProceed: { categories: [], series: [] },
+    allDataProfit: { categories: [], series: [] },
+    actionDataCount: { categories: [], series: [] },
+    actionDataProceed: { categories: [], series: [] },
+    actionDataProfit: { categories: [], series: [] },
+    imDataCount: { categories: [], series: [] },
+    imDataProceed: { categories: [], series: [] },
+    imDataProfit: { categories: [], series: [] },
+    avgDataCount: { categories: [], series: [] },
+    avgDataProceed: { categories: [], series: [] },
+    avgDataProfit: { categories: [], series: [] },
+    avgDayCountPerClient: { categories: [], series: [] },
+    countUniqClient: { categories: [], series: [] },
+    countInDanger: { categories: [], series: [] },
+  });
+  const [drilldownRfmDayWeekTime, setDrilldownRfmDayWeekTime] =
+    useState<DrilldownRfmDayWeekTimeResponse>({
+      data: [],
+    });
 
-  const mock: any = useMemo(
-    () => ({
+  const [drilldownTimeDayWeekRfm, setDrilldownTimeDayWeekRfm] =
+    useState<DrilldownRfmDayWeekTimeResponse>({
+      data: [],
+      text: [],
+    });
+
+  const [treemapTopGroupProduct, setTreemapTopGroupProduct] =
+    useState<TreemapTopGroupProductResponse>({
+      childrenProceed: [],
+      childrenProfit: [],
+    });
+
+  const [treemapTopBonuses, setTreemapTopBonuses] =
+    useState<TreemapTopBonusesResponse>({
+      childrenProceed: [],
+      childrenProfit: [],
+    });
+
+  const [radarCountUniqGroupAndProduct, setRadarCountUniqGroupAndProduct] =
+    useState<RadarCountUniqGroupAndProductResponse>({
+      CountUniqGroup: {
+        legend: {
+          data: [],
+        },
+        radar: {
+          indicator: [],
+        },
+        series: [],
+      },
+      CountUniqProduct: {
+        legend: {
+          data: [],
+        },
+        radar: {
+          indicator: [],
+        },
+        series: [],
+      },
+    });
+
+  const [treemapRfmOrderDelivery, setTreemapRfmOrderDelivery] =
+    useState<TreemapRfmOrderDeliveryResponse>({
+      childrenProceed: [],
+    });
+
+  const [drilldownRfmRegionCityStore, setDrilldownRfmRegionCityStore] =
+    useState<DrilldownRfmRegionCityStoreResponse>({
+      data: [],
+    });
+
+  const [
+    sankeyMigrationClientPerSegments,
+    setSankeyMigrationClientPerSegments,
+  ] = useState<SankeyMigrationClientPerSegmentsResponse>({
+    nodes: [],
+    links: [],
+  });
+
+  const [heatmapMigrationPerSegment, setHeatmapMigrationPerSegment] =
+    useState<HeatmapMigrationPerSegmentResponse>({
+      xAxis: [],
+      yAxis: [],
+      matrixData: [],
+    });
+
+  const {
+    getAllGistogram,
+    isAllGistogramLoading,
+    getDrilldownRfmDayWeekTime,
+    isDrilldownRfmDayWeekTimeLoading,
+    getDrilldownTimeDayWeekRfm,
+    isDrilldownTimeDayWeekRfmLoading,
+    getTreemapTopGroupProduct,
+    isTreemapTopGroupProductLoading,
+    getTreemapTopBonuses,
+    isTreemapTopBonusesLoading,
+    getRadarCountUniqGroupAndProduct,
+    isRadarCountUniqGroupAndProductLoading,
+    getTreemapRfmOrderDelivery,
+    isTreemapRfmOrderDeliveryLoading,
+    getDrilldownRfmRegionCityStore,
+    isDrilldownRfmRegionCityStoreLoading,
+    getSankeyMigrationClientPerSegments,
+    isSankeyMigrationClientPerSegmentsLoading,
+    getHeatmapMigrationPerSegment,
+    isHeatmapMigrationPerSegmentLoading,
+    getMainDataSegment,
+    isMainDataSegmentLoading,
+    //getComparisonTwoRfm,
+    //isComparisonTwoRfmLoading,
+  } = useRfm();
+
+  const handleApplyFilters = () => {
+    const filters = getApiPayload();
+    setAppliedFilters({
       data: {
         period: filters.period,
         rfmList: filters.rfmList,
+        sex: filters.sex,
+        age: filters.agePeriods,
       },
       dataSankey: {
         period: filters.sankey,
         rfmList: filters.rfmList,
+        sex: filters.sex,
+        age: filters.agePeriods,
       },
       dataHeatMap: {
         period: filters.heatmap,
         rfmList: filters.rfmList,
+        sex: filters.sex,
+        age: filters.agePeriods,
       },
-    }),
-    [filters],
-  );
-
-  const [firstCalculation, setFirstCalculation] =
-    useState<FirstCalculationResponse>({
-      categories: [],
-      series: [],
-      text: [],
     });
-  const [secondCalculation, setSecondCalculation] =
-    useState<SecondCalculationResponse>({
-      data: [],
-    });
-  const [secondCalculationReverse, setSecondCalculationReverse] =
-    useState<SecondCalculationResponse>({
-      data: [],
-      text: [],
-    });
-  const [thirdCalculation, setThirdCalculation] =
-    useState<ThirdCalculationResponse>({
-      childrenProceed: [],
-      childrenProfit: [],
-    });
-  const [fourthCalculation, setFourthCalculation] =
-    useState<FourthCalculationResponse>({
-      headers: [],
-      dataSourceList: [],
-    });
-  const [fifthCalculation, setFifthCalculation] =
-    useState<FifthCalculationResponse>({
-      childrenProceed: [],
-      childrenProfit: [],
-    });
-  //const [sixthCalculation, setSixthCalculation] =
-  //  useState<SixthCalculationResponse>({
-  //    legendData: [],
-  //    radarIndicator: [],
-  //    seriesData: [],
-  //  });
-  //const [seventhCalculation, setSeventhCalculation] =
-  //  useState<SeventhCalculationResponse>({
-  //    data: [],
-  //  });
-  //const [eighthCalculation, setEighthCalculation] =
-  //  useState<EighthCalculationResponse>({
-  //    categories: [],
-  //    series: [],
-  //  });
-  //const [ninthCalculation, setNinthCalculation] = useState<
-  //  NinthCalculationResponse[]
-  //>([]);
-  //const [tenthCalculation, setTenthCalculation] =
-  //  useState<TenthCalculationResponse>({
-  //    segments: [],
-  //    series: [],
-  //    legend: {
-  //      data: [],
-  //      left: "",
-  //    },
-  //  });
-  //const [eleventhCalculation, setEleventhCalculation] =
-  //  useState<EleventhCalculationResponse>({
-  //    categories: [],
-  //    series: [],
-  //  });
-  //const [twelfthCalculation, setTwelfthCalculation] =
-  //  useState<TwelfthCalculationResponse>({
-  //    segments: [],
-  //    series: [],
-  //    legend: {
-  //      data: [],
-  //      left: "",
-  //    },
-  //  });
-  //const [thirteenthCalculation, setThirteenthCalculation] =
-  //  useState<ThirteenthCalculationResponse>({
-  //    segments: [],
-  //    series: [],
-  //    legend: {
-  //      data: [],
-  //      left: "",
-  //    },
-  //  });
-  //const [fourteenCalculation, setFourteenCalculation] =
-  //  useState<FourteenCalculationResponse>({
-  //    data: [],
-  //    links: [],
-  //  });
-  //const [fifteenCalculation, setFifteenCalculation] =
-  //  useState<FifteenCalculationResponse>({
-  //    xAxis: [],
-  //    yAxis: [],
-  //    matrixData: [],
-  //  });
-  const [sixteenCalculation, setSixteenCalculation] = useState<
-    SixteenCalculationResponse[]
-  >([]);
-
-  const {
-    getFirstCalculation,
-    isFirstCalculationLoading,
-    getSecondCalculation,
-    isSecondCalculationLoading,
-    getSecondCalculationReverse,
-    isSecondCalculationReverseLoading,
-    getThirdCalculation,
-    isThirdCalculationLoading,
-    getFourthCalculation,
-    isFourthCalculationLoading,
-    getFifthCalculation,
-    isFifthCalculationLoading,
-    //getSixthCalculation,
-    isSixthCalculationLoading,
-    //getSeventhCalculation,
-    isSeventhCalculationLoading,
-    //getEighthCalculation,
-    isEighthCalculationLoading,
-    //getNinthCalculation,
-    isNinthCalculationLoading,
-    //getTenthCalculation,
-    isTenthCalculationLoading,
-    //getEleventhCalculation,
-    isEleventhCalculationLoading,
-    //getTwelfthCalculation,
-    isTwelfthCalculationLoading,
-    //getThirteenthCalculation,
-    isThirteenthCalculationLoading,
-    //getFourteenCalculation,
-    isFourteenCalculationLoading,
-    //getFifteenCalculation,
-    isFifteenCalculationLoading,
-    getSixteenCalculation,
-    isSixteenCalculationLoading,
-  } = useRfm();
+  };
 
   useEffect(() => {
-    if (mock.data.rfmList.length > 0) {
-      getFirstCalculation(mock.data).then((data) => {
-        setFirstCalculation(data);
+    if (appliedFilters && appliedFilters.data.rfmList.length > 0) {
+      getMainDataSegment(appliedFilters.data).then((data) => {
+        setMainDataSegment(data);
       });
 
-      getSecondCalculation(mock.data).then((data) => {
-        setSecondCalculation(data);
+      getAllGistogram(appliedFilters.data).then((data) => {
+        setAllGistogram(data);
       });
 
-      getSecondCalculationReverse(mock.data).then((data) => {
-        setSecondCalculationReverse(data);
+      getDrilldownRfmDayWeekTime(appliedFilters.data).then((data) => {
+        setDrilldownRfmDayWeekTime(data);
       });
 
-      getThirdCalculation(mock.data).then((data) => {
-        setThirdCalculation(data);
+      getDrilldownTimeDayWeekRfm(appliedFilters.data).then((data) => {
+        setDrilldownTimeDayWeekRfm(data);
       });
 
-      getFourthCalculation(mock.data).then((data) => {
-        setFourthCalculation(data);
+      getTreemapTopGroupProduct(appliedFilters.data).then((data) => {
+        setTreemapTopGroupProduct(data);
       });
 
-      getFifthCalculation(mock.data).then((data) => {
-        setFifthCalculation(data);
+      getTreemapTopBonuses(appliedFilters.data).then((data) => {
+        setTreemapTopBonuses(data);
       });
 
-      //getSixthCalculation(mock.data).then((data) => {
-      //  setSixthCalculation(data);
-      //});
+      getRadarCountUniqGroupAndProduct(appliedFilters.data).then((data) => {
+        setRadarCountUniqGroupAndProduct(data);
+      });
 
-      //getSeventhCalculation(mock.data).then((data) => {
-      //  setSeventhCalculation(data);
-      //});
-      //
-      //getEighthCalculation(mock.data).then((data) => {
-      //  setEighthCalculation(data);
-      //});
-      //getNinthCalculation(mock.data).then((data) => {
-      //  setNinthCalculation(data);
-      //});
-      //getTenthCalculation(mock.data).then((data) => {
-      //  setTenthCalculation(data);
-      //});
-      //getEleventhCalculation(mock.data).then((data) => {
-      //  setEleventhCalculation(data);
-      //});
-      //
-      //getTwelfthCalculation(mock.data).then((data) => {
-      //  setTwelfthCalculation(data);
-      //});
-      //
-      //getThirteenthCalculation(mock.data).then((data) => {
-      //  setThirteenthCalculation(data);
-      //});
+      getTreemapRfmOrderDelivery(appliedFilters.data).then((data) => {
+        setTreemapRfmOrderDelivery(data);
+      });
 
-      getSixteenCalculation(mock.data).then((data) => {
-        setSixteenCalculation(data);
+      getDrilldownRfmRegionCityStore(appliedFilters.data).then((data) => {
+        setDrilldownRfmRegionCityStore(data);
       });
     }
 
-    //if (mock.dataSankey.rfmList.length > 0) {
-    //  getFourteenCalculation(mock.dataSankey).then((data) => {
-    //    setFourteenCalculation(data);
-    //  });
-    //}
-    //
-    //if (mock.dataHeatMap.rfmList.length > 0) {
-    //  getFifteenCalculation(mock.dataHeatMap).then((data) => {
-    //    setFifteenCalculation(data);
-    //  });
-    //}
-  }, [mock]);
+    if (appliedFilters && appliedFilters.dataSankey.rfmList.length > 0) {
+      getSankeyMigrationClientPerSegments(appliedFilters.dataSankey).then(
+        (data) => {
+          setSankeyMigrationClientPerSegments(data);
+        },
+      );
+    }
 
-  const isLoading =
-    isFirstCalculationLoading ||
-    isSecondCalculationLoading ||
-    isSecondCalculationReverseLoading ||
-    isThirdCalculationLoading ||
-    isFourthCalculationLoading ||
-    isFifthCalculationLoading ||
-    isSixthCalculationLoading ||
-    isSeventhCalculationLoading ||
-    isEighthCalculationLoading ||
-    isNinthCalculationLoading ||
-    isTenthCalculationLoading ||
-    isEleventhCalculationLoading ||
-    isTwelfthCalculationLoading ||
-    isThirteenthCalculationLoading ||
-    isFourteenCalculationLoading ||
-    isFifteenCalculationLoading ||
-    isSixteenCalculationLoading;
-  console.log(fourthCalculation);
+    if (appliedFilters && appliedFilters.dataHeatMap.rfmList.length > 0) {
+      getHeatmapMigrationPerSegment(appliedFilters.dataHeatMap).then((data) => {
+        setHeatmapMigrationPerSegment(data);
+      });
+    }
+  }, [appliedFilters]);
+
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
         title={`Лояльность`}
         actions={{
-          right: !isMobile && <RfmFilter />,
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
               <Link to={ROUTES_PATH.LOYALTY}>
@@ -307,61 +278,66 @@ export const Rfm = () => {
       <div
         className={cn(
           "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]",
-          filters.rfmList.length === 0 && !isMobile && "justify-center",
+          appliedFilters?.data?.rfmList?.length === 0 &&
+            !isMobile &&
+            "justify-center",
         )}
       >
-        {isMobile && (
-          <div className="flex flex-row justify-end">
-            <RfmFilter />
-          </div>
-        )}
-        {filters.rfmList.length > 0 ? (
+        <div className="fixed right-10 bottom-10 z-50">
+          <FilterModal onApplyFilters={handleApplyFilters} />
+        </div>
+        {appliedFilters && appliedFilters.data.rfmList.length > 0 ? (
           <>
-            <Segments
-              isLoading={isSixteenCalculationLoading}
-              data={sixteenCalculation}
+            <SegmentsCard
+              isLoading={isMainDataSegmentLoading}
+              data={mainDataSegment}
             />
             <div className="grid grid-cols-2 gap-4">
-              <FirstCalculation
-                graph={firstCalculation}
-                isLoading={isFirstCalculationLoading}
+              <AllGistogram
+                graph={allGistogram}
+                isLoading={isAllGistogramLoading}
               />
-              <SecondCalculation
-                graph={secondCalculation}
-                isLoading={isSecondCalculationReverseLoading}
-                title="Количество чеков по сегментам"
-                rootName="Сегменты"
+              <DrilldownRfmDayWeekTime
+                graph={drilldownRfmDayWeekTime}
+                isLoading={isDrilldownRfmDayWeekTimeLoading}
               />
-              <SecondCalculation
-                graph={secondCalculationReverse}
-                isLoading={isSecondCalculationReverseLoading}
-                title="Количество чеков по часам"
-                rootName="Часы"
+              <DrilldownTimeDayWeekRfm
+                graph={drilldownTimeDayWeekRfm}
+                isLoading={isDrilldownTimeDayWeekRfmLoading}
               />
-              <ThirdCalculation
-                graph={thirdCalculation}
-                isLoading={isThirdCalculationLoading}
+              <TreemapTopGroupProduct
+                graph={treemapTopGroupProduct}
+                isLoading={isTreemapTopGroupProductLoading}
               />
-              <FifthCalculation
-                graph={fifthCalculation}
-                isLoading={isFifthCalculationLoading}
+              <TreemapTopBonuses
+                graph={treemapTopBonuses}
+                isLoading={isTreemapTopBonusesLoading}
+              />
+              <RadarCountUniqGroupAndProduct
+                graph={radarCountUniqGroupAndProduct}
+                isLoading={isRadarCountUniqGroupAndProductLoading}
+              />
+              <TreemapRfmOrderDelivery
+                graph={treemapRfmOrderDelivery}
+                isLoading={isTreemapRfmOrderDeliveryLoading}
+              />
+              <DrilldownRfmRegionCityStore
+                graph={drilldownRfmRegionCityStore}
+                isLoading={isDrilldownRfmRegionCityStoreLoading}
+              />
+              <SankeyMigrationClientPerSegments
+                graph={sankeyMigrationClientPerSegments}
+                isLoading={isSankeyMigrationClientPerSegmentsLoading}
+              />
+              <HeatmapMigrationPerSegment
+                graph={heatmapMigrationPerSegment}
+                isLoading={isHeatmapMigrationPerSegmentLoading}
               />
             </div>
           </>
         ) : (
-          <div
-            className={cn(
-              isLoading ? "my-[25%]" : "my-[10%]",
-              "flex flex-col gap-4 h-full w-full justify-center items-center",
-            )}
-          >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <div className="dark:opacity-70">
-                <NotSelectedFilters />
-              </div>
-            )}
+          <div className="my-[10%] flex h-full w-full justify-center items-center dark:opacity-70">
+            <NotSelectedFilters />
           </div>
         )}
       </div>

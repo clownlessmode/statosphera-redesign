@@ -1,6 +1,8 @@
 export interface RequestDto {
-  period: "M-0" | "M-3" | "M-6" | "M-6 -> M-3" | "M-3 -> M0" | "M-6 -> M0";
+  period: string;
   rfmList: number[];
+  sex: string[];
+  age: string[];
 }
 
 export interface NameSegmentResponse {
@@ -8,21 +10,38 @@ export interface NameSegmentResponse {
   rfmName: string;
 }
 
-export interface FirstCalculationResponse {
+interface AllGistogram {
   categories: string[];
   series: {
     name: string;
     value: number[];
   }[];
-  text: string[];
 }
 
-export interface SecondCalculationResponse {
+export interface AllGistogramResponse {
+  allDataCount: AllGistogram;
+  allDataProceed: AllGistogram;
+  allDataProfit: AllGistogram;
+  actionDataCount: AllGistogram;
+  actionDataProceed: AllGistogram;
+  actionDataProfit: AllGistogram;
+  imDataCount: AllGistogram;
+  imDataProceed: AllGistogram;
+  imDataProfit: AllGistogram;
+  avgDataCount: AllGistogram;
+  avgDataProceed: AllGistogram;
+  avgDataProfit: AllGistogram;
+  avgDayCountPerClient: AllGistogram;
+  countUniqClient: AllGistogram;
+  countInDanger: AllGistogram;
+}
+
+export interface DrilldownRfmDayWeekTimeResponse {
   data: [string | number, number, string, string | null][][];
   text?: string[];
 }
 
-export interface ThirdCalculationResponse {
+export interface TreemapTopGroupProductResponse {
   childrenProceed: {
     name: string;
     value: number;
@@ -41,15 +60,7 @@ export interface ThirdCalculationResponse {
   }[];
 }
 
-export interface FourthCalculationResponse {
-  headers: string[];
-  dataSourceList: {
-    name: string;
-    data: (string | number)[][];
-  }[];
-}
-
-export interface FifthCalculationResponse {
+export interface TreemapTopBonusesResponse {
   childrenProceed: {
     name: string;
     value: number;
@@ -68,107 +79,60 @@ export interface FifthCalculationResponse {
   }[];
 }
 
-export interface SixthCalculationResponse {
-  legendData: string[];
-  radarIndicator: {
-    name: string;
-    max: number;
-  }[];
-  seriesData: {
-    type: string;
-    radarIndex: 0;
-    data: {
-      name: string;
-      value: number[];
-    }[];
-  }[];
-}
-
-export interface SeventhCalculationResponse {
-  data: {
-    name: string;
-    children: {
-      name: string;
-      children: {
+export interface RadarCountUniqGroupAndProductResponse {
+  CountUniqGroup: {
+    legend: {
+      data: string[];
+    };
+    radar: {
+      indicator: {
         name: string;
-        value: number;
-        count: number;
-        profit: number;
+      }[];
+    };
+    series: {
+      type: string;
+      data: {
+        value: number[];
+        name: string;
       }[];
     }[];
-  }[];
+  };
+  CountUniqProduct: {
+    legend: {
+      data: string[];
+    };
+    radar: {
+      indicator: {
+        name: string;
+      }[];
+    };
+    series: {
+      type: string;
+      data: {
+        value: number[];
+        name: string;
+      }[];
+    }[];
+  };
 }
 
-export interface EighthCalculationResponse {
-  categories: string[];
-  series: {
-    name: string;
-    value: number[];
-  }[];
-}
-
-export interface NinthCalculationResponse {
-  optionId: string;
-  data: {
+export interface TreemapRfmOrderDeliveryResponse {
+  childrenProceed: {
     name: string;
     value: number;
-    groupId: string;
-    childGroupId: string;
+    children: {
+      name: string;
+      value: number;
+    }[];
   }[];
 }
 
-export interface TenthCalculationResponse {
-  segments: string[];
-  series: {
-    name: string;
-    type: string;
-    stack: string;
-    data: number[];
-  }[];
-  legend: {
-    data: string[];
-    left: string;
-  };
+export interface DrilldownRfmRegionCityStoreResponse {
+  data: [string | number, number, string, string | null][][];
 }
 
-export interface EleventhCalculationResponse {
-  categories: string[];
-  series: {
-    name: string;
-    value: number[];
-  }[];
-}
-
-export interface TwelfthCalculationResponse {
-  segments: string[];
-  series: {
-    name: string;
-    type: string;
-    stack: string;
-    data: number[];
-  }[];
-  legend: {
-    data: string[];
-    left: string;
-  };
-}
-
-export interface ThirteenthCalculationResponse {
-  segments: string[];
-  series: {
-    name: string;
-    type: string;
-    stack: string;
-    data: number[];
-  }[];
-  legend: {
-    data: string[];
-    left: string;
-  };
-}
-
-export interface FourteenCalculationResponse {
-  data: {
+export interface SankeyMigrationClientPerSegmentsResponse {
+  nodes: {
     name: string;
   }[];
   links: {
@@ -178,14 +142,14 @@ export interface FourteenCalculationResponse {
   }[];
 }
 
-export interface FifteenCalculationResponse {
+export interface HeatmapMigrationPerSegmentResponse {
   xAxis: string[];
   yAxis: string[];
   matrixData: number[][];
 }
 
-export interface SixteenCalculationResponse {
-  segmentCode: string;
+export interface MainDataSegmentResponse {
+  segmentCode: number;
   segment: string;
   period: string;
   countClient: number;
@@ -199,77 +163,69 @@ export interface SixteenCalculationResponse {
   proceedAvgCheck: number;
   countClientInWarningZone: number;
   avgPeriodPerSales: number;
-  checkZones: {
-    name: string;
-    count: number;
-    percent: number;
-  }[];
-  storeZones: {
-    name: string;
-    count: number;
-    percent: number;
-  }[];
+  mainCountCheckPerClient: string;
+  mainCountCheckPerClientPercent: number;
   mainCountStorePerClient: string;
-  accountAges: {
-    name: string;
-    count: number;
-    percent: number;
-  }[];
-  genders: {
-    name: string;
-    count: number;
-    percent: number;
-  }[];
-  clientAges: {
-    name: string;
-    count: number;
-    percent: number;
-  }[];
-  bonuses: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
+  mainCountStorePerClientPercent: number;
+  mainLifeAccoutPeriod: string;
+  mainLifeAccoutPeriodPercent: number;
+  mainGender: string;
+  mainGenderPercent: number;
+  mainLifeClientPeriod: string;
+  mainLifeClientPercent: number;
+  mainBonus: string;
+  proceedPercentMainBonus: number;
   proceedIM: number;
   proceedPercentIM: number;
-  orderMethods: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  deliveryMethods: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  productGroups: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  weekDays: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  timeDays: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  regions: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  cities: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
-  stores: {
-    name: string;
-    proceed: number;
-    percent: number;
-  }[];
+  mainOrderMethod: string;
+  proceedPersentIMMainOrderMethod: number;
+  mainOrderDelivery: string;
+  proceedPersentIMMainOrderDelivery: number;
+  mainGroupProduct: string;
+  proceedPercentMainGroupProduct: number;
+  mainWeekDay: string;
+  proseedPercentMainWeekDay: number;
+  mainTimeDay: string;
+  proseedPercentMainTimeDay: number;
+  mainRegion: string;
+  proseedPercentMainRegion: number;
+  mainCity: string;
+  proseedPercentMainCity: number;
+  mainStore: string;
+  proseedPercentMainStore: number;
+}
+
+interface AllDataCount {
+  name: string;
+  count: number;
+  percent: number;
+}
+
+interface AllDataProceed {
+  name: string;
+  proceed: number;
+  percent: number;
+}
+
+export interface MainAllDataSegmentResponse {
+  segmentCode: 111;
+  checkZones: AllDataCount[];
+  storeZones: AllDataCount[];
+  accountAges: AllDataCount[];
+  genders: AllDataCount[];
+  clientAges: AllDataCount[];
+  bonuses: AllDataCount[];
+  orderMethods: AllDataProceed[];
+  deliveryMethods: AllDataProceed[];
+  productGroups: AllDataProceed[];
+  weekDays: AllDataProceed[];
+  timeDays: AllDataProceed[];
+  stores: AllDataProceed[];
+  regions: AllDataProceed[];
+  cities: AllDataProceed[];
+}
+
+export interface SeventeenCalculationResponse {
+  firstSegment: MainDataSegmentResponse[];
+  secondSegment: MainDataSegmentResponse[];
 }

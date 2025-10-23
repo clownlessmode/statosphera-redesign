@@ -1,21 +1,32 @@
-import { useRfmFiltersStore } from "@pages/rfm/ui/filters/filters-store";
+import { useFiltersStore } from "@widgets/rfm/model/filters-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
 import { Eraser } from "lucide-react";
-import { UseFormReturn, FieldValues } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
+import { FC } from "react";
+import { FormValues } from "../config/types";
 
 // Универсальный компонент с ограничением на FieldValues
-interface Props<T extends FieldValues> {
-  form: UseFormReturn<T>;
+interface Props {
+  form: UseFormReturn<FormValues>;
 }
 
-const ClearFilters = <T extends FieldValues>({ form }: Props<T>) => {
-  const { resetAll } = useRfmFiltersStore();
+const ClearFilters: FC<Props> = ({ form }) => {
+  const isMobile = useIsMobile();
+  const { resetAll } = useFiltersStore();
+
   const handleClearFilters = () => {
-    form.reset();
+    form.reset({
+      rfmList: [],
+      agePeriods: [],
+      sex: [],
+      period: "M0",
+      sankey: "M-3 -> M0",
+      heatmap: "M-3 -> M0",
+    });
     resetAll();
   };
-  const isMobile = useIsMobile();
+
   return (
     <Button
       size={isMobile ? "default" : "sm"}

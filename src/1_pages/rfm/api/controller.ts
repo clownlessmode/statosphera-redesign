@@ -2,24 +2,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import { RfmService } from "./service";
 import {
-  EighthCalculationResponse,
-  EleventhCalculationResponse,
-  FifteenCalculationResponse,
-  FifthCalculationResponse,
-  FirstCalculationResponse,
-  FourteenCalculationResponse,
-  FourthCalculationResponse,
+  AllGistogramResponse,
+  DrilldownRfmDayWeekTimeResponse,
+  DrilldownRfmRegionCityStoreResponse,
+  HeatmapMigrationPerSegmentResponse,
+  MainAllDataSegmentResponse,
+  MainDataSegmentResponse,
   NameSegmentResponse,
-  NinthCalculationResponse,
+  RadarCountUniqGroupAndProductResponse,
   RequestDto,
-  SecondCalculationResponse,
-  SeventhCalculationResponse,
-  SixteenCalculationResponse,
-  SixthCalculationResponse,
-  TenthCalculationResponse,
-  ThirdCalculationResponse,
-  ThirteenthCalculationResponse,
-  TwelfthCalculationResponse,
+  SankeyMigrationClientPerSegmentsResponse,
+  SeventeenCalculationResponse,
+  TreemapRfmOrderDeliveryResponse,
+  TreemapTopBonusesResponse,
+  TreemapTopGroupProductResponse,
 } from "../config";
 
 export const useRfm = () => {
@@ -33,200 +29,175 @@ export const useRfm = () => {
     },
   });
 
-  const firstCalculation = useMutation<
-    FirstCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getFirstCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["firstCalculation"] });
+  const agePeriods = useQuery<string[], ApiError>({
+    queryKey: ["agePeriod"],
+    queryFn: async () => {
+      const response = await RfmService.getAgePeriod();
       return response;
     },
   });
 
-  const secondCalculation = useMutation<
-    SecondCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
+  const allGistogram = useMutation<AllGistogramResponse, ApiError, RequestDto>({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getSecondCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["secondCalculation"] });
+      const response = await RfmService.getAllGistogram(dto);
+      queryClient.invalidateQueries({ queryKey: ["allGistogram"] });
       return response;
     },
   });
 
-  const secondCalculationReverse = useMutation<
-    SecondCalculationResponse,
+  const drilldownRfmDayWeekTime = useMutation<
+    DrilldownRfmDayWeekTimeResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getSecondCalculationReverse(dto);
-      queryClient.invalidateQueries({ queryKey: ["secondCalculation"] });
+      const response = await RfmService.getDrilldownRfmDayWeekTime(dto);
+      queryClient.invalidateQueries({ queryKey: ["drilldownRfmDayWeekTime"] });
       return response;
     },
   });
 
-  const thirdCalculation = useMutation<
-    ThirdCalculationResponse,
+  const drilldownTimeDayWeekRfm = useMutation<
+    DrilldownRfmDayWeekTimeResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getThirdCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["thirdCalculation"] });
-      return response;
-    },
-  });
-  const fourthCalculation = useMutation<
-    FourthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getFourthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["fourthCalculation"] });
-      return response;
-    },
-  });
-  const fifthCalculation = useMutation<
-    FifthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getFifthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["fifthCalculation"] });
-      return response;
-    },
-  });
-  const sixthCalculation = useMutation<
-    SixthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getSixthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["sixthCalculation"] });
+      const response = await RfmService.getDrilldownTimeDayWeekRfm(dto);
+      queryClient.invalidateQueries({ queryKey: ["drilldownTimeDayWeekRfm"] });
       return response;
     },
   });
 
-  const seventhCalculation = useMutation<
-    SeventhCalculationResponse,
+  const treemapTopGroupProduct = useMutation<
+    TreemapTopGroupProductResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getSeventhCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["seventhCalculation"] });
+      const response = await RfmService.getTreemapTopGroupProduct(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapTopGroupProduct"] });
       return response;
     },
   });
 
-  const eighthCalculation = useMutation<
-    EighthCalculationResponse,
+  const treemapTopBonuses = useMutation<
+    TreemapTopBonusesResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getEighthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["eighthCalculation"] });
+      const response = await RfmService.getTreemapTopBonuses(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapTopBonuses"] });
       return response;
     },
   });
 
-  const ninthCalculation = useMutation<
-    NinthCalculationResponse,
+  const radarCountUniqGroupAndProduct = useMutation<
+    RadarCountUniqGroupAndProductResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getNinthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["ninthCalculation"] });
-      return response;
-    },
-  });
-  const tenthCalculation = useMutation<
-    TenthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getTenthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["tenthCalculation"] });
-      return response;
-    },
-  });
-  const eleventhCalculation = useMutation<
-    EleventhCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getEleventhCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["eleventhCalculation"] });
-      return response;
-    },
-  });
-  const twelfthCalculation = useMutation<
-    TwelfthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getTwelfthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["twelfthCalculation"] });
-      return response;
-    },
-  });
-  const thirteenthCalculation = useMutation<
-    ThirteenthCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getThirteenthCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["thirteenthCalculation"] });
-      return response;
-    },
-  });
-  const fourteenCalculation = useMutation<
-    FourteenCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getFourteenCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["fourteenCalculation"] });
-      return response;
-    },
-  });
-
-  const fifteenCalculation = useMutation<
-    FifteenCalculationResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getFifteenCalculation(dto);
-      queryClient.invalidateQueries({ queryKey: ["fifteenCalculation"] });
-      return response;
-    },
-  });
-
-  const sixteenCalculation = useMutation<
-    SixteenCalculationResponse[],
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await RfmService.getSixteenCalculation(dto);
+      const response = await RfmService.getRadarCountUniqGroupAndProduct(dto);
       queryClient.invalidateQueries({
-        queryKey: ["sixteenCalculation"],
+        queryKey: ["radarCountUniqGroupAndProduct"],
       });
+      return response;
+    },
+  });
+
+  const treemapRfmOrderDelivery = useMutation<
+    TreemapRfmOrderDeliveryResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getTreemapRfmOrderDelivery(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapRfmOrderDelivery"] });
+      return response;
+    },
+  });
+
+  const drilldownRfmRegionCityStore = useMutation<
+    DrilldownRfmRegionCityStoreResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getDrilldownRfmRegionCityStore(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["drilldownRfmRegionCityStore"],
+      });
+      return response;
+    },
+  });
+
+  const sankeyMigrationClientPerSegments = useMutation<
+    SankeyMigrationClientPerSegmentsResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response =
+        await RfmService.getSankeyMigrationClientPerSegments(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["sankeyMigrationClientPerSegments"],
+      });
+      return response;
+    },
+  });
+
+  const heatmapMigrationPerSegment = useMutation<
+    HeatmapMigrationPerSegmentResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getHeatmapMigrationPerSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["heatmapMigrationPerSegment"],
+      });
+      return response;
+    },
+  });
+
+  const mainDataSegment = useMutation<
+    MainDataSegmentResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getMainDataSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["mainDataSegment"],
+      });
+      return response;
+    },
+  });
+
+  const mainAllDataSegment = useMutation<
+    MainAllDataSegmentResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getMainAllDataSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["mainAllDataSegment"],
+      });
+      return response;
+    },
+  });
+
+  const comparisonTwoRfm = useMutation<
+    SeventeenCalculationResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getComparisonTwoRfm(dto);
+      queryClient.invalidateQueries({ queryKey: ["comparisonTwoRfm"] });
       return response;
     },
   });
@@ -235,39 +206,37 @@ export const useRfm = () => {
     getNameSegment: nameSegment.refetch,
     isNameSegmentLoading: nameSegment.isPending,
     nameSegment: nameSegment.data,
-    getFirstCalculation: firstCalculation.mutateAsync,
-    isFirstCalculationLoading: firstCalculation.isPending,
-    getSecondCalculation: secondCalculation.mutateAsync,
-    isSecondCalculationLoading: secondCalculation.isPending,
-    getSecondCalculationReverse: secondCalculationReverse.mutateAsync,
-    isSecondCalculationReverseLoading: secondCalculationReverse.isPending,
-    getThirdCalculation: thirdCalculation.mutateAsync,
-    isThirdCalculationLoading: thirdCalculation.isPending,
-    getFourthCalculation: fourthCalculation.mutateAsync,
-    isFourthCalculationLoading: fourthCalculation.isPending,
-    getFifthCalculation: fifthCalculation.mutateAsync,
-    isFifthCalculationLoading: fifthCalculation.isPending,
-    getSixthCalculation: sixthCalculation.mutateAsync,
-    isSixthCalculationLoading: sixthCalculation.isPending,
-    getSeventhCalculation: seventhCalculation.mutateAsync,
-    isSeventhCalculationLoading: seventhCalculation.isPending,
-    getEighthCalculation: eighthCalculation.mutateAsync,
-    isEighthCalculationLoading: eighthCalculation.isPending,
-    getNinthCalculation: ninthCalculation.mutateAsync,
-    isNinthCalculationLoading: ninthCalculation.isPending,
-    getTenthCalculation: tenthCalculation.mutateAsync,
-    isTenthCalculationLoading: tenthCalculation.isPending,
-    getEleventhCalculation: eleventhCalculation.mutateAsync,
-    isEleventhCalculationLoading: eleventhCalculation.isPending,
-    getTwelfthCalculation: twelfthCalculation.mutateAsync,
-    isTwelfthCalculationLoading: twelfthCalculation.isPending,
-    getThirteenthCalculation: thirteenthCalculation.mutateAsync,
-    isThirteenthCalculationLoading: thirteenthCalculation.isPending,
-    getFourteenCalculation: fourteenCalculation.mutateAsync,
-    isFourteenCalculationLoading: fourteenCalculation.isPending,
-    getFifteenCalculation: fifteenCalculation.mutateAsync,
-    isFifteenCalculationLoading: fifteenCalculation.isPending,
-    getSixteenCalculation: sixteenCalculation.mutateAsync,
-    isSixteenCalculationLoading: sixteenCalculation.isPending,
+    getAgePeriods: agePeriods.refetch,
+    isAgePeriodsLoading: agePeriods.isPending,
+    agePeriods: agePeriods.data,
+    getAllGistogram: allGistogram.mutateAsync,
+    isAllGistogramLoading: allGistogram.isPending,
+    getDrilldownRfmDayWeekTime: drilldownRfmDayWeekTime.mutateAsync,
+    isDrilldownRfmDayWeekTimeLoading: drilldownRfmDayWeekTime.isPending,
+    getDrilldownTimeDayWeekRfm: drilldownTimeDayWeekRfm.mutateAsync,
+    isDrilldownTimeDayWeekRfmLoading: drilldownTimeDayWeekRfm.isPending,
+    getTreemapTopGroupProduct: treemapTopGroupProduct.mutateAsync,
+    isTreemapTopGroupProductLoading: treemapTopGroupProduct.isPending,
+    getTreemapTopBonuses: treemapTopBonuses.mutateAsync,
+    isTreemapTopBonusesLoading: treemapTopBonuses.isPending,
+    getRadarCountUniqGroupAndProduct: radarCountUniqGroupAndProduct.mutateAsync,
+    isRadarCountUniqGroupAndProductLoading:
+      radarCountUniqGroupAndProduct.isPending,
+    getTreemapRfmOrderDelivery: treemapRfmOrderDelivery.mutateAsync,
+    isTreemapRfmOrderDeliveryLoading: treemapRfmOrderDelivery.isPending,
+    getDrilldownRfmRegionCityStore: drilldownRfmRegionCityStore.mutateAsync,
+    isDrilldownRfmRegionCityStoreLoading: drilldownRfmRegionCityStore.isPending,
+    getSankeyMigrationClientPerSegments:
+      sankeyMigrationClientPerSegments.mutateAsync,
+    isSankeyMigrationClientPerSegmentsLoading:
+      sankeyMigrationClientPerSegments.isPending,
+    getHeatmapMigrationPerSegment: heatmapMigrationPerSegment.mutateAsync,
+    isHeatmapMigrationPerSegmentLoading: heatmapMigrationPerSegment.isPending,
+    getMainDataSegment: mainDataSegment.mutateAsync,
+    isMainDataSegmentLoading: mainDataSegment.isPending,
+    getMainAllDataSegment: mainAllDataSegment.mutateAsync,
+    isMainAllDataSegmentLoading: mainAllDataSegment.isPending,
+    getComparisonTwoRfm: comparisonTwoRfm.mutateAsync,
+    isComparisonTwoRfmLoading: comparisonTwoRfm.isPending,
   };
 };

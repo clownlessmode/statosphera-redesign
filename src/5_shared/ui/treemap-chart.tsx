@@ -9,7 +9,7 @@ interface Data {
   children?: Data[];
 }
 
-type TreemapCharProps = {
+interface TreemapChartProps {
   series: {
     data: Data[];
     rootLevel: string;
@@ -19,9 +19,13 @@ type TreemapCharProps = {
   grid?: {
     bottom?: number;
   };
-};
+}
 
-export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
+export const TreemapChart = ({
+  series,
+  formatter,
+  grid,
+}: TreemapChartProps) => {
   const colors = useGraphColors();
 
   const option: EChartsOption = {
@@ -42,22 +46,39 @@ export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
       bottom: grid?.bottom || 20,
     },
     series: {
-      leafDepth: 2,
+      roam: "move",
+      leafDepth: 3,
       name: series.rootLevel,
       type: "treemap",
       emphasis: { focus: "series" },
       data: series.data,
       label: {
         show: true,
+        color: colors.text,
+        formatter: "{b}",
       },
       upperLabel: {
-        backgroundColor: colors.background,
         color: colors.text,
         show: true,
       },
       levels: [
         {
-          upperLabel: { show: false },
+          color: [
+            colors.series[0],
+            colors.series[1],
+            colors.series[2],
+            colors.series[3],
+            colors.series[4],
+          ],
+          upperLabel: { show: false, backgroundColor: colors.background },
+          itemStyle: {
+            borderColor: colors.background,
+            borderWidth: 1,
+            gapWidth: 5,
+          },
+        },
+        {
+          upperLabel: { backgroundColor: colors.background },
           itemStyle: {
             borderColor: colors.background,
             borderWidth: 1,
@@ -67,6 +88,7 @@ export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
         {
           itemStyle: {
             borderColor: colors.background,
+            borderColorSaturation: 0.6,
             borderWidth: 1,
             gapWidth: 5,
           },
@@ -86,6 +108,8 @@ export const TreemapChart = ({ series, formatter, grid }: TreemapCharProps) => {
         option={option}
         style={{ height: "100%", width: "100%" }}
         className="w-full h-full"
+        notMerge={true}
+        lazyUpdate={false}
       />
     </div>
   );

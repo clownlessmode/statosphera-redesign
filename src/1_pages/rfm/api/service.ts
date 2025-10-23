@@ -7,97 +7,82 @@ export class RfmService {
     return response.data;
   }
 
-  static async getFirstCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/first-calculation-gistogram", dto);
+  static async getAgePeriod() {
+    const response = await api.get("/rfm/get-age-period");
     return response.data;
   }
 
-  static async getSecondCalculation(dto: RequestDto) {
+  static async getAllGistogram(dto: RequestDto) {
+    const response = await api.post("/rfm/all-gistogram", dto);
+    return response.data;
+  }
+
+  static async getDrilldownRfmDayWeekTime(dto: RequestDto) {
+    const response = await api.post("/rfm/drilldown-rfm-day-week-time", dto);
+    return response.data;
+  }
+
+  static async getDrilldownTimeDayWeekRfm(dto: RequestDto) {
+    const response = await api.post("/rfm/drilldown-time-day-week-rfm", dto);
+    return response.data;
+  }
+
+  static async getTreemapTopGroupProduct(dto: RequestDto) {
+    const response = await api.post("/rfm/treemap-top10-group-product", dto);
+    return response.data;
+  }
+
+  static async getTreemapTopBonuses(dto: RequestDto) {
+    const response = await api.post("/rfm/treemap-top10-bonuses", dto);
+    return response.data;
+  }
+
+  static async getRadarCountUniqGroupAndProduct(dto: RequestDto) {
     const response = await api.post(
-      "/rfm/second-calculation-drilldown-gistogram",
+      "/rfm/radar-count-uniq-group-and-product",
       dto,
     );
     return response.data;
   }
 
-  static async getSecondCalculationReverse(dto: RequestDto) {
+  static async getTreemapRfmOrderDelivery(dto: RequestDto) {
+    const response = await api.post("/rfm/treemap-rfm-order-delivery", dto);
+    return response.data;
+  }
+
+  static async getDrilldownRfmRegionCityStore(dto: RequestDto) {
     const response = await api.post(
-      "/rfm/second-calculation-reverse-drilldown-gistogram",
+      "/rfm/drilldown-rfm-region-city-store",
       dto,
     );
     return response.data;
   }
 
-  static async getThirdCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/third-calculation-treemap", dto);
-    return response.data;
-  }
-
-  static async getFourthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/fourth-calculation-gistogram", dto);
-    return response.data;
-  }
-
-  static async getFifthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/fifth-calculation-treemap", dto);
-    return response.data;
-  }
-
-  static async getSixthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/sixth-calculation-radar", dto);
-    return response.data;
-  }
-
-  static async getSeventhCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/seventh-calculation-sunburst", dto);
-    return response.data;
-  }
-  static async getEighthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/eighth-calculation-gistogram", dto);
-    return response.data;
-  }
-
-  static async getNinthCalculation(dto: RequestDto) {
+  static async getSankeyMigrationClientPerSegments(dto: RequestDto) {
     const response = await api.post(
-      "/rfm/ninth-calculation-drill-down-gistogram",
-      dto,
-    );
-    return response.data;
-  }
-  static async getTenthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/tenth-calculation-gistogram", dto);
-    return response.data;
-  }
-  static async getEleventhCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/eleventh-calculation-gistogram", dto);
-    return response.data;
-  }
-
-  static async getTwelfthCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/twelfth-calculation-gistogram", dto);
-    return response.data;
-  }
-
-  static async getThirteenthCalculation(dto: RequestDto) {
-    const response = await api.post(
-      "/rfm/thirteenth-calculation-gistogram",
+      "/rfm/sankey-migration-client-per-segments",
       dto,
     );
     return response.data;
   }
 
-  static async getFourteenCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/fourteen-calculation-gistogram", dto);
+  static async getHeatmapMigrationPerSegment(dto: RequestDto) {
+    const response = await api.post("/rfm/heatmap-migration-per-segment", dto);
     return response.data;
   }
 
-  static async getFifteenCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/fifteen-calculation-gistogram", dto);
+  static async getMainDataSegment(dto: RequestDto) {
+    const response = await api.post("/rfm/main-data-segment", dto);
     return response.data;
   }
 
-  static async getSixteenCalculation(dto: RequestDto) {
-    const response = await api.post("/rfm/16-calculation-gistogram", dto);
+  static async getMainAllDataSegment(dto: RequestDto) {
+    const response = await api.post("/rfm/main-all-data-segment", dto);
+    return response.data;
+  }
+
+  static async getComparisonTwoRfm(dto: RequestDto) {
+    const response = await api.post("/rfm/comparison-two-rfm", dto);
     return response.data;
   }
 }

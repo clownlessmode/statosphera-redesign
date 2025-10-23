@@ -2,6 +2,8 @@ import { create } from "zustand";
 
 interface Filters {
   rfmList: number[];
+  agePeriods: string[];
+  sex: string[];
   period: string;
   sankey: string;
   heatmap: string;
@@ -17,13 +19,15 @@ interface RfmFiltersState {
 const initialFilters = {
   filters: {
     rfmList: [],
+    agePeriods: [],
+    sex: [],
     period: "M0",
     sankey: "M-3 -> M0",
     heatmap: "M-3 -> M0",
   },
 };
 
-export const useRfmFiltersStore = create<RfmFiltersState>((set, get) => ({
+export const useFiltersStore = create<RfmFiltersState>((set, get) => ({
   ...initialFilters,
   updateFilters: (key, value) =>
     set((state) => {

@@ -2,6 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { useGraphColors } from "@shared/hooks";
+import { Button } from "./button";
 
 type SeriesData = [number | string, number, string, string | null][];
 
@@ -36,7 +37,7 @@ export const BarMultiDrilldownChart = ({
     verticalAlign: "middle" as const,
     rotate: 90,
     fontSize: 12,
-    color: "#ffffff",
+    color: colors.text,
     textBorderColor: "#383838C2",
     formatter: formatter ? formatter : "{c}",
   };
@@ -97,6 +98,7 @@ export const BarMultiDrilldownChart = ({
             type: "category",
             axisTick: { show: false },
             axisLabel: {
+              //            show: history.length === 4 ? false : true,
               color: colors.text,
               fontSize: 12,
               interval: 0,
@@ -143,7 +145,7 @@ export const BarMultiDrilldownChart = ({
     });
 
     return options;
-  }, [allSeries, formatter, title, grid, history.length]);
+  }, [allSeries, formatter, title, grid, history.length, colors]);
 
   // Собираем финальную опцию для рендеринга
   const optionToRender = useMemo(() => {
@@ -161,24 +163,24 @@ export const BarMultiDrilldownChart = ({
             {index > 0 && (
               <span className={`text-muted-foreground select-none`}>/</span>
             )}
-            <button
+            <Button
+              variant="ghost"
               onClick={() => jumpToLevel(index)}
               disabled={index === history.length - 1}
               className={`
-              transition-colors rounded px-2 py-1
+              transition-colors px-2 py-1
               ${
                 index === history.length - 1
-                  ? `font-semibold cursor-default text-foreground` // Стиль для текущего уровня
-                  : `text-muted-foreground hover:bg-foreground hover:text-background cursor-pointer` // Стиль для предыдущих
+                  ? `cursor-default text-foreground` // Стиль для текущего уровня
+                  : `text-muted-foreground hover:bg-foreground hover:text-background` // Стиль для предыдущих
               }
             `}
             >
               {level.name}
-            </button>
+            </Button>
           </Fragment>
         ))}
       </div>
-
       <ReactECharts
         option={optionToRender}
         style={{ height: "100%", width: "100%" }}
