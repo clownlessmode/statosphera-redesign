@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { RequestDto } from "../config";
+import { RequestDto, RequestDtoComparison } from "../config";
 
 export class RfmService {
   static async getNameSegment() {
@@ -81,7 +81,7 @@ export class RfmService {
     return response.data;
   }
 
-  static async getComparisonTwoRfm(dto: RequestDto) {
+  static async getComparisonTwoRfm(dto: RequestDtoComparison) {
     const response = await api.post("/rfm/comparison-two-rfm", dto);
     return response.data;
   }

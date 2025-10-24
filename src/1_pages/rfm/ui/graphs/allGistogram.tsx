@@ -46,7 +46,8 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
     graph.avgDataProfit.series.length === 0 ||
     graph.avgDayCountPerClient.series.length === 0 ||
     graph.countInDanger.series.length === 0 ||
-    graph.countUniqClient.series.length === 0
+    graph.countUniqClient.series.length === 0 ||
+    graph.avgDataCheck.series.length === 0
   ) {
     return <StackedLineSkeleton className="h-[400px] col-span-2" />;
   }
@@ -63,6 +64,10 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
     {
       label: "по прибыли",
       value: graph.allDataProfit,
+    },
+    {
+      label: "по среднему чеку",
+      value: graph.avgDataCheck,
     },
     {
       label: "по количеству чеков с применением акций",
@@ -89,15 +94,15 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
       value: graph.imDataProfit,
     },
     {
-      label: "по среднему количеству чеков",
+      label: "по среднему количеству чеков на человека",
       value: graph.avgDataCount,
     },
     {
-      label: "по средней выручке",
+      label: "по средней выручке на человека",
       value: graph.avgDataProceed,
     },
     {
-      label: "по средней прибыли",
+      label: "по средней прибыли на человека",
       value: graph.avgDataProfit,
     },
     {

@@ -66,8 +66,14 @@ export const ModalInfo = ({ data, isLoading, title }: ModalProps) => {
                           {idx + 1}. {item.name}
                         </span>
                         <span className="text-center">
-                          {item.count && Math.round(item.count)}
-                          {item.proceed && Math.round(item.proceed)}
+                          {item.count &&
+                            Math.round(item.count)
+                              .toLocaleString()
+                              .replace(/,/g, " ")}
+                          {item.proceed &&
+                            Math.round(item.proceed)
+                              .toLocaleString()
+                              .replace(/,/g, " ")}
                         </span>
                         <span className="text-center">{item.percent}%</span>
                       </div>

@@ -293,7 +293,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               {Math.round(segment.proceedIM)
                                 .toLocaleString()
                                 .replace(/,/g, " ")}{" "}
-                              ({segment.proceedPercentIM}%)
+                              ({segment.proceedPersentIM}%)
                             </span>
                           </div>
                           <div className="flex flex-col my-2">

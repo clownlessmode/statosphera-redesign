@@ -3,6 +3,7 @@ import { ApiError } from "@shared/api/types";
 import { RfmService } from "./service";
 import {
   AllGistogramResponse,
+  ComparisonTwoRfmResponse,
   DrilldownRfmDayWeekTimeResponse,
   DrilldownRfmRegionCityStoreResponse,
   HeatmapMigrationPerSegmentResponse,
@@ -11,8 +12,8 @@ import {
   NameSegmentResponse,
   RadarCountUniqGroupAndProductResponse,
   RequestDto,
+  RequestDtoComparison,
   SankeyMigrationClientPerSegmentsResponse,
-  SeventeenCalculationResponse,
   TreemapRfmOrderDeliveryResponse,
   TreemapTopBonusesResponse,
   TreemapTopGroupProductResponse,
@@ -191,11 +192,11 @@ export const useRfm = () => {
   });
 
   const comparisonTwoRfm = useMutation<
-    SeventeenCalculationResponse,
+    ComparisonTwoRfmResponse,
     ApiError,
-    RequestDto
+    RequestDtoComparison
   >({
-    mutationFn: async (dto: RequestDto) => {
+    mutationFn: async (dto: RequestDtoComparison) => {
       const response = await RfmService.getComparisonTwoRfm(dto);
       queryClient.invalidateQueries({ queryKey: ["comparisonTwoRfm"] });
       return response;

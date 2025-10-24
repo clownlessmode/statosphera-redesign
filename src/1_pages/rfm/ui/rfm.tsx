@@ -32,6 +32,7 @@ import { DrilldownTimeDayWeekRfm } from "./graphs/drilldownTimeDayWeekRfm";
 import { SankeyMigrationClientPerSegments } from "./graphs/sankeyMigrationClientPerSegments";
 import { HeatmapMigrationPerSegment } from "./graphs/heatmapMigrationPerSegment";
 import { TreemapRfmOrderDelivery } from "./graphs/treemapRfmOrderDelivery";
+import { ComparisonTwoRfmCard } from "./cards/comparison-two-rfm";
 
 interface Filters {
   data: {
@@ -77,6 +78,7 @@ export const Rfm = () => {
     avgDayCountPerClient: { categories: [], series: [] },
     countUniqClient: { categories: [], series: [] },
     countInDanger: { categories: [], series: [] },
+    avgDataCheck: { categories: [], series: [] },
   });
   const [drilldownRfmDayWeekTime, setDrilldownRfmDayWeekTime] =
     useState<DrilldownRfmDayWeekTimeResponse>({
@@ -171,8 +173,6 @@ export const Rfm = () => {
     isHeatmapMigrationPerSegmentLoading,
     getMainDataSegment,
     isMainDataSegmentLoading,
-    //getComparisonTwoRfm,
-    //isComparisonTwoRfmLoading,
   } = useRfm();
 
   const handleApplyFilters = () => {
@@ -334,6 +334,7 @@ export const Rfm = () => {
                 isLoading={isHeatmapMigrationPerSegmentLoading}
               />
             </div>
+            <ComparisonTwoRfmCard />
           </>
         ) : (
           <div className="my-[10%] flex h-full w-full justify-center items-center dark:opacity-70">

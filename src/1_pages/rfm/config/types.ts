@@ -5,6 +5,21 @@ export interface RequestDto {
   age: string[];
 }
 
+export interface RequestDtoComparison {
+  firstSegment: {
+    period: string;
+    rfmCode: number;
+    sex: string[];
+    age: string[];
+  };
+  secondSegment: {
+    period: string;
+    rfmCode: number;
+    sex: string[];
+    age: string[];
+  };
+}
+
 export interface NameSegmentResponse {
   rfmCode: number;
   rfmName: string;
@@ -34,6 +49,7 @@ export interface AllGistogramResponse {
   avgDayCountPerClient: AllGistogram;
   countUniqClient: AllGistogram;
   countInDanger: AllGistogram;
+  avgDataCheck: AllGistogram;
 }
 
 export interface DrilldownRfmDayWeekTimeResponse {
@@ -176,7 +192,7 @@ export interface MainDataSegmentResponse {
   mainBonus: string;
   proceedPercentMainBonus: number;
   proceedIM: number;
-  proceedPercentIM: number;
+  proceedPersentIM: number;
   mainOrderMethod: string;
   proceedPersentIMMainOrderMethod: number;
   mainOrderDelivery: string;
@@ -209,6 +225,7 @@ interface AllDataProceed {
 
 export interface MainAllDataSegmentResponse {
   segmentCode: 111;
+  period: string;
   checkZones: AllDataCount[];
   storeZones: AllDataCount[];
   accountAges: AllDataCount[];
@@ -225,7 +242,28 @@ export interface MainAllDataSegmentResponse {
   cities: AllDataProceed[];
 }
 
-export interface SeventeenCalculationResponse {
-  firstSegment: MainDataSegmentResponse[];
-  secondSegment: MainDataSegmentResponse[];
+export interface ComparisonTwoRfmResponse {
+  firstSegment: {
+    mainData: MainDataSegmentResponse;
+    allData: MainAllDataSegmentResponse;
+  };
+  secondSegment: {
+    mainData: MainDataSegmentResponse;
+    allData: MainAllDataSegmentResponse;
+  };
+  diff: {
+    countClient: number;
+    proceedAll: number;
+    proceedAvgCheck: number;
+    avgPeriodPerSales: number;
+    countClientInWarningZone: number;
+    countNightClient: number;
+    proceedNightClient: number;
+    profitNightClient: number;
+    countMMClient: number;
+    proceedMMClient: number;
+    profitMMClient: number;
+    proceedIM: number;
+    proceedPersentIM: number;
+  };
 }
