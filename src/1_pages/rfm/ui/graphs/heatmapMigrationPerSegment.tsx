@@ -41,7 +41,7 @@ export const HeatmapMigrationPerSegment: FC<Props> = ({ graph, isLoading }) => {
             return `
                   ${params.marker}Был: ${graph.yAxis[params.value[1]]}<br />
                   ${params.marker}Стал: ${graph.xAxis[params.value[0]]}<br />
-                  ${params.marker}Мигрировало клиентов: ${params.value[2]}<br />
+                  ${params.marker}Мигрировало клиентов: ${params.value[2].toLocaleString().replace(/,/g, " ")}<br />
                 `;
           }}
         />

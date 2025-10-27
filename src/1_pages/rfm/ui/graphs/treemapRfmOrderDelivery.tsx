@@ -21,7 +21,7 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
     <Card className="h-[600px] col-span-2 gap-0">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
         <CardTitle className="text-center text-lg font-semibold">
-          Treemap самых популярных способов заказа и доставки
+          Самые популярные способы заказа и доставки
         </CardTitle>
       </CardHeader>
       <div style={{ height: 600, width: "100%" }}>

@@ -6,7 +6,7 @@ import { Button } from "./button";
 
 type SeriesData = [number | string, number, string, string | null][];
 
-type BarMultiDrilldownChartProps = {
+interface BarMultiDrilldownChartProps {
   allSeries: SeriesData[];
   rootId: string;
   rootName: string;
@@ -15,7 +15,7 @@ type BarMultiDrilldownChartProps = {
   grid?: {
     bottom?: number;
   };
-};
+}
 
 export const BarMultiDrilldownChart = ({
   allSeries,
@@ -98,10 +98,16 @@ export const BarMultiDrilldownChart = ({
             type: "category",
             axisTick: { show: false },
             axisLabel: {
-              //            show: history.length === 4 ? false : true,
               color: colors.text,
               fontSize: 12,
               interval: 0,
+              formatter: (value) => {
+                return (data.length > 10 && value.length > 10) ||
+                  (data.length > 24 && value.length > 2) ||
+                  data.length > 24
+                  ? ""
+                  : value;
+              },
             },
             axisLine: { show: false },
           },

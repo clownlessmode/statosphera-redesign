@@ -257,41 +257,6 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
-            Продажи и акции
-          </span>
-          <div className="flex flex-col my-2">
-            <span className="text-md text-muted-foreground font-semibold">
-              Популярная группа
-            </span>
-            <span className="mt-1">
-              {segment?.mainData.mainGroupProduct
-                ? segment?.mainData.mainGroupProduct
-                : "Нет данных"}{" "}
-              (
-              {segment?.mainData.proceedPercentMainGroupProduct
-                ? segment?.mainData.proceedPercentMainGroupProduct
-                : 0}
-              %)
-            </span>
-          </div>
-          <div className="flex flex-col my-2">
-            <span className="text-md text-muted-foreground font-semibold">
-              Популярный бонус
-            </span>
-            <span className="mt-1">
-              {segment?.mainData.mainBonus
-                ? segment?.mainData.mainBonus.replace(/\[[^\]]*\]/g, "")
-                : "Нет данных"}{" "}
-              (
-              {segment?.mainData.proceedPercentMainBonus
-                ? segment?.mainData.proceedPercentMainBonus
-                : 0}
-              %)
-            </span>
-          </div>
-        </div>
         <div className="grid grid-cols-3">
           <span className="text-lg text-primary/90 font-bold col-span-3">
             Микромаркеты
@@ -328,6 +293,41 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                     .toLocaleString()
                     .replace(/,/g, " ")
                 : "Нет данных"}{" "}
+            </span>
+          </div>
+        </div>
+        <div className="grid grid-cols-1">
+          <span className="text-lg text-primary/90 font-bold col-span-1">
+            Продажи и акции
+          </span>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
+              Популярная группа
+            </span>
+            <span className="mt-1">
+              {segment?.mainData.mainGroupProduct
+                ? segment?.mainData.mainGroupProduct
+                : "Нет данных"}{" "}
+              (
+              {segment?.mainData.proceedPercentMainGroupProduct
+                ? segment?.mainData.proceedPercentMainGroupProduct
+                : 0}
+              %)
+            </span>
+          </div>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
+              Популярный бонус
+            </span>
+            <span className="mt-1">
+              {segment?.mainData.mainBonus
+                ? segment?.mainData.mainBonus.replace(/\[[^\]]*\]/g, "")
+                : "Нет данных"}{" "}
+              (
+              {segment?.mainData.proceedPercentMainBonus
+                ? segment?.mainData.proceedPercentMainBonus
+                : 0}
+              %)
             </span>
           </div>
         </div>

@@ -50,7 +50,8 @@ export const ModalInfo = ({ data, isLoading, title }: ModalProps) => {
         <DialogBody className="gap-4 grid grid-col-1 mt-">
           <ScrollArea className="max-h-[50vh] md:max-h-[50vh]">
             <Card className="max-md:min-h-[50vh] gap-4">
-              <CardHeader className="grid grid-cols-3">
+              <CardHeader className="grid grid-cols-4">
+                <CardTitle className="text-center text-lg">№</CardTitle>
                 <CardTitle className="text-center text-lg">
                   Показатель
                 </CardTitle>
@@ -61,10 +62,9 @@ export const ModalInfo = ({ data, isLoading, title }: ModalProps) => {
                 {!isLoading && data ? (
                   data?.map((item, idx) => (
                     <Fragment key={idx}>
-                      <div className="grid grid-cols-3 py-4 border-t">
-                        <span className="text-center">
-                          {idx + 1}. {item.name}
-                        </span>
+                      <div className="grid grid-cols-4 py-4 border-t">
+                        <span className="text-center">{idx + 1}</span>
+                        <span className="text-center">{item.name}</span>
                         <span className="text-center">
                           {item.count &&
                             Math.round(item.count)

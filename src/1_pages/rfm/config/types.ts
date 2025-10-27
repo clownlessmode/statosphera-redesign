@@ -33,6 +33,35 @@ interface AllGistogram {
   }[];
 }
 
+export interface AllStackedGistogramResponse {
+  sexGistogram: {
+    segments: string[];
+    series: {
+      name: string;
+      type: string;
+      stack: string;
+      data: number[];
+    }[];
+
+    legend: {
+      data: string[];
+    };
+  };
+  ageGistogram: {
+    segments: string[];
+    series: {
+      name: string;
+      type: string;
+      stack: string;
+      data: number[];
+    }[];
+
+    legend: {
+      data: string[];
+    };
+  };
+}
+
 export interface AllGistogramResponse {
   allDataCount: AllGistogram;
   allDataProceed: AllGistogram;

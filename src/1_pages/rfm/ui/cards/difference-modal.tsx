@@ -86,13 +86,13 @@ export const DifferenceModal = ({
                 <div className="grid grid-cols-8">
                   <span className="text-center py-4 border-t">№</span>
                   <span className="text-center py-4 border-t">Показатель</span>
-                  <span className="text-center py-4 border-t">Количество</span>
+                  <span className="text-center py-4 border-t">Значение</span>
                   <span className="text-center py-4 border-t border-r">
                     Доля
                   </span>
                   <span className="text-center py-4 border-t">№</span>
                   <span className="text-center py-4 border-t">Показатель</span>
-                  <span className="text-center py-4 border-t">Количество</span>
+                  <span className="text-center py-4 border-t">Значение</span>
                   <span className="text-center py-4 border-t">Доля</span>
                   <div className="col-span-8 grid grid-cols-8 *:border-t *:py-4">
                     {firstData &&

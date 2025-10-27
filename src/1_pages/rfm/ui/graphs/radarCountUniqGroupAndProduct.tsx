@@ -48,7 +48,10 @@ export const RadarCountUniqGroupAndProduct = ({ isLoading, graph }: Props) => {
                     : params.value;
 
                   const indicatorsText = graph.CountUniqGroup.radar?.indicator
-                    .map((ind, i) => `Сегмент ${ind.name} - ${values[i]}`)
+                    .map(
+                      (ind, i) =>
+                        `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
+                    )
                     .join("<br/>");
 
                   return `${indicatorsText}`;
@@ -88,7 +91,10 @@ export const RadarCountUniqGroupAndProduct = ({ isLoading, graph }: Props) => {
 
                   const indicatorsText =
                     graph?.CountUniqProduct.radar?.indicator
-                      .map((ind, i) => `Сегмент ${ind.name} - ${values[i]}`)
+                      .map(
+                        (ind, i) =>
+                          `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
+                      )
                       .join("<br/>");
 
                   return `${indicatorsText}`;

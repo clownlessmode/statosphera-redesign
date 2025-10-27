@@ -1,49 +1,74 @@
 import { FC, useEffect, useState } from "react";
 import { useRfm } from "@pages/rfm/api";
-import { ComparisonTwoRfmResponse } from "@pages/rfm/config";
+import {
+  ComparisonTwoRfmResponse,
+  RequestDtoComparison,
+} from "@pages/rfm/config";
 import { RfmElm } from "./rfm-elm";
 import { RfmElmSkeleton } from "./rfm-elm-skeleton";
 import { Difference } from "./difference";
+import { ComparisonFilterModal } from "../comparison-filter-modal";
+import { useComparisonFiltersStore } from "@widgets/rfm/model/comparision-filters-store";
 
 export const ComparisonTwoRfmCard: FC = () => {
   const [dataSegments, setDataSegments] = useState<ComparisonTwoRfmResponse>();
+  const { getApiPayload } = useComparisonFiltersStore();
+  const [appliedFilters, setAppliedFilters] = useState<RequestDtoComparison>();
   const { getComparisonTwoRfm, isComparisonTwoRfmLoading } = useRfm();
 
-  useEffect(() => {
-    const filter = {
+  const handleApplyFilters = () => {
+    const filters = getApiPayload();
+    setAppliedFilters({
       firstSegment: {
-        period: "M-3",
-        rfmCode: 111,
-        sex: ["Мужской", "Женский", "Не определено"],
-        age: ["Не указан возраст", "25-35", ">60", "<18"],
+        period: filters.firstSegment.period,
+        rfmCode: filters.firstSegment.rfmCode,
+        sex: filters.firstSegment.sex,
+        age: filters.firstSegment.age,
       },
       secondSegment: {
-        period: "M-6",
-        rfmCode: 112,
-        sex: ["Мужской", "Женский", "Не определено"],
-        age: ["Не указан возраст", "25-35", ">60", "<18"],
+        period: filters.secondSegment.period,
+        rfmCode: filters.secondSegment.rfmCode,
+        sex: filters.secondSegment.sex,
+        age: filters.secondSegment.age,
       },
-    };
-    getComparisonTwoRfm(filter).then((data) => {
+    });
+  };
+
+  useEffect(() => {
+    const filters = getApiPayload();
+    getComparisonTwoRfm({
+      firstSegment: {
+        period: filters.firstSegment.period,
+        rfmCode: filters.firstSegment.rfmCode,
+        sex: filters.firstSegment.sex,
+        age: filters.firstSegment.age,
+      },
+      secondSegment: {
+        period: filters.secondSegment.period,
+        rfmCode: filters.secondSegment.rfmCode,
+        sex: filters.secondSegment.sex,
+        age: filters.secondSegment.age,
+      },
+    }).then((data) => {
       setDataSegments(data);
     });
   }, []);
 
-  //const selectFirstSegment = (segments, periods, genders, ages) => {
-  //  if (!dataSegment || segment !== datadataSegments?.firstSegment.mainData.segmentCode) {
-  //    const filter = {
-  //      period: periods,
-  //      rfmList: [segments],
-  //      sex: [genders],
-  //      age: [ages],
-  //    };
-  //
-  //  }
-  //};
+  useEffect(() => {
+    if (appliedFilters && appliedFilters.firstSegment.rfmCode) {
+      getComparisonTwoRfm(appliedFilters).then((data) => {
+        setDataSegments(data);
+      });
+    }
+  }, [appliedFilters]);
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-md font-semibold">Сравнение сегментов</span>
+      <div className="flex flex-row items-center">
+        <span className="text-md font-semibold mr-2">Сравнение сегментов</span>
+        <ComparisonFilterModal onApplyFilters={handleApplyFilters} />
+      </div>
+
       <div className="w-full h-full grid grid-cols-3 gap-4">
         {dataSegments ? (
           <>
@@ -67,7 +92,11 @@ export const ComparisonTwoRfmCard: FC = () => {
             />
           </>
         ) : (
-          <RfmElmSkeleton />
+          <>
+            <RfmElmSkeleton />
+            <RfmElmSkeleton />
+            <RfmElmSkeleton />
+          </>
         )}
       </div>
     </div>

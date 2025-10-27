@@ -17,6 +17,11 @@ export class RfmService {
     return response.data;
   }
 
+  static async getAllStackedGistogram(dto: RequestDto) {
+    const response = await api.post("/rfm/all-stacked-gistogram", dto);
+    return response.data;
+  }
+
   static async getDrilldownRfmDayWeekTime(dto: RequestDto) {
     const response = await api.post("/rfm/drilldown-rfm-day-week-time", dto);
     return response.data;

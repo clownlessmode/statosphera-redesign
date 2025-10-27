@@ -18,6 +18,7 @@ import { RadarCountUniqGroupAndProduct } from "./graphs/radarCountUniqGroupAndPr
 import { DrilldownRfmRegionCityStore } from "./graphs/drilldownRfmRegionCityStore";
 import {
   AllGistogramResponse,
+  AllStackedGistogramResponse,
   DrilldownRfmDayWeekTimeResponse,
   DrilldownRfmRegionCityStoreResponse,
   HeatmapMigrationPerSegmentResponse,
@@ -33,6 +34,7 @@ import { SankeyMigrationClientPerSegments } from "./graphs/sankeyMigrationClient
 import { HeatmapMigrationPerSegment } from "./graphs/heatmapMigrationPerSegment";
 import { TreemapRfmOrderDelivery } from "./graphs/treemapRfmOrderDelivery";
 import { ComparisonTwoRfmCard } from "./cards/comparison-two-rfm";
+import { AllStackedGistogram } from "./graphs/allStackedGistogram";
 
 interface Filters {
   data: {
@@ -80,6 +82,25 @@ export const Rfm = () => {
     countInDanger: { categories: [], series: [] },
     avgDataCheck: { categories: [], series: [] },
   });
+
+  const [allStackedGistogram, setAllStackedGistogram] =
+    useState<AllStackedGistogramResponse>({
+      sexGistogram: {
+        segments: [],
+        series: [],
+        legend: {
+          data: [],
+        },
+      },
+      ageGistogram: {
+        segments: [],
+        series: [],
+        legend: {
+          data: [],
+        },
+      },
+    });
+
   const [drilldownRfmDayWeekTime, setDrilldownRfmDayWeekTime] =
     useState<DrilldownRfmDayWeekTimeResponse>({
       data: [],
@@ -153,6 +174,8 @@ export const Rfm = () => {
   const {
     getAllGistogram,
     isAllGistogramLoading,
+    getAllStackedGistogram,
+    isAllStackedGistogramLoading,
     getDrilldownRfmDayWeekTime,
     isDrilldownRfmDayWeekTimeLoading,
     getDrilldownTimeDayWeekRfm,
@@ -207,6 +230,10 @@ export const Rfm = () => {
 
       getAllGistogram(appliedFilters.data).then((data) => {
         setAllGistogram(data);
+      });
+
+      getAllStackedGistogram(appliedFilters.data).then((data) => {
+        setAllStackedGistogram(data);
       });
 
       getDrilldownRfmDayWeekTime(appliedFilters.data).then((data) => {
@@ -312,6 +339,10 @@ export const Rfm = () => {
               <TreemapTopBonuses
                 graph={treemapTopBonuses}
                 isLoading={isTreemapTopBonusesLoading}
+              />
+              <AllStackedGistogram
+                graph={allStackedGistogram}
+                isLoading={isAllStackedGistogramLoading}
               />
               <RadarCountUniqGroupAndProduct
                 graph={radarCountUniqGroupAndProduct}

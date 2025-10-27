@@ -179,7 +179,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                             <ModalInfo
                               data={dataSegment?.checkZones}
                               isLoading={isMainAllDataSegmentLoading}
-                              title="кол-ве чеков клиента"
+                              title="количестве чеков клиентов"
                             />
                           </div>
                           <div className="flex flex-col my-2">
@@ -214,7 +214,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                             <ModalInfo
                               data={dataSegment?.storeZones}
                               isLoading={isMainAllDataSegmentLoading}
-                              title="кол-ве магазинов клиента"
+                              title="количестве магазинов клиентов"
                             />
                           </div>
                           <div className="flex flex-col my-2">

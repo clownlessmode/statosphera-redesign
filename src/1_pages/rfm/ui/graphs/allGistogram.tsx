@@ -162,11 +162,12 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
             if (Array.isArray(params)) {
               return params
                 .map(
-                  (item) => `${item.marker}${item.seriesName}: ${item.value}`,
+                  (item) =>
+                    `${item.marker}${item.seriesName}: ${item.value.toLocaleString().replace(/,/g, " ")}`,
                 )
                 .join("<br/>");
             }
-            return `${params.value}`;
+            return `${params.value.toLocaleString().replace(/,/g, " ")}`;
           }}
         />
       </div>

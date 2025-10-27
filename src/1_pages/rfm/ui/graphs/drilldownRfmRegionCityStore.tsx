@@ -55,11 +55,14 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
                 .map(
                   (item) =>
                     `${item.value?.length > 0 && item.value[0]}<br/>
-                      Чеки: ${item.value?.length > 0 && item.value[1]}`,
+                      Чеки: ${
+                        item.value?.length > 0 &&
+                        item.value[1].toLocaleString().replace(/,/g, " ")
+                      }`,
                 )
                 .join("<br/>");
             }
-            return `${params.value[1]}`;
+            return `${params.value[1].toLocaleString().replace(/,/g, " ")}`;
           }}
         />
       </CardContent>

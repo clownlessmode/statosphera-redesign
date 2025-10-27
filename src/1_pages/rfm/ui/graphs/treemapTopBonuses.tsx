@@ -27,7 +27,7 @@ export const TreemapTopBonuses: FC<Props> = ({ graph, isLoading }) => {
     <Card className="h-[600px] col-span-2 gap-0">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
         <CardTitle className="text-center text-lg font-semibold">
-          Treemap самых популярных акций по
+          Самые популярные акции по
         </CardTitle>
         <Button
           variant="outline"

@@ -3,6 +3,7 @@ import { ApiError } from "@shared/api/types";
 import { RfmService } from "./service";
 import {
   AllGistogramResponse,
+  AllStackedGistogramResponse,
   ComparisonTwoRfmResponse,
   DrilldownRfmDayWeekTimeResponse,
   DrilldownRfmRegionCityStoreResponse,
@@ -41,6 +42,18 @@ export const useRfm = () => {
   const allGistogram = useMutation<AllGistogramResponse, ApiError, RequestDto>({
     mutationFn: async (dto: RequestDto) => {
       const response = await RfmService.getAllGistogram(dto);
+      queryClient.invalidateQueries({ queryKey: ["allGistogram"] });
+      return response;
+    },
+  });
+
+  const allStackedGistogram = useMutation<
+    AllStackedGistogramResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getAllStackedGistogram(dto);
       queryClient.invalidateQueries({ queryKey: ["allGistogram"] });
       return response;
     },
@@ -212,6 +225,8 @@ export const useRfm = () => {
     agePeriods: agePeriods.data,
     getAllGistogram: allGistogram.mutateAsync,
     isAllGistogramLoading: allGistogram.isPending,
+    getAllStackedGistogram: allStackedGistogram.mutateAsync,
+    isAllStackedGistogramLoading: allStackedGistogram.isPending,
     getDrilldownRfmDayWeekTime: drilldownRfmDayWeekTime.mutateAsync,
     isDrilldownRfmDayWeekTimeLoading: drilldownRfmDayWeekTime.isPending,
     getDrilldownTimeDayWeekRfm: drilldownTimeDayWeekRfm.mutateAsync,

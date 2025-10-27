@@ -100,7 +100,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице чеков сегментов",
+                header: "различиях в чеках",
                 btn: "Кол-во чеков клиента",
               }}
             />
@@ -112,7 +112,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в магазинах",
                 btn: "Кол-во магазинов",
               }}
             />
@@ -124,7 +124,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в возрасте",
                 btn: "Возраст клиентов",
               }}
             />
@@ -136,7 +136,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях во времени жизни аккаунта",
                 btn: "Время жизни аккаунта",
               }}
             />
@@ -154,7 +154,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях клиентов по полу",
                 btn: "Пол",
               }}
             />
@@ -183,7 +183,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в способах доставки",
                 btn: "Способ заказа",
               }}
             />
@@ -195,7 +195,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в способах доставки",
                 btn: "Способ доставки",
               }}
             />
@@ -240,35 +240,6 @@ export const Difference: FC<Props> = ({
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
-            Продажи и акции
-          </span>
-          <div className="flex flex-col my-2">
-            <DifferenceModal
-              firstData={allData.first.productGroups}
-              secondData={allData.second.productGroups}
-              firstTitle={firstCode}
-              secondTitle={secondCode}
-              title={{
-                header: "разнице магазинов сегментов",
-                btn: "Популярная группа",
-              }}
-            />
-          </div>
-          <div className="flex flex-col my-2">
-            <DifferenceModal
-              firstData={allData.first.bonuses}
-              secondData={allData.second.bonuses}
-              firstTitle={firstCode}
-              secondTitle={secondCode}
-              title={{
-                header: "разнице магазинов сегментов",
-                btn: "Популярный бонус",
-              }}
-            />
-          </div>
-        </div>
         <div className="grid grid-cols-3">
           <span className="text-lg text-primary/90 font-bold col-span-3">
             Микромаркеты
@@ -310,6 +281,35 @@ export const Difference: FC<Props> = ({
         </div>
         <div className="grid grid-cols-1">
           <span className="text-lg text-primary/90 font-bold col-span-1">
+            Продажи и акции
+          </span>
+          <div className="flex flex-col my-2">
+            <DifferenceModal
+              firstData={allData.first.productGroups}
+              secondData={allData.second.productGroups}
+              firstTitle={firstCode}
+              secondTitle={secondCode}
+              title={{
+                header: "различиях в группах",
+                btn: "Популярная группа",
+              }}
+            />
+          </div>
+          <div className="flex flex-col my-2">
+            <DifferenceModal
+              firstData={allData.first.bonuses}
+              secondData={allData.second.bonuses}
+              firstTitle={firstCode}
+              secondTitle={secondCode}
+              title={{
+                header: "различиях в бонусах",
+                btn: "Популярный бонус",
+              }}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1">
+          <span className="text-lg text-primary/90 font-bold col-span-1">
             География и время
           </span>
           <div className="flex flex-col my-2">
@@ -319,7 +319,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в регионах",
                 btn: "Популярный регион",
               }}
             />
@@ -331,7 +331,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в городах",
                 btn: "Популярный город",
               }}
             />
@@ -343,7 +343,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в магазинах",
                 btn: "Популярный магазин",
               }}
             />
@@ -355,7 +355,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях во времени покупок",
                 btn: "Время покупок",
               }}
             />
@@ -367,7 +367,7 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "разнице магазинов сегментов",
+                header: "различиях в днях недели",
                 btn: "День недели",
               }}
             />

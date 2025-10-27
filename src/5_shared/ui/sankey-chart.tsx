@@ -99,7 +99,7 @@ export const SankeyChart = ({ data, grid, formatter }: SankeyChartProps) => {
     <div className="w-full h-full">
       <ReactECharts
         option={option}
-        style={{ height: "100%", width: "112%" }}
+        style={{ height: "100%", width: "100%" }}
         className="w-full h-full"
       />
     </div>
