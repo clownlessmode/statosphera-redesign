@@ -35,6 +35,7 @@ import { HeatmapMigrationPerSegment } from "./graphs/heatmapMigrationPerSegment"
 import { TreemapRfmOrderDelivery } from "./graphs/treemapRfmOrderDelivery";
 import { ComparisonTwoRfmCard } from "./cards/comparison-two-rfm";
 import { AllStackedGistogram } from "./graphs/allStackedGistogram";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 
 interface Filters {
   data: {
@@ -296,8 +297,68 @@ export const Rfm = () => {
                 </Button>
               </Link>
               <Button variant="outline" className="border-b-0 rounded-b-none">
-                RFM-анализ
+                RFM
               </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      ABC
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Retention
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Выгрузки
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
             </div>
           ),
         }}

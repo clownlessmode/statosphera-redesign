@@ -1,6 +1,6 @@
 import { AllGistogramResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import { Card, CardHeader, CardTitle } from "@shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { BarChartMultiSeries } from "@shared/ui/substacked-bar-chart";
 import useSafari from "@shared/hooks/use-safari";
 import { FC, useEffect, useState } from "react";
@@ -147,7 +147,7 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
-      <div style={{ height: 400, width: "100%" }}>
+      <CardContent className="h-full w-full">
         <BarChartMultiSeries
           xAxisData={value.categories}
           showLegend={false}
@@ -170,7 +170,7 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
             return `${params.value.toLocaleString().replace(/,/g, " ")}`;
           }}
         />
-      </div>
+      </CardContent>
       {/*<div className="flex flex-col px-4">
             {graph.text.map((text) => (
               <p>{text}</p>

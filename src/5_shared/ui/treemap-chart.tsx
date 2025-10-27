@@ -46,7 +46,7 @@ export const TreemapChart = ({
       bottom: grid?.bottom || 20,
     },
     series: {
-      roam: "move",
+      roam: true,
       leafDepth: 3,
       name: series.rootLevel,
       type: "treemap",

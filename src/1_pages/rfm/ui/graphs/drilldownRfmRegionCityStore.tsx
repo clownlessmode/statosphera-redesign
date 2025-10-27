@@ -41,7 +41,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
           </Tooltip>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className="h-full w-full">
         <BarMultiDrilldownChart
           allSeries={graph.data}
           rootName="Сегменты"

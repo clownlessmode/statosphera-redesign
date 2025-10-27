@@ -1,6 +1,6 @@
 import { AllStackedGistogramResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import { Card, CardHeader, CardTitle } from "@shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { FC, useState } from "react";
 import { Button } from "@shared/ui/button";
 import { StackedBarChart } from "@shared/ui/graphs/stacked-bars/stacked-bars";
@@ -35,7 +35,7 @@ export const AllStackedGistogram: FC<Props> = ({ graph, isLoading }) => {
           {sexGistogram ? "полу" : "возрасту"}
         </Button>
       </CardHeader>
-      <div className="px-4" style={{ height: 400, width: "100%" }}>
+      <CardContent className="h-full w-full">
         <StackedBarChart
           xAxis={
             sexGistogram
@@ -49,7 +49,7 @@ export const AllStackedGistogram: FC<Props> = ({ graph, isLoading }) => {
             show: false,
           }}
         />
-      </div>
+      </CardContent>
     </Card>
   );
 };

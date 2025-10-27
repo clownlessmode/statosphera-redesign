@@ -38,7 +38,7 @@ export const DrilldownRfmDayWeekTime: FC<Props> = ({ graph, isLoading }) => {
           </Tooltip>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className="h-full w-full">
         <BarMultiDrilldownChart
           allSeries={graph.data}
           rootName="Сегменты"

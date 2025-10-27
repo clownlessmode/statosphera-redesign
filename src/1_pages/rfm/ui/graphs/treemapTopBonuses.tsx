@@ -1,6 +1,6 @@
 import { TreemapTopBonusesResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import { Card, CardHeader, CardTitle } from "@shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import useSafari from "@shared/hooks/use-safari";
 import { TreemapChart } from "@shared/ui/treemap-chart";
 import { Button } from "@shared/ui/button";
@@ -13,6 +13,8 @@ interface Props {
 
 export const TreemapTopBonuses: FC<Props> = ({ graph, isLoading }) => {
   const [proceed, setProceed] = useState(true);
+  const [visible, setVisible] = useState(true);
+  let timer: NodeJS.Timeout;
   const isSafari = useSafari();
 
   if (
@@ -37,7 +39,18 @@ export const TreemapTopBonuses: FC<Props> = ({ graph, isLoading }) => {
           {proceed ? "выручке" : "прибыли"}
         </Button>
       </CardHeader>
-      <div style={{ height: 600, width: "100%" }}>
+      <CardContent
+        onMouseEnter={() => {
+          timer = setTimeout(() => setVisible(false), 500); // исчезает через 500vc
+        }}
+        onMouseLeave={() => {
+          clearTimeout(timer);
+          setVisible(true); // возвращается, если ушёл раньше
+        }}
+        className="h-full w-full relative"
+      >
+        {/*Обертка что не мешать скроллу страницы*/}
+        {visible && <div className="absolute inset-0 z-100" />}
         <TreemapChart
           series={{
             data: proceed ? graph.childrenProceed : graph.childrenProfit,
@@ -56,7 +69,7 @@ export const TreemapTopBonuses: FC<Props> = ({ graph, isLoading }) => {
                 `;
           }}
         />
-      </div>
+      </CardContent>
     </Card>
   );
 };

@@ -1,9 +1,9 @@
 import { TreemapRfmOrderDeliveryResponse } from "../../config";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import { Card, CardHeader, CardTitle } from "@shared/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import useSafari from "@shared/hooks/use-safari";
 import { TreemapChart } from "@shared/ui/treemap-chart";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 interface Props {
   graph: TreemapRfmOrderDeliveryResponse;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
+  const [visible, setVisible] = useState(true);
+  let timer: NodeJS.Timeout;
   const isSafari = useSafari();
 
   if (isLoading || graph?.childrenProceed.length === 0) {
@@ -24,7 +26,18 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
           Самые популярные способы заказа и доставки
         </CardTitle>
       </CardHeader>
-      <div style={{ height: 600, width: "100%" }}>
+      <CardContent
+        onMouseEnter={() => {
+          timer = setTimeout(() => setVisible(false), 500); // исчезает через 500vc
+        }}
+        onMouseLeave={() => {
+          clearTimeout(timer);
+          setVisible(true); // возвращается, если ушёл раньше
+        }}
+        className="h-full w-full relative"
+      >
+        {/*Обертка что не мешать скроллу страницы*/}
+        {visible && <div className="absolute inset-0 z-100" />}
         <TreemapChart
           series={{
             data: graph.childrenProceed,
@@ -43,7 +56,7 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
                 `;
           }}
         />
-      </div>
+      </CardContent>
     </Card>
   );
 };

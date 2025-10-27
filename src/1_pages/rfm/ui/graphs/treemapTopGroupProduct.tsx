@@ -13,6 +13,8 @@ interface Props {
 
 export const TreemapTopGroupProduct: FC<Props> = ({ graph, isLoading }) => {
   const [proceed, setProceed] = useState(true);
+  const [visible, setVisible] = useState(true);
+  let timer: NodeJS.Timeout;
   const isSafari = useSafari();
 
   if (
@@ -37,7 +39,18 @@ export const TreemapTopGroupProduct: FC<Props> = ({ graph, isLoading }) => {
           {proceed ? "выручке" : "прибыли"}
         </Button>
       </CardHeader>
-      <CardContent className="h-full w-full">
+      <CardContent
+        onMouseEnter={() => {
+          timer = setTimeout(() => setVisible(false), 500); // исчезает через 500vc
+        }}
+        onMouseLeave={() => {
+          clearTimeout(timer);
+          setVisible(true); // возвращается, если ушёл раньше
+        }}
+        className="h-full w-full relative"
+      >
+        {/*Обертка что не мешать скроллу страницы*/}
+        {visible && <div className="absolute inset-0 z-100" />}
         <TreemapChart
           series={{
             data: proceed ? graph.childrenProceed : graph.childrenProfit,

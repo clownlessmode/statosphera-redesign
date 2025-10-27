@@ -3,12 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { RadarChartRfm } from "@shared/ui/graphs/radar-chart/radar-chart-rfm";
 import RadarChartSkeleton from "@shared/ui/graphs/radar-chart/radar-chart-skeleton";
 import { Skeleton } from "@shared/ui/skeleton";
+import { FC } from "react";
 
 interface Props {
   isLoading: boolean;
   graph: RadarCountUniqGroupAndProductResponse;
 }
-export const RadarCountUniqGroupAndProduct = ({ isLoading, graph }: Props) => {
+export const RadarCountUniqGroupAndProduct: FC<Props> = ({
+  isLoading,
+  graph,
+}) => {
+  console.log(graph.CountUniqGroup?.series[0]?.data[0].value);
   return (
     <>
       {!isLoading &&
@@ -23,40 +28,48 @@ export const RadarCountUniqGroupAndProduct = ({ isLoading, graph }: Props) => {
                 {graph.CountUniqGroup.legend.data[0]}
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1">
-              <RadarChartRfm
-                indicator={graph?.CountUniqGroup.radar?.indicator.map(
-                  (item) => {
-                    if (graph.CountUniqGroup?.series[0]?.data[0].value) {
-                      return {
-                        name: item.name,
-                        max: Math.max(
-                          ...graph.CountUniqGroup.series[0].data[0].value,
-                        ),
-                      };
-                    } else {
-                      return {
-                        name: item.name,
-                      };
-                    }
-                  },
-                )}
-                value={graph.CountUniqGroup.series[0]?.data[0].value}
-                formatter={(params) => {
-                  const values = Array.isArray(params)
-                    ? params[0].value
-                    : params.value;
+            <CardContent className="h-full w-full">
+              {graph.CountUniqGroup?.series[0]?.data[0].value.length > 3 ? (
+                <RadarChartRfm
+                  indicator={graph?.CountUniqGroup.radar?.indicator.map(
+                    (item) => {
+                      if (graph.CountUniqGroup?.series[0]?.data[0].value) {
+                        return {
+                          name: item.name,
+                          max: Math.max(
+                            ...graph.CountUniqGroup.series[0].data[0].value,
+                          ),
+                        };
+                      } else {
+                        return {
+                          name: item.name,
+                        };
+                      }
+                    },
+                  )}
+                  value={graph.CountUniqGroup.series[0]?.data[0].value}
+                  formatter={(params) => {
+                    const values = Array.isArray(params)
+                      ? params[0].value
+                      : params.value;
 
-                  const indicatorsText = graph.CountUniqGroup.radar?.indicator
-                    .map(
-                      (ind, i) =>
-                        `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
-                    )
-                    .join("<br/>");
+                    const indicatorsText = graph.CountUniqGroup.radar?.indicator
+                      .map(
+                        (ind, i) =>
+                          `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
+                      )
+                      .join("<br/>");
 
-                  return `${indicatorsText}`;
-                }}
-              />
+                    return `${indicatorsText}`;
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <p className="text-sm text-center text-muted-foreground">
+                    Выберите не менее трёх сегментов для отображения графика
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
           <Card className="w-full flex flex-col h-[400px]">
@@ -66,40 +79,48 @@ export const RadarCountUniqGroupAndProduct = ({ isLoading, graph }: Props) => {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1">
-              <RadarChartRfm
-                indicator={graph.CountUniqProduct.radar?.indicator.map(
-                  (item) => {
-                    if (graph.CountUniqProduct?.series[0]?.data[0].value) {
-                      return {
-                        name: item.name,
-                        max: Math.max(
-                          ...graph.CountUniqProduct.series[0].data[0].value,
-                        ),
-                      };
-                    } else {
-                      return {
-                        name: item.name,
-                      };
-                    }
-                  },
-                )}
-                value={graph.CountUniqProduct?.series[0]?.data[0].value}
-                formatter={(params) => {
-                  const values = Array.isArray(params)
-                    ? params[0].value
-                    : params.value;
+              {graph.CountUniqProduct?.series[0]?.data[0].value.length > 3 ? (
+                <RadarChartRfm
+                  indicator={graph.CountUniqProduct.radar?.indicator.map(
+                    (item) => {
+                      if (graph.CountUniqProduct?.series[0]?.data[0].value) {
+                        return {
+                          name: item.name,
+                          max: Math.max(
+                            ...graph.CountUniqProduct.series[0].data[0].value,
+                          ),
+                        };
+                      } else {
+                        return {
+                          name: item.name,
+                        };
+                      }
+                    },
+                  )}
+                  value={graph.CountUniqProduct?.series[0]?.data[0].value}
+                  formatter={(params) => {
+                    const values = Array.isArray(params)
+                      ? params[0].value
+                      : params.value;
 
-                  const indicatorsText =
-                    graph?.CountUniqProduct.radar?.indicator
-                      .map(
-                        (ind, i) =>
-                          `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
-                      )
-                      .join("<br/>");
+                    const indicatorsText =
+                      graph?.CountUniqProduct.radar?.indicator
+                        .map(
+                          (ind, i) =>
+                            `Сегмент ${ind.name} - ${values[i].toLocaleString().replace(/,/g, " ")}`,
+                        )
+                        .join("<br/>");
 
-                  return `${indicatorsText}`;
-                }}
-              />
+                    return `${indicatorsText}`;
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <p className="text-sm text-center text-muted-foreground">
+                    Выберите не менее трёх сегментов для отображения графика
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

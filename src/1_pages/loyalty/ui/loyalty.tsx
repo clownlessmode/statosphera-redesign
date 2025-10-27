@@ -42,6 +42,7 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -206,13 +207,6 @@ export const Loyalty = () => {
       <Header
         title="Лояльность"
         actions={{
-          right: !isMobile && (
-            <div className="flex gap-2">
-              <GraphDate />
-              <DaysFilter />
-              <ShopsFilter />
-            </div>
-          ),
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
               <Button variant="outline" className="border-b-0 rounded-b-none">
@@ -223,21 +217,79 @@ export const Loyalty = () => {
                   variant="outline"
                   className="border-b-0 rounded-b-none opacity-50"
                 >
-                  RFM-анализ
+                  RFM
                 </Button>
               </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      ABC
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Retention
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Выгрузки
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
             </div>
           ),
         }}
       />
       <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
-        {isMobile && (
-          <div className="flex flex-row justify-between">
-            <DaysFilter />
-            <GraphDate />
-            <ShopsFilter />
-          </div>
-        )}
+        <div className="flex flex-row gap-2 justify-between md:justify-end">
+          <DaysFilter />
+          <GraphDate />
+          <ShopsFilter />
+        </div>
         <AllUsers
           isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
           noSales30DaysUser={noSales30DaysUser as any}

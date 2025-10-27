@@ -3,7 +3,6 @@ import {
   BookOpenIcon,
   ChartBarStacked,
   ChartLine,
-  ChartPie,
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
@@ -128,12 +127,6 @@ const Sidebar = ({
         title: "Прибыль ФРС",
         url: "#",
         icon: ShoppingBag,
-        disabled: true,
-      },
-      {
-        title: "ABC анализ",
-        url: "#",
-        icon: ChartPie,
         disabled: true,
       },
       {
