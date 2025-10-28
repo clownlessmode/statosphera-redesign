@@ -96,7 +96,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
           <div className="flex flex-col my-2">
             <div className="flex flex-row items-center">
               <span className="text-md text-muted-foreground font-semibold">
-                Кол-во чеков клиента
+                Кол-во чеков у клиента
               </span>
             </div>
             <span className="mt-1">
@@ -129,7 +129,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
           </div>
           <div className="flex flex-col my-2">
             <span className="text-md text-muted-foreground font-semibold">
-              Возраст клиентов
+              Возраст клиента
             </span>
             <span className="mt-1">
               {segment?.mainData.mainLifeClientPeriod

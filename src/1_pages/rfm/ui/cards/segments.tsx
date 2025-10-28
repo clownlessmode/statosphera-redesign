@@ -231,7 +231,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                           </div>
                           <div className="flex flex-col my-2">
                             <span className="text-md text-muted-foreground font-semibold">
-                              Возраст клиентов
+                              Возраст клиента
                             </span>
                             <span className="mt-1">
                               {segment.mainLifeClientPeriod
@@ -246,7 +246,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                             <ModalInfo
                               data={dataSegment?.clientAges}
                               isLoading={isMainAllDataSegmentLoading}
-                              title="возрасте клиентов"
+                              title="возрасте клиента"
                             />
                           </div>
                           <div className="flex flex-col my-2">
@@ -263,6 +263,11 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : 0}
                               %)
                             </span>
+                            <ModalInfo
+                              data={dataSegment?.accountAges}
+                              isLoading={isMainAllDataSegmentLoading}
+                              title="времени жизни аккаунта"
+                            />
                           </div>
                           <div className="flex flex-col my-2">
                             <span className="text-md text-muted-foreground font-semibold">

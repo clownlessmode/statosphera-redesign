@@ -108,8 +108,8 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "различиях в чеках",
-                btn: "Кол-во чеков клиента",
+                header: "различиях в чеках клиента",
+                btn: "Кол-во чеков у клиента",
               }}
             />
           </div>
@@ -132,8 +132,8 @@ export const Difference: FC<Props> = ({
               firstTitle={firstCode}
               secondTitle={secondCode}
               title={{
-                header: "различиях в возрасте",
-                btn: "Возраст клиентов",
+                header: "различиях в возрасте клиента",
+                btn: "Возраст клиента",
               }}
             />
           </div>
