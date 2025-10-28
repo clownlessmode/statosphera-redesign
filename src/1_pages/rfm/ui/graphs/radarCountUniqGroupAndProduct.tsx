@@ -13,7 +13,6 @@ export const RadarCountUniqGroupAndProduct: FC<Props> = ({
   isLoading,
   graph,
 }) => {
-  console.log(graph.CountUniqGroup?.series[0]?.data[0].value);
   return (
     <>
       {!isLoading &&

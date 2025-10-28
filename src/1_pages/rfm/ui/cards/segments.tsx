@@ -148,9 +148,21 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                             Клиентская база
                           </span>
                           <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Чеки
+                            </span>
+                            <span className="mt-1">
+                              {segment.countChecks
+                                ? segment.countChecks
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
+                          <div className="flex flex-col my-2">
                             <div className="flex flex-row items-center">
                               <span className="text-md text-muted-foreground font-semibold">
-                                Кол-во чеков клиента
+                                Кол-во чеков у клиента
                               </span>
                               <Tooltip>
                                 <TooltipTrigger className="ml-1" asChild>
@@ -287,6 +299,18 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                           </span>
                           <div className="flex flex-col my-2">
                             <span className="text-md text-muted-foreground font-semibold">
+                              Чеки
+                            </span>
+                            <span className="mt-1">
+                              {segment.countIM
+                                ? segment.countIM
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
                               Выручка
                             </span>
                             <span className="mt-1">
@@ -337,45 +361,6 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                             />
                           </div>
                           <span className="text-lg text-primary/90 font-bold">
-                            Ночные магазины
-                          </span>
-                          <div className="flex flex-col my-2">
-                            <span className="text-md text-muted-foreground font-semibold">
-                              Клиенты
-                            </span>
-                            <span className="mt-1">
-                              {segment.countNightClient
-                                ? segment.countNightClient
-                                : "Нет данных"}{" "}
-                            </span>
-                          </div>
-                          <div className="flex flex-col my-2">
-                            <span className="text-md text-muted-foreground font-semibold">
-                              Выручка
-                            </span>
-                            <span className="mt-1">
-                              {segment.proceedNightClient
-                                ? Math.round(segment.proceedNightClient)
-                                    .toLocaleString()
-                                    .replace(/,/g, " ")
-                                : "Нет данных"}{" "}
-                            </span>
-                          </div>
-                          <div className="flex flex-col my-2">
-                            <span className="text-md text-muted-foreground font-semibold">
-                              Прибыль
-                            </span>
-                            <span className="mt-1">
-                              {segment.profitNightClient
-                                ? Math.round(segment.profitNightClient)
-                                    .toLocaleString()
-                                    .replace(/,/g, " ")
-                                : "Нет данных"}{" "}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-lg text-primary/90 font-bold">
                             Продажи и акции
                           </span>
                           <div className="flex flex-col my-2">
@@ -418,9 +403,72 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="популярных бонусах"
                             />
                           </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-lg text-primary/90 font-bold">
+                            Ночные магазины
+                          </span>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Чеки
+                            </span>
+                            <span className="mt-1">
+                              {segment.countNightCheck
+                                ? segment.countNightCheck
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Клиенты
+                            </span>
+                            <span className="mt-1">
+                              {segment.countNightClient
+                                ? segment.countNightClient
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Выручка
+                            </span>
+                            <span className="mt-1">
+                              {segment.proceedNightClient
+                                ? Math.round(segment.proceedNightClient)
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Прибыль
+                            </span>
+                            <span className="mt-1">
+                              {segment.profitNightClient
+                                ? Math.round(segment.profitNightClient)
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
                           <span className="text-lg text-primary/90 font-bold">
                             Микромаркеты
                           </span>
+                          <div className="flex flex-col my-2">
+                            <span className="text-md text-muted-foreground font-semibold">
+                              Чеки
+                            </span>
+                            <span className="mt-1">
+                              {segment.countMMCheck
+                                ? segment.countMMCheck
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : "Нет данных"}{" "}
+                            </span>
+                          </div>
                           <div className="flex flex-col my-2">
                             <span className="text-md text-muted-foreground font-semibold">
                               Клиенты

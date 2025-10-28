@@ -90,12 +90,20 @@ export interface TreemapTopGroupProductResponse {
   childrenProceed: {
     name: string;
     value: number;
-    children?: {
+    children: {
       name: string;
       value: number;
     }[];
   }[];
   childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
     name: string;
     value: number;
     children: {
@@ -115,6 +123,14 @@ export interface TreemapTopBonusesResponse {
     }[];
   }[];
   childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
     name: string;
     value: number;
     children: {
@@ -170,6 +186,22 @@ export interface TreemapRfmOrderDeliveryResponse {
       value: number;
     }[];
   }[];
+  childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
 }
 
 export interface DrilldownRfmRegionCityStoreResponse {
@@ -199,12 +231,15 @@ export interface MainDataSegmentResponse {
   period: string;
   countClient: number;
   proceedAll: number;
+  countChecks: number;
   countNightClient: number;
   proceedNightClient: number;
   profitNightClient: number;
+  countNightCheck: number;
   countMMClient: number;
   profitMMClient: number;
   proceedMMClient: number;
+  countMMCheck: number;
   proceedAvgCheck: number;
   countClientInWarningZone: number;
   avgPeriodPerSales: number;
@@ -222,6 +257,7 @@ export interface MainDataSegmentResponse {
   proceedPercentMainBonus: number;
   proceedIM: number;
   proceedPersentIM: number;
+  countIM: number;
   mainOrderMethod: string;
   proceedPersentIMMainOrderMethod: number;
   mainOrderDelivery: string;
@@ -286,13 +322,17 @@ export interface ComparisonTwoRfmResponse {
     proceedAvgCheck: number;
     avgPeriodPerSales: number;
     countClientInWarningZone: number;
+    countChecks: number;
     countNightClient: number;
     proceedNightClient: number;
     profitNightClient: number;
+    countNightCheck: number;
     countMMClient: number;
     proceedMMClient: number;
     profitMMClient: number;
+    countMMCheck: number;
     proceedIM: number;
     proceedPersentIM: number;
+    countIM: number;
   };
 }

@@ -117,12 +117,14 @@ export const Rfm = () => {
     useState<TreemapTopGroupProductResponse>({
       childrenProceed: [],
       childrenProfit: [],
+      childrenCount: [],
     });
 
   const [treemapTopBonuses, setTreemapTopBonuses] =
     useState<TreemapTopBonusesResponse>({
       childrenProceed: [],
       childrenProfit: [],
+      childrenCount: [],
     });
 
   const [radarCountUniqGroupAndProduct, setRadarCountUniqGroupAndProduct] =
@@ -150,6 +152,8 @@ export const Rfm = () => {
   const [treemapRfmOrderDelivery, setTreemapRfmOrderDelivery] =
     useState<TreemapRfmOrderDeliveryResponse>({
       childrenProceed: [],
+      childrenProfit: [],
+      childrenCount: [],
     });
 
   const [drilldownRfmRegionCityStore, setDrilldownRfmRegionCityStore] =

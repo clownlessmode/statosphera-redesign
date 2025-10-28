@@ -50,6 +50,14 @@ export const Difference: FC<Props> = ({
           </span>
           <div className="flex flex-col my-2">
             <span className="text-md text-muted-foreground font-semibold">
+              Чеки
+            </span>
+            <span className="mt-1">
+              {mainData?.countChecks ? mainData?.countChecks : "Нет данных"}
+            </span>
+          </div>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
               Клиенты
             </span>
             <span className="mt-1">
@@ -160,10 +168,18 @@ export const Difference: FC<Props> = ({
             />
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
+        <div className="grid grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-2">
             Интернет магазин
           </span>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
+              Чеки
+            </span>
+            <span className="mt-1">
+              {mainData?.countIM ? mainData?.countIM : "Нет данных"}
+            </span>
+          </div>
           <div className="flex flex-col my-2">
             <span className="text-md text-muted-foreground font-semibold">
               Выручка
@@ -176,7 +192,7 @@ export const Difference: FC<Props> = ({
               ({mainData?.proceedPersentIM}%)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 pr-1 col-span-1">
             <DifferenceModal
               firstData={allData.first.orderMethods}
               secondData={allData.second.orderMethods}
@@ -188,7 +204,7 @@ export const Difference: FC<Props> = ({
               }}
             />
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 pl-1 col-span-1">
             <DifferenceModal
               firstData={allData.first.deliveryMethods}
               secondData={allData.second.deliveryMethods}
@@ -201,10 +217,49 @@ export const Difference: FC<Props> = ({
             />
           </div>
         </div>
-        <div className="grid grid-cols-3">
-          <span className="text-lg text-primary/90 font-bold col-span-3">
+        <div className="grid grid-cols-1">
+          <span className="text-lg text-primary/90 font-bold col-span-1">
+            Продажи и акции
+          </span>
+          <div className="flex flex-col my-2">
+            <DifferenceModal
+              firstData={allData.first.productGroups}
+              secondData={allData.second.productGroups}
+              firstTitle={firstCode}
+              secondTitle={secondCode}
+              title={{
+                header: "различиях в группах",
+                btn: "Популярная группа",
+              }}
+            />
+          </div>
+          <div className="flex flex-col my-2">
+            <DifferenceModal
+              firstData={allData.first.bonuses}
+              secondData={allData.second.bonuses}
+              firstTitle={firstCode}
+              secondTitle={secondCode}
+              title={{
+                header: "различиях в бонусах",
+                btn: "Популярный бонус",
+              }}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-2">
             Ночные магазины
           </span>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
+              Чеки
+            </span>
+            <span className="mt-1">
+              {mainData?.countNightCheck
+                ? mainData?.countNightCheck
+                : "Нет данных"}
+            </span>
+          </div>
           <div className="flex flex-col my-2">
             <span className="text-md text-muted-foreground font-semibold">
               Клиенты
@@ -240,10 +295,18 @@ export const Difference: FC<Props> = ({
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-3">
-          <span className="text-lg text-primary/90 font-bold col-span-3">
+        <div className="grid grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-2">
             Микромаркеты
           </span>
+          <div className="flex flex-col my-2">
+            <span className="text-md text-muted-foreground font-semibold">
+              Чеки
+            </span>
+            <span className="mt-1">
+              {mainData?.countMMCheck ? mainData?.countMMCheck : "Нет данных"}
+            </span>
+          </div>
           <div className="flex flex-col my-2">
             <span className="text-md text-muted-foreground font-semibold">
               Клиенты
@@ -277,35 +340,6 @@ export const Difference: FC<Props> = ({
                     .replace(/,/g, " ")
                 : "Нет данных"}{" "}
             </span>
-          </div>
-        </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
-            Продажи и акции
-          </span>
-          <div className="flex flex-col my-2">
-            <DifferenceModal
-              firstData={allData.first.productGroups}
-              secondData={allData.second.productGroups}
-              firstTitle={firstCode}
-              secondTitle={secondCode}
-              title={{
-                header: "различиях в группах",
-                btn: "Популярная группа",
-              }}
-            />
-          </div>
-          <div className="flex flex-col my-2">
-            <DifferenceModal
-              firstData={allData.first.bonuses}
-              secondData={allData.second.bonuses}
-              firstTitle={firstCode}
-              secondTitle={secondCode}
-              title={{
-                header: "различиях в бонусах",
-                btn: "Популярный бонус",
-              }}
-            />
           </div>
         </div>
         <div className="grid grid-cols-1">
