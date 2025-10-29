@@ -817,7 +817,7 @@ const Report: FC = () => {
               onRowClick={handleRowClick}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
-              className="w-full max-md:mx-4 max-md:mx-auto max-md:w-[calc(100%-32px)]"
+              className="w-full max-md:mx-auto max-md:w-[calc(100%-32px)]"
             />
           ) : (
             <div

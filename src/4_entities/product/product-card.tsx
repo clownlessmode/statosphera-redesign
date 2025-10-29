@@ -39,15 +39,20 @@ const ProductCard: FC<Props> = ({
 
           <div className="flex flex-col gap-2 justify-between py-0  overflow-hidden">
             <div className="flex items-center flex-row gap-2 flex-wrap">
-              <Badge className="bg-primary/5 text-primary text-[12px] hover:bg-primary/5 shadow-none">
-                <span className="truncate block max-w-[158px]">{subGroup}</span>
-              </Badge>
+              {subGroup && (
+                <Badge className="bg-primary/5 text-primary text-[12px] hover:bg-primary/5 shadow-none">
+                  <span className="truncate block max-w-[158px]">
+                    {subGroup}
+                  </span>
+                </Badge>
+              )}
               <div className="flex items-center gap-2 shrink-0">
                 {pp ? (
                   <Tooltip>
                     <TooltipTrigger>
                       <Salad className="text-green-600 w-4 h-4" />
                     </TooltipTrigger>
+
                     <TooltipContent>
                       <p>Продукт относится к ПП</p>
                     </TooltipContent>

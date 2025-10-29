@@ -51,7 +51,7 @@ export default function StackedLine({
   }, [mirror, isMobile]);
 
   return (
-    <Card className={cn("w-full h-full pt-1 rounded-2xl", className)}>
+    <Card className={cn("w-full h-full pt-1 !rounded-2xl", className)}>
       <ReactECharts
         ref={chartRef}
         option={optionCharts}

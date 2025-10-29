@@ -39,6 +39,10 @@ import { AgeSalesGraph } from "./graphs/age-sales-graph";
 import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { Button } from "@shared/ui/button";
+import { Link } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
@@ -201,25 +205,107 @@ export const Loyalty = () => {
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
-        title={`Лояльность`}
+        title="Лояльность"
         actions={{
           left: !isMobile && (
-            <div className="flex gap-2">
-              <GraphDate />
-              <DaysFilter />
-              <ShopsFilter />
+            <div className="ml-6 -mb-4 flex flex-row gap-1">
+              <Button variant="outline" className="border-b-0 rounded-b-none">
+                Лояльность
+              </Button>
+              <Link to={ROUTES_PATH.RFM}>
+                <Button
+                  variant="outline"
+                  className="border-b-0 rounded-b-none opacity-50"
+                >
+                  RFM
+                </Button>
+              </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      ABC
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Retention
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Button
+                      disabled
+                      variant="outline"
+                      className="border-b-0 rounded-b-none opacity-50"
+                    >
+                      Выгрузки
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent
+                  sideOffset={0}
+                  className="w-max h-fit p-2 text-center"
+                  side="bottom"
+                >
+                  В разработке.
+                </TooltipContent>
+              </Tooltip>
             </div>
           ),
         }}
       />
-      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
-        {isMobile && (
-          <div className="flex flex-row justify-between">
-            <DaysFilter />
-            <GraphDate />
-            <ShopsFilter />
-          </div>
-        )}
+      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0">
+        <div className="hidden max-md:flex flex-row gap-1">
+          <Button
+            variant="outline"
+            className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1"
+          >
+            Лояльность
+          </Button>
+          <Link to={ROUTES_PATH.RFM} className="w-1/2">
+            <Button
+              variant="outline"
+              className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1"
+            >
+              RFM
+            </Button>
+          </Link>
+        </div>
+        <div className="flex flex-row gap-2 justify-between md:justify-end">
+          <DaysFilter />
+          <GraphDate />
+          <ShopsFilter />
+        </div>
         <AllUsers
           isNoSales30DaysUserLoading={isNoSales30DaysUserLoading}
           noSales30DaysUser={noSales30DaysUser as any}
@@ -346,25 +432,28 @@ export const Loyalty = () => {
           <List
             title="Топ 5 групп по выручке"
             isLoading={isTopGroupsLoading}
+            suffix={" ₽"}
             options={topGroups.map((group) => ({
               name: group.subSubGroups,
-              price: `${group.countSales.toLocaleString()}`,
+              count: `${group.countSales.toLocaleString()}`,
             }))}
           />
           <List
             title="Топ 5 товаров по выручке"
             isLoading={isTopProductsLoading}
+            suffix={" ₽"}
             options={topProducts.map((group) => ({
               name: group.product,
-              price: `${group.proceeds.toLocaleString()} ₽`,
+              count: `${group.proceeds.toLocaleString()}`,
             }))}
           />
           <List
             title="Топ 5 товаров по количеству продаж"
             isLoading={isTopProductsCountLoading}
+            suffix={" шт"}
             options={topProductsCount.map((group: any) => ({
               name: group.product,
-              price: `${group.countSales.toLocaleString()} шт`,
+              count: `${group.countSales.toLocaleString()}`,
             }))}
           />
         </div>

@@ -10,19 +10,23 @@ type SeriesData = {
 type BarChartMultiSeriesProps = {
   xAxisData: string[];
   series: SeriesData[];
+  showLegend?: boolean;
   title?: string;
   formatter?: (params: any) => string;
   grid?: {
     bottom?: number;
   };
+  customColors?: string[];
 };
 
 export const BarChartMultiSeries = ({
   xAxisData,
   series,
+  showLegend = true,
   formatter,
   title,
   grid,
+  customColors,
 }: BarChartMultiSeriesProps) => {
   const colors = useGraphColors();
 
@@ -35,7 +39,7 @@ export const BarChartMultiSeries = ({
     verticalAlign: "center" as const,
     rotate: 90,
     fontSize: 12,
-    color: "#ffffff",
+    color: colors.text,
     textBorderColor: "#383838C2",
     formatter: formatter ? formatter : "{c}  {name|{a}}",
 
@@ -69,6 +73,7 @@ export const BarChartMultiSeries = ({
       formatter: formatter ? formatter : undefined,
     },
     legend: {
+      show: showLegend,
       data: series.map((s) => s.name),
       textStyle: { color: colors.text },
       top: 40,
@@ -81,7 +86,7 @@ export const BarChartMultiSeries = ({
         axisLabel: {
           color: colors.text,
           fontSize: 12,
-          interval: 0,
+          hideOverlap: true,
         },
         axisLine: { show: false },
       },
@@ -106,7 +111,7 @@ export const BarChartMultiSeries = ({
       emphasis: { focus: "series" },
       data: s.data,
       itemStyle: {
-        color: colors.series[idx % colors.series.length],
+        color: customColors?.[idx] || colors.series[idx % colors.series.length],
         borderRadius: 4,
       },
     })) as any,

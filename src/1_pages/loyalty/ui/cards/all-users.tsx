@@ -15,7 +15,7 @@ export const AllUsers = ({
   const isMobile = useIsMobile();
   // if () return <AllUsersSkeleton />;
   return (
-    <Card className="w-full h-full gap-1 ">
+    <Card className="w-full h-full gap-1 max-md:px-0! max-md:mx-auto max-md:w-[calc(100%-32px)]">
       <CardHeader className="flex flex-row justify-center items-center flex-grow"></CardHeader>
       <CardContent>
         <div className="flex flex-col md:flex-row justify-center items-center p-2 bg-background rounded-2xl gap-1 w-full">
@@ -29,10 +29,10 @@ export const AllUsers = ({
               </div>
             ) : (
               <>
-                <div className="text-xs font-semibold w-full bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
+                <div className="text-xs font-semibold w-full bg-muted-foreground border-border text-muted border rounded-lg flex items-center justify-center h-8">
                   {noSales30DaysUser?.no_30d.toLocaleString()}
                 </div>
-                <p className="text-xs text-nowrap">
+                <p className="text-xs text-nowrap ">
                   Не совершали покупок &gt;30 дней
                 </p>
               </>
@@ -53,7 +53,7 @@ export const AllUsers = ({
               </div>
             ) : (
               <>
-                <div className="text-xs font-semibold w-full bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
+                <div className="text-xs font-semibold w-full  bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
                   {noSales30DaysUser?.no_30d.toLocaleString()}
                 </div>
                 <p className="text-xs text-nowrap">
@@ -86,7 +86,7 @@ export const AllUsers = ({
 
 const AllUsersSkeleton = () => {
   return (
-    <Card className="w-full h-full gap-1 ">
+    <Card className="w-full h-full gap-1 max-md:px-0! max-md:mx-auto max-md:w-[calc(100%-32px)]">
       <CardContent>
         <div className="flex flex-row justify-center items-center p-2 bg-background rounded-2xl gap-1 w-full">
           <div

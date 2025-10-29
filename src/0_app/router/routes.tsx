@@ -27,12 +27,10 @@ import { AdminDigests } from "@pages/admin/admin-digests";
 import { AdminRolesPage } from "@pages/admin/admin-roles";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
+import { Rfm } from "@pages/rfm/ui/rfm";
 import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
-
-// Заглушка для IM компонента
-const IM = () => <div>Интернет-магазин (в разработке)</div>;
-// import { WriteOff } from "@pages/write-off";
+import { IM } from "@pages/im";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -80,6 +78,7 @@ export const ROUTES_PATH = {
   ROADMAP: "/roadmap",
   PRODUCTS: "/products",
   LOYALTY: "/loyalty",
+  RFM: "/rfm",
   GRILL: "/grill",
   IM: "/im",
 
@@ -88,9 +87,6 @@ export const ROUTES_PATH = {
 
   // Сводная таблица
   SUMMARY: "/summary",
-
-  // Дайджесты
-  RFM: "/rfm",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -262,6 +258,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Grill />,
     layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
     label: "Гриль",
   },
   {
@@ -288,7 +285,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.RFM,
     variant: "private",
-    element: <Loyalty />,
+    element: <Rfm />,
     layout: Sidebar,
     label: "РФМ",
   },

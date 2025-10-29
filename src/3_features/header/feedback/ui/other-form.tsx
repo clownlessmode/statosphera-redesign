@@ -34,7 +34,7 @@ const OtherForm: FC<Props> = ({ setIsOpen }) => {
       >
         <FormField
           control={form.control}
-          name="page"
+          name="textMessage"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Комментарий</FormLabel>

@@ -1,115 +1,338 @@
-export interface AvarageCheckResponse {
-  avgCheck: number;
-  avgCheckLoyal: number;
-  avgCheckNoLoyal: number | null;
-  avgCheckDifferencePercent: number | null;
-}
-
 export interface RequestDto {
-  store: {
-    idStore: string[];
-    idCity: string[];
-    idRegion: string[];
-    idManager: string[];
-    storeCondition: string[];
-    ageGroup: string[];
-    idLegalEntity: string[];
-    channel: string[];
-    district: string[];
+  period: string;
+  rfmList: number[];
+  sex: string[];
+  age: string[];
+}
+
+export interface RequestDtoComparison {
+  firstSegment: {
+    period: string;
+    rfmCode: number;
+    sex: string[];
+    age: string[];
   };
-  filterDate: {
-    dateStart: string;
-    dateEnd: string;
+  secondSegment: {
+    period: string;
+    rfmCode: number;
+    sex: string[];
+    age: string[];
   };
 }
 
-export interface NoSales30DaysUserResponse {
-  yes_30d: number;
-  no_30d: number;
-  total_users: number;
+export interface NameSegmentResponse {
+  rfmCode: number;
+  rfmName: string;
 }
 
-export interface BonusesResponse {
-  bonusWriteOff: number;
-  bonusAccrual: number;
-  bonusWriteOffFromAccrualPercent: number;
+interface AllGistogram {
+  categories: string[];
+  series: {
+    name: string;
+    value: number[];
+  }[];
 }
 
-export interface TopGroupResponse {
-  subSubGroups: string;
-  idSubSubGroups: number;
-  countSales: number;
+export interface AllStackedGistogramResponse {
+  sexGistogram: {
+    segments: string[];
+    series: {
+      name: string;
+      type: string;
+      stack: string;
+      data: number[];
+    }[];
+
+    legend: {
+      data: string[];
+    };
+  };
+  ageGistogram: {
+    segments: string[];
+    series: {
+      name: string;
+      type: string;
+      stack: string;
+      data: number[];
+    }[];
+
+    legend: {
+      data: string[];
+    };
+  };
 }
 
-export interface TopProductRubResponse {
-  product: string;
-  id_product: number;
-  proceeds: number;
-}
-export interface TopStoreLoyalResponse {
-  store: string;
-  id_store: number;
-  appLoyalPercent: number;
-}
-export interface GraphResponse {
-  name: string;
-  type: string;
-  data: number[];
-}
-
-export interface UniqueGraphResponse {
-  graph: GraphResponse[];
-}
-export interface AppLoyalGraphResponse {
-  graph: GraphResponse[];
+export interface AllGistogramResponse {
+  allDataCount: AllGistogram;
+  allDataProceed: AllGistogram;
+  allDataProfit: AllGistogram;
+  actionDataCount: AllGistogram;
+  actionDataProceed: AllGistogram;
+  actionDataProfit: AllGistogram;
+  imDataCount: AllGistogram;
+  imDataProceed: AllGistogram;
+  imDataProfit: AllGistogram;
+  avgDataCount: AllGistogram;
+  avgDataProceed: AllGistogram;
+  avgDataProfit: AllGistogram;
+  avgDayCountPerClient: AllGistogram;
+  countUniqClient: AllGistogram;
+  countInDanger: AllGistogram;
+  avgDataCheck: AllGistogram;
 }
 
-export interface TopActionsResponse {
-  discountType: string;
-  discount: number;
+export interface DrilldownRfmDayWeekTimeResponse {
+  data: [string | number, number, string, string | null][][];
+  text?: string[];
 }
 
-export interface LoyalCard2Response {
-  uniqueCardNumber: 269510;
-  uniqueCheckLoyal: 776779;
-  uniqueCheck: 1404511;
-  appLoyalPercent: 55.3;
-  bonusWriteOff: 15709236;
-  bonusAccrual: 10944168;
-  frequencySalesLoyal: 2.9;
-  proceedsAdditionalLoyal: 318189279;
-  proceedsAdditionalLoyalPercent: 36.7;
-  proceeds: 867600179;
-  proceedsLoyal: 549410899;
-}
-
-export interface AgeGroupsGraphResponse {
-  xAxis: string[];
-  legend: string[];
-  series: GraphResponse[];
-}
-export interface AgeCircleGraphResponse {
-  circle: {
+export interface TreemapTopGroupProductResponse {
+  childrenProceed: {
+    name: string;
     value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+}
+
+export interface TreemapTopBonusesResponse {
+  childrenProceed: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+}
+
+export interface RadarCountUniqGroupAndProductResponse {
+  CountUniqGroup: {
+    legend: {
+      data: string[];
+    };
+    radar: {
+      indicator: {
+        name: string;
+      }[];
+    };
+    series: {
+      type: string;
+      data: {
+        value: number[];
+        name: string;
+      }[];
+    }[];
+  };
+  CountUniqProduct: {
+    legend: {
+      data: string[];
+    };
+    radar: {
+      indicator: {
+        name: string;
+      }[];
+    };
+    series: {
+      type: string;
+      data: {
+        value: number[];
+        name: string;
+      }[];
+    }[];
+  };
+}
+
+export interface TreemapRfmOrderDeliveryResponse {
+  childrenProceed: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenProfit: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+  childrenCount: {
+    name: string;
+    value: number;
+    children: {
+      name: string;
+      value: number;
+    }[];
+  }[];
+}
+
+export interface DrilldownRfmRegionCityStoreResponse {
+  data: [string | number, number, string, string | null][][];
+}
+
+export interface SankeyMigrationClientPerSegmentsResponse {
+  nodes: {
     name: string;
   }[];
-  center: {
-    total: number;
+  links: {
+    source: string;
+    target: string;
+    value: number;
   }[];
 }
 
-export interface AgeSalesGraphResponse {
+export interface HeatmapMigrationPerSegmentResponse {
   xAxis: string[];
-  legend: string[];
-  series: GraphResponse[];
-}
-
-export interface RevenueGroupsGraphResponse {
   yAxis: string[];
-  legend: string[];
-  series: GraphResponse[];
+  matrixData: number[][];
 }
 
-export interface AvarageCheckAgeGroupGraphResponse {
-  graph: GraphResponse[];
+export interface MainDataSegmentResponse {
+  segmentCode: number;
+  segment: string;
+  period: string;
+  countClient: number;
+  proceedAll: number;
+  countChecks: number;
+  countNightClient: number;
+  proceedNightClient: number;
+  profitNightClient: number;
+  countNightCheck: number;
+  countMMClient: number;
+  profitMMClient: number;
+  proceedMMClient: number;
+  countMMCheck: number;
+  proceedAvgCheck: number;
+  countClientInWarningZone: number;
+  avgPeriodPerSales: number;
+  mainCountCheckPerClient: string;
+  mainCountCheckPerClientPercent: number;
+  mainCountStorePerClient: string;
+  mainCountStorePerClientPercent: number;
+  mainLifeAccoutPeriod: string;
+  mainLifeAccoutPeriodPercent: number;
+  mainGender: string;
+  mainGenderPercent: number;
+  mainLifeClientPeriod: string;
+  mainLifeClientPercent: number;
+  mainBonus: string;
+  proceedPercentMainBonus: number;
+  proceedIM: number;
+  proceedPersentIM: number;
+  countIM: number;
+  mainOrderMethod: string;
+  proceedPersentIMMainOrderMethod: number;
+  mainOrderDelivery: string;
+  proceedPersentIMMainOrderDelivery: number;
+  mainGroupProduct: string;
+  proceedPercentMainGroupProduct: number;
+  mainWeekDay: string;
+  proseedPercentMainWeekDay: number;
+  mainTimeDay: string;
+  proseedPercentMainTimeDay: number;
+  mainRegion: string;
+  proseedPercentMainRegion: number;
+  mainCity: string;
+  proseedPercentMainCity: number;
+  mainStore: string;
+  proseedPercentMainStore: number;
+}
+
+interface AllDataCount {
+  name: string;
+  count: number;
+  percent: number;
+}
+
+interface AllDataProceed {
+  name: string;
+  proceed: number;
+  percent: number;
+}
+
+export interface MainAllDataSegmentResponse {
+  segmentCode: 111;
+  period: string;
+  checkZones: AllDataCount[];
+  storeZones: AllDataCount[];
+  accountAges: AllDataCount[];
+  genders: AllDataCount[];
+  clientAges: AllDataCount[];
+  bonuses: AllDataCount[];
+  orderMethods: AllDataProceed[];
+  deliveryMethods: AllDataProceed[];
+  productGroups: AllDataProceed[];
+  weekDays: AllDataProceed[];
+  timeDays: AllDataProceed[];
+  stores: AllDataProceed[];
+  regions: AllDataProceed[];
+  cities: AllDataProceed[];
+}
+
+export interface ComparisonTwoRfmResponse {
+  firstSegment: {
+    mainData: MainDataSegmentResponse;
+    allData: MainAllDataSegmentResponse;
+  };
+  secondSegment: {
+    mainData: MainDataSegmentResponse;
+    allData: MainAllDataSegmentResponse;
+  };
+  diff: {
+    countClient: number;
+    proceedAll: number;
+    proceedAvgCheck: number;
+    avgPeriodPerSales: number;
+    countClientInWarningZone: number;
+    countChecks: number;
+    countNightClient: number;
+    proceedNightClient: number;
+    profitNightClient: number;
+    countNightCheck: number;
+    countMMClient: number;
+    proceedMMClient: number;
+    profitMMClient: number;
+    countMMCheck: number;
+    proceedIM: number;
+    proceedPersentIM: number;
+    countIM: number;
+  };
 }

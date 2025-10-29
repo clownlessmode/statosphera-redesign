@@ -118,7 +118,7 @@ body {
 
   --ring: #ffadc6;
   --chart-1: 347 77% 50%;
-  --chart-2: 352 83% 91%;
+  --chart-2: 342, 93%, 70%;
   --chart-3: 350 80% 72%;
   --chart-4: 351 83% 82%;
   --chart-5: 349 77% 62%;
@@ -159,7 +159,7 @@ body {
   --input: #2f2f2f;
   --ring: #ffadc6;
   --chart-1: 347 77% 50%;
-  --chart-2: 352 83% 91%;
+  --chart-2: 342, 93%, 70%;
   --chart-3: 350 80% 72%;
   --chart-4: 351 83% 82%;
   --chart-5: 349 77% 62%;
@@ -240,7 +240,9 @@ body {
   justify-content: center !important;
   text-align: center !important;
 }
-
+.echarts-for-react {
+  border-radius: var(--radius);
+}
 .ag-cell {
   text-align: center;
 }
