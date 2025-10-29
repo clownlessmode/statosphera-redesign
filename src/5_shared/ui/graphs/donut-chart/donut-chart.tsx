@@ -1,6 +1,6 @@
 import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useGraphColors } from "@shared/hooks/use-graph-colors";
 import DonutChartSkeleton from "./donut-chart-skeleton";
 
@@ -19,25 +19,32 @@ export const DonutChart = ({
 }: DonutChartProps) => {
   const colors = useGraphColors();
 
-  const [visibleMap, setVisibleMap] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(data.map((item) => [item.name, true])),
-  );
+  const [visibleMap, setVisibleMap] = useState<Record<string, boolean>>({});
 
-  const total = useMemo(
-    () =>
-      data.reduce(
-        (sum, item) => (visibleMap[item.name] ? sum + item.value : sum),
-        0,
-      ),
-    [data, visibleMap],
-  );
+  // Обновляем visibleMap когда приходят новые данные
+  useEffect(() => {
+    setVisibleMap(Object.fromEntries(data.map((item) => [item.name, true])));
+  }, [data]);
+
+  const total = useMemo(() => {
+    const calculatedTotal = data.reduce(
+      (sum, item) => (visibleMap[item.name] ? sum + item.value : sum),
+      0,
+    );
+    console.log("DonutChart total calculation:", {
+      data,
+      visibleMap,
+      calculatedTotal,
+    });
+    return calculatedTotal;
+  }, [data, visibleMap]);
 
   const option: EChartsOption = useMemo(
     () => ({
       backgroundColor: "transparent",
       title: {
         //перекидывать пропсами целое/дробное число
-        text: `${total}`,
+        text: `${total.toLocaleString()}`,
         left: "center",
         top: "53%",
         textStyle: {

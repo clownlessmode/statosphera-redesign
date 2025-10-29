@@ -28,6 +28,9 @@ export interface EffectsSettings {
     textColor: string;
     fontSize: string;
   };
+
+  // Настройки скругления углов
+  borderRadius?: number;
 }
 
 const DEFAULT_SETTINGS: EffectsSettings = {
@@ -73,14 +76,27 @@ const DEFAULT_SETTINGS: EffectsSettings = {
     textColor: "#be185d", // text-pink-700
     fontSize: "text-lg",
   },
+
+  borderRadius: 12,
 };
 
 export const useEffectsSettings = () => {
   const [settings, setSettings] = useState<EffectsSettings>(() => {
     const saved = localStorage.getItem("effects-settings");
-    return saved
-      ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) }
-      : DEFAULT_SETTINGS;
+    if (saved) {
+      const parsedSettings = JSON.parse(saved);
+
+      // Миграция: если borderRadius - объект, конвертируем в число
+      if (
+        parsedSettings.borderRadius &&
+        typeof parsedSettings.borderRadius === "object"
+      ) {
+        parsedSettings.borderRadius = parsedSettings.borderRadius.card || 12;
+      }
+
+      return { ...DEFAULT_SETTINGS, ...parsedSettings };
+    }
+    return DEFAULT_SETTINGS;
   });
 
   useEffect(() => {
@@ -88,7 +104,12 @@ export const useEffectsSettings = () => {
   }, [settings]);
 
   const updateSettings = (updates: Partial<EffectsSettings>) => {
-    setSettings((prev) => ({ ...prev, ...updates }));
+    console.log("🎯 updateSettings called with:", updates);
+    setSettings((prev) => {
+      const newSettings = { ...prev, ...updates };
+      console.log("🎯 New settings:", newSettings);
+      return newSettings;
+    });
   };
 
   const resetSettings = () => {

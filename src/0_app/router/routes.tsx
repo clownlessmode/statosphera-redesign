@@ -30,10 +30,7 @@ import { TV } from "@pages/tv";
 import { Rfm } from "@pages/rfm/ui/rfm";
 import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
-
-// Заглушка для IM компонента
-const IM = () => <div>Интернет-магазин (в разработке)</div>;
-// import { WriteOff } from "@pages/write-off";
+import { IM } from "@pages/im";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -261,6 +258,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Grill />,
     layout: Sidebar,
+    allowedRoles: [ROLES.ADMIN],
     label: "Гриль",
   },
   {

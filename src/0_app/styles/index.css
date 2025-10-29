@@ -240,7 +240,9 @@ body {
   justify-content: center !important;
   text-align: center !important;
 }
-
+.echarts-for-react {
+  border-radius: var(--radius);
+}
 .ag-cell {
   text-align: center;
 }

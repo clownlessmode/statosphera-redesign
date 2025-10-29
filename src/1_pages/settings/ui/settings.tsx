@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@shared/lib/utils";
 import { Header } from "@widgets/header";
 import { Card } from "@shared/ui/card";
@@ -10,6 +10,7 @@ import { ThemeSwitcher } from "@features/theme-switcher/theme-switcher";
 import { Separator } from "@shared/ui/separator";
 import { Input } from "@shared/ui/input";
 import { Badge } from "@shared/ui/badge";
+import { Progress } from "@shared/ui/progress";
 import {
   Palette,
   RotateCcw,
@@ -23,6 +24,7 @@ import {
   XCircle,
   AlertCircle,
   Info,
+  CornerDownRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { COLOR_PRESETS } from "@shared/lib/color-utils";
@@ -60,9 +62,31 @@ export const Settings = () => {
   const [selectedFullPreset, setSelectedFullPreset] = useState<string | null>(
     () => localStorage.getItem("applied-theme-preset"),
   );
+  const [pendingBorderRadius, setPendingBorderRadius] = useState<number | null>(
+    null,
+  );
 
   // Проверяем, есть ли доступ к эффектам для текущего пользователя
   const userHasEffectsAccess = hasEffectsAccess(session?.idUser);
+
+  // Скроллим к карточке border radius после перезагрузки
+  useEffect(() => {
+    const shouldScroll = localStorage.getItem("scroll-to-border-radius");
+    if (shouldScroll === "true") {
+      localStorage.removeItem("scroll-to-border-radius");
+      setTimeout(() => {
+        const borderRadiusCard = document.querySelector(
+          "[data-border-radius-card]",
+        );
+        if (borderRadiusCard) {
+          borderRadiusCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 500);
+    }
+  }, []);
 
   // Хук для управления порядком виджетов
   const allWidgets = [
@@ -108,6 +132,24 @@ export const Settings = () => {
 
   const handleResetColors = () => {
     resetColors();
+  };
+
+  const handleBorderRadiusChange = (value: number) => {
+    setPendingBorderRadius(value);
+  };
+
+  const handleApplyBorderRadius = () => {
+    if (pendingBorderRadius !== null) {
+      updateEffectsSettings({
+        borderRadius: pendingBorderRadius,
+      });
+
+      // Сохраняем информацию о том, что нужно скроллить после перезагрузки
+      localStorage.setItem("scroll-to-border-radius", "true");
+
+      // Обновляем страницу для применения изменений
+      window.location.reload();
+    }
   };
 
   const handleFullPresetSelect = async (presetId: string) => {
@@ -609,6 +651,110 @@ export const Settings = () => {
                         <RotateCcw className="h-4 w-4" />
                         Сбросить все цвета
                       </Button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Настройка Border Radius */}
+                <Card className="p-6" data-border-radius-card>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <CornerDownRight className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold">
+                          Настройка скругления углов
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                          Настройте радиус скругления для элементов интерфейса
+                        </p>
+                      </div>
+                    </div>
+                    <Separator />
+
+                    <div className="space-y-6">
+                      <div className="space-y-4">
+                        <Label htmlFor="border-radius">
+                          Общий радиус скругления
+                        </Label>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-muted-foreground">
+                              0px
+                            </span>
+                            <span className="text-sm font-medium">
+                              {pendingBorderRadius !== null
+                                ? pendingBorderRadius
+                                : typeof effectsSettings.borderRadius ===
+                                    "number"
+                                  ? effectsSettings.borderRadius
+                                  : 12}
+                              px
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              50px
+                            </span>
+                          </div>
+                          <div className="space-y-2 relative">
+                            <Progress
+                              value={
+                                ((pendingBorderRadius !== null
+                                  ? pendingBorderRadius
+                                  : typeof effectsSettings.borderRadius ===
+                                      "number"
+                                    ? effectsSettings.borderRadius
+                                    : 12) /
+                                  50) *
+                                100
+                              }
+                              className="h-2"
+                            />
+                            <input
+                              id="border-radius"
+                              type="range"
+                              min="0"
+                              max="50"
+                              value={
+                                pendingBorderRadius !== null
+                                  ? pendingBorderRadius
+                                  : typeof effectsSettings.borderRadius ===
+                                      "number"
+                                    ? effectsSettings.borderRadius
+                                    : 12
+                              }
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                handleBorderRadiusChange(value);
+                              }}
+                              className="w-full h-2 bg-transparent appearance-none cursor-pointer absolute top-0 left-0 opacity-0"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          updateEffectsSettings({
+                            borderRadius: 12,
+                          })
+                        }
+                        className="gap-2"
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                        Сбросить радиусы
+                      </Button>
+                      {pendingBorderRadius !== null && (
+                        <Button
+                          onClick={handleApplyBorderRadius}
+                          className="gap-2"
+                        >
+                          Применить изменения
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </Card>

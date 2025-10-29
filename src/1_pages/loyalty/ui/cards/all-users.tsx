@@ -29,10 +29,10 @@ export const AllUsers = ({
               </div>
             ) : (
               <>
-                <div className="text-xs font-semibold w-full bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
+                <div className="text-xs font-semibold w-full bg-muted-foreground border-border text-muted border rounded-lg flex items-center justify-center h-8">
                   {noSales30DaysUser?.no_30d.toLocaleString()}
                 </div>
-                <p className="text-xs text-nowrap">
+                <p className="text-xs text-nowrap ">
                   Не совершали покупок &gt;30 дней
                 </p>
               </>
@@ -53,7 +53,7 @@ export const AllUsers = ({
               </div>
             ) : (
               <>
-                <div className="text-xs font-semibold w-full bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
+                <div className="text-xs font-semibold w-full  bg-muted-foreground border-border border rounded-lg flex items-center justify-center h-8">
                   {noSales30DaysUser?.no_30d.toLocaleString()}
                 </div>
                 <p className="text-xs text-nowrap">
