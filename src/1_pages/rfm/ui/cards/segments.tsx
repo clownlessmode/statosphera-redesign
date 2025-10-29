@@ -49,8 +49,14 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center">
-        <span className="text-md font-semibold">Детали по сегментам</span>
-        <Button size="sm" className="ml-2" onClick={() => setShow(!show)}>
+        <span className="text-md font-semibold max-md:text-sm">
+          Детали по сегментам
+        </span>
+        <Button
+          size="sm"
+          className="ml-2 max-md:p-1.5 max-md:h-max max-md:text-xs"
+          onClick={() => setShow(!show)}
+        >
           {show ? "Скрыть" : "Показать"}
         </Button>
       </div>
@@ -60,28 +66,30 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
           data
             .sort((a, b) => Number(a.segmentCode) - Number(b.segmentCode))
             .map((segment) => (
-              <Card key={segment.segmentCode}>
+              <Card key={segment.segmentCode} className="max-md:py-2">
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value={String(segment.segmentCode)}>
                     <AccordionTrigger
                       onClick={() => selectSegment(segment.segmentCode)}
-                      className="flex flex-row items-center py-2 px-8"
+                      className="flex flex-row items-center py-2 px-8 max-md:px-2 max-md:py-0"
                     >
                       <CardHeader className="flex flex-col w-full p-0">
                         <div className="flex flex-row justify-between w-full">
-                          <div className="flex flex-row gap-2 items-center">
-                            <Badge className="py-2 w-15 text-sm font-semibold">
+                          <div className="flex flex-row gap-2 items-center max-md:gap-1">
+                            <Badge className="py-2 w-15 text-sm font-semibold max-md:text-xs max-md:w-10">
                               {segment.segmentCode}
                             </Badge>
                             <div className="flex flex-col w-max">
-                              <CardTitle className="text-md">
+                              <CardTitle className="text-md max-md:text-xs">
                                 {segment.segment}
                               </CardTitle>
-                              Период: {segment.period}
+                              <span className="max-md:text-xs">
+                                Период: {segment.period}
+                              </span>
                             </div>
                           </div>
                         </div>
-                        <div className="grid grid-cols-4 pt-4 w-full gap-10">
+                        <div className="grid grid-cols-4 pt-4 w-full gap-10 max-md:hidden">
                           <div className="flex flex-col">
                             <span className="text-md font-semibold">
                               Клиенты
@@ -141,13 +149,60 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                       </CardHeader>
                     </AccordionTrigger>
                     <AccordionContent>
-                      <Separator />
-                      <CardContent className="grid grid-cols-4 gap-4 px-8 pt-2 w-full">
+                      <Separator className="max-md:mt-2" />
+                      <CardContent className="grid grid-cols-4 gap-4 px-8 pt-2 w-full max-md:grid-cols-2 max-md:gap-2 max-md:px-2 max-md:text-xs">
+                        <div className="grid-cols-2 pt-4 w-full gap-2 col-span-2 hidden max-md:grid max-md:pt-0">
+                          <span className="text-lg text-primary/90 font-bold col-span-2 max-md:col-span-2 max-md:text-sm">
+                            Основная информация
+                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-md font-semibold max-md:text-muted-foreground">
+                              Клиенты
+                            </span>
+                            <span>
+                              {segment.countClient ? segment.countClient : 0}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-md font-semibold max-md:text-muted-foreground">
+                              Выручка
+                            </span>
+                            <span>
+                              {segment.proceedAll
+                                ? Math.round(segment.proceedAll)
+                                    .toLocaleString()
+                                    .replace(/,/g, " ")
+                                : 0}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-md font-semibold max-md:text-muted-foreground">
+                              Средний чек
+                            </span>
+                            <span>
+                              {segment.proceedAvgCheck
+                                ? segment.proceedAvgCheck
+                                : 0}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex flex-row items-center">
+                              <span className="text-md font-semibold max-md:text-muted-foreground">
+                                В опасной зоне
+                              </span>
+                            </div>
+                            <span>
+                              {segment.countClientInWarningZone
+                                ? segment.countClientInWarningZone
+                                : 0}
+                            </span>
+                          </div>
+                        </div>
                         <div className="flex flex-col">
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             Клиентская база
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Чеки
                             </span>
@@ -159,13 +214,16 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <div className="flex flex-row items-center">
                               <span className="text-md text-muted-foreground font-semibold">
                                 Кол-во чеков у клиента
                               </span>
                               <Tooltip>
-                                <TooltipTrigger className="ml-1" asChild>
+                                <TooltipTrigger
+                                  className="ml-1 max-md:hidden"
+                                  asChild
+                                >
                                   <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
                                 </TooltipTrigger>
                                 <TooltipContent
@@ -194,13 +252,16 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="количестве чеков клиентов"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <div className="flex flex-row items-center">
                               <span className="text-md text-muted-foreground font-semibold">
                                 Кол-во магазинов
                               </span>
                               <Tooltip>
-                                <TooltipTrigger className="ml-1" asChild>
+                                <TooltipTrigger
+                                  className="ml-1 max-md:hidden"
+                                  asChild
+                                >
                                   <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
                                 </TooltipTrigger>
                                 <TooltipContent
@@ -229,7 +290,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="количестве магазинов клиентов"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Возраст клиента
                             </span>
@@ -249,7 +310,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="возрасте клиента"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Время жизни аккаунта
                             </span>
@@ -269,7 +330,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="времени жизни аккаунта"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Период между покупками
                             </span>
@@ -277,7 +338,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               {segment.avgPeriodPerSales} дней
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Пол
                             </span>
@@ -299,10 +360,10 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                           </div>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             Интернет магазин
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Чеки
                             </span>
@@ -314,7 +375,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Выручка
                             </span>
@@ -325,7 +386,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               ({segment.proceedPersentIM}%)
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Способ заказа
                             </span>
@@ -345,7 +406,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="способах заказа"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Способ доставки
                             </span>
@@ -365,10 +426,10 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="способах доставки"
                             />
                           </div>
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             Продажи и акции
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Популярная группа
                             </span>
@@ -388,7 +449,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="популярных группах"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Популярный бонус
                             </span>
@@ -410,10 +471,10 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                           </div>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             Ночные магазины
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Чеки
                             </span>
@@ -425,7 +486,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Клиенты
                             </span>
@@ -435,7 +496,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Выручка
                             </span>
@@ -447,7 +508,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Прибыль
                             </span>
@@ -459,10 +520,10 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             Микромаркеты
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Чеки
                             </span>
@@ -474,7 +535,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Клиенты
                             </span>
@@ -484,7 +545,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Выручка
                             </span>
@@ -496,7 +557,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                                 : "Нет данных"}{" "}
                             </span>
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Прибыль
                             </span>
@@ -510,10 +571,10 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                           </div>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-lg text-primary/90 font-bold">
+                          <span className="text-lg text-primary/90 font-bold max-md:text-sm">
                             География и время
                           </span>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Популярный регион
                             </span>
@@ -533,7 +594,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="популярных регионах"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Популярный город
                             </span>
@@ -553,7 +614,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="популярных городах"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Популярный магазин
                             </span>
@@ -573,7 +634,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="популярных магазинах"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               Время покупок
                             </span>
@@ -593,7 +654,7 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               title="времени покупок"
                             />
                           </div>
-                          <div className="flex flex-col my-2">
+                          <div className="flex flex-col my-2 max-md:my-1.5">
                             <span className="text-md text-muted-foreground font-semibold">
                               День недели
                             </span>

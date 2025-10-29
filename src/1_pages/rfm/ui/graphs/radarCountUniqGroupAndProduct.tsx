@@ -20,10 +20,10 @@ export const RadarCountUniqGroupAndProduct: FC<Props> = ({
       graph.CountUniqGroup?.radar?.indicator &&
       graph.CountUniqProduct?.series[0]?.data[0] &&
       graph.CountUniqProduct?.radar?.indicator ? (
-        <div className="w-full grid grid-cols-2 gap-4 col-span-2">
+        <div className="w-full grid grid-cols-2 gap-4 col-span-2 max-md:grid-cols-1">
           <Card className="w-full flex flex-col h-[400px]">
             <CardHeader>
-              <CardTitle className="text-center">
+              <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
                 {graph.CountUniqGroup.legend.data[0]}
               </CardTitle>
             </CardHeader>
@@ -73,7 +73,7 @@ export const RadarCountUniqGroupAndProduct: FC<Props> = ({
           </Card>
           <Card className="w-full flex flex-col h-[400px]">
             <CardHeader>
-              <CardTitle className="text-center">
+              <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
                 {graph.CountUniqProduct.legend?.data[0]}
               </CardTitle>
             </CardHeader>
@@ -124,7 +124,7 @@ export const RadarCountUniqGroupAndProduct: FC<Props> = ({
           </Card>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 col-span-2">
+        <div className="grid grid-cols-2 gap-4 col-span-2 max-md:grid-cols-1">
           <Card className="w-full flex flex-col h-[400px]">
             <CardHeader>
               <CardTitle>

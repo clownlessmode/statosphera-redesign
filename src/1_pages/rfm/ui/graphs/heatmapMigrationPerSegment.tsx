@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import useSafari from "@shared/hooks/use-safari";
 import { FC } from "react";
 import { HeatChart } from "@shared/ui/heatmap-chart";
+import { useIsMobile } from "@shared/hooks";
 
 interface Props {
   graph: HeatmapMigrationPerSegmentResponse;
@@ -12,6 +13,7 @@ interface Props {
 
 export const HeatmapMigrationPerSegment: FC<Props> = ({ graph, isLoading }) => {
   const isSafari = useSafari();
+  const isMobile = useIsMobile();
 
   if (
     isLoading ||
@@ -19,13 +21,15 @@ export const HeatmapMigrationPerSegment: FC<Props> = ({ graph, isLoading }) => {
     graph?.yAxis.length === 0 ||
     graph?.matrixData.length === 0
   ) {
-    return <StackedLineSkeleton className="h-[800px] col-span-2" />;
+    return (
+      <StackedLineSkeleton className="h-[800px] col-span-2 max-md:h-[600px]" />
+    );
   }
 
   return (
-    <Card className="h-[800px] col-span-2 gap-0">
+    <Card className="h-[800px] col-span-2 gap-0 max-md:h-[600px]">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
-        <CardTitle className="text-center text-lg font-semibold">
+        <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Тепловая карта
         </CardTitle>
       </CardHeader>
@@ -35,7 +39,7 @@ export const HeatmapMigrationPerSegment: FC<Props> = ({ graph, isLoading }) => {
           xAxisData={graph.xAxis}
           yAxisData={graph.yAxis}
           grid={{
-            bottom: isSafari ? 50 : 20,
+            bottom: isSafari ? (!isMobile ? 50 : 70) : !isMobile ? 20 : 60,
           }}
           formatter={(params) => {
             return `

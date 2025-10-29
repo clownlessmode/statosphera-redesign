@@ -129,7 +129,7 @@ export default function RfmFilter() {
                         field.onChange(values);
                         updateFilters("sex", values);
                       }}
-                      className="grid-cols-3"
+                      className="grid-cols-3 max-md:grid-cols-1"
                     />
                   </FormControl>
                 </FormItem>
@@ -187,7 +187,7 @@ export default function RfmFilter() {
                         field.onChange(value);
                         updateFilters("sankey", value);
                       }}
-                      className="grid-cols-2"
+                      className="grid-cols-2 max-xxs:grid-cols-1"
                     />
                   </FormControl>
                 </FormItem>
@@ -207,7 +207,7 @@ export default function RfmFilter() {
                         field.onChange(value);
                         updateFilters("heatmap", value);
                       }}
-                      className="grid-cols-3"
+                      className="grid-cols-3 max-xxs:grid-cols-1"
                     />
                   </FormControl>
                 </FormItem>

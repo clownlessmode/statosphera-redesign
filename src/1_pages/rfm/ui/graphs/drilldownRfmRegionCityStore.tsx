@@ -6,6 +6,7 @@ import { BarMultiDrilldownChart } from "@shared/ui/bar-multi-drilldown-chart";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import { Info } from "lucide-react";
 import { FC } from "react";
+import { useIsMobile } from "@shared/hooks";
 
 interface Props {
   graph: DrilldownRfmRegionCityStoreResponse;
@@ -17,6 +18,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
   isLoading,
 }) => {
   const isSafari = useSafari();
+  const isMobile = useIsMobile();
 
   if (isLoading || graph.data.length === 0) {
     return <StackedLineSkeleton className="h-[400px] col-span-2" />;
@@ -25,7 +27,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
   return (
     <Card className="w-full h-[400px] flex flex-col gap-0 col-span-2">
       <CardHeader>
-        <CardTitle className="flex items-center justify-center text-base font-extrabold">
+        <CardTitle className="flex items-center justify-center text-lg font-semibold max-md:text-sm">
           Количество чеков по магазинам
           <Tooltip>
             <TooltipTrigger className="ml-1" asChild>
@@ -62,7 +64,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
                 )
                 .join("<br/>");
             }
-            return `${params.value[1].toLocaleString().replace(/,/g, " ")}`;
+            return `${!isMobile ? params.value[1].toLocaleString().replace(/,/g, " ") : ""}`;
           }}
         />
       </CardContent>

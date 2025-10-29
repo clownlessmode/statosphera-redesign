@@ -62,13 +62,16 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
 
   return (
     <Card className="h-[600px] col-span-2 gap-0">
-      <CardHeader className="flex flex-row justify-center items-center gap-1">
-        <CardTitle className="text-center text-lg font-semibold">
+      <CardHeader className="flex flex-row justify-center items-center gap-1 max-md:flex-col">
+        <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Самые популярные способы заказа и доставки
         </CardTitle>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="px-1.5 text-lg font-semibold" variant="outline">
+            <Button
+              className="px-1.5 text-lg font-semibold max-md:text-sm"
+              variant="outline"
+            >
               {selectedLabel}
             </Button>
           </DropdownMenuTrigger>
@@ -97,7 +100,7 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
         className="h-full w-full relative"
       >
         {/*Обертка что не мешать скроллу страницы*/}
-        {visible && <div className="absolute inset-0 z-100" />}
+        {visible && <div className="absolute inset-0 z-100 max-md:hidden" />}
         <TreemapChart
           series={{
             data: value,

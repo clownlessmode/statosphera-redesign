@@ -13,38 +13,30 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
   if (isLoading) return <RfmElmSkeleton />;
 
   return (
-    <Card>
+    <Card className="max-md:gap-1">
       <CardHeader className="flex flex-col items-center">
         <div className="flex flex-row">
           <div className="flex flex-row gap-2 items-center">
-            <Badge className="py-2 w-15 text-sm font-semibold">
+            <Badge className="py-2 w-15 text-sm font-semibold max-md:text-xs max-md:w-10">
               {segment?.mainData.segmentCode}
             </Badge>
             <div className="flex flex-col w-full">
-              <CardTitle className="text-md">
+              <CardTitle className="text-md max-md:text-xs">
                 {segment?.mainData.segment}
               </CardTitle>
-              Период: {segment?.mainData.period}
+              <span className="max-md:text-xs">
+                Период: {segment?.mainData.period}
+              </span>
             </div>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 px-8 pt-2 w-full">
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-2">
+      <CardContent className="flex flex-col gap-4 px-8 pt-2 w-full max-md:gap-1 max-md:px-4 max-md:text-xs">
+        <div className="grid grid-cols-2 max-md:grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-2 max-md:col-span-2 max-md:text-sm">
             Основная информация
           </span>
-          <div className="flex flex-col my-2">
-            <span className="text-md text-muted-foreground font-semibold">
-              Чеки
-            </span>
-            <span className="mt-1">
-              {segment.mainData?.countChecks
-                ? segment?.mainData.countChecks
-                : "Нет данных"}
-            </span>
-          </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Клиенты
             </span>
@@ -54,7 +46,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : 0}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Выручка
             </span>
@@ -66,7 +58,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : 0}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Средний чек
             </span>
@@ -76,7 +68,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : 0}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <div className="flex flex-row items-center">
               <span className="text-md text-muted-foreground font-semibold">
                 В опасной зоне
@@ -89,11 +81,21 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
+        <div className="grid grid-cols-1 max-md:grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-1 max-md:col-span-2 max-md:text-sm">
             Клиентская база
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
+            <span className="text-md text-muted-foreground font-semibold">
+              Чеки
+            </span>
+            <span className="mt-1">
+              {segment.mainData?.countChecks
+                ? segment?.mainData.countChecks
+                : "Нет данных"}
+            </span>
+          </div>
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <div className="flex flex-row items-center">
               <span className="text-md text-muted-foreground font-semibold">
                 Кол-во чеков у клиента
@@ -110,7 +112,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <div className="flex flex-row items-center">
               <span className="text-md text-muted-foreground font-semibold">
                 Кол-во магазинов
@@ -127,7 +129,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Возраст клиента
             </span>
@@ -142,7 +144,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Время жизни аккаунта
             </span>
@@ -157,7 +159,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Период между покупками
             </span>
@@ -165,7 +167,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               {segment?.mainData.avgPeriodPerSales} дней
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Пол
             </span>
@@ -182,10 +184,10 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
           </div>
         </div>
         <div className="grid grid-cols-2">
-          <span className="text-lg text-primary/90 font-bold col-span-2">
+          <span className="text-lg text-primary/90 font-bold col-span-2 max-md:text-sm">
             Интернет магазин
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Чеки
             </span>
@@ -195,7 +197,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Выручка
             </span>
@@ -207,7 +209,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               ({segment?.mainData.proceedPersentIM}%)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Способ заказа
             </span>
@@ -222,7 +224,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Способ доставки
             </span>
@@ -238,11 +240,11 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
+        <div className="grid grid-cols-1 max-md:grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-1 max-md:col-span-2 max-md:text-sm">
             Продажи и акции
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Популярная группа
             </span>
@@ -257,7 +259,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Популярный бонус
             </span>
@@ -273,11 +275,11 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2">
-          <span className="text-lg text-primary/90 font-bold col-span-2">
+        <div className="grid grid-cols-2 max-md:grid-cols-4">
+          <span className="text-lg text-primary/90 font-bold col-span-2 max-md:col-span-4 max-md:text-sm">
             Ночные магазины
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Чеки
             </span>
@@ -287,7 +289,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Клиенты
             </span>
@@ -297,7 +299,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}{" "}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Выручка
             </span>
@@ -309,7 +311,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}{" "}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Прибыль
             </span>
@@ -322,11 +324,11 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2">
-          <span className="text-lg text-primary/90 font-bold col-span-2">
+        <div className="grid grid-cols-2 max-md:grid-cols-4">
+          <span className="text-lg text-primary/90 font-bold col-span-2 max-md:col-span-4 max-md:text-sm">
             Микромаркеты
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Чеки
             </span>
@@ -336,7 +338,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Клиенты
             </span>
@@ -346,7 +348,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}{" "}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Выручка
             </span>
@@ -358,7 +360,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
                 : "Нет данных"}{" "}
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Прибыль
             </span>
@@ -371,11 +373,11 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1">
-          <span className="text-lg text-primary/90 font-bold col-span-1">
+        <div className="grid grid-cols-1 max-md:grid-cols-2">
+          <span className="text-lg text-primary/90 font-bold col-span-1 max-md:col-span-2 max-md:text-sm">
             География и время
           </span>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Популярный регион
             </span>
@@ -390,7 +392,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Популярный город
             </span>
@@ -405,7 +407,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Популярный магазин
             </span>
@@ -420,7 +422,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               Время покупок
             </span>
@@ -435,7 +437,7 @@ export const RfmElm: FC<Props> = ({ segment, isLoading }) => {
               %)
             </span>
           </div>
-          <div className="flex flex-col my-2">
+          <div className="flex flex-col my-2 max-md:my-1.5">
             <span className="text-md text-muted-foreground font-semibold">
               День недели
             </span>

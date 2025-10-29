@@ -34,7 +34,7 @@ export const ModalInfo = ({ data, isLoading, title }: ModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span className="text-sm text-muted-foreground hover:text-primary/90 hover:font-semibold hover:cursor-pointer">
+        <span className="text-sm text-muted-foreground hover:text-primary/90 hover:font-semibold hover:cursor-pointer max-md:text-xs">
           Подробнее..
         </span>
       </DialogTrigger>
@@ -43,26 +43,32 @@ export const ModalInfo = ({ data, isLoading, title }: ModalProps) => {
         className="w-full max-xs:text-xs md:max-w-[80vw]!"
       >
         <DialogHeader>
-          <DialogTitle className="max-md:grid max-md:grid-col-1">
+          <DialogTitle className="max-md:grid max-md:grid-col-1 max-md:text-base">
             Детальная информация о {title}
           </DialogTitle>
         </DialogHeader>
-        <DialogBody className="gap-4 grid grid-col-1 mt-">
+        <DialogBody className="gap-4 grid grid-col-1">
           <ScrollArea className="max-h-[50vh] md:max-h-[50vh]">
-            <Card className="max-md:min-h-[50vh] gap-4">
-              <CardHeader className="grid grid-cols-4">
-                <CardTitle className="text-center text-lg">№</CardTitle>
-                <CardTitle className="text-center text-lg">
+            <Card className="max-md:min-h-[50vh] gap-4 max-md:gap-2">
+              <CardHeader className="grid grid-cols-4 max-md:px-0">
+                <CardTitle className="text-center text-lg max-md:text-xs">
+                  №
+                </CardTitle>
+                <CardTitle className="text-center text-lg max-md:text-xs">
                   Показатель
                 </CardTitle>
-                <CardTitle className="text-center text-lg">Значение</CardTitle>
-                <CardTitle className="text-center text-lg">Доля</CardTitle>
+                <CardTitle className="text-center text-lg max-md:text-xs">
+                  Значение
+                </CardTitle>
+                <CardTitle className="text-center text-lg max-md:text-xs">
+                  Доля
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="max-md:px-0 max-md:text-xs">
                 {!isLoading && data ? (
                   data?.map((item, idx) => (
                     <Fragment key={idx}>
-                      <div className="grid grid-cols-4 py-4 border-t">
+                      <div className="grid grid-cols-4 py-4 border-t max-md:py-2">
                         <span className="text-center">{idx + 1}</span>
                         <span className="text-center">{item.name}</span>
                         <span className="text-center">

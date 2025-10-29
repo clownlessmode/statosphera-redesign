@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import ClearComparisonFilters from "./clear-comparison-filters";
+import { Separator } from "@shared/ui/separator";
 
 export default function ComparisonFilter() {
   const { updateFilters, getApiPayload } = useComparisonFiltersStore();
@@ -69,7 +70,7 @@ export default function ComparisonFilter() {
           <ClearComparisonFilters form={form} />
         </div>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4">
+      <CardContent className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField
@@ -210,6 +211,7 @@ export default function ComparisonFilter() {
             />
           </form>
         </Form>
+        <Separator className="hidden max-md:flex my-2" />
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField

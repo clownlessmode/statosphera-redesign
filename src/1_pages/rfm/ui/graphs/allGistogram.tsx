@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@shared/ui/dropdown-menu";
 import { Button } from "@shared/ui/button";
+import { useIsMobile } from "@shared/hooks";
 
 interface Props {
   graph: AllGistogramResponse;
@@ -21,6 +22,7 @@ interface Props {
 
 export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
   const [value, setValue] = useState<typeof graph.allDataCount | undefined>();
+  const isMobile = useIsMobile();
   const isSafari = useSafari();
 
   useEffect(() => {
@@ -123,13 +125,14 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
 
   return (
     <Card className="h-[400px] col-span-2">
-      <CardHeader className="flex flex-row justify-center items-center gap-1">
-        <CardTitle className="text-center text-lg font-semibold">
-          График
-        </CardTitle>
+      <CardHeader className="flex flex-row justify-center items-center gap-1 max-md:flex-col">
+        <CardTitle className="font-semibold max-md:text-sm">График</CardTitle>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="px-1.5 text-lg font-semibold" variant="outline">
+            <Button
+              className="px-1.5 text-lg font-semibold max-md:text-sm"
+              variant="outline"
+            >
               {selectedLabel}
             </Button>
           </DropdownMenuTrigger>
@@ -167,15 +170,10 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
                 )
                 .join("<br/>");
             }
-            return `${params.value.toLocaleString().replace(/,/g, " ")}`;
+            return `${!isMobile ? params.value.toLocaleString().replace(/,/g, " ") : ""}`;
           }}
         />
       </CardContent>
-      {/*<div className="flex flex-col px-4">
-            {graph.text.map((text) => (
-              <p>{text}</p>
-            ))}
-          </div>*/}
     </Card>
   );
 };

@@ -284,7 +284,23 @@ export const Loyalty = () => {
           ),
         }}
       />
-      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
+      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0">
+        <div className="hidden max-md:flex flex-row gap-1">
+          <Button
+            variant="outline"
+            className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1"
+          >
+            Лояльность
+          </Button>
+          <Link to={ROUTES_PATH.RFM} className="w-1/2">
+            <Button
+              variant="outline"
+              className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1"
+            >
+              RFM
+            </Button>
+          </Link>
+        </div>
         <div className="flex flex-row gap-2 justify-between md:justify-end">
           <DaysFilter />
           <GraphDate />

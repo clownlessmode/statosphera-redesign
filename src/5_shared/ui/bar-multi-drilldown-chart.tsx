@@ -100,11 +100,11 @@ export const BarMultiDrilldownChart = ({
             axisLabel: {
               color: colors.text,
               fontSize: 12,
-              interval: 0,
-              formatter: (value) => {
-                return (data.length > 10 && value.length > 10) ||
-                  (data.length > 24 && value.length > 2) ||
-                  data.length > 24
+              hideOverlap: true,
+              formatter: (value, index) => {
+                return (index === 0 || index === data.length - 1) &&
+                  data.length > 4 &&
+                  value.length > 15
                   ? ""
                   : value;
               },
@@ -163,7 +163,7 @@ export const BarMultiDrilldownChart = ({
   return (
     <div className="w-full h-full flex flex-col">
       {/* Блок с "хлебными крошками" */}
-      <div className="flex items-center gap-2 p-4 text-sm">
+      <div className="flex items-center gap-2 p-4 text-sm max-md:gap-1 max-md:overflow-x-auto max-md:overflow-y-hidden max-md:flex-nowrap">
         {history.map((level, index) => (
           <Fragment key={index}>
             {index > 0 && (
@@ -174,7 +174,7 @@ export const BarMultiDrilldownChart = ({
               onClick={() => jumpToLevel(index)}
               disabled={index === history.length - 1}
               className={`
-              transition-colors px-2 py-1
+              transition-colors px-2 py-1 max-md:text-xs
               ${
                 index === history.length - 1
                   ? `cursor-default text-foreground` // Стиль для текущего уровня

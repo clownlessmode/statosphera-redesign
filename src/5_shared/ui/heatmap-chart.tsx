@@ -1,6 +1,6 @@
 import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
-import { useGraphColors } from "@shared/hooks";
+import { useGraphColors, useIsMobile } from "@shared/hooks";
 
 interface SankeyChartProps {
   xAxisData: string[];
@@ -21,6 +21,7 @@ export const HeatChart = ({
   formatter,
 }: SankeyChartProps) => {
   const colors = useGraphColors();
+  const isMobile = useIsMobile();
 
   const option: EChartsOption = {
     backgroundColor: "transparent",
@@ -35,8 +36,8 @@ export const HeatChart = ({
     },
     grid: {
       top: 20,
-      left: 40,
-      right: 80,
+      left: !isMobile ? 40 : 30,
+      right: !isMobile ? 80 : 10,
       bottom: grid?.bottom || 20,
     },
     xAxis: {
@@ -57,25 +58,22 @@ export const HeatChart = ({
       min: 0,
       max: 500,
       calculable: true,
-      orient: "vertical",
-      left: "right",
-      top: "middle",
+      orient: !isMobile ? "vertical" : "horizontal",
+      left: !isMobile ? "right" : "center",
+      top: !isMobile ? "middle" : "bottom",
+      itemWidth: !isMobile ? 20 : 10,
       textStyle: {
         color: colors.text,
       },
       inRange: {
-        // Цвет для значений от min до max
-        color: [colors.series[3], colors.series[0]], // от светло-голубого до темно-синего
-        // Можно также управлять размером символа, прозрачностью и т.д.
-        // symbolSize: [10, 30],
-        // opacity: [0.4, 1],
+        color: [colors.series[3], colors.series[0]],
       },
     },
     series: {
       type: "heatmap",
       data: series,
       label: {
-        show: true,
+        show: !isMobile,
       },
     } as any,
   };

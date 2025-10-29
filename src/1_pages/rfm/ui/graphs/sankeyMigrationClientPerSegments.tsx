@@ -23,7 +23,7 @@ export const SankeyMigrationClientPerSegments: FC<Props> = ({
   return (
     <Card className="h-[800px] col-span-2 gap-0">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
-        <CardTitle className="text-center text-lg font-semibold">
+        <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Диаграмма потоков
         </CardTitle>
       </CardHeader>

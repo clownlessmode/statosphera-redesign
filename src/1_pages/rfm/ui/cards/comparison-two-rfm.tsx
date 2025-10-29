@@ -65,11 +65,12 @@ export const ComparisonTwoRfmCard: FC = () => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row items-center">
-        <span className="text-md font-semibold mr-2">Сравнение сегментов</span>
+        <span className="text-md font-semibold mr-2 max-md:text-sm">
+          Сравнение сегментов
+        </span>
         <ComparisonFilterModal onApplyFilters={handleApplyFilters} />
       </div>
-
-      <div className="w-full h-full grid grid-cols-3 gap-4">
+      <div className="w-full h-full grid grid-cols-3 gap-4 max-md:grid-cols-1">
         {dataSegments ? (
           <>
             <RfmElm

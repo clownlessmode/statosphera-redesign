@@ -84,7 +84,7 @@ export const BarChartMultiSeries = ({
         axisLabel: {
           color: colors.text,
           fontSize: 12,
-          interval: 0,
+          hideOverlap: true,
         },
         axisLine: { show: false },
       },

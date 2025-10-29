@@ -8,7 +8,7 @@ export const RfmElmSkeleton: FC = () => {
       <CardHeader className="flex flex-col items-center">
         <div className="flex flex-row">
           <div className="flex flex-row gap-2 items-center">
-            <Skeleton className="w-[360px] h-[40px] bg-muted-foreground rounded-md" />
+            <Skeleton className="w-[360px] h-[40px] bg-muted-foreground rounded-md max-md:w-[260px] max-md:h-[36px]" />
           </div>
         </div>
       </CardHeader>

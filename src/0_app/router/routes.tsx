@@ -78,6 +78,7 @@ export const ROUTES_PATH = {
   ROADMAP: "/roadmap",
   PRODUCTS: "/products",
   LOYALTY: "/loyalty",
+  RFM: "/rfm",
   GRILL: "/grill",
   IM: "/im",
 
@@ -86,9 +87,6 @@ export const ROUTES_PATH = {
 
   // Сводная таблица
   SUMMARY: "/summary",
-
-  // Дайджесты
-  RFM: "/rfm",
 
   // Служебные страницы
   NOT_FOUND: "*",

@@ -15,7 +15,7 @@ export const AllUsers = ({
   const isMobile = useIsMobile();
   // if () return <AllUsersSkeleton />;
   return (
-    <Card className="w-full h-full gap-1 ">
+    <Card className="w-full h-full gap-1 max-md:px-0! max-md:mx-auto max-md:w-[calc(100%-32px)]">
       <CardHeader className="flex flex-row justify-center items-center flex-grow"></CardHeader>
       <CardContent>
         <div className="flex flex-col md:flex-row justify-center items-center p-2 bg-background rounded-2xl gap-1 w-full">
@@ -86,7 +86,7 @@ export const AllUsers = ({
 
 const AllUsersSkeleton = () => {
   return (
-    <Card className="w-full h-full gap-1 ">
+    <Card className="w-full h-full gap-1 max-md:px-0! max-md:mx-auto max-md:w-[calc(100%-32px)]">
       <CardContent>
         <div className="flex flex-row justify-center items-center p-2 bg-background rounded-2xl gap-1 w-full">
           <div

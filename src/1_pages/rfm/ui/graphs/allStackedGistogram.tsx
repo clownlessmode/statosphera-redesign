@@ -24,12 +24,12 @@ export const AllStackedGistogram: FC<Props> = ({ graph, isLoading }) => {
   return (
     <Card className="h-[400px] col-span-2">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
-        <CardTitle className="text-center text-lg font-semibold">
+        <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           График по
         </CardTitle>
         <Button
           variant="outline"
-          className="w-max text-lg font-semibold px-1.5"
+          className="w-max text-lg font-semibold px-1.5 max-md:text-sm"
           onClick={() => setSexGistogram(!sexGistogram)}
         >
           {sexGistogram ? "полу" : "возрасту"}

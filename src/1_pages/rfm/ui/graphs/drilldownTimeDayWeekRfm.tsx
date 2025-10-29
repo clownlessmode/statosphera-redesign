@@ -6,6 +6,7 @@ import { BarMultiDrilldownChart } from "@shared/ui/bar-multi-drilldown-chart";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import { Info } from "lucide-react";
 import { FC } from "react";
+import { useIsMobile } from "@shared/hooks";
 
 interface Props {
   graph: DrilldownRfmDayWeekTimeResponse;
@@ -14,15 +15,16 @@ interface Props {
 
 export const DrilldownTimeDayWeekRfm: FC<Props> = ({ graph, isLoading }) => {
   const isSafari = useSafari();
+  const isMobile = useIsMobile();
 
   if (isLoading || graph.data.length === 0) {
-    return <StackedLineSkeleton className="h-[400px]" />;
+    return <StackedLineSkeleton className="h-[400px] max-md:col-span-2" />;
   }
 
   return (
-    <Card className="w-full h-[400px] flex flex-col gap-0">
+    <Card className="w-full h-[400px] flex flex-col gap-0 max-md:col-span-2">
       <CardHeader>
-        <CardTitle className="flex items-center justify-center text-base font-extrabold">
+        <CardTitle className="flex items-center justify-center font-semibold max-md:text-sm">
           Количество чеков по сегментам
           <Tooltip>
             <TooltipTrigger className="ml-1" asChild>
@@ -56,7 +58,7 @@ export const DrilldownTimeDayWeekRfm: FC<Props> = ({ graph, isLoading }) => {
                 )
                 .join("<br/>");
             }
-            return `${params.value[1].toLocaleString().replace(/,/g, " ")}`;
+            return `${!isMobile ? params.value[1].toLocaleString().replace(/,/g, " ") : ""}`;
           }}
         />
       </CardContent>
