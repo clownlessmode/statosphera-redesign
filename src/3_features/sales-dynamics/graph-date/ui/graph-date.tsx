@@ -17,6 +17,7 @@ import { Button } from "@shared/ui/button";
 import { create } from "zustand";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { cn } from "@shared/lib/utils";
+import { useDropdownTourStore } from "@pages/sales-dynamics/ui/dropdown-tour-store";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -30,9 +31,25 @@ export const useDateFilterStore = create<DateFilterState>((set) => ({
   setValue: (value) => set({ value }),
 }));
 
+// Глобальный стор для отслеживания состояния дропдауна
+interface DropdownState {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export const useDropdownStore = create<DropdownState>((set) => ({
+  isOpen: false,
+  setIsOpen: (isOpen) => {
+    console.log("🔄 [DROPDOWN STORE] State changed:", { isOpen });
+    set({ isOpen });
+  },
+}));
+
 const GraphDate = () => {
   const isMobile = useIsMobile();
   const { value, setValue } = useDateFilterStore();
+  const { isOpen, setIsOpen } = useDropdownStore();
+
   const handleSubmit = async (value: DateFilterValue) => {
     try {
       setValue(value);
@@ -70,11 +87,19 @@ const GraphDate = () => {
   ];
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
+  const { setIsWaitingForDropdown } = useDropdownTourStore();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        setIsWaitingForDropdown(open);
+        console.log("🔄 [DROPDOWN] State changed to:", open);
+      }}
+    >
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="graph-date-filter">
           <Calendar className={cn(!isMobile && "mr-2")} />
           {!isMobile && selectedLabel}
         </Button>

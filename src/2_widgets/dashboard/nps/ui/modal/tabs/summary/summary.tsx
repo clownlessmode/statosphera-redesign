@@ -26,7 +26,7 @@ export const Summary = ({ tv }: { tv?: boolean }) => {
   }
 
   return (
-    <Card className={cn("h-full", tv && "border-0 pt-0")}>
+    <Card className={cn("h-[450px]", tv && "border-0 pt-0")}>
       {tv && (
         <CardHeader>
           <CardTitle className="text-center">NPS сводка по месяцам</CardTitle>
@@ -43,7 +43,7 @@ export const Summary = ({ tv }: { tv?: boolean }) => {
           </CardTitle>
         </CardHeader>
       )}
-      <CardContent className="h-full flex-1">
+      <CardContent className=" shrink-0">
         {!tv && (
           <div className="text-center">
             <div className={cn("text-4xl font-bold")}>{summaryNps} / 100</div>
@@ -75,6 +75,7 @@ export const Summary = ({ tv }: { tv?: boolean }) => {
           </CardContent>
         ) : (
           <BarChart
+            className="h-[350px]"
             xAxisData={
               npsGraph.map(
                 (item) =>

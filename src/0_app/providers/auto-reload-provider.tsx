@@ -22,12 +22,7 @@ const AutoReloadProvider: FC<PropsWithChildren<AutoReloadProviderProps>> = ({
     if (reloadIntervalMinutes && reloadIntervalMinutes > 0) {
       const intervalMs = reloadIntervalMinutes * 60 * 1000;
 
-      console.log(`Автоперезагрузка каждые ${reloadIntervalMinutes} минут`);
-
       const intervalId = setInterval(() => {
-        console.log(
-          `Автоматическая перезагрузка страницы каждые ${reloadIntervalMinutes} минут`,
-        );
         window.location.reload();
       }, intervalMs);
 
@@ -68,14 +63,10 @@ const AutoReloadProvider: FC<PropsWithChildren<AutoReloadProviderProps>> = ({
         const currentDate = new Date().toDateString();
         if (lastReloadDateRef.current !== currentDate) {
           lastReloadDateRef.current = currentDate;
-          console.log(`Автоматическая перезагрузка страницы в ${reloadTime}`);
+
           window.location.reload();
         }
       }, timeUntilReload);
-
-      console.log(
-        `Автоперезагрузка запланирована на ${targetTime.toLocaleString()}`,
-      );
     };
 
     // Запускаем планировщик
@@ -90,7 +81,6 @@ const AutoReloadProvider: FC<PropsWithChildren<AutoReloadProviderProps>> = ({
         const today = now.toDateString();
         if (lastReloadDateRef.current !== today) {
           lastReloadDateRef.current = today;
-          console.log(`Автоматическая перезагрузка страницы в ${reloadTime}`);
           window.location.reload();
         }
       }

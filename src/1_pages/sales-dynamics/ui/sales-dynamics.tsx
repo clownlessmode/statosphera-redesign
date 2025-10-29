@@ -32,10 +32,13 @@ import {
 import { Skeleton } from "@shared/ui/skeleton";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { cn } from "@shared/lib/utils";
+import { SalesDynamicsJoyride } from "./sales-dynamics-joyride";
+import { SalesDynamicsTest } from "./sales-dynamics-test";
 
 const SalesDynamics: FC = () => {
   // где-то вверху компонента
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showTest, setShowTest] = useState(false);
 
   // мемоизированный отфильтрованный массив
   const isMobile = useIsMobile();
@@ -207,23 +210,53 @@ const SalesDynamics: FC = () => {
 
   const isCompleted = !!table && !!total && !!graph && !!secondGraph;
   const isAllLoading = !table || !total || !graph || !secondGraph;
+
+  const handleTestComplete = () => {
+    setShowTest(false);
+  };
+
+  const handleTestRetry = () => {
+    setShowTest(true);
+  };
+
+  const handleTourComplete = () => {
+    // Тур завершен, но не запускаем тест автоматически
+    console.log("Tour completed");
+  };
+
+  if (showTest) {
+    return (
+      <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
+        <div className="flex justify-center items-center h-full">
+          <SalesDynamicsTest
+            onComplete={handleTestComplete}
+            onRetry={handleTestRetry}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <div className="bg-muted md:max-h-screen w-full p-2 flex flex-col gap-2">
+    <SalesDynamicsJoyride onTourComplete={handleTourComplete}>
+      <div
+        className="bg-muted md:max-h-screen w-full p-2 flex flex-col gap-2"
+        data-testid="sales-dynamics-page"
+      >
         <Header
           title="Динамика продаж"
           actions={{
             left: !isMobile && (
               <div className={cn("flex flex-row gap-2")}>
-                <DaysFilter />
-                <GraphDate />
-                <ShopsFilter />
-                <Lfl />
+                <DaysFilter data-testid="days-filter" />
+                <GraphDate data-testid="graph-date-filter" />
+                <ShopsFilter data-testid="shops-filter" />
+                <Lfl data-testid="lfl-filter" />
               </div>
             ),
             right: !isMobile && (
               <div className="flex flex-row gap-2">
-                <DownloadSalesDynamics />
+                <DownloadSalesDynamics data-testid="download-button" />
               </div>
             ),
           }}
@@ -235,17 +268,18 @@ const SalesDynamics: FC = () => {
               <div className="flex flex-col gap-2 h-full w-full">
                 {isMobile && (
                   <div className="flex flex-row gap-2 justify-between">
-                    <DaysFilter />
-                    <GraphDate />
-                    <ShopsFilter />
-                    <Lfl />
-                    <DownloadSalesDynamics />
+                    <DaysFilter data-testid="days-filter-mobile" />
+                    <GraphDate data-testid="graph-date-filter-mobile" />
+                    <ShopsFilter data-testid="shops-filter-mobile" />
+                    <Lfl data-testid="lfl-filter-mobile" />
+                    <DownloadSalesDynamics data-testid="download-button-mobile" />
                   </div>
                 )}
-                <SalesSelect index={1} />
+                <SalesSelect index={1} data-testid="first-graph-select" />
                 {isCompleted && (
                   <StackedLine
                     mirror={1}
+                    data-testid="first-graph"
                     option={{
                       title: {
                         text: first.label,
@@ -274,10 +308,11 @@ const SalesDynamics: FC = () => {
             {isAllLoading && <Skeleton className="w-full h-full" />}
             {!isAllLoading && !isMobile && (
               <div className="flex flex-col gap-2 h-full w-full">
-                <SalesSelect index={2} />
+                <SalesSelect index={2} data-testid="second-graph-select" />
                 {isCompleted && (
                   <StackedLine
                     mirror={1}
+                    data-testid="second-graph"
                     option={{
                       title: {
                         text: second.label,
@@ -309,6 +344,7 @@ const SalesDynamics: FC = () => {
               {isMobile ? (
                 <div className="flex flex-row">
                   <Input
+                    data-testid="search-input-mobile"
                     placeholder="Поиск по магазину"
                     className="w-full! min-w-0"
                     value={searchTerm}
@@ -317,10 +353,12 @@ const SalesDynamics: FC = () => {
 
                   <AddIndicators
                     defaultValues={defaultValues.indicators_and_groups}
+                    data-testid="add-indicators-mobile"
                   />
                 </div>
               ) : (
                 <Input
+                  data-testid="search-input"
                   placeholder="Поиск по магазину"
                   className="w-full! min-w-0"
                   value={searchTerm}
@@ -333,7 +371,11 @@ const SalesDynamics: FC = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <DialogTrigger asChild>
-                          <Button className="max-md:w-full" variant="outline">
+                          <Button
+                            className="max-md:w-full"
+                            variant="outline"
+                            data-testid="selected-stores-button"
+                          >
                             <Store /> Выбранные магазины: {selectedRows.length}
                           </Button>
                         </DialogTrigger>
@@ -348,7 +390,7 @@ const SalesDynamics: FC = () => {
                       )}
                     </Tooltip>
                   </TooltipProvider>
-                  <DialogContent>
+                  <DialogContent data-testid="selected-stores-modal">
                     <div className="flex flex-col gap-2 ">
                       {selectedRows.map((row) => (
                         <div
@@ -375,6 +417,7 @@ const SalesDynamics: FC = () => {
               {!isMobile && (
                 <AddIndicators
                   defaultValues={defaultValues.indicators_and_groups}
+                  data-testid="add-indicators"
                 />
               )}
             </div>
@@ -390,12 +433,13 @@ const SalesDynamics: FC = () => {
                 data={filteredTable as any}
                 totalData={total as any}
                 columnDefs={columnDefs}
+                data-testid="data-table"
               />
             )}
           </div>
         </div>
       </div>
-    </>
+    </SalesDynamicsJoyride>
   );
 };
 

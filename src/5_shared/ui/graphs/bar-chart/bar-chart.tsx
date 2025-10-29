@@ -2,6 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
 
 import { useGraphColors } from "@shared/hooks/use-graph-colors";
+import { cn } from "@shared/lib/utils";
 
 type BarChartProps = {
   xAxisData: string[];
@@ -9,6 +10,7 @@ type BarChartProps = {
   tooltipData?: string[];
   title?: string;
   show?: boolean;
+  className?: string;
 };
 
 export const BarChart = ({
@@ -17,6 +19,7 @@ export const BarChart = ({
   tooltipData,
   title,
   show = true,
+  className,
 }: BarChartProps) => {
   const colors = useGraphColors();
 
@@ -124,7 +127,7 @@ export const BarChart = ({
   };
 
   return (
-    <div className="w-full h-full">
+    <div className={cn("w-full h-full", className)}>
       <ReactECharts
         option={option}
         style={{ height: "100%", width: "100%" }}

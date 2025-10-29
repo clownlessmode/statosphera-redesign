@@ -33,6 +33,7 @@ const CurrentRevenue = ({
             "w-full h-full gap-1 flex flex-col justify-between bg-primary py-2 text-primary-foreground",
             tv && "py-2",
           )}
+          data-testid="month-revenue-widget"
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">

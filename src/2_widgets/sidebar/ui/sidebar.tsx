@@ -15,6 +15,7 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Store,
+  Vote,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -112,6 +113,13 @@ const Sidebar = ({
         url: ROUTES_PATH.GRILL,
         icon: Ham,
       },
+      {
+        title: "Предложения",
+        url: ROUTES_PATH.DEMOCRACY,
+        disabled: true,
+        allowedRoles: [ROLES.ADMIN],
+        icon: Vote,
+      },
 
       {
         title: "Админ панель",
@@ -121,6 +129,7 @@ const Sidebar = ({
         children: [
           { title: "Дайджесты", url: ROUTES_PATH.ADMIN_DIGESTS },
           { title: "Уведомления", url: ROUTES_PATH.ADMIN_NOTIFICATIONS },
+          { title: "Роли голосования", url: ROUTES_PATH.ADMIN_ROLES },
         ],
       },
       {
@@ -142,7 +151,7 @@ const Sidebar = ({
         title: "Обучение",
         url: ROUTES_PATH.LESSONS,
         icon: BookOpenIcon,
-        disabled: true,
+        disabled: false,
       },
       {
         title: "Дорожка карта",

@@ -24,10 +24,12 @@ import { Loyalty } from "@pages/loyalty";
 
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { AdminDigests } from "@pages/admin/admin-digests";
+import { AdminRolesPage } from "@pages/admin/admin-roles";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
 import { Rfm } from "@pages/rfm/ui/rfm";
 import { Settings } from "@pages/settings";
+import { DemocracyPage } from "@pages/democracy";
 
 // Заглушка для IM компонента
 const IM = () => <div>Интернет-магазин (в разработке)</div>;
@@ -48,6 +50,7 @@ export const ROUTES_PATH = {
   DASHBOARD: "/",
   SETTINGS: "/settings",
   NOTIFICATIONS: "/notifications",
+  DEMOCRACY: "/democracy",
 
   // Тренировка
   LESSONS: "/lessons",
@@ -122,6 +125,13 @@ export const ROUTES: RouteConfig[] = [
     element: <AdminDigests />,
     layout: Sidebar,
   },
+  {
+    path: ROUTES_PATH.ADMIN_ROLES,
+    variant: "private",
+    allowedRoles: [ROLES.ADMIN],
+    element: <AdminRolesPage />,
+    layout: Sidebar,
+  },
   // Авторизация
   {
     path: ROUTES_PATH.LOGIN,
@@ -168,6 +178,13 @@ export const ROUTES: RouteConfig[] = [
     element: <Notifications />,
     layout: Sidebar,
     label: "Уведомления",
+  },
+  {
+    path: ROUTES_PATH.DEMOCRACY,
+    variant: "private",
+    element: <DemocracyPage />,
+    layout: Sidebar,
+    label: "Предложения",
   },
   {
     path: ROUTES_PATH.LESSONS,

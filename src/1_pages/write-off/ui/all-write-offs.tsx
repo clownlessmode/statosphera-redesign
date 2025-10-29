@@ -1070,8 +1070,6 @@ export const AllWriteOffs = ({
   // Обработчик изменения сортировки
   const handleSortChange = useCallback(
     async (sortInfo: { sort: "asc" | "desc"; colId: string }) => {
-      console.log("handleSortChange called with:", sortInfo);
-      console.log("Current tab:", tab);
       setCurrentSort(sortInfo);
 
       // Получаем текущий payload и обновляем сортировку
@@ -1085,17 +1083,12 @@ export const AllWriteOffs = ({
         },
       };
 
-      console.log("Updated payload:", updatedPayload);
-
       try {
-        console.log("Making table request with sort...");
         // Обновляем таблицу с новой сортировкой в зависимости от таба
         let tableRes;
         if (tab === "write-off-equip") {
-          console.log("Using getEquipmentTable for equipment tab");
           tableRes = await getEquipmentTable(updatedPayload);
         } else {
-          console.log("Using getTable for write-off tab");
           tableRes = await getTable(updatedPayload);
         }
 
@@ -1104,7 +1097,6 @@ export const AllWriteOffs = ({
           setTable(tableRes);
         }
 
-        console.log("Making total request with sort...");
         // Также обновляем total данные
         const totalRes = await getTotal(updatedPayload);
         if (totalRes) {

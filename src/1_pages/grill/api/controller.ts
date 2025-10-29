@@ -27,7 +27,6 @@ export const useGrillController = () => {
     { id: number; payload: { count: number } }
   >({
     mutationFn: (payload: { id: number; payload: { count: number } }) => {
-      console.log("Payload count", payload);
       return GrillService.addProductLeftover(payload.id, payload.payload);
     },
     onSuccess: () => {

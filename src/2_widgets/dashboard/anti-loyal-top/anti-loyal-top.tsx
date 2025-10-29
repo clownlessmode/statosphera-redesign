@@ -37,6 +37,7 @@ const AntiLoyalTop = ({ isLoading, data, tv }: AntiLoyalTopProps) => {
             "w-full h-full flex flex-col max-md:mt-5",
             !tv && "md:h-[400px]",
           )}
+          data-testid="anti-loyalty-widget"
         >
           <CardHeader>
             <CardTitle className="text-center">

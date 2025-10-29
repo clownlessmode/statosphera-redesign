@@ -25,8 +25,6 @@ export const CombinedSubmitButton = () => {
     clearAll();
     const allData = getApiPayload();
 
-    console.log("Передача для получения номенклатуры", allData);
-
     const newParams = new URLSearchParams(searchParams);
     newParams.set("open", "false");
     setSearchParams(newParams);

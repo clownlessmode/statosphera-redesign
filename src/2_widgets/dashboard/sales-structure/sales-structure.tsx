@@ -16,7 +16,10 @@ const SalesStructure = ({ isLoading, data, tv }: SalesStructureProps) => {
       data.data &&
       data.data.xAxis &&
       data.data.series ? (
-        <Card className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}>
+        <Card
+          className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}
+          data-testid="sales-structure-widget"
+        >
           <CardHeader>
             <CardTitle className="text-center">
               Структура продаж за 6 месяцев

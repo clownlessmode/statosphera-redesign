@@ -41,7 +41,7 @@ export const AgeSalesGraph = ({
                     )
                     .join("<br/>");
                 }
-                return `${params.value}`;
+                return `${params.value.toLocaleString()}`;
               }}
               title={
                 isMobile

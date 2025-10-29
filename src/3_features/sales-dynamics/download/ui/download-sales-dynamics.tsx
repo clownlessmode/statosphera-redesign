@@ -40,7 +40,11 @@ const DownloadSalesDynamics = () => {
   };
 
   return (
-    <Button variant="outline" onClick={handleDownloadReport}>
+    <Button
+      variant="outline"
+      onClick={handleDownloadReport}
+      data-testid="download-button"
+    >
       <Download />
     </Button>
   );

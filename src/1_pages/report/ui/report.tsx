@@ -315,8 +315,6 @@ const Report: FC = () => {
 
   const handleRowClick = useCallback(
     (rowData: any) => {
-      console.log("Clicked row data:", rowData);
-
       // Проверяем, есть ли уже эта строка в выбранных
       const isRowSelected = selectedRows.some(
         (row) =>
@@ -437,8 +435,6 @@ const Report: FC = () => {
   // Обработчик клика на ячейку для установки показателя
   const handleCellClick = useCallback(
     (info: { rowData: any; field: string; value: any }) => {
-      console.log("Clicked cell:", info);
-
       // Проверяем что данные загружены
       if (!graph || !table || !total) {
         return;
@@ -648,7 +644,7 @@ const Report: FC = () => {
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
-  console.log(isGraphLoading, isTableLoading, isTotalLoading);
+
   return (
     <>
       <Sheet />

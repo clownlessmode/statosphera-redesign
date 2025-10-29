@@ -39,6 +39,7 @@ const TodayRevenue = ({
             "w-full h-full gap-1 flex flex-col justify-between",
             tv && "py-2",
           )}
+          data-testid="today-revenue-widget"
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">

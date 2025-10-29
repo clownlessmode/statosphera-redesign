@@ -1,8 +1,7 @@
 import { cn } from "@shared/lib/utils";
 import { Button } from "@shared/ui/button";
 import { Header } from "@widgets/header";
-import { Link } from "react-router";
-import { ROUTES_PATH } from "@app/router/routes";
+
 import { useState } from "react";
 import { DigestForm } from "./digest-form";
 import { DigestList } from "./digest-list";
@@ -39,13 +38,6 @@ export const AdminDigests = () => {
               >
                 Управление
               </Button>
-            </div>
-          ),
-          center: (
-            <div className="hidden md:flex flex-row gap-2">
-              <Link to={ROUTES_PATH.ADMIN_NOTIFICATIONS}>
-                <Button variant={"outline"}>Админ уведомления</Button>
-              </Link>
             </div>
           ),
         }}

@@ -50,16 +50,22 @@ const formatNumber = (value: number, shouldFormat: boolean): string => {
   }
 
   if (!shouldFormat) {
-    return value.toFixed(1);
+    return value.toLocaleString("ru-RU", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
   }
 
   // Если число целое, показываем без десятичных знаков
   if (Number.isInteger(value)) {
-    return value.toString();
+    return value.toLocaleString("ru-RU");
   }
 
   // Иначе показываем с одним знаком после запятой
-  return value.toFixed(1);
+  return value.toLocaleString("ru-RU", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 };
 
 export const BarHorizontalChart = ({

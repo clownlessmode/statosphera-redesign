@@ -24,8 +24,9 @@ import { useSalesDynamicsIndicatorsController } from "../model/api/controller";
 import { Group, UpdateIndicatorsRequest } from "../model/api/types";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { Badge } from "@shared/ui/badge";
-import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useTourState } from "@entities/lessons";
 import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks";
 
 interface Props {
   defaultValues: string[];
@@ -49,6 +50,7 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
   const { updateValues } = useSalesDynamicsFiltersStore();
   const isMobile = useIsMobile();
   useSalesDynamicsFiltersStore();
+  const isTourActive = useTourState();
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { indicators_and_groups: defaultValues },
@@ -76,14 +78,23 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
     updateValues(data.indicators_and_groups);
   };
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={!isTourActive}>
       <DialogTrigger asChild>
-        <Button className="w-fit">
+        <Button className="w-fit" data-testid="add-indicators">
           <Plus className="w-4 h-4" />{" "}
           {!isMobile && "Добавить группы и показатели"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent
+        className="p-0 rounded-xl border-none"
+        data-testid="indicators-modal"
+        onInteractOutside={(e) => {
+          // Предотвращаем закрытие модалки при активном туре
+          if (isTourActive) {
+            e.preventDefault();
+          }
+        }}
+      >
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle className="flex flex-row items-center">

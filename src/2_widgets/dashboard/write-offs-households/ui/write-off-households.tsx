@@ -41,6 +41,7 @@ const WriteOffHouseholds = ({
             "w-full h-[128px] gap-1 flex flex-col justify-between",
             tv && "h-full py-2",
           )}
+          data-testid="writeoffs-households-widget"
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">

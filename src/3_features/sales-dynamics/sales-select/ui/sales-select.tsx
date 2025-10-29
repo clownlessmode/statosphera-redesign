@@ -170,9 +170,13 @@ export const useSalesSelectStore = create<SalesSelectStore>((set) => ({
 
 interface SalesSelectProps {
   index: 1 | 2;
+  "data-testid"?: string;
 }
 
-export const SalesSelect: FC<SalesSelectProps> = ({ index }) => {
+export const SalesSelect: FC<SalesSelectProps> = ({
+  index,
+  "data-testid": dataTestId,
+}) => {
   const setOption =
     index === 1
       ? useSalesSelectStore((state) => state.setFirst)
@@ -186,7 +190,7 @@ export const SalesSelect: FC<SalesSelectProps> = ({ index }) => {
         setOption({ value, label: found?.label || value });
       }}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="w-full" data-testid={dataTestId}>
         <SelectValue placeholder="Финансовый показатель" />
       </SelectTrigger>
       <SelectContent>

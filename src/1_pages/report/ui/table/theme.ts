@@ -89,8 +89,7 @@ function hslToHex(hsl: string): string {
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
-export function getAgGridTheme(isLight: boolean): Theme {
-  console.log("isLight:", isLight);
+export function getAgGridTheme(): Theme {
   // Получаем базовые цвета из CSS переменных
   const background = getCSSVariableAsHex("--background");
   const foreground = getCSSVariableAsHex("--foreground");

@@ -3,7 +3,7 @@ import Spinner from "@shared/ui/spinner";
 
 export const SummarySkeleton = () => {
   return (
-    <Card className="animate-pulse h-full flex justify-center items-center ">
+    <Card className="animate-pulse h-[450px] flex justify-center items-center ">
       <Spinner />
     </Card>
   );

@@ -1,106 +1,71 @@
 import { Header } from "@widgets/header";
 import {
   LessonCard,
-  LESSONS_MOCK,
-  useLessonTour,
-  getLessonTour,
-  useLessonProgress,
+  useLessons,
   Lesson,
+  TestComponent,
+  TestResultsComponent,
 } from "@entities/lessons";
 import { LessonCardSkeleton } from "@entities/lessons/ui/lesson-card-skeleton";
 import { useNavigate } from "react-router";
-import { useCallback, useMemo } from "react";
+import { useState } from "react";
+import { TestResult } from "@entities/lessons";
 
 const Lessons = () => {
   const isLoading = false;
+  const { lessons, completeTest, resetProgress } = useLessons();
   const navigate = useNavigate();
-  const { startTour } = useLessonTour();
-  const { getProgressPercentage, isLessonCompleted, progressData } =
-    useLessonProgress();
 
-  // Фильтруем тестовые уроки и обновляем прогресс из localStorage
-  const visibleLessons = useMemo(() => {
-    console.log("📊 Загружаем страницу уроков...");
-    return LESSONS_MOCK.filter((lesson) => !lesson.isTest).map((lesson) => {
-      const progressPercentage = getProgressPercentage(lesson.id.toString());
-      const completed = isLessonCompleted(lesson.id.toString());
-
-      console.log(
-        `Урок "${lesson.title}": отображается ${progressPercentage}%`,
-      );
-
-      return {
-        ...lesson,
-        progress: progressPercentage,
-        completed: completed,
-      };
-    });
-  }, [getProgressPercentage, isLessonCompleted, progressData]);
-
-  const handleStartLesson = useCallback(
-    (lesson: Lesson) => {
-      const tour = getLessonTour(lesson.id);
-      if (!tour) {
-        console.warn(`Урок ${lesson.id} не найден в конфигурации туров`);
-        return;
-      }
-
-      // Если есть целевой путь, переходим на него
-      if (lesson.targetPath) {
-        navigate(lesson.targetPath);
-        // Даем время на загрузку страницы
-        setTimeout(() => {
-          startTour({
-            lessonId: lesson.id.toString(),
-            steps: tour.steps,
-            onComplete: () => {
-              console.log("🚀 onComplete вызван в lessons.tsx!");
-              // Прогресс автоматически обновляется в useLessonTour
-              // Возвращаемся на страницу уроков
-              console.log("🚀 Переходим на /lessons...");
-              navigate("/lessons");
-              console.log("🚀 navigate выполнен");
-            },
-            onDestroy: () => {
-              console.log("🚀 onDestroy вызван в lessons.tsx!");
-              // Прогресс автоматически сохраняется в useLessonTour
-              // Возвращаемся на страницу уроков
-              console.log("🚀 Переходим на /lessons через onDestroy...");
-              navigate("/lessons");
-              console.log("🚀 navigate выполнен через onDestroy");
-            },
-          });
-        }, 500);
-      } else {
-        // Запускаем тур на текущей странице
-        startTour({
-          lessonId: lesson.id.toString(),
-          steps: tour.steps,
-          onComplete: () => {
-            console.log("🚀 onComplete вызван в lessons.tsx (без targetPath)!");
-            // Прогресс автоматически обновляется в useLessonTour
-            // Возвращаемся на страницу уроков
-            console.log("🚀 Переходим на /lessons (без targetPath)...");
-            navigate("/lessons");
-            console.log("🚀 navigate выполнен (без targetPath)");
-          },
-          onDestroy: () => {
-            console.log("🚀 onDestroy вызван в lessons.tsx (без targetPath)!");
-            // Прогресс автоматически сохраняется в useLessonTour
-            // Возвращаемся на страницу уроков
-            console.log(
-              "🚀 Переходим на /lessons через onDestroy (без targetPath)...",
-            );
-            navigate("/lessons");
-            console.log(
-              "🚀 navigate выполнен через onDestroy (без targetPath)",
-            );
-          },
-        });
-      }
-    },
-    [navigate, startTour],
+  // Состояние для тестов
+  const [activeTestLessonId, setActiveTestLessonId] = useState<number | null>(
+    null,
   );
+  const [testResult, setTestResult] = useState<TestResult | null>(null);
+
+  const handleStartTour = (lesson: Lesson) => {
+    // Переходим на страницу урока с параметром для автозапуска тура
+    const targetPath = lesson.targetPath || "/";
+    navigate(`${targetPath}?fromLesson=true`);
+  };
+
+  const handleStartTest = (lesson: Lesson) => {
+    if (lesson.testId) {
+      setActiveTestLessonId(lesson.id);
+    }
+  };
+
+  const handleTestComplete = (result: TestResult) => {
+    setTestResult(result);
+    setActiveTestLessonId(null);
+
+    // Сбрасываем прогресс только если тест НЕ пройден
+    if (!result.passed) {
+      resetProgress(result.testId);
+    }
+
+    // Записываем прохождение теста только если тест пройден
+    if (result.passed) {
+      completeTest(result.testId);
+    }
+  };
+
+  const handleTestClose = () => {
+    setActiveTestLessonId(null);
+  };
+
+  const handleTestResultsClose = () => {
+    setTestResult(null);
+  };
+
+  const handleRetakeTest = () => {
+    setTestResult(null);
+    // Находим урок по testId и запускаем тур с самого начала
+    const lesson = lessons.find((l) => l.testId === testResult?.testId);
+    if (lesson) {
+      // Запускаем тур с самого начала
+      handleStartTour(lesson);
+    }
+  };
 
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
@@ -111,14 +76,37 @@ const Lessons = () => {
           ? Array.from({ length: 12 }).map((_, index) => (
               <LessonCardSkeleton key={index} />
             ))
-          : visibleLessons.map((lesson, index) => (
-              <LessonCard
-                key={index}
-                lesson={lesson}
-                onStartLesson={handleStartLesson}
-              />
-            ))}
+          : lessons.map((lesson) => {
+              return (
+                <LessonCard
+                  key={lesson.id}
+                  lesson={lesson}
+                  onStartLesson={() => {}}
+                  onStartTest={handleStartTest}
+                  onStartTour={handleStartTour}
+                  onProgressChange={() => {}}
+                />
+              );
+            })}
       </div>
+
+      {/* Модалка теста */}
+      {activeTestLessonId && (
+        <TestComponent
+          lessonId={activeTestLessonId}
+          onTestComplete={handleTestComplete}
+          onTestClose={handleTestClose}
+        />
+      )}
+
+      {/* Модалка результатов теста */}
+      {testResult && (
+        <TestResultsComponent
+          result={testResult}
+          onRetake={handleRetakeTest}
+          onClose={handleTestResultsClose}
+        />
+      )}
     </div>
   );
 };
