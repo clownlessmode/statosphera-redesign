@@ -27,6 +27,7 @@ import { AdminDigests } from "@pages/admin/admin-digests";
 import { AdminRolesPage } from "@pages/admin/admin-roles";
 import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
+import { Rfm } from "@pages/rfm/ui/rfm";
 import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
@@ -77,6 +78,7 @@ export const ROUTES_PATH = {
   ROADMAP: "/roadmap",
   PRODUCTS: "/products",
   LOYALTY: "/loyalty",
+  RFM: "/rfm",
   GRILL: "/grill",
   IM: "/im",
 
@@ -85,9 +87,6 @@ export const ROUTES_PATH = {
 
   // Сводная таблица
   SUMMARY: "/summary",
-
-  // Дайджесты
-  RFM: "/rfm",
 
   // Служебные страницы
   NOT_FOUND: "*",
@@ -286,7 +285,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.RFM,
     variant: "private",
-    element: <Loyalty />,
+    element: <Rfm />,
     layout: Sidebar,
     label: "РФМ",
   },

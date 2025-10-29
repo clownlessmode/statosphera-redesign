@@ -13,6 +13,10 @@ type SeriesItem = {
 type StackedBarChartProps = {
   xAxis: string[]; // Месяцы
   series: SeriesItem[]; // Сегменты (группы)
+  labelData?: {
+    show: boolean;
+    formatter?: string;
+  };
   isLoading?: boolean;
   title?: string;
 };
@@ -20,6 +24,10 @@ type StackedBarChartProps = {
 export const StackedBarChart = ({
   xAxis,
   series,
+  labelData = {
+    show: true,
+    formatter: "{c}%",
+  },
   isLoading = false,
   title,
 }: StackedBarChartProps) => {
@@ -27,7 +35,6 @@ export const StackedBarChart = ({
   const option: EChartsOption = useMemo(
     () => ({
       backgroundColor: "transparent",
-
       title: title
         ? {
             text: title,
@@ -56,9 +63,9 @@ export const StackedBarChart = ({
       },
       grid: {
         top: 80,
-        left: "0",
-        right: "0",
-        bottom: "0",
+        left: 10,
+        right: 10,
+        bottom: 0,
         containLabel: true,
       },
       xAxis: {
@@ -79,14 +86,14 @@ export const StackedBarChart = ({
         type: "bar",
         stack: "total",
         label: {
-          show: true,
+          show: labelData.show,
           position: "inside",
-          formatter: "{c}%",
+          formatter: labelData.formatter,
           color: colors.text,
           fontSize: 12,
         },
         itemStyle: {
-          borderRadius: [8, 8, 8, 8],
+          borderRadius: [4, 4, 4, 4],
         },
         barMaxWidth: 40,
         emphasis: { focus: "series" },

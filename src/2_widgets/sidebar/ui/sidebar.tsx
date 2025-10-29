@@ -3,7 +3,6 @@ import {
   BookOpenIcon,
   ChartBarStacked,
   ChartLine,
-  ChartPie,
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
@@ -140,12 +139,6 @@ const Sidebar = ({
         url: ROUTES_PATH.IM,
         icon: ShoppingBag,
         disabled: false,
-      },
-      {
-        title: "ABC анализ",
-        url: "#",
-        icon: ChartPie,
-        disabled: true,
       },
       {
         title: "R&D",

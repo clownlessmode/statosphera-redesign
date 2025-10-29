@@ -1,251 +1,258 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
 import { ApiError } from "@shared/api/types";
-import { LoyaltyService } from "./service";
+import { RfmService } from "./service";
 import {
-  AvarageCheckResponse,
-  BonusesResponse,
-  GraphResponse,
-  NoSales30DaysUserResponse,
+  AllGistogramResponse,
+  AllStackedGistogramResponse,
+  ComparisonTwoRfmResponse,
+  DrilldownRfmDayWeekTimeResponse,
+  DrilldownRfmRegionCityStoreResponse,
+  HeatmapMigrationPerSegmentResponse,
+  MainAllDataSegmentResponse,
+  MainDataSegmentResponse,
+  NameSegmentResponse,
+  RadarCountUniqGroupAndProductResponse,
   RequestDto,
-  TopGroupResponse,
-  TopProductRubResponse,
-  TopStoreLoyalResponse,
-  UniqueGraphResponse,
-  AppLoyalGraphResponse,
-  TopActionsResponse,
-  LoyalCard2Response,
-  AgeGroupsGraphResponse,
-  AgeCircleGraphResponse,
-  AgeSalesGraphResponse,
-  AvarageCheckAgeGroupGraphResponse,
-  RevenueGroupsGraphResponse,
+  RequestDtoComparison,
+  SankeyMigrationClientPerSegmentsResponse,
+  TreemapRfmOrderDeliveryResponse,
+  TreemapTopBonusesResponse,
+  TreemapTopGroupProductResponse,
 } from "../config";
 
-export const useLoyal = () => {
+export const useRfm = () => {
   const queryClient = useQueryClient();
 
-  const avarageCheck = useMutation<
-    AvarageCheckResponse[],
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getAvarageCheck(dto);
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      return response;
-    },
-  });
-
-  const noSales30DaysUser = useMutation<
-    NoSales30DaysUserResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getNoSales30DaysUser(dto);
-      queryClient.invalidateQueries({ queryKey: ["noSales30DaysUser"] });
-      return response;
-    },
-  });
-
-  const uniques = useQuery<number, ApiError>({
-    queryKey: ["uniques"],
+  const nameSegment = useQuery<NameSegmentResponse[], ApiError>({
+    queryKey: ["nameSegment"],
     queryFn: async () => {
-      const response = await LoyaltyService.getUniques();
+      const response = await RfmService.getNameSegment();
       return response;
     },
   });
 
-  const bonuses = useMutation<BonusesResponse[], ApiError, RequestDto>({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getBonuses(dto);
-      queryClient.invalidateQueries({ queryKey: ["bonuses"] });
-      return response;
-    },
-  });
-  const topGroups = useMutation<TopGroupResponse[], ApiError, RequestDto>({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getTopGroup(dto);
-      queryClient.invalidateQueries({ queryKey: ["topGroups"] });
-      return response;
-    },
-  });
-  const topProducts = useMutation<
-    TopProductRubResponse[],
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getTopProductRub(dto);
-      queryClient.invalidateQueries({ queryKey: ["topProducts"] });
-      return response;
-    },
-  });
-  const topProductsCount = useMutation<
-    TopProductRubResponse[],
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getTopProductCount(dto);
-      queryClient.invalidateQueries({ queryKey: ["topProductsCount"] });
+  const agePeriods = useQuery<string[], ApiError>({
+    queryKey: ["agePeriod"],
+    queryFn: async () => {
+      const response = await RfmService.getAgePeriod();
       return response;
     },
   });
 
-  const topStoreLoyal = useMutation<
-    TopStoreLoyalResponse[],
-    ApiError,
-    RequestDto
-  >({
+  const allGistogram = useMutation<AllGistogramResponse, ApiError, RequestDto>({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getTopStoreLoyal(dto);
-      queryClient.invalidateQueries({ queryKey: ["topStoreLoyal"] });
+      const response = await RfmService.getAllGistogram(dto);
+      queryClient.invalidateQueries({ queryKey: ["allGistogram"] });
       return response;
     },
   });
 
-  const bonusGraph = useMutation<
-    { graph: GraphResponse[] },
+  const allStackedGistogram = useMutation<
+    AllStackedGistogramResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getBonusGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["bonusGraph"] });
+      const response = await RfmService.getAllStackedGistogram(dto);
+      queryClient.invalidateQueries({ queryKey: ["allGistogram"] });
       return response;
     },
   });
 
-  const uniqueGraph = useMutation<UniqueGraphResponse, ApiError, RequestDto>({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getUniqueGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["uniqueGraph"] });
-      return response;
-    },
-  });
-  const appLoyalGraph = useMutation<
-    AppLoyalGraphResponse,
+  const drilldownRfmDayWeekTime = useMutation<
+    DrilldownRfmDayWeekTimeResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getAppLoyalGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["appLoyalGraph"] });
-      return response;
-    },
-  });
-  const topActions = useMutation<TopActionsResponse[], ApiError, RequestDto>({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getTopActions(dto);
-      queryClient.invalidateQueries({ queryKey: ["topActions"] });
-      return response;
-    },
-  });
-  const loyalCard2 = useMutation<LoyalCard2Response[], ApiError, RequestDto>({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getLoyalCard2(dto);
-      return response;
-    },
-  });
-  const ageGroupsGraph = useMutation<
-    AgeGroupsGraphResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getAgeGroupsGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["ageGroupsGraph"] });
-      return response;
-    },
-  });
-  const ageCircleGraph = useMutation<
-    AgeCircleGraphResponse,
-    ApiError,
-    RequestDto
-  >({
-    mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.getAgeCircleGraph(dto);
+      const response = await RfmService.getDrilldownRfmDayWeekTime(dto);
+      queryClient.invalidateQueries({ queryKey: ["drilldownRfmDayWeekTime"] });
       return response;
     },
   });
 
-  const ageSalesGraph = useMutation<
-    AgeSalesGraphResponse,
+  const drilldownTimeDayWeekRfm = useMutation<
+    DrilldownRfmDayWeekTimeResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.ageSalesGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["ageSalesGraph"] });
+      const response = await RfmService.getDrilldownTimeDayWeekRfm(dto);
+      queryClient.invalidateQueries({ queryKey: ["drilldownTimeDayWeekRfm"] });
       return response;
     },
   });
 
-  const averageCheckAgeGroupGraph = useMutation<
-    AvarageCheckAgeGroupGraphResponse,
+  const treemapTopGroupProduct = useMutation<
+    TreemapTopGroupProductResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.averageCheckAgeGroupGraph(dto);
+      const response = await RfmService.getTreemapTopGroupProduct(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapTopGroupProduct"] });
+      return response;
+    },
+  });
+
+  const treemapTopBonuses = useMutation<
+    TreemapTopBonusesResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getTreemapTopBonuses(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapTopBonuses"] });
+      return response;
+    },
+  });
+
+  const radarCountUniqGroupAndProduct = useMutation<
+    RadarCountUniqGroupAndProductResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getRadarCountUniqGroupAndProduct(dto);
       queryClient.invalidateQueries({
-        queryKey: ["averageCheckAgeGroupGraph"],
+        queryKey: ["radarCountUniqGroupAndProduct"],
       });
       return response;
     },
   });
 
-  const revenueGroupsGraph = useMutation<
-    RevenueGroupsGraphResponse,
+  const treemapRfmOrderDelivery = useMutation<
+    TreemapRfmOrderDeliveryResponse,
     ApiError,
     RequestDto
   >({
     mutationFn: async (dto: RequestDto) => {
-      const response = await LoyaltyService.revenueGroupsGraph(dto);
-      queryClient.invalidateQueries({ queryKey: ["revenueGroupsGraph"] });
+      const response = await RfmService.getTreemapRfmOrderDelivery(dto);
+      queryClient.invalidateQueries({ queryKey: ["treemapRfmOrderDelivery"] });
+      return response;
+    },
+  });
+
+  const drilldownRfmRegionCityStore = useMutation<
+    DrilldownRfmRegionCityStoreResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getDrilldownRfmRegionCityStore(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["drilldownRfmRegionCityStore"],
+      });
+      return response;
+    },
+  });
+
+  const sankeyMigrationClientPerSegments = useMutation<
+    SankeyMigrationClientPerSegmentsResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response =
+        await RfmService.getSankeyMigrationClientPerSegments(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["sankeyMigrationClientPerSegments"],
+      });
+      return response;
+    },
+  });
+
+  const heatmapMigrationPerSegment = useMutation<
+    HeatmapMigrationPerSegmentResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getHeatmapMigrationPerSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["heatmapMigrationPerSegment"],
+      });
+      return response;
+    },
+  });
+
+  const mainDataSegment = useMutation<
+    MainDataSegmentResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getMainDataSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["mainDataSegment"],
+      });
+      return response;
+    },
+  });
+
+  const mainAllDataSegment = useMutation<
+    MainAllDataSegmentResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await RfmService.getMainAllDataSegment(dto);
+      queryClient.invalidateQueries({
+        queryKey: ["mainAllDataSegment"],
+      });
+      return response;
+    },
+  });
+
+  const comparisonTwoRfm = useMutation<
+    ComparisonTwoRfmResponse,
+    ApiError,
+    RequestDtoComparison
+  >({
+    mutationFn: async (dto: RequestDtoComparison) => {
+      const response = await RfmService.getComparisonTwoRfm(dto);
+      queryClient.invalidateQueries({ queryKey: ["comparisonTwoRfm"] });
       return response;
     },
   });
 
   return {
-    getAgeCircleGraph: ageCircleGraph.mutateAsync,
-    isAgeCircleGraphLoading: ageCircleGraph.isPending,
-    getUniqueGraph: uniqueGraph.mutateAsync,
-    isUniqueGraphLoading: uniqueGraph.isPending,
-    getBonusGraph: bonusGraph.mutateAsync,
-    isBonusGraphLoading: bonusGraph.isPending,
-    getTopGroups: topGroups.mutateAsync,
-    isTopGroupsLoading: topGroups.isPending,
-    getAvarageCheck: avarageCheck.mutateAsync,
-    isAvarageCheckLoading: avarageCheck.isPending,
-    getNoSales30DaysUser: noSales30DaysUser.mutateAsync,
-    isNoSales30DaysUserLoading: noSales30DaysUser.isPending,
-    getUniques: uniques.refetch,
-    isUniquesLoading: uniques.isPending,
-    uniques: uniques.data,
-    getBonuses: bonuses.mutateAsync,
-    isBonusesLoading: bonuses.isPending,
-    getTopProducts: topProducts.mutateAsync,
-    isTopProductsLoading: topProducts.isPending,
-    getTopProductsCount: topProductsCount.mutateAsync,
-    isTopProductsCountLoading: topProductsCount.isPending,
-    getTopStoreLoyal: topStoreLoyal.mutateAsync,
-    isTopStoreLoyalLoading: topStoreLoyal.isPending,
-    getAppLoyalGraph: appLoyalGraph.mutateAsync,
-    isAppLoyalGraphLoading: appLoyalGraph.isPending,
-    getTopActions: topActions.mutateAsync,
-    isTopActionsLoading: topActions.isPending,
-    getLoyalCard2: loyalCard2.mutateAsync,
-    isLoyalCard2Loading: loyalCard2.isPending,
-    getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
-    isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
-    getAgeSalesGraph: ageSalesGraph.mutateAsync,
-    isAgeSalesGraphLoading: ageSalesGraph.isPending,
-    getAverageCheckAgeGroupGraph: averageCheckAgeGroupGraph.mutateAsync,
-    isAverageCheckAgeGroupGraphLoading: averageCheckAgeGroupGraph.isPending,
-    getRevenueGroupsGraph: revenueGroupsGraph.mutateAsync,
-    isRevenueGroupsGraphLoading: revenueGroupsGraph.isPending,
+    getNameSegment: nameSegment.refetch,
+    isNameSegmentLoading: nameSegment.isPending,
+    nameSegment: nameSegment.data,
+    getAgePeriods: agePeriods.refetch,
+    isAgePeriodsLoading: agePeriods.isPending,
+    agePeriods: agePeriods.data,
+    getAllGistogram: allGistogram.mutateAsync,
+    isAllGistogramLoading: allGistogram.isPending,
+    getAllStackedGistogram: allStackedGistogram.mutateAsync,
+    isAllStackedGistogramLoading: allStackedGistogram.isPending,
+    getDrilldownRfmDayWeekTime: drilldownRfmDayWeekTime.mutateAsync,
+    isDrilldownRfmDayWeekTimeLoading: drilldownRfmDayWeekTime.isPending,
+    getDrilldownTimeDayWeekRfm: drilldownTimeDayWeekRfm.mutateAsync,
+    isDrilldownTimeDayWeekRfmLoading: drilldownTimeDayWeekRfm.isPending,
+    getTreemapTopGroupProduct: treemapTopGroupProduct.mutateAsync,
+    isTreemapTopGroupProductLoading: treemapTopGroupProduct.isPending,
+    getTreemapTopBonuses: treemapTopBonuses.mutateAsync,
+    isTreemapTopBonusesLoading: treemapTopBonuses.isPending,
+    getRadarCountUniqGroupAndProduct: radarCountUniqGroupAndProduct.mutateAsync,
+    isRadarCountUniqGroupAndProductLoading:
+      radarCountUniqGroupAndProduct.isPending,
+    getTreemapRfmOrderDelivery: treemapRfmOrderDelivery.mutateAsync,
+    isTreemapRfmOrderDeliveryLoading: treemapRfmOrderDelivery.isPending,
+    getDrilldownRfmRegionCityStore: drilldownRfmRegionCityStore.mutateAsync,
+    isDrilldownRfmRegionCityStoreLoading: drilldownRfmRegionCityStore.isPending,
+    getSankeyMigrationClientPerSegments:
+      sankeyMigrationClientPerSegments.mutateAsync,
+    isSankeyMigrationClientPerSegmentsLoading:
+      sankeyMigrationClientPerSegments.isPending,
+    getHeatmapMigrationPerSegment: heatmapMigrationPerSegment.mutateAsync,
+    isHeatmapMigrationPerSegmentLoading: heatmapMigrationPerSegment.isPending,
+    getMainDataSegment: mainDataSegment.mutateAsync,
+    isMainDataSegmentLoading: mainDataSegment.isPending,
+    getMainAllDataSegment: mainAllDataSegment.mutateAsync,
+    isMainAllDataSegmentLoading: mainAllDataSegment.isPending,
+    getComparisonTwoRfm: comparisonTwoRfm.mutateAsync,
+    isComparisonTwoRfmLoading: comparisonTwoRfm.isPending,
   };
 };

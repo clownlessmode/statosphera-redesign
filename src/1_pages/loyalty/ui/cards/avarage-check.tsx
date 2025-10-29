@@ -61,7 +61,7 @@ export const AvarageCheck = ({
 
 const AvarageCheckSkeleton = () => {
   return (
-    <Card className=" w-[200px] !h-full flex flex-col justify-between grow min-h-[232px]">
+    <Card className="w-full md:w-[200px] !h-full flex flex-col justify-between grow min-h-[232px]">
       <CardContent className="gap-1 md:gap-2 flex flex-col h-full w-full">
         <Skeleton className="w-full h-6 bg-muted-foreground/50" />
         <Skeleton className="w-full h-4 bg-muted-foreground/50" />
