@@ -61,15 +61,17 @@ export const TopLoyalStoreCards = ({
       <List
         title="Топ 5 магазинов по лояльности"
         isLoading={isLoading}
+        suffix={" %"}
         options={top.map((store, index) => ({
           name: store.store,
-          price: `${store.appLoyalPercent} %`,
+          count: `${store.appLoyalPercent}`,
           index: index + 1,
         }))}
       />
       <List
         title="Ваша позиция"
         isLoading={isLoading}
+        suffix={" %"}
         options={my.map((store) => {
           const realIndex = topStoreLoyal.findIndex(
             (s) => s.id_store === store.id_store,
@@ -77,7 +79,7 @@ export const TopLoyalStoreCards = ({
           const isUserStore = session?.idStore?.includes(store.id_store);
           return {
             name: store.store,
-            price: `${store.appLoyalPercent} %`,
+            count: `${store.appLoyalPercent}`,
             index: realIndex + 1,
             isHighlighted: isUserStore,
           };
@@ -86,11 +88,12 @@ export const TopLoyalStoreCards = ({
       <List
         title="5 магазинов аутсайдеров по лояльности"
         isLoading={isLoading}
+        suffix={" %"}
         options={bottom.map((store, index) => {
           const indexFromEnd = topStoreLoyal.length - 5 + index + 1;
           return {
             name: store.store,
-            price: `${store.appLoyalPercent} %`,
+            count: `${store.appLoyalPercent}`,
             index: indexFromEnd,
           };
         })}

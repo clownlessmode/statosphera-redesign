@@ -29,10 +29,7 @@ import { Summary } from "@pages/summary";
 import { TV } from "@pages/tv";
 import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
-
-// Заглушка для IM компонента
-const IM = () => <div>Интернет-магазин (в разработке)</div>;
-// import { WriteOff } from "@pages/write-off";
+import { IM } from "@pages/im";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>

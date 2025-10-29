@@ -15,6 +15,7 @@ type BarChartMultiSeriesProps = {
   grid?: {
     bottom?: number;
   };
+  customColors?: string[];
 };
 
 export const BarChartMultiSeries = ({
@@ -23,6 +24,7 @@ export const BarChartMultiSeries = ({
   formatter,
   title,
   grid,
+  customColors,
 }: BarChartMultiSeriesProps) => {
   const colors = useGraphColors();
 
@@ -106,7 +108,7 @@ export const BarChartMultiSeries = ({
       emphasis: { focus: "series" },
       data: s.data,
       itemStyle: {
-        color: colors.series[idx % colors.series.length],
+        color: customColors?.[idx] || colors.series[idx % colors.series.length],
         borderRadius: 4,
       },
     })) as any,

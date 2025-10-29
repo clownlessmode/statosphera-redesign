@@ -346,25 +346,28 @@ export const Loyalty = () => {
           <List
             title="Топ 5 групп по выручке"
             isLoading={isTopGroupsLoading}
+            suffix={" ₽"}
             options={topGroups.map((group) => ({
               name: group.subSubGroups,
-              price: `${group.countSales.toLocaleString()}`,
+              count: `${group.countSales.toLocaleString()}`,
             }))}
           />
           <List
             title="Топ 5 товаров по выручке"
             isLoading={isTopProductsLoading}
+            suffix={" ₽"}
             options={topProducts.map((group) => ({
               name: group.product,
-              price: `${group.proceeds.toLocaleString()} ₽`,
+              count: `${group.proceeds.toLocaleString()}`,
             }))}
           />
           <List
             title="Топ 5 товаров по количеству продаж"
             isLoading={isTopProductsCountLoading}
+            suffix={" шт"}
             options={topProductsCount.map((group: any) => ({
               name: group.product,
-              price: `${group.countSales.toLocaleString()} шт`,
+              count: `${group.countSales.toLocaleString()}`,
             }))}
           />
         </div>

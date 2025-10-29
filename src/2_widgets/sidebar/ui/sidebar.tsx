@@ -7,7 +7,7 @@ import {
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
-  FileQuestion,
+  // FileQuestion,
   Ham,
   Heart,
   MapIcon,
@@ -36,6 +36,7 @@ import { ROLES } from "@shared/constants/roles";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+
 const Sidebar = ({
   children,
   ...props
@@ -68,15 +69,15 @@ const Sidebar = ({
         url: ROUTES_PATH.DIGESTS,
         icon: FileChartPieIcon,
       },
-      {
-        title: "Стандарты",
-        url:
-          session?.role === ROLES.SERVICE_MANAGER
-            ? ROUTES_PATH.DASHBOARD
-            : ROUTES_PATH.STANDARTS,
-        icon: FileQuestion,
-        disabled: session?.role === ROLES.SERVICE_MANAGER,
-      },
+      // {
+      //   title: "Стандарты",
+      //   url:
+      //     session?.role === ROLES.SERVICE_MANAGER
+      //       ? ROUTES_PATH.DASHBOARD
+      //       : ROUTES_PATH.STANDARTS,
+      //   icon: FileQuestion,
+      //   disabled: session?.role === ROLES.SERVICE_MANAGER,
+      // },
 
       {
         title: "Справочник магазинов",
@@ -135,10 +136,10 @@ const Sidebar = ({
         ],
       },
       {
-        title: "Прибыль ФРС",
-        url: "#",
+        title: "Интернет-магазин",
+        url: ROUTES_PATH.IM,
         icon: ShoppingBag,
-        disabled: true,
+        disabled: false,
       },
       {
         title: "ABC анализ",

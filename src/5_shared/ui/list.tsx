@@ -1,8 +1,9 @@
-import { ArrowBigUpDash } from "lucide-react";
+import { ArrowBigUpDash, ArrowLeftRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { FC, memo } from "react";
+import { FC, memo, useState } from "react";
 import { Skeleton } from "./skeleton";
 import { cn } from "@shared/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   title: string;
@@ -10,6 +11,7 @@ interface Props {
   arrows?: boolean;
   className?: string;
   tv?: boolean;
+  suffix?: string | ((count: number) => string); // Новый пропс для суффикса к count
   options?: {
     name: string;
     count?: number | string;
@@ -19,10 +21,36 @@ interface Props {
   }[];
 }
 export const List: FC<Props> = memo(
-  ({ options, title, isLoading, arrows, className, tv }) => {
+  ({ options, title, isLoading, arrows, className, tv, suffix }) => {
     // Оптимизация: ограничиваем количество отображаемых элементов для TV режима
     const displayOptions =
       tv && options && options.length > 10 ? options.slice(0, 10) : options;
+
+    // Состояние для отслеживания активного поля для каждого элемента (только count или price)
+    const [activeFields, setActiveFields] = useState<
+      Record<number, "count" | "price">
+    >({});
+
+    // Функция для переключения между count и price при наведении
+    const handleMouseEnter = (index: number) => {
+      setActiveFields((prev) => {
+        const current = prev[index] || "count";
+        const next = current === "count" ? "price" : "count";
+        return { ...prev, [index]: next };
+      });
+    };
+
+    // Функция для возврата к count при уходе мыши
+    const handleMouseLeave = (index: number) => {
+      setActiveFields((prev) => {
+        return { ...prev, [index]: "count" };
+      });
+    };
+
+    // Проверяем, есть ли count и price для переключения
+    const hasCountAndPrice = (option: any) => {
+      return option.count && option.price;
+    };
 
     return (
       <Card className={cn("w-full", className)}>
@@ -44,47 +72,73 @@ export const List: FC<Props> = memo(
               <Skeleton className="w-1/2 h-4" />
             </>
           ) : (
-            displayOptions?.map((option, arrayIndex) => (
-              <div
-                key={arrayIndex}
-                className={cn(
-                  "px-5 flex flex-row justify-between p-2 rounded-2xl gap-4",
-                  option.isHighlighted
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-background",
-                )}
-              >
-                <div className="flex flex-row gap-3 items-center px-2">
-                  <p
-                    className={cn(
-                      "text-base font-bold",
-                      option.isHighlighted
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {option.index !== undefined ? option.index : arrayIndex + 1}
-                  </p>
-                  {arrows && (
-                    <ArrowBigUpDash className="size-4 text-positive" />
+            displayOptions?.map((option, arrayIndex) => {
+              const isInteractive = hasCountAndPrice(option);
+              const activeField = activeFields[arrayIndex] || "count";
+
+              return (
+                <div
+                  key={arrayIndex}
+                  className={cn(
+                    "px-5 flex flex-row justify-between p-2 rounded-2xl gap-4",
+                    option.isHighlighted
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-background",
+                    isInteractive && "hover:bg-muted transition-colors",
                   )}
-                  <p className={cn("line-clamp-1", tv && "text-sm")}>
-                    {option.name}
-                  </p>
-                </div>
-                <div className="flex flex-row gap-1 items-center px-2">
-                  {option.count && <p>{option.count}М шт.</p>}
-                  <p
-                    className={cn(
-                      "text-base font-semibold text-nowrap",
-                      tv && "text-sm",
+                  onMouseEnter={() =>
+                    isInteractive && handleMouseEnter(arrayIndex)
+                  }
+                  onMouseLeave={() =>
+                    isInteractive && handleMouseLeave(arrayIndex)
+                  }
+                >
+                  <div className="flex flex-row gap-3 items-center px-2">
+                    <p
+                      className={cn(
+                        "text-base font-bold",
+                        option.isHighlighted
+                          ? "text-primary-foreground"
+                          : "text-muted-foreground",
+                      )}
+                    >
+                      {option.index !== undefined
+                        ? option.index
+                        : arrayIndex + 1}
+                    </p>
+                    {arrows && (
+                      <ArrowBigUpDash className="size-4 text-positive" />
                     )}
-                  >
-                    {option.price}
-                  </p>
+                    <p className={cn("line-clamp-1", tv && "text-sm")}>
+                      {option.name}
+                    </p>
+                  </div>
+                  <div className="flex flex-row gap-1 items-center px-2">
+                    <div className="flex items-center gap-2">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={activeField}
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-nowrap"
+                        >
+                          {activeField === "count" &&
+                            (typeof suffix === "function"
+                              ? suffix(Number(option.count))
+                              : `${option.count}${suffix || "М"}`)}
+                          {activeField === "price" && option.price}
+                        </motion.div>
+                      </AnimatePresence>
+                      {isInteractive && (
+                        <ArrowLeftRight className="size-4 text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </CardContent>
       </Card>

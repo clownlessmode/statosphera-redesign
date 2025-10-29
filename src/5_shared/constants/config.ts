@@ -1,10 +1,10 @@
-export const VERSION = "1.0.399-7ae18cc";
+export const VERSION = "1.0.401-71d1683";
 
 export const VERSION_INFO = {
-  version: "1.0.399-7ae18cc",
-  commitHash: "7ae18cc",
-  commitDate: "2025-10-21",
-  commitCount: "399",
+  version: "1.0.401-71d1683",
+  commitHash: "71d1683",
+  commitDate: "2025-10-22",
+  commitCount: "401",
   branch: "test",
-  buildDate: "2025-10-22",
+  buildDate: "2025-10-29",
 };
