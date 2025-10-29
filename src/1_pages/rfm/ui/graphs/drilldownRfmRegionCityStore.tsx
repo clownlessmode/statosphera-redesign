@@ -30,7 +30,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
         <CardTitle className="flex items-center justify-center text-lg font-semibold max-md:text-sm">
           Количество чеков по магазинам
           <Tooltip>
-            <TooltipTrigger className="ml-1" asChild>
+            <TooltipTrigger className="ml-1 max-md:hidden" asChild>
               <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
             </TooltipTrigger>
             <TooltipContent

@@ -27,7 +27,7 @@ export const DrilldownTimeDayWeekRfm: FC<Props> = ({ graph, isLoading }) => {
         <CardTitle className="flex items-center justify-center font-semibold max-md:text-sm">
           Количество чеков по сегментам
           <Tooltip>
-            <TooltipTrigger className="ml-1" asChild>
+            <TooltipTrigger className="ml-1 max-md:hidden" asChild>
               <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
             </TooltipTrigger>
             <TooltipContent
