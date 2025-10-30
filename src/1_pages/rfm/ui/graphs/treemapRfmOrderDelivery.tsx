@@ -61,7 +61,7 @@ export const TreemapRfmOrderDelivery: FC<Props> = ({ graph, isLoading }) => {
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
 
   return (
-    <Card className="h-[600px] col-span-2 gap-0">
+    <Card className="h-[600px] col-span-2 gap-0 overflow-visible">
       <CardHeader className="flex flex-row justify-center items-center gap-1 max-md:flex-col">
         <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Самые популярные способы заказа и доставки

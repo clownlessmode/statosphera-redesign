@@ -39,7 +39,7 @@ const DigestCard: FC<Props> = ({
           style={{
             backgroundImage: cover ? `url(${cover})` : "url(/digest/cover.png)",
           }}
-          className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
+          className="size-[150px] md:size-[190px] shrink-0 aspect-square bg-accent bg-no-repeat bg-center bg-cover"
         />
         <div className="flex flex-col gap-2 justify-between py-4 ">
           <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">

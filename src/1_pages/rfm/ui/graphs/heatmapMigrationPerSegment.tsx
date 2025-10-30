@@ -27,7 +27,7 @@ export const HeatmapMigrationPerSegment: FC<Props> = ({ graph, isLoading }) => {
   }
 
   return (
-    <Card className="h-[800px] col-span-2 gap-0 max-md:h-[600px]">
+    <Card className="h-[800px] col-span-2 gap-0 max-md:h-[600px] overflow-visible">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
         <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Тепловая карта
