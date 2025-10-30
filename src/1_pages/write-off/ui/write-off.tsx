@@ -26,14 +26,14 @@ export const WriteOff = () => {
                 <Link to={ROUTES_PATH.REPORT}>
                   <Button
                     variant="outline"
-                    className="border-b-0 rounded-b-none opacity-50"
+                    className="border-b-0! rounded-b-none! opacity-50"
                   >
                     {reportTab === "commerce" ? "Коммерческая" : "Чековая"}
                   </Button>
                 </Link>
                 <Button
                   variant="outline"
-                  className="border-b-0 rounded-b-none "
+                  className="border-b-0! rounded-b-none!"
                 >
                   {tab === "write-off" ? "Списания" : "Списания по поломкам"}
                 </Button>
@@ -47,14 +47,14 @@ export const WriteOff = () => {
               <Link to={ROUTES_PATH.REPORT} className="w-1/2">
                 <Button
                   variant="outline"
-                  className="border-0 border-b-1 border-r-1 rounded-none rounded-tl-3xl h-10 px-1 w-full opacity-50"
+                  className="border-0 border-b-1 border-r-1 rounded-none! rounded-tl-3xl! h-10 px-1 w-full opacity-50"
                 >
                   {reportTab === "commerce" ? "Коммерческая" : "Чековая"}
                 </Button>
               </Link>
               <Button
                 variant="outline"
-                className="border-0 rounded-none rounded-tr-3xl w-1/2 h-10"
+                className="border-0 rounded-none! rounded-tr-3xl! w-1/2 h-10"
               >
                 {tab === "write-off" ? "Списания" : "Списания по поломкам"}
               </Button>

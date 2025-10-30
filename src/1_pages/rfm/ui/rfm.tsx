@@ -295,12 +295,12 @@ export const Rfm = () => {
               <Link to={ROUTES_PATH.LOYALTY}>
                 <Button
                   variant="outline"
-                  className="border-b-0 rounded-b-none opacity-50"
+                  className="border-b-0! rounded-b-none! opacity-50"
                 >
                   Лояльность
                 </Button>
               </Link>
-              <Button variant="outline" className="border-b-0 rounded-b-none">
+              <Button variant="outline" className="border-b-0! rounded-b-none!">
                 RFM
               </Button>
               <Tooltip>
@@ -309,7 +309,7 @@ export const Rfm = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       ABC
                     </Button>
@@ -329,7 +329,7 @@ export const Rfm = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       Retention
                     </Button>
@@ -349,7 +349,7 @@ export const Rfm = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       Выгрузки
                     </Button>
@@ -369,7 +369,7 @@ export const Rfm = () => {
       />
       <div
         className={cn(
-          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0",
+          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:pb-18 max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0",
           appliedFilters?.data?.rfmList?.length === 0 &&
             !isMobile &&
             "justify-center",
@@ -379,19 +379,19 @@ export const Rfm = () => {
           <Link to={ROUTES_PATH.LOYALTY} className="w-1/2">
             <Button
               variant="outline"
-              className="border-0 border-b-1 border-r-1 rounded-none rounded-tl-3xl h-10 px-1 w-full opacity-50"
+              className="border-0 border-b-1 border-r-1 rounded-none! rounded-tl-3xl! h-10 px-1 w-full opacity-50"
             >
               Лояльность
             </Button>
           </Link>
           <Button
             variant="outline"
-            className="border-0 rounded-none rounded-tr-3xl w-1/2 h-10"
+            className="border-0 rounded-none! rounded-tr-3xl! w-1/2 h-10"
           >
             RFM
           </Button>
         </div>
-        <div className="fixed right-10 bottom-10 z-50">
+        <div className="fixed right-10 bottom-10 max-md:bottom-6.5 max-md:inset-x-2 z-50">
           <FilterModal onApplyFilters={handleApplyFilters} />
         </div>
         {appliedFilters && appliedFilters.data.rfmList.length > 0 ? (

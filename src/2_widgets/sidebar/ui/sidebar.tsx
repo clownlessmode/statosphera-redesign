@@ -108,7 +108,12 @@ const Sidebar = ({
         url: ROUTES_PATH.SUMMARY,
         icon: ChartBarStacked,
       },
-
+      {
+        title: "Интернет-магазин",
+        url: ROUTES_PATH.IM,
+        icon: ShoppingBag,
+        disabled: false,
+      },
       {
         title: "Гриль",
         url: ROUTES_PATH.GRILL,
@@ -133,12 +138,6 @@ const Sidebar = ({
           { title: "Уведомления", url: ROUTES_PATH.ADMIN_NOTIFICATIONS },
           { title: "Роли голосования", url: ROUTES_PATH.ADMIN_ROLES },
         ],
-      },
-      {
-        title: "Интернет-магазин",
-        url: ROUTES_PATH.IM,
-        icon: ShoppingBag,
-        disabled: false,
       },
       {
         title: "R&D",
