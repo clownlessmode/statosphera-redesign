@@ -60,7 +60,7 @@ export default function ComparisonFilter() {
   }, [form, updateFilters]);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full max-md:overflow-y-auto scrollbar-hide">
       <CardHeader>
         <CardTitle>Фильтры</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">

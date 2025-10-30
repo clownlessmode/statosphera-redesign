@@ -50,7 +50,7 @@ export default function RfmFilter() {
   }, [form, updateFilters]);
 
   return (
-    <Card className="w-full md:mr-4">
+    <Card className="w-full md:mr-4 max-md:overflow-y-auto scrollbar-hide">
       <CardHeader>
         <CardTitle>Фильтры</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">

@@ -661,13 +661,16 @@ const Report: FC = () => {
             ),
             left: !isMobile && (
               <div className="ml-6 -mb-4 flex flex-row gap-1">
-                <Button variant="outline" className="border-b-0 rounded-b-none">
+                <Button
+                  variant="outline"
+                  className="border-b-0! rounded-b-none!"
+                >
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
                 </Button>
                 <Link to={ROUTES_PATH.WRITE_OFF}>
                   <Button
                     variant="outline"
-                    className="border-b-0 rounded-b-none opacity-50"
+                    className="border-b-0! rounded-b-none! opacity-50"
                   >
                     Списания
                   </Button>
@@ -682,14 +685,14 @@ const Report: FC = () => {
               <div className="w-full h-full flex flex-row">
                 <Button
                   variant="outline"
-                  className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1"
+                  className="border-0 rounded-none! rounded-tl-3xl!  h-10 w-1/2 px-1"
                 >
                   {tab === "commerce" ? "Коммерческая" : "Чековая"}
                 </Button>
                 <Link to={ROUTES_PATH.WRITE_OFF} className="w-1/2">
                   <Button
                     variant="outline"
-                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1"
+                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none! rounded-tr-3xl! w-full h-10 px-1"
                   >
                     Списания
                   </Button>

@@ -209,13 +209,13 @@ export const Loyalty = () => {
         actions={{
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
-              <Button variant="outline" className="border-b-0 rounded-b-none">
+              <Button variant="outline" className="border-b-0! rounded-b-none!">
                 Лояльность
               </Button>
               <Link to={ROUTES_PATH.RFM}>
                 <Button
                   variant="outline"
-                  className="border-b-0 rounded-b-none opacity-50"
+                  className="border-b-0! rounded-b-none! opacity-50"
                 >
                   RFM
                 </Button>
@@ -226,7 +226,7 @@ export const Loyalty = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       ABC
                     </Button>
@@ -246,7 +246,7 @@ export const Loyalty = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       Retention
                     </Button>
@@ -266,7 +266,7 @@ export const Loyalty = () => {
                     <Button
                       disabled
                       variant="outline"
-                      className="border-b-0 rounded-b-none opacity-50"
+                      className="border-b-0! rounded-b-none! opacity-50"
                     >
                       Выгрузки
                     </Button>
@@ -288,14 +288,14 @@ export const Loyalty = () => {
         <div className="hidden max-md:flex flex-row gap-1">
           <Button
             variant="outline"
-            className="border-0 rounded-none rounded-tl-3xl h-10 w-1/2 px-1"
+            className="border-0 rounded-none! rounded-tl-3xl! h-10 w-1/2 px-1"
           >
             Лояльность
           </Button>
           <Link to={ROUTES_PATH.RFM} className="w-1/2">
             <Button
               variant="outline"
-              className="opacity-50 border-0 border-b-1 border-l-1 rounded-none rounded-tr-3xl w-full h-10 px-1"
+              className="opacity-50 border-0 border-b-1 border-l-1 rounded-none! rounded-tr-3xl! w-full h-10 px-1"
             >
               RFM
             </Button>

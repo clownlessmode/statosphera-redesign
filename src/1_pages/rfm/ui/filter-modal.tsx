@@ -39,13 +39,13 @@ export const FilterModal: FC<Props> = ({ onApplyFilters }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="max-md:w-full">
           Изменить фильтры <Funnel />
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby={undefined}
-        className="max-md:overflow-y-auto scrollbar-hide max-md:h-[calc(100vh-96px)]"
+        className="max-md:h-[calc(100vh-128px)]"
       >
         <RfmFilter />
         <Button disabled={isDisabled()} onClick={handleClick}>
