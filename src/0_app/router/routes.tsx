@@ -105,7 +105,6 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <IM />,
     label: "Интернет-магазин",
-    allowedRoles: [ROLES.ADMIN],
     layout: Sidebar,
   },
   {
