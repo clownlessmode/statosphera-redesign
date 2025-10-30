@@ -49,7 +49,7 @@ export const ComparisonFilterModal: FC<Props> = ({ onApplyFilters }) => {
       </DialogTrigger>
       <DialogContent
         aria-describedby={undefined}
-        className="max-md:overflow-y-auto scrollbar-hide max-md:h-[calc(100vh-96px)] md:min-w-160"
+        className="max-md:h-[calc(100vh-128px)] md:min-w-160"
       >
         <ComparisonFilter />
         <Button disabled={isDisabled()} onClick={handleClick}>

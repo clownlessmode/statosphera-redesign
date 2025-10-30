@@ -21,7 +21,7 @@ export const AdminDigests = () => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "border-b-0 rounded-b-none",
+                  "border-b-0! rounded-b-none!",
                   activeTab === "create" ? "opacity-100" : "opacity-50",
                 )}
                 onClick={() => setActiveTab("create")}
@@ -31,7 +31,7 @@ export const AdminDigests = () => {
               <Button
                 variant={"outline"}
                 className={cn(
-                  "border-b-0 rounded-b-none",
+                  "border-b-0! rounded-b-none!",
                   activeTab === "manage" ? "opacity-100" : "opacity-50",
                 )}
                 onClick={() => setActiveTab("manage")}
