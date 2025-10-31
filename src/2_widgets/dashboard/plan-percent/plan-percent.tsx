@@ -34,7 +34,7 @@ const PlanPercent = ({
           data-testid="plan-percent-widget"
         >
           <CardHeader>
-            <CardTitle className="text-center">
+            <CardTitle className="text-center max-md:text-sm">
               Процент выполнения плана
             </CardTitle>
           </CardHeader>

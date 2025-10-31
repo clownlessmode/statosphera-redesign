@@ -34,7 +34,7 @@ const ProductCard: FC<Props> = ({
             style={{
               backgroundImage: `url(${imagePath})`,
             }}
-            className="size-[100px] md:size-[130px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
+            className="size-[100px] md:size-[130px] aspect-square bg-accent bg-no-repeat bg-center bg-cover shrink-0"
           />
 
           <div className="flex flex-col gap-2 justify-between py-0  overflow-hidden">
@@ -81,12 +81,12 @@ const ProductCard: FC<Props> = ({
             </div>
 
             <div className="flex flex-col gap-[8px] overflow-hidden">
-              <h3 className="text-[18px] font-semibold tracking-tight leading-tight line-clamp-2">
+              <h3 className="text-[18px] font-semibold tracking-tight leading-tight line-clamp-2 max-md:text-sm">
                 {title}
               </h3>
             </div>
 
-            <div className="flex flex-col items-start gap-1.5 text-muted-foreground text-[12px] font-medium leading-none">
+            <div className="flex flex-col items-start gap-1.5 text-muted-foreground text-[12px] font-medium leading-none max-md:text-xs">
               <div className="flex items-center gap-1 overflow-hidden">
                 <span className="shrink-0">Код:</span>
                 <span className="truncate">{productCode}</span>

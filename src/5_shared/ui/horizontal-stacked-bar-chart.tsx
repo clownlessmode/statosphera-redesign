@@ -12,6 +12,7 @@ type HorizontalStackedBarChartProps = {
   yAxisData: string[];
   series: SeriesData[];
   title?: string;
+  titleSize?: number;
   formatter?: (params: any) => string;
   grid?: {
     bottom?: number;
@@ -23,6 +24,7 @@ export const HorizontalStackedBarChart = ({
   yAxisData,
   series,
   title,
+  titleSize = 16,
   formatter,
   grid,
 }: HorizontalStackedBarChartProps) => {
@@ -37,7 +39,7 @@ export const HorizontalStackedBarChart = ({
           left: "center",
           textStyle: {
             color: colors.text,
-            fontSize: 16,
+            fontSize: titleSize,
           },
         }
       : undefined,
@@ -56,8 +58,8 @@ export const HorizontalStackedBarChart = ({
       top: 40,
     },
     grid: {
-      left: "3%",
-      right: "4%",
+      left: isMobile ? 20 : "3%",
+      right: isMobile ? 20 : "4%",
       top: grid?.top || "",
       bottom: grid?.bottom || "3%",
       containLabel: true,

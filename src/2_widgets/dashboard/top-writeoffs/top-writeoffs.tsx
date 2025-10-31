@@ -18,7 +18,9 @@ const TopWriteoffs = ({ isLoading, data }: TopWriteoffsProps) => {
           data-testid="writeoffs-groups-widget"
         >
           <CardHeader>
-            <CardTitle>Аутсайдеры по группам списаний</CardTitle>
+            <CardTitle className="text-center max-md:text-sm">
+              Аутсайдеры по группам списаний
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex-1">
             <DoubleHorizontalBarChart

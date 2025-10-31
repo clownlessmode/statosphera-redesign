@@ -84,7 +84,7 @@ const HoursRevenue = ({ isLoading, data, tv }: HoursRevenueProps) => {
           data-testid="hours-revenue-widget"
         >
           <CardHeader>
-            <CardTitle className="text-center">
+            <CardTitle className="text-center max-md:text-sm">
               Выручка по часам (сегодня)
             </CardTitle>
           </CardHeader>

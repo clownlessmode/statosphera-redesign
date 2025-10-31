@@ -25,7 +25,7 @@ export const DrilldownRfmRegionCityStore: FC<Props> = ({
   }
 
   return (
-    <Card className="w-full h-[400px] flex flex-col gap-0 col-span-2">
+    <Card className="w-full h-[400px] flex flex-col gap-0 col-span-2 overflow-visible">
       <CardHeader>
         <CardTitle className="flex items-center justify-center text-lg font-semibold max-md:text-sm">
           Количество чеков по магазинам

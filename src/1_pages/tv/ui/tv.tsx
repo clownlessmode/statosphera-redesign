@@ -378,10 +378,11 @@ export const TV = () => {
               title="Анти топ ночных магазинов (по выручке)"
               className="border-0 p-0"
               isLoading={isNightShopsLoading}
+              suffix={"₽"}
               options={
                 nightShops?.antiTopstoreProceed?.map((group) => ({
                   name: group.storeName,
-                  price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
+                  count: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}`,
                 })) || []
               }
               tv={true}
@@ -391,10 +392,11 @@ export const TV = () => {
               title="Топ ночных магазинов (по выручке)"
               className="border-0 p-0"
               isLoading={isNightShopsLoading}
+              suffix={"₽"}
               options={
                 nightShops?.topStoreProceed?.map((group) => ({
                   name: group.storeName,
-                  price: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}₽`,
+                  count: `${Math.round(group?.proceeds).toLocaleString().replace(/,/g, " ")}`,
                 })) || []
               }
               tv={true}

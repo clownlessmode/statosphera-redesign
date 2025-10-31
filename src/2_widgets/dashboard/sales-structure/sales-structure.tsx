@@ -21,7 +21,7 @@ const SalesStructure = ({ isLoading, data, tv }: SalesStructureProps) => {
           data-testid="sales-structure-widget"
         >
           <CardHeader>
-            <CardTitle className="text-center">
+            <CardTitle className="text-center max-md:text-sm">
               Структура продаж за 6 месяцев
             </CardTitle>
           </CardHeader>

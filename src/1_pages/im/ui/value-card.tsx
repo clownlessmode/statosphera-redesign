@@ -16,11 +16,11 @@ const ValueCard: React.FC<ValueCardProps> & { Skeleton: React.FC } = ({
     return <ValueCard.Skeleton />;
   }
   return (
-    <Card className="col-span-1 h-fit text-center gap-1">
-      <CardHeader>
+    <Card className="col-span-1 h-full flex flex-col items-center justify-center gap-1">
+      <CardHeader className="w-full text-center">
         <CardTitle className="font-normal">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="text-3xl font-bold">
+      <CardContent className="text-3xl font-bold max-md:text-xl">
         {value.toLocaleString()} {suffix}
       </CardContent>
     </Card>
@@ -29,8 +29,8 @@ const ValueCard: React.FC<ValueCardProps> & { Skeleton: React.FC } = ({
 
 ValueCard.Skeleton = () => {
   return (
-    <Card className="col-span-1 h-fit text-center gap-1">
-      <CardHeader>
+    <Card className="col-span-1 h-full flex flex-col items-center justify-center gap-1">
+      <CardHeader className="w-full text-center">
         <CardTitle className="font-normal">
           <Skeleton className="w-[120px] h-[16px] bg-muted-foreground rounded-md mx-auto" />
         </CardTitle>

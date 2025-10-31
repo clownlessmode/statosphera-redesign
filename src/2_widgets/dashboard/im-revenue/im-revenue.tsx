@@ -37,10 +37,12 @@ const ImRevenue = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Выручка интернет магазина</CardTitle>
+              <CardTitle className="max-md:text-sm">
+                Выручка интернет магазина
+              </CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
+              <p className=" text-xl font-bold max-md:text-lg">
                 {proceedsIm
                   ? `${proceedsIm.toLocaleString().replace(/,/g, " ")}₽`
                   : null}
@@ -65,7 +67,7 @@ const ImRevenue = ({
               tv && "text-sm",
             )}
           >
-            <p className="w-full">Изменения к прошлому году</p>
+            <p className="w-full max-md:text-sm">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
               {proceedsImYoY
                 ? `${proceedsImYoY.toLocaleString().replace(/,/g, " ")}₽`

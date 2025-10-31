@@ -30,7 +30,7 @@ const Markup = ({ percent, proceeds, isLoading, tv }: MarkupProps) => {
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Наценка</CardTitle>
+              <CardTitle className="max-md:text-sm">Наценка</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm">
               Текущий месяц

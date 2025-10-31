@@ -103,7 +103,7 @@ const Digests = () => {
               <>
                 <TabsTrigger
                   value="all"
-                  className="w-full justify-between gap-4"
+                  className="w-full justify-between gap-4 max-md:py-2"
                 >
                   <div className="flex flex-row gap-2 items-center">
                     <GalleryHorizontalEnd className="size-4 text-muted-foreground" />
@@ -119,7 +119,7 @@ const Digests = () => {
                 {session && (
                   <TabsTrigger
                     value="analytics"
-                    className="w-full justify-between gap-4"
+                    className="w-full justify-between gap-4 max-md:py-2"
                   >
                     <div className="flex flex-row gap-2 items-center">
                       <ChartNetwork className="size-4 text-muted-foreground" />
@@ -135,7 +135,7 @@ const Digests = () => {
 
                 <TabsTrigger
                   value="director"
-                  className="w-full justify-between gap-4"
+                  className="w-full justify-between gap-4 max-md:py-2"
                 >
                   <div className="flex flex-row gap-2 items-center">
                     <ShieldUser className="size-4 text-muted-foreground" />{" "}
@@ -151,7 +151,7 @@ const Digests = () => {
                 {session && (
                   <TabsTrigger
                     value="franchise"
-                    className="w-full justify-between gap-4"
+                    className="w-full justify-between gap-4 max-md:py-2"
                   >
                     <div className="flex flex-row gap-2 items-center">
                       <Store className="size-4 text-muted-foreground" />{" "}
@@ -167,7 +167,7 @@ const Digests = () => {
 
                 <TabsTrigger
                   value="groupCompany"
-                  className="w-full justify-between gap-4"
+                  className="w-full justify-between gap-4 max-md:py-2"
                 >
                   <div className="flex flex-row gap-2 items-center">
                     <Boxes className="size-4 text-muted-foreground" /> Группа
