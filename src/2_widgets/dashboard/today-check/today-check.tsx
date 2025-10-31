@@ -43,10 +43,10 @@ const TodayCheck = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Чеки (сегодня)</CardTitle>
+              <CardTitle className="max-md:text-sm">Чеки (сегодня)</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
+              <p className=" text-xl font-bold max-md:text-lg">
                 {proceedsTotal ? `${proceedsTotal.toLocaleString()}` : null}{" "}
                 {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
               </p>
@@ -62,7 +62,7 @@ const TodayCheck = ({
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
-            <p className="w-full">Чеки на прошлой неделе</p>
+            <p className="w-full max-md:text-sm">Чеки на прошлой неделе</p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
                 ? `${weekAgoProceedsTotal.toLocaleString()}`
@@ -70,7 +70,9 @@ const TodayCheck = ({
               {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
 
-            <p className="w-full">Изменения к последнему закрытому чаcу</p>
+            <p className="w-full max-md:text-sm">
+              Изменения к последнему закрытому чаcу
+            </p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
                 ? `${weekAgoProceedsTotal.toLocaleString()}`

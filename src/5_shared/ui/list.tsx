@@ -55,7 +55,7 @@ export const List: FC<Props> = memo(
     return (
       <Card className={cn("w-full", className)}>
         <CardHeader className="text-center">
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="max-md:text-sm">{title}</CardTitle>
         </CardHeader>
         <CardContent
           className={cn(

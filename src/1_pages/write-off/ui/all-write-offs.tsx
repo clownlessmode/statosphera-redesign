@@ -1451,7 +1451,7 @@ export const AllWriteOffs = ({
   // Показываем общую заглушку, если нет данных
   if (!isCompleted) {
     return (
-      <div className="flex flex-col gap-4 h-full mx-4 md:mx-0">
+      <div className="flex flex-col gap-4 h-full mx-4 md:mx-0 max-md:gap-2">
         <div className="flex flex-row gap-1 items-center justify-between md:justify-end">
           {!isMobile && <DateDropdown />}
           <Button
@@ -1495,11 +1495,11 @@ export const AllWriteOffs = ({
   }
 
   return (
-    <div className="flex gap-4 h-full flex-col mx-4 md:flex-row">
+    <div className="flex gap-4 h-full flex-col mx-4 md:flex-row max-md:gap-2">
       {/* Левая часть: График и Таблица */}
       <div className="flex flex-col flex-1 min-h-0">
         {/* Верхняя панель с кнопками */}
-        <div className="flex flex-row gap-1 mb-4 justify-between md:justify-end">
+        <div className="flex flex-row gap-1 mb-4 justify-between md:justify-end max-md:mb-2">
           {!isMobile && <DateDropdown />}
           <Button
             className="w-fit"
@@ -1529,7 +1529,7 @@ export const AllWriteOffs = ({
         </div>
 
         {/* График или Фильтры */}
-        <div className="flex-shrink-0 mb-4 min-h-60">
+        <div className="flex-shrink-0 mb-4 min-h-60 max-md:mb-2">
           {!isFiltersOpen ? (
             graph ? (
               <div className="h-64 w-full">
@@ -1637,7 +1637,7 @@ export const AllWriteOffs = ({
       {/* Правая часть: Карточки и Круговой график */}
       {tab === "write-off" && (
         <>
-          <div className="flex-shrink-0 flex flex-col min-h-0 gap-4 w-full md:w-110">
+          <div className="flex-shrink-0 flex flex-col min-h-0 gap-4 w-full md:w-110 max-md:gap-2">
             {/* Карточки */}
             <div>
               <WriteOffStatsCards data={statsData} />

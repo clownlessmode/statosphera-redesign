@@ -28,7 +28,7 @@ const Margin = ({ data, isLoading, tv }: MarginProps) => {
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Маржа</CardTitle>
+              <CardTitle className="max-md:text-sm">Маржа</CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm">
               Текущий месяц

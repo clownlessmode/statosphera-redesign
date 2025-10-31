@@ -120,7 +120,8 @@ export const BarChart = ({
           position: "top",
           color: colors.text,
           fontSize: 10,
-          formatter: (params: any) => params.value.toLocaleString(),
+          formatter: (params: any) =>
+            params.value.toLocaleString().replace(/,/g, " "),
         },
       },
     ],

@@ -108,7 +108,7 @@ const ShopsFilter = () => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="p-0 rounded-xl border-none max-md:overflow-y-auto scrollbar-hide max-xs:h-[calc(100vh-96px)] max-md:h-max"
+        className="p-0 rounded-xl border-none max-xs:h-[calc(100vh-128px)] max-md:h-max"
         data-testid="shops-filter-modal"
         onInteractOutside={(e) => {
           // Предотвращаем закрытие модалки при активном туре
@@ -117,7 +117,7 @@ const ShopsFilter = () => {
           }
         }}
       >
-        <Card className="w-full md:mr-4">
+        <Card className="w-full md:mr-4 max-md:overflow-y-auto scrollbar-hide">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>
             <div className="flex flex-row gap-2 justify-between items-center w-full">

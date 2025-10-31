@@ -124,7 +124,7 @@ export const AllGistogram: FC<Props> = ({ graph, isLoading }) => {
   const selectedLabel = options.find((opt) => opt.value === value)?.label;
 
   return (
-    <Card className="h-[400px] col-span-2">
+    <Card className="h-[400px] col-span-2 overflow-visible">
       <CardHeader className="flex flex-row justify-center items-center gap-1 max-md:flex-col">
         <CardTitle className="font-semibold max-md:text-sm">График</CardTitle>
         <DropdownMenu>

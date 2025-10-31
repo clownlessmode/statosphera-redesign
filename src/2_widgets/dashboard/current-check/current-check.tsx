@@ -40,10 +40,17 @@ const CurrentCheck = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Чеки (за текущий месяц)</CardTitle>
+              <CardTitle className="max-md:text-sm">
+                Чеки (за текущий месяц)
+              </CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className={cn("text-xl font-bold", tv && "text-lg")}>
+              <p
+                className={cn(
+                  "text-xl font-bold max-md:text-lg",
+                  tv && "text-lg",
+                )}
+              >
                 {check ? `${check.toLocaleString().replace(/,/g, " ")}` : null}{" "}
                 {checkYoYPercent ? `(${checkYoYPercent}%)` : null}
               </p>
@@ -65,7 +72,7 @@ const CurrentCheck = ({
               tv && "text-sm",
             )}
           >
-            <p className="w-full">Изменения к прошлому году</p>
+            <p className="w-full max-md:text-sm">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
               {checkYoY
                 ? `${checkYoY.toLocaleString().replace(/,/g, " ")}`

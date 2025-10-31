@@ -22,7 +22,7 @@ export const AllStackedGistogram: FC<Props> = ({ graph, isLoading }) => {
   }
 
   return (
-    <Card className="h-[400px] col-span-2">
+    <Card className="h-[400px] col-span-2 overflow-visible">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
         <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           График по

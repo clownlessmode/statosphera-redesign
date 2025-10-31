@@ -42,10 +42,17 @@ const WriteOffIndicator = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Списания (показатель)</CardTitle>
+              <CardTitle className="max-md:text-sm">
+                Списания (показатель)
+              </CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className={cn("text-xl font-bold", tv && "text-lg")}>
+              <p
+                className={cn(
+                  "text-xl font-bold max-md:text-lg",
+                  tv && "text-lg",
+                )}
+              >
                 {writeOff
                   ? `${writeOff.toLocaleString().replace(/,/g, " ")}₽`
                   : null}{" "}
@@ -71,7 +78,7 @@ const WriteOffIndicator = ({
               tv && " text-sm",
             )}
           >
-            <p className="w-full">Изменения к прошлому году</p>
+            <p className="w-full max-md:text-sm">Изменения к прошлому году</p>
             <p className="w-full text-muted-foreground font-bold">
               {writeOffYoY
                 ? `${writeOffYoY.toLocaleString().replace(/,/g, " ")}₽`

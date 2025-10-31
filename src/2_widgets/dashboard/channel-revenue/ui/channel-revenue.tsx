@@ -19,7 +19,7 @@ const ChannelRevenue = ({ isLoading, data, tv }: ChannelRevenueProps) => {
           data-testid="channel-revenue-widget"
         >
           <CardHeader>
-            <CardTitle className="text-center">
+            <CardTitle className="text-center max-md:text-sm">
               Распределение по каналам продаж
             </CardTitle>
           </CardHeader>

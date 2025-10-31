@@ -49,7 +49,7 @@ const SalesDynamics: FC = () => {
   const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
   const { values } = useSalesDynamicsFiltersStore((state) => state);
   const { filters } = useSalesDynamicsFiltersStore((state) => state);
-  const prepareLine = usePreparedStackedLine(isMobile);
+  const prepareLine = usePreparedStackedLine();
   const {
     getTable,
     getTotal,
@@ -305,7 +305,9 @@ const SalesDynamics: FC = () => {
                 )}
               </div>
             )}
-            {isAllLoading && <Skeleton className="w-full h-full" />}
+            {isAllLoading && !isMobile && (
+              <Skeleton className="w-full h-full" />
+            )}
             {!isAllLoading && !isMobile && (
               <div className="flex flex-col gap-2 h-full w-full">
                 <SalesSelect index={2} data-testid="second-graph-select" />

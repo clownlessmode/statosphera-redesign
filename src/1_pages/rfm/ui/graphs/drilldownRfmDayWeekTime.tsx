@@ -22,7 +22,7 @@ export const DrilldownRfmDayWeekTime: FC<Props> = ({ graph, isLoading }) => {
   }
 
   return (
-    <Card className="w-full h-[400px] flex flex-col gap-0 max-md:col-span-2">
+    <Card className="w-full h-[400px] flex flex-col gap-0 max-md:col-span-2 overflow-visible">
       <CardHeader>
         <CardTitle className="flex items-center justify-center font-semibold max-md:text-sm">
           Количество чеков по часам
