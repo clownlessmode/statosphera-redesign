@@ -40,7 +40,9 @@ const WriteoffsLeaders = ({ isLoading, data, tv }: WriteoffsLeadersProps) => {
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>
         ) : (
-          <CardTitle className="text-center">Аутсайдеры по списаниям</CardTitle>
+          <CardTitle className="text-center max-md:text-sm">
+            Аутсайдеры по списаниям
+          </CardTitle>
         )}
       </CardHeader>
       <CardContent className="flex-1">

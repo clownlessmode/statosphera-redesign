@@ -40,7 +40,7 @@ const AntiLoyalTop = ({ isLoading, data, tv }: AntiLoyalTopProps) => {
           data-testid="anti-loyalty-widget"
         >
           <CardHeader>
-            <CardTitle className="text-center">
+            <CardTitle className="text-center max-md:text-sm">
               Анти топ по применению карт лояльности
             </CardTitle>
           </CardHeader>

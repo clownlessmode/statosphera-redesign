@@ -13,9 +13,9 @@ export type StackedLineOptions = {
   fourthLineStyle?: LineSeriesOption["lineStyle"];
 };
 
-export const usePreparedStackedLine = (isMobile?: boolean) => {
+export const usePreparedStackedLine = () => {
   return (series: SeriesOption[], options?: StackedLineOptions) => {
-    return series.map((serie, index) => {
+    return series.map((series, index) => {
       // Determine if this should be solid (first two) or dashed (rest)
       const isSolid = index < 2;
       // Default widths: solid=4, dashed=2
@@ -36,7 +36,7 @@ export const usePreparedStackedLine = (isMobile?: boolean) => {
       const lineStyle = overrideStyle ?? genericStyle ?? defaultLineStyle;
 
       return {
-        ...serie,
+        ...series,
         type: "line",
         smooth: true,
         lineStyle,
@@ -46,17 +46,9 @@ export const usePreparedStackedLine = (isMobile?: boolean) => {
             ? {
                 show: true,
                 formatter: (args: any) => {
-                  if (!isMobile) {
-                    if (args.data[1]) {
-                      return divideNumberSpaces(
-                        Math.round(args.data[1] * 10) / 10,
-                      );
-                    }
-                  } else {
-                    if (args.data[1] % 2 === 0) {
-                      return divideNumberSpaces(
-                        Math.round(args.data[1] * 10) / 10,
-                      );
+                  if (args.data[1]) {
+                    if (args.dataIndex % 2 === 0) {
+                      return divideNumberSpaces(Math.round(args.data[1]));
                     }
                     return "";
                   }

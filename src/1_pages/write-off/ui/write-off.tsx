@@ -41,7 +41,7 @@ export const WriteOff = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:pb-4 max-md:*:px-4 *:first:px-0 max-md:*:last:px-0 md:p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:pb-4 max-md:*:px-4 *:first:px-0 max-md:*:last:px-0 md:p-4 max-md:gap-2">
           {isMobile && (
             <div className="flex flex-row gap-1">
               <Link to={ROUTES_PATH.REPORT} className="w-1/2">

@@ -17,12 +17,14 @@ import { useGraphDate } from "./filters/graph-date/model/hooks/use-graph-date";
 import { useLoyaltyFiltersStore } from "./filters/filters-store";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { useMemo } from "react";
+import { useGraphColors } from "@shared/hooks";
 
 export const IM = () => {
   const { value } = useGraphDate();
   const { filterDate } = useLoyaltyFiltersStore();
   const store = useSalesDynamicsFiltersStore((state) => state.filters);
   const filters = useSalesDynamicsFiltersStore((state) => state.filters);
+  const colors = useGraphColors();
 
   const mock: any = useMemo(
     () => ({
@@ -106,7 +108,7 @@ export const IM = () => {
           ),
         }}
       />
-      <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col">
+      <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col max-md:gap-2">
         {isMobile && (
           <div className="flex flex-row justify-between">
             <DaysFilter />
@@ -115,7 +117,7 @@ export const IM = () => {
           </div>
         )}
         {/* Основные метрики ИМ */}
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-5 gap-4 max-md:grid-cols-2 max-md:*:first:col-span-2 max-md:gap-2">
           {/* Выручка ИМ */}
           <ValueCard
             title={mainCards?.im_proceeds?.title}
@@ -153,7 +155,7 @@ export const IM = () => {
           />
         </div>
         {/* Графики */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1 max-md:gap-2">
           {isOrderProcessingGraphLoading ? (
             <StackedLineSkeleton className="h-[400px]" />
           ) : (
@@ -162,6 +164,15 @@ export const IM = () => {
                 title: {
                   text:
                     orderProcessingGraph?.title || "График обработки заказов",
+                  textStyle: isMobile
+                    ? {
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: colors.text,
+                      }
+                    : {
+                        color: colors.text,
+                      },
                 },
                 series:
                   orderProcessingGraph?.data &&
@@ -183,6 +194,15 @@ export const IM = () => {
               option={{
                 title: {
                   text: proceedsGraph?.[0]?.title || "График выручки ИМ",
+                  textStyle: isMobile
+                    ? {
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: colors.text,
+                      }
+                    : {
+                        color: colors.text,
+                      },
                 },
                 legend: {
                   data:
@@ -204,10 +224,10 @@ export const IM = () => {
             />
           )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1 max-md:gap-2">
             <Card className="h-[400px]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-center text-lg">
+                <CardTitle className="text-center text-lg max-md:text-sm">
                   {channelsGraph?.title || "Распределение заказов по каналам"}
                 </CardTitle>
               </CardHeader>
@@ -228,7 +248,7 @@ export const IM = () => {
             {/* Топ по способу оплаты */}
             <Card className="h-[400px]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-center text-lg">
+                <CardTitle className="text-center text-lg max-md:text-sm">
                   {topPaymentMethod?.title ||
                     "Распределение заказов по способу оплаты"}
                 </CardTitle>
@@ -251,8 +271,14 @@ export const IM = () => {
           {isChannelsAgeGraphLoading ? (
             <div className="h-[400px] bg-muted animate-pulse rounded-lg" />
           ) : (
-            <Card className="md:h-[400px]">
-              <div style={{ height: "400px", width: "100%" }}>
+            <Card className="h-[400px] max-md:gap-1">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-center text-lg max-md:text-sm">
+                  {channelsAgeGraph?.title ||
+                    "Распределение выручки по каналам и возрасту"}
+                </CardTitle>
+              </CardHeader>
+              <div style={{ height: "320px", width: "100%" }}>
                 <HorizontalStackedBarChart
                   yAxisData={Array.from(
                     new Set(
@@ -289,10 +315,7 @@ export const IM = () => {
                     bottom: 20,
                     top: 80,
                   }}
-                  title={
-                    channelsAgeGraph?.title ||
-                    "Распределение выручки по каналам и возрасту"
-                  }
+                  titleSize={isMobile ? 13 : 16}
                   formatter={(params) => {
                     if (Array.isArray(params)) {
                       return params
@@ -311,7 +334,7 @@ export const IM = () => {
         </div>
 
         {/* Заказы (обычные) */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 max-md:gap-2 max-md:grid-cols-1">
           {/* Заказов (обычные) */}
           <ValueCard
             title={ordinariesCards?.total_orders?.title}
@@ -335,7 +358,7 @@ export const IM = () => {
           />
         </div>
         {/* Листы */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 max-md:gap-2 max-md:grid-cols-1">
           <List
             title={
               storeOrdinaryTable?.top?.title ||
@@ -380,7 +403,7 @@ export const IM = () => {
         </div>
 
         {/* Заказы (самовывоз) */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 max-md:gap-2 max-md:grid-cols-1">
           {/* Заказов (самовывоз) */}
           <ValueCard
             title={pickupCards?.total_orders?.title}
@@ -405,7 +428,7 @@ export const IM = () => {
         </div>
 
         {/* Листы самовывоза */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 max-md:gap-2 max-md:grid-cols-1">
           <List
             title={
               storePickupTable?.top?.title ||
@@ -437,7 +460,7 @@ export const IM = () => {
         </div>
 
         {/* Строка в 3 колонки */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 max-md:gap-2 max-md:grid-cols-1">
           <List
             title={
               topNomenclature?.title || "Топ номенклатур по продажам (выручка)"

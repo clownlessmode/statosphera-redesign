@@ -30,7 +30,7 @@ export default function WeeklyRevenue({
             <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
           </CardTitle>
         ) : (
-          <CardTitle className="text-center">
+          <CardTitle className="text-center max-md:text-sm">
             Выручка за последние 7 дней
           </CardTitle>
         )}

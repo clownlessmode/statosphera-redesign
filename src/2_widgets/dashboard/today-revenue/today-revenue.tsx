@@ -43,10 +43,12 @@ const TodayRevenue = ({
         >
           <div className="flex flex-col">
             <CardHeader className="flex justify-between items-center">
-              <CardTitle>Выручка (сегодня)</CardTitle>
+              <CardTitle className="max-md:text-sm">
+                Выручка (сегодня)
+              </CardTitle>
             </CardHeader>
             <CardContent className="leading-none text-sm flex items-center gap-1">
-              <p className=" text-xl font-bold">
+              <p className=" text-xl font-bold max-md:text-lg">
                 {proceedsTotal
                   ? `${proceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`
                   : null}{" "}
@@ -64,7 +66,7 @@ const TodayRevenue = ({
             </CardContent>
           </div>
           <CardFooter className=" items-end flex flex-col text-left w-full">
-            <p className="w-full">Выручка на прошлой неделе</p>
+            <p className="w-full max-md:text-sm">Выручка на прошлой неделе</p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
                 ? `${weekAgoProceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`
@@ -72,7 +74,9 @@ const TodayRevenue = ({
               {proceedsWoYPercent ? `(${proceedsWoYPercent}%)` : null}
             </p>
 
-            <p className="w-full">Изменения к последнему закрытому часу</p>
+            <p className="w-full max-md:text-sm">
+              Изменения к последнему закрытому часу
+            </p>
             <p className="w-full text-muted-foreground font-bold">
               {weekAgoProceedsTotal
                 ? `${weekAgoProceedsTotal.toLocaleString().replace(/,\d+/g, "")}₽`

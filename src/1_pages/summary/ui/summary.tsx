@@ -300,14 +300,14 @@ export const Summary = () => {
             left: !isMobile && <PackageFilters />,
           }}
         />
-        <div className="rounded-3xl bg-background p-4 flex flex-col gap-4 flex-1 min-h-0">
+        <div className="rounded-3xl bg-background p-4 flex flex-col gap-4 flex-1 min-h-0 max-md:gap-2">
           {isMobile && (
             <div className="flex flex-row w-full justify-between">
               <PackageFilters />
             </div>
           )}
           {!hasNomenklatura ? (
-            <div className="flex flex-col gap-4 h-full w-full justify-center items-center">
+            <div className="flex flex-col gap-4 h-full w-full justify-center items-center ">
               <div className="dark:opacity-70">
                 <NotSelectedFilters />
               </div>
@@ -319,7 +319,7 @@ export const Summary = () => {
               </div>
             </div>
           ) : (
-            <div className="flex-1 h-screen overflow-y-auto scrollbar-hide md:min-h-0 flex flex-col md:flex-row gap-4">
+            <div className="flex-1 h-screen overflow-y-auto scrollbar-hide md:min-h-0 flex flex-col md:flex-row gap-4 max-md:gap-2">
               <div className="flex flex-col gap-4 max-md:h-[50vh] md:min-h-0">
                 <div className="flex-1 min-h-0">
                   <NomenklaturaList

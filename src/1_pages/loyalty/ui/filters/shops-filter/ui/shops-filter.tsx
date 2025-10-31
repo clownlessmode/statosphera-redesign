@@ -100,8 +100,8 @@ const ShopsFilter = () => {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 max-md:overflow-y-auto scrollbar-hide max-xxs:h-[calc(100vh-96px)] max-md:h-max rounded-xl border-none">
-        <Card className="w-full mr-4">
+      <DialogContent className="p-0 max-xxs:h-[calc(100vh-128px)] max-md:h-max rounded-xl border-none">
+        <Card className="w-full mr-4 max-md:overflow-y-auto scrollbar-hide">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>
             <div className="flex flex-row gap-2 justify-between items-center w-full">

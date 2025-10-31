@@ -594,7 +594,7 @@ const Dashboard = () => {
           )}
           <SortableContext items={widgetOrder} strategy={rectSortingStrategy}>
             <div
-              className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+              className="rounded-3xl h-full bg-background p-4 gap-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 max-md:gap-2"
               data-testid="widget-grid"
             >
               {hasPersonalMessages && (
