@@ -162,7 +162,7 @@ export const Monitoring = () => {
                 <Layout />
               </Button>
               {displayMode === "grid" && (
-                <Card className="!p-1 flex flex-row items-center gap-1 ml-2">
+                <div className="!p-1 flex flex-row items-center gap-1 ml-2">
                   <Button
                     onClick={() =>
                       setGridColumns((prev) => Math.max(3, prev - 1))
@@ -186,7 +186,7 @@ export const Monitoring = () => {
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
-                </Card>
+                </div>
               )}
             </Card>
           </div>
@@ -243,7 +243,6 @@ export const Monitoring = () => {
                             <ProductCard
                               key={`yarche-${product.id}`}
                               product={product}
-                              type="yarche"
                               variant="table"
                               onRemove={handleRemoveProduct}
                             />
@@ -284,7 +283,6 @@ export const Monitoring = () => {
                             <ProductCard
                               key={`magnit-${product.id}`}
                               product={product}
-                              type="magnit"
                               variant="table"
                               onRemove={handleRemoveProduct}
                             />
@@ -325,7 +323,6 @@ export const Monitoring = () => {
                             <ProductCard
                               key={`metro-${product.id}`}
                               product={product}
-                              type="metro"
                               variant="table"
                               onRemove={handleRemoveProduct}
                             />
@@ -352,7 +349,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`yarche-${product.id}`}
                         product={product}
-                        type="yarche"
                         variant="table"
                         onRemove={handleRemoveProduct}
                       />
@@ -361,7 +357,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`magnit-${product.id}`}
                         product={product}
-                        type="magnit"
                         variant="table"
                         onRemove={handleRemoveProduct}
                       />
@@ -370,7 +365,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`metro-${product.id}`}
                         product={product}
-                        type="metro"
                         variant="table"
                         onRemove={handleRemoveProduct}
                       />
@@ -414,7 +408,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`yarche-${product.id}`}
                         product={product}
-                        type="yarche"
                         variant={displayMode}
                         onRemove={handleRemoveProduct}
                       />
@@ -455,7 +448,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`magnit-${product.id}`}
                         product={product}
-                        type="magnit"
                         variant={displayMode}
                         onRemove={handleRemoveProduct}
                       />
@@ -496,7 +488,6 @@ export const Monitoring = () => {
                       <ProductCard
                         key={`metro-${product.id}`}
                         product={product}
-                        type="metro"
                         variant={displayMode}
                         onRemove={handleRemoveProduct}
                       />
@@ -524,7 +515,6 @@ export const Monitoring = () => {
                 <ProductCard
                   key={`yarche-${product.id}`}
                   product={product}
-                  type="yarche"
                   variant={displayMode}
                   onRemove={handleRemoveProduct}
                 />
@@ -533,7 +523,6 @@ export const Monitoring = () => {
                 <ProductCard
                   key={`magnit-${product.id}`}
                   product={product}
-                  type="magnit"
                   variant={displayMode}
                   onRemove={handleRemoveProduct}
                 />
@@ -542,7 +531,6 @@ export const Monitoring = () => {
                 <ProductCard
                   key={`metro-${product.id}`}
                   product={product}
-                  type="metro"
                   variant={displayMode}
                   onRemove={handleRemoveProduct}
                 />
