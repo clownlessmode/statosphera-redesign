@@ -8,13 +8,14 @@ import { ProductCard } from "./product-card";
 import { Skeleton } from "@shared/ui/skeleton";
 import pluralize from "@shared/lib/pluralize";
 import { useState, useEffect } from "react";
-import { Box, Grid3X3, Layout, List, Store } from "lucide-react";
+import { Box, Grid3X3, Layout, List, Store, Minus, Plus } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useSession } from "@entities/session";
 import { ROLES } from "@shared/constants/roles";
 import { useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
+import { cn } from "@shared/lib/utils";
 
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
@@ -38,6 +39,7 @@ export const Monitoring = () => {
   const [displayMode, setDisplayMode] = useState<"grid" | "list" | "table">(
     "grid",
   );
+  const [gridColumns, setGridColumns] = useState(5);
   const [removedProducts, setRemovedProducts] = useState<Set<string | number>>(
     new Set(),
   );
@@ -159,6 +161,33 @@ export const Monitoring = () => {
               >
                 <Layout />
               </Button>
+              {displayMode === "grid" && (
+                <Card className="!p-1 flex flex-row items-center gap-1 ml-2">
+                  <Button
+                    onClick={() =>
+                      setGridColumns((prev) => Math.max(3, prev - 1))
+                    }
+                    variant="outline"
+                    size="icon"
+                    disabled={gridColumns <= 3}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="px-2 text-sm font-medium min-w-[2rem] text-center">
+                    {gridColumns}
+                  </span>
+                  <Button
+                    onClick={() =>
+                      setGridColumns((prev) => Math.min(8, prev + 1))
+                    }
+                    variant="outline"
+                    size="icon"
+                    disabled={gridColumns >= 8}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </Card>
+              )}
             </Card>
           </div>
         </div>
@@ -210,9 +239,9 @@ export const Monitoring = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {yarcheProducts?.map((product, index) => (
+                          {yarcheProducts?.map((product) => (
                             <ProductCard
-                              key={`yarche-${product.id}-${index}`}
+                              key={`yarche-${product.id}`}
                               product={product}
                               type="yarche"
                               variant="table"
@@ -251,9 +280,9 @@ export const Monitoring = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {magnitProducts?.map((product, index) => (
+                          {magnitProducts?.map((product) => (
                             <ProductCard
-                              key={`magnit-${product.id}-${index}`}
+                              key={`magnit-${product.id}`}
                               product={product}
                               type="magnit"
                               variant="table"
@@ -292,9 +321,9 @@ export const Monitoring = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {metroProducts?.map((product, index) => (
+                          {metroProducts?.map((product) => (
                             <ProductCard
-                              key={`metro-${product.id}-${index}`}
+                              key={`metro-${product.id}`}
                               product={product}
                               type="metro"
                               variant="table"
@@ -319,27 +348,27 @@ export const Monitoring = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {yarcheProducts?.map((product, index) => (
+                    {yarcheProducts?.map((product) => (
                       <ProductCard
-                        key={`yarche-${product.id}-${index}`}
+                        key={`yarche-${product.id}`}
                         product={product}
                         type="yarche"
                         variant="table"
                         onRemove={handleRemoveProduct}
                       />
                     ))}
-                    {magnitProducts?.map((product, index) => (
+                    {magnitProducts?.map((product) => (
                       <ProductCard
-                        key={`magnit-${product.id}-${index}`}
+                        key={`magnit-${product.id}`}
                         product={product}
                         type="magnit"
                         variant="table"
                         onRemove={handleRemoveProduct}
                       />
                     ))}
-                    {metroProducts?.map((product, index) => (
+                    {metroProducts?.map((product) => (
                       <ProductCard
-                        key={`metro-${product.id}-${index}`}
+                        key={`metro-${product.id}`}
                         product={product}
                         type="metro"
                         variant="table"
@@ -370,13 +399,20 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? "w-full grid grid-cols-4 gap-4"
+                        ? cn(`w-full grid gap-4`, {
+                            "grid-cols-3": gridColumns === 3,
+                            "grid-cols-4": gridColumns === 4,
+                            "grid-cols-5": gridColumns === 5,
+                            "grid-cols-6": gridColumns === 6,
+                            "grid-cols-7": gridColumns === 7,
+                            "grid-cols-8": gridColumns === 8,
+                          })
                         : "w-full flex flex-col gap-2"
                     }
                   >
-                    {yarcheProducts?.map((product, index) => (
+                    {yarcheProducts?.map((product) => (
                       <ProductCard
-                        key={`yarche-${product.id}-${index}`}
+                        key={`yarche-${product.id}`}
                         product={product}
                         type="yarche"
                         variant={displayMode}
@@ -404,13 +440,20 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? "w-full grid grid-cols-4 gap-4"
+                        ? cn(`w-full grid gap-4`, {
+                            "grid-cols-3": gridColumns === 3,
+                            "grid-cols-4": gridColumns === 4,
+                            "grid-cols-5": gridColumns === 5,
+                            "grid-cols-6": gridColumns === 6,
+                            "grid-cols-7": gridColumns === 7,
+                            "grid-cols-8": gridColumns === 8,
+                          })
                         : "w-full flex flex-col gap-2"
                     }
                   >
-                    {magnitProducts?.map((product, index) => (
+                    {magnitProducts?.map((product) => (
                       <ProductCard
-                        key={`magnit-${product.id}-${index}`}
+                        key={`magnit-${product.id}`}
                         product={product}
                         type="magnit"
                         variant={displayMode}
@@ -438,13 +481,20 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? "w-full grid grid-cols-4 gap-4"
+                        ? cn(`w-full grid gap-4`, {
+                            "grid-cols-3": gridColumns === 3,
+                            "grid-cols-4": gridColumns === 4,
+                            "grid-cols-5": gridColumns === 5,
+                            "grid-cols-6": gridColumns === 6,
+                            "grid-cols-7": gridColumns === 7,
+                            "grid-cols-8": gridColumns === 8,
+                          })
                         : "w-full flex flex-col gap-2"
                     }
                   >
-                    {metroProducts?.map((product, index) => (
+                    {metroProducts?.map((product) => (
                       <ProductCard
-                        key={`metro-${product.id}-${index}`}
+                        key={`metro-${product.id}`}
                         product={product}
                         type="metro"
                         variant={displayMode}
@@ -459,31 +509,38 @@ export const Monitoring = () => {
             <div
               className={
                 displayMode === "grid"
-                  ? "w-full grid grid-cols-4 gap-4"
+                  ? cn(`w-full grid gap-4`, {
+                      "grid-cols-3": gridColumns === 3,
+                      "grid-cols-4": gridColumns === 4,
+                      "grid-cols-5": gridColumns === 5,
+                      "grid-cols-6": gridColumns === 6,
+                      "grid-cols-7": gridColumns === 7,
+                      "grid-cols-8": gridColumns === 8,
+                    })
                   : "w-full flex flex-col gap-2"
               }
             >
-              {yarcheProducts?.map((product, index) => (
+              {yarcheProducts?.map((product) => (
                 <ProductCard
-                  key={`yarche-${product.id}-${index}`}
+                  key={`yarche-${product.id}`}
                   product={product}
                   type="yarche"
                   variant={displayMode}
                   onRemove={handleRemoveProduct}
                 />
               ))}
-              {magnitProducts?.map((product, index) => (
+              {magnitProducts?.map((product) => (
                 <ProductCard
-                  key={`magnit-${product.id}-${index}`}
+                  key={`magnit-${product.id}`}
                   product={product}
                   type="magnit"
                   variant={displayMode}
                   onRemove={handleRemoveProduct}
                 />
               ))}
-              {metroProducts?.map((product, index) => (
+              {metroProducts?.map((product) => (
                 <ProductCard
-                  key={`metro-${product.id}-${index}`}
+                  key={`metro-${product.id}`}
                   product={product}
                   type="metro"
                   variant={displayMode}
@@ -498,7 +555,16 @@ export const Monitoring = () => {
               <Skeleton className="w-[100px] h-[20px]"></Skeleton>
               <Skeleton className="w-[100px] h-[20px]"></Skeleton>
             </div>
-            <div className="w-full grid grid-cols-4 gap-4">
+            <div
+              className={cn(`w-full grid gap-4`, {
+                "grid-cols-3": gridColumns === 3,
+                "grid-cols-4": gridColumns === 4,
+                "grid-cols-5": gridColumns === 5,
+                "grid-cols-6": gridColumns === 6,
+                "grid-cols-7": gridColumns === 7,
+                "grid-cols-8": gridColumns === 8,
+              })}
+            >
               {[...Array(16)].map((_, index) => (
                 <Skeleton key={index} className="w-full h-[200px]" />
               ))}
