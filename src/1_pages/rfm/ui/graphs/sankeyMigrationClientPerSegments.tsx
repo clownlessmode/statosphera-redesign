@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import useSafari from "@shared/hooks/use-safari";
 import { FC } from "react";
 import { SankeyChart } from "@shared/ui/sankey-chart";
+import { DownloadSankey } from "@features/rfm/download";
 
 interface Props {
   graph: SankeyMigrationClientPerSegmentsResponse;
@@ -21,11 +22,12 @@ export const SankeyMigrationClientPerSegments: FC<Props> = ({
   }
 
   return (
-    <Card className="h-[800px] col-span-2 gap-0 overflow-visible">
+    <Card className="h-[800px] col-span-2 gap-0 overflow-visible relative">
       <CardHeader className="flex flex-row justify-center items-center gap-1">
         <CardTitle className="text-center text-lg font-semibold max-md:text-sm">
           Диаграмма потоков
         </CardTitle>
+        <DownloadSankey />
       </CardHeader>
       <CardContent className="h-full w-full">
         <SankeyChart
