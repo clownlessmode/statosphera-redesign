@@ -1,3 +1,10 @@
+export interface YarcheCategory {
+  id: number;
+  code: string;
+  name: string;
+  parent_tree_id: number | null;
+}
+
 export interface YarcheProduct {
   id: string;
   code: string;
@@ -5,13 +12,77 @@ export interface YarcheProduct {
   description: string;
   price: number;
   previous_price: number | null;
+  item_sum?: number;
+  previous_item_sum?: number | null;
   is_available: boolean;
+  is_adult?: boolean;
+  is_new?: boolean;
+  is_hit?: boolean;
+  is_vkusvill?: boolean;
+  is_favorite?: boolean;
+  is_subscribed?: boolean;
+  is_veterinary_control?: boolean;
   url: string;
   image: string;
+  images?: number[];
   brand: string | null;
   weight_unit: string;
   volume_unit: string | null;
-  categories: string | string[];
+  categories: YarcheCategory[] | string | string[];
+  rating?: number;
+  number_of_ratings?: number;
+  promos?: any;
+  quant?: {
+    code: string;
+    type: string;
+    unit: string;
+    currency: string;
+    fullName?: string | null;
+    multiple: number;
+    unitCode: string;
+    maxAmount: number;
+    minAmount: number;
+    shortName?: string | null;
+    stepAmount: number;
+    pricePerUnit: number;
+    amountPerQuant: number;
+    previousPricePerUnit?: number | null;
+  };
+  agreement?: {
+    seller?: {
+      name: string;
+    };
+    minimalOrderSum?: number;
+  };
+  min_delivery_time?: string | null;
+  max_delivery_time?: string | null;
+  property_values?: {
+    [key: string]: string | undefined;
+    at_pack?: string;
+    shelf_life?: string;
+    composition?: string;
+    fat_content?: string;
+    weight_unit?: string;
+    energy_value?: string;
+    manufacturer?: string;
+    article_number?: string;
+    own_trade_mark?: string;
+    protein_content?: string;
+    carbohydrate_content?: string;
+    country_of_manufacture?: string;
+    obrabotka_molochnogo_producta?: string;
+  };
+  meta_tags?: {
+    title?: string;
+    description?: string;
+  };
+  unavailable_reason?: string | null;
+  catalogs?: any;
+  energy_value_per_serving?: number | null;
+  protein_content_per_serving?: number | null;
+  fat_content_per_serving?: number | null;
+  carbohydrate_content_per_serving?: number | null;
+  delivery_slot?: any;
   updated_at: string;
   created_at: string;
 }

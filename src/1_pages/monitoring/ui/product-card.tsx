@@ -1,105 +1,108 @@
-import { Card, CardContent, CardDescription, CardTitle } from "@shared/ui/card";
-import { Badge } from "@shared/ui/badge";
+import { memo } from "react";
 import {
   ShopProduct,
   YarcheProduct,
+  YarcheCategory,
   MagnitProduct,
   MetroProduct,
 } from "../config/types";
-import { TrendingDown, X } from "lucide-react";
-import { Button } from "@shared/ui/button";
-import { memo } from "react";
-
-const formatImageUrl = (imageUrl: string | string[]): string => {
-  // Если это JSON строка массива (для Magnit и Metro), парсим ее
-  if (typeof imageUrl === "string" && imageUrl.startsWith("[")) {
-    try {
-      const parsed = JSON.parse(imageUrl);
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed[0] : "";
-    } catch {
-      return imageUrl;
-    }
-  }
-
-  // Если массив, берем первый элемент
-  const url = Array.isArray(imageUrl) ? imageUrl[0] : imageUrl;
-
-  // Извлекаем число из URL вида https://yarcheplus.ru/images/76256
-  const match = url.match(/\/images\/(\d+)/);
-  if (!match) return url;
-
-  const fullNumber = match[1]; // "76256"
-  const firstTwo = fullNumber.slice(0, 2); // "76"
-  const rest = fullNumber.slice(2); // "256"
-
-  return `https://api.yarcheplus.ru/thumbnail/768x768/${firstTwo}/${rest}/${fullNumber}.webp`;
-};
-
-const removeUnitsFromName = (name: string): string => {
-  // Удаляем единицы измерения: г, кг, л, мл, шт, штук, штуки и т.д.
-  // Паттерн: число (с запятой/точкой) + единица измерения
-  return name
-    .replace(/«[^»]*»/g, "") // Удаляем текст в кавычках «...»
-    .replace(
-      /\d+([,.]\d+)?\s*(г|кг|л|мл|шт|штук|штуки?|кг\.|г\.|л\.|мл\.)/gi,
-      "",
-    )
-    .replace(/,\s*$/g, "") // Убираем запятую в конце строки
-    .replace(/\s+/g, " ") // Убираем множественные пробелы
-    .trim(); // Убираем пробелы в начале и конце
-};
-
-const getWeight = (name: string): string => {
-  const match = name.match(
-    /\d+([,.]\d+)?\s*(г|кг|л|мл|шт|штук|штуки?|кг\.|г\.|л\.|мл\.)/gi,
-  );
-  if (!match) return "";
-
-  const weight = match[0];
-  return weight;
-};
+import { formatImageUrl, removeUnitsFromName, getWeight } from "./cards/utils";
+import { ProductCardData } from "./cards/types";
+import { YarcheCard } from "./cards/yarche-card";
+import { MagnitCard } from "./cards/magnit-card";
+import { MetroCard } from "./cards/metro-card";
 
 interface ProductCardProps {
   product: ShopProduct;
-  type: "yarche" | "magnit" | "metro";
   variant?: "grid" | "list" | "table";
   onRemove?: (id: string | number) => void;
 }
 
+const getProductType = (
+  product: ShopProduct,
+): "yarche" | "magnit" | "metro" => {
+  // YarcheProduct имеет уникальные поля: code, weight_unit, volume_unit
+  if (
+    "code" in product &&
+    "weight_unit" in product &&
+    "volume_unit" in product
+  ) {
+    return "yarche";
+  }
+
+  // MetroProduct имеет уникальные поля: slug, article, packing, prices
+  if (
+    "slug" in product &&
+    "article" in product &&
+    "packing" in product &&
+    "prices" in product
+  ) {
+    return "metro";
+  }
+
+  // По умолчанию Magnit
+  return "magnit";
+};
+
 export const ProductCard = memo(
-  ({ product, type, variant = "grid", onRemove }: ProductCardProps) => {
-    let image;
-    let weight;
-    let name;
-    let brand;
-    let price;
-    let previous_price;
-    let categories: string[] = [];
-    //   let is_available = false;
-    //   let url = "";
-    //   let updated_at = "";
-    //   let created_at = "";
+  ({ product, variant = "grid", onRemove }: ProductCardProps) => {
+    const type = getProductType(product);
+    let cardData: ProductCardData;
+
     if (type === "yarche") {
       const yarcheProduct = product as YarcheProduct;
-      image = formatImageUrl(yarcheProduct.image);
-      weight = yarcheProduct.weight_unit
+      const image = formatImageUrl(yarcheProduct.image);
+      const weight = yarcheProduct.weight_unit
         ? yarcheProduct.weight_unit
         : getWeight(yarcheProduct.name);
-      name = removeUnitsFromName(yarcheProduct.name);
-      brand = yarcheProduct.brand ? yarcheProduct.brand : "Бренд не указан";
-      price = yarcheProduct.price;
-      previous_price = yarcheProduct.previous_price
+      const name = removeUnitsFromName(yarcheProduct.name);
+      const brand = yarcheProduct.brand
+        ? yarcheProduct.brand
+        : "Бренд не указан";
+      const price = yarcheProduct.price;
+      const previous_price = yarcheProduct.previous_price
         ? yarcheProduct.previous_price
         : 0;
-      // Нормализуем categories: если строка JSON - парсим, если массив - оставляем, если обычная строка - в массив
+
+      // Нормализуем categories: новый формат - массив объектов {id, code, name, parent_tree_id}
+      let categories: string[] = [];
       if (Array.isArray(yarcheProduct.categories)) {
-        categories = yarcheProduct.categories;
+        // Проверяем, это новый формат (объекты) или старый (строки)
+        if (yarcheProduct.categories.length > 0) {
+          const firstItem = yarcheProduct.categories[0];
+          if (typeof firstItem === "object" && "name" in firstItem) {
+            // Новый формат: массив объектов с полем name
+            categories = (yarcheProduct.categories as YarcheCategory[]).map(
+              (cat) => cat.name,
+            );
+          } else {
+            // Старый формат: массив строк
+            categories = yarcheProduct.categories as string[];
+          }
+        } else {
+          categories = [];
+        }
       } else if (typeof yarcheProduct.categories === "string") {
-        // Пытаемся распарсить JSON строку
+        // Пытаемся распарсить JSON строку (старый формат)
         if (yarcheProduct.categories.startsWith("[")) {
           try {
             const parsed = JSON.parse(yarcheProduct.categories);
-            categories = Array.isArray(parsed) ? parsed : [parsed];
+            if (Array.isArray(parsed)) {
+              // Проверяем формат элементов
+              if (
+                parsed.length > 0 &&
+                typeof parsed[0] === "object" &&
+                "name" in parsed[0]
+              ) {
+                categories = (parsed as YarcheCategory[]).map(
+                  (cat) => cat.name,
+                );
+              } else {
+                categories = parsed;
+              }
+            } else {
+              categories = [parsed];
+            }
           } catch {
             categories = [yarcheProduct.categories];
           }
@@ -109,224 +112,104 @@ export const ProductCard = memo(
       } else {
         categories = [];
       }
-    } else if (type === "magnit") {
-      // MagnitProduct
+
+      cardData = {
+        image,
+        weight,
+        name,
+        brand,
+        price,
+        previous_price,
+        categories,
+        id: product.id,
+      };
+
+      return (
+        <YarcheCard
+          data={cardData}
+          product={yarcheProduct}
+          variant={variant}
+          onRemove={onRemove}
+        />
+      );
+    }
+
+    if (type === "magnit") {
       const magnitProduct = product as MagnitProduct;
-      image = formatImageUrl(magnitProduct.images);
-      weight = magnitProduct.weight
+      const image = formatImageUrl(magnitProduct.images);
+      const weight = magnitProduct.weight
         ? magnitProduct.weight
         : getWeight(magnitProduct.name);
-      name = removeUnitsFromName(magnitProduct.name);
-      brand = magnitProduct.brand ? magnitProduct.brand : "";
-      price = magnitProduct.price;
-      previous_price = magnitProduct.old_price ? magnitProduct.old_price : 0;
-    } else {
-      // MetroProduct
-      const metroProduct = product as MetroProduct;
-      image = formatImageUrl(metroProduct.images);
+      const name = removeUnitsFromName(magnitProduct.name);
+      const brand = magnitProduct.brand ? magnitProduct.brand : "";
+      const price = magnitProduct.price;
+      const previous_price = magnitProduct.old_price
+        ? magnitProduct.old_price
+        : 0;
 
-      // Парсим packing для веса
-      let packingWeight = "";
-      try {
-        const packing = JSON.parse(metroProduct.packing);
-        if (packing.type === "шт") {
-          packingWeight = `${packing.size} ${packing.type}`;
-        } else if (packing.size) {
-          packingWeight = `${packing.size} ${packing.type}`;
-        }
-      } catch {
-        packingWeight = getWeight(metroProduct.name);
-      }
-      weight = packingWeight || getWeight(metroProduct.name);
+      cardData = {
+        image,
+        weight,
+        name,
+        brand,
+        price,
+        previous_price,
+        categories: [],
+        id: product.id,
+      };
 
-      name = removeUnitsFromName(metroProduct.name);
-      brand = metroProduct.manufacturer
-        ? metroProduct.manufacturer
-        : "Бренд не указан";
-
-      // Парсим prices для цены
-      try {
-        const prices = JSON.parse(metroProduct.prices);
-        price = prices.price;
-        previous_price = prices.old_price ? prices.old_price : 0;
-      } catch {
-        price = 0;
-        previous_price = 0;
-      }
+      return (
+        <MagnitCard data={cardData} variant={variant} onRemove={onRemove} />
+      );
     }
 
-    const handleRemove = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      if (onRemove) {
-        onRemove(product.id);
+    // MetroProduct
+    const metroProduct = product as MetroProduct;
+    const image = formatImageUrl(metroProduct.images);
+
+    // Парсим packing для веса
+    let packingWeight = "";
+    try {
+      const packing = JSON.parse(metroProduct.packing);
+      if (packing.type === "шт") {
+        packingWeight = `${packing.size} ${packing.type}`;
+      } else if (packing.size) {
+        packingWeight = `${packing.size} ${packing.type}`;
       }
+    } catch {
+      packingWeight = getWeight(metroProduct.name);
+    }
+    const weight = packingWeight || getWeight(metroProduct.name);
+
+    const name = removeUnitsFromName(metroProduct.name);
+    const brand = metroProduct.manufacturer
+      ? metroProduct.manufacturer
+      : "Бренд не указан";
+
+    // Парсим prices для цены
+    let price = 0;
+    let previous_price = 0;
+    try {
+      const prices = JSON.parse(metroProduct.prices);
+      price = prices.price;
+      previous_price = prices.old_price ? prices.old_price : 0;
+    } catch {
+      price = 0;
+      previous_price = 0;
+    }
+
+    cardData = {
+      image,
+      weight,
+      name,
+      brand,
+      price,
+      previous_price,
+      categories: [],
+      id: product.id,
     };
-    if (variant === "table") {
-      return (
-        <tr className="border-b hover:bg-muted/50 group">
-          <td className="p-4">
-            <img
-              src={image}
-              alt={name}
-              width={60}
-              height={60}
-              loading="lazy"
-              decoding="async"
-              className="w-[60px] h-[60px] object-contain bg-white border border-border rounded-lg"
-            />
-          </td>
-          <td className="p-4">
-            <div className="text-sm text-muted-foreground font-light">
-              {brand}
-            </div>
-            <div className="font-medium">{name}</div>
-          </td>
-          <td className="p-4">
-            <div className="text-sm text-muted-foreground">{weight}</div>
-          </td>
-          <td className="p-4">
-            <div className="text-primary text-lg font-bold">
-              {price?.toLocaleString()} ₽
-              {previous_price && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingDown className="h-3 w-3" />
-                  <span className="line-through">
-                    {previous_price.toFixed(2)} ₽
-                  </span>
-                </div>
-              )}
-            </div>
-          </td>
-          {onRemove && (
-            <td className="p-4">
-              <Button
-                variant="destructive"
-                size="icon"
-                className="size-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={handleRemove}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </td>
-          )}
-        </tr>
-      );
-    }
 
-    if (variant === "list") {
-      return (
-        <Card className="w-full relative group">
-          {onRemove && (
-            <Button
-              variant="destructive"
-              size="icon"
-              className="absolute top-2 right-2 size-8 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-              onClick={handleRemove}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          )}
-          <CardContent className="flex flex-row gap-4 p-4 py-0">
-            <img
-              src={image}
-              alt={name}
-              width={100}
-              height={100}
-              loading="lazy"
-              decoding="async"
-              className="w-[100px] h-[100px] flex-shrink-0 object-contain bg-white border border-border rounded-2xl"
-            />
-            <div className="flex-1 flex flex-col">
-              <div>
-                <CardDescription className="text-sm text-muted-foreground font-light">
-                  {brand}
-                </CardDescription>
-                <div className="flex flex-row gap-2">
-                  <CardTitle className="line-clamp-2">{name}</CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground font-light">
-                    {weight}
-                  </CardDescription>
-                </div>
-              </div>
-              <div className="flex flex-row justify-between items-start mt-1">
-                <div className="flex flex-row gap-2 flex-wrap">
-                  {categories &&
-                    Array.isArray(categories) &&
-                    categories.length > 0 &&
-                    categories
-                      .filter((cat) => cat && typeof cat === "string")
-                      .map((category, idx) => (
-                        <Badge key={idx} variant="outline">
-                          {category}
-                        </Badge>
-                      ))}
-                </div>
-                <CardTitle className="text-primary text-2xl font-bold">
-                  {price?.toLocaleString()} ₽
-                  {previous_price ? (
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <TrendingDown className="h-3 w-3" />
-                      <span className="line-through">
-                        {previous_price.toFixed(2)} ₽
-                      </span>
-                    </div>
-                  ) : null}
-                </CardTitle>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      );
-    }
-
-    // Grid (по умолчанию)
-    return (
-      <Card className="col-span-1 w-full gap-2 relative group">
-        {onRemove && (
-          <Button
-            variant="destructive"
-            size="icon"
-            className="absolute top-2 right-2 size-8 opacity-0 group-hover:opacity-100 transition-opacity z-10"
-            onClick={handleRemove}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        )}
-        <CardContent>
-          <img
-            src={image}
-            alt={name}
-            width={100}
-            height={100}
-            loading="lazy"
-            decoding="async"
-            className="w-full aspect-square object-contain bg-white border border-border rounded-2xl overflow-hidden"
-          />
-        </CardContent>
-        <CardContent className="py-0">
-          <CardDescription className="text-sm text-muted-foreground font-light">
-            {brand}
-          </CardDescription>
-          <CardTitle className="line-clamp-2">{name}</CardTitle>
-        </CardContent>
-        <CardContent className="py-0 mt-auto flex flex-row justify-between items-center">
-          <CardTitle className="text-primary text-2xl font-bold items-start">
-            {price?.toLocaleString()} ₽
-            {previous_price ? (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <TrendingDown className="h-3 w-3" />
-                <span className="line-through">
-                  {previous_price.toFixed(2)} ₽
-                </span>
-              </div>
-            ) : null}
-          </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground font-light">
-            {weight}
-          </CardDescription>
-        </CardContent>
-      </Card>
-    );
+    return <MetroCard data={cardData} variant={variant} onRemove={onRemove} />;
   },
 );
 
