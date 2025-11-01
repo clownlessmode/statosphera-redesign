@@ -31,6 +31,7 @@ import { Rfm } from "@pages/rfm/ui/rfm";
 import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
+import { Monitoring } from "@pages/monitoring";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -70,7 +71,7 @@ export const ROUTES_PATH = {
   ADMIN_LOGS: "/admin/logs",
   ADMIN_NOTIFICATIONS: "/admin/notifications",
   ADMIN_DIGESTS: "/admin/digests",
-
+  MONITORING: "/monitoring",
   // Магазины и доходы
   STORES: "/stores",
   REPORT: "/report",
@@ -251,6 +252,13 @@ export const ROUTES: RouteConfig[] = [
     element: <SalesDynamics />,
     layout: Sidebar,
     label: "Динамика продаж",
+  },
+  {
+    path: ROUTES_PATH.MONITORING,
+    variant: "private",
+    element: <Monitoring />,
+    layout: Sidebar,
+    label: "Мониторинг сетей",
   },
   {
     path: ROUTES_PATH.GRILL,

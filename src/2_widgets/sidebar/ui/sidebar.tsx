@@ -6,6 +6,7 @@ import {
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
+  Globe,
   // FileQuestion,
   Ham,
   Heart,
@@ -113,6 +114,12 @@ const Sidebar = ({
         url: ROUTES_PATH.IM,
         icon: ShoppingBag,
         disabled: false,
+      },
+      {
+        title: "Мониторинг сетей",
+        url: ROUTES_PATH.MONITORING,
+        icon: Globe,
+        disabled: session?.idUser !== 181,
       },
       {
         title: "Гриль",
