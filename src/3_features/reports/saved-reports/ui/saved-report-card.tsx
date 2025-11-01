@@ -665,7 +665,7 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
   };
 
   return (
-    <Card className="hover:shadow-md cursor-pointer transition-all bg-background">
+    <Card className="hover:shadow-md cursor-pointer transition-all bg-background shrink-0">
       <CardHeader className="flex flex-row justify-between gap-4">
         <CardTitle>{data.nameReport}</CardTitle>
         <CardDescription>
