@@ -8,7 +8,16 @@ import { ProductCard } from "./product-card";
 import { Skeleton } from "@shared/ui/skeleton";
 import pluralize from "@shared/lib/pluralize";
 import { useState, useEffect } from "react";
-import { Box, Grid3X3, Layout, List, Store, Minus, Plus } from "lucide-react";
+import {
+  Box,
+  Grid3X3,
+  Layout,
+  List,
+  Store,
+  Minus,
+  Plus,
+  Save,
+} from "lucide-react";
 import { Button } from "@shared/ui/button";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useSession } from "@entities/session";
@@ -20,8 +29,12 @@ import { cn } from "@shared/lib/utils";
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const { products, isProductsLoading } =
-    useMonitoringController(debouncedSearch);
+  const {
+    products,
+    isProductsLoading,
+    downloadReport,
+    isDownloadReportLoading,
+  } = useMonitoringController(debouncedSearch);
   console.log(debouncedSearch);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -86,9 +99,61 @@ export const Monitoring = () => {
     return null;
   }
 
+  const handleDownloadReport = async () => {
+    try {
+      // 1) Получаем Blob
+      const blob = await downloadReport({
+        yarche: yarcheProducts.map((product) => product.id.toString()),
+        magnit: magnitProducts.map((product) => product.id.toString()),
+        metro: metroProducts.map((product) => product.id.toString()),
+      });
+
+      // 2) Выбираем имя файла (можно статично или из headers)
+      const filename =
+        "Мониторинг сетей на " +
+        new Date().toLocaleDateString("ru-RU", {
+          year: "numeric",
+          month: "long",
+        }) +
+        ".xlsx";
+
+      // 3) Создаём временный URL из Blob
+      const url = window.URL.createObjectURL(blob as any);
+
+      // 4) Генерируем <a> и эмулируем клик
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      // 5) Убираем за собой
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download error:", err);
+    }
+  };
+
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
-      <Header title="Мониторинг сетей" />
+      <Header
+        title="Мониторинг сетей"
+        actions={{
+          right: (
+            <div className="flex flex-row gap-2">
+              {allProducts.length > 0 && (
+                <Button
+                  loading={isDownloadReportLoading}
+                  onClick={() => handleDownloadReport()}
+                >
+                  Скачать отчет <Save />
+                </Button>
+              )}
+            </div>
+          ),
+        }}
+      />
       <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col">
         <Card>
           <CardContent className="flex flex-row gap-2">

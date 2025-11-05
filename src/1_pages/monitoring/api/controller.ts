@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { MonitoringService } from "./service";
-import { ShopProductsResponse } from "../config/types";
+import { DownloadReportRequest, ShopProductsResponse } from "../config/types";
 import { ApiError } from "@shared/api/types";
+import { toast } from "sonner";
 
 export const useMonitoringController = (search: string) => {
   const getProducts = useQuery<ShopProductsResponse[], ApiError>({
@@ -10,8 +11,28 @@ export const useMonitoringController = (search: string) => {
     enabled: !!search,
   });
 
+  const downloadReport = useMutation<any, ApiError, DownloadReportRequest>({
+    mutationFn: (dto: DownloadReportRequest) =>
+      toast
+        .promise(MonitoringService.downloadReport(dto), {
+          loading: "Генерация файла",
+          success: () => {
+            return `Файл сейчас будет скачан на ваш компьютер`;
+          },
+          error: (error) => {
+            if (error.response?.data) {
+              return `Произошла ошибка: ${error.response.data.message}`;
+            }
+            return "Произошла ошибка при генерации файла";
+          },
+        })
+        .unwrap(),
+  });
+
   return {
     products: getProducts.data,
     isProductsLoading: getProducts.isLoading,
+    downloadReport: downloadReport.mutateAsync,
+    isDownloadReportLoading: downloadReport.isPending,
   };
 };
