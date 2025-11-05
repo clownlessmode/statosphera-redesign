@@ -20,10 +20,6 @@ import {
 } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
-import { useSession } from "@entities/session";
-import { ROLES } from "@shared/constants/roles";
-import { useNavigate } from "react-router";
-import { ROUTES_PATH } from "@app/router/routes";
 import { cn } from "@shared/lib/utils";
 
 export const Monitoring = () => {
@@ -82,22 +78,6 @@ export const Monitoring = () => {
   const handleRemoveProduct = (id: string | number) => {
     setRemovedProducts((prev) => new Set([...prev, id]));
   };
-
-  const navigate = useNavigate();
-  const { session } = useSession();
-
-  useEffect(() => {
-    if (session) {
-      const hasAccess = session.idUser === 181 || session.role === ROLES.ADMIN;
-      if (!hasAccess) {
-        navigate(ROUTES_PATH.FORBIDDEN, { replace: true });
-      }
-    }
-  }, [session, navigate]);
-
-  if (session && session.idUser !== 181 && session.role !== ROLES.ADMIN) {
-    return null;
-  }
 
   const handleDownloadReport = async () => {
     try {
