@@ -88,7 +88,15 @@ export const Monitoring = () => {
 
   useEffect(() => {
     if (session) {
-      const hasAccess = session.idUser === 181 || session.role === ROLES.ADMIN;
+      // Создаем массив с ID, у которых есть особый доступ
+      const specialAccessUserIds = [181, 2793];
+
+      const hasAccess =
+        // 1. Проверяем, есть ли ID пользователя в нашем списке
+        specialAccessUserIds.includes(session.idUser) ||
+        // 2. ИЛИ проверяем, является ли пользователь админом
+        session.role === ROLES.ADMIN;
+
       if (!hasAccess) {
         navigate(ROUTES_PATH.FORBIDDEN, { replace: true });
       }
