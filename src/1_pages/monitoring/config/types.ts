@@ -123,3 +123,9 @@ export interface ShopProductsResponse {
   shop: string;
   data: ShopProduct[];
 }
+
+export interface DownloadReportRequest {
+  yarche: string[];
+  magnit: string[];
+  metro: string[];
+}

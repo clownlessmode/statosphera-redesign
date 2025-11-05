@@ -1,4 +1,9 @@
-export const formatImageUrl = (imageUrl: string | string[]): string => {
+export const formatImageUrl = (
+  imageUrl: string | string[] | null | undefined,
+): string => {
+  // Проверка на null или undefined
+  if (!imageUrl) return "";
+
   // Если это JSON строка массива (для Magnit и Metro), парсим ее
   if (typeof imageUrl === "string" && imageUrl.startsWith("[")) {
     try {
@@ -11,6 +16,9 @@ export const formatImageUrl = (imageUrl: string | string[]): string => {
 
   // Если массив, берем первый элемент
   const url = Array.isArray(imageUrl) ? imageUrl[0] : imageUrl;
+
+  // Проверка на null или undefined после извлечения из массива
+  if (!url) return "";
 
   // Извлекаем число из URL вида https://yarcheplus.ru/images/76256
   const match = url.match(/\/images\/(\d+)/);
