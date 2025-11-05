@@ -119,7 +119,6 @@ const Sidebar = ({
         title: "Мониторинг сетей",
         url: ROUTES_PATH.MONITORING,
         icon: Globe,
-        disabled: ![181, 2793].includes(Number(session?.idUser)),
       },
       {
         title: "Гриль",
