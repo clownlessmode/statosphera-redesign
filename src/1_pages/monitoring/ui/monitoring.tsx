@@ -21,6 +21,7 @@ import {
 import { Button } from "@shared/ui/button";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
+import { useIsMobile } from "@shared/hooks";
 
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
@@ -115,6 +116,7 @@ export const Monitoring = () => {
     }
   };
 
+  const isMobile = useIsMobile();
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header
@@ -138,14 +140,18 @@ export const Monitoring = () => {
         <Card>
           <CardContent className="flex flex-row gap-2">
             <Input
-              placeholder="Введите продукт, например: 'Молоко'"
+              placeholder={
+                !isMobile
+                  ? "Введите продукт, например: 'Молоко'"
+                  : "Введите продукт"
+              }
               className="bg-background"
               value={search}
               onChange={handleSearch}
             />
           </CardContent>
         </Card>
-        <div className="flex flex-row gap-2 justify-between items-center">
+        <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
           {products && products.length > 0 ? (
             <p className="text-sm text-muted-foreground">
               Найдено{" "}
@@ -170,9 +176,10 @@ export const Monitoring = () => {
           ) : (
             <div className="not-sr-only"></div>
           )}
-          <div className="flex flex-row gap-2">
-            <Card className="!p-1 flex flex-row items-center gap-1">
+          <div className="flex flex-col md:flex-row gap-2 md:w-fit w-full">
+            <Card className="!p-1 flex flex-row items-center gap-1 md:w-fit w-full">
               <Button
+                className="md:w-fit w-full"
                 onClick={() => handleViewChange("by-shops")}
                 variant={view === "by-shops" ? "default" : "outline"}
               >
@@ -180,6 +187,7 @@ export const Monitoring = () => {
                 По магазинам
               </Button>
               <Button
+                className="md:w-fit w-full"
                 onClick={() => handleViewChange("all")}
                 variant={view === "all" ? "default" : "outline"}
               >
@@ -187,7 +195,7 @@ export const Monitoring = () => {
                 Все вместе
               </Button>
             </Card>
-            <Card className="!p-1 flex flex-row items-center gap-1">
+            <Card className="!p-1 flex flex-col md:flex-row items-center gap-1 w-fit md:static fixed z-10 right-4 bottom-4 ">
               <Button
                 onClick={() => setDisplayMode("grid")}
                 variant={displayMode === "grid" ? "default" : "outline"}
@@ -206,8 +214,8 @@ export const Monitoring = () => {
               >
                 <Layout />
               </Button>
-              {displayMode === "grid" && (
-                <div className="!p-1 flex flex-row items-center gap-1 ml-2">
+              {displayMode === "grid" && !isMobile && (
+                <div className="!p-1 flex items-center gap-1 md:ml-2 flex-col md:flex-row justify-center">
                   <Button
                     onClick={() =>
                       setGridColumns((prev) => Math.max(3, prev - 1))
@@ -238,7 +246,7 @@ export const Monitoring = () => {
         </div>
         {!isProductsLoading ? (
           !debouncedSearch || debouncedSearch.trim() === "" ? (
-            <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
+            <div className="flex flex-col items-center justify-center h-full text-center">
               <NotSelectedFilters />
               <div className="text-muted-foreground space-y-2 mt-4">
                 <p className="text-lg font-medium">
@@ -449,14 +457,16 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? cn(`w-full grid gap-4`, {
-                            "grid-cols-3": gridColumns === 3,
-                            "grid-cols-4": gridColumns === 4,
-                            "grid-cols-5": gridColumns === 5,
-                            "grid-cols-6": gridColumns === 6,
-                            "grid-cols-7": gridColumns === 7,
-                            "grid-cols-8": gridColumns === 8,
-                          })
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
                         : "w-full flex flex-col gap-2"
                     }
                   >
@@ -489,14 +499,16 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? cn(`w-full grid gap-4`, {
-                            "grid-cols-3": gridColumns === 3,
-                            "grid-cols-4": gridColumns === 4,
-                            "grid-cols-5": gridColumns === 5,
-                            "grid-cols-6": gridColumns === 6,
-                            "grid-cols-7": gridColumns === 7,
-                            "grid-cols-8": gridColumns === 8,
-                          })
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
                         : "w-full flex flex-col gap-2"
                     }
                   >
@@ -529,14 +541,16 @@ export const Monitoring = () => {
                   <div
                     className={
                       displayMode === "grid"
-                        ? cn(`w-full grid gap-4`, {
-                            "grid-cols-3": gridColumns === 3,
-                            "grid-cols-4": gridColumns === 4,
-                            "grid-cols-5": gridColumns === 5,
-                            "grid-cols-6": gridColumns === 6,
-                            "grid-cols-7": gridColumns === 7,
-                            "grid-cols-8": gridColumns === 8,
-                          })
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
                         : "w-full flex flex-col gap-2"
                     }
                   >
@@ -556,14 +570,16 @@ export const Monitoring = () => {
             <div
               className={
                 displayMode === "grid"
-                  ? cn(`w-full grid gap-4`, {
-                      "grid-cols-3": gridColumns === 3,
-                      "grid-cols-4": gridColumns === 4,
-                      "grid-cols-5": gridColumns === 5,
-                      "grid-cols-6": gridColumns === 6,
-                      "grid-cols-7": gridColumns === 7,
-                      "grid-cols-8": gridColumns === 8,
-                    })
+                  ? !isMobile
+                    ? cn(`w-full grid gap-4`, {
+                        "grid-cols-3": gridColumns === 3,
+                        "grid-cols-4": gridColumns === 4,
+                        "grid-cols-5": gridColumns === 5,
+                        "grid-cols-6": gridColumns === 6,
+                        "grid-cols-7": gridColumns === 7,
+                        "grid-cols-8": gridColumns === 8,
+                      })
+                    : cn("grid-cols-1 gap-2 *:mb-4")
                   : "w-full flex flex-col gap-2"
               }
             >
@@ -600,14 +616,20 @@ export const Monitoring = () => {
               <Skeleton className="w-[100px] h-[20px]"></Skeleton>
             </div>
             <div
-              className={cn(`w-full grid gap-4`, {
-                "grid-cols-3": gridColumns === 3,
-                "grid-cols-4": gridColumns === 4,
-                "grid-cols-5": gridColumns === 5,
-                "grid-cols-6": gridColumns === 6,
-                "grid-cols-7": gridColumns === 7,
-                "grid-cols-8": gridColumns === 8,
-              })}
+              className={
+                displayMode === "grid"
+                  ? !isMobile
+                    ? cn(`w-full grid gap-4`, {
+                        "grid-cols-3": gridColumns === 3,
+                        "grid-cols-4": gridColumns === 4,
+                        "grid-cols-5": gridColumns === 5,
+                        "grid-cols-6": gridColumns === 6,
+                        "grid-cols-7": gridColumns === 7,
+                        "grid-cols-8": gridColumns === 8,
+                      })
+                    : cn("grid-cols-1 gap-2 *:mb-4")
+                  : "w-full flex flex-col gap-2"
+              }
             >
               {[...Array(16)].map((_, index) => (
                 <Skeleton key={index} className="w-full h-[200px]" />
