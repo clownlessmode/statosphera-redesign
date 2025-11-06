@@ -276,8 +276,10 @@ export const Monitoring = () => {
                       <table className="w-full">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="p-4 text-left">Изображение</th>
-                            <th className="p-4 text-left">Название</th>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
                             <th className="p-4 text-left">Вес</th>
                             <th className="p-4 text-left">Цена</th>
                             <th className="p-4 text-left w-[60px]"></th>
@@ -316,8 +318,11 @@ export const Monitoring = () => {
                       <table className="w-full">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="p-4 text-left">Изображение</th>
-                            <th className="p-4 text-left">Название</th>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+
                             <th className="p-4 text-left">Вес</th>
                             <th className="p-4 text-left">Цена</th>
                             <th className="p-4 text-left w-[60px]"></th>
@@ -356,8 +361,11 @@ export const Monitoring = () => {
                       <table className="w-full">
                         <thead className="bg-muted">
                           <tr>
-                            <th className="p-4 text-left">Изображение</th>
-                            <th className="p-4 text-left">Название</th>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+
                             <th className="p-4 text-left">Вес</th>
                             <th className="p-4 text-left">Цена</th>
                             <th className="p-4 text-left w-[60px]"></th>
@@ -383,8 +391,11 @@ export const Monitoring = () => {
                 <table className="w-full">
                   <thead className="bg-muted">
                     <tr>
-                      <th className="p-4 text-left">Изображение</th>
-                      <th className="p-4 text-left">Название</th>
+                      <th className="p-4 text-left sr-only w-fit">
+                        Изображение
+                      </th>
+                      <th className="p-4 text-left pl-0">Название</th>
+
                       <th className="p-4 text-left">Вес</th>
                       <th className="p-4 text-left">Цена</th>
                     </tr>
