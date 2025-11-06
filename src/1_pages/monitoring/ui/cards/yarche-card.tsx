@@ -42,7 +42,7 @@ export const YarcheCard = ({
           className="border-b hover:bg-muted/50 group cursor-pointer"
           onClick={handleCardClick}
         >
-          <td className="p-4">
+          <td className="p-4 w-[92px]">
             <img
               src={image}
               alt={name}
@@ -53,26 +53,26 @@ export const YarcheCard = ({
               className="w-[60px] h-[60px] object-contain bg-white border border-border rounded-lg"
             />
           </td>
-          <td className="p-4">
+          <td className="p-4 w-fit  pl-0">
             <div className="text-sm text-muted-foreground font-light">
               {brand}
             </div>
             <div className="font-medium">{name}</div>
           </td>
-          <td className="p-4">
+          <td className="p-4 w-fit">
             <div className="text-sm text-muted-foreground">{weight}</div>
           </td>
-          <td className="p-4">
+          <td className="p-4 w-fit">
             <div className="text-primary text-lg font-bold">
               {price?.toLocaleString()} ₽
-              {previous_price && (
+              {previous_price ? (
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <TrendingDown className="h-3 w-3" />
                   <span className="line-through">
                     {previous_price.toFixed(2)} ₽
                   </span>
                 </div>
-              )}
+              ) : null}
             </div>
           </td>
           {onRemove && (
