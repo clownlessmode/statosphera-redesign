@@ -280,7 +280,6 @@ export const Monitoring = () => {
                               Изображение
                             </th>
                             <th className="p-4 text-left pl-0">Название</th>
-
                             <th className="p-4 text-left">Вес</th>
                             <th className="p-4 text-left">Цена</th>
                             <th className="p-4 text-left w-[60px]"></th>
