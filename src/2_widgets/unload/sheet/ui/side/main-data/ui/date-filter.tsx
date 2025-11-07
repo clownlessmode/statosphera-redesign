@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { format, parse, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { DateRange } from "react-day-picker";
 import {
   Card,
@@ -8,25 +8,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@shared/ui/form";
 import { DateRangePicker } from "@shared/ui/date-range-picker";
-import { TimeRangePicker } from "@shared/ui/time-range-picker";
-
 // Store imports
-import { useFiltersStore } from "../../../../model/filters-store";
 
 // Local imports
 import { useForm } from "../model";
-import { DATE_RANGES, MAX_DATE, MIN_DATE, TIME_RANGES } from "../config";
+import { DATE_RANGES, MAX_DATE, MIN_DATE } from "../config";
 import ClearFilters from "./clear-filter";
 import { DatePresetButtons } from "./date-presets-buttons";
-import { TimePresetButtons } from "./time-presets-buttons";
+import { useFiltersStore } from "@widgets/unload/sheet/model/filters-store";
+import { useNameSegments } from "@widgets/rfm/ui/filter/model/hook";
+import { MultiSelect } from "@shared/ui/multiselect";
 
-const DateFilter: FC = () => {
+const MainFilter: FC = () => {
   // Form and stores initialization
   const form = useForm();
   const today = new Date();
-  const { updateDateFilter, updateTimeFilter } = useFiltersStore();
+  const { updateMainDataFilter } = useFiltersStore();
+  const { nameSegmentOptions, handleOpenNameSegment, isNameSegmentLoading } =
+    useNameSegments();
 
   // Form watch effect
   useEffect(() => {
@@ -42,18 +49,14 @@ const DateFilter: FC = () => {
         form.setValue("dateEnd", format(MAX_DATE, "yyyy-MM-dd"));
       }
 
-      updateDateFilter(values.dateStart || "", values.dateEnd || "");
-      updateTimeFilter(values.timeStart || "", values.timeEnd || "");
+      updateMainDataFilter(
+        values.dateStart || "",
+        values.dateEnd || "",
+        values.rfmList || [],
+      );
     });
     return () => subscription.unsubscribe();
-  }, [form, updateDateFilter, updateTimeFilter]);
-
-  // Handler functions
-  const handleTimeButtonClick = (key: keyof typeof TIME_RANGES) => {
-    const [start, end] = TIME_RANGES[key];
-    form.setValue("timeStart", start);
-    form.setValue("timeEnd", end);
-  };
+  }, [form, updateMainDataFilter]);
 
   const setDateRange = (start: Date, end: Date) => {
     form.setValue("dateStart", format(start, "yyyy-MM-dd"));
@@ -88,11 +91,11 @@ const DateFilter: FC = () => {
   };
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full mr-4 shrink-0">
       <CardHeader>
-        <CardTitle>Дата события</CardTitle>
+        <CardTitle>Основная информация</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>Фильтруйте данные по дате и времени</CardDescription>
+          <CardDescription>Фильтруйте данные по периоду</CardDescription>
           <ClearFilters form={form} />
         </div>
       </CardHeader>
@@ -117,42 +120,37 @@ const DateFilter: FC = () => {
                 </FormItem>
               )}
             />
-
-            {/* Date Preset Buttons */}
             <DatePresetButtons onPresetSelect={handleButtonClick} />
-
-            {/* Time Range Section (only for 'check' tab) */}
             <FormField
               control={form.control}
-              name="timeStart"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Промежуток времени</FormLabel>
-                  <TimeRangePicker
-                    from={
-                      field.value
-                        ? parse(field.value, "HH:mm", new Date())
-                        : undefined
-                    }
-                    to={
-                      form.getValues("timeEnd")
-                        ? parse(form.getValues("timeEnd"), "HH:mm", new Date())
-                        : undefined
-                    }
-                    onFromChange={(date: Date) =>
-                      field.onChange(format(date, "HH:mm"))
-                    }
-                    onToChange={(date: Date) =>
-                      form.setValue("timeEnd", format(date, "HH:mm"))
-                    }
-                    className="w-full"
-                  />
-                </FormItem>
-              )}
+              name="rfmList"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Сегменты</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        value={field.value?.map(String) || []}
+                        options={nameSegmentOptions}
+                        isLoading={isNameSegmentLoading}
+                        onOpenChange={(open) => handleOpenNameSegment(open)}
+                        onValueChange={(value) => {
+                          const numericValues = value.map(Number);
+                          field.onChange(numericValues);
+                          updateMainDataFilter(
+                            "rfmList",
+                            form.getValues("dateStart"),
+                            numericValues,
+                          );
+                        }}
+                        defaultValue={field.value?.map(String)}
+                        placeholder="Выберите сегменты"
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
             />
-
-            {/* Time Preset Buttons */}
-            <TimePresetButtons onPresetSelect={handleTimeButtonClick} />
           </form>
         </Form>
       </CardContent>
@@ -160,4 +158,4 @@ const DateFilter: FC = () => {
   );
 };
 
-export default DateFilter;
+export default MainFilter;

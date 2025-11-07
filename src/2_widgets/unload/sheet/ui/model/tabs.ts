@@ -1,38 +1,47 @@
 import {
   Calendar,
   ChartPie,
-  Grid2x2Check,
-  PanelsTopLeft,
+  Globe,
+  ShoppingBasket,
   Store,
+  Users,
 } from "lucide-react";
 import { DateFilter } from "../side/date-filter";
 import { ShopsFilter } from "../side/shops-filter";
 import { ProductsFilter } from "../side/products-filter";
+import { MainFilter } from "../side/main-data";
+import { LoyaltyFilter } from "../side/loyalty-filter";
+import { OnlineFilter } from "../side/online-filter";
 
 export const filters = [
+  {
+    title: "Сегменты и период",
+    icon: ChartPie,
+    component: MainFilter,
+  },
   {
     title: "Дата",
     icon: Calendar,
     component: DateFilter,
   },
   {
-    title: "Города и магазины",
+    title: "Клиенты",
+    icon: Users,
+    component: LoyaltyFilter,
+  },
+  {
+    title: "Магазины",
     icon: Store,
     component: ShopsFilter,
   },
   {
-    title: "Группы и номенклатуры",
-    icon: PanelsTopLeft,
-    component: ProductsFilter,
+    title: "Интернет магазин",
+    icon: Globe,
+    component: OnlineFilter,
   },
   {
-    title: "Сегменты",
-    icon: ChartPie,
-    component: ShopsFilter,
-  },
-  {
-    title: "Показатели",
-    icon: Grid2x2Check,
+    title: "Продукты",
+    icon: ShoppingBasket,
     component: ProductsFilter,
   },
 ];

@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import { Tabs } from "@shared/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Filters } from "@widgets/unload/sheet";
+import { Star } from "lucide-react";
 
 interface Filters {
   data: {
@@ -19,7 +20,7 @@ interface Filters {
 
 export const Unload = () => {
   const isMobile = useIsMobile();
-
+  console.log("Unload");
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
@@ -84,9 +85,15 @@ export const Unload = () => {
                 </TooltipContent>
               </Tooltip>
               <Button variant="outline" className="border-b-0! rounded-b-none!">
-                Выгрузки
+                Выгрузка
               </Button>
             </div>
+          ),
+          right: !isMobile && (
+            <Button variant="outline">
+              <Star className="size-4" />
+              Сохраненная аудитория
+            </Button>
           ),
         }}
       />
@@ -135,7 +142,12 @@ export const Unload = () => {
                 </span>
                 <span className="text-4xl">0</span>
               </div>
-              <Button className="w-full">Выгрузить</Button>
+              <div className="flex gap-2">
+                <Button className="w-full">Выгрузить</Button>
+                <Button className="w-max">
+                  <Star />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

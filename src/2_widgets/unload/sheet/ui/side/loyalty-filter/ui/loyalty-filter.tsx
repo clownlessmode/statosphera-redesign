@@ -18,11 +18,11 @@ import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { DualRangeSlider } from "@shared/ui/dual-range-slider";
 import { useForm, useLoyalAction, useLoyalBonus } from "../model";
 
-import { COLORS, GENDER, TYPE } from "../config";
+import { COLORS, GENDER } from "../config";
 import ClearFilters from "./clear-filter";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import CheckboxCards from "@shared/ui/checkbox-cards";
-import { MultipleInput } from "@shared/ui/multiple-input";
+
 const LoyaltyFilter: FC = () => {
   const form = useForm();
   const { updateLoyalFilter, getApiPayload } = useFiltersStore();
@@ -44,36 +44,15 @@ const LoyaltyFilter: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Лояльность</CardTitle>
+        <CardTitle>Клиенты</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>
-            Фильтруйте данные по программе лояльности
-          </CardDescription>
+          <CardDescription>Фильтруйте данные по клиентам</CardDescription>
           <ClearFilters form={form} />
         </div>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
-            <FormField
-              control={form.control}
-              name="isLoyal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Тип</FormLabel>
-                  <BooleanCheckboxCard
-                    {...field}
-                    options={TYPE}
-                    className="grid-cols-1 md:grid-cols-3"
-                    onChange={(vals) => {
-                      field.onChange(vals);
-                      updateLoyalFilter("isLoyal", vals);
-                    }}
-                  />
-                </FormItem>
-              )}
-            />
-
             {/* Возраст */}
             <FormField
               control={form.control}
@@ -140,33 +119,6 @@ const LoyaltyFilter: FC = () => {
               )}
             />
 
-            {/* Номера карт */}
-            <FormField
-              control={form.control}
-              name="cardNumber"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel htmlFor="">Номера карт</FormLabel>
-                    <MultipleInput
-                      type="number"
-                      min={10}
-                      max={10}
-                      placeholder="Введите номера карт"
-                      value={field.value?.map(Number) || []}
-                      onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateLoyalFilter(
-                          "cardNumber",
-                          numericValues.map(String),
-                        );
-                      }}
-                    />
-                  </FormItem>
-                );
-              }}
-            />
             {/* Акция */}
             <FormField
               control={form.control}

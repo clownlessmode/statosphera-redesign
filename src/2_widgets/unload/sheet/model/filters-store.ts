@@ -1,6 +1,4 @@
 // features/filters-store/store.ts
-
-import { COLUMN_KEY } from "@shared/constants/table-columns";
 import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
@@ -145,61 +143,9 @@ export enum AGE_GROUP {
   TODDLER = "Малыш",
 }
 
-export enum OPERATION_WRITE_OFF {
-  INDICATOR = "Показатель",
-  HOUSEHOLD_GOODS = "Хозяйственные товары",
-}
-
-//Статьи списания все
-export enum ARTICLE_WRITE_OFF {
-  LOSSES = "ПОТЕРИ",
-  EMPLOYEE_MEALS = "Питание сотрудников",
-  TASTINGS = "Дегустации",
-  CUSTOMER_GIFT = "Подарок покупателю (сервисная фишка)",
-  THEFTS = "Кражи",
-  MARKETING = "МАРКЕТИНГ (блогеры, фотосессии)",
-  HOUSEHOLD_GOODS = "Хозяйственные товары",
-}
 export const ageGroupSchema = z.nativeEnum(AGE_GROUP);
 export const frsChannelSchema = z.nativeEnum(FRS_CHANNEL);
-export const operationWriteOffSchema = z.nativeEnum(OPERATION_WRITE_OFF);
-export const articleWriteOffSchema = z.nativeEnum(ARTICLE_WRITE_OFF);
 
-// выбор подстатьи распределения по списаниям
-export const indicatorWriteOff: Record<
-  OPERATION_WRITE_OFF,
-  ARTICLE_WRITE_OFF[]
-> = {
-  [OPERATION_WRITE_OFF.INDICATOR]: [
-    ARTICLE_WRITE_OFF.LOSSES,
-    ARTICLE_WRITE_OFF.EMPLOYEE_MEALS,
-    ARTICLE_WRITE_OFF.TASTINGS,
-    ARTICLE_WRITE_OFF.CUSTOMER_GIFT,
-    ARTICLE_WRITE_OFF.THEFTS,
-    ARTICLE_WRITE_OFF.MARKETING,
-  ],
-  [OPERATION_WRITE_OFF.HOUSEHOLD_GOODS]: [ARTICLE_WRITE_OFF.HOUSEHOLD_GOODS], // Нужно что-то указать, даже если пустой массив
-};
-
-//выборка главная группа статей списания
-export const operationWriteOff: OPERATION_WRITE_OFF[] = [
-  OPERATION_WRITE_OFF.INDICATOR,
-  OPERATION_WRITE_OFF.INDICATOR,
-];
-
-export enum VALUE_WRITE_OFF {
-  WRITEOFF_PERCENT = COLUMN_KEY.WRITE_OFF_PERCENT,
-  WRITEOFF_PERCENT_YOY_PERCENT = COLUMN_KEY.WRITE_OFF_PERCENT_YOY_PERCENT,
-  WRITEOFF_PERCENT_LM = COLUMN_KEY.WRITE_OFF_PERCENT_LM,
-  WRITEOFF_PERCENT_MOM_PERCENT = COLUMN_KEY.WRITE_OFF_PERCENT_MOM_PERCENT,
-  WRITEOFF = COLUMN_KEY.WRITE_OFF_LY,
-  WRITEOFF_LY = COLUMN_KEY.WRITE_OFF_LY,
-  WRITEOFF_YOY = COLUMN_KEY.WRITE_OFF_YOY,
-  WRITEOFF_YOY_PERCENT = COLUMN_KEY.WRITE_OFF_YOY_PERCENT,
-  WRITEOFF_LM = COLUMN_KEY.WRITE_OFF_LM,
-  WRITEOFF_MOM = COLUMN_KEY.WRITE_OFF_MOM,
-  WRITEOFF_MOM_PERCENT = COLUMN_KEY.WRITE_OFF_MOM_PERCENT,
-}
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
 const today = new Date();
 
@@ -246,19 +192,7 @@ export type FiltersState = {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
-    check: {
-      tabNumber: number[];
-      containsBankQr: boolean | null;
-      paymentClass: "Безналичный" | "Наличный" | null;
-      shift: number[];
-      cashBox: number[];
-      checkNumber: number[];
-      numberfield: number[];
-      type: ("Продажа" | "Возврат")[];
-    };
     loyal: {
-      isLoyal: boolean | null;
-      cardNumber: string[];
       sex: "M" | "Ж" | null;
       guidDiscount: string[];
       guidBonus: string[];
@@ -276,14 +210,13 @@ export type FiltersState = {
       imReceiveInterval: string[];
       imPromo: string[];
     };
-    writeoff: {
-      indicator: OPERATION_WRITE_OFF[];
-      article: ARTICLE_WRITE_OFF[];
-    };
   };
-  uniques: string[];
-  indicators: string[];
   values: string[];
+  mainData: {
+    dateStart: string;
+    dateEnd: string;
+    rfmList: (number | undefined)[];
+  };
   filterDate: {
     dateStart: string;
     dateEnd: string;
@@ -311,11 +244,6 @@ export type FiltersState = {
     value: FiltersState["filters"]["product"][K],
   ) => void;
 
-  updateCheckFilter: <K extends keyof FiltersState["filters"]["check"]>(
-    key: K,
-    value: FiltersState["filters"]["check"][K],
-  ) => void;
-
   updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
     key: K,
     value: FiltersState["filters"]["loyal"][K],
@@ -328,36 +256,28 @@ export type FiltersState = {
     value: FiltersState["filters"]["onlineStore"][K],
   ) => void;
 
-  // updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
-  //   key: K,
-  //   value: FiltersState["filters"]["writeoff"][K],
-  // ) => void;
-
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
+  updateMainDataFilter: (
+    dateStart: string,
+    dateEnd: string,
+    rfmList: (number | undefined)[],
+  ) => void;
   updateTimeFilter: (timeStart: string, timeEnd: string) => void;
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
-  updatePagination: (limit: number, offset: number) => void;
   updateGroups: (groups: string[]) => void;
-  updateUniques: (uniques: string[]) => void;
-  updateIndicators: (indicators: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
     | "uniques"
-    | "indicators"
     | "updateStoreFilter"
     | "updateProductFilter"
-    | "updateCheckFilter"
     | "updateLoyalFilter"
     | "updateOnlineStoreFilter"
-    | "updateWriteoffFilter"
+    | "updateMainDataFilter"
     | "updateDateFilter"
     | "updateTimeFilter"
     | "updateSorts"
-    | "updatePagination"
     | "updateGroups"
-    | "updateUniques"
-    | "updateIndicators"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -368,17 +288,13 @@ const initialState: Omit<
   FiltersState,
   | "updateStoreFilter"
   | "updateProductFilter"
-  | "updateCheckFilter"
   | "updateLoyalFilter"
   | "updateOnlineStoreFilter"
-  | "updateWriteoffFilter"
+  | "updateMainDataFilter"
   | "updateDateFilter"
   | "updateTimeFilter"
   | "updateSorts"
-  | "updatePagination"
   | "updateGroups"
-  | "updateUniques"
-  | "updateIndicators"
   | "resetAllFilters"
   | "getApiPayload"
 > = {
@@ -410,19 +326,7 @@ const initialState: Omit<
       seasonalityProducts: [],
       managerAuto: [],
     },
-    check: {
-      tabNumber: [],
-      containsBankQr: null,
-      paymentClass: null,
-      shift: [],
-      cashBox: [],
-      checkNumber: [],
-      numberfield: [],
-      type: [],
-    },
     loyal: {
-      isLoyal: null,
-      cardNumber: [],
       sex: null,
       guidDiscount: [],
       guidBonus: [],
@@ -440,14 +344,13 @@ const initialState: Omit<
       imReceiveInterval: [],
       imPromo: [],
     },
-    writeoff: {
-      indicator: [],
-      article: [],
-    },
   },
   values: ["proceeds"],
-  uniques: [],
-  indicators: ["proceeds"],
+  mainData: {
+    dateStart,
+    dateEnd,
+    rfmList: [],
+  },
   filterDate: {
     dateStart,
     dateEnd,
@@ -489,17 +392,6 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateCheckFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        check: {
-          ...state.filters.check,
-          [key]: value,
-        },
-      },
-    })),
-
   updateLoyalFilter: (key, value) => {
     set((state) => ({
       filters: {
@@ -523,40 +415,18 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  // updateWriteoffFilter: (key, value) =>
-  //   set((state) => ({
-  //     filters: {
-  //       ...state.filters,
-  //       writeoff: {
-  //         ...state.filters.writeoff,
-  //         [key]: value,
-  //       },
-  //     },
-  //   })),
-
   updateDateFilter: (dateStart, dateEnd) =>
     set({ filterDate: { dateStart, dateEnd } }),
+
+  updateMainDataFilter: (dateStart, dateEnd, rfmList) =>
+    set({ mainData: { dateStart, dateEnd, rfmList } }),
 
   updateTimeFilter: (timeStart, timeEnd) =>
     set({ filterTime: { timeStart, timeEnd } }),
 
   updateSorts: (sort, colId) => set({ sorts: { sort, colId } }),
 
-  updatePagination: (limit, offset) => set({ limit, offset }),
-
   updateGroups: (groups) => set({ groups }),
-
-  updateUniques: (uniques) =>
-    set({
-      uniques,
-      values: [...uniques, ...get().indicators], // Автоматически обновляем values
-    }),
-
-  updateIndicators: (indicators) =>
-    set({
-      indicators,
-      values: [...get().uniques, ...indicators], // Автоматически обновляем values
-    }),
 
   resetAllFilters: () => set(initialState),
 
@@ -565,6 +435,7 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
     return {
       filters: state.filters,
       values: state.values,
+      mainData: state.mainData,
       filterDate: state.filterDate,
       filterTime: state.filterTime,
       sorts: state.sorts,
