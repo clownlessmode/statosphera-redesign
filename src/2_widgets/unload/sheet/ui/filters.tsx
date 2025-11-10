@@ -11,7 +11,7 @@ import {
 } from "@shared/ui/view-tabs";
 import { filters } from "./model/tabs";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import { TabsList, TabsTrigger } from "@shared/ui/tabs";
+import { Button } from "@shared/ui/button";
 
 const FiltersInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
@@ -52,10 +52,10 @@ const FiltersInner = () => {
             </ViewTabsContent>
           ))}
         </div>
-        <TabsList className="w-full h-fit px-4">
-          <TabsTrigger value="include">Применить</TabsTrigger>
-          <TabsTrigger value="exclude">Исключить</TabsTrigger>
-        </TabsList>
+        <div className="w-full grid grid-cols-2 gap-2">
+          <Button>Применить</Button>
+          <Button>Исключить</Button>
+        </div>
       </div>
     </>
   );

@@ -20,17 +20,23 @@ import { DateRangePicker } from "@shared/ui/date-range-picker";
 
 // Local imports
 import { useForm } from "../model";
-import { DATE_RANGES, MAX_DATE, MIN_DATE } from "../config";
+import {
+  //DATE_RANGES,
+  MAX_DATE,
+  MIN_DATE,
+} from "../config";
 import ClearFilters from "./clear-filter";
-import { DatePresetButtons } from "./date-presets-buttons";
+//import { DatePresetButtons } from "./date-presets-buttons";
 import { useFiltersStore } from "@widgets/unload/sheet/model/filters-store";
 import { useNameSegments } from "@widgets/rfm/ui/filter/model/hook";
 import { MultiSelect } from "@shared/ui/multiselect";
+//import { PERIOD } from "@widgets/rfm/ui/filter/config/constants";
+//import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 
 const MainFilter: FC = () => {
   // Form and stores initialization
   const form = useForm();
-  const today = new Date();
+  //const today = new Date();
   const { updateMainDataFilter } = useFiltersStore();
   const { nameSegmentOptions, handleOpenNameSegment, isNameSegmentLoading } =
     useNameSegments();
@@ -75,10 +81,10 @@ const MainFilter: FC = () => {
     }
   };
 
-  const handleButtonClick = (handlerKey: keyof typeof DATE_RANGES) => {
-    const { start, end } = DATE_RANGES[handlerKey](today);
-    setDateRange(start, end);
-  };
+  //const handleButtonClick = (handlerKey: keyof typeof DATE_RANGES) => {
+  //  const { start, end } = DATE_RANGES[handlerKey](today);
+  //  setDateRange(start, end);
+  //};
 
   // Derived values
   const dateRangeValue = {
@@ -120,7 +126,25 @@ const MainFilter: FC = () => {
                 </FormItem>
               )}
             />
-            <DatePresetButtons onPresetSelect={handleButtonClick} />
+            {/*<FormField
+              control={form.control}
+              name="period"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <BooleanCheckboxCard
+                      {...field}
+                      options={PERIOD}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        //updateFilters("period", value);
+                      }}
+                      className="grid-cols-3"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />*/}
             <FormField
               control={form.control}
               name="rfmList"

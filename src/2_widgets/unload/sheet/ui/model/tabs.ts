@@ -1,7 +1,7 @@
 import {
-  Calendar,
   ChartPie,
   Globe,
+  Receipt,
   ShoppingBasket,
   Store,
   Users,
@@ -10,7 +10,7 @@ import { DateFilter } from "../side/date-filter";
 import { ShopsFilter } from "../side/shops-filter";
 import { ProductsFilter } from "../side/products-filter";
 import { MainFilter } from "../side/main-data";
-import { LoyaltyFilter } from "../side/loyalty-filter";
+import { ClientsFilter } from "../side/clients-filter";
 import { OnlineFilter } from "../side/online-filter";
 
 export const filters = [
@@ -20,14 +20,14 @@ export const filters = [
     component: MainFilter,
   },
   {
-    title: "Дата",
-    icon: Calendar,
+    title: "Покупки",
+    icon: Receipt,
     component: DateFilter,
   },
   {
     title: "Клиенты",
     icon: Users,
-    component: LoyaltyFilter,
+    component: ClientsFilter,
   },
   {
     title: "Магазины",

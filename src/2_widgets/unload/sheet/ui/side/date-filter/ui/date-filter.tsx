@@ -8,7 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@shared/ui/card";
-import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
+import {
+  Form,
+  //FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@shared/ui/form";
 import { DateRangePicker } from "@shared/ui/date-range-picker";
 import { TimeRangePicker } from "@shared/ui/time-range-picker";
 
@@ -21,6 +27,7 @@ import { DATE_RANGES, MAX_DATE, MIN_DATE, TIME_RANGES } from "../config";
 import ClearFilters from "./clear-filter";
 import { DatePresetButtons } from "./date-presets-buttons";
 import { TimePresetButtons } from "./time-presets-buttons";
+//import { Input } from "@shared/ui/input";
 
 const DateFilter: FC = () => {
   // Form and stores initialization
@@ -90,9 +97,11 @@ const DateFilter: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Дата события</CardTitle>
+        <CardTitle>Покупки</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
-          <CardDescription>Фильтруйте данные по дате и времени</CardDescription>
+          <CardDescription>
+            Фильтруйте данные по дате, времени и сумме
+          </CardDescription>
           <ClearFilters form={form} />
         </div>
       </CardHeader>
@@ -100,6 +109,110 @@ const DateFilter: FC = () => {
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
+            {/* Сумма покупки */}
+            {/*<FormField
+              control={form.control}
+              name="totalPurchase"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Сумма</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-2 w-full **:[appearance:textfield] **:[&::-webkit-outer-spin-button]:appearance-none **:[&::-webkit-inner-spin-button]:appearance-none">
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="text-sm text-muted-foreground">
+                          от
+                        </span>
+                        <Input
+                          type="number"
+                          min={0}
+                          step={1}
+                          className="flex-1"
+                          value={field.value?.[0] ?? ""}
+                          onKeyDown={(e) => {
+                            // Разрешаем: цифры, Backspace, Delete, Tab, Escape, Enter, стрелки
+                            if (
+                              !/[0-9]/.test(e.key) &&
+                              !['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key) &&
+                              !(e.ctrlKey || e.metaKey) && // Разрешаем Ctrl/Cmd + A, C, V, X
+                              !(e.key === 'a' && (e.ctrlKey || e.metaKey)) &&
+                              !(e.key === 'c' && (e.ctrlKey || e.metaKey)) &&
+                              !(e.key === 'v' && (e.ctrlKey || e.metaKey)) &&
+                              !(e.key === 'x' && (e.ctrlKey || e.metaKey))
+                            ) {
+                              e.preventDefault();
+                            }
+                          }}
+                          onChange={(e) => {
+                            const currentMax = field.value?.[1] ?? Infinity;
+                            const inputValue = Number(e.target.value);
+                            // Обрабатываем пустое значение
+                            if (isNaN(inputValue) || e.target.value === "") {
+                              const min = undefined;
+                              const max =
+                                currentMax === Infinity
+                                  ? undefined
+                                  : currentMax;
+                              const newValue = [min, max];
+                              field.onChange(newValue);
+                              updateLoyalFilter("ageStart", undefined);
+                              updateLoyalFilter(
+                                "ageEnd",
+                                max === Infinity || max === undefined
+                                  ? undefined
+                                  : max
+                              );
+                              return;
+                            }
+                            // Ограничиваем минимальное значение: не меньше 0, не больше текущего максимума
+                            const min = Math.max(
+                              0,
+                              Math.min(currentMax, inputValue)
+                            );
+                            const max =
+                              currentMax === Infinity ? inputValue : currentMax;
+                            const newValue = [min, max];
+                            field.onChange(newValue);
+                            updateLoyalFilter("ageStart", min);
+                            updateLoyalFilter(
+                              "ageEnd",
+                              max === Infinity ? min : max
+                            );
+                          }}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="text-sm text-muted-foreground">
+                          до
+                        </span>
+                        <Input
+                          type="number"
+                          min={0}
+                          step={1}
+                          className="flex-1"
+                          value={field.value?.[1] ?? ""}
+                          onChange={(e) => {
+                            const currentMin = field.value?.[0] ?? 0;
+                            const inputValue = Number(e.target.value);
+                            // Ограничиваем максимальное значение: не меньше текущего минимума
+                            const min = currentMin;
+                            const max = isNaN(inputValue)
+                              ? Infinity
+                              : Math.max(currentMin, inputValue);
+                            const newValue = [min, max];
+                            field.onChange(newValue);
+                            updateLoyalFilter("ageStart", min);
+                            updateLoyalFilter(
+                              "ageEnd",
+                              max === Infinity ? min : max
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />*/}
             {/* Date Range Section */}
             <FormField
               control={form.control}
