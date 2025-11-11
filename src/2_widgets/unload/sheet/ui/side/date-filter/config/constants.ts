@@ -9,6 +9,7 @@ import {
   subWeeks,
   isAfter,
 } from "date-fns";
+import { Calendar1, CalendarDays, CalendarRange } from "lucide-react";
 
 export const MIN_DATE = new Date(2018, 4, 1);
 export const MAX_DATE = subDays(new Date(), 1);
@@ -66,3 +67,21 @@ export const DATE_RANGES = {
     return { start, end };
   },
 };
+
+export const PERIOD = [
+  {
+    label: "M0",
+    value: "M0",
+    icon: Calendar1,
+  },
+  {
+    label: "M-3",
+    value: "M-3",
+    icon: CalendarDays,
+  },
+  {
+    label: "M-6",
+    value: "M-6",
+    icon: CalendarRange,
+  },
+];

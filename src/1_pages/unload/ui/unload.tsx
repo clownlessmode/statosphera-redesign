@@ -9,18 +9,9 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import { Filters } from "@widgets/unload/sheet";
 import { Star } from "lucide-react";
 
-interface Filters {
-  data: {
-    period: string;
-    rfmList: number[];
-    sex: string[];
-    age: string[];
-  };
-}
-
 export const Unload = () => {
   const isMobile = useIsMobile();
-  console.log("Unload");
+
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header

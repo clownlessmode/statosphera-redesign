@@ -96,8 +96,8 @@ const DownloadSankey: FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="absolute top-5 right-5 z-10">
-          Выгрузить <Download />
+        <Button size="sm" className="h-full" variant="ghost">
+          <Download />
         </Button>
       </DialogTrigger>
       <DialogContent aria-describedby={undefined} className="min-w-max">

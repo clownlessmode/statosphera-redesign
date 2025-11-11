@@ -192,13 +192,48 @@ export type FiltersState = {
       seasonalityProducts: string[];
       managerAuto: string[];
     };
-    loyal: {
-      sex: "M" | "Ж" | null;
+    clients: {
+      sex: string[];
       guidDiscount: string[];
       guidBonus: string[];
+      frequency: {
+        from: number | null;
+        to: number | null;
+      };
+      totalPurchase: {
+        from: number | null;
+        to: number | null;
+      };
+      proceedPerCheck: {
+        from: number | null;
+        to: number | null;
+      };
+      avgCheckLen: {
+        from: number | null;
+        to: number | null;
+      };
+      avg: {
+        from: number | null;
+        to: number | null;
+      };
+      countBonus: {
+        from: number | null;
+        to: number | null;
+      };
+      ageAccount: {
+        from: {
+          years: number | null;
+          months: number | null;
+          days: number | null;
+        };
+        to: {
+          years: number | null;
+          months: number | null;
+          days: number | null;
+        };
+      };
       ageStart: number | null;
       ageEnd: number | null;
-      groupAge: string[];
       colorsDiscount: string[];
     };
     onlineStore: {
@@ -215,15 +250,10 @@ export type FiltersState = {
   mainData: {
     dateStart: string;
     dateEnd: string;
-    rfmList: (number | undefined)[];
-  };
-  filterDate: {
-    dateStart: string;
-    dateEnd: string;
-  };
-  filterTime: {
     timeStart: string;
     timeEnd: string;
+    rfmList: number[];
+    period: string | undefined;
   };
   sorts: {
     sort: "asc" | "desc";
@@ -244,9 +274,9 @@ export type FiltersState = {
     value: FiltersState["filters"]["product"][K],
   ) => void;
 
-  updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
+  updateClientsFilter: <K extends keyof FiltersState["filters"]["clients"]>(
     key: K,
-    value: FiltersState["filters"]["loyal"][K],
+    value: FiltersState["filters"]["clients"][K],
   ) => void;
 
   updateOnlineStoreFilter: <
@@ -256,13 +286,10 @@ export type FiltersState = {
     value: FiltersState["filters"]["onlineStore"][K],
   ) => void;
 
-  updateDateFilter: (dateStart: string, dateEnd: string) => void;
-  updateMainDataFilter: (
-    dateStart: string,
-    dateEnd: string,
-    rfmList: (number | undefined)[],
+  updateMainDataFilter: <K extends keyof FiltersState["mainData"]>(
+    key: K,
+    value: FiltersState["mainData"][K],
   ) => void;
-  updateTimeFilter: (timeStart: string, timeEnd: string) => void;
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
   updateGroups: (groups: string[]) => void;
   resetAllFilters: () => void;
@@ -271,11 +298,9 @@ export type FiltersState = {
     | "uniques"
     | "updateStoreFilter"
     | "updateProductFilter"
-    | "updateLoyalFilter"
+    | "updateClientsFilter"
     | "updateOnlineStoreFilter"
     | "updateMainDataFilter"
-    | "updateDateFilter"
-    | "updateTimeFilter"
     | "updateSorts"
     | "updateGroups"
     | "resetAllFilters"
@@ -288,11 +313,9 @@ const initialState: Omit<
   FiltersState,
   | "updateStoreFilter"
   | "updateProductFilter"
-  | "updateLoyalFilter"
+  | "updateClientsFilter"
   | "updateOnlineStoreFilter"
   | "updateMainDataFilter"
-  | "updateDateFilter"
-  | "updateTimeFilter"
   | "updateSorts"
   | "updateGroups"
   | "resetAllFilters"
@@ -326,14 +349,41 @@ const initialState: Omit<
       seasonalityProducts: [],
       managerAuto: [],
     },
-    loyal: {
-      sex: null,
+    clients: {
+      sex: [],
+      frequency: {
+        from: null,
+        to: null,
+      },
+      totalPurchase: {
+        from: null,
+        to: null,
+      },
+      proceedPerCheck: {
+        from: null,
+        to: null,
+      },
+      avgCheckLen: {
+        from: null,
+        to: null,
+      },
+      avg: {
+        from: null,
+        to: null,
+      },
+      countBonus: {
+        from: null,
+        to: null,
+      },
+      ageAccount: {
+        from: { years: null, months: null, days: null },
+        to: { years: null, months: null, days: null },
+      },
       guidDiscount: [],
       guidBonus: [],
       ageStart: null,
       ageEnd: null,
       colorsDiscount: [],
-      groupAge: [],
     },
     onlineStore: {
       isIm: null,
@@ -349,15 +399,10 @@ const initialState: Omit<
   mainData: {
     dateStart,
     dateEnd,
-    rfmList: [],
-  },
-  filterDate: {
-    dateStart,
-    dateEnd,
-  },
-  filterTime: {
     timeStart: "",
     timeEnd: "",
+    rfmList: [],
+    period: "",
   },
   sorts: {
     sort: "desc",
@@ -368,7 +413,7 @@ const initialState: Omit<
   groups: [],
 };
 
-export const useFiltersStore = create<FiltersState>((set, get) => ({
+export const useUnloadFilterStore = create<FiltersState>((set, get) => ({
   ...initialState,
   updateStoreFilter: (key, value) =>
     set((state) => ({
@@ -392,12 +437,12 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateLoyalFilter: (key, value) => {
+  updateClientsFilter: (key, value) => {
     set((state) => ({
       filters: {
         ...state.filters,
-        loyal: {
-          ...state.filters.loyal,
+        clients: {
+          ...state.filters.clients,
           [key]: value,
         },
       },
@@ -415,14 +460,16 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateDateFilter: (dateStart, dateEnd) =>
-    set({ filterDate: { dateStart, dateEnd } }),
-
-  updateMainDataFilter: (dateStart, dateEnd, rfmList) =>
-    set({ mainData: { dateStart, dateEnd, rfmList } }),
-
-  updateTimeFilter: (timeStart, timeEnd) =>
-    set({ filterTime: { timeStart, timeEnd } }),
+  updateMainDataFilter: <K extends keyof FiltersState["mainData"]>(
+    key: K,
+    value: FiltersState["mainData"][K],
+  ) =>
+    set((state) => ({
+      mainData: {
+        ...state.mainData,
+        [key]: value,
+      },
+    })),
 
   updateSorts: (sort, colId) => set({ sorts: { sort, colId } }),
 
@@ -436,8 +483,6 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       filters: state.filters,
       values: state.values,
       mainData: state.mainData,
-      filterDate: state.filterDate,
-      filterTime: state.filterTime,
       sorts: state.sorts,
       limit: state.limit,
       offset: state.offset,

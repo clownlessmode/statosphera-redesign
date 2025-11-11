@@ -1,21 +1,25 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 import { defaultValues, FormValues, schema } from "../../config";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { processArrayableValue } from "@shared/lib/arrayable-string";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 
 export const useForm = () => {
   const {
     ageEnd,
     ageStart,
-    cardNumber,
-    groupAge,
     guidBonus,
     guidDiscount,
-    isLoyal,
+    frequency,
+    totalPurchase,
+    proceedPerCheck,
+    avgCheckLen,
+    avg,
+    countBonus,
+    ageAccount,
     sex,
     colorsDiscount,
-  } = useFiltersStore((state) => state.filters.loyal);
+  } = useUnloadFilterStore((state) => state.filters.clients);
 
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
@@ -24,15 +28,19 @@ export const useForm = () => {
         ageStart === undefined && ageEnd === undefined
           ? defaultValues.age
           : [ageStart || 0, ageEnd || 100],
-      cardNumber: cardNumber || defaultValues.cardNumber,
-      groupAge: groupAge || defaultValues.groupAge,
+      frequency: frequency || defaultValues.frequency,
+      totalPurchase: totalPurchase || defaultValues.totalPurchase,
+      proceedPerCheck: proceedPerCheck || defaultValues.proceedPerCheck,
+      avgCheckLen: avgCheckLen || defaultValues.avgCheckLen,
+      avg: avg || defaultValues.avg,
+      countBonus: countBonus || defaultValues.countBonus,
+      ageAccount: ageAccount || defaultValues.ageAccount,
+      sex: sex || defaultValues.sex,
       guidBonus: processArrayableValue(guidBonus, defaultValues.guidBonus),
       guidDiscount: processArrayableValue(
         guidDiscount,
         defaultValues.guidDiscount,
       ),
-      isLoyal: isLoyal || defaultValues.isLoyal,
-      sex: sex || defaultValues.sex,
       colorsDiscount: colorsDiscount || defaultValues.colorsDiscount,
     },
     mode: "all",

@@ -4,16 +4,16 @@ import { FC, useEffect, useRef } from "react";
 
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 
 interface Props {
   form: UseFormReturn<FormValues>;
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateLoyalFilter } = useFiltersStore();
+  const { updateClientsFilter } = useUnloadFilterStore();
 
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
@@ -27,23 +27,23 @@ const ClearFilters: FC<Props> = ({ form }) => {
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
   }, [resetSignal]);
   const handleClearFilters = () => {
-    updateLoyalFilter("ageEnd", 100);
-    updateLoyalFilter("ageStart", 0);
-    updateLoyalFilter("cardNumber", []);
-    updateLoyalFilter("isLoyal", null);
-    updateLoyalFilter("cardNumber", []);
-    updateLoyalFilter("sex", null);
-    updateLoyalFilter("guidDiscount", []);
-    updateLoyalFilter("guidBonus", []);
-    updateLoyalFilter("groupAge", []);
+    updateClientsFilter("ageEnd", 100);
+    updateClientsFilter("ageStart", 0);
+    updateClientsFilter("sex", []);
+    updateClientsFilter("guidDiscount", []);
+    updateClientsFilter("guidBonus", []);
+    updateClientsFilter("frequency", { from: null, to: null });
+    updateClientsFilter("totalPurchase", { from: null, to: null });
+    updateClientsFilter("proceedPerCheck", { from: null, to: null });
+    updateClientsFilter("avgCheckLen", { from: null, to: null });
+    updateClientsFilter("avg", { from: null, to: null });
+    updateClientsFilter("countBonus", { from: null, to: null });
+    updateClientsFilter("ageAccount", {
+      from: { years: null, months: null, days: null },
+      to: { years: null, months: null, days: null },
+    });
     form.reset({
-      isLoyal: null,
-      cardNumber: [],
-      sex: null,
-      guidDiscount: [],
-      guidBonus: [],
       age: [0, 100],
-      groupAge: [],
     });
   };
   const isMobile = useIsMobile();

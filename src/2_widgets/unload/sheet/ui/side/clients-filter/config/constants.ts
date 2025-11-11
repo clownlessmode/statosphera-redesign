@@ -1,45 +1,20 @@
-import {
-  BadgeCheck,
-  BadgeX,
-  User2,
-  User,
-  Badge,
-  Users,
-  Circle,
-} from "lucide-react";
+import { User, Circle, UserRound, Bot } from "lucide-react";
 
-export const TYPE = [
-  {
-    label: "Все",
-    value: null,
-    icon: Badge,
-  },
-  {
-    label: "Лояльность",
-    value: true,
-    icon: BadgeCheck,
-  },
-  {
-    label: "Кроме лояльности",
-    value: false,
-    icon: BadgeX,
-  },
-];
-export const GENDER = [
-  {
-    label: "Все",
-    value: null,
-    icon: Users,
-  },
+export const SEX = [
   {
     label: "Мужской",
-    value: "M",
+    value: "М",
     icon: User,
   },
   {
     label: "Женский",
     value: "Ж",
-    icon: User2,
+    icon: UserRound,
+  },
+  {
+    label: "Не определено",
+    value: "",
+    icon: Bot,
   },
 ];
 

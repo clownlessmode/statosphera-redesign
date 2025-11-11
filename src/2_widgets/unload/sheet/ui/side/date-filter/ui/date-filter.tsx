@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { format, parse, parseISO } from "date-fns";
+import { format, parse, parseISO, subDays, subMonths } from "date-fns";
 import { DateRange } from "react-day-picker";
 import {
   Card,
@@ -10,7 +10,7 @@ import {
 } from "@shared/ui/card";
 import {
   Form,
-  //FormControl,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -19,43 +19,69 @@ import { DateRangePicker } from "@shared/ui/date-range-picker";
 import { TimeRangePicker } from "@shared/ui/time-range-picker";
 
 // Store imports
-import { useFiltersStore } from "../../../../model/filters-store";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 
 // Local imports
 import { useForm } from "../model";
-import { DATE_RANGES, MAX_DATE, MIN_DATE, TIME_RANGES } from "../config";
+import {
+  DATE_RANGES,
+  MAX_DATE,
+  MIN_DATE,
+  PERIOD,
+  TIME_RANGES,
+} from "../config";
 import ClearFilters from "./clear-filter";
 import { DatePresetButtons } from "./date-presets-buttons";
 import { TimePresetButtons } from "./time-presets-buttons";
-//import { Input } from "@shared/ui/input";
+import { MultiSelect } from "@shared/ui/multiselect";
+import { useNameSegments } from "@widgets/rfm/ui/filter/model/hook";
+import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
+import { Separator } from "@shared/ui/separator";
 
 const DateFilter: FC = () => {
-  // Form and stores initialization
   const form = useForm();
   const today = new Date();
-  const { updateDateFilter, updateTimeFilter } = useFiltersStore();
+  const { nameSegmentOptions, handleOpenNameSegment, isNameSegmentLoading } =
+    useNameSegments();
+  const { updateMainDataFilter, getApiPayload } = useUnloadFilterStore();
 
-  // Form watch effect
+  let minDate = new Date(2018, 4, 1);
+  let maxDate = subDays(new Date(), 1);
+
   useEffect(() => {
+    const periods = getApiPayload().mainData.period;
+
+    if (periods === "m0") {
+      minDate = subMonths(today, 3);
+      maxDate = today;
+    } else if (periods === "m3") {
+      minDate = subMonths(today, 6);
+      maxDate = subMonths(today, 3);
+    } else if (periods === "m6") {
+      minDate = subMonths(today, 9);
+      maxDate = subMonths(today, 6);
+    }
+
     const subscription = form.watch((values) => {
       const dateStart = values.dateStart ? parseISO(values.dateStart) : null;
       const dateEnd = values.dateEnd ? parseISO(values.dateEnd) : null;
 
       // Validate date ranges
-      if (dateStart && (dateStart < MIN_DATE || dateStart > MAX_DATE)) {
-        form.setValue("dateStart", format(MAX_DATE, "yyyy-MM-dd"));
+      if (dateStart && (dateStart < minDate || dateStart > maxDate)) {
+        form.setValue("dateStart", format(maxDate, "yyyy-MM-dd"));
       }
-      if (dateEnd && (dateEnd < MIN_DATE || dateEnd > MAX_DATE)) {
-        form.setValue("dateEnd", format(MAX_DATE, "yyyy-MM-dd"));
+      if (dateEnd && (dateEnd < minDate || dateEnd > maxDate)) {
+        form.setValue("dateEnd", format(maxDate, "yyyy-MM-dd"));
       }
 
-      updateDateFilter(values.dateStart || "", values.dateEnd || "");
-      updateTimeFilter(values.timeStart || "", values.timeEnd || "");
+      updateMainDataFilter("dateStart", values.dateStart || "");
+      updateMainDataFilter("dateEnd", values.dateEnd || "");
+      updateMainDataFilter("timeStart", values.timeStart || "");
+      updateMainDataFilter("timeEnd", values.timeEnd || "");
     });
     return () => subscription.unsubscribe();
-  }, [form, updateDateFilter, updateTimeFilter]);
+  }, [form, getApiPayload, updateMainDataFilter]);
 
-  // Handler functions
   const handleTimeButtonClick = (key: keyof typeof TIME_RANGES) => {
     const [start, end] = TIME_RANGES[key];
     form.setValue("timeStart", start);
@@ -84,7 +110,6 @@ const DateFilter: FC = () => {
     setDateRange(start, end);
   };
 
-  // Derived values
   const dateRangeValue = {
     from: form.getValues("dateStart")
       ? parseISO(form.getValues("dateStart"))
@@ -97,122 +122,66 @@ const DateFilter: FC = () => {
   return (
     <Card className="w-full mr-4">
       <CardHeader>
-        <CardTitle>Покупки</CardTitle>
+        <CardTitle>Основная информация</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
           <CardDescription>
-            Фильтруйте данные по дате, времени и сумме
+            Фильтруйте данные по времени, сегментам, периоду или дате
           </CardDescription>
           <ClearFilters form={form} />
         </div>
       </CardHeader>
-
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
-            {/* Сумма покупки */}
-            {/*<FormField
+            <FormField
               control={form.control}
-              name="totalPurchase"
+              name="rfmList"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Сегменты</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        value={field.value?.map(String) || []}
+                        options={nameSegmentOptions}
+                        isLoading={isNameSegmentLoading}
+                        onOpenChange={(open) => handleOpenNameSegment(open)}
+                        onValueChange={(value) => {
+                          const numericValues = value.map(Number);
+                          field.onChange(numericValues);
+                          updateMainDataFilter("rfmList", numericValues);
+                        }}
+                        defaultValue={field.value?.map(String)}
+                        placeholder="Выберите сегменты"
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="period"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Сумма</FormLabel>
+                  <FormLabel>Период</FormLabel>
                   <FormControl>
-                    <div className="flex items-center gap-2 w-full **:[appearance:textfield] **:[&::-webkit-outer-spin-button]:appearance-none **:[&::-webkit-inner-spin-button]:appearance-none">
-                      <div className="flex items-center gap-2 flex-1">
-                        <span className="text-sm text-muted-foreground">
-                          от
-                        </span>
-                        <Input
-                          type="number"
-                          min={0}
-                          step={1}
-                          className="flex-1"
-                          value={field.value?.[0] ?? ""}
-                          onKeyDown={(e) => {
-                            // Разрешаем: цифры, Backspace, Delete, Tab, Escape, Enter, стрелки
-                            if (
-                              !/[0-9]/.test(e.key) &&
-                              !['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key) &&
-                              !(e.ctrlKey || e.metaKey) && // Разрешаем Ctrl/Cmd + A, C, V, X
-                              !(e.key === 'a' && (e.ctrlKey || e.metaKey)) &&
-                              !(e.key === 'c' && (e.ctrlKey || e.metaKey)) &&
-                              !(e.key === 'v' && (e.ctrlKey || e.metaKey)) &&
-                              !(e.key === 'x' && (e.ctrlKey || e.metaKey))
-                            ) {
-                              e.preventDefault();
-                            }
-                          }}
-                          onChange={(e) => {
-                            const currentMax = field.value?.[1] ?? Infinity;
-                            const inputValue = Number(e.target.value);
-                            // Обрабатываем пустое значение
-                            if (isNaN(inputValue) || e.target.value === "") {
-                              const min = undefined;
-                              const max =
-                                currentMax === Infinity
-                                  ? undefined
-                                  : currentMax;
-                              const newValue = [min, max];
-                              field.onChange(newValue);
-                              updateLoyalFilter("ageStart", undefined);
-                              updateLoyalFilter(
-                                "ageEnd",
-                                max === Infinity || max === undefined
-                                  ? undefined
-                                  : max
-                              );
-                              return;
-                            }
-                            // Ограничиваем минимальное значение: не меньше 0, не больше текущего максимума
-                            const min = Math.max(
-                              0,
-                              Math.min(currentMax, inputValue)
-                            );
-                            const max =
-                              currentMax === Infinity ? inputValue : currentMax;
-                            const newValue = [min, max];
-                            field.onChange(newValue);
-                            updateLoyalFilter("ageStart", min);
-                            updateLoyalFilter(
-                              "ageEnd",
-                              max === Infinity ? min : max
-                            );
-                          }}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2 flex-1">
-                        <span className="text-sm text-muted-foreground">
-                          до
-                        </span>
-                        <Input
-                          type="number"
-                          min={0}
-                          step={1}
-                          className="flex-1"
-                          value={field.value?.[1] ?? ""}
-                          onChange={(e) => {
-                            const currentMin = field.value?.[0] ?? 0;
-                            const inputValue = Number(e.target.value);
-                            // Ограничиваем максимальное значение: не меньше текущего минимума
-                            const min = currentMin;
-                            const max = isNaN(inputValue)
-                              ? Infinity
-                              : Math.max(currentMin, inputValue);
-                            const newValue = [min, max];
-                            field.onChange(newValue);
-                            updateLoyalFilter("ageStart", min);
-                            updateLoyalFilter(
-                              "ageEnd",
-                              max === Infinity ? min : max
-                            );
-                          }}
-                        />
-                      </div>
-                    </div>
+                    <BooleanCheckboxCard
+                      {...field}
+                      options={PERIOD}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        updateMainDataFilter("period", value);
+                      }}
+                      className="grid-cols-3"
+                    />
                   </FormControl>
                 </FormItem>
               )}
-            />*/}
+            />
+
+            <Separator />
+
             {/* Date Range Section */}
             <FormField
               control={form.control}
@@ -233,6 +202,8 @@ const DateFilter: FC = () => {
 
             {/* Date Preset Buttons */}
             <DatePresetButtons onPresetSelect={handleButtonClick} />
+
+            <Separator />
 
             {/* Time Range Section (only for 'check' tab) */}
             <FormField

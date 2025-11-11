@@ -24,6 +24,10 @@ export const schema = z
     timeEnd: z.string().regex(/^$|^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
       message: "Неверный формат времени. Используйте HH:MM или оставьте пустым",
     }),
+
+    rfmList: z.array(z.number()),
+
+    period: z.string(),
   })
   .refine(
     (data) => {
