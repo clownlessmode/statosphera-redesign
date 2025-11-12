@@ -343,14 +343,15 @@ export const Rfm = () => {
                   В разработке.
                 </TooltipContent>
               </Tooltip>
-              <Link to={ROUTES_PATH.UNLOAD}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  Выгрузка
-                </Button>
-              </Link>
+              {/* <Link to={ROUTES_PATH.UNLOAD}> */}
+              <Button
+                disabled
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+              >
+                Выгрузка
+              </Button>
+              {/* </Link> */}
             </div>
           ),
         }}
