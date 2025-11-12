@@ -1,0 +1,87 @@
+import {
+  subDays,
+  startOfYear,
+  endOfQuarter,
+  startOfMonth,
+  endOfMonth,
+  startOfQuarter,
+  subMonths,
+  subWeeks,
+  isAfter,
+} from "date-fns";
+import { Calendar1, CalendarDays, CalendarRange } from "lucide-react";
+
+export const MIN_DATE = new Date(2018, 4, 1);
+export const MAX_DATE = new Date();
+
+export const TIME_RANGES = {
+  morning: ["06:00", "12:00"],
+  day: ["12:00", "18:00"],
+  evening: ["18:00", "00:00"],
+  night: ["00:00", "06:00"],
+} as const;
+
+export const DATE_RANGES = {
+  /** Последние 6 месяцев (от сегодняшней даты, включая вчера) */
+  halfYear: (today: Date) => {
+    const start = subMonths(today, 6);
+    const end = subDays(today, 1);
+    return { start, end };
+  },
+
+  /** С начала года до вчера */
+  startOfYear: (today: Date) => {
+    const start = startOfYear(today);
+    const end = subDays(today, 1);
+    return { start, end };
+  },
+
+  /** С начала квартала до вчера, но не позже конца квартала */
+  currentQuarter: (today: Date) => {
+    const start = startOfQuarter(today);
+    const yesterday = subDays(today, 1);
+    const quarterEnd = endOfQuarter(today);
+    const end = isAfter(quarterEnd, yesterday) ? yesterday : quarterEnd;
+    return { start, end };
+  },
+
+  /** С начала месяца до вчера */
+  currentMonth: (today: Date) => {
+    const start = startOfMonth(today);
+    const end = subDays(today, 1);
+    return { start, end };
+  },
+
+  /** Последняя неделя (7 дней до вчерашнего дня) */
+  lastWeek: (today: Date) => {
+    const end = subDays(today, 1);
+    const start = subWeeks(end, 1);
+    return { start, end };
+  },
+
+  /** Предыдущий месяц (полный, от начала до конца) */
+  lastMonth: (today: Date) => {
+    const lastMonthDate = subMonths(today, 1);
+    const start = startOfMonth(lastMonthDate);
+    const end = endOfMonth(lastMonthDate);
+    return { start, end };
+  },
+};
+
+export const PERIOD = [
+  {
+    label: "M0",
+    value: "M0",
+    icon: Calendar1,
+  },
+  {
+    label: "M-3",
+    value: "M-3",
+    icon: CalendarDays,
+  },
+  {
+    label: "M-6",
+    value: "M-6",
+    icon: CalendarRange,
+  },
+];
