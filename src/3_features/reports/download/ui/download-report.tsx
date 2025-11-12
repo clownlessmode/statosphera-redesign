@@ -36,9 +36,17 @@ const DownloadReport = ({ rows }: { rows: number }) => {
   const isExcelDisabled = true; //rows > 500000;
   const isAllDisabled = rows > 7000000;
   const { session } = useSession();
+
+  const disabledRolesList: string[] = [
+    ROLES.MANAGER_STORE,
+    ROLES.PARTNER,
+    ROLES.SERVICE_MANAGER,
+  ];
+
+  const isDisabled = disabledRolesList.includes(session?.role as string);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild disabled={session?.role === ROLES.MANAGER_STORE}>
+      <DialogTrigger asChild disabled={isDisabled}>
         <Button variant="outline">
           <Download />
         </Button>
