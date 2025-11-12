@@ -1,5 +1,5 @@
 import { Captions, Globe, ShoppingBasket, Store, Users } from "lucide-react";
-import { DateFilter } from "../side/date-filter";
+import { MainFilter } from "../side/main-filter";
 import { ShopsFilter } from "../side/shops-filter";
 import { ProductsFilter } from "../side/products-filter";
 import { ClientsFilter } from "../side/clients-filter";
@@ -9,7 +9,7 @@ export const filters = [
   {
     title: "Основная информация",
     icon: Captions,
-    component: DateFilter,
+    component: MainFilter,
   },
   {
     title: "Клиенты",

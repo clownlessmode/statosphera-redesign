@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import {
   ViewTabs,
@@ -12,10 +12,15 @@ import {
 import { filters } from "./model/tabs";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
+import { useUnloadFilterStore } from "../model/filters-store";
 
 const FiltersInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
   const { scrollTo } = useViewTabs();
+  const { getPreparedFilterPayload, updatePreparedFilter, resetAllFilters } =
+    useUnloadFilterStore();
+  const [resetKey, setResetKey] = useState(0);
+  const payload = getPreparedFilterPayload();
 
   useEffect(() => {
     if (targetViewValue) {
@@ -45,7 +50,10 @@ const FiltersInner = () => {
         </ViewTabsList>
       )}
       <div className="flex flex-col gap-4 pb-20 w-3/4">
-        <div className="flex flex-col overflow-auto gap-4 pt-4 scrollbar-hide">
+        <div
+          key={resetKey}
+          className="flex flex-col overflow-auto gap-4 pt-4 scrollbar-hide"
+        >
           {filters.map((item, index) => (
             <ViewTabsContent value={item.title} key={`filter-content-${index}`}>
               <item.component />
@@ -53,8 +61,24 @@ const FiltersInner = () => {
           ))}
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
-          <Button>Применить</Button>
-          <Button>Исключить</Button>
+          <Button
+            onClick={() => {
+              updatePreparedFilter("include", payload);
+              resetAllFilters();
+              setResetKey((k) => k + 1);
+            }}
+          >
+            Применить
+          </Button>
+          <Button
+            onClick={() => {
+              updatePreparedFilter("exclude", payload);
+              resetAllFilters();
+              setResetKey((k) => k + 1);
+            }}
+          >
+            Исключить
+          </Button>
         </div>
       </div>
     </>

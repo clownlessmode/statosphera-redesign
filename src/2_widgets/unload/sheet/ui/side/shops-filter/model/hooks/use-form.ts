@@ -1,9 +1,9 @@
 // hook.ts
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { FormValues, schema, defaultValues } from "../../config";
 import { processArrayableValue } from "@shared/lib/arrayable-string";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 
 export const useForm = () => {
   const {
@@ -16,7 +16,7 @@ export const useForm = () => {
     idRegion,
     idStore,
     storeCondition,
-  } = useFiltersStore((state) => state.filters.store);
+  } = useUnloadFilterStore((state) => state.filters.store);
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {

@@ -30,17 +30,19 @@ import {
   useSubsubgroup,
   useProduct,
 } from "../model";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 import { HEALTHY } from "../config";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { cn } from "@shared/lib/utils";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 interface Props {
   className?: string;
 }
 
 const ProductsFilter: FC<Props> = ({ className }) => {
-  const { updateProductFilter, getApiPayload } = useFiltersStore();
+  const { updateProductFilter } = useUnloadFilterStore();
+  const { getApiPayload } = useFiltersStore();
   const payload = getApiPayload();
   const form = useForm();
 

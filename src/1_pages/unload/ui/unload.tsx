@@ -5,12 +5,34 @@ import { Button } from "@shared/ui/button";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import { Tabs } from "@shared/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
 import { Filters } from "@widgets/unload/sheet";
 import { Star } from "lucide-react";
+import {
+  PreparedFilterBlock,
+  useUnloadFilterStore,
+} from "@widgets/unload/sheet/model/filters-store";
+import { useUnload } from "../api";
+import { useEffect, useState } from "react";
+import Spinner from "@shared/ui/spinner";
+import DownloadUnload from "@features/unload/download/ui/download-unload";
 
 export const Unload = () => {
   const isMobile = useIsMobile();
+  const { getPreparedFilter } = useUnloadFilterStore();
+  const { getAudience, isAudienceLoading } = useUnload();
+  const [audienceCount, setAudienceCount] = useState<number>(0);
+  const allData = getPreparedFilter();
+  console.log(allData);
+  useEffect(() => {
+    getAudience({
+      filter: {
+        include: allData.include as PreparedFilterBlock[],
+        exclude: allData.exclude as PreparedFilterBlock[],
+      },
+    }).then((data) => {
+      setAudienceCount(data.count);
+    });
+  }, [allData.include, allData.exclude]);
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -80,12 +102,6 @@ export const Unload = () => {
               </Button>
             </div>
           ),
-          right: !isMobile && (
-            <Button variant="outline">
-              <Star className="size-4" />
-              Сохраненная аудитория
-            </Button>
-          ),
         }}
       />
       <div className="rounded-3xl pr-4 gap-2 flex flex-col w-full bg-background h-[calc(100vh-64px)] overflow-hidden">
@@ -106,13 +122,8 @@ export const Unload = () => {
           </Button>
         </div>
         <div className="grid grid-cols-4 gap-4">
-          <Tabs defaultValue="include" className="col-span-3">
-            <TabsContent value="include">
-              <Filters />
-            </TabsContent>
-            <TabsContent value="exclude">
-              <Filters />
-            </TabsContent>
+          <Tabs className="col-span-3">
+            <Filters />
           </Tabs>
           <div className="flex flex-col justify-between h-screen pt-4 pb-20">
             <div className="flex flex-col gap-4">
@@ -131,10 +142,12 @@ export const Unload = () => {
                 <span className="text-base text-muted-foreground">
                   В аудитории
                 </span>
-                <span className="text-4xl">0</span>
+                <span className="text-4xl *:[svg]:my-2 *:[svg]:size-6">
+                  {isAudienceLoading ? <Spinner /> : audienceCount}
+                </span>
               </div>
               <div className="flex gap-2">
-                <Button className="w-full">Выгрузить</Button>
+                <DownloadUnload />
                 <Button className="w-max">
                   <Star />
                 </Button>

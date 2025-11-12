@@ -4,17 +4,17 @@ import { FC, useEffect, useRef } from "react";
 
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useFormResetStore } from "@widgets/unload/sheet/model/reset-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
 
 interface Props {
   form: UseFormReturn<FormValues>;
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateStoreFilter } = useFiltersStore();
+  const { updateStoreFilter } = useUnloadFilterStore();
   const { toggleMyShopsMode } = useMyShopsStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 

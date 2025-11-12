@@ -27,7 +27,9 @@ export const schema = z
 
     rfmList: z.array(z.number()),
 
-    period: z.string(),
+    period: z.string().nullable(),
+
+    audienceId: z.array(z.number()),
   })
   .refine(
     (data) => {

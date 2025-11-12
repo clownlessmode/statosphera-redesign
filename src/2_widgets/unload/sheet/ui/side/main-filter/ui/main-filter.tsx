@@ -1,5 +1,12 @@
-import { FC, useEffect } from "react";
-import { format, parse, parseISO, subDays, subMonths } from "date-fns";
+import { FC, useEffect, useMemo } from "react";
+import {
+  endOfDay,
+  format,
+  parse,
+  parseISO,
+  startOfDay,
+  subMonths,
+} from "date-fns";
 import { DateRange } from "react-day-picker";
 import {
   Card,
@@ -37,50 +44,73 @@ import { MultiSelect } from "@shared/ui/multiselect";
 import { useNameSegments } from "@widgets/rfm/ui/filter/model/hook";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Separator } from "@shared/ui/separator";
+import { useAudience } from "../model/hooks/use-audience";
 
-const DateFilter: FC = () => {
+const MainFilter: FC = () => {
   const form = useForm();
   const today = new Date();
   const { nameSegmentOptions, handleOpenNameSegment, isNameSegmentLoading } =
     useNameSegments();
+  const { audienceOptions, handleOpenAudienceSelect, isAudienceLoading } =
+    useAudience();
   const { updateMainDataFilter, getApiPayload } = useUnloadFilterStore();
+  const { period } = getApiPayload().mainData;
 
-  let minDate = new Date(2018, 4, 1);
-  let maxDate = subDays(new Date(), 1);
+  const { minDate, maxDate } = useMemo(() => {
+    switch (period) {
+      case "M0":
+        return {
+          minDate: startOfDay(subMonths(today, 3)),
+          maxDate: endOfDay(today),
+        };
+      case "M-3":
+        return {
+          minDate: startOfDay(subMonths(today, 6)),
+          maxDate: endOfDay(subMonths(today, 3)),
+        };
+      case "M-6":
+        return {
+          minDate: startOfDay(subMonths(today, 9)),
+          maxDate: endOfDay(subMonths(today, 6)),
+        };
+      default:
+        return {
+          minDate: startOfDay(MIN_DATE),
+          maxDate: endOfDay(MAX_DATE),
+        };
+    }
+  }, [period, today]);
+
+  const handlePeriodChange = (value: string) => {
+    switch (value) {
+      case "M0":
+        setDateRange(startOfDay(subMonths(today, 3)), endOfDay(today));
+        break;
+      case "M-3":
+        setDateRange(
+          startOfDay(subMonths(today, 6)),
+          endOfDay(subMonths(today, 3)),
+        );
+        break;
+      case "M-6":
+        setDateRange(
+          startOfDay(subMonths(today, 9)),
+          endOfDay(subMonths(today, 6)),
+        );
+        break;
+    }
+  };
 
   useEffect(() => {
-    const periods = getApiPayload().mainData.period;
-
-    if (periods === "m0") {
-      minDate = subMonths(today, 3);
-      maxDate = today;
-    } else if (periods === "m3") {
-      minDate = subMonths(today, 6);
-      maxDate = subMonths(today, 3);
-    } else if (periods === "m6") {
-      minDate = subMonths(today, 9);
-      maxDate = subMonths(today, 6);
-    }
-
     const subscription = form.watch((values) => {
-      const dateStart = values.dateStart ? parseISO(values.dateStart) : null;
-      const dateEnd = values.dateEnd ? parseISO(values.dateEnd) : null;
-
-      // Validate date ranges
-      if (dateStart && (dateStart < minDate || dateStart > maxDate)) {
-        form.setValue("dateStart", format(maxDate, "yyyy-MM-dd"));
-      }
-      if (dateEnd && (dateEnd < minDate || dateEnd > maxDate)) {
-        form.setValue("dateEnd", format(maxDate, "yyyy-MM-dd"));
-      }
-
+      // Просто обновляем стор, без валидации
       updateMainDataFilter("dateStart", values.dateStart || "");
       updateMainDataFilter("dateEnd", values.dateEnd || "");
       updateMainDataFilter("timeStart", values.timeStart || "");
       updateMainDataFilter("timeEnd", values.timeEnd || "");
     });
     return () => subscription.unsubscribe();
-  }, [form, getApiPayload, updateMainDataFilter]);
+  }, [form, updateMainDataFilter]);
 
   const handleTimeButtonClick = (key: keyof typeof TIME_RANGES) => {
     const [start, end] = TIME_RANGES[key];
@@ -94,10 +124,20 @@ const DateFilter: FC = () => {
   };
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
-    if (range?.from && range.to) {
-      setDateRange(range.from, range.to);
-    } else if (range?.from) {
-      form.setValue("dateStart", format(range.from, "yyyy-MM-dd"));
+    let from = range?.from;
+    let to = range?.to;
+
+    if (from && (from < minDate || from > maxDate)) {
+      from = minDate;
+    }
+    if (to && (to < minDate || to > maxDate)) {
+      to = maxDate;
+    }
+
+    if (from && to) {
+      setDateRange(from, to);
+    } else if (from) {
+      form.setValue("dateStart", format(from, "yyyy-MM-dd"));
       form.setValue("dateEnd", "");
     } else {
       form.setValue("dateStart", "");
@@ -142,7 +182,8 @@ const DateFilter: FC = () => {
                     <FormLabel>Сегменты</FormLabel>
                     <FormControl>
                       <MultiSelect
-                        value={field.value?.map(String) || []}
+                        disabled={!period}
+                        value={!period ? [] : field.value?.map(String) || []}
                         options={nameSegmentOptions}
                         isLoading={isNameSegmentLoading}
                         onOpenChange={(open) => handleOpenNameSegment(open)}
@@ -169,9 +210,11 @@ const DateFilter: FC = () => {
                     <BooleanCheckboxCard
                       {...field}
                       options={PERIOD}
+                      value={field.value ?? null}
                       onChange={(value) => {
-                        field.onChange(value);
-                        updateMainDataFilter("period", value);
+                        field.onChange(value ?? null);
+                        updateMainDataFilter("period", value ?? null);
+                        handlePeriodChange(value ?? null);
                       }}
                       className="grid-cols-3"
                     />
@@ -190,8 +233,8 @@ const DateFilter: FC = () => {
                 <FormItem>
                   <FormLabel htmlFor={field.name}>Промежуток даты</FormLabel>
                   <DateRangePicker
-                    min={MIN_DATE}
-                    max={MAX_DATE}
+                    min={minDate}
+                    max={maxDate}
                     onChange={handleDateRangeChange}
                     className="w-full"
                     value={dateRangeValue}
@@ -237,6 +280,33 @@ const DateFilter: FC = () => {
 
             {/* Time Preset Buttons */}
             <TimePresetButtons onPresetSelect={handleTimeButtonClick} />
+
+            <Separator />
+
+            <FormField
+              control={form.control}
+              name="audienceId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Аудитория</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value?.map(String) || []}
+                      options={audienceOptions}
+                      isLoading={isAudienceLoading}
+                      onOpenChange={handleOpenAudienceSelect}
+                      onValueChange={(value) => {
+                        const numericValues = value.map(Number);
+                        field.onChange(numericValues);
+                        updateMainDataFilter("audienceId", numericValues);
+                      }}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите аудиторию"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
       </CardContent>
@@ -244,4 +314,4 @@ const DateFilter: FC = () => {
   );
 };
 
-export default DateFilter;
+export default MainFilter;

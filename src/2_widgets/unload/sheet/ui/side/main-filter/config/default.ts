@@ -1,6 +1,6 @@
 // default.ts
 import { format, startOfMonth, endOfMonth, subMonths, subDays } from "date-fns";
-import { FormValues } from "../../date-filter/config/types";
+import { FormValues } from "./types";
 
 const today = new Date();
 
@@ -23,4 +23,5 @@ export const defaultValues: FormValues = {
   timeEnd: "",
   rfmList: [],
   period: "",
+  audienceId: [],
 };

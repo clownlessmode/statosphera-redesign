@@ -14,17 +14,19 @@ import {
 } from "@shared/ui/form";
 import { FC } from "react";
 import { useForm, useInterval, usePromo, useStatusOrder } from "../model";
-import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import ClearFilters from "./clear-filter";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { TYPE, TYPE_DELIVERY, TYPE_ORDER, TYPE_PAYMENT } from "../config";
 import { MultiSelect } from "@shared/ui/multiselect";
 import CheckboxCards from "@shared/ui/checkbox-cards";
+import { useUnloadFilterStore } from "@widgets/unload/sheet/model/filters-store";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 const OnlineFilter: FC = () => {
   const form = useForm();
 
-  const { updateOnlineStoreFilter, getApiPayload } = useFiltersStore();
+  const { updateOnlineStoreFilter } = useUnloadFilterStore();
+  const { getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
   const {
     savedStatusOrderLabels,

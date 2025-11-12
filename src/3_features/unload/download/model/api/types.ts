@@ -1,13 +1,8 @@
 import { PreparedFilterBlock } from "@widgets/unload/sheet/model/filters-store";
 
-export interface RequestDto {
+export interface DownloadAudienceRequest {
   filter: {
     include: PreparedFilterBlock[];
     exclude: PreparedFilterBlock[];
   };
-  nameAudience?: string;
-}
-
-export interface AudienceResponse {
-  count: number;
 }

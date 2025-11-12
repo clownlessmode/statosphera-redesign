@@ -145,7 +145,35 @@ export enum AGE_GROUP {
 
 export const ageGroupSchema = z.nativeEnum(AGE_GROUP);
 export const frsChannelSchema = z.nativeEnum(FRS_CHANNEL);
-
+export interface PreparedFilterBlock {
+  RFM?: { rfmList: number[]; period: string | null };
+  filterDate: { dateStart: string; dateEnd: string };
+  filterTime: { timeStart: string; timeEnd: string };
+  store: FiltersState["filters"]["store"];
+  product: FiltersState["filters"]["product"];
+  onlineStore: FiltersState["filters"]["onlineStore"];
+  client: {
+    sex: string[];
+    guidDiscount: string[];
+    guidBonus: string[];
+    ageStart: number | null;
+    ageEnd: number | null;
+    ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
+    colorsDiscount: string[];
+    countBonus: FiltersState["filters"]["clients"]["countBonus"];
+    totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
+    avg: FiltersState["filters"]["clients"]["avg"];
+    frequency: FiltersState["filters"]["clients"]["frequency"];
+    avgCheckLen: FiltersState["filters"]["clients"]["avgCheckLen"];
+    proceedPerCheck: FiltersState["filters"]["clients"]["proceedPerCheck"];
+  };
+  audienceId: number[];
+}
+export interface PreparedFiltersState {
+  include: Partial<PreparedFilterBlock>[];
+  exclude: Partial<PreparedFilterBlock>[];
+  count: number;
+}
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
 const today = new Date();
 
@@ -246,22 +274,15 @@ export type FiltersState = {
       imPromo: string[];
     };
   };
-  values: string[];
   mainData: {
     dateStart: string;
     dateEnd: string;
     timeStart: string;
     timeEnd: string;
     rfmList: number[];
-    period: string | undefined;
+    period: string | null;
+    audienceId: number[];
   };
-  sorts: {
-    sort: "asc" | "desc";
-    colId: string[];
-  };
-  limit: number;
-  offset: number;
-  groups: string[];
 
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -290,25 +311,71 @@ export type FiltersState = {
     key: K,
     value: FiltersState["mainData"][K],
   ) => void;
-  updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
-  updateGroups: (groups: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
-    | "uniques"
     | "updateStoreFilter"
     | "updateProductFilter"
     | "updateClientsFilter"
     | "updateOnlineStoreFilter"
     | "updateMainDataFilter"
-    | "updateSorts"
-    | "updateGroups"
     | "resetAllFilters"
     | "getApiPayload"
+    | "preparedFilter"
+    | "getPreparedFilterPayload"
+    | "updatePreparedFilter"
+    | "resetPreparedFilter"
+    | "getPreparedFilter"
   >;
+
+  getPreparedFilterPayload: () => {
+    RFM?: {
+      rfmList: number[];
+      period: string | null;
+    };
+    filterDate: { dateStart: string; dateEnd: string };
+    filterTime: { timeStart: string; timeEnd: string };
+    store: FiltersState["filters"]["store"];
+    product: FiltersState["filters"]["product"];
+    onlineStore: FiltersState["filters"]["onlineStore"];
+    client: {
+      sex: string[];
+      guidDiscount: string[];
+      guidBonus: string[];
+      ageStart: number | null;
+      ageEnd: number | null;
+      ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
+      colorsDiscount: string[];
+      countBonus: FiltersState["filters"]["clients"]["countBonus"];
+      totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
+      avg: FiltersState["filters"]["clients"]["avg"];
+      frequency: FiltersState["filters"]["clients"]["frequency"];
+      avgCheckLen: FiltersState["filters"]["clients"]["avgCheckLen"];
+      proceedPerCheck: FiltersState["filters"]["clients"]["proceedPerCheck"];
+    };
+    audienceId: number[];
+  };
+
+  getPreparedFilter: () => {
+    include: Partial<PreparedFilterBlock>[];
+    exclude: Partial<PreparedFilterBlock>[];
+  };
+
+  updatePreparedFilter: (
+    side: "include" | "exclude",
+    partial: Partial<PreparedFilterBlock>,
+  ) => void;
+
+  resetPreparedFilter: () => void;
 };
 
 // Начальное состояние
+const initialPreparedState: PreparedFiltersState = {
+  include: [],
+  exclude: [],
+  count: 0,
+};
+
 const initialState: Omit<
   FiltersState,
   | "updateStoreFilter"
@@ -316,10 +383,12 @@ const initialState: Omit<
   | "updateClientsFilter"
   | "updateOnlineStoreFilter"
   | "updateMainDataFilter"
-  | "updateSorts"
-  | "updateGroups"
   | "resetAllFilters"
   | "getApiPayload"
+  | "getPreparedFilterPayload"
+  | "updatePreparedFilter"
+  | "resetPreparedFilter"
+  | "getPreparedFilter"
 > = {
   filters: {
     store: {
@@ -395,7 +464,6 @@ const initialState: Omit<
       imPromo: [],
     },
   },
-  values: ["proceeds"],
   mainData: {
     dateStart,
     dateEnd,
@@ -403,90 +471,139 @@ const initialState: Omit<
     timeEnd: "",
     rfmList: [],
     period: "",
+    audienceId: [],
   },
-  sorts: {
-    sort: "desc",
-    colId: [],
-  },
-  limit: 100,
-  offset: 0,
-  groups: [],
 };
 
-export const useUnloadFilterStore = create<FiltersState>((set, get) => ({
-  ...initialState,
-  updateStoreFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
+export const useUnloadFilterStore = create<FiltersState & PreparedFiltersState>(
+  (set, get) => ({
+    ...initialState,
+    ...initialPreparedState,
+    updateStoreFilter: (key, value) =>
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          store: {
+            ...state.filters.store,
+            [key]: value,
+          },
+        },
+      })),
+
+    updateProductFilter: (key, value) =>
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          product: {
+            ...state.filters.product,
+            [key]: value,
+          },
+        },
+      })),
+
+    updateClientsFilter: (key, value) => {
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          clients: {
+            ...state.filters.clients,
+            [key]: value,
+          },
+        },
+      }));
+    },
+
+    updateOnlineStoreFilter: (key, value) =>
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          onlineStore: {
+            ...state.filters.onlineStore,
+            [key]: value,
+          },
+        },
+      })),
+
+    updateMainDataFilter: <K extends keyof FiltersState["mainData"]>(
+      key: K,
+      value: FiltersState["mainData"][K],
+    ) =>
+      set((state) => ({
+        mainData: {
+          ...state.mainData,
+          [key]: value,
+        },
+      })),
+
+    resetAllFilters: () => set(initialState),
+
+    getApiPayload: () => {
+      const state = get();
+      return {
+        filters: state.filters,
+        mainData: state.mainData,
+      };
+    },
+
+    getPreparedFilterPayload: () => {
+      const { filters, mainData } = get();
+
+      const rfmPart = mainData.period
+        ? {
+            RFM: {
+              rfmList: mainData.rfmList ?? [],
+              period: mainData.period,
+            },
+          }
+        : {};
+      return {
+        ...rfmPart,
+        filterDate: {
+          dateStart: mainData.dateStart,
+          dateEnd: mainData.dateEnd,
+        },
+        filterTime: {
+          timeStart: mainData.timeStart,
+          timeEnd: mainData.timeEnd,
+        },
         store: {
-          ...state.filters.store,
-          [key]: value,
+          ...filters.store,
         },
-      },
-    })),
-
-  updateProductFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
         product: {
-          ...state.filters.product,
-          [key]: value,
+          ...filters.product,
         },
-      },
-    })),
-
-  updateClientsFilter: (key, value) => {
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        clients: {
-          ...state.filters.clients,
-          [key]: value,
-        },
-      },
-    }));
-  },
-
-  updateOnlineStoreFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
         onlineStore: {
-          ...state.filters.onlineStore,
-          [key]: value,
+          ...filters.onlineStore,
         },
-      },
-    })),
-
-  updateMainDataFilter: <K extends keyof FiltersState["mainData"]>(
-    key: K,
-    value: FiltersState["mainData"][K],
-  ) =>
-    set((state) => ({
-      mainData: {
-        ...state.mainData,
-        [key]: value,
-      },
-    })),
-
-  updateSorts: (sort, colId) => set({ sorts: { sort, colId } }),
-
-  updateGroups: (groups) => set({ groups }),
-
-  resetAllFilters: () => set(initialState),
-
-  getApiPayload: () => {
-    const state = get();
-    return {
-      filters: state.filters,
-      values: state.values,
-      mainData: state.mainData,
-      sorts: state.sorts,
-      limit: state.limit,
-      offset: state.offset,
-      groups: state.groups,
-    };
-  },
-}));
+        client: {
+          sex: filters.clients.sex ?? [],
+          guidDiscount: filters.clients.guidDiscount ?? [],
+          guidBonus: filters.clients.guidBonus ?? [],
+          ageStart: filters.clients.ageStart ?? null,
+          ageEnd: filters.clients.ageEnd ?? null,
+          ageAccount: filters.clients.ageAccount,
+          colorsDiscount: filters.clients.colorsDiscount ?? [],
+          countBonus: filters.clients.countBonus,
+          totalPurchase: filters.clients.totalPurchase,
+          avg: filters.clients.avg,
+          frequency: filters.clients.frequency,
+          avgCheckLen: filters.clients.avgCheckLen,
+          proceedPerCheck: filters.clients.proceedPerCheck,
+        },
+        audienceId: mainData.audienceId,
+      };
+    },
+    updatePreparedFilter: (side, partial) =>
+      set((state) => ({
+        ...state,
+        [side]: Array.isArray(partial)
+          ? [...state[side], ...partial]
+          : [...state[side], partial],
+      })),
+    getPreparedFilter: () => {
+      const { include, exclude, count } = get();
+      return { include, exclude, count };
+    },
+    resetPreparedFilter: () => set(initialPreparedState),
+  }),
+);

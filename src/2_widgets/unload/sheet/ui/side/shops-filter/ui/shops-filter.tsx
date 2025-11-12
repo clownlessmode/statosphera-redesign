@@ -28,17 +28,19 @@ import {
   AGE_GROUP,
   FRS_CHANNEL,
   STORE_CONDITIONS,
-  useFiltersStore,
-} from "@widgets/report/sheet/model/filters-store";
+  useUnloadFilterStore,
+} from "@widgets/unload/sheet/model/filters-store";
 import { STATUS, TIME } from "../config";
 import { useMyShopsStore } from "../model/stores/use-my-shops";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useSession } from "@entities/session";
 import { useChannel } from "../model/hooks/use-channel";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 export const ShopsFilter: FC = () => {
   const form = useForm();
-  const { updateStoreFilter, getApiPayload } = useFiltersStore();
+  const { updateStoreFilter } = useUnloadFilterStore();
+  const { getApiPayload } = useFiltersStore();
   const { isMyShopsMode } = useMyShopsStore();
   const { session } = useSession();
   const payload = getApiPayload();

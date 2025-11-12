@@ -4,7 +4,7 @@ import { FC, useEffect, useRef } from "react";
 
 import { defaultValues, FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useFormResetStore } from "@widgets/unload/sheet/model/reset-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
 interface Props {
@@ -25,10 +25,13 @@ const ClearFilters: FC<Props> = ({ form }) => {
   }, [resetSignal]);
   const handleClearFilters = () => {
     form.reset({
+      rfmList: defaultValues.rfmList,
+      period: defaultValues.period,
       dateEnd: defaultValues.dateEnd,
       dateStart: defaultValues.dateStart,
       timeEnd: defaultValues.timeEnd,
       timeStart: defaultValues.timeStart,
+      audienceId: defaultValues.audienceId,
     });
   };
   const isMobile = useIsMobile();

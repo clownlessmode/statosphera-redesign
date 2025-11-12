@@ -1,14 +1,14 @@
 import { api } from "@shared/api/api";
 import { RequestDto } from "../config";
 
-export class RfmService {
-  static async getNameSegment() {
-    const response = await api.get("/rfm/get-name-segment");
+export class UnloadService {
+  static async getAudience(dto: RequestDto) {
+    const response = await api.post("/unload/build-audience", dto);
     return response.data;
   }
 
-  static async getTreemapRfmOrderDelivery(dto: RequestDto) {
-    const response = await api.post("/rfm/treemap-rfm-order-delivery", dto);
+  static async saveAudience(dto: RequestDto) {
+    const response = await api.post("/unload/save-audience", dto);
     return response.data;
   }
 }
