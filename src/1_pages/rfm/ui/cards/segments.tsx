@@ -19,6 +19,7 @@ import SegmentsSkeleton from "./segments-skeleton";
 import { useFiltersStore } from "@widgets/rfm/model/filters-store";
 import { ModalInfo } from "./segments-modal";
 import { useRfm } from "@pages/rfm/api";
+import { DownloadSegment } from "@features/rfm/download";
 
 interface Props {
   data: MainDataSegmentResponse[];
@@ -80,11 +81,17 @@ export const SegmentsCard: FC<Props> = ({ data, isLoading }) => {
                               {segment.segmentCode}
                             </Badge>
                             <div className="flex flex-col w-max">
-                              <CardTitle className="text-md max-md:text-xs">
+                              <CardTitle className="text-md max-md:text-xs flex flex-row items-center max-xxs:*:hidden">
                                 {segment.segment}
+                                <DownloadSegment
+                                  rfmCode={segment.segmentCode}
+                                />
                               </CardTitle>
-                              <span className="max-md:text-xs">
+                              <span className="xxs:*:hidden max-md:text-xs flex flex-row items-center">
                                 Период: {segment.period}
+                                <DownloadSegment
+                                  rfmCode={segment.segmentCode}
+                                />
                               </span>
                             </div>
                           </div>

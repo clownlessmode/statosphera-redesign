@@ -343,26 +343,15 @@ export const Rfm = () => {
                   В разработке.
                 </TooltipContent>
               </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div>
-                    <Button
-                      disabled
-                      variant="outline"
-                      className="border-b-0! rounded-b-none! opacity-50"
-                    >
-                      Выгрузки
-                    </Button>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent
-                  sideOffset={0}
-                  className="w-max h-fit p-2 text-center"
-                  side="bottom"
-                >
-                  В разработке.
-                </TooltipContent>
-              </Tooltip>
+              {/* <Link to={ROUTES_PATH.UNLOAD}> */}
+              <Button
+                disabled
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+              >
+                Выгрузка
+              </Button>
+              {/* </Link> */}
             </div>
           ),
         }}
