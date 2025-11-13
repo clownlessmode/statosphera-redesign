@@ -6,7 +6,6 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import { Tabs } from "@shared/ui/tabs";
 import { Filters } from "@widgets/unload/sheet";
-import { Star } from "lucide-react";
 import {
   PreparedFilterBlock,
   useUnloadFilterStore,
@@ -15,14 +14,17 @@ import { useUnload } from "../api";
 import { useEffect, useState } from "react";
 import Spinner from "@shared/ui/spinner";
 import DownloadUnload from "@features/unload/download/ui/download-unload";
+import SaveUnload from "@features/unload/save-unload/ui/save-unload";
+import { SelectedFilters } from "./selected-filters";
+import { X } from "lucide-react";
 
 export const Unload = () => {
   const isMobile = useIsMobile();
-  const { getPreparedFilter } = useUnloadFilterStore();
+  const { getPreparedFilter, removePreparedFilter } = useUnloadFilterStore();
   const { getAudience, isAudienceLoading } = useUnload();
   const [audienceCount, setAudienceCount] = useState<number>(0);
   const allData = getPreparedFilter();
-  console.log(allData);
+
   useEffect(() => {
     getAudience({
       filter: {
@@ -126,14 +128,61 @@ export const Unload = () => {
             <Filters />
           </Tabs>
           <div className="flex flex-col justify-between h-screen pt-4 pb-20">
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col">
-                <span className="text-sm text-muted-foreground">События</span>
-                <div className="flex flex-row flex-wrap"></div>
+            <div className="flex flex-col gap-4 overflow-y-auto scrollbar-hide">
+              <div className="flex flex-row flex-wrap gap-2 items-center">
+                <span className="text-sm text-muted-foreground text-center">
+                  События:
+                </span>
+                {allData.include.map((item, index) => (
+                  <div key={index} className="flex flex-row gap-2">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="text-sm px-2 py-1 rounded-3xl hover:*:[svg]:block *:[svg]:hidden"
+                          onClick={() => removePreparedFilter("include", index)}
+                        >
+                          Условие {index + 1}
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        sideOffset={0}
+                        className="w-max h-fit p-2 text-left"
+                        side="bottom"
+                      >
+                        <SelectedFilters item={item} />
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                ))}
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-muted-foreground">Кроме</span>
-                <div className="flex flex-row flex-wrap"></div>
+              <div className="flex flex-row flex-wrap gap-2 items-center">
+                <span className="text-sm text-muted-foreground text-center">
+                  Кроме:
+                </span>
+                {allData.exclude.map((item, index) => (
+                  <div key={index} className="flex flex-row gap-2">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="text-sm px-2 py-1 rounded-3xl"
+                          onClick={() => removePreparedFilter("exclude", index)}
+                        >
+                          Условие {index + 1}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        sideOffset={0}
+                        className="w-max h-fit p-2 text-left"
+                        side="bottom"
+                      >
+                        <SelectedFilters item={item} />
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                ))}
               </div>
             </div>
             <div className="flex flex-col gap-4">
@@ -148,9 +197,7 @@ export const Unload = () => {
               </div>
               <div className="flex gap-2">
                 <DownloadUnload />
-                <Button className="w-max">
-                  <Star />
-                </Button>
+                <SaveUnload />
               </div>
             </div>
           </div>

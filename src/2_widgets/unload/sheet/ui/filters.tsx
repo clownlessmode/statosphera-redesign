@@ -62,6 +62,9 @@ const FiltersInner = () => {
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
           <Button
+            disabled={
+              !payload.filterDate.dateStart || !payload.filterDate.dateEnd
+            }
             onClick={() => {
               updatePreparedFilter("include", payload);
               resetAllFilters();
@@ -71,6 +74,9 @@ const FiltersInner = () => {
             Применить
           </Button>
           <Button
+            disabled={
+              !payload.filterDate.dateStart || !payload.filterDate.dateEnd
+            }
             onClick={() => {
               updatePreparedFilter("exclude", payload);
               resetAllFilters();

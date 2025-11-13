@@ -11,7 +11,6 @@ const DownloadUnload = () => {
 
   const handleDownloadReport = async () => {
     const { include, exclude } = getPreparedFilter();
-    console.log({ include, exclude });
     await downloadAudience({
       filter: {
         include: include as PreparedFilterBlock[],

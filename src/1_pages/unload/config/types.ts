@@ -5,7 +5,6 @@ export interface RequestDto {
     include: PreparedFilterBlock[];
     exclude: PreparedFilterBlock[];
   };
-  nameAudience?: string;
 }
 
 export interface AudienceResponse {

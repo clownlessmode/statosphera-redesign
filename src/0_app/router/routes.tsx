@@ -32,7 +32,7 @@ import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
-//import { Unload } from "@pages/unload";
+import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -298,13 +298,13 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "РФМ",
   },
-  //{
-  //  path: ROUTES_PATH.UNLOAD,
-  //  variant: "private",
-  //  element: <Unload />,
-  //  layout: Sidebar,
-  //  label: "Выгрузка",
-  //},
+  {
+    path: ROUTES_PATH.UNLOAD,
+    variant: "private",
+    element: <Unload />,
+    layout: Sidebar,
+    label: "Выгрузка",
+  },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",

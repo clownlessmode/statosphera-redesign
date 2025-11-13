@@ -1,5 +1,5 @@
 // features/filters-store/store.ts
-import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
+import { format, startOfMonth } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 export enum FULL_GROUPS_SERVER {
@@ -175,21 +175,13 @@ export interface PreparedFiltersState {
   count: number;
 }
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
-const today = new Date();
 
-let dateStart: string;
-let dateEnd: string;
+const dateStart: string = format(
+  startOfMonth(new Date(2018, 4, 1)),
+  "yyyy-MM-dd",
+);
+const dateEnd: string = format(new Date(), "yyyy-MM-dd");
 
-if (today.getDate() === 1) {
-  // Сегодня — первое число месяца → берём весь предыдущий месяц
-  const lastMonth = subMonths(today, 1);
-  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
-  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
-} else {
-  // Иначе → с начала месяца до вчерашнего дня
-  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
-  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
-}
 export type FiltersState = {
   // Основная структура данных
   filters: {
@@ -324,6 +316,7 @@ export type FiltersState = {
     | "preparedFilter"
     | "getPreparedFilterPayload"
     | "updatePreparedFilter"
+    | "removePreparedFilter"
     | "resetPreparedFilter"
     | "getPreparedFilter"
   >;
@@ -359,12 +352,15 @@ export type FiltersState = {
   getPreparedFilter: () => {
     include: Partial<PreparedFilterBlock>[];
     exclude: Partial<PreparedFilterBlock>[];
+    count: number;
   };
 
   updatePreparedFilter: (
     side: "include" | "exclude",
     partial: Partial<PreparedFilterBlock>,
   ) => void;
+
+  removePreparedFilter: (side: "include" | "exclude", index: number) => void;
 
   resetPreparedFilter: () => void;
 };
@@ -387,6 +383,7 @@ const initialState: Omit<
   | "getApiPayload"
   | "getPreparedFilterPayload"
   | "updatePreparedFilter"
+  | "removePreparedFilter"
   | "resetPreparedFilter"
   | "getPreparedFilter"
 > = {
@@ -604,6 +601,13 @@ export const useUnloadFilterStore = create<FiltersState & PreparedFiltersState>(
       const { include, exclude, count } = get();
       return { include, exclude, count };
     },
+
+    removePreparedFilter: (side, index) =>
+      set((state) => ({
+        ...state,
+        [side]: state[side].filter((_, i) => i !== index),
+      })),
+
     resetPreparedFilter: () => set(initialPreparedState),
   }),
 );
