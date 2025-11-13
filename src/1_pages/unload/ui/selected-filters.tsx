@@ -21,7 +21,7 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-y-auto max-h-[500px]">
       {item?.RFM?.period && <span>Период: {item?.RFM?.period}</span>}
       {item?.RFM?.rfmList && item.RFM.rfmList.length > 0 && (
         <span>Сегменты: {item.RFM?.rfmList.length} шт.</span>
@@ -73,7 +73,12 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
           {item.client?.frequency?.to && (
             <span>до {item.client?.frequency?.to}</span>
           )}
-          дней
+          {(item.client?.frequency?.from === 1 &&
+            !item.client?.frequency?.to) ||
+          (item.client?.frequency?.to === 1 &&
+            item.client?.frequency?.to !== null)
+            ? "дня"
+            : "дней"}
         </div>
       )}
       {(item.client?.totalPurchase?.from || item.client?.totalPurchase?.to) && (
@@ -144,16 +149,20 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
               {(item.client?.ageAccount?.from.years ||
                 item.client?.ageAccount?.from.months ||
                 item.client?.ageAccount?.from.days) && (
-                <span>
-                  от {toTotalDays(item.client?.ageAccount?.from)} дней
-                </span>
+                <span>от {toTotalDays(item.client?.ageAccount?.from)}</span>
               )}
               {(item.client?.ageAccount?.to.years ||
                 item.client?.ageAccount?.to.months ||
                 item.client?.ageAccount?.to.days) && (
-                <span>до {toTotalDays(item.client?.ageAccount?.to)} дней</span>
+                <span>до {toTotalDays(item.client?.ageAccount?.to)}</span>
               )}
             </div>
+            {(toTotalDays(item.client?.ageAccount?.from) === 1 &&
+              !toTotalDays(item.client?.ageAccount?.to)) ||
+            (toTotalDays(item.client?.ageAccount?.to) === 1 &&
+              toTotalDays(item.client?.ageAccount?.to) !== null)
+              ? "дня"
+              : "дней"}
           </div>
         )}
       {item.client?.sex && item.client?.sex?.length > 0 && (

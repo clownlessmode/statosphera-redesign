@@ -164,7 +164,7 @@ export default function SaveUnload() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button>
           <Save className="w-4 h-4" />
         </Button>
       </DialogTrigger>

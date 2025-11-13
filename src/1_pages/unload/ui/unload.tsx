@@ -167,10 +167,16 @@ export const Unload = () => {
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="text-sm px-2 py-1 rounded-3xl"
+                          className="text-sm px-2 py-1 rounded-3xl hover:*:[svg]:block *:[svg]:hidden"
                           onClick={() => removePreparedFilter("exclude", index)}
                         >
                           Условие {index + 1}
+                          <X
+                            onClick={() =>
+                              removePreparedFilter("exclude", index)
+                            }
+                            className="w-4 h-4"
+                          />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent

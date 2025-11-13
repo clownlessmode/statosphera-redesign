@@ -23,7 +23,6 @@ import {
 } from "../model";
 import { FC, useEffect, useCallback, useRef } from "react";
 import ClearFilters from "./clear-filter";
-import { SelectMyShops } from "./select-my-shops";
 import {
   AGE_GROUP,
   FRS_CHANNEL,
@@ -123,7 +122,6 @@ export const ShopsFilter: FC = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <SelectMyShops />
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField

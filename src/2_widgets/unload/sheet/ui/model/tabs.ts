@@ -22,13 +22,13 @@ export const filters = [
     component: ShopsFilter,
   },
   {
-    title: "Интернет магазин",
-    icon: Globe,
-    component: OnlineFilter,
-  },
-  {
     title: "Продукты",
     icon: ShoppingBasket,
     component: ProductsFilter,
+  },
+  {
+    title: "Интернет магазин",
+    icon: Globe,
+    component: OnlineFilter,
   },
 ];

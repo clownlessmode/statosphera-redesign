@@ -143,6 +143,47 @@ export enum AGE_GROUP {
   TODDLER = "Малыш",
 }
 
+export function processFiltersUnload(dto: any): any {
+  const flattenStringArrays = (arr: string[]): number[] => {
+    return arr.flatMap((str) => {
+      try {
+        const parsed = JSON.parse(str);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    });
+  };
+
+  const processFilters = (filters: any): any => {
+    const processed = { ...filters };
+
+    // Обрабатываем все вложенные объекты
+    Object.keys(processed).forEach((category) => {
+      if (processed[category] && typeof processed[category] === "object") {
+        Object.keys(processed[category]).forEach((field) => {
+          const value = processed[category][field];
+          if (
+            Array.isArray(value) &&
+            value.length > 0 &&
+            typeof value[0] === "string" &&
+            value[0].startsWith("[")
+          ) {
+            processed[category][field] = flattenStringArrays(value);
+          }
+        });
+      }
+    });
+
+    return processed;
+  };
+
+  return {
+    ...dto,
+    filters: processFilters(dto.filters),
+  };
+}
+
 export const ageGroupSchema = z.nativeEnum(AGE_GROUP);
 export const frsChannelSchema = z.nativeEnum(FRS_CHANNEL);
 export interface PreparedFilterBlock {
@@ -237,6 +278,14 @@ export type FiltersState = {
         to: number | null;
       };
       countBonus: {
+        from: number | null;
+        to: number | null;
+      };
+      bonusWriteoff: {
+        from: number | null;
+        to: number | null;
+      };
+      bonusAccrual: {
         from: number | null;
         to: number | null;
       };
@@ -441,6 +490,14 @@ const initialState: Omit<
         from: null,
         to: null,
       },
+      bonusWriteoff: {
+        from: null,
+        to: null,
+      },
+      bonusAccrual: {
+        from: null,
+        to: null,
+      },
       ageAccount: {
         from: { years: null, months: null, days: null },
         to: { years: null, months: null, days: null },
@@ -543,51 +600,57 @@ export const useUnloadFilterStore = create<FiltersState & PreparedFiltersState>(
     },
 
     getPreparedFilterPayload: () => {
-      const { filters, mainData } = get();
+      const filters = get();
+      const processedFilters = processFiltersUnload({
+        filters: filters.filters,
+        mainData: filters.mainData,
+      });
 
-      const rfmPart = mainData.period
+      const rfmPart = processedFilters.mainData.period
         ? {
             RFM: {
-              rfmList: mainData.rfmList ?? [],
-              period: mainData.period,
+              rfmList: processedFilters.mainData.rfmList ?? [],
+              period: processedFilters.mainData.period,
             },
           }
         : {};
       return {
         ...rfmPart,
         filterDate: {
-          dateStart: mainData.dateStart,
-          dateEnd: mainData.dateEnd,
+          dateStart: processedFilters.mainData.dateStart,
+          dateEnd: processedFilters.mainData.dateEnd,
         },
         filterTime: {
-          timeStart: mainData.timeStart,
-          timeEnd: mainData.timeEnd,
+          timeStart: processedFilters.mainData.timeStart,
+          timeEnd: processedFilters.mainData.timeEnd,
         },
         store: {
-          ...filters.store,
+          ...processedFilters.filters.store,
         },
         product: {
-          ...filters.product,
+          ...processedFilters.filters.product,
         },
         onlineStore: {
-          ...filters.onlineStore,
+          ...processedFilters.filters.onlineStore,
         },
         client: {
-          sex: filters.clients.sex ?? [],
-          guidDiscount: filters.clients.guidDiscount ?? [],
-          guidBonus: filters.clients.guidBonus ?? [],
-          ageStart: filters.clients.ageStart ?? null,
-          ageEnd: filters.clients.ageEnd ?? null,
-          ageAccount: filters.clients.ageAccount,
-          colorsDiscount: filters.clients.colorsDiscount ?? [],
-          countBonus: filters.clients.countBonus,
-          totalPurchase: filters.clients.totalPurchase,
-          avg: filters.clients.avg,
-          frequency: filters.clients.frequency,
-          avgCheckLen: filters.clients.avgCheckLen,
-          proceedPerCheck: filters.clients.proceedPerCheck,
+          sex: processedFilters.filters.clients.sex ?? [],
+          guidDiscount: processedFilters.filters.clients.guidDiscount ?? [],
+          guidBonus: processedFilters.filters.clients.guidBonus ?? [],
+          ageStart: processedFilters.filters.clients.ageStart ?? null,
+          ageEnd: processedFilters.filters.clients.ageEnd ?? null,
+          ageAccount: processedFilters.filters.clients.ageAccount,
+          colorsDiscount: processedFilters.filters.clients.colorsDiscount ?? [],
+          countBonus: processedFilters.filters.clients.countBonus,
+          bonusWriteoff: processedFilters.filters.clients.bonusWriteoff,
+          bonusAccrual: processedFilters.filters.clients.bonusAccrual,
+          totalPurchase: processedFilters.filters.clients.totalPurchase,
+          avg: processedFilters.filters.clients.avg,
+          frequency: processedFilters.filters.clients.frequency,
+          avgCheckLen: processedFilters.filters.clients.avgCheckLen,
+          proceedPerCheck: processedFilters.filters.clients.proceedPerCheck,
         },
-        audienceId: mainData.audienceId,
+        audienceId: processedFilters.mainData.audienceId,
       };
     },
     updatePreparedFilter: (side, partial) =>

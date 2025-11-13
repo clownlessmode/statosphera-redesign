@@ -28,6 +28,14 @@ export const schema = z.object({
     from: z.number().nullable(),
     to: z.number().nullable(),
   }),
+  bonusWriteoff: z.object({
+    from: z.number().nullable(),
+    to: z.number().nullable(),
+  }),
+  bonusAccrual: z.object({
+    from: z.number().nullable(),
+    to: z.number().nullable(),
+  }),
   ageAccount: z.object({
     from: z.object({
       years: z.number().nullable(),

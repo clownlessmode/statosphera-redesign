@@ -824,6 +824,202 @@ const ClientsFilter: FC = () => {
                   </FormItem>
                 )}
               />
+              {/* Потрачено бонусов у пользователя */}
+              <FormField
+                control={form.control}
+                name="bonusWriteoff"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Потрачено бонусов за период</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-2">
+                        {(() => {
+                          const value = field.value ?? { from: null, to: null };
+                          const currentFrom = value.from ?? null;
+                          const currentTo = value.to ?? null;
+
+                          const handleUpdate = (next: {
+                            from: number | null;
+                            to: number | null;
+                          }) => {
+                            field.onChange(next);
+                            updateClientsFilter("bonusWriteoff", {
+                              ...form.getValues("bonusWriteoff"),
+                              ...next,
+                            });
+                          };
+
+                          return (
+                            <>
+                              <div className="flex items-center gap-2 w-full">
+                                <span className="text-sm text-muted-foreground">
+                                  от
+                                </span>
+                                <Input
+                                  type="number"
+                                  step={1}
+                                  className="border-foreground/10 text-foreground bg-background"
+                                  value={formatNumberValue(
+                                    currentFrom ?? undefined,
+                                  )}
+                                  onKeyDown={handleKeyDown}
+                                  onPaste={handlePaste}
+                                  onChange={(e) => {
+                                    const sanitized = e.target.value.replace(
+                                      /^0+(?=\d)/,
+                                      "",
+                                    );
+                                    const min =
+                                      sanitized === ""
+                                        ? null
+                                        : Number(sanitized);
+                                    const max =
+                                      currentTo !== null && min !== null
+                                        ? Math.max(min, currentTo)
+                                        : currentTo;
+
+                                    handleUpdate({ from: min, to: max });
+                                  }}
+                                />
+                              </div>
+
+                              <div className="flex items-center gap-2 w-full">
+                                <span className="text-sm text-muted-foreground">
+                                  до
+                                </span>
+                                <Input
+                                  type="number"
+                                  step={1}
+                                  className="border-foreground/10 text-foreground bg-background"
+                                  value={formatNumberValue(
+                                    currentTo ?? undefined,
+                                  )}
+                                  onKeyDown={handleKeyDown}
+                                  onPaste={handlePaste}
+                                  onChange={(e) => {
+                                    const sanitized = e.target.value.replace(
+                                      /^0+(?=\d)/,
+                                      "",
+                                    );
+                                    const max =
+                                      sanitized === ""
+                                        ? null
+                                        : Number(sanitized);
+                                    const min =
+                                      currentFrom !== null && max !== null
+                                        ? Math.min(currentFrom, max)
+                                        : currentFrom;
+
+                                    handleUpdate({ from: min, to: max });
+                                  }}
+                                />
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              {/* Начислено бонусов у пользователя */}
+              <FormField
+                control={form.control}
+                name="bonusAccrual"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Заработано бонусов за период</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-2">
+                        {(() => {
+                          const value = field.value ?? { from: null, to: null };
+                          const currentFrom = value.from ?? null;
+                          const currentTo = value.to ?? null;
+
+                          const handleUpdate = (next: {
+                            from: number | null;
+                            to: number | null;
+                          }) => {
+                            field.onChange(next);
+                            updateClientsFilter("bonusAccrual", {
+                              ...form.getValues("bonusAccrual"),
+                              ...next,
+                            });
+                          };
+
+                          return (
+                            <>
+                              <div className="flex items-center gap-2 w-full">
+                                <span className="text-sm text-muted-foreground">
+                                  от
+                                </span>
+                                <Input
+                                  type="number"
+                                  step={1}
+                                  className="border-foreground/10 text-foreground bg-background"
+                                  value={formatNumberValue(
+                                    currentFrom ?? undefined,
+                                  )}
+                                  onKeyDown={handleKeyDown}
+                                  onPaste={handlePaste}
+                                  onChange={(e) => {
+                                    const sanitized = e.target.value.replace(
+                                      /^0+(?=\d)/,
+                                      "",
+                                    );
+                                    const min =
+                                      sanitized === ""
+                                        ? null
+                                        : Number(sanitized);
+                                    const max =
+                                      currentTo !== null && min !== null
+                                        ? Math.max(min, currentTo)
+                                        : currentTo;
+
+                                    handleUpdate({ from: min, to: max });
+                                  }}
+                                />
+                              </div>
+
+                              <div className="flex items-center gap-2 w-full">
+                                <span className="text-sm text-muted-foreground">
+                                  до
+                                </span>
+                                <Input
+                                  type="number"
+                                  step={1}
+                                  className="border-foreground/10 text-foreground bg-background"
+                                  value={formatNumberValue(
+                                    currentTo ?? undefined,
+                                  )}
+                                  onKeyDown={handleKeyDown}
+                                  onPaste={handlePaste}
+                                  onChange={(e) => {
+                                    const sanitized = e.target.value.replace(
+                                      /^0+(?=\d)/,
+                                      "",
+                                    );
+                                    const max =
+                                      sanitized === ""
+                                        ? null
+                                        : Number(sanitized);
+                                    const min =
+                                      currentFrom !== null && max !== null
+                                        ? Math.min(currentFrom, max)
+                                        : currentFrom;
+
+                                    handleUpdate({ from: min, to: max });
+                                  }}
+                                />
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               {/* Время жизни аккаунта*/}
               <FormField
                 control={form.control}
@@ -859,7 +1055,7 @@ const ClientsFilter: FC = () => {
                   });
 
                   return (
-                    <FormItem className="col-span-2">
+                    <FormItem className="col-span-3">
                       <FormLabel>Время жизни аккаунта</FormLabel>
                       <FormControl>
                         <div className="flex items-center gap-2 w-full">
