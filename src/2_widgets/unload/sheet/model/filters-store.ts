@@ -1,5 +1,5 @@
 // features/filters-store/store.ts
-import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
+import { format } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 export enum FULL_GROUPS_SERVER {
@@ -219,20 +219,8 @@ export interface PreparedFiltersState {
 }
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
 
-const today = new Date();
-let dateStart: string;
-let dateEnd: string;
-
-if (today.getDate() === 1) {
-  // Сегодня — первое число месяца → берём весь предыдущий месяц
-  const lastMonth = subMonths(today, 1);
-  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
-  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
-} else {
-  // Иначе → с начала месяца до вчерашнего дня
-  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
-  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
-}
+const dateStart = format(new Date(2022, 0, 1), "yyyy-MM-dd");
+const dateEnd = format(new Date(), "yyyy-MM-dd");
 
 export type FiltersState = {
   // Основная структура данных

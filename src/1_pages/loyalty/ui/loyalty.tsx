@@ -40,7 +40,7 @@ import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
 import {
@@ -234,14 +234,13 @@ export const Loyalty = () => {
               <Button variant="outline" className="border-b-0! rounded-b-none!">
                 Лояльность
               </Button>
-              <Link to={ROUTES_PATH.RFM}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  RFM
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.RFM)}
+              >
+                RFM
+              </Button>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div>
@@ -282,14 +281,13 @@ export const Loyalty = () => {
                   В разработке.
                 </TooltipContent>
               </Tooltip>
-              <Link to={ROUTES_PATH.UNLOAD}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  Выгрузка
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.UNLOAD)}
+              >
+                Выгрузка
+              </Button>
             </div>
           ),
         }}

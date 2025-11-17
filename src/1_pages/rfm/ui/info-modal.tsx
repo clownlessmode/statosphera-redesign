@@ -1,18 +1,21 @@
 import { Button } from "@shared/ui/button";
 import { DialogContent, DialogTrigger, Dialog } from "@shared/ui/dialog";
 
-import { Info } from "lucide-react";
+import { BookMarked } from "lucide-react";
 
 const InfoModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Info className="w-4 h-4" />
-          <span className="hidden md:block">Информация</span>
+          <BookMarked className="w-4 h-4" />
+          <span className="hidden md:block">Руководство</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:min-w-[800px] h-[80vh] overflow-y-auto scrollbar-hide">
+      <DialogContent
+        aria-describedby={undefined}
+        className="md:min-w-[800px] h-[80vh] overflow-y-auto scrollbar-hide"
+      >
         <div className="space-y-2 pl-4">
           <p>
             <strong>RFM‑сегментация (по квантилям)</strong> — это способ

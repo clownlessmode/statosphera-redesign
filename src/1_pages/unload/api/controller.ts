@@ -19,6 +19,9 @@ export const useUnload = () => {
         dto,
         newController.signal,
       );
+      if (response.status === "error") {
+        throw new Error(response.message);
+      }
       return response;
     },
     onSuccess: () => {

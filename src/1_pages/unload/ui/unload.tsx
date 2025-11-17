@@ -1,5 +1,5 @@
 import { Header } from "@widgets/header";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
 import { useIsMobile } from "@shared/hooks/use-mobile";
@@ -16,7 +16,7 @@ import Spinner from "@shared/ui/spinner";
 import DownloadUnload from "@features/unload/download/ui/download-unload";
 import SaveUnload from "@features/unload/save-unload/ui/save-unload";
 import { SelectedFilters } from "./selected-filters";
-import { X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import axios from "axios";
 import {
   Select,
@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import InfoModal from "./info-modal";
+import { toast } from "sonner";
 
 export const Unload = () => {
   const isMobile = useIsMobile();
@@ -58,12 +59,14 @@ export const Unload = () => {
           exclude: allData.exclude as PreparedFilterBlock[],
         },
       });
+
       setAudienceCount(response.count);
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log("Запрос был отменен.");
       } else {
-        console.error("Произошла ошибка при выполнении запроса:", error);
+        console.error("Ошибка при получении аудитории:", error);
+        toast.error("Ошибка при получении аудитории");
       }
     }
   };
@@ -71,12 +74,11 @@ export const Unload = () => {
   useEffect(() => {
     if (isMobile) {
       setShowFilters(true);
+    } else {
+      setShowFilters(false);
     }
-  }, [isMobile]);
-
-  useEffect(() => {
     getAudienceCount();
-  }, [allData.include, allData.exclude]);
+  }, [isMobile, allData.include, allData.exclude]);
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -85,22 +87,20 @@ export const Unload = () => {
         actions={{
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
-              <Link to={ROUTES_PATH.LOYALTY}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  Лояльность
-                </Button>
-              </Link>
-              <Link to={ROUTES_PATH.RFM}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  RFM
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.LOYALTY)}
+              >
+                Лояльность
+              </Button>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.RFM)}
+              >
+                RFM
+              </Button>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div>
@@ -149,7 +149,7 @@ export const Unload = () => {
           right: <InfoModal />,
         }}
       />
-      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col w-full bg-background h-[calc(100vh-64px)] overflow-hidden">
+      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col relative w-full bg-background h-[calc(100vh-64px)] overflow-hidden">
         <div className="md:hidden pt-4">
           <Select defaultValue="unload" onValueChange={handleSelectChange}>
             <SelectTrigger className="w-full">
@@ -162,17 +162,14 @@ export const Unload = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="grid grid-cols-4 max-md:flex max-md:flex-col gap-4 max-md:gap-2 max-md:pb-4 max-md:h-screen max-md:overflow-y-auto scrollbar-hide">
-          <Button
-            onClick={() => setShowFilters(!showFilters)}
-            className="md:hidden"
-          >
-            {!showFilters ? "Показать фильтры" : "Скрыть фильтры"}
-          </Button>
+        <div className="grid grid-cols-4 gap-4 md:sticky md:inset-0 max-md:flex max-md:flex-col max-md:gap-2 max-md:pb-4 max-md:h-screen max-md:overflow-y-auto scrollbar-hide">
           {isMobile ? (
             showFilters && (
               <Tabs className="col-span-3 max-md:col-span-1">
-                <Filters isLoading={isAudienceLoading} />
+                <Filters
+                  isLoading={isAudienceLoading}
+                  setShowFilters={setShowFilters}
+                />
               </Tabs>
             )
           ) : (
@@ -260,6 +257,12 @@ export const Unload = () => {
                   </span>
                 </div>
                 <div className="flex gap-2">
+                  <Button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="md:hidden"
+                  >
+                    <Filter />
+                  </Button>
                   <DownloadUnload />
                   <SaveUnload />
                 </div>

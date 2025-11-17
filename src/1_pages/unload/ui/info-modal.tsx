@@ -1,17 +1,20 @@
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-import { Info } from "lucide-react";
+import { BookMarked } from "lucide-react";
 
 export const InfoModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <Info className="w-4 h-4" />
-          <span className="hidden md:block">Информация</span>
+          <BookMarked className="w-4 h-4" />
+          <span className="hidden md:block">Руководство</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:min-w-[800px] max-md:h-[80vh] max-md:overflow-y-auto scrollbar-hide">
+      <DialogContent
+        aria-describedby={undefined}
+        className="md:min-w-[800px] max-md:h-[80vh] max-md:overflow-y-auto scrollbar-hide"
+      >
         <div className="md:grid md:grid-cols-[200px_1fr] gap-8 md:h-[80vh]">
           {/* Левая колонка: Навигация */}
           <nav className="sticky top-0 border-r pr-4 pt-4 max-md:hidden">

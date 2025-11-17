@@ -1,6 +1,6 @@
 import { Header } from "@widgets/header";
 import { useRfm } from "../api";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
 import { FilterModal } from "../ui/filter-modal";
@@ -316,14 +316,13 @@ export const Rfm = () => {
         actions={{
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
-              <Link to={ROUTES_PATH.LOYALTY}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  Лояльность
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.LOYALTY)}
+              >
+                Лояльность
+              </Button>
               <Button variant="outline" className="border-b-0! rounded-b-none!">
                 RFM
               </Button>
@@ -367,14 +366,13 @@ export const Rfm = () => {
                   В разработке.
                 </TooltipContent>
               </Tooltip>
-              <Link to={ROUTES_PATH.UNLOAD}>
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none! opacity-50"
-                >
-                  Выгрузка
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                className="border-b-0! rounded-b-none! opacity-50"
+                onClick={() => navigate(ROUTES_PATH.UNLOAD)}
+              >
+                Выгрузка
+              </Button>
             </div>
           ),
           right: <InfoModal />,
