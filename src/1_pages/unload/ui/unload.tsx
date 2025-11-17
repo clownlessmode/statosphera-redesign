@@ -16,7 +16,7 @@ import Spinner from "@shared/ui/spinner";
 import DownloadUnload from "@features/unload/download/ui/download-unload";
 import SaveUnload from "@features/unload/save-unload/ui/save-unload";
 import { SelectedFilters } from "./selected-filters";
-import { Filter, X } from "lucide-react";
+import { Filter } from "lucide-react";
 import axios from "axios";
 import {
   Select,
@@ -190,13 +190,12 @@ export const Unload = () => {
                         <TooltipTrigger asChild>
                           <Button
                             variant="outline"
-                            className="text-sm px-2 py-1 rounded-3xl hover:*:[svg]:block *:[svg]:hidden max-md:h-8 max-md:text-xs"
+                            className="text-sm px-2 py-1 rounded-3xl hover:line-through max-md:h-8 max-md:text-xs"
                             onClick={() =>
                               removePreparedFilter("include", index)
                             }
                           >
                             Условие {index + 1}
-                            <X className="w-4 h-4" />
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent
@@ -220,18 +219,12 @@ export const Unload = () => {
                         <TooltipTrigger asChild>
                           <Button
                             variant="outline"
-                            className="text-sm px-2 py-1 rounded-3xl hover:*:[svg]:block *:[svg]:hidden max-md:h-8 max-md:text-xs"
+                            className="text-sm px-2 py-1 rounded-3xl hover:line-through max-md:h-8 max-md:text-xs"
                             onClick={() =>
                               removePreparedFilter("exclude", index)
                             }
                           >
                             Условие {index + 1}
-                            <X
-                              onClick={() =>
-                                removePreparedFilter("exclude", index)
-                              }
-                              className="w-4 h-4"
-                            />
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent
