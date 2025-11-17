@@ -40,15 +40,37 @@ import { RevenueGroupsGraph } from "./graphs/revenueGroups";
 import { AvarageCheckAgeGroupGraph } from "./graphs/avarage-check-age-group-graph";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@shared/ui/select";
 
 export const Loyalty = () => {
   const { value } = useGraphDate();
   const { filterDate } = useLoyaltyFiltersStore();
   const store = useSalesDynamicsFiltersStore((state) => state.filters);
   const filters = useSalesDynamicsFiltersStore((state) => state.filters);
+  const navigate = useNavigate();
+
+  const handleSelectChange = (value: string) => {
+    switch (value) {
+      case "loyalty":
+        navigate(ROUTES_PATH.LOYALTY);
+        break;
+      case "rfm":
+        navigate(ROUTES_PATH.RFM);
+        break;
+      case "unload":
+        navigate(ROUTES_PATH.UNLOAD);
+        break;
+    }
+  };
 
   const mock: any = useMemo(
     () => ({
@@ -272,22 +294,18 @@ export const Loyalty = () => {
           ),
         }}
       />
-      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0">
-        <div className="hidden max-md:flex flex-row gap-1">
-          <Button
-            variant="outline"
-            className="border-0 rounded-none! rounded-tl-3xl! h-10 w-1/2 px-1"
-          >
-            Лояльность
-          </Button>
-          <Link to={ROUTES_PATH.RFM} className="w-1/2">
-            <Button
-              variant="outline"
-              className="opacity-50 border-0 border-b-1 border-l-1 rounded-none! rounded-tr-3xl! w-full h-10 px-1"
-            >
-              RFM
-            </Button>
-          </Link>
+      <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
+        <div className="md:hidden">
+          <Select defaultValue="loyalty" onValueChange={handleSelectChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="rfm">RFM</SelectItem>
+              <SelectItem value="unload">Выгрузка</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div className="flex flex-row gap-2 justify-between md:justify-end">
           <DaysFilter />

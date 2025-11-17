@@ -11,7 +11,7 @@ import {
 } from "date-fns";
 import { Calendar1, CalendarDays, CalendarRange } from "lucide-react";
 
-export const MIN_DATE = new Date(2018, 4, 1);
+export const MIN_DATE = new Date(2022, 0, 1);
 export const MAX_DATE = new Date();
 
 export const TIME_RANGES = {

@@ -65,7 +65,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
   } = useProduct(payload);
 
   return (
-    <Card className="w-full md:mr-4 max-md:overflow-y-auto scrollbar-hide">
+    <Card className="w-full max-md:overflow-y-auto scrollbar-hide">
       <CardHeader>
         <CardTitle>Продукты</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -81,7 +81,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
               name="idGroupMain"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Группа</FormLabel>
+                  <FormLabel htmlFor="idGroupMain-label">Группа</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
@@ -106,7 +106,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
               name="subGroups"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Подгруппа</FormLabel>
+                  <FormLabel htmlFor="subGroups-label">Подгруппа</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
@@ -183,7 +183,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
 
                 return (
                   <FormItem>
-                    <FormLabel>Подподгруппа</FormLabel>
+                    <FormLabel htmlFor="subSubGroups-label">
+                      Подподгруппа
+                    </FormLabel>
                     <FormControl>
                       <MultiSelect
                         value={normalizedValues}
@@ -209,7 +211,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
               name="idProduct"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Номенклатура</FormLabel>
+                  <FormLabel htmlFor="idProduct-label">Номенклатура</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}

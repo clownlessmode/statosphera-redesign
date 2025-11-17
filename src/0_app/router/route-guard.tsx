@@ -7,12 +7,14 @@ import { useSession } from "@entities/session";
 interface RouteGuardProps {
   variant: RouteVariant;
   allowedRoles?: string[];
+  allowedUsers?: number[];
   children: ReactNode;
 }
 
 const RouteGuard: FC<RouteGuardProps> = ({
   variant,
   allowedRoles,
+  allowedUsers,
   children,
 }) => {
   const { session } = useSession();
@@ -34,12 +36,26 @@ const RouteGuard: FC<RouteGuardProps> = ({
     if (!isAuthenticated) {
       return <Navigate to={ROUTES_PATH.LOGIN} replace />;
     }
-
-    if (allowedRoles && !allowedRoles.includes(userRole ?? "")) {
+    // Если для маршрута вообще не заданы ограничения, разрешаем доступ
+    if (!allowedRoles && !allowedUsers) {
+      return <>{children}</>;
+    }
+    // По умолчанию считаем, что доступа нет, пока не докажем обратное
+    let hasAccess = false;
+    // Проверяем, есть ли у пользователя доступ по роли
+    if (allowedRoles && allowedRoles.includes(userRole)) {
+      hasAccess = true;
+    }
+    // Проверяем, есть ли у пользователя доступ по ID
+    if (!hasAccess && allowedUsers && allowedUsers.includes(session.idUser)) {
+      hasAccess = true;
+    }
+    // Если после всех проверок доступ есть - показываем страницу, иначе - запрещаем
+    if (hasAccess) {
+      return <>{children}</>;
+    } else {
       return <Navigate to={ROUTES_PATH.FORBIDDEN} replace />;
     }
-
-    return <>{children}</>;
   }
 
   return null;

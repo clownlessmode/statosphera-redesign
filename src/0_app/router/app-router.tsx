@@ -20,6 +20,7 @@ const AppRouter = () => {
                   <RouteGuard
                     variant={route.variant}
                     allowedRoles={route.allowedRoles}
+                    allowedUsers={route.allowedUsers}
                   >
                     {route.layout ? (
                       <route.layout>

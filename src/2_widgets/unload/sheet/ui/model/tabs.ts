@@ -17,11 +17,6 @@ export const filters = [
     component: ClientsFilter,
   },
   {
-    title: "Магазины",
-    icon: Store,
-    component: ShopsFilter,
-  },
-  {
     title: "Продукты",
     icon: ShoppingBasket,
     component: ProductsFilter,
@@ -30,5 +25,10 @@ export const filters = [
     title: "Интернет магазин",
     icon: Globe,
     component: OnlineFilter,
+  },
+  {
+    title: "Магазины",
+    icon: Store,
+    component: ShopsFilter,
   },
 ];

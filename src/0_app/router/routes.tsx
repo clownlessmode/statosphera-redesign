@@ -302,6 +302,8 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.UNLOAD,
     variant: "private",
     element: <Unload />,
+    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [200], // Чемякин Данила
     layout: Sidebar,
     label: "Выгрузка",
   },

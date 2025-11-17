@@ -1,6 +1,6 @@
 import { Header } from "@widgets/header";
 import { useRfm } from "../api";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
 import { FilterModal } from "../ui/filter-modal";
@@ -36,6 +36,14 @@ import { TreemapRfmOrderDelivery } from "./graphs/treemapRfmOrderDelivery";
 import { ComparisonTwoRfmCard } from "./cards/comparison-two-rfm";
 import { AllStackedGistogram } from "./graphs/allStackedGistogram";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/ui/tooltip";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@shared/ui/select";
+import InfoModal from "./info-modal";
 
 interface Filters {
   data: {
@@ -61,6 +69,22 @@ interface Filters {
 export const Rfm = () => {
   const isMobile = useIsMobile();
   const { getApiPayload } = useFiltersStore();
+  const navigate = useNavigate();
+
+  const handleSelectChange = (value: string) => {
+    switch (value) {
+      case "loyalty":
+        navigate(ROUTES_PATH.LOYALTY);
+        break;
+      case "rfm":
+        navigate(ROUTES_PATH.RFM);
+        break;
+      case "unload":
+        navigate(ROUTES_PATH.UNLOAD);
+        break;
+    }
+  };
+
   const [appliedFilters, setAppliedFilters] = useState<Filters>();
   const [mainDataSegment, setMainDataSegment] = useState<
     MainDataSegmentResponse[]
@@ -353,33 +377,30 @@ export const Rfm = () => {
               </Link>
             </div>
           ),
+          right: <InfoModal />,
         }}
       />
       <div
         className={cn(
-          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:pb-18 max-md:px-0 max-md:pt-0 max-md:*:px-4 max-md:*:first:px-0",
+          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:pb-18",
           appliedFilters?.data?.rfmList?.length === 0 &&
             !isMobile &&
             "justify-center",
         )}
       >
-        <div className="hidden max-md:flex flex-row gap-1">
-          <Link to={ROUTES_PATH.LOYALTY} className="w-1/2">
-            <Button
-              variant="outline"
-              className="border-0 border-b-1 border-r-1 rounded-none! rounded-tl-3xl! h-10 px-1 w-full opacity-50"
-            >
-              Лояльность
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            className="border-0 rounded-none! rounded-tr-3xl! w-1/2 h-10"
-          >
-            RFM
-          </Button>
+        <div className="md:hidden">
+          <Select defaultValue="rfm" onValueChange={handleSelectChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="rfm">RFM</SelectItem>
+              <SelectItem value="unload">Выгрузка</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <div className="fixed right-10 bottom-10 max-md:bottom-6.5 max-md:inset-x-2 z-50">
+        <div className="fixed right-10 bottom-10 max-md:bottom-6.5 max-md:inset-x-6 z-50">
           <FilterModal onApplyFilters={handleApplyFilters} />
         </div>
         {appliedFilters && appliedFilters.data.rfmList.length > 0 ? (

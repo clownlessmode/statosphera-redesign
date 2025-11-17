@@ -1,5 +1,5 @@
 // features/filters-store/store.ts
-import { format, startOfMonth } from "date-fns";
+import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 export enum FULL_GROUPS_SERVER {
@@ -202,6 +202,8 @@ export interface PreparedFilterBlock {
     ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
     colorsDiscount: string[];
     countBonus: FiltersState["filters"]["clients"]["countBonus"];
+    bonusWriteoff: FiltersState["filters"]["clients"]["bonusWriteoff"];
+    bonusAccrual: FiltersState["filters"]["clients"]["bonusAccrual"];
     totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
     avg: FiltersState["filters"]["clients"]["avg"];
     frequency: FiltersState["filters"]["clients"]["frequency"];
@@ -217,11 +219,20 @@ export interface PreparedFiltersState {
 }
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
 
-const dateStart: string = format(
-  startOfMonth(new Date(2018, 4, 1)),
-  "yyyy-MM-dd",
-);
-const dateEnd: string = format(new Date(), "yyyy-MM-dd");
+const today = new Date();
+let dateStart: string;
+let dateEnd: string;
+
+if (today.getDate() === 1) {
+  // Сегодня — первое число месяца → берём весь предыдущий месяц
+  const lastMonth = subMonths(today, 1);
+  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
+  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
+} else {
+  // Иначе → с начала месяца до вчерашнего дня
+  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
+  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
+}
 
 export type FiltersState = {
   // Основная структура данных
@@ -389,6 +400,8 @@ export type FiltersState = {
       ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
       colorsDiscount: string[];
       countBonus: FiltersState["filters"]["clients"]["countBonus"];
+      bonusWriteoff: FiltersState["filters"]["clients"]["bonusWriteoff"];
+      bonusAccrual: FiltersState["filters"]["clients"]["bonusAccrual"];
       totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
       avg: FiltersState["filters"]["clients"]["avg"];
       frequency: FiltersState["filters"]["clients"]["frequency"];

@@ -21,7 +21,7 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 overflow-y-auto max-h-[500px]">
+    <div className="flex flex-col gap-2 overflow-y-auto max-h-[500px] max-md:max-h-[150px]">
       {item?.RFM?.period && <span>Период: {item?.RFM?.period}</span>}
       {item?.RFM?.rfmList && item.RFM.rfmList.length > 0 && (
         <span>Сегменты: {item.RFM?.rfmList.length} шт.</span>
@@ -66,7 +66,7 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
       )}
       {(item.client?.frequency?.from || item.client?.frequency?.to) && (
         <div className="flex flex-row gap-1">
-          Частота:
+          Количество покупок:
           {item.client?.frequency?.from && (
             <span>от {item.client?.frequency?.from}</span>
           )}
@@ -133,6 +133,28 @@ export const SelectedFilters: FC<FiltersProps> = ({ item }) => {
           )}
           {item.client?.countBonus?.to && (
             <span>до {item.client?.countBonus?.to}</span>
+          )}
+        </div>
+      )}
+      {(item.client?.bonusWriteoff?.from || item.client?.bonusWriteoff?.to) && (
+        <div className="flex flex-row gap-1">
+          Списано бонусов:
+          {item.client?.bonusWriteoff?.from && (
+            <span>от {item.client?.bonusWriteoff?.from}</span>
+          )}
+          {item.client?.bonusWriteoff?.to && (
+            <span>до {item.client?.bonusWriteoff?.to}</span>
+          )}
+        </div>
+      )}
+      {(item.client?.bonusAccrual?.from || item.client?.bonusAccrual?.to) && (
+        <div className="flex flex-row gap-1">
+          Начислено бонусов:
+          {item.client?.bonusAccrual?.from && (
+            <span>от {item.client?.bonusAccrual?.from}</span>
+          )}
+          {item.client?.bonusAccrual?.to && (
+            <span>до {item.client?.bonusAccrual?.to}</span>
           )}
         </div>
       )}

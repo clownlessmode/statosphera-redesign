@@ -187,7 +187,7 @@ const MainFilter: FC = () => {
   };
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Основная информация</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -206,7 +206,7 @@ const MainFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Сегменты</FormLabel>
+                    <FormLabel htmlFor="rfmList-label">Сегменты</FormLabel>
                     <FormControl>
                       <MultiSelect
                         disabled={!period}
@@ -232,7 +232,7 @@ const MainFilter: FC = () => {
               name="period"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Период</FormLabel>
+                  <FormLabel htmlFor="period-label">Период</FormLabel>
                   <FormControl>
                     <BooleanCheckboxCard
                       {...field}
@@ -315,7 +315,7 @@ const MainFilter: FC = () => {
               name="audienceId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Аудитория</FormLabel>
+                  <FormLabel htmlFor="audienceId-label">Аудитория</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}

@@ -161,7 +161,7 @@ const ClientsFilter: FC = () => {
   };
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Клиенты</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -172,14 +172,14 @@ const ClientsFilter: FC = () => {
       <CardContent>
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 **:[appearance:textfield] **:[&::-webkit-outer-spin-button]:appearance-none **:[&::-webkit-inner-spin-button]:appearance-none">
+            <div className="grid grid-cols-1 col-span-full lg:grid-cols-2 xl:grid-cols-3 gap-4 **:[appearance:textfield] **:[&::-webkit-outer-spin-button]:appearance-none **:[&::-webkit-inner-spin-button]:appearance-none">
               {/* Возраст */}
               <FormField
                 control={form.control}
                 name="age"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Возраст</FormLabel>
+                    <FormLabel htmlFor="age-label">Возраст</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-2 w-full">
@@ -265,7 +265,9 @@ const ClientsFilter: FC = () => {
                 name="frequency"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Частота покупок</FormLabel>
+                    <FormLabel htmlFor="frequency-label">
+                      Количество покупок
+                    </FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -358,7 +360,9 @@ const ClientsFilter: FC = () => {
                 name="totalPurchase"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Общая выручка пользователя</FormLabel>
+                    <FormLabel htmlFor="totalPurchase-label">
+                      Общая сумма покупок
+                    </FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -453,7 +457,9 @@ const ClientsFilter: FC = () => {
                 name="proceedPerCheck"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Сумма чека</FormLabel>
+                    <FormLabel htmlFor="proceedPerCheck-label">
+                      Выручка на чек
+                    </FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2 w-full **:[appearance:textfield] **:[&::-webkit-outer-spin-button]:appearance-none **:[&::-webkit-inner-spin-button]:appearance-none">
                         {(() => {
@@ -538,7 +544,9 @@ const ClientsFilter: FC = () => {
                 name="avgCheckLen"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Средняя длина чека</FormLabel>
+                    <FormLabel htmlFor="avgCheckLen-label">
+                      Средняя длина чека
+                    </FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -633,7 +641,7 @@ const ClientsFilter: FC = () => {
                 name="avg"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Средний чек</FormLabel>
+                    <FormLabel htmlFor="avg-label">Средний чек</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -732,7 +740,9 @@ const ClientsFilter: FC = () => {
                 name="countBonus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Бонусов у пользователя</FormLabel>
+                    <FormLabel htmlFor="countBonus-label">
+                      Количество бонусов
+                    </FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -830,7 +840,7 @@ const ClientsFilter: FC = () => {
                 name="bonusWriteoff"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Потрачено бонусов за период</FormLabel>
+                    <FormLabel>Списано бонусов за период</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -928,7 +938,7 @@ const ClientsFilter: FC = () => {
                 name="bonusAccrual"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Заработано бонусов за период</FormLabel>
+                    <FormLabel>Начислено бонусов за период</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-2">
                         {(() => {
@@ -1055,10 +1065,10 @@ const ClientsFilter: FC = () => {
                   });
 
                   return (
-                    <FormItem className="col-span-3">
+                    <FormItem className="col-span-full">
                       <FormLabel>Время жизни аккаунта</FormLabel>
                       <FormControl>
-                        <div className="flex items-center gap-2 w-full">
+                        <div className="flex max-md:grid max-md:grid-cols-[min-content_1fr] items-center gap-2 w-full">
                           <span className="text-sm text-muted-foreground">
                             от
                           </span>
