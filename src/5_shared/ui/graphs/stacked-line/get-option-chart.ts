@@ -16,7 +16,7 @@ export const getOptionChart = (
   customColors?: string[],
   show?: boolean,
 ) => {
-  const { title, legend, groupType, ...otherOption } = option;
+  const { title, legend, groupType, series, ...otherOption } = option;
   const colors =
     customColors && customColors.length > 0
       ? {
@@ -24,6 +24,34 @@ export const getOptionChart = (
           series: customColors,
         }
       : graphColors;
+
+  // Гарантируем, что вторая линия всегда имеет другой цвет из палитры темы
+  // Используем третий цвет из палитры (chart-3) для второй линии, так как он более контрастен
+  const seriesWithColors = Array.isArray(series)
+    ? series.map((s: any, index: number) => {
+        if (index === 1 && series.length > 1) {
+          // Для второй серии используем цвет из палитры темы
+          // Если customColors заданы, используем второй цвет из них
+          // Иначе используем третий цвет из палитры (colors.series[2]), который более контрастен чем второй
+          const secondColor =
+            customColors && customColors.length > 1
+              ? customColors[1]
+              : colors.series[2] || colors.series[1] || colors.series[0];
+          return {
+            ...s,
+            itemStyle: {
+              ...s.itemStyle,
+              color: secondColor,
+            },
+            lineStyle: {
+              ...s.lineStyle,
+              color: secondColor,
+            },
+          };
+        }
+        return s;
+      })
+    : series;
 
   return {
     backgroundColor: colors.background,
@@ -129,6 +157,7 @@ export const getOptionChart = (
       containLabel: true,
     },
     color: colors.series,
+    series: seriesWithColors,
     ...otherOption,
   };
 };
