@@ -13,14 +13,22 @@ import { filters } from "./model/tabs";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { Button } from "@shared/ui/button";
 import { useUnloadFilterStore } from "../model/filters-store";
+import { FC } from "react";
+import { ChevronLeft } from "lucide-react";
 
-const FiltersInner = () => {
+interface FiltersProps {
+  isLoading: boolean;
+  setShowFilters?: (value: React.SetStateAction<boolean>) => void;
+}
+
+const FiltersInner: FC<FiltersProps> = ({ isLoading, setShowFilters }) => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
   const { scrollTo } = useViewTabs();
   const { getPreparedFilterPayload, updatePreparedFilter, resetAllFilters } =
     useUnloadFilterStore();
   const [resetKey, setResetKey] = useState(0);
   const payload = getPreparedFilterPayload();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (targetViewValue) {
@@ -28,14 +36,19 @@ const FiltersInner = () => {
       setTargetViewValue(null);
     }
   }, [targetViewValue, scrollTo, setTargetViewValue]);
-  const isMobile = useIsMobile();
+
+  const handleApply = (type: "include" | "exclude") => {
+    updatePreparedFilter(type, payload);
+    resetAllFilters();
+    setResetKey((k) => k + 1);
+  };
 
   return (
     <>
       {!isMobile && (
-        <ViewTabsList className="flex flex-col w-1/4 bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4 h-full">
+        <ViewTabsList className="flex flex-col w-1/4 bg-background text-inherit rounded-none px-4 gap-4 border-none md:border-r md:border-border pt-4">
           <ViewTabsGroup>
-            <ViewTabsGroupContent className="flex-col">
+            <ViewTabsGroupContent>
               {filters.map((item, index) => (
                 <ViewTabsTrigger
                   value={item.title}
@@ -49,10 +62,10 @@ const FiltersInner = () => {
           </ViewTabsGroup>
         </ViewTabsList>
       )}
-      <div className="flex flex-col gap-4 pb-20 w-3/4">
+      <div className="flex flex-col gap-4 pb-20 w-3/4 max-md:w-full">
         <div
           key={resetKey}
-          className="flex flex-col overflow-auto gap-4 pt-4 scrollbar-hide"
+          className="flex flex-col md:overflow-auto gap-4 md:pt-4 scrollbar-hide max-md:pb-17"
         >
           {filters.map((item, index) => (
             <ViewTabsContent value={item.title} key={`filter-content-${index}`}>
@@ -60,22 +73,27 @@ const FiltersInner = () => {
             </ViewTabsContent>
           ))}
         </div>
-        <div className="w-full grid grid-cols-2 gap-2">
+        <div className="w-full grid grid-cols-2 max-md:grid-cols-[min-content_1fr_1fr] gap-2 max-md:fixed max-md:bottom-7 max-md:inset-x-0 max-md:px-6 z-50">
+          <Button className="md:hidden" onClick={() => setShowFilters?.(false)}>
+            <ChevronLeft />
+          </Button>
           <Button
-            onClick={() => {
-              updatePreparedFilter("include", payload);
-              resetAllFilters();
-              setResetKey((k) => k + 1);
-            }}
+            disabled={
+              !payload.filterDate.dateStart ||
+              !payload.filterDate.dateEnd ||
+              isLoading
+            }
+            onClick={() => handleApply("include")}
           >
             Применить
           </Button>
           <Button
-            onClick={() => {
-              updatePreparedFilter("exclude", payload);
-              resetAllFilters();
-              setResetKey((k) => k + 1);
-            }}
+            disabled={
+              !payload.filterDate.dateStart ||
+              !payload.filterDate.dateEnd ||
+              isLoading
+            }
+            onClick={() => handleApply("exclude")}
           >
             Исключить
           </Button>
@@ -85,7 +103,7 @@ const FiltersInner = () => {
   );
 };
 
-const Filers = () => {
+const Filters: FC<FiltersProps> = ({ isLoading, setShowFilters }) => {
   const defaultValue = filters.length > 0 ? filters[0].title : "";
 
   return (
@@ -93,9 +111,9 @@ const Filers = () => {
       defaultValue={defaultValue}
       className="flex flex-row gap-4 h-screen w-full"
     >
-      <FiltersInner />
+      <FiltersInner isLoading={isLoading} setShowFilters={setShowFilters} />
     </ViewTabs>
   );
 };
 
-export default Filers;
+export default Filters;

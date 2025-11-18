@@ -23,7 +23,6 @@ import {
 } from "../model";
 import { FC, useEffect, useCallback, useRef } from "react";
 import ClearFilters from "./clear-filter";
-import { SelectMyShops } from "./select-my-shops";
 import {
   AGE_GROUP,
   FRS_CHANNEL,
@@ -114,7 +113,7 @@ export const ShopsFilter: FC = () => {
   }, [isMyShopsMode, session?.idStore, form, updateStoreFilter]);
   const { CHANNEL_SHOP } = useChannel();
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Магазины</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -123,7 +122,6 @@ export const ShopsFilter: FC = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <SelectMyShops />
         <Form {...form}>
           <form className="flex flex-col gap-4 w-full">
             <FormField
@@ -132,7 +130,7 @@ export const ShopsFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Канал</FormLabel>
+                    <FormLabel htmlFor="channel-label">Канал</FormLabel>
                     <CheckboxCards
                       {...field}
                       disabled={isMyShopsMode}
@@ -153,7 +151,7 @@ export const ShopsFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Статус</FormLabel>
+                    <FormLabel htmlFor="storeCondition-label">Статус</FormLabel>
                     <CheckboxCards
                       disabled={isMyShopsMode}
                       {...field}
@@ -177,7 +175,7 @@ export const ShopsFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">
+                    <FormLabel htmlFor="ageGroup-label">
                       Период деятельности магазина
                     </FormLabel>
                     <CheckboxCards
@@ -200,7 +198,7 @@ export const ShopsFilter: FC = () => {
               name="idManager"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Партнеры</FormLabel>
+                  <FormLabel htmlFor="idManager-label">Партнеры</FormLabel>
                   <FormControl>
                     <MultiSelect
                       disabled={isMyShopsMode}
@@ -226,7 +224,7 @@ export const ShopsFilter: FC = () => {
               name="idRegion"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Регионы</FormLabel>
+                  <FormLabel htmlFor="idRegion-label">Регионы</FormLabel>
                   <FormControl>
                     <MultiSelect
                       disabled={isMyShopsMode}
@@ -252,7 +250,7 @@ export const ShopsFilter: FC = () => {
               name="idCity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Города</FormLabel>
+                  <FormLabel htmlFor="idCity-label">Города</FormLabel>
                   <FormControl>
                     <MultiSelect
                       disabled={isMyShopsMode}
@@ -278,7 +276,7 @@ export const ShopsFilter: FC = () => {
               name="idStore"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Магазины</FormLabel>
+                  <FormLabel htmlFor="idStore-label">Магазины</FormLabel>
                   <FormControl>
                     <MultiSelect
                       disabled={isMyShopsMode}

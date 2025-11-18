@@ -17,9 +17,9 @@ export const filters = [
     component: ClientsFilter,
   },
   {
-    title: "Магазины",
-    icon: Store,
-    component: ShopsFilter,
+    title: "Продукты",
+    icon: ShoppingBasket,
+    component: ProductsFilter,
   },
   {
     title: "Интернет магазин",
@@ -27,8 +27,8 @@ export const filters = [
     component: OnlineFilter,
   },
   {
-    title: "Продукты",
-    icon: ShoppingBasket,
-    component: ProductsFilter,
+    title: "Магазины",
+    icon: Store,
+    component: ShopsFilter,
   },
 ];

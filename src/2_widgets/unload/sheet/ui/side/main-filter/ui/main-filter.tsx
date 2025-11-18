@@ -51,10 +51,37 @@ const MainFilter: FC = () => {
   const today = new Date();
   const { nameSegmentOptions, handleOpenNameSegment, isNameSegmentLoading } =
     useNameSegments();
-  const { audienceOptions, handleOpenAudienceSelect, isAudienceLoading } =
-    useAudience();
   const { updateMainDataFilter, getApiPayload } = useUnloadFilterStore();
   const { period } = getApiPayload().mainData;
+  const { audienceOptions, isAudienceLoading, refreshAudienceOptions } =
+    useAudience();
+
+  // ...
+
+  // 2. Создаем асинхронный обработчик для onOpenChange
+  const handleOpenAudienceSelect = async (isOpen: boolean) => {
+    if (!isOpen) return; // Работаем только при открытии
+
+    // 3. Запускаем обновление и получаем свежий список опций
+    const newOptions = await refreshAudienceOptions();
+
+    // 4. СРАЗУ ЖЕ синхронизируем значение в форме
+    const currentValue = form.getValues("audienceId"); // Берем текущее значение из формы
+
+    if (currentValue && currentValue.length > 0) {
+      // Создаем Set из ID новых опций для быстрой проверки
+      const availableIds = new Set(newOptions.map((opt) => Number(opt.value)));
+
+      // Фильтруем текущие выбранные ID, оставляя только те, что есть в новом списке
+      const validValues = currentValue.filter((id) => availableIds.has(id));
+
+      // Если отфильтрованный массив отличается от исходного (т.е. какие-то ID стали невалидными)
+      if (validValues.length !== currentValue.length) {
+        // Обновляем значение в форме
+        form.setValue("audienceId", validValues, { shouldDirty: true });
+      }
+    }
+  };
 
   const { minDate, maxDate } = useMemo(() => {
     switch (period) {
@@ -160,7 +187,7 @@ const MainFilter: FC = () => {
   };
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Основная информация</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -179,7 +206,7 @@ const MainFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel>Сегменты</FormLabel>
+                    <FormLabel htmlFor="rfmList-label">Сегменты</FormLabel>
                     <FormControl>
                       <MultiSelect
                         disabled={!period}
@@ -205,7 +232,7 @@ const MainFilter: FC = () => {
               name="period"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Период</FormLabel>
+                  <FormLabel htmlFor="period-label">Период</FormLabel>
                   <FormControl>
                     <BooleanCheckboxCard
                       {...field}
@@ -288,7 +315,7 @@ const MainFilter: FC = () => {
               name="audienceId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Аудитория</FormLabel>
+                  <FormLabel htmlFor="audienceId-label">Аудитория</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
@@ -300,7 +327,6 @@ const MainFilter: FC = () => {
                         field.onChange(numericValues);
                         updateMainDataFilter("audienceId", numericValues);
                       }}
-                      defaultValue={field.value?.map(String)}
                       placeholder="Выберите аудиторию"
                     />
                   </FormControl>

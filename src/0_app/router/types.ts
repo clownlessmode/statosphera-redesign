@@ -9,6 +9,7 @@ export type RouteConfig = ReactRouterRouteProps & {
   layout?: ComponentType<any>;
   variant: RouteVariant;
   allowedRoles?: string[];
+  allowedUsers?: number[];
   label?: string;
   group?: string;
 };

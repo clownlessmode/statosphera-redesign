@@ -38,6 +38,8 @@ const ClearFilters: FC<Props> = ({ form }) => {
     updateClientsFilter("avgCheckLen", { from: null, to: null });
     updateClientsFilter("avg", { from: null, to: null });
     updateClientsFilter("countBonus", { from: null, to: null });
+    updateClientsFilter("bonusWriteoff", { from: null, to: null });
+    updateClientsFilter("bonusAccrual", { from: null, to: null });
     updateClientsFilter("ageAccount", {
       from: { years: null, months: null, days: null },
       to: { years: null, months: null, days: null },
