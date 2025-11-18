@@ -32,6 +32,7 @@ import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
+import { Farmer } from "@pages/farmer";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -84,6 +85,12 @@ export const ROUTES_PATH = {
   UNLOAD: "/unload",
   GRILL: "/grill",
   IM: "/im",
+
+  // Фермеры
+  FARMER: "/farmer",
+
+  // Профиль
+  PROFILE: "/profile",
 
   // Списания
   WRITE_OFF: "/write-off",
@@ -305,6 +312,13 @@ export const ROUTES: RouteConfig[] = [
   //  layout: Sidebar,
   //  label: "Выгрузка",
   //},
+  {
+    path: ROUTES_PATH.FARMER,
+    variant: "private",
+    element: <Farmer />,
+    layout: Sidebar,
+    label: "Фермер",
+  },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",
