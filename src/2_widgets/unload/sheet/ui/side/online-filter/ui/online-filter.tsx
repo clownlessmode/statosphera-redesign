@@ -48,7 +48,7 @@ const OnlineFilter: FC = () => {
   } = usePromo(allData);
 
   return (
-    <Card className="w-full mr-4">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Интернет магазин</CardTitle>
         <div className="flex flex-row gap-2 justify-between items-center w-full">
@@ -67,7 +67,7 @@ const OnlineFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Тип</FormLabel>
+                    <FormLabel htmlFor="isIm-label">Тип</FormLabel>
                     <BooleanCheckboxCard
                       {...field}
                       options={TYPE}
@@ -87,7 +87,9 @@ const OnlineFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Источник заказа</FormLabel>
+                    <FormLabel htmlFor="imTypeOrder-label">
+                      Источник заказа
+                    </FormLabel>
                     <CheckboxCards
                       {...field}
                       selectAll
@@ -108,7 +110,9 @@ const OnlineFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Способ доставки</FormLabel>
+                    <FormLabel htmlFor="imDeliveryMethod-label">
+                      Способ доставки
+                    </FormLabel>
                     <CheckboxCards
                       {...field}
                       selectAll
@@ -129,7 +133,9 @@ const OnlineFilter: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel htmlFor="">Способ оплаты</FormLabel>
+                    <FormLabel htmlFor="imPaymentMethod-label">
+                      Способ оплаты
+                    </FormLabel>
                     <CheckboxCards
                       {...field}
                       selectAll
@@ -149,7 +155,9 @@ const OnlineFilter: FC = () => {
               name="imStatusOrder"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Cтатус заказа</FormLabel>
+                  <FormLabel htmlFor="imStatusOrder-label">
+                    Cтатус заказа
+                  </FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
@@ -184,7 +192,9 @@ const OnlineFilter: FC = () => {
               name="imReceiveInterval"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Интервал</FormLabel>
+                  <FormLabel htmlFor="imReceiveInterval-label">
+                    Интервал
+                  </FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}
@@ -212,7 +222,7 @@ const OnlineFilter: FC = () => {
               name="imPromo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Промо</FormLabel>
+                  <FormLabel htmlFor="imPromo-label">Промо</FormLabel>
                   <FormControl>
                     <MultiSelect
                       value={field.value?.map(String) || []}

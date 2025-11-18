@@ -28,6 +28,14 @@ export const defaultValues: FormValues = {
     from: null,
     to: null,
   },
+  bonusWriteoff: {
+    from: null,
+    to: null,
+  },
+  bonusAccrual: {
+    from: null,
+    to: null,
+  },
   ageAccount: {
     from: { years: null, months: null, days: null },
     to: { years: null, months: null, days: null },

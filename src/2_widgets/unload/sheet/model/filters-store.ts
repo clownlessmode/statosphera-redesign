@@ -1,5 +1,5 @@
 // features/filters-store/store.ts
-import { endOfMonth, format, startOfMonth, subDays, subMonths } from "date-fns";
+import { format } from "date-fns";
 import { z } from "zod";
 import { create } from "zustand";
 export enum FULL_GROUPS_SERVER {
@@ -143,6 +143,47 @@ export enum AGE_GROUP {
   TODDLER = "Малыш",
 }
 
+export function processFiltersUnload(dto: any): any {
+  const flattenStringArrays = (arr: string[]): number[] => {
+    return arr.flatMap((str) => {
+      try {
+        const parsed = JSON.parse(str);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    });
+  };
+
+  const processFilters = (filters: any): any => {
+    const processed = { ...filters };
+
+    // Обрабатываем все вложенные объекты
+    Object.keys(processed).forEach((category) => {
+      if (processed[category] && typeof processed[category] === "object") {
+        Object.keys(processed[category]).forEach((field) => {
+          const value = processed[category][field];
+          if (
+            Array.isArray(value) &&
+            value.length > 0 &&
+            typeof value[0] === "string" &&
+            value[0].startsWith("[")
+          ) {
+            processed[category][field] = flattenStringArrays(value);
+          }
+        });
+      }
+    });
+
+    return processed;
+  };
+
+  return {
+    ...dto,
+    filters: processFilters(dto.filters),
+  };
+}
+
 export const ageGroupSchema = z.nativeEnum(AGE_GROUP);
 export const frsChannelSchema = z.nativeEnum(FRS_CHANNEL);
 export interface PreparedFilterBlock {
@@ -161,6 +202,8 @@ export interface PreparedFilterBlock {
     ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
     colorsDiscount: string[];
     countBonus: FiltersState["filters"]["clients"]["countBonus"];
+    bonusWriteoff: FiltersState["filters"]["clients"]["bonusWriteoff"];
+    bonusAccrual: FiltersState["filters"]["clients"]["bonusAccrual"];
     totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
     avg: FiltersState["filters"]["clients"]["avg"];
     frequency: FiltersState["filters"]["clients"]["frequency"];
@@ -175,21 +218,10 @@ export interface PreparedFiltersState {
   count: number;
 }
 export type FilterApiPayload = ReturnType<FiltersState["getApiPayload"]>;
-const today = new Date();
 
-let dateStart: string;
-let dateEnd: string;
+const dateStart = format(new Date(2022, 0, 1), "yyyy-MM-dd");
+const dateEnd = format(new Date(), "yyyy-MM-dd");
 
-if (today.getDate() === 1) {
-  // Сегодня — первое число месяца → берём весь предыдущий месяц
-  const lastMonth = subMonths(today, 1);
-  dateStart = format(startOfMonth(lastMonth), "yyyy-MM-dd");
-  dateEnd = format(endOfMonth(lastMonth), "yyyy-MM-dd");
-} else {
-  // Иначе → с начала месяца до вчерашнего дня
-  dateStart = format(startOfMonth(today), "yyyy-MM-dd");
-  dateEnd = format(subDays(today, 1), "yyyy-MM-dd");
-}
 export type FiltersState = {
   // Основная структура данных
   filters: {
@@ -245,6 +277,14 @@ export type FiltersState = {
         to: number | null;
       };
       countBonus: {
+        from: number | null;
+        to: number | null;
+      };
+      bonusWriteoff: {
+        from: number | null;
+        to: number | null;
+      };
+      bonusAccrual: {
         from: number | null;
         to: number | null;
       };
@@ -324,6 +364,7 @@ export type FiltersState = {
     | "preparedFilter"
     | "getPreparedFilterPayload"
     | "updatePreparedFilter"
+    | "removePreparedFilter"
     | "resetPreparedFilter"
     | "getPreparedFilter"
   >;
@@ -347,6 +388,8 @@ export type FiltersState = {
       ageAccount: FiltersState["filters"]["clients"]["ageAccount"];
       colorsDiscount: string[];
       countBonus: FiltersState["filters"]["clients"]["countBonus"];
+      bonusWriteoff: FiltersState["filters"]["clients"]["bonusWriteoff"];
+      bonusAccrual: FiltersState["filters"]["clients"]["bonusAccrual"];
       totalPurchase: FiltersState["filters"]["clients"]["totalPurchase"];
       avg: FiltersState["filters"]["clients"]["avg"];
       frequency: FiltersState["filters"]["clients"]["frequency"];
@@ -359,12 +402,15 @@ export type FiltersState = {
   getPreparedFilter: () => {
     include: Partial<PreparedFilterBlock>[];
     exclude: Partial<PreparedFilterBlock>[];
+    count: number;
   };
 
   updatePreparedFilter: (
     side: "include" | "exclude",
     partial: Partial<PreparedFilterBlock>,
   ) => void;
+
+  removePreparedFilter: (side: "include" | "exclude", index: number) => void;
 
   resetPreparedFilter: () => void;
 };
@@ -387,6 +433,7 @@ const initialState: Omit<
   | "getApiPayload"
   | "getPreparedFilterPayload"
   | "updatePreparedFilter"
+  | "removePreparedFilter"
   | "resetPreparedFilter"
   | "getPreparedFilter"
 > = {
@@ -441,6 +488,14 @@ const initialState: Omit<
         to: null,
       },
       countBonus: {
+        from: null,
+        to: null,
+      },
+      bonusWriteoff: {
+        from: null,
+        to: null,
+      },
+      bonusAccrual: {
         from: null,
         to: null,
       },
@@ -546,51 +601,57 @@ export const useUnloadFilterStore = create<FiltersState & PreparedFiltersState>(
     },
 
     getPreparedFilterPayload: () => {
-      const { filters, mainData } = get();
+      const filters = get();
+      const processedFilters = processFiltersUnload({
+        filters: filters.filters,
+        mainData: filters.mainData,
+      });
 
-      const rfmPart = mainData.period
+      const rfmPart = processedFilters.mainData.period
         ? {
             RFM: {
-              rfmList: mainData.rfmList ?? [],
-              period: mainData.period,
+              rfmList: processedFilters.mainData.rfmList ?? [],
+              period: processedFilters.mainData.period,
             },
           }
         : {};
       return {
         ...rfmPart,
         filterDate: {
-          dateStart: mainData.dateStart,
-          dateEnd: mainData.dateEnd,
+          dateStart: processedFilters.mainData.dateStart,
+          dateEnd: processedFilters.mainData.dateEnd,
         },
         filterTime: {
-          timeStart: mainData.timeStart,
-          timeEnd: mainData.timeEnd,
+          timeStart: processedFilters.mainData.timeStart,
+          timeEnd: processedFilters.mainData.timeEnd,
         },
         store: {
-          ...filters.store,
+          ...processedFilters.filters.store,
         },
         product: {
-          ...filters.product,
+          ...processedFilters.filters.product,
         },
         onlineStore: {
-          ...filters.onlineStore,
+          ...processedFilters.filters.onlineStore,
         },
         client: {
-          sex: filters.clients.sex ?? [],
-          guidDiscount: filters.clients.guidDiscount ?? [],
-          guidBonus: filters.clients.guidBonus ?? [],
-          ageStart: filters.clients.ageStart ?? null,
-          ageEnd: filters.clients.ageEnd ?? null,
-          ageAccount: filters.clients.ageAccount,
-          colorsDiscount: filters.clients.colorsDiscount ?? [],
-          countBonus: filters.clients.countBonus,
-          totalPurchase: filters.clients.totalPurchase,
-          avg: filters.clients.avg,
-          frequency: filters.clients.frequency,
-          avgCheckLen: filters.clients.avgCheckLen,
-          proceedPerCheck: filters.clients.proceedPerCheck,
+          sex: processedFilters.filters.clients.sex ?? [],
+          guidDiscount: processedFilters.filters.clients.guidDiscount ?? [],
+          guidBonus: processedFilters.filters.clients.guidBonus ?? [],
+          ageStart: processedFilters.filters.clients.ageStart ?? null,
+          ageEnd: processedFilters.filters.clients.ageEnd ?? null,
+          ageAccount: processedFilters.filters.clients.ageAccount,
+          colorsDiscount: processedFilters.filters.clients.colorsDiscount ?? [],
+          countBonus: processedFilters.filters.clients.countBonus,
+          bonusWriteoff: processedFilters.filters.clients.bonusWriteoff,
+          bonusAccrual: processedFilters.filters.clients.bonusAccrual,
+          totalPurchase: processedFilters.filters.clients.totalPurchase,
+          avg: processedFilters.filters.clients.avg,
+          frequency: processedFilters.filters.clients.frequency,
+          avgCheckLen: processedFilters.filters.clients.avgCheckLen,
+          proceedPerCheck: processedFilters.filters.clients.proceedPerCheck,
         },
-        audienceId: mainData.audienceId,
+        audienceId: processedFilters.mainData.audienceId,
       };
     },
     updatePreparedFilter: (side, partial) =>
@@ -604,6 +665,13 @@ export const useUnloadFilterStore = create<FiltersState & PreparedFiltersState>(
       const { include, exclude, count } = get();
       return { include, exclude, count };
     },
+
+    removePreparedFilter: (side, index) =>
+      set((state) => ({
+        ...state,
+        [side]: state[side].filter((_, i) => i !== index),
+      })),
+
     resetPreparedFilter: () => set(initialPreparedState),
   }),
 );
