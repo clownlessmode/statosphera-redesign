@@ -33,6 +33,8 @@ import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
 import { Unload } from "@pages/unload";
+import { IMReport } from "@pages/im-report";
+//import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -40,6 +42,7 @@ const Sidebar = React.lazy(() =>
 );
 
 export const ROUTES_PATH = {
+  IM_REPORT: "/im/report",
   MESSAGES: "/messages",
   TV: "/tv",
   // Авторизация
@@ -115,6 +118,13 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
     element: <AdminNotifications />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.IM_REPORT,
+    variant: "private",
+    element: <IMReport />,
+    label: "Отчет ИМ",
     layout: Sidebar,
   },
   {

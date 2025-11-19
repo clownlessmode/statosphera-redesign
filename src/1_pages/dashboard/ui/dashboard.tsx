@@ -41,11 +41,13 @@ import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
-import { userMessages } from "./test";
+import { userMessages, userPhotos } from "./test";
 import { FlyingHearts } from "@widgets/dashboard/flying-hearts";
 import { CursorTrail } from "@widgets/dashboard/cursor-trail";
 import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
 import { hasEffectsAccess } from "@shared/constants/effects-users";
+import { Card } from "@shared/ui/card";
+import { cn } from "@shared/lib/utils";
 const WeeklyRevenue = lazy(
   () => import("@widgets/dashboard/weekly-revenue/ui/weekly-revenue"),
 );
@@ -116,9 +118,12 @@ const Dashboard = () => {
   const userPhrases = session?.idUser
     ? userMessages[session.idUser]
     : undefined;
+  const userPhoto = session?.idUser ? userPhotos[session.idUser] : undefined;
+
   const hasPersonalMessages =
     !!userPhrases &&
     userHasEffectsAccess &&
+    userPhoto &&
     effectsSettings.personalMessagesEnabled;
 
   const randomMessage = useMemo(() => {
@@ -126,22 +131,36 @@ const Dashboard = () => {
     return userPhrases[Math.floor(Math.random() * userPhrases.length)];
   }, [userPhrases]); // Перевычисляем при смене пользователя
 
+  const randomPhoto = useMemo(() => {
+    if (!userPhoto) return null;
+    return userPhoto[Math.floor(Math.random() * userPhoto.length)];
+  }, [userPhoto]);
+
   // Определяем все виджеты с уникальными ID
-  const allWidgets = [
-    "weeklyRevenue",
-    "nps",
-    "channelRevenue",
-    "stats",
-    "salesStructure",
-    "currentStats",
-    "writeoffsLeaders",
-    "loyaltyOrWriteOff",
-    "hoursRevenue",
-    "planPercent",
-    "topWriteoffs",
-    "todayStats",
-    "antiLoyalTop",
-  ];
+  const allWidgets = useMemo(() => {
+    const baseWidgets = [
+      "weeklyRevenue",
+      "nps",
+      "channelRevenue",
+      "stats",
+      "salesStructure",
+      "currentStats",
+      "writeoffsLeaders",
+      "loyaltyOrWriteOff",
+      "hoursRevenue",
+      "planPercent",
+      "topWriteoffs",
+      "todayStats",
+      "antiLoyalTop",
+    ];
+
+    // Добавляем виджет персональных сообщений, если есть сообщения
+    if (hasPersonalMessages) {
+      return ["hasPersonalMessages", ...baseWidgets];
+    }
+
+    return baseWidgets;
+  }, [hasPersonalMessages]);
 
   const { items: widgetOrder, setItems: setWidgetOrder } =
     useDashboardLayout(allWidgets);
@@ -171,6 +190,15 @@ const Dashboard = () => {
 
   // Создаем маппинг виджетов
   const widgetsMap: Record<string, ReactNode> = {
+    hasPersonalMessages: hasPersonalMessages ? (
+      <Card className={cn("w-full h-[400px] flex flex-col !p-0")}>
+        <img
+          src={randomPhoto || ""}
+          alt="User Photo"
+          className="w-full h-full object-fit"
+        />
+      </Card>
+    ) : null,
     weeklyRevenue: (
       <div data-widget="weeklyRevenue" data-testid="widget-revenue">
         <Suspense fallback={<WeeklyRevenueSkeleton />}>
@@ -599,7 +627,7 @@ const Dashboard = () => {
             >
               {hasPersonalMessages && (
                 <div
-                  className={`col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance flex justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
+                  className={`flex flex-col gap-4 col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance  justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
                   style={{
                     backgroundColor:
                       effectsSettings.personalMessagesStyle.backgroundColor,
