@@ -316,7 +316,6 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.FARMER,
     variant: "private",
     element: <Farmer />,
-    layout: Sidebar,
     label: "Фермер",
   },
   // {
