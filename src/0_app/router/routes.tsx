@@ -303,7 +303,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Unload />,
     allowedRoles: [ROLES.ADMIN],
-    allowedUsers: [200], // Чемякин Данила
+    allowedUsers: [107, 200, 2816],
     layout: Sidebar,
     label: "Выгрузка",
   },
