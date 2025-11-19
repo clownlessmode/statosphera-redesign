@@ -476,6 +476,8 @@ export enum COLUMN_KEY {
   PROCEEDS_IM_YOY = "proceedsImYoY",
   PROCEEDS_IM_YOY_PERCENT = "proceedsImYoYPercent",
   DISCOUNT_TYPE = "discountType",
+
+  PROCEEDS_OFFLINE = "proceeds_offline",
 }
 
 export const formatNumber = (
@@ -1140,6 +1142,14 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_OFFLINE,
+    headerName: "Выручка Офлайн",
+    headerTooltip: "Выручка Офлайн",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,

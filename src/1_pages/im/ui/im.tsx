@@ -18,6 +18,9 @@ import { useLoyaltyFiltersStore } from "./filters/filters-store";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { useMemo } from "react";
 import { useGraphColors } from "@shared/hooks";
+import { Button } from "@shared/ui/button";
+// import { Link } from "react-router";
+// import { ROUTES_PATH } from "@app/router/routes";
 
 export const IM = () => {
   const { value } = useGraphDate();
@@ -100,11 +103,31 @@ export const IM = () => {
         title="Интернет-магазин"
         actions={{
           left: !isMobile && (
-            <div className="flex gap-2">
-              <GraphDate />
-              <DaysFilter />
-              <ShopsFilter />
-            </div>
+            <>
+              <div className=" -mb-4 flex flex-row gap-1">
+                <Button
+                  variant="outline"
+                  className="border-b-0! rounded-b-none!"
+                >
+                  Дашборд
+                  {/* {tab === "commerce" ? "Коммерческая" : "Чековая"} */}
+                </Button>
+
+                {/* <Link to={ROUTES_PATH.IM_REPORT}>
+                  <Button
+                    variant="outline"
+                    className="border-b-0! rounded-b-none! opacity-50"
+                  >
+                    Отчет
+                  </Button>
+                </Link> */}
+              </div>
+              <div className="flex gap-2">
+                <GraphDate />
+                <DaysFilter />
+                <ShopsFilter />
+              </div>
+            </>
           ),
         }}
       />
