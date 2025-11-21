@@ -3,22 +3,22 @@ import { Card, CardContent, CardDescription, CardTitle } from "@shared/ui/card";
 import { TrendingDown, X } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { ProductCardData } from "./types";
-import { MetroProduct } from "../../config/types";
-import { MetroModal } from "./metro-modal";
+import { LentaProduct } from "../../config/types";
+import { LentaModal } from "./lenta-modal";
 
-interface MetroCardProps {
+interface LentaCardProps {
   data: ProductCardData;
-  product: MetroProduct;
+  product: LentaProduct;
   variant?: "grid" | "list" | "table";
   onRemove?: (id: string | number) => void;
 }
 
-export const MetroCard = ({
+export const LentaCard = ({
   data,
   product,
   variant = "grid",
   onRemove,
-}: MetroCardProps) => {
+}: LentaCardProps) => {
   const { image, weight, name, brand, price, previous_price, id } = data;
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -51,7 +51,7 @@ export const MetroCard = ({
               className="w-[60px] h-[60px] object-contain bg-white border border-border rounded-lg"
             />
           </td>
-          <td className="p-4 pl-0">
+          <td className="p-4 w-fit  pl-0">
             <div className="text-sm text-muted-foreground font-light">
               {brand}
             </div>
@@ -86,7 +86,7 @@ export const MetroCard = ({
             </td>
           )}
         </tr>
-        <MetroModal
+        <LentaModal
           product={product}
           open={modalOpen}
           onOpenChange={setModalOpen}
@@ -153,7 +153,7 @@ export const MetroCard = ({
             </div>
           </CardContent>
         </Card>
-        <MetroModal
+        <LentaModal
           product={product}
           open={modalOpen}
           onOpenChange={setModalOpen}
@@ -213,7 +213,7 @@ export const MetroCard = ({
           </CardDescription>
         </CardContent>
       </Card>
-      <MetroModal
+      <LentaModal
         product={product}
         open={modalOpen}
         onOpenChange={setModalOpen}

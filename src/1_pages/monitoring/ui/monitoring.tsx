@@ -70,7 +70,17 @@ export const Monitoring = () => {
       ?.filter((shop) => shop.shop === "Метро")
       .flatMap((shop) => shop.data)
       .filter((product) => !removedProducts.has(product.id)) || [];
-  const allProducts = [...yarcheProducts, ...magnitProducts, ...metroProducts];
+  const lentaProducts =
+    products
+      ?.filter((shop) => shop.shop === "Лента")
+      .flatMap((shop) => shop.data)
+      .filter((product) => !removedProducts.has(product.id)) || [];
+  const allProducts = [
+    ...yarcheProducts,
+    ...magnitProducts,
+    ...metroProducts,
+    ...lentaProducts,
+  ];
 
   const handleViewChange = (view: "all" | "by-shops") => {
     setView(view);
@@ -87,6 +97,7 @@ export const Monitoring = () => {
         yarche: yarcheProducts.map((product) => product.id.toString()),
         magnit: magnitProducts.map((product) => product.id.toString()),
         metro: metroProducts.map((product) => product.id.toString()),
+        lenta: lentaProducts.map((product) => product.id.toString()),
       });
 
       // 2) Выбираем имя файла (можно статично или из headers)
@@ -393,6 +404,48 @@ export const Monitoring = () => {
                     </div>
                   </div>
                 )}
+                {lentaProducts.length > 0 && (
+                  <div className="w-full flex flex-col gap-4">
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="text-2xl font-bold">Лента</h1>
+                      <p className="text-sm text-muted-foreground">
+                        Найдено {lentaProducts?.length}{" "}
+                        {
+                          pluralize(lentaProducts?.length, [
+                            "продукт",
+                            "продукта",
+                            "продуктов",
+                          ]).split(" ")[1]
+                        }
+                      </p>
+                    </div>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+                            <th className="p-4 text-left">Вес</th>
+                            <th className="p-4 text-left">Цена</th>
+                            <th className="p-4 text-left w-[60px]"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {lentaProducts?.map((product) => (
+                            <ProductCard
+                              key={`lenta-${product.id}`}
+                              product={product}
+                              variant="table"
+                              onRemove={handleRemoveProduct}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="border rounded-lg overflow-hidden">
@@ -428,6 +481,14 @@ export const Monitoring = () => {
                     {metroProducts?.map((product) => (
                       <ProductCard
                         key={`metro-${product.id}`}
+                        product={product}
+                        variant="table"
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                    {lentaProducts?.map((product) => (
+                      <ProductCard
+                        key={`lenta-${product.id}`}
                         product={product}
                         variant="table"
                         onRemove={handleRemoveProduct}
@@ -565,6 +626,48 @@ export const Monitoring = () => {
                   </div>
                 </div>
               )}
+              {lentaProducts.length > 0 && (
+                <div className="w-full flex flex-col gap-4">
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-2xl font-bold">Лента</h1>
+                    <p className="text-sm text-muted-foreground">
+                      Найдено {lentaProducts?.length}{" "}
+                      {
+                        pluralize(lentaProducts?.length, [
+                          "продукт",
+                          "продукта",
+                          "продуктов",
+                        ]).split(" ")[1]
+                      }
+                    </p>
+                  </div>
+                  <div
+                    className={
+                      displayMode === "grid"
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
+                        : "w-full flex flex-col gap-2"
+                    }
+                  >
+                    {lentaProducts?.map((product) => (
+                      <ProductCard
+                        key={`lenta-${product.id}`}
+                        product={product}
+                        variant={displayMode}
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <div
@@ -602,6 +705,14 @@ export const Monitoring = () => {
               {metroProducts?.map((product) => (
                 <ProductCard
                   key={`metro-${product.id}`}
+                  product={product}
+                  variant={displayMode}
+                  onRemove={handleRemoveProduct}
+                />
+              ))}
+              {lentaProducts?.map((product) => (
+                <ProductCard
+                  key={`lenta-${product.id}`}
                   product={product}
                   variant={displayMode}
                   onRemove={handleRemoveProduct}

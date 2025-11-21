@@ -1,5 +1,10 @@
 export { YarcheCard } from "./yarche-card";
 export { MagnitCard } from "./magnit-card";
 export { MetroCard } from "./metro-card";
+export { LentaCard } from "./lenta-card";
+export { YarcheModal } from "./yarche-modal";
+export { MagnitModal } from "./magnit-modal";
+export { MetroModal } from "./metro-modal";
+export { LentaModal } from "./lenta-modal";
 export { formatImageUrl, removeUnitsFromName, getWeight } from "./utils";
 export type { ProductCardData } from "./types";
