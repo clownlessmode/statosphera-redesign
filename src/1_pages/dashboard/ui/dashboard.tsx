@@ -38,6 +38,7 @@ import HoursRevenueSkeleton from "@widgets/dashboard/hours-revenue/hours-revenue
 import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
 import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
 import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
+import TarotSkeleton from "@widgets/dashboard/tarot/ui/tarot-skeleton";
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
@@ -106,6 +107,7 @@ const TodayCheck = lazy(
 
 const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
+const Tarot = lazy(() => import("@widgets/dashboard/tarot/ui/tarot"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboardData();
   const { session } = useSession();
@@ -122,6 +124,12 @@ const Dashboard = () => {
 
   const hasPersonalMessages =
     !!userPhrases &&
+    userHasEffectsAccess &&
+    userPhoto &&
+    effectsSettings.personalMessagesEnabled;
+
+  // Условие для доступа к таро (без проверки наличия сообщений)
+  const hasTarotAccess =
     userHasEffectsAccess &&
     userPhoto &&
     effectsSettings.personalMessagesEnabled;
@@ -154,13 +162,18 @@ const Dashboard = () => {
       "antiLoyalTop",
     ];
 
+    // Добавляем виджет таро, если есть доступ (даже без сообщений)
+    if (hasTarotAccess) {
+      baseWidgets.push("tarot");
+    }
+
     // Добавляем виджет персональных сообщений, если есть сообщения
     if (hasPersonalMessages) {
       return ["hasPersonalMessages", ...baseWidgets];
     }
 
     return baseWidgets;
-  }, [hasPersonalMessages]);
+  }, [hasPersonalMessages, hasTarotAccess]);
 
   const { items: widgetOrder, setItems: setWidgetOrder } =
     useDashboardLayout(allWidgets);
@@ -597,6 +610,13 @@ const Dashboard = () => {
           ) : (
             <AntiLoyalTopSkeleton />
           )}
+        </Suspense>
+      </div>
+    ),
+    tarot: (
+      <div data-widget="tarot" data-testid="widget-tarot">
+        <Suspense fallback={<TarotSkeleton />}>
+          <Tarot />
         </Suspense>
       </div>
     ),
