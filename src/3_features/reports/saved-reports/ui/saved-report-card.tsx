@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -7,8 +8,19 @@ import {
 } from "@shared/ui/card";
 import { SavedReport } from "../config";
 import { Button } from "@shared/ui/button";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, X } from "lucide-react";
 import { useNavigate } from "react-router";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@shared/ui/alert-dialog";
+import { useSavedReportsController } from "../api/controller";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import {
   FilterApiPayload,
@@ -25,11 +37,13 @@ interface SavedReportCardProps {
 }
 
 const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { getGraph, getTable, getTotal } = useReport();
   const { setGraph, setTotal, setTable, clearAll } = useReportStore();
   const { bumpDataVersion } = useTableVersionStore();
   const { setCount } = useCountStore();
+  const { deleteReport, isDeleting } = useSavedReportsController();
 
   // Добавляем использование основного store для фильтров
   const {
@@ -664,25 +678,70 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteReport(data.idReport);
+      setDeleteDialogOpen(false);
+    } catch (error) {
+      console.error("Ошибка при удалении отчета:", error);
+    }
+  };
+
   return (
-    <Card className="hover:shadow-md cursor-pointer transition-all bg-background shrink-0">
-      <CardHeader className="flex flex-row justify-between gap-4">
-        <CardTitle>{data.nameReport}</CardTitle>
-        <CardDescription>
-          {new Date(data.dateAdd).toLocaleDateString()}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-2">
-        <Button size="sm" onClick={handleApplyReport}>
-          Применить отчет
-          <CheckCircle2 className="w-4 h-4" />
-        </Button>
-        {/* <Button disabled variant="outline" size="sm">
-          Поделиться отчетом
-          <Share2 className="w-4 h-4" />
-        </Button> */}
-      </CardContent>
-    </Card>
+    <>
+      <Card className="hover:shadow-md cursor-pointer transition-all bg-background shrink-0 relative group">
+        <CardHeader className="flex flex-row justify-between gap-4 items-start">
+          <CardTitle>{data.nameReport}</CardTitle>
+          <div className="flex flex-row items-center gap-2 relative">
+            <CardDescription className="transition-transform duration-200 group-hover:-translate-x-8">
+              {new Date(data.dateAdd).toLocaleDateString()}
+            </CardDescription>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeleteDialogOpen(true);
+              }}
+              disabled={isDeleting}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 gap-2">
+          <Button size="sm" onClick={handleApplyReport}>
+            Применить отчет
+            <CheckCircle2 className="w-4 h-4" />
+          </Button>
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Удалить отчет?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Вы уверены, что хотите удалить отчет{" "}
+              <span className="font-bold">"{data.nameReport}"</span>?
+              <br />
+              Это действие нельзя отменить.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? "Удаление..." : "Удалить"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
