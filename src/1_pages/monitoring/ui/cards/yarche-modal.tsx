@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,7 @@ import {
   Award,
 } from "lucide-react";
 import { Button } from "@shared/ui/button";
+import { ImageGallery } from "./image-gallery";
 
 interface YarcheModalProps {
   product: YarcheProduct | null;
@@ -36,6 +38,9 @@ export const YarcheModal = ({
   open,
   onOpenChange,
 }: YarcheModalProps) => {
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+
   if (!product) return null;
 
   const image = formatImageUrl(product.image);
@@ -600,11 +605,26 @@ export const YarcheModal = ({
                       key={idx}
                       src={imageUrl}
                       alt={`${product.name} - изображение ${idx + 1}`}
-                      className="w-full aspect-square object-contain bg-white border border-border rounded-lg p-2"
+                      className="w-full aspect-square object-contain bg-white border border-border rounded-lg p-2 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => {
+                        setGalleryIndex(idx);
+                        setGalleryOpen(true);
+                      }}
                     />
                   );
                 })}
               </div>
+              <ImageGallery
+                images={product.images.map((imageId) => {
+                  const imageNumber = String(imageId);
+                  const firstTwo = imageNumber.slice(0, 2);
+                  const rest = imageNumber.slice(2);
+                  return `https://api.yarcheplus.ru/thumbnail/768x768/${firstTwo}/${rest}/${imageNumber}.webp`;
+                })}
+                initialIndex={galleryIndex}
+                open={galleryOpen}
+                onOpenChange={setGalleryOpen}
+              />
             </div>
           )}
 

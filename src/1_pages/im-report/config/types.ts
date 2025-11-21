@@ -204,3 +204,75 @@ export interface getAvgCheckRO {
   year?: string;
   avg_check: number;
 }
+
+export interface getOrdersCountAllRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  onlineCountOrders: number;
+  ordinaryCountOrders: number;
+  pickupCountOrders: number;
+  kuperCountOrders: number;
+  completedOnlineCountOrders: number;
+  completedOrdinaryCountOrders: number;
+  completedPickupCountOrders: number;
+  completedKuperCountOrders: number;
+}
+
+export interface getAvgCheckCountRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  avgItemsPerCheck: number;
+}
+
+export interface getDiscretenessRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  uniqueCustomers: number;
+  totalOrders: number;
+  discreteness: number;
+}
+
+export interface getPercentCancellationAllRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  cancellationPercentage: number;
+}
+
+export interface getPercentCancellationPickupRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  cancellationPercentage: number;
+}
+
+export interface getPercentCancellationOrdinaryRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  cancellationPercentage: number;
+}
+
+export interface getDeliveryImCountRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  deliveryImCount: number;
+}

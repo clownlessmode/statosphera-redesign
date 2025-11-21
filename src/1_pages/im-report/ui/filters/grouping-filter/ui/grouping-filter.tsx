@@ -20,9 +20,18 @@ import { Button } from "@shared/ui/button";
 import { Badge } from "@shared/ui/badge";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
-const GroupingFilter: FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface GroupingFilterProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+const GroupingFilter: FC<GroupingFilterProps> = ({ open, onOpenChange }) => {
+  const [internalOpen, setInternalOpen] = useState(false);
   const form = useForm();
+
+  // Используем внешнее управление, если оно предоставлено, иначе внутреннее
+  const isOpen = open !== undefined ? open : internalOpen;
+  const setIsOpen = onOpenChange || setInternalOpen;
 
   const { updateGroups } = useLoyaltyFiltersStore();
 

@@ -5,12 +5,14 @@ import {
   YarcheCategory,
   MagnitProduct,
   MetroProduct,
+  LentaProduct,
 } from "../config/types";
 import { formatImageUrl, removeUnitsFromName, getWeight } from "./cards/utils";
 import { ProductCardData } from "./cards/types";
 import { YarcheCard } from "./cards/yarche-card";
 import { MagnitCard } from "./cards/magnit-card";
 import { MetroCard } from "./cards/metro-card";
+import { LentaCard } from "./cards/lenta-card";
 
 interface ProductCardProps {
   product: ShopProduct;
@@ -20,7 +22,7 @@ interface ProductCardProps {
 
 const getProductType = (
   product: ShopProduct,
-): "yarche" | "magnit" | "metro" => {
+): "yarche" | "magnit" | "metro" | "lenta" => {
   // YarcheProduct имеет уникальные поля: code, weight_unit, volume_unit
   if (
     "code" in product &&
@@ -38,6 +40,15 @@ const getProductType = (
     "prices" in product
   ) {
     return "metro";
+  }
+
+  // LentaProduct имеет уникальные поля: category_id, category_name, price_regular
+  if (
+    "category_id" in product &&
+    "category_name" in product &&
+    "price_regular" in product
+  ) {
+    return "lenta";
   }
 
   // По умолчанию Magnit
@@ -159,57 +170,143 @@ export const ProductCard = memo(
       };
 
       return (
-        <MagnitCard data={cardData} variant={variant} onRemove={onRemove} />
+        <MagnitCard
+          data={cardData}
+          product={magnitProduct}
+          variant={variant}
+          onRemove={onRemove}
+        />
       );
     }
 
-    // MetroProduct
-    const metroProduct = product as MetroProduct;
-    const image = formatImageUrl(metroProduct.images);
+    if (type === "metro") {
+      // MetroProduct
+      const metroProduct = product as MetroProduct;
+      const image = formatImageUrl(metroProduct.images);
 
-    // Парсим packing для веса
-    let packingWeight = "";
+      // Парсим packing для веса
+      let packingWeight = "";
+      try {
+        const packing = JSON.parse(metroProduct.packing);
+        if (packing.type === "шт") {
+          packingWeight = `${packing.size} ${packing.type}`;
+        } else if (packing.size) {
+          packingWeight = `${packing.size} ${packing.type}`;
+        }
+      } catch {
+        packingWeight = getWeight(metroProduct.name);
+      }
+      const weight = packingWeight || getWeight(metroProduct.name);
+
+      const name = removeUnitsFromName(metroProduct.name);
+      const brand = metroProduct.manufacturer
+        ? metroProduct.manufacturer
+        : "Бренд не указан";
+
+      // Парсим prices для цены
+      let price = 0;
+      let previous_price = 0;
+      try {
+        const prices = JSON.parse(metroProduct.prices);
+        price = prices.price;
+        previous_price = prices.old_price ? prices.old_price : 0;
+      } catch {
+        price = 0;
+        previous_price = 0;
+      }
+
+      cardData = {
+        image,
+        weight,
+        name,
+        brand,
+        price,
+        previous_price,
+        categories: [],
+        id: product.id,
+      };
+
+      return (
+        <MetroCard
+          data={cardData}
+          product={metroProduct}
+          variant={variant}
+          onRemove={onRemove}
+        />
+      );
+    }
+
+    // LentaProduct
+    const lentaProduct = product as LentaProduct;
+
+    // Обрабатываем images - может быть массивом или JSON строкой
+    let image = "";
+    if (Array.isArray(lentaProduct.images)) {
+      image =
+        lentaProduct.images.length > 0
+          ? lentaProduct.images[0].preview || lentaProduct.images[0].medium
+          : "";
+    } else if (typeof lentaProduct.images === "string") {
+      try {
+        const parsed = JSON.parse(lentaProduct.images);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          image = parsed[0].preview || parsed[0].medium || "";
+        }
+      } catch {
+        image = "";
+      }
+    }
+
+    // Получаем вес из dimensions или из названия
+    let weight = "";
     try {
-      const packing = JSON.parse(metroProduct.packing);
-      if (packing.type === "шт") {
-        packingWeight = `${packing.size} ${packing.type}`;
-      } else if (packing.size) {
-        packingWeight = `${packing.size} ${packing.type}`;
+      const dimensions =
+        typeof lentaProduct.dimensions === "string"
+          ? JSON.parse(lentaProduct.dimensions)
+          : lentaProduct.dimensions;
+      if (
+        dimensions &&
+        (dimensions.width || dimensions.height || dimensions.length)
+      ) {
+        // Можно использовать dimensions для веса, но обычно вес в названии
+        weight = getWeight(lentaProduct.name);
+      } else {
+        weight = getWeight(lentaProduct.name);
       }
     } catch {
-      packingWeight = getWeight(metroProduct.name);
+      weight = getWeight(lentaProduct.name);
     }
-    const weight = packingWeight || getWeight(metroProduct.name);
 
-    const name = removeUnitsFromName(metroProduct.name);
-    const brand = metroProduct.manufacturer
-      ? metroProduct.manufacturer
-      : "Бренд не указан";
-
-    // Парсим prices для цены
-    let price = 0;
-    let previous_price = 0;
-    try {
-      const prices = JSON.parse(metroProduct.prices);
-      price = prices.price;
-      previous_price = prices.old_price ? prices.old_price : 0;
-    } catch {
-      price = 0;
-      previous_price = 0;
-    }
+    const name = removeUnitsFromName(lentaProduct.name);
+    const brand = ""; // У Ленты нет поля brand в структуре
+    const price = lentaProduct.price;
+    const previous_price =
+      lentaProduct.price_regular &&
+      lentaProduct.price_regular > lentaProduct.price
+        ? lentaProduct.price_regular
+        : 0;
 
     cardData = {
-      image,
+      image: image || "",
       weight,
       name,
       brand,
       price,
       previous_price,
-      categories: [],
-      id: product.id,
+      categories: lentaProduct.category_name
+        ? [lentaProduct.category_name]
+        : [],
+      id: lentaProduct.id,
     };
 
-    return <MetroCard data={cardData} variant={variant} onRemove={onRemove} />;
+    return (
+      <LentaCard
+        data={cardData}
+        product={lentaProduct}
+        variant={variant}
+        onRemove={onRemove}
+      />
+    );
   },
 );
 

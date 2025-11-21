@@ -19,8 +19,8 @@ import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filter
 import { useMemo } from "react";
 import { useGraphColors } from "@shared/hooks";
 import { Button } from "@shared/ui/button";
-// import { Link } from "react-router";
-// import { ROUTES_PATH } from "@app/router/routes";
+import { Link } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
 
 export const IM = () => {
   const { value } = useGraphDate();
@@ -110,17 +110,16 @@ export const IM = () => {
                   className="border-b-0! rounded-b-none!"
                 >
                   Дашборд
-                  {/* {tab === "commerce" ? "Коммерческая" : "Чековая"} */}
                 </Button>
 
-                {/* <Link to={ROUTES_PATH.IM_REPORT}>
+                <Link to={ROUTES_PATH.IM_REPORT}>
                   <Button
                     variant="outline"
                     className="border-b-0! rounded-b-none! opacity-50"
                   >
                     Отчет
                   </Button>
-                </Link> */}
+                </Link>
               </div>
               <div className="flex gap-2">
                 <GraphDate />

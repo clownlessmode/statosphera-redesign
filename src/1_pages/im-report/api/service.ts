@@ -75,4 +75,41 @@ export class IMService {
     const response = await api.post("online-store/avg-check", dto);
     return response.data;
   }
+  static async getOrdersCountAll(dto: RequestDto) {
+    const response = await api.post("online-store/orders-count-all", dto);
+    return response.data;
+  }
+  static async getAvgCheckCount(dto: RequestDto) {
+    const response = await api.post("online-store/avg-check-count", dto);
+    return response.data;
+  }
+  static async getDiscreteness(dto: RequestDto) {
+    const response = await api.post("online-store/discreteness", dto);
+    return response.data;
+  }
+  static async getPercentCancellationAll(dto: RequestDto) {
+    const response = await api.post(
+      "online-store/percent-cancellation-all",
+      dto,
+    );
+    return response.data;
+  }
+  static async getPercentCancellationPickup(dto: RequestDto) {
+    const response = await api.post(
+      "online-store/percent-cancellation-pickup",
+      dto,
+    );
+    return response.data;
+  }
+  static async getPercentCancellationOrdinary(dto: RequestDto) {
+    const response = await api.post(
+      "online-store/percent-cancellation-ordinary",
+      dto,
+    );
+    return response.data;
+  }
+  static async getDeliveryImCount(dto: RequestDto) {
+    const response = await api.post("online-store/delivery-im-count", dto);
+    return response.data;
+  }
 }

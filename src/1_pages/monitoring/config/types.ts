@@ -115,8 +115,98 @@ export interface MetroProduct {
   created_at: string;
 }
 
+export interface LentaImage {
+  id: number;
+  icon: string;
+  large: string;
+  medium: string;
+  preview: string;
+  original: string;
+  position: number;
+}
+
+export interface LentaBadge {
+  title: string;
+  tooltip: {
+    description: string;
+  };
+  backgroundColor: string;
+}
+
+export interface LentaBadges {
+  image: any[];
+  discount: LentaBadge[];
+}
+
+export interface LentaFeatures {
+  isAdult: boolean;
+  isPromo: boolean;
+  isPinned: boolean;
+  isWeight: boolean;
+  markType?: string;
+  isAlcohol: boolean;
+  isPartner: boolean;
+  isTobacco: boolean;
+  isFavorite: boolean;
+  isMarkType: boolean;
+  isMercurial: boolean;
+  isPurchased: boolean;
+  isOnlyPickup: boolean;
+  isReviewable: boolean;
+  isIndividualAcc: boolean;
+  isPersonalPrice: boolean;
+  isBlockedForSale: boolean;
+  isQuantityDiscount: boolean;
+}
+
+export interface LentaDimensions {
+  width: number;
+  height: number;
+  length: number;
+}
+
+export interface LentaRating {
+  rate: number;
+  votes: number;
+}
+
+export interface LentaPersonalization {
+  ruleId: string;
+  modelType: string;
+}
+
+export interface LentaProduct {
+  id: number;
+  name: string;
+  category_id: number | null;
+  category_name: string | null;
+  price: number;
+  price_regular: number;
+  cost: number;
+  cost_regular: number;
+  is_loyalty_card_price: boolean;
+  is_promoaction_price: boolean;
+  images: LentaImage[] | string; // JSONB или массив
+  badges: LentaBadges | string; // JSONB или объект
+  features: LentaFeatures | string; // JSONB или объект
+  dimensions: LentaDimensions | string; // JSONB или объект
+  rating: LentaRating | string; // JSONB или объект
+  count: number;
+  chips_prices: any | null;
+  quantity_discount: any | null;
+  quantity_discount_promo: any | null;
+  personalization: LentaPersonalization | string; // JSONB или объект
+  url: string;
+  updated_at: string;
+  created_at: string;
+}
+
 // Union type для продуктов разных магазинов
-export type ShopProduct = YarcheProduct | MagnitProduct | MetroProduct;
+export type ShopProduct =
+  | YarcheProduct
+  | MagnitProduct
+  | MetroProduct
+  | LentaProduct;
 
 // Тип для ответа API - массив магазинов
 export interface ShopProductsResponse {
@@ -128,4 +218,5 @@ export interface DownloadReportRequest {
   yarche: string[];
   magnit: string[];
   metro: string[];
+  lenta: string[];
 }
