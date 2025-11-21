@@ -21,7 +21,6 @@ import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
 import { WriteOff } from "@pages/write-off/ui/write-off";
 import { Loyalty } from "@pages/loyalty";
-
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { AdminDigests } from "@pages/admin/admin-digests";
 import { AdminRolesPage } from "@pages/admin/admin-roles";
@@ -32,6 +31,8 @@ import { Settings } from "@pages/settings";
 import { DemocracyPage } from "@pages/democracy";
 import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
+import { Unload } from "@pages/unload";
+import { IMReport } from "@pages/im-report";
 import { Farmer } from "@pages/farmer";
 //import { Unload } from "@pages/unload";
 
@@ -41,6 +42,7 @@ const Sidebar = React.lazy(() =>
 );
 
 export const ROUTES_PATH = {
+  IM_REPORT: "/im/report",
   MESSAGES: "/messages",
   TV: "/tv",
   // Авторизация
@@ -122,6 +124,13 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
     element: <AdminNotifications />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.IM_REPORT,
+    variant: "private",
+    element: <IMReport />,
+    label: "Отчет ИМ",
     layout: Sidebar,
   },
   {
@@ -305,13 +314,15 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "РФМ",
   },
-  //{
-  //  path: ROUTES_PATH.UNLOAD,
-  //  variant: "private",
-  //  element: <Unload />,
-  //  layout: Sidebar,
-  //  label: "Выгрузка",
-  //},
+  {
+    path: ROUTES_PATH.UNLOAD,
+    variant: "private",
+    element: <Unload />,
+    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [107, 200, 2816],
+    layout: Sidebar,
+    label: "Выгрузка",
+  },
   {
     path: ROUTES_PATH.FARMER,
     variant: "private",
