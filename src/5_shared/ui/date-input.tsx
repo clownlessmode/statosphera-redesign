@@ -1,17 +1,21 @@
-import { forwardRef } from "react";
+import { InputHTMLAttributes, forwardRef } from "react";
 import { Input } from "./input";
 import { format, isValid, parse } from "date-fns";
 import { cn } from "@shared/lib/utils";
 
-interface DateInputProps {
+interface DateInputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   value: string;
   placeholder?: string;
   className?: string;
   onChange: (value: string) => void;
 }
 
-export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
-  ({ value, onChange, placeholder = "Введите дату", className }, ref) => {
+const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
+  (
+    { value, onChange, placeholder = "Введите дату", className, ...props },
+    ref,
+  ) => {
     const formatDateOnInput = (value: string): string => {
       const digits = value.replace(/\D/g, "").substring(0, 8);
 
@@ -49,12 +53,16 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
         className={cn("bg-background", className)}
         value={value}
         onChange={(e) => {
-          const formattedValue = formatDateOnInput(e.target.value);
-          onChange(formattedValue);
+          if (e.target.value.length <= 10) {
+            const formattedValue = formatDateOnInput(e.target.value);
+            onChange(formattedValue);
+          }
         }}
+        {...props}
       />
     );
   },
 );
 
 DateInput.displayName = "DateInput";
+export default DateInput;

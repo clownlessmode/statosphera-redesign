@@ -1,26 +1,34 @@
-import * as React from "react";
 import { useIMask } from "react-imask";
 import { Input } from "./input";
 import { cn } from "@shared/lib/utils";
-import { InputHTMLAttributes, useEffect, useImperativeHandle } from "react";
+import {
+  InputHTMLAttributes,
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+  ChangeEventHandler,
+} from "react";
 
 interface PhoneInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "ref"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
   onValueChange?: (value: string) => void;
   value?: string;
   unmask?: boolean;
   mask?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
+export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
   (
     {
       className,
       value,
       onValueChange,
-      placeholder = "Введите номер телефона",
+      placeholder = "Введите номер",
       mask = "+7 (000) 000-00-00",
       unmask = true,
+      onChange,
       ...props
     },
     ref,
@@ -41,7 +49,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         const result = unmask ? typedValue : maskedValue;
         onValueChange?.(result);
       }
-    }, [maskedValue, onValueChange, unmask]);
+    }, [maskedValue, unmask]);
 
     useImperativeHandle(ref, () => maskRef.current as HTMLInputElement, [
       value,
@@ -49,11 +57,12 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
 
     return (
       <Input
-        ref={maskRef as React.RefObject<HTMLInputElement>}
+        ref={maskRef as RefObject<HTMLInputElement>}
         value={maskedValue}
         placeholder={placeholder}
         type="tel"
         className={cn("bg-background", className)}
+        onChange={onChange || (() => {})}
         {...props}
       />
     );
