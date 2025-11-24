@@ -122,10 +122,20 @@ const Dashboard = () => {
     : undefined;
   const userPhoto = session?.idUser ? userPhotos[session.idUser] : undefined;
 
+  // Фразы показываются, если они есть у пользователя и есть доступ к эффектам
   const hasPersonalMessages =
     !!userPhrases &&
+    Array.isArray(userPhrases) &&
+    userPhrases.length > 0 &&
     userHasEffectsAccess &&
-    userPhoto &&
+    effectsSettings.personalMessagesEnabled;
+
+  // Фото показывается отдельно, если оно есть у пользователя и есть доступ к эффектам
+  const hasPersonalPhotos =
+    !!userPhoto &&
+    Array.isArray(userPhoto) &&
+    userPhoto.length > 0 &&
+    userHasEffectsAccess &&
     effectsSettings.personalMessagesEnabled;
 
   // Проверяем, есть ли доступ к виджету Таро для текущего пользователя
@@ -163,9 +173,9 @@ const Dashboard = () => {
 
     const widgets: string[] = [];
 
-    // Добавляем виджет персональных сообщений, если есть сообщения
-    if (hasPersonalMessages) {
-      widgets.push("hasPersonalMessages");
+    // Добавляем виджет персональных фото, если есть фото
+    if (hasPersonalPhotos) {
+      widgets.push("hasPersonalPhotos");
     }
 
     // Добавляем виджет Таро сразу после фоточек, если есть доступ
@@ -177,7 +187,7 @@ const Dashboard = () => {
     widgets.push(...baseWidgets);
 
     return widgets;
-  }, [hasPersonalMessages, hasTarotAccess]);
+  }, [hasPersonalPhotos, hasTarotAccess]);
 
   const { items: widgetOrder, setItems: setWidgetOrder } =
     useDashboardLayout(allWidgets);
@@ -207,7 +217,7 @@ const Dashboard = () => {
 
   // Создаем маппинг виджетов
   const widgetsMap: Record<string, ReactNode> = {
-    hasPersonalMessages: hasPersonalMessages ? (
+    hasPersonalPhotos: hasPersonalPhotos ? (
       <Card className={cn("w-full h-[400px] flex flex-col !p-0")}>
         <img
           src={randomPhoto || ""}
@@ -651,7 +661,7 @@ const Dashboard = () => {
             >
               {hasPersonalMessages && (
                 <div
-                  className={`flex flex-col gap-4 col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance  justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
+                  className={`flex flex-col gap-4 col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
                   style={{
                     backgroundColor:
                       effectsSettings.personalMessagesStyle.backgroundColor,
