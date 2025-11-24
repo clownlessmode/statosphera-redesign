@@ -27,7 +27,7 @@ export const RatingModal = ({
   onOpenChange,
   onSubmitted,
 }: RatingModalProps) => {
-  const [rating, setRating] = useState<number>(3);
+  const [rating, setRating] = useState<number>(5);
   const [comment, setComment] = useState<string>("");
   const { sendFeedback, isFeedbackLoading } = useFeedbackController();
   const location = useLocation();
