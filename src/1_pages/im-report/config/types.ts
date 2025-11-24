@@ -292,6 +292,7 @@ export interface getIMTableRO {
   pickupProceeds: number;
   kuperCountOrders: number;
   kuperProceeds: number;
+  proceedsAll: number;
   closedOnlineCountOrders: number;
   closedOrdinaryCountOrders: number;
   closedPickupCountOrders: number;

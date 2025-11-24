@@ -478,6 +478,7 @@ export enum COLUMN_KEY {
   DISCOUNT_TYPE = "discountType",
 
   PROCEEDS_OFFLINE = "proceeds_offline",
+  PROCEEDS_ALL = "proceedsAll",
 
   // ----------------- Количество заказов ИМ -----------------
   GROUP_ORDERS_COUNT = "groupOrdersCount",
@@ -4193,6 +4194,14 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.KUPER_PROCEEDS,
     headerName: "Выручка купер",
     headerTooltip: "Выручка от заказов купер",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_ALL,
+    headerName: "Общая выручка сети",
+    headerTooltip: "Общая выручка сети",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
