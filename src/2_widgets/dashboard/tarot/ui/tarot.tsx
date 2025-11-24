@@ -240,6 +240,43 @@ const TAROT_CARDS: TarotCard[] = [
   },
 ];
 
+const STORAGE_KEY = "tarot-reading";
+
+interface SavedReading {
+  date: string;
+  cardId: number;
+  isReversed: boolean;
+}
+
+const getTodayDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
+const saveReading = (cardId: number, isReversed: boolean) => {
+  const reading: SavedReading = {
+    date: getTodayDate(),
+    cardId,
+    isReversed,
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(reading));
+};
+
+const getSavedReading = (): SavedReading | null => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return null;
+    const reading: SavedReading = JSON.parse(saved);
+    // Проверяем, что гадание было сегодня
+    if (reading.date === getTodayDate()) {
+      return reading;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
 const Tarot = () => {
   const [isBlurred, setIsBlurred] = useState(true);
   const [isSpreading, setIsSpreading] = useState(false);
@@ -252,6 +289,21 @@ const Tarot = () => {
   useEffect(() => {
     // Инициализируем позиции карт
     setCardPositions(TAROT_CARDS.map((_, i) => i));
+
+    // Проверяем, есть ли сохраненное гадание за сегодня
+    const savedReading = getSavedReading();
+    if (savedReading) {
+      const savedCard = TAROT_CARDS.find(
+        (card) => card.id === savedReading.cardId,
+      );
+      if (savedCard) {
+        setSelectedCard(savedCard);
+        setIsReversed(savedReading.isReversed);
+        setIsFlipped(true);
+        setHasReadToday(true);
+        setIsBlurred(false);
+      }
+    }
   }, []);
 
   const shuffleCards = () => {
@@ -287,6 +339,8 @@ const Tarot = () => {
           setIsFlipped(true);
           setIsSpreading(false);
           setHasReadToday(true);
+          // Сохраняем гадание в localStorage
+          saveReading(randomCard.id, reversed);
         }, 500);
       }, 1500);
     }, 2000);
@@ -384,6 +438,8 @@ const Tarot = () => {
                       setIsFlipped(true);
                       setIsSpreading(false);
                       setHasReadToday(true);
+                      // Сохраняем гадание в localStorage
+                      saveReading(card.id, reversed);
                     }, 1000);
                   }
                 }}
