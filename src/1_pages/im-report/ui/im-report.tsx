@@ -29,21 +29,12 @@ export const IMReport = () => {
         dateEnd: filterDate.dateEnd,
       },
       groups: groups.length > 0 ? groups : [],
+      exportFile: false,
     }),
     [store, filters, filterDate, groups],
   );
 
-  const {
-    shareIM,
-    avgCheck,
-    ordersCountAll,
-    avgCheckCount,
-    discreteness,
-    percentCancellationAll,
-    percentCancellationPickup,
-    percentCancellationOrdinary,
-    deliveryImCount,
-  } = useIM(mock);
+  const { imTable } = useIM(mock);
 
   // Автоматически открываем модалку группировок, если групп нет
   useEffect(() => {
@@ -52,77 +43,10 @@ export const IMReport = () => {
     }
   }, [groups.length]);
 
-  // Объединяем данные shareIM, avgCheck, ordersCountAll, avgCheckCount, discreteness, percentCancellationAll, percentCancellationPickup, percentCancellationOrdinary и deliveryImCount по ключу группировки
+  // Данные уже приходят объединенными из API
   const combinedData = useMemo(() => {
-    const sources = [
-      shareIM,
-      avgCheck,
-      ordersCountAll,
-      avgCheckCount,
-      discreteness,
-      percentCancellationAll,
-      percentCancellationPickup,
-      percentCancellationOrdinary,
-      deliveryImCount,
-    ];
-    const dataSources = sources.filter(Boolean);
-    if (dataSources.length === 0) return [];
-
-    const combinedMap = new Map();
-
-    // Объединяем данные из всех источников
-    dataSources.forEach((data) => {
-      if (!data) return;
-      const sourceIndex = sources.findIndex((d) => d === data);
-
-      data.forEach((item: any) => {
-        const key =
-          item.day ||
-          item.week ||
-          item.month ||
-          item.quarter ||
-          item.year ||
-          "";
-        if (key) {
-          const existing = combinedMap.get(key) || {};
-          // Для percentCancellationPickup переименовываем cancellationPercentage в cancellationPercentagePickup
-          if (sourceIndex === 6 && item.cancellationPercentage !== undefined) {
-            const { cancellationPercentage, ...rest } = item;
-            combinedMap.set(key, {
-              ...existing,
-              ...rest,
-              cancellationPercentagePickup: cancellationPercentage,
-            });
-          } else if (
-            sourceIndex === 7 &&
-            item.cancellationPercentage !== undefined
-          ) {
-            // Для percentCancellationOrdinary переименовываем cancellationPercentage в cancellationPercentageOrdinary
-            const { cancellationPercentage, ...rest } = item;
-            combinedMap.set(key, {
-              ...existing,
-              ...rest,
-              cancellationPercentageOrdinary: cancellationPercentage,
-            });
-          } else {
-            combinedMap.set(key, { ...existing, ...item });
-          }
-        }
-      });
-    });
-
-    return Array.from(combinedMap.values());
-  }, [
-    shareIM,
-    avgCheck,
-    ordersCountAll,
-    avgCheckCount,
-    discreteness,
-    percentCancellationAll,
-    percentCancellationPickup,
-    percentCancellationOrdinary,
-    deliveryImCount,
-  ]);
+    return imTable || [];
+  }, [imTable]);
 
   // Вычисляем итоговую строку с суммой всех числовых полей
   const totalData = useMemo(() => {

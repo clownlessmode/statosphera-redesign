@@ -15,6 +15,7 @@ export interface RequestDto {
     dateEnd: string;
   };
   groups?: string[];
+  exportFile?: boolean;
 }
 export interface getMainCardsRO {
   im_proceeds: {
@@ -275,4 +276,34 @@ export interface getDeliveryImCountRO {
   quarter?: string;
   year?: string;
   deliveryImCount: number;
+}
+
+export interface getIMTableRO {
+  day?: string;
+  week?: string;
+  month?: string;
+  quarter?: string;
+  year?: string;
+  onlineCountOrders: number;
+  onlineProceeds: number;
+  ordinaryCountOrders: number;
+  ordinaryProceeds: number;
+  pickupCountOrders: number;
+  pickupProceeds: number;
+  kuperCountOrders: number;
+  kuperProceeds: number;
+  closedOnlineCountOrders: number;
+  closedOrdinaryCountOrders: number;
+  closedPickupCountOrders: number;
+  closedKuperCountOrders: number;
+  shareIm: number;
+  totalOrders: number;
+  avgCheck: number;
+  avgItemsPerCheck: number;
+  cancellationPercentageAll: number;
+  cancellationPercentageOrdinary: number;
+  cancellationPercentagePickup: number;
+  deliveryImCount: number;
+  uniqueCustomers: number;
+  uniqueCompletedCustomers: number;
 }

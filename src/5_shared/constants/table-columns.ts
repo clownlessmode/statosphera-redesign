@@ -489,17 +489,27 @@ export enum COLUMN_KEY {
   COMPLETED_ORDINARY_COUNT_ORDERS = "completedOrdinaryCountOrders",
   COMPLETED_PICKUP_COUNT_ORDERS = "completedPickupCountOrders",
   COMPLETED_KUPER_COUNT_ORDERS = "completedKuperCountOrders",
+  CLOSED_ONLINE_COUNT_ORDERS = "closedOnlineCountOrders",
+  CLOSED_ORDINARY_COUNT_ORDERS = "closedOrdinaryCountOrders",
+  CLOSED_PICKUP_COUNT_ORDERS = "closedPickupCountOrders",
+
+  // ----------------- Выручка ИМ -----------------
+  ORDINARY_PROCEEDS = "ordinaryProceeds",
+  PICKUP_PROCEEDS = "pickupProceeds",
+  KUPER_PROCEEDS = "kuperProceeds",
 
   // ----------------- Среднее количество товаров в чеке ИМ -----------------
   AVG_ITEMS_PER_CHECK = "avgItemsPerCheck",
 
   // ----------------- Дискретность ИМ -----------------
   UNIQUE_CUSTOMERS = "uniqueCustomers",
+  UNIQUE_COMPLETED_CUSTOMERS = "uniqueCompletedCustomers",
   TOTAL_ORDERS = "totalOrders",
   DISCRETENESS = "discreteness",
 
   // ----------------- Процент отмены заказов ИМ -----------------
   CANCELLATION_PERCENTAGE = "cancellationPercentage",
+  CANCELLATION_PERCENTAGE_ALL = "cancellationPercentageAll",
   CANCELLATION_PERCENTAGE_PICKUP = "cancellationPercentagePickup",
   CANCELLATION_PERCENTAGE_ORDINARY = "cancellationPercentageOrdinary",
 
@@ -4139,6 +4149,55 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
+    field: COLUMN_KEY.CLOSED_ONLINE_COUNT_ORDERS,
+    headerName: "Закрытые онлайн",
+    headerTooltip: "Количество закрытых онлайн заказов",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.CLOSED_ORDINARY_COUNT_ORDERS,
+    headerName: "Закрытые обычные",
+    headerTooltip: "Количество закрытых обычных заказов",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.CLOSED_PICKUP_COUNT_ORDERS,
+    headerName: "Закрытые самовывоз",
+    headerTooltip: "Количество закрытых заказов на самовывоз",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  // ----------------- Выручка ИМ -----------------
+  {
+    field: COLUMN_KEY.ORDINARY_PROCEEDS,
+    headerName: "Выручка обычные",
+    headerTooltip: "Выручка от обычных заказов",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.PICKUP_PROCEEDS,
+    headerName: "Выручка самовывоз",
+    headerTooltip: "Выручка от заказов на самовывоз",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.KUPER_PROCEEDS,
+    headerName: "Выручка купер",
+    headerTooltip: "Выручка от заказов купер",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.AVG_ITEMS_PER_CHECK,
     headerName: "Среднее количество товаров в чеке",
     headerTooltip: "Среднее количество товаров в чеке интернет-магазина",
@@ -4150,6 +4209,14 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.UNIQUE_CUSTOMERS,
     headerName: "Уникальные клиенты",
     headerTooltip: "Количество уникальных клиентов",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_COMPLETED_CUSTOMERS,
+    headerName: "Уникальные завершенные клиенты",
+    headerTooltip: "Количество уникальных клиентов с завершенными заказами",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
@@ -4175,6 +4242,14 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.CANCELLATION_PERCENTAGE,
     headerName: "Процент отмены",
     headerTooltip: "Процент отмененных заказов",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.CANCELLATION_PERCENTAGE_ALL,
+    headerName: "Процент отмены все",
+    headerTooltip: "Процент отмененных заказов (все типы)",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
