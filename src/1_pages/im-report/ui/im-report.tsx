@@ -166,7 +166,7 @@ export const IMReport = () => {
                   Отчет
                 </Button>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 max-2xl:hidden">
                 <DaysFilter />
                 <ShopsFilter />
                 <GroupingFilter
@@ -179,6 +179,14 @@ export const IMReport = () => {
         }}
       />
       <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col max-md:gap-2">
+        <div className="flex flex-row justify-end gap-2 2xl:hidden">
+          <DaysFilter />
+          <ShopsFilter />
+          <GroupingFilter
+            open={isGroupingModalOpen}
+            onOpenChange={setIsGroupingModalOpen}
+          />
+        </div>
         {groups.length === 0 && !isGroupingModalOpen ? (
           <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center">
             <div className="text-muted-foreground space-y-2">
