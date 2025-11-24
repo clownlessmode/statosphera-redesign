@@ -71,4 +71,13 @@ export class IMService {
     const response = await api.post("online-store/tbl", dto);
     return response.data;
   }
+
+  // Экспорт отчета ИМ
+  static async exportIMTable(dto: RequestDto) {
+    const response = await api.post("online-store/tbl", {
+      ...dto,
+      exportFile: true,
+    });
+    return response.data;
+  }
 }

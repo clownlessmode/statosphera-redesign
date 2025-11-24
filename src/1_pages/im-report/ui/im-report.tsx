@@ -13,10 +13,14 @@ import { ROUTES_PATH } from "@app/router/routes";
 import UniversalTable from "@pages/report/ui/table";
 import { calculateTotalRow } from "@pages/report/ui/table/utils";
 import { columnDefs } from "@shared/constants/table-columns";
+import { toast } from "sonner";
+import { IMService } from "../api/service";
+import { Download } from "lucide-react";
 
 export const IMReport = () => {
   const { filterDate, groups } = useLoyaltyFiltersStore();
   const [isGroupingModalOpen, setIsGroupingModalOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const store = useSalesDynamicsFiltersStore((state) => state.filters);
   const filters = useSalesDynamicsFiltersStore((state) => state.filters);
 
@@ -65,6 +69,24 @@ export const IMReport = () => {
     return [formattedTotal];
   }, [combinedData]);
 
+  const handleExportReport = async () => {
+    setIsExporting(true);
+    try {
+      await toast.promise(IMService.exportIMTable(mock), {
+        loading: "Отправка запроса на экспорт...",
+        success: "Запрос на экспорт отчета успешно отправлен",
+        error: (error) => {
+          console.error("Ошибка при экспорте:", error);
+          return "Произошла ошибка при экспорте отчета";
+        },
+      });
+    } catch (error) {
+      console.error("Ошибка при экспорте:", error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const isMobile = useIsMobile();
 
   return (
@@ -99,6 +121,17 @@ export const IMReport = () => {
                 />
               </div>
             </>
+          ),
+          center: (
+            <Button
+              variant="outline"
+              onClick={handleExportReport}
+              disabled={isExporting || groups.length === 0}
+              loading={isExporting}
+            >
+              <Download className="size-4" />
+              Скачать отчет
+            </Button>
           ),
         }}
       />
