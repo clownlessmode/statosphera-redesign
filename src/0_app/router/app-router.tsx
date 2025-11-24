@@ -5,12 +5,14 @@ import { ROUTES } from "./routes";
 import { Suspense } from "react";
 import PageSkeleton from "@shared/ui/page-skeleton";
 import { TourProvider } from "@entities/lessons";
+import { RatingProvider } from "@widgets/rating";
 
 const AppRouter = () => {
   return (
     <AnimatePresence mode="wait">
       <BrowserRouter>
         <TourProvider>
+          <RatingProvider />
           <Routes>
             {ROUTES.map((route) => (
               <Route
