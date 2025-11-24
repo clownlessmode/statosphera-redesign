@@ -1,1 +1,1 @@
-export { default as FarmerProfile } from "./farmer-profile";
+export { default as FarmerQuestionnaire } from "./farmer-questionnaire";

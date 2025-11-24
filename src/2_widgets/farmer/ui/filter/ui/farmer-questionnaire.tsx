@@ -30,12 +30,15 @@ import { ChiefAccountantFields } from "./chief-accountant-field";
 import { MainContactFields } from "./main-contact-fields";
 import { AdditionalContactsFields } from "./additional-contacts-fields";
 
-interface FarmerProfileProps {
+interface FarmerQuestionnaireProps {
   level: number;
   form: UseFormReturn<FormValues>;
 }
 
-export default function FarmerProfile({ level, form }: FarmerProfileProps) {
+export default function FarmerQuestionnaire({
+  level,
+  form,
+}: FarmerQuestionnaireProps) {
   const { updateFilters } = useFarmerProfileStore();
 
   return (

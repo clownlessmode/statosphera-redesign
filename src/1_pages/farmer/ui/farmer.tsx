@@ -1,5 +1,5 @@
 import { Button } from "@shared/ui/button";
-import { FarmerProfile } from "@widgets/farmer/ui/filter";
+import { FarmerQuestionnaire } from "@widgets/farmer/ui/filter";
 import { FC, useState } from "react";
 import useForm from "@widgets/farmer/ui/filter/model/hook";
 import { toast } from "sonner";
@@ -30,12 +30,11 @@ const STEPS_FIELDS = [
 
 const Farmer: FC = () => {
   const [level, setLevel] = useState<number>(0);
-  const { createProfile, uploadPhoto } = useFarmer();
+  const { session } = useSession();
+  const { createProfile, uploadPhoto } = useFarmer(session?.idUser);
   const { getApiPayload } = useFarmerProfileStore();
   const navigate = useNavigate();
   const form = useForm();
-  const { session } = useSession();
-  console.log(getApiPayload());
 
   const handleNext = async () => {
     const fields = STEPS_FIELDS[level];
@@ -83,7 +82,7 @@ const Farmer: FC = () => {
     <div className="bg-muted h-full w-full p-2 flex flex-col">
       <div className="rounded-3xl bg-background flex flex-col items-center justify-center min-h-screen max-h-max p-4">
         <div className="w-max flex flex-col gap-4">
-          <FarmerProfile level={level} form={form} />
+          <FarmerQuestionnaire level={level} form={form} />
           <div className="w-full flex flex-row gap-2 justify-end">
             {level > 0 && <Button onClick={handleBack}>Назад</Button>}
             {level < 2 && <Button onClick={handleNext}>Далее</Button>}

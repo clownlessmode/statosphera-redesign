@@ -3,25 +3,25 @@ import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
 import { ProfileResponse, RequestDto, RequestDtoPhoto } from "../config";
 
-export const useFarmer = (id?: string) => {
+export const useFarmer = (idUser?: number) => {
   const queryClient = useQueryClient();
-
-  const getProfile = useQuery<ProfileResponse, ApiError>({
-    queryKey: ["getProfile"],
-    queryFn: async () => {
-      const response = await FarmerService.getProfile(id!);
-      return response;
-    },
-    enabled: !!id,
-  });
 
   const checkProfile = useQuery<boolean, ApiError>({
     queryKey: ["checkProfile"],
     queryFn: async () => {
-      const response = await FarmerService.checkProfile(id!);
+      const response = await FarmerService.checkProfile(idUser!);
       return response;
     },
-    enabled: !!id,
+    enabled: !!idUser,
+  });
+
+  const getProfile = useQuery<ProfileResponse, ApiError>({
+    queryKey: ["getProfile"],
+    queryFn: async () => {
+      const response = await FarmerService.getProfile(idUser!);
+      return response;
+    },
+    enabled: !!idUser && checkProfile.data === true,
   });
 
   const createProfile = useMutation<void, ApiError, RequestDto>({

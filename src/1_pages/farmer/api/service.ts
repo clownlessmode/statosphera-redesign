@@ -2,12 +2,12 @@ import { api } from "@shared/api/api";
 import { RequestDto, RequestDtoPhoto } from "../config";
 
 export class FarmerService {
-  static async getProfile(id: string) {
+  static async getProfile(id: number) {
     const response = await api.get("/profile/get-profile/" + id);
     return response.data;
   }
 
-  static async checkProfile(id: string) {
+  static async checkProfile(id: number) {
     const response = await api.get("/profile/check-profile/" + id);
     return response.data;
   }
