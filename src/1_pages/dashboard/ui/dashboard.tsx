@@ -42,7 +42,7 @@ import TarotSkeleton from "@widgets/dashboard/tarot/ui/tarot-skeleton";
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
-import { userMessages, userPhotos } from "./test";
+import { userMessages, userPhotos, tarotUsers } from "./test";
 import { FlyingHearts } from "@widgets/dashboard/flying-hearts";
 import { CursorTrail } from "@widgets/dashboard/cursor-trail";
 import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
@@ -128,11 +128,10 @@ const Dashboard = () => {
     userPhoto &&
     effectsSettings.personalMessagesEnabled;
 
-  // Условие для доступа к таро (без проверки наличия сообщений)
-  const hasTarotAccess =
-    userHasEffectsAccess &&
-    userPhoto &&
-    effectsSettings.personalMessagesEnabled;
+  // Проверяем, есть ли доступ к виджету Таро для текущего пользователя
+  const hasTarotAccess = session?.idUser
+    ? tarotUsers.includes(String(session.idUser))
+    : false;
 
   const randomMessage = useMemo(() => {
     if (!userPhrases) return null;
@@ -162,17 +161,22 @@ const Dashboard = () => {
       "antiLoyalTop",
     ];
 
-    // Добавляем виджет таро, если есть доступ (даже без сообщений)
-    if (hasTarotAccess) {
-      baseWidgets.push("tarot");
-    }
+    const widgets: string[] = [];
 
     // Добавляем виджет персональных сообщений, если есть сообщения
     if (hasPersonalMessages) {
-      return ["hasPersonalMessages", ...baseWidgets];
+      widgets.push("hasPersonalMessages");
     }
 
-    return baseWidgets;
+    // Добавляем виджет Таро сразу после фоточек, если есть доступ
+    if (hasTarotAccess) {
+      widgets.push("tarot");
+    }
+
+    // Добавляем остальные виджеты
+    widgets.push(...baseWidgets);
+
+    return widgets;
   }, [hasPersonalMessages, hasTarotAccess]);
 
   const { items: widgetOrder, setItems: setWidgetOrder } =

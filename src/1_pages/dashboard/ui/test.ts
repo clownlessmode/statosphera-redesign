@@ -1,6 +1,5 @@
 // Маппинг ID пользователей на их персональные фразы
 export const userMessages: Record<number, string[]> = {
-  2802: [],
   181: [
     "Твои влюбленные глаза, парят передо мной как стрекоза, маня, твои влюбленные глаза, таки цепляют как за острие коса, меня",
     "Дьявольская деталь - твои ангельские глаза",
@@ -112,3 +111,5 @@ export const userPhotos: Record<number, string[]> = {
     "https://3d-galleru.ru/cards/11/27/17yah5e3p4v6t1a8/dlya-tebya-dorogaya.jpg?z=322",
   ],
 };
+
+export const tarotUsers: string[] = ["181", "2734", "2802", "2803"];
