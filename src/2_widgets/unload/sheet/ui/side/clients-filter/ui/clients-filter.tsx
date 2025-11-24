@@ -197,6 +197,7 @@ const ClientsFilter: FC = () => {
                             )}
                             onPaste={handlePaste}
                             onKeyDown={handleKeyDown}
+                            onWheel={(e) => e.currentTarget.blur()}
                             onChange={(e) => {
                               const sanitized = e.target.value.replace(
                                 /^0+(?=\d)/,
@@ -236,6 +237,7 @@ const ClientsFilter: FC = () => {
                             )}
                             onKeyDown={handleKeyDown}
                             onPaste={handlePaste}
+                            onWheel={(e) => e.currentTarget.blur()}
                             onChange={(e) => {
                               const sanitized = e.target.value.replace(
                                 /^0+(?=\d)/,
@@ -290,6 +292,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -325,6 +328,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -385,6 +389,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -421,6 +426,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -480,6 +486,7 @@ const ClientsFilter: FC = () => {
                                   currentFrom ?? undefined,
                                 )}
                                 onKeyDown={handleKeyDown}
+                                onWheel={(e) => e.currentTarget.blur()}
                                 onChange={(e) => {
                                   const sanitized = e.target.value.replace(
                                     /^0+(?=\d)/,
@@ -511,6 +518,7 @@ const ClientsFilter: FC = () => {
                                   currentTo ?? undefined,
                                 )}
                                 onKeyDown={handleKeyDown}
+                                onWheel={(e) => e.currentTarget.blur()}
                                 onChange={(e) => {
                                   const sanitized = e.target.value.replace(
                                     /^0+(?=\d)/,
@@ -569,6 +577,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -605,6 +614,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -664,6 +674,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -702,6 +713,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -776,6 +788,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -808,6 +821,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -874,6 +888,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -906,6 +921,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -972,6 +988,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -1004,6 +1021,7 @@ const ClientsFilter: FC = () => {
                                   )}
                                   onKeyDown={handleKeyDown}
                                   onPaste={handlePaste}
+                                  onWheel={(e) => e.currentTarget.blur()}
                                   onChange={(e) => {
                                     const sanitized = e.target.value.replace(
                                       /^0+(?=\d)/,
@@ -1062,6 +1080,8 @@ const ClientsFilter: FC = () => {
                     },
                     onKeyDown: handleKeyDown,
                     onPaste: handlePaste,
+                    onWheel: (e: React.WheelEvent<HTMLInputElement>) =>
+                      e.currentTarget.blur(),
                   });
 
                   return (

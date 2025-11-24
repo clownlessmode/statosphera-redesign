@@ -121,7 +121,7 @@ export const IM = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 max-2xl:hidden">
                 <GraphDate />
                 <DaysFilter />
                 <ShopsFilter />
@@ -131,13 +131,11 @@ export const IM = () => {
         }}
       />
       <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col max-md:gap-2">
-        {isMobile && (
-          <div className="flex flex-row justify-between">
-            <DaysFilter />
-            <GraphDate />
-            <ShopsFilter />
-          </div>
-        )}
+        <div className="flex flex-row justify-end gap-2 max-md:justify-between 2xl:hidden">
+          <DaysFilter />
+          <GraphDate />
+          <ShopsFilter />
+        </div>
         {/* Основные метрики ИМ */}
         <div className="grid grid-cols-5 gap-4 max-md:grid-cols-2 max-md:*:first:col-span-2 max-md:gap-2">
           {/* Выручка ИМ */}
