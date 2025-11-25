@@ -54,3 +54,48 @@ export const getWeight = (name: string): string => {
   const weight = match[0];
   return weight;
 };
+
+// Форматирует вес/объем, добавляя единицы измерения если их нет
+export const formatWeightOrVolume = (
+  value: string | number | null | undefined,
+  isVolume: boolean = false,
+  forceGrams: boolean = false,
+): string => {
+  // Обрабатываем null, undefined и пустые значения
+  if (value === null || value === undefined) return "";
+
+  // Преобразуем в строку на случай если пришло число
+  const strValue = String(value).trim();
+
+  if (strValue === "" || strValue === "null" || strValue === "undefined") {
+    return "";
+  }
+
+  // Проверяем, есть ли уже единицы измерения
+  const hasUnits = /(г|кг|л|мл|шт|штук|штуки?|кг\.|г\.|л\.|мл\.)/gi.test(
+    strValue,
+  );
+  if (hasUnits) return strValue;
+
+  // Если единиц нет, пытаемся определить по значению
+  const numMatch = strValue.match(/^(\d+([,.]\d+)?)/);
+  if (!numMatch) return strValue;
+
+  const numValue = parseFloat(numMatch[0].replace(",", "."));
+
+  if (isVolume) {
+    // Для объема: если значение >= 1000, то это скорее всего мл (1000 мл = 1 л)
+    if (numValue >= 1000) {
+      return `${strValue} мл`;
+    }
+    // Если меньше 1, то мл, иначе л
+    return numValue < 1 ? `${strValue} мл` : `${strValue} л`;
+  } else {
+    // Для веса: если forceGrams=true, всегда "г"
+    if (forceGrams) {
+      return `${strValue} г`;
+    }
+    // Для веса: если меньше 1000, то г, иначе кг
+    return numValue < 1000 ? `${strValue} г` : `${strValue} кг`;
+  }
+};

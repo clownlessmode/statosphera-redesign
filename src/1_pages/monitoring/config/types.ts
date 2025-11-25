@@ -201,12 +201,105 @@ export interface LentaProduct {
   created_at: string;
 }
 
+export interface PyaterochkaImageLinks {
+  small: string[];
+  normal: string[];
+}
+
+export interface PyaterochkaPrices {
+  regular: string;
+  discount: string | null;
+  cpd_promo_price: string | null;
+}
+
+export interface PyaterochkaProduct {
+  id: string;
+  plu: string;
+  name: string;
+  category_id: string;
+  category_name: string;
+  image_links: PyaterochkaImageLinks;
+  uom: string;
+  step: number;
+  rating: number | null;
+  promo: any | null;
+  prices: PyaterochkaPrices;
+  labels: any | null;
+  property_clarification: string | null;
+  url: string;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface ZhiznmartProductInfo {
+  weight: string;
+  weight_value: number;
+}
+
+export interface ZhiznmartProduct {
+  id: string;
+  name: string;
+  price: number;
+  min_price: number;
+  price_before_discount: number | null;
+  description: string;
+  consist: string;
+  photo: string;
+  photos: string[];
+  categories_ids: number[];
+  tags: any | null;
+  rating: number;
+  avg_score: number | null;
+  scores_count: number | null;
+  info: ZhiznmartProductInfo;
+  max_quantity: number;
+  count_step: number;
+  is_countable: boolean;
+  contractor: string;
+  url: string;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface AzbukaVkusaImage {
+  url: string;
+  format: string;
+  imageType: string;
+}
+
+export interface AzbukaVkusaProduct {
+  id: string;
+  name: string;
+  category_slug: string;
+  price: number | null;
+  old_price: number | null;
+  discount_percent: number | null;
+  // images может быть массивом строк (URL) или массивом объектов
+  images: string[] | AzbukaVkusaImage[];
+  description: string;
+  brand: string;
+  weight: string;
+  volume: string;
+  barcode: string;
+  in_stock: boolean;
+  is_new: boolean;
+  is_hit: boolean;
+  rating: number | null;
+  reviews_count: number | null;
+  url: string;
+  updated_at: string;
+  created_at: string;
+}
+
 // Union type для продуктов разных магазинов
 export type ShopProduct =
   | YarcheProduct
   | MagnitProduct
   | MetroProduct
-  | LentaProduct;
+  | LentaProduct
+  | PyaterochkaProduct
+  | ZhiznmartProduct
+  | AzbukaVkusaProduct;
 
 // Тип для ответа API - массив магазинов
 export interface ShopProductsResponse {
@@ -219,4 +312,7 @@ export interface DownloadReportRequest {
   magnit: string[];
   metro: string[];
   lenta: string[];
+  pyaterochka: string[];
+  jiznmart: string[];
+  azbuka_vkusa: string[];
 }

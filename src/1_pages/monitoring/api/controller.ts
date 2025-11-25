@@ -4,10 +4,10 @@ import { DownloadReportRequest, ShopProductsResponse } from "../config/types";
 import { ApiError } from "@shared/api/types";
 import { toast } from "sonner";
 
-export const useMonitoringController = (search: string) => {
+export const useMonitoringController = (search: string, limit?: number) => {
   const getProducts = useQuery<ShopProductsResponse[], ApiError>({
-    queryKey: ["monitoring-products", search],
-    queryFn: () => MonitoringService.getProducts(search),
+    queryKey: ["monitoring-products", search, limit],
+    queryFn: () => MonitoringService.getProducts(search, limit),
     enabled: !!search,
   });
 
