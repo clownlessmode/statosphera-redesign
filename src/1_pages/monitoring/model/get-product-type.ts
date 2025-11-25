@@ -2,7 +2,7 @@ import { ShopProduct } from "../config";
 
 export const getProductType = (
   product: ShopProduct,
-): "yarche" | "magnit" | "metro" | "lenta" => {
+): "yarche" | "magnit" | "metro" | "lenta" | "pyaterochka" | "zhiznmart" => {
   if ("code" in product && "description" in product) {
     return "yarche";
   }
@@ -15,6 +15,28 @@ export const getProductType = (
     "price_regular" in product
   ) {
     return "lenta";
+  }
+  if (
+    "plu" in product &&
+    "image_links" in product &&
+    "uom" in product &&
+    "prices" in product &&
+    typeof product.prices === "object" &&
+    product.prices !== null &&
+    "regular" in product.prices
+  ) {
+    return "pyaterochka";
+  }
+  if (
+    "photo" in product &&
+    "photos" in product &&
+    "min_price" in product &&
+    "info" in product &&
+    typeof product.info === "object" &&
+    product.info !== null &&
+    "weight" in product.info
+  ) {
+    return "zhiznmart";
   }
   return "magnit";
 };
