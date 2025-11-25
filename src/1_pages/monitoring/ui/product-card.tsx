@@ -6,6 +6,8 @@ import {
   MagnitProduct,
   MetroProduct,
   LentaProduct,
+  PyaterochkaProduct,
+  ZhiznmartProduct,
 } from "../config/types";
 import { formatImageUrl, removeUnitsFromName, getWeight } from "./cards/utils";
 import { ProductCardData } from "./cards/types";
@@ -13,6 +15,8 @@ import { YarcheCard } from "./cards/yarche-card";
 import { MagnitCard } from "./cards/magnit-card";
 import { MetroCard } from "./cards/metro-card";
 import { LentaCard } from "./cards/lenta-card";
+import { PyaterochkaCard } from "./cards/pyaterochka-card";
+import { ZhiznmartCard } from "./cards/zhiznmart-card";
 
 interface ProductCardProps {
   product: ShopProduct;
@@ -22,7 +26,7 @@ interface ProductCardProps {
 
 const getProductType = (
   product: ShopProduct,
-): "yarche" | "magnit" | "metro" | "lenta" => {
+): "yarche" | "magnit" | "metro" | "lenta" | "pyaterochka" | "zhiznmart" => {
   // YarcheProduct имеет уникальные поля: code, weight_unit, volume_unit
   if (
     "code" in product &&
@@ -49,6 +53,32 @@ const getProductType = (
     "price_regular" in product
   ) {
     return "lenta";
+  }
+
+  // PyaterochkaProduct имеет уникальные поля: plu, image_links, uom, prices
+  if (
+    "plu" in product &&
+    "image_links" in product &&
+    "uom" in product &&
+    "prices" in product &&
+    typeof product.prices === "object" &&
+    product.prices !== null &&
+    "regular" in product.prices
+  ) {
+    return "pyaterochka";
+  }
+
+  // ZhiznmartProduct имеет уникальные поля: photo, photos, min_price, info
+  if (
+    "photo" in product &&
+    "photos" in product &&
+    "min_price" in product &&
+    "info" in product &&
+    typeof product.info === "object" &&
+    product.info !== null &&
+    "weight" in product.info
+  ) {
+    return "zhiznmart";
   }
 
   // По умолчанию Magnit
@@ -236,55 +266,159 @@ export const ProductCard = memo(
       );
     }
 
-    // LentaProduct
-    const lentaProduct = product as LentaProduct;
+    if (type === "lenta") {
+      // LentaProduct
+      const lentaProduct = product as LentaProduct;
 
-    // Обрабатываем images - может быть массивом или JSON строкой
-    let image = "";
-    if (Array.isArray(lentaProduct.images)) {
-      image =
-        lentaProduct.images.length > 0
-          ? lentaProduct.images[0].preview || lentaProduct.images[0].medium
-          : "";
-    } else if (typeof lentaProduct.images === "string") {
+      // Обрабатываем images - может быть массивом или JSON строкой
+      let image = "";
+      if (Array.isArray(lentaProduct.images)) {
+        image =
+          lentaProduct.images.length > 0
+            ? lentaProduct.images[0].preview || lentaProduct.images[0].medium
+            : "";
+      } else if (typeof lentaProduct.images === "string") {
+        try {
+          const parsed = JSON.parse(lentaProduct.images);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            image = parsed[0].preview || parsed[0].medium || "";
+          }
+        } catch {
+          image = "";
+        }
+      }
+
+      // Получаем вес из dimensions или из названия
+      let weight = "";
       try {
-        const parsed = JSON.parse(lentaProduct.images);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          image = parsed[0].preview || parsed[0].medium || "";
+        const dimensions =
+          typeof lentaProduct.dimensions === "string"
+            ? JSON.parse(lentaProduct.dimensions)
+            : lentaProduct.dimensions;
+        if (
+          dimensions &&
+          (dimensions.width || dimensions.height || dimensions.length)
+        ) {
+          // Можно использовать dimensions для веса, но обычно вес в названии
+          weight = getWeight(lentaProduct.name);
+        } else {
+          weight = getWeight(lentaProduct.name);
         }
       } catch {
-        image = "";
-      }
-    }
-
-    // Получаем вес из dimensions или из названия
-    let weight = "";
-    try {
-      const dimensions =
-        typeof lentaProduct.dimensions === "string"
-          ? JSON.parse(lentaProduct.dimensions)
-          : lentaProduct.dimensions;
-      if (
-        dimensions &&
-        (dimensions.width || dimensions.height || dimensions.length)
-      ) {
-        // Можно использовать dimensions для веса, но обычно вес в названии
-        weight = getWeight(lentaProduct.name);
-      } else {
         weight = getWeight(lentaProduct.name);
       }
-    } catch {
-      weight = getWeight(lentaProduct.name);
+
+      const name = removeUnitsFromName(lentaProduct.name);
+      const brand = ""; // У Ленты нет поля brand в структуре
+      const price = lentaProduct.price;
+      const previous_price =
+        lentaProduct.price_regular &&
+        lentaProduct.price_regular > lentaProduct.price
+          ? lentaProduct.price_regular
+          : 0;
+
+      cardData = {
+        image: image || "",
+        weight,
+        name,
+        brand,
+        price,
+        previous_price,
+        categories: lentaProduct.category_name
+          ? [lentaProduct.category_name]
+          : [],
+        id: lentaProduct.id,
+      };
+
+      return (
+        <LentaCard
+          data={cardData}
+          product={lentaProduct}
+          variant={variant}
+          onRemove={onRemove}
+        />
+      );
     }
 
-    const name = removeUnitsFromName(lentaProduct.name);
-    const brand = ""; // У Ленты нет поля brand в структуре
-    const price = lentaProduct.price;
-    const previous_price =
-      lentaProduct.price_regular &&
-      lentaProduct.price_regular > lentaProduct.price
-        ? lentaProduct.price_regular
-        : 0;
+    if (type === "pyaterochka") {
+      // PyaterochkaProduct
+      const pyaterochkaProduct = product as PyaterochkaProduct;
+
+      // Получаем изображение из image_links
+      const image =
+        pyaterochkaProduct.image_links?.normal?.[0] ||
+        pyaterochkaProduct.image_links?.small?.[0] ||
+        "";
+
+      // Получаем вес из property_clarification или из названия
+      const weight =
+        pyaterochkaProduct.property_clarification ||
+        getWeight(pyaterochkaProduct.name);
+
+      const name = removeUnitsFromName(pyaterochkaProduct.name);
+      const brand = ""; // У Пятерочки нет поля brand в структуре
+
+      // Обрабатываем цены: regular - базовая цена, discount и cpd_promo_price - скидочные цены
+      const regularPrice = parseFloat(
+        pyaterochkaProduct.prices?.regular || "0",
+      );
+      const discountPrice = pyaterochkaProduct.prices?.discount
+        ? parseFloat(pyaterochkaProduct.prices.discount)
+        : null;
+      const promoPrice = pyaterochkaProduct.prices?.cpd_promo_price
+        ? parseFloat(pyaterochkaProduct.prices.cpd_promo_price)
+        : null;
+
+      // Текущая цена - минимальная из всех доступных цен
+      const prices = [regularPrice, discountPrice, promoPrice].filter(
+        (p): p is number => p !== null && p > 0,
+      );
+      const price = prices.length > 0 ? Math.min(...prices) : regularPrice;
+
+      // Предыдущая цена - regularPrice, если есть скидка или промо меньше regularPrice
+      const previous_price =
+        (discountPrice && discountPrice < regularPrice) ||
+        (promoPrice && promoPrice < regularPrice)
+          ? regularPrice
+          : 0;
+
+      cardData = {
+        image: image || "",
+        weight,
+        name,
+        brand,
+        price,
+        previous_price,
+        categories: pyaterochkaProduct.category_name
+          ? [pyaterochkaProduct.category_name]
+          : [],
+        id: pyaterochkaProduct.id,
+      };
+
+      return (
+        <PyaterochkaCard
+          data={cardData}
+          product={pyaterochkaProduct}
+          variant={variant}
+          onRemove={onRemove}
+        />
+      );
+    }
+
+    // ZhiznmartProduct
+    const zhiznmartProduct = product as ZhiznmartProduct;
+
+    // Получаем изображение из photo или photos
+    const image = zhiznmartProduct.photo || zhiznmartProduct.photos?.[0] || "";
+
+    // Получаем вес из info.weight или из названия
+    const weight =
+      zhiznmartProduct.info?.weight || getWeight(zhiznmartProduct.name);
+
+    const name = removeUnitsFromName(zhiznmartProduct.name);
+    const brand = zhiznmartProduct.contractor || ""; // Используем contractor как бренд
+    const price = zhiznmartProduct.price;
+    const previous_price = zhiznmartProduct.price_before_discount || 0;
 
     cardData = {
       image: image || "",
@@ -293,16 +427,14 @@ export const ProductCard = memo(
       brand,
       price,
       previous_price,
-      categories: lentaProduct.category_name
-        ? [lentaProduct.category_name]
-        : [],
-      id: lentaProduct.id,
+      categories: [], // У Жизньмарт categories_ids - это массив чисел, без названий
+      id: zhiznmartProduct.id,
     };
 
     return (
-      <LentaCard
+      <ZhiznmartCard
         data={cardData}
-        product={lentaProduct}
+        product={zhiznmartProduct}
         variant={variant}
         onRemove={onRemove}
       />
