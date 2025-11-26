@@ -115,9 +115,7 @@ export const ROUTES: RouteConfig[] = [
     element: <TV />,
     label: "TV",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -127,9 +125,7 @@ export const ROUTES: RouteConfig[] = [
     label: "Интернет-магазин",
     layout: Sidebar,
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -146,9 +142,7 @@ export const ROUTES: RouteConfig[] = [
     label: "Отчет ИМ",
     layout: Sidebar,
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -171,11 +165,6 @@ export const ROUTES: RouteConfig[] = [
     variant: "auth",
     element: <Authorization />,
     label: "Логин",
-    allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
-    ],
   },
 
   // Основные страницы
@@ -226,9 +215,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Предложения",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -238,9 +225,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Обучение",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -250,9 +235,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Роадмап",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -276,9 +259,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Магазины",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -288,9 +269,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Списания",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -300,9 +279,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Парные продажи",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -312,9 +289,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Отчеты",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -324,9 +299,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Продукты",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -336,9 +309,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Динамика продаж",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -348,9 +319,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Мониторинг сетей",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -368,9 +337,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Стандарты",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -380,9 +347,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Стандарт",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -392,9 +357,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Лояльность",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {
@@ -404,9 +367,7 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "РФМ",
     allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
     ],
   },
   {

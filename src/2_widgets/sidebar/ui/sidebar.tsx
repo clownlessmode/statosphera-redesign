@@ -190,6 +190,11 @@ const Sidebar = ({
         url: ROUTES_PATH.CHAT,
         icon: MessageCircle,
       },
+      {
+        title: "Дайджесты",
+        url: ROUTES_PATH.DIGESTS,
+        icon: FileChartPieIcon,
+      },
     ],
 
     navSecondary: [

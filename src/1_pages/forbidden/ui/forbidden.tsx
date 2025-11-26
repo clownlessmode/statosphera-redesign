@@ -1,9 +1,22 @@
 import { Feedback } from "@features/header/feedback";
+import { ROLES } from "@shared/constants/roles";
 import { Button } from "@shared/ui/button";
 import { Header } from "@widgets/header";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useSession } from "@entities/session";
+import { useEffect } from "react";
+import { ROUTES_PATH } from "@app/router/routes";
 
 const Forbidden = () => {
+  const navigate = useNavigate();
+  const { session } = useSession();
+
+  useEffect(() => {
+    if (session?.role === ROLES.FARMER) {
+      navigate(ROUTES_PATH.FARMER, { replace: true });
+    }
+  }, [session, navigate]);
+
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header title="Доступ запрещен" />
