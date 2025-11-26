@@ -33,7 +33,8 @@ import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
 import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
-import { Farmer } from "@pages/farmer";
+import { FarmerProfile } from "@pages/farmer/profile";
+import { FarmerAnalytics } from "@pages/farmer/analytics";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -90,6 +91,8 @@ export const ROUTES_PATH = {
 
   // Фермеры
   FARMER: "/farmer",
+  ANALYTICS: "/analytics",
+  CHAT: "/chat",
 
   // Профиль
   PROFILE: "/profile",
@@ -265,11 +268,6 @@ export const ROUTES: RouteConfig[] = [
     element: <Forbidden />,
     layout: Sidebar,
     label: "Нет доступа",
-    allowedRoles: [
-      ...Object.values(ROLES).filter(
-        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
-      ),
-    ],
   },
   {
     path: ROUTES_PATH.STORES,
@@ -423,10 +421,27 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.FARMER,
     variant: "private",
-    element: <Farmer />,
+    element: <FarmerProfile />,
     allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
     label: "Фермер",
   },
+  {
+    path: ROUTES_PATH.ANALYTICS,
+    variant: "private",
+    element: <FarmerAnalytics />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
+    label: "Аналитика",
+  },
+  //{
+  //  path: ROUTES_PATH.CHAT,
+  //  variant: "private",
+  //  element: <Chat />,
+  //  allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+  //  layout: Sidebar,
+  //  label: "Чаты",
+  //},
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",

@@ -1,0 +1,127 @@
+import { create } from "zustand";
+import formatDateIso from "@shared/lib/format-date-iso";
+
+interface Filters {
+  photo: FileList;
+  organizationName: string;
+  managerName: string;
+  phoneOrganization: string;
+  emailOrganization: string;
+  inn: string[];
+  kpp: string[];
+  nds: string;
+  bankDetails: string;
+  legalAddress: string;
+  postalAddress: string;
+  workshopAddress: string;
+  ogrn: string;
+  okpo: string;
+  okved: string;
+  declarations: {
+    nameDeclaration: string;
+    dateEndDeclaration: string;
+  }[];
+  startDateOfCooperation: string;
+  dateOfFirstDelivery: string;
+  chiefAccountant: {
+    name: string;
+    phone: string;
+    email: string;
+    position: "Главный бухгалтер";
+  };
+  responsiblePerson: {
+    name: string;
+    phone: string;
+    email: string;
+    position: "Ответственное лицо";
+  };
+  mainContact: {
+    name: string;
+    phone: string;
+    email: string;
+    position: string;
+  };
+  additionalContacts: {
+    name: string;
+    phone: string;
+    email: string;
+    position: string;
+  }[];
+  companyHistory: string;
+}
+
+interface FarmerFiltersState {
+  filters: Filters;
+  updateFilters: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
+  getApiPayload: () => Filters;
+}
+
+const initialFilters = {
+  filters: {
+    photo: [] as unknown as FileList,
+    organizationName: "",
+    managerName: "",
+    phoneOrganization: "",
+    emailOrganization: "",
+    inn: [],
+    kpp: [],
+    nds: "",
+    bankDetails: "",
+    legalAddress: "",
+    postalAddress: "",
+    workshopAddress: "",
+    ogrn: "",
+    okpo: "",
+    okved: "",
+    declarations: [],
+    startDateOfCooperation: "",
+    dateOfFirstDelivery: "",
+    chiefAccountant: {
+      name: "",
+      phone: "",
+      email: "",
+      position: "Главный бухгалтер" as const,
+    },
+    responsiblePerson: {
+      name: "",
+      phone: "",
+      email: "",
+      position: "Ответственное лицо" as const,
+    },
+    mainContact: {
+      name: "",
+      phone: "",
+      email: "",
+      position: "",
+    },
+    additionalContacts: [],
+    companyHistory: "",
+  },
+};
+
+export const useFarmerProfileStore = create<FarmerFiltersState>((set, get) => ({
+  ...initialFilters,
+  updateFilters: (key, value) =>
+    set((state) => {
+      return {
+        filters: {
+          ...state.filters,
+          [key]: value,
+        },
+      };
+    }),
+
+  getApiPayload: () => {
+    const { filters } = get();
+
+    return {
+      ...filters,
+      declarations: filters.declarations.map((d) => ({
+        ...d,
+        dateEndDeclaration: formatDateIso(d.dateEndDeclaration),
+      })),
+      startDateOfCooperation: formatDateIso(filters.startDateOfCooperation),
+      dateOfFirstDelivery: formatDateIso(filters.dateOfFirstDelivery),
+    };
+  },
+}));

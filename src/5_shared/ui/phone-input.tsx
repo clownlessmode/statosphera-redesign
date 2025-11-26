@@ -33,36 +33,35 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     },
     ref,
   ) => {
-    const {
-      ref: maskRef,
-      value: maskedValue,
-      typedValue,
-    } = useIMask({
-      mask: mask,
-      lazy: true,
-      overwrite: true,
-      unmask: unmask,
-    });
+    const { ref: maskRef, setValue } = useIMask(
+      {
+        mask: mask,
+        lazy: true,
+        overwrite: true,
+        unmask: unmask,
+      },
+      {
+        onAccept: (val) => {
+          onValueChange?.(val);
+        },
+      },
+    );
 
     useEffect(() => {
-      if (typedValue !== undefined) {
-        const result = unmask ? typedValue : maskedValue;
-        onValueChange?.(result);
+      if (value !== undefined) {
+        setValue(value);
       }
-    }, [maskedValue, unmask]);
+    }, [value]);
 
-    useImperativeHandle(ref, () => maskRef.current as HTMLInputElement, [
-      value,
-    ]);
+    useImperativeHandle(ref, () => maskRef.current as HTMLInputElement, []);
 
     return (
       <Input
         ref={maskRef as RefObject<HTMLInputElement>}
-        value={maskedValue}
         placeholder={placeholder}
         type="tel"
         className={cn("bg-background", className)}
-        onChange={onChange || (() => {})}
+        onChange={onChange}
         {...props}
       />
     );
