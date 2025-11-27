@@ -1,5 +1,5 @@
 import { api } from "@shared/api/api";
-import { RequestDto, RequestDtoPhoto } from "../config";
+import { RequestDto, RequestDtoKmContacts, RequestDtoPhoto } from "../config";
 
 export class FarmerService {
   static async getProfile(id: number) {
@@ -30,6 +30,11 @@ export class FarmerService {
 
   static async updateProfile(dto: RequestDto) {
     const response = await api.put("/profile/update-profile", dto);
+    return response.data;
+  }
+
+  static async updateKmContacts(dto: RequestDtoKmContacts) {
+    const response = await api.put("/profile/update-km-contacts", dto);
     return response.data;
   }
 }

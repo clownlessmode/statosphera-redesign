@@ -6,6 +6,8 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import FarmerQuestionnaire from "./farmer-questionnaire";
 import useForm from "../model/hook";
+import { ROLES } from "@shared/constants/roles";
+import { useSession } from "@entities/session";
 
 export default function FarmerProfileCard({
   profile,
@@ -14,7 +16,7 @@ export default function FarmerProfileCard({
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const form = useForm();
-
+  const { session } = useSession();
   const handleEdit = () => {
     setIsEdit(!isEdit);
   };
@@ -33,9 +35,11 @@ export default function FarmerProfileCard({
             <CardTitle className="text-2xl font-semibold py-2">
               {profile.organizationName}
             </CardTitle>
-            <Button onClick={handleEdit}>
-              <Pencil /> Редактировать
-            </Button>
+            {session?.role === ROLES.FARMER && (
+              <Button onClick={handleEdit}>
+                <Pencil /> Редактировать
+              </Button>
+            )}
             <Separator />
           </CardHeader>
           <CardContent className="py-2">
@@ -281,12 +285,31 @@ export default function FarmerProfileCard({
                   </div>
                 </div>
               </div>
-              <Card
-                style={{
-                  backgroundImage: `url(${profile.photo})`,
-                }}
-                className="size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0"
-              />
+              <div className="w-full h-full flex flex-col gap-6 max-w-[300px]">
+                <Card
+                  style={{
+                    backgroundImage: `url(${profile.photo})`,
+                  }}
+                  className="size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0"
+                />
+                {profile.kmContacts.length > 0 && (
+                  <div className="w-full h-full flex flex-col gap-2">
+                    <span className="text-base font-semibold text-accent">
+                      Контакты КМ
+                    </span>
+                    {profile.kmContacts.map((contact) => (
+                      <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-full h-fit">
+                        <span className="text-xs text-muted-foreground">
+                          {contact.position}
+                        </span>
+                        <span className="text-sm w-fit">{contact.name}</span>
+                        <span className="text-sm w-fit">{contact.email}</span>
+                        <span className="text-sm w-fit">{contact.phone}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

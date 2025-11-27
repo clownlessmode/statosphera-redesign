@@ -129,14 +129,14 @@ export const AdditionalContactsFields = ({
                     htmlFor="position-AdditionalСontact"
                     className="text-xs text-muted-foreground"
                   >
-                    Позиция
+                    Должность
                   </Label>
                   <Input
                     id="position-AdditionalСontact"
                     name="position-AdditionalСontact"
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
-                    placeholder="Позиция"
+                    placeholder="Должность"
                     className="bg-background"
                   />
                 </div>

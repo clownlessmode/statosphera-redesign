@@ -118,13 +118,13 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-xs text-muted-foreground">
-              Позиция
+              Должность
             </FormLabel>
             <FormControl>
               <Input
                 {...field}
                 value={field.value || ""}
-                placeholder="Введите позицию"
+                placeholder="Введите должность"
                 className="bg-background"
                 onChange={(e) => {
                   if (e.target.value.startsWith(" "))

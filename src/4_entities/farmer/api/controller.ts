@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
-import { ProfileResponse, RequestDto, RequestDtoPhoto } from "../config";
+import {
+  ProfileResponse,
+  RequestDto,
+  RequestDtoKmContacts,
+  RequestDtoPhoto,
+} from "../config";
 
 export const useFarmer = (idUser?: number) => {
   const queryClient = useQueryClient();
@@ -48,6 +53,14 @@ export const useFarmer = (idUser?: number) => {
     },
   });
 
+  const updateKmContacts = useMutation<void, ApiError, RequestDtoKmContacts>({
+    mutationFn: async (dto: RequestDtoKmContacts) => {
+      const response = await FarmerService.updateKmContacts(dto);
+      queryClient.invalidateQueries({ queryKey: ["farmers"] });
+      return response;
+    },
+  });
+
   return {
     getProfile: getProfile.refetch,
     isGetProfileLoading: getProfile.isPending,
@@ -61,5 +74,7 @@ export const useFarmer = (idUser?: number) => {
     isUploadPhotoLoading: uploadPhoto.isPending,
     updateProfile: updateProfile.mutateAsync,
     isUpdateProfileLoading: updateProfile.isPending,
+    updateKmContacts: updateKmContacts.mutateAsync,
+    isUpdateKmContactsLoading: updateKmContacts.isPending,
   };
 };

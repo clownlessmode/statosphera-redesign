@@ -110,3 +110,14 @@ export const schema = z.object({
     }),
   ),
 });
+
+export const schemaContacts = z.object({
+  contacts: z.array(
+    z.object({
+      name: z.string().min(1, "Обязательное поле"),
+      phone: z.string().length(16, { message: "Введите номер полностью" }),
+      email: z.string().email({ message: "Некорректный email" }),
+      position: z.string().min(1, "Обязательное поле"),
+    }),
+  ),
+});

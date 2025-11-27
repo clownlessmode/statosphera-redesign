@@ -19,6 +19,7 @@ import {
   Vote,
   ChartColumn,
   MessageCircle,
+  Tractor,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -135,7 +136,13 @@ const Sidebar = ({
         allowedRoles: [ROLES.ADMIN],
         icon: Vote,
       },
-
+      {
+        title: "Фермеры",
+        url: ROUTES_PATH.FARMERS,
+        icon: Tractor,
+        disabled:
+          session?.role !== ROLES.ADMIN && session?.role !== ROLES.FARMER,
+      },
       {
         title: "Админ панель",
         url: ROUTES_PATH.ADMIN_DIGESTS,

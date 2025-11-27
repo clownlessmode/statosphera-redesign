@@ -125,3 +125,41 @@ export const useFarmerProfileStore = create<FarmerFiltersState>((set, get) => ({
     };
   },
 }));
+
+interface Contacts {
+  contacts: {
+    name: string;
+    phone: string;
+    email: string;
+    position: string;
+  }[];
+}
+
+interface ContactsState {
+  contacts: Contacts["contacts"];
+  updateContacts: <K extends keyof Contacts>(
+    key: K,
+    value: Contacts[K],
+  ) => void;
+  getApiPayload: () => Contacts;
+}
+
+const initialContacts = {
+  contacts: [],
+};
+
+export const useContactsStore = create<ContactsState>((set, get) => ({
+  ...initialContacts,
+  updateContacts: (_key, value) =>
+    set(() => {
+      return {
+        contacts: value,
+      };
+    }),
+
+  getApiPayload: () => {
+    const { contacts } = get();
+
+    return { contacts };
+  },
+}));

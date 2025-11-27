@@ -35,6 +35,7 @@ import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
+import { Farmers } from "@pages/farmers";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -91,6 +92,7 @@ export const ROUTES_PATH = {
 
   // Фермеры
   FARMER: "/farmer",
+  FARMERS: "/farmers",
   ANALYTICS: "/analytics",
   CHAT: "/chat",
 
@@ -385,7 +387,7 @@ export const ROUTES: RouteConfig[] = [
     element: <FarmerProfile />,
     allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
     layout: Sidebar,
-    label: "Фермер",
+    label: "Профиль фермера",
   },
   {
     path: ROUTES_PATH.ANALYTICS,
@@ -393,7 +395,7 @@ export const ROUTES: RouteConfig[] = [
     element: <FarmerAnalytics />,
     allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
     layout: Sidebar,
-    label: "Аналитика",
+    label: "Аналитика фермера",
   },
   //{
   //  path: ROUTES_PATH.CHAT,
@@ -403,6 +405,14 @@ export const ROUTES: RouteConfig[] = [
   //  layout: Sidebar,
   //  label: "Чаты",
   //},
+  {
+    path: ROUTES_PATH.FARMERS,
+    variant: "private",
+    element: <Farmers />,
+    allowedRoles: [ROLES.ADMIN, ROLES.MANAGER],
+    layout: Sidebar,
+    label: "Фермеры",
+  },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",

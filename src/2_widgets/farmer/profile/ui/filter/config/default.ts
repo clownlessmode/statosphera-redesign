@@ -1,5 +1,5 @@
 // default.ts
-import { FormValues } from "./types";
+import { ContactsValues, FormValues } from "./types";
 
 export const defaultValues: FormValues = {
   photo: [] as unknown as FileList,
@@ -40,4 +40,8 @@ export const defaultValues: FormValues = {
   },
   additionalContacts: [],
   companyHistory: "",
+};
+
+export const defaultContactsValues: ContactsValues = {
+  contacts: [],
 };

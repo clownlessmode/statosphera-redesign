@@ -1,10 +1,13 @@
 // hook.ts
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schema } from "../config/schema";
-import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
+import { schema, schemaContacts } from "../config/schema";
+import {
+  useContactsStore,
+  useFarmerProfileStore,
+} from "@widgets/farmer/profile/model/profile-store";
 import { useForm as useHookForm } from "react-hook-form";
-import { FormValues } from "../config/types";
-import { defaultValues } from "../config/default";
+import { ContactsValues, FormValues } from "../config/types";
+import { defaultContactsValues, defaultValues } from "../config/default";
 
 const useForm = () => {
   const {
@@ -67,3 +70,15 @@ const useForm = () => {
 };
 
 export default useForm;
+
+export const useContactsEdit = () => {
+  const contacts = useContactsStore((state) => state.contacts);
+
+  const form = useHookForm<ContactsValues>({
+    resolver: zodResolver(schemaContacts),
+    defaultValues: {
+      contacts: contacts || defaultContactsValues.contacts,
+    },
+  });
+  return form;
+};

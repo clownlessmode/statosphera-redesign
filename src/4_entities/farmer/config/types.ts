@@ -55,6 +55,16 @@ export interface RequestDtoPhoto {
   photo: File;
 }
 
+export interface RequestDtoKmContacts {
+  idUser: number;
+  contacts: {
+    name: string;
+    phone: string;
+    email: string;
+    position: string;
+  }[];
+}
+
 export interface ProfileResponse {
   organizationName: string;
   phoneOrganization: string;
@@ -108,4 +118,10 @@ export interface ProfileResponse {
         dateEndDeclaration: string;
       }[]
     | [];
+  kmContacts: {
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+  }[];
 }
