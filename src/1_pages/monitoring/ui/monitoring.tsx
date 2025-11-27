@@ -26,12 +26,13 @@ import { useIsMobile } from "@shared/hooks";
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [limit, setLimit] = useState<number | undefined>(10);
   const {
     products,
     isProductsLoading,
     downloadReport,
     isDownloadReportLoading,
-  } = useMonitoringController(debouncedSearch);
+  } = useMonitoringController(debouncedSearch, limit);
   console.log(debouncedSearch);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -54,6 +55,11 @@ export const Monitoring = () => {
     new Set(),
   );
 
+  // Сбрасываем удаленные товары при новом поиске
+  useEffect(() => {
+    setRemovedProducts(new Set());
+  }, [debouncedSearch]);
+
   const yarcheProducts =
     products
       ?.filter((shop) => shop.shop === "Ярче")
@@ -75,11 +81,29 @@ export const Monitoring = () => {
       ?.filter((shop) => shop.shop === "Лента")
       .flatMap((shop) => shop.data)
       .filter((product) => !removedProducts.has(product.id)) || [];
+  const pyaterochkaProducts =
+    products
+      ?.filter((shop) => shop.shop === "Пятёрочка")
+      .flatMap((shop) => shop.data)
+      .filter((product) => !removedProducts.has(product.id)) || [];
+  const zhiznmartProducts =
+    products
+      ?.filter((shop) => shop.shop === "Жизньмарт")
+      .flatMap((shop) => shop.data)
+      .filter((product) => !removedProducts.has(product.id)) || [];
+  const azbukaVkusaProducts =
+    products
+      ?.filter((shop) => shop.shop === "Азбука вкуса")
+      .flatMap((shop) => shop.data)
+      .filter((product) => !removedProducts.has(product.id)) || [];
   const allProducts = [
     ...yarcheProducts,
     ...magnitProducts,
     ...metroProducts,
     ...lentaProducts,
+    ...pyaterochkaProducts,
+    ...zhiznmartProducts,
+    ...azbukaVkusaProducts,
   ];
 
   const handleViewChange = (view: "all" | "by-shops") => {
@@ -98,6 +122,13 @@ export const Monitoring = () => {
         magnit: magnitProducts.map((product) => product.id.toString()),
         metro: metroProducts.map((product) => product.id.toString()),
         lenta: lentaProducts.map((product) => product.id.toString()),
+        pyaterochka: pyaterochkaProducts.map((product) =>
+          product.id.toString(),
+        ),
+        jiznmart: zhiznmartProducts.map((product) => product.id.toString()),
+        azbuka_vkusa: azbukaVkusaProducts.map((product) =>
+          product.id.toString(),
+        ),
       });
 
       // 2) Выбираем имя файла (можно статично или из headers)
@@ -149,17 +180,59 @@ export const Monitoring = () => {
       />
       <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col">
         <Card>
-          <CardContent className="flex flex-row gap-2">
+          <CardContent className="flex flex-col md:flex-row gap-2">
             <Input
               placeholder={
                 !isMobile
                   ? "Введите продукт, например: 'Молоко'"
                   : "Введите продукт"
               }
-              className="bg-background"
+              className="bg-background flex-1"
               value={search}
               onChange={handleSearch}
             />
+            <div className="flex flex-row items-center gap-2">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">
+                Показать:
+              </span>
+              <Card className="!p-1 flex flex-row items-center gap-1">
+                <Button
+                  onClick={() => setLimit(10)}
+                  variant={limit === 10 ? "default" : "outline"}
+                  size="sm"
+                >
+                  10
+                </Button>
+                <Button
+                  onClick={() => setLimit(20)}
+                  variant={limit === 20 ? "default" : "outline"}
+                  size="sm"
+                >
+                  20
+                </Button>
+                <Button
+                  onClick={() => setLimit(50)}
+                  variant={limit === 50 ? "default" : "outline"}
+                  size="sm"
+                >
+                  50
+                </Button>
+                <Button
+                  onClick={() => setLimit(100)}
+                  variant={limit === 100 ? "default" : "outline"}
+                  size="sm"
+                >
+                  100
+                </Button>
+                <Button
+                  onClick={() => setLimit(undefined)}
+                  variant={limit === undefined ? "default" : "outline"}
+                  size="sm"
+                >
+                  Без лимита
+                </Button>
+              </Card>
+            </div>
           </CardContent>
         </Card>
         <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
@@ -446,6 +519,132 @@ export const Monitoring = () => {
                     </div>
                   </div>
                 )}
+                {pyaterochkaProducts.length > 0 && (
+                  <div className="w-full flex flex-col gap-4">
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="text-2xl font-bold">Пятёрочка</h1>
+                      <p className="text-sm text-muted-foreground">
+                        Найдено {pyaterochkaProducts?.length}{" "}
+                        {
+                          pluralize(pyaterochkaProducts?.length, [
+                            "продукт",
+                            "продукта",
+                            "продуктов",
+                          ]).split(" ")[1]
+                        }
+                      </p>
+                    </div>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+                            <th className="p-4 text-left">Вес</th>
+                            <th className="p-4 text-left">Цена</th>
+                            <th className="p-4 text-left w-[60px]"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {pyaterochkaProducts?.map((product) => (
+                            <ProductCard
+                              key={`pyaterochka-${product.id}`}
+                              product={product}
+                              variant="table"
+                              onRemove={handleRemoveProduct}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+                {zhiznmartProducts.length > 0 && (
+                  <div className="w-full flex flex-col gap-4">
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="text-2xl font-bold">Жизньмарт</h1>
+                      <p className="text-sm text-muted-foreground">
+                        Найдено {zhiznmartProducts?.length}{" "}
+                        {
+                          pluralize(zhiznmartProducts?.length, [
+                            "продукт",
+                            "продукта",
+                            "продуктов",
+                          ]).split(" ")[1]
+                        }
+                      </p>
+                    </div>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+                            <th className="p-4 text-left">Вес</th>
+                            <th className="p-4 text-left">Цена</th>
+                            <th className="p-4 text-left w-[60px]"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {zhiznmartProducts?.map((product) => (
+                            <ProductCard
+                              key={`zhiznmart-${product.id}`}
+                              product={product}
+                              variant="table"
+                              onRemove={handleRemoveProduct}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+                {azbukaVkusaProducts.length > 0 && (
+                  <div className="w-full flex flex-col gap-4">
+                    <div className="flex flex-row items-center gap-2">
+                      <h1 className="text-2xl font-bold">Азбука вкуса</h1>
+                      <p className="text-sm text-muted-foreground">
+                        Найдено {azbukaVkusaProducts?.length}{" "}
+                        {
+                          pluralize(azbukaVkusaProducts?.length, [
+                            "продукт",
+                            "продукта",
+                            "продуктов",
+                          ]).split(" ")[1]
+                        }
+                      </p>
+                    </div>
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="p-4 text-left sr-only w-fit">
+                              Изображение
+                            </th>
+                            <th className="p-4 text-left pl-0">Название</th>
+                            <th className="p-4 text-left">Вес</th>
+                            <th className="p-4 text-left">Цена</th>
+                            <th className="p-4 text-left w-[60px]"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {azbukaVkusaProducts?.map((product) => (
+                            <ProductCard
+                              key={`azbukaVkusa-${product.id}`}
+                              product={product}
+                              variant="table"
+                              onRemove={handleRemoveProduct}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="border rounded-lg overflow-hidden">
@@ -489,6 +688,30 @@ export const Monitoring = () => {
                     {lentaProducts?.map((product) => (
                       <ProductCard
                         key={`lenta-${product.id}`}
+                        product={product}
+                        variant="table"
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                    {pyaterochkaProducts?.map((product) => (
+                      <ProductCard
+                        key={`pyaterochka-${product.id}`}
+                        product={product}
+                        variant="table"
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                    {zhiznmartProducts?.map((product) => (
+                      <ProductCard
+                        key={`zhiznmart-${product.id}`}
+                        product={product}
+                        variant="table"
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                    {azbukaVkusaProducts?.map((product) => (
+                      <ProductCard
+                        key={`azbukaVkusa-${product.id}`}
                         product={product}
                         variant="table"
                         onRemove={handleRemoveProduct}
@@ -668,6 +891,132 @@ export const Monitoring = () => {
                   </div>
                 </div>
               )}
+              {pyaterochkaProducts.length > 0 && (
+                <div className="w-full flex flex-col gap-4">
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-2xl font-bold">Пятерочка</h1>
+                    <p className="text-sm text-muted-foreground">
+                      Найдено {pyaterochkaProducts?.length}{" "}
+                      {
+                        pluralize(pyaterochkaProducts?.length, [
+                          "продукт",
+                          "продукта",
+                          "продуктов",
+                        ]).split(" ")[1]
+                      }
+                    </p>
+                  </div>
+                  <div
+                    className={
+                      displayMode === "grid"
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
+                        : "w-full flex flex-col gap-2"
+                    }
+                  >
+                    {pyaterochkaProducts?.map((product) => (
+                      <ProductCard
+                        key={`pyaterochka-${product.id}`}
+                        product={product}
+                        variant={displayMode}
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {zhiznmartProducts.length > 0 && (
+                <div className="w-full flex flex-col gap-4">
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-2xl font-bold">Жизньмарт</h1>
+                    <p className="text-sm text-muted-foreground">
+                      Найдено {zhiznmartProducts?.length}{" "}
+                      {
+                        pluralize(zhiznmartProducts?.length, [
+                          "продукт",
+                          "продукта",
+                          "продуктов",
+                        ]).split(" ")[1]
+                      }
+                    </p>
+                  </div>
+                  <div
+                    className={
+                      displayMode === "grid"
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
+                        : "w-full flex flex-col gap-2"
+                    }
+                  >
+                    {zhiznmartProducts?.map((product) => (
+                      <ProductCard
+                        key={`zhiznmart-${product.id}`}
+                        product={product}
+                        variant={displayMode}
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {azbukaVkusaProducts.length > 0 && (
+                <div className="w-full flex flex-col gap-4">
+                  <div className="flex flex-row items-center gap-2">
+                    <h1 className="text-2xl font-bold">Азбука вкуса</h1>
+                    <p className="text-sm text-muted-foreground">
+                      Найдено {azbukaVkusaProducts?.length}{" "}
+                      {
+                        pluralize(azbukaVkusaProducts?.length, [
+                          "продукт",
+                          "продукта",
+                          "продуктов",
+                        ]).split(" ")[1]
+                      }
+                    </p>
+                  </div>
+                  <div
+                    className={
+                      displayMode === "grid"
+                        ? !isMobile
+                          ? cn(`w-full grid gap-4`, {
+                              "grid-cols-3": gridColumns === 3,
+                              "grid-cols-4": gridColumns === 4,
+                              "grid-cols-5": gridColumns === 5,
+                              "grid-cols-6": gridColumns === 6,
+                              "grid-cols-7": gridColumns === 7,
+                              "grid-cols-8": gridColumns === 8,
+                            })
+                          : cn("grid-cols-1 gap-2 *:mb-4")
+                        : "w-full flex flex-col gap-2"
+                    }
+                  >
+                    {azbukaVkusaProducts?.map((product) => (
+                      <ProductCard
+                        key={`azbukaVkusa-${product.id}`}
+                        product={product}
+                        variant={displayMode}
+                        onRemove={handleRemoveProduct}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <div
@@ -713,6 +1062,30 @@ export const Monitoring = () => {
               {lentaProducts?.map((product) => (
                 <ProductCard
                   key={`lenta-${product.id}`}
+                  product={product}
+                  variant={displayMode}
+                  onRemove={handleRemoveProduct}
+                />
+              ))}
+              {pyaterochkaProducts?.map((product) => (
+                <ProductCard
+                  key={`pyaterochka-${product.id}`}
+                  product={product}
+                  variant={displayMode}
+                  onRemove={handleRemoveProduct}
+                />
+              ))}
+              {zhiznmartProducts?.map((product) => (
+                <ProductCard
+                  key={`zhiznmart-${product.id}`}
+                  product={product}
+                  variant={displayMode}
+                  onRemove={handleRemoveProduct}
+                />
+              ))}
+              {azbukaVkusaProducts?.map((product) => (
+                <ProductCard
+                  key={`azbukaVkusa-${product.id}`}
                   product={product}
                   variant={displayMode}
                   onRemove={handleRemoveProduct}

@@ -112,4 +112,12 @@ export const userPhotos: Record<number, string[]> = {
   ],
 };
 
-export const tarotUsers: string[] = ["181", "2734", "2802", "2803", "200"];
+export const tarotUsers: string[] = [
+  "181",
+  "2734",
+  "2802",
+  "2803",
+  "200",
+  "101",
+  "107",
+];

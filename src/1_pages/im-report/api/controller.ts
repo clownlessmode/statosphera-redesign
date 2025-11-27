@@ -17,15 +17,7 @@ import {
   getWorstOnlineOfflineRO,
   getAntitopOrderCancellRO,
   getTopPaymentMethodRO,
-  getShareIMRO,
-  getAvgCheckRO,
-  getOrdersCountAllRO,
-  getAvgCheckCountRO,
-  getDiscretenessRO,
-  getPercentCancellationAllRO,
-  getPercentCancellationPickupRO,
-  getPercentCancellationOrdinaryRO,
-  getDeliveryImCountRO,
+  getIMTableRO,
 } from "../config/types";
 
 export const useIM = (dto: RequestDto) => {
@@ -102,59 +94,10 @@ export const useIM = (dto: RequestDto) => {
     queryFn: () => IMService.getTopPaymentMethod(dto),
   });
 
-  // Роуты для отчетов ИМ
-  const shareIM = useQuery<getShareIMRO[], ApiError>({
-    queryKey: ["shareIM", dto],
-    queryFn: () => IMService.getShareIM(dto),
-  });
-
-  const avgCheck = useQuery<getAvgCheckRO[], ApiError>({
-    queryKey: ["avgCheck", dto],
-    queryFn: () => IMService.getAvgCheck(dto),
-  });
-
-  const ordersCountAll = useQuery<getOrdersCountAllRO[], ApiError>({
-    queryKey: ["ordersCountAll", dto],
-    queryFn: () => IMService.getOrdersCountAll(dto),
-  });
-
-  const avgCheckCount = useQuery<getAvgCheckCountRO[], ApiError>({
-    queryKey: ["avgCheckCount", dto],
-    queryFn: () => IMService.getAvgCheckCount(dto),
-  });
-
-  const discreteness = useQuery<getDiscretenessRO[], ApiError>({
-    queryKey: ["discreteness", dto],
-    queryFn: () => IMService.getDiscreteness(dto),
-  });
-
-  const percentCancellationAll = useQuery<
-    getPercentCancellationAllRO[],
-    ApiError
-  >({
-    queryKey: ["percentCancellationAll", dto],
-    queryFn: () => IMService.getPercentCancellationAll(dto),
-  });
-
-  const percentCancellationPickup = useQuery<
-    getPercentCancellationPickupRO[],
-    ApiError
-  >({
-    queryKey: ["percentCancellationPickup", dto],
-    queryFn: () => IMService.getPercentCancellationPickup(dto),
-  });
-
-  const percentCancellationOrdinary = useQuery<
-    getPercentCancellationOrdinaryRO[],
-    ApiError
-  >({
-    queryKey: ["percentCancellationOrdinary", dto],
-    queryFn: () => IMService.getPercentCancellationOrdinary(dto),
-  });
-
-  const deliveryImCount = useQuery<getDeliveryImCountRO[], ApiError>({
-    queryKey: ["deliveryImCount", dto],
-    queryFn: () => IMService.getDeliveryImCount(dto),
+  // Единый эндпоинт для таблицы отчетов ИМ
+  const imTable = useQuery<getIMTableRO[], ApiError>({
+    queryKey: ["imTable", dto],
+    queryFn: () => IMService.getIMTable(dto),
   });
 
   return {
@@ -218,40 +161,8 @@ export const useIM = (dto: RequestDto) => {
     isTopPaymentMethodLoading: topPaymentMethod.isLoading,
     errorTopPaymentMethod: topPaymentMethod.error,
 
-    shareIM: shareIM.data,
-    isShareIMLoading: shareIM.isLoading,
-    errorShareIM: shareIM.error,
-
-    avgCheck: avgCheck.data,
-    isAvgCheckLoading: avgCheck.isLoading,
-    errorAvgCheck: avgCheck.error,
-
-    ordersCountAll: ordersCountAll.data,
-    isOrdersCountAllLoading: ordersCountAll.isLoading,
-    errorOrdersCountAll: ordersCountAll.error,
-
-    avgCheckCount: avgCheckCount.data,
-    isAvgCheckCountLoading: avgCheckCount.isLoading,
-    errorAvgCheckCount: avgCheckCount.error,
-
-    discreteness: discreteness.data,
-    isDiscretenessLoading: discreteness.isLoading,
-    errorDiscreteness: discreteness.error,
-
-    percentCancellationAll: percentCancellationAll.data,
-    isPercentCancellationAllLoading: percentCancellationAll.isLoading,
-    errorPercentCancellationAll: percentCancellationAll.error,
-
-    percentCancellationPickup: percentCancellationPickup.data,
-    isPercentCancellationPickupLoading: percentCancellationPickup.isLoading,
-    errorPercentCancellationPickup: percentCancellationPickup.error,
-
-    percentCancellationOrdinary: percentCancellationOrdinary.data,
-    isPercentCancellationOrdinaryLoading: percentCancellationOrdinary.isLoading,
-    errorPercentCancellationOrdinary: percentCancellationOrdinary.error,
-
-    deliveryImCount: deliveryImCount.data,
-    isDeliveryImCountLoading: deliveryImCount.isLoading,
-    errorDeliveryImCount: deliveryImCount.error,
+    imTable: imTable.data,
+    isIMTableLoading: imTable.isLoading,
+    errorIMTable: imTable.error,
   };
 };

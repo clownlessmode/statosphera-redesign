@@ -66,50 +66,18 @@ export class IMService {
     return response.data;
   }
 
-  // Роуты для отчетов ИМ
-  static async getShareIM(dto: RequestDto) {
-    const response = await api.post("online-store/share-im", dto);
+  // Единый эндпоинт для таблицы отчетов ИМ
+  static async getIMTable(dto: RequestDto) {
+    const response = await api.post("online-store/tbl", dto);
     return response.data;
   }
-  static async getAvgCheck(dto: RequestDto) {
-    const response = await api.post("online-store/avg-check", dto);
-    return response.data;
-  }
-  static async getOrdersCountAll(dto: RequestDto) {
-    const response = await api.post("online-store/orders-count-all", dto);
-    return response.data;
-  }
-  static async getAvgCheckCount(dto: RequestDto) {
-    const response = await api.post("online-store/avg-check-count", dto);
-    return response.data;
-  }
-  static async getDiscreteness(dto: RequestDto) {
-    const response = await api.post("online-store/discreteness", dto);
-    return response.data;
-  }
-  static async getPercentCancellationAll(dto: RequestDto) {
-    const response = await api.post(
-      "online-store/percent-cancellation-all",
-      dto,
-    );
-    return response.data;
-  }
-  static async getPercentCancellationPickup(dto: RequestDto) {
-    const response = await api.post(
-      "online-store/percent-cancellation-pickup",
-      dto,
-    );
-    return response.data;
-  }
-  static async getPercentCancellationOrdinary(dto: RequestDto) {
-    const response = await api.post(
-      "online-store/percent-cancellation-ordinary",
-      dto,
-    );
-    return response.data;
-  }
-  static async getDeliveryImCount(dto: RequestDto) {
-    const response = await api.post("online-store/delivery-im-count", dto);
+
+  // Экспорт отчета ИМ
+  static async exportIMTable(dto: RequestDto) {
+    const response = await api.post("online-store/tbl", {
+      ...dto,
+      exportFile: true,
+    });
     return response.data;
   }
 }
