@@ -157,6 +157,7 @@ export const TV = () => {
           ]}
         />
         <Slider
+          indexClass={{ class: "border-0 bg-inherit py-0 *:px-0", index: 1 }}
           components={[
             <Summary key="summary" tv={true} />,
             <Nps key="nps" tv={true} />,
