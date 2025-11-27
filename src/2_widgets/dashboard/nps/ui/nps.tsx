@@ -136,10 +136,10 @@ export const Nps = ({ tv }: { tv?: boolean }) => {
         </div>
         <div className="flex flex-col items-center">
           <h2 className="text-xl font-bold">Общий eNPS</h2>
-          <h2 className="text-base flex items-center gap-0.5 text-card-foreground/40">
-            (5.72п.п.)
+          <h2 className="text-base flex items-center gap-0.5 text-card-foreground">
+            5.72п.п.
             <ArrowBigDownDash
-              className={cn("w-4 h-4 text-destructive/50")}
+              className={cn("w-4 h-4 text-destructive")}
               fill="currentColor"
             />
           </h2>
