@@ -16,6 +16,7 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Store,
+  TreePine,
   Vote,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -119,6 +120,11 @@ const Sidebar = ({
         title: "Мониторинг сетей",
         url: ROUTES_PATH.MONITORING,
         icon: Globe,
+      },
+      {
+        title: "Проект Лес",
+        url: ROUTES_PATH.FOREST,
+        icon: TreePine,
       },
       {
         title: "Гриль",

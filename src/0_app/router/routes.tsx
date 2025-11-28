@@ -34,6 +34,7 @@ import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
 import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
+import { Forest } from "@pages/forest";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -87,6 +88,7 @@ export const ROUTES_PATH = {
   UNLOAD: "/unload",
   GRILL: "/grill",
   IM: "/im",
+  FOREST: "/forest",
 
   // Списания
   WRITE_OFF: "/write-off",
@@ -316,6 +318,13 @@ export const ROUTES: RouteConfig[] = [
     allowedUsers: [107, 200, 2816],
     layout: Sidebar,
     label: "Выгрузка",
+  },
+  {
+    path: ROUTES_PATH.FOREST,
+    variant: "private",
+    element: <Forest />,
+    layout: Sidebar,
+    label: "Проект Лес",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
