@@ -17,6 +17,12 @@ export const RatingProvider = () => {
       return;
     }
 
+    // Не показываем модалку на странице авторизации
+    if (location.pathname === "/login") {
+      previousPathRef.current = location.pathname;
+      return;
+    }
+
     // Проверяем, изменился ли путь
     if (previousPathRef.current !== location.pathname) {
       previousPathRef.current = location.pathname;
