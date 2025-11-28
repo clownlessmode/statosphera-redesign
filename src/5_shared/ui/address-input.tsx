@@ -9,7 +9,7 @@ import {
   CommandEmpty,
 } from "@shared/ui/command";
 import useDebounce from "@shared/ui/debounce";
-import { forwardRef, useState, useEffect, useRef } from "react";
+import { forwardRef, useState, useEffect } from "react";
 
 interface DaDataSuggestion {
   value: string;
@@ -47,9 +47,14 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
     }, [value]);
 
     const debouncedValue = useDebounce(inputValue, 300);
-    const lastSelectedValue = useRef<string | null>(null);
 
     useEffect(() => {
+      // Если текущее значение совпадает с внешним value - значит, это или инициализация,
+      // или мы только что выбрали значение из списка. В обоих случаях поиск не нужен.
+      if (debouncedValue === value) {
+        return;
+      }
+
       if (!debouncedValue || debouncedValue.length < 3 || !apiKey) {
         setSuggestions([]);
         setIsOpen(false);
@@ -81,7 +86,7 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
       };
 
       fetchSuggestions();
-    }, [debouncedValue, apiKey]);
+    }, [debouncedValue, apiKey, value]); // Добавляем value в зависимости
 
     const handleSelect = (suggestion: any) => {
       const {
@@ -108,8 +113,11 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
       ].filter(Boolean);
 
       const fullAddress = addressParts.join(", ");
+
       onValueChange?.(fullAddress);
-      lastSelectedValue.current = fullAddress;
+      // Мы не вызываем setInputValue здесь, потому что он обновится через useEffect([value])
+      // Но для плавности UI можно оставить, если useEffect срабатывает с задержкой
+      setInputValue(fullAddress);
 
       // Проверяем, есть ли минимально необходимые поля (регион, город, улица и дом)
       if (
@@ -134,7 +142,6 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
               setInputValue(e.target.value);
               if (e.target.value === "") {
                 onValueChange?.("");
-                lastSelectedValue.current = null;
               }
             }}
             onBlur={(e) => {

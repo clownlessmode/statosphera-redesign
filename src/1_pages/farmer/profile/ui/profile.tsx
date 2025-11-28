@@ -11,6 +11,7 @@ import { ProfileResponse } from "@entities/farmer";
 import { Header } from "@widgets/header";
 import Spinner from "@shared/ui/spinner";
 import { STEPS_FIELDS } from "@widgets/farmer/profile/ui/filter/config/constant";
+import formatDateIso from "@shared/lib/format-date-iso";
 
 const FarmerProfile: FC = () => {
   const [level, setLevel] = useState<number>(0);
@@ -58,6 +59,16 @@ const FarmerProfile: FC = () => {
         try {
           await createProfile({
             ...payloadWithoutPhoto,
+            startDateOfCooperation: payloadWithoutPhoto.startDateOfCooperation
+              ? formatDateIso(payloadWithoutPhoto.startDateOfCooperation)
+              : null,
+            dateOfFirstDelivery: payloadWithoutPhoto.dateOfFirstDelivery
+              ? formatDateIso(payloadWithoutPhoto.dateOfFirstDelivery)
+              : null,
+            declarations: payloadWithoutPhoto.declarations?.map((d: any) => ({
+              ...d,
+              dateEndDeclaration: formatDateIso(d.dateEndDeclaration),
+            })),
             idUser: session.idUser,
           });
           await uploadPhoto({ photo: photo[0] });
@@ -88,7 +99,7 @@ const FarmerProfile: FC = () => {
       {profileStatus && profile && <Header title="Профиль" />}
       {!profileStatus && (
         <div className="rounded-3xl bg-background flex flex-col items-center justify-center min-h-screen max-h-max p-4">
-          <div className="w-max flex flex-col gap-4">
+          <div className="w-max flex flex-col gap-4 max-md:w-full">
             <FarmerQuestionnaire level={level} form={form} />
             <div className="w-full flex flex-row gap-2 justify-end">
               {level === 0 && <Button onClick={handleNext}>Далее</Button>}

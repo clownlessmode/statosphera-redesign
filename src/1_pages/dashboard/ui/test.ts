@@ -111,3 +111,13 @@ export const userPhotos: Record<number, string[]> = {
     "https://3d-galleru.ru/cards/11/27/17yah5e3p4v6t1a8/dlya-tebya-dorogaya.jpg?z=322",
   ],
 };
+
+export const tarotUsers: string[] = [
+  "181",
+  "2734",
+  "2802",
+  "2803",
+  "200",
+  "101",
+  "107",
+];

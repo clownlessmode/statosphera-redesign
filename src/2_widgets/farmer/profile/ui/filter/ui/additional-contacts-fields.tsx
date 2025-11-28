@@ -73,7 +73,7 @@ export const AdditionalContactsFields = ({
           return (
             <div className="col-span-2 flex flex-col gap-4">
               {/* Форма добавления */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 max-md:flex max-md:flex-col">
                 <div className="space-y-1">
                   <Label
                     htmlFor="name-AdditionalСontact"
@@ -156,9 +156,9 @@ export const AdditionalContactsFields = ({
                 {(field.value || []).map((contact: any, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md border text-sm"
+                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md border text-sm max-md:px-4 max-md:py-2"
                   >
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 w-full mr-2">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 w-full mr-2 max-md:grid-cols-1">
                       <span className="font-medium">{contact.name}</span>
                       <span className="text-muted-foreground">
                         {contact.phone}

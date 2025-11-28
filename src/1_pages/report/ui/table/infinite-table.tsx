@@ -51,11 +51,10 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   className,
   onRowClick,
   onCellClick,
-  onSelectionChange,
+
   dataVersion = 0,
   maxRows,
   selectedRows = [],
-  rowSelection = "multiple",
 }) => {
   const selectedRowsRef = useRef(selectedRows);
   const gridRef = useRef<AgGridReact>(null);
@@ -69,13 +68,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   }, [maxRows, cacheBlockSize]);
   const { theme } = useTheme();
   const isLight = theme === "light";
-  // Добавьте этот эффект в компонент InfinityTable
-  useEffect(() => {
-    if (gridApiRef.current) {
-      // Принудительно обновляем все видимые строки
-      gridApiRef.current.redrawRows();
-    }
-  }, [selectedRows]);
   const [pinnedTopData, setPinnedTopData] = useState<any[]>([]);
 
   const defaultColDef = useMemo<ColDef>(
@@ -272,6 +264,10 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
   useEffect(() => {
     selectedRowsRef.current = selectedRows;
+    // Принудительно обновляем все видимые строки при изменении selectedRows
+    if (gridApiRef.current) {
+      gridApiRef.current.redrawRows();
+    }
   }, [selectedRows]);
 
   const isEqual = useCallback((obj1: any, obj2: any) => {
@@ -291,19 +287,19 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
   const getRowStyle = useCallback(
     (params: RowClassParams): RowStyle => {
-      if (!params.data || !selectedRowsRef.current?.length) {
+      if (!params.data || !selectedRows?.length) {
         return {};
       }
 
-      // Используем текущее значение из ref
-      const isSelected = selectedRowsRef.current.some((selectedRow) =>
+      // Используем актуальное значение selectedRows напрямую
+      const isSelected = selectedRows.some((selectedRow) =>
         isEqual(selectedRow, params.data),
       );
 
-      return isSelected ? { backgroundColor: "rgba(59, 130, 246, 0.1)" } : {};
+      return isSelected ? { backgroundColor: "rgba(239, 68, 68, 0.1)" } : {};
     },
-    [isEqual],
-  ); // Убираем selectedRows из зависимостей
+    [isEqual, selectedRows],
+  );
   return (
     <div
       className={`rounded-[16px] overflow-hidden border border-border h-full flex-1 ${
@@ -336,8 +332,8 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
         getRowStyle={getRowStyle}
-        rowSelection={rowSelection}
-        onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
+        suppressRowClickSelection={true}
+        suppressCellFocus={true}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
           gridApiRef.current?.purgeInfiniteCache();

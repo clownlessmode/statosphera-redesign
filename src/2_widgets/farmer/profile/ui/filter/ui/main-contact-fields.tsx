@@ -20,7 +20,7 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
   const { getValues } = useFormContext();
 
   return (
-    <div className="grid grid-cols-2 gap-2 items-start">
+    <div className="grid grid-cols-2 gap-2 items-start max-md:flex max-md:flex-col">
       <span className="col-span-2 text-sm flex gap-0.5 leading-none font-medium select-none">
         Основной контакт<span className="text-destructive">*</span>
       </span>
@@ -28,7 +28,7 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
         name="mainContact.name"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">ФИО</FormLabel>
             <FormControl>
               <Input
@@ -58,7 +58,7 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
         name="mainContact.phone"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">
               Номер телефона
             </FormLabel>
@@ -85,7 +85,7 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
         name="mainContact.email"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">
               Email
             </FormLabel>
@@ -116,7 +116,7 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
         name="mainContact.position"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">
               Должность
             </FormLabel>

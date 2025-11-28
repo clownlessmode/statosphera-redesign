@@ -10,5 +10,5 @@ export enum ROLES {
   SERVICE_MANAGER = "service",
   ZAVOD = "zavod_volkov",
   FARMER = "farmer",
-  MANAGER = "manager",
+  FARMER_MANAGER = "farmer_manager",
 }

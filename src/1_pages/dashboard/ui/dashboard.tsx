@@ -38,10 +38,11 @@ import HoursRevenueSkeleton from "@widgets/dashboard/hours-revenue/hours-revenue
 import LoyaltySkeleton from "@widgets/dashboard/loaylty/loyalty-skeleton";
 import ImRevenueSkeleton from "@widgets/dashboard/im-revenue/im-revenue-skeleton";
 import LeaderImSalesSkeleton from "@widgets/dashboard/leader-im-sales/leader-im-sales-skeleton";
+import TarotSkeleton from "@widgets/dashboard/tarot/ui/tarot-skeleton";
 import { Nps } from "@widgets/dashboard/nps";
 import { ROLES } from "@shared/constants/roles";
 import { useSession } from "@entities/session";
-import { userMessages, userPhotos } from "./test";
+import { userMessages, userPhotos, tarotUsers } from "./test";
 import { FlyingHearts } from "@widgets/dashboard/flying-hearts";
 import { CursorTrail } from "@widgets/dashboard/cursor-trail";
 import { useEffectsSettings } from "@shared/hooks/use-effects-settings";
@@ -106,6 +107,7 @@ const TodayCheck = lazy(
 
 const Margin = lazy(() => import("@widgets/dashboard/margin/ui/margin"));
 const Markup = lazy(() => import("@widgets/dashboard/markup/ui/markup"));
+const Tarot = lazy(() => import("@widgets/dashboard/tarot/ui/tarot"));
 const Dashboard = () => {
   const { dashboard, isDashboardLoading } = useDashboardData();
   const { session } = useSession();
@@ -120,11 +122,26 @@ const Dashboard = () => {
     : undefined;
   const userPhoto = session?.idUser ? userPhotos[session.idUser] : undefined;
 
+  // Фразы показываются, если они есть у пользователя и есть доступ к эффектам
   const hasPersonalMessages =
     !!userPhrases &&
+    Array.isArray(userPhrases) &&
+    userPhrases.length > 0 &&
     userHasEffectsAccess &&
-    userPhoto &&
     effectsSettings.personalMessagesEnabled;
+
+  // Фото показывается отдельно, если оно есть у пользователя и есть доступ к эффектам
+  const hasPersonalPhotos =
+    !!userPhoto &&
+    Array.isArray(userPhoto) &&
+    userPhoto.length > 0 &&
+    userHasEffectsAccess &&
+    effectsSettings.personalMessagesEnabled;
+
+  // Проверяем, есть ли доступ к виджету Таро для текущего пользователя
+  const hasTarotAccess = session?.idUser
+    ? tarotUsers.includes(String(session.idUser))
+    : false;
 
   const randomMessage = useMemo(() => {
     if (!userPhrases) return null;
@@ -154,13 +171,23 @@ const Dashboard = () => {
       "antiLoyalTop",
     ];
 
-    // Добавляем виджет персональных сообщений, если есть сообщения
-    if (hasPersonalMessages) {
-      return ["hasPersonalMessages", ...baseWidgets];
+    const widgets: string[] = [];
+
+    // Добавляем виджет персональных фото, если есть фото
+    if (hasPersonalPhotos) {
+      widgets.push("hasPersonalPhotos");
     }
 
-    return baseWidgets;
-  }, [hasPersonalMessages]);
+    // Добавляем виджет Таро сразу после фоточек, если есть доступ
+    if (hasTarotAccess) {
+      widgets.push("tarot");
+    }
+
+    // Добавляем остальные виджеты
+    widgets.push(...baseWidgets);
+
+    return widgets;
+  }, [hasPersonalPhotos, hasTarotAccess]);
 
   const { items: widgetOrder, setItems: setWidgetOrder } =
     useDashboardLayout(allWidgets);
@@ -190,7 +217,7 @@ const Dashboard = () => {
 
   // Создаем маппинг виджетов
   const widgetsMap: Record<string, ReactNode> = {
-    hasPersonalMessages: hasPersonalMessages ? (
+    hasPersonalPhotos: hasPersonalPhotos ? (
       <Card className={cn("w-full h-[400px] flex flex-col !p-0")}>
         <img
           src={randomPhoto || ""}
@@ -600,6 +627,13 @@ const Dashboard = () => {
         </Suspense>
       </div>
     ),
+    tarot: (
+      <div data-widget="tarot" data-testid="widget-tarot">
+        <Suspense fallback={<TarotSkeleton />}>
+          <Tarot />
+        </Suspense>
+      </div>
+    ),
   };
 
   return (
@@ -627,7 +661,7 @@ const Dashboard = () => {
             >
               {hasPersonalMessages && (
                 <div
-                  className={`flex flex-col gap-4 col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance  justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
+                  className={`flex flex-col gap-4 col-span-3 border-2 rounded-3xl p-10 font-black text-center text-balance justify-center items-center ${effectsSettings.personalMessagesStyle.fontSize}`}
                   style={{
                     backgroundColor:
                       effectsSettings.personalMessagesStyle.backgroundColor,

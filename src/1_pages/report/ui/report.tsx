@@ -62,6 +62,7 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
     loyal: {
       cardNumber: [],
       sex: [],
+      colorsDiscount: [],
     },
     onlineStore: {
       imTypeOrder: [],
@@ -485,26 +486,172 @@ const Report: FC = () => {
           updateIndicators([]);
         }
 
+        // Извлекаем фильтры из строки, на которую кликнули
+        const extractedFilters = extractFiltersFromRow(info.rowData, [
+          info.rowData,
+        ]);
+
         // Делаем запрос за новыми данными для графика
         const payload = getApiPayload();
 
-        // Подготавливаем фильтры с корректной обработкой loyal
-        const preparedFilters = {
-          ...payload.filters,
+        // Используем начальные фильтры как базу, если они есть
+        const baseFilters = initialFiltersRef.current
+          ? initialFiltersRef.current.filters
+          : payload.filters;
+
+        // Создаем новые фильтры, объединяя начальные с извлеченными из строки
+        const mergedFilters = {
+          ...baseFilters,
+          store: {
+            ...baseFilters.store,
+            idStore:
+              extractedFilters.store.idStore.length > 0
+                ? extractedFilters.store.idStore
+                : baseFilters.store.idStore,
+            idCity:
+              extractedFilters.store.idCity.length > 0
+                ? extractedFilters.store.idCity
+                : baseFilters.store.idCity,
+            idRegion:
+              extractedFilters.store.idRegion.length > 0
+                ? extractedFilters.store.idRegion
+                : baseFilters.store.idRegion,
+            storeCondition:
+              extractedFilters.store.storeCondition.length > 0
+                ? extractedFilters.store.storeCondition
+                : baseFilters.store.storeCondition,
+            ageGroup:
+              extractedFilters.store.ageGroup.length > 0
+                ? extractedFilters.store.ageGroup
+                : baseFilters.store.ageGroup,
+            channel:
+              extractedFilters.store.channel.length > 0
+                ? extractedFilters.store.channel
+                : baseFilters.store.channel,
+          },
+          product: {
+            ...baseFilters.product,
+            idProduct:
+              extractedFilters.product.idProduct.length > 0
+                ? extractedFilters.product.idProduct
+                : baseFilters.product.idProduct,
+            idGroupMain:
+              extractedFilters.product.idGroupMain.length > 0
+                ? extractedFilters.product.idGroupMain
+                : baseFilters.product.idGroupMain,
+            groupFranchise:
+              extractedFilters.product.groupFranchise.length > 0
+                ? extractedFilters.product.groupFranchise
+                : baseFilters.product.groupFranchise,
+            subGroups:
+              extractedFilters.product.subGroups.length > 0
+                ? extractedFilters.product.subGroups
+                : baseFilters.product.subGroups,
+            subSubGroups:
+              extractedFilters.product.subSubGroups.length > 0
+                ? extractedFilters.product.subSubGroups
+                : baseFilters.product.subSubGroups,
+            typeProducts:
+              extractedFilters.product.typeProducts.length > 0
+                ? extractedFilters.product.typeProducts
+                : baseFilters.product.typeProducts,
+            teamProducts:
+              extractedFilters.product.teamProducts.length > 0
+                ? extractedFilters.product.teamProducts
+                : baseFilters.product.teamProducts,
+            directionProducts:
+              extractedFilters.product.directionProducts.length > 0
+                ? extractedFilters.product.directionProducts
+                : baseFilters.product.directionProducts,
+            groupsEconomist:
+              extractedFilters.product.groupsEconomist.length > 0
+                ? extractedFilters.product.groupsEconomist
+                : baseFilters.product.groupsEconomist,
+            seasonalityProducts:
+              extractedFilters.product.seasonalityProducts.length > 0
+                ? extractedFilters.product.seasonalityProducts
+                : baseFilters.product.seasonalityProducts,
+            managerAuto:
+              extractedFilters.product.managerAuto.length > 0
+                ? extractedFilters.product.managerAuto
+                : baseFilters.product.managerAuto,
+          },
+          check: {
+            ...baseFilters.check,
+            tabNumber:
+              extractedFilters.check.tabNumber.length > 0
+                ? extractedFilters.check.tabNumber
+                : baseFilters.check.tabNumber,
+            cashBox:
+              extractedFilters.check.cashBox.length > 0
+                ? extractedFilters.check.cashBox
+                : baseFilters.check.cashBox,
+            idCheck:
+              extractedFilters.check.idCheck.length > 0
+                ? extractedFilters.check.idCheck
+                : baseFilters.check.idCheck,
+            type:
+              extractedFilters.check.type.length > 0
+                ? extractedFilters.check.type
+                : baseFilters.check.type,
+          },
           loyal: {
-            ...payload.filters.loyal,
+            ...baseFilters.loyal,
+            cardNumber:
+              extractedFilters.loyal.cardNumber.length > 0
+                ? extractedFilters.loyal.cardNumber
+                : baseFilters.loyal.cardNumber,
+            sex:
+              extractedFilters.loyal.sex.length > 0
+                ? extractedFilters.loyal.sex
+                : baseFilters.loyal.sex,
+            colorsDiscount:
+              extractedFilters.loyal.colorsDiscount &&
+              extractedFilters.loyal.colorsDiscount.length > 0
+                ? extractedFilters.loyal.colorsDiscount
+                : baseFilters.loyal.colorsDiscount || [],
             ageStart:
-              payload.filters.loyal.ageStart === 0 &&
-              payload.filters.loyal.ageEnd === 100
+              baseFilters.loyal.ageStart === 0 &&
+              baseFilters.loyal.ageEnd === 100
                 ? null
-                : payload.filters.loyal.ageStart,
+                : baseFilters.loyal.ageStart,
             ageEnd:
-              payload.filters.loyal.ageStart === 0 &&
-              payload.filters.loyal.ageEnd === 100
+              baseFilters.loyal.ageStart === 0 &&
+              baseFilters.loyal.ageEnd === 100
                 ? null
-                : payload.filters.loyal.ageEnd,
+                : baseFilters.loyal.ageEnd,
+          },
+          onlineStore: {
+            ...baseFilters.onlineStore,
+            imTypeOrder:
+              extractedFilters.onlineStore.imTypeOrder.length > 0
+                ? extractedFilters.onlineStore.imTypeOrder
+                : baseFilters.onlineStore.imTypeOrder,
+            imDeliveryMethod:
+              extractedFilters.onlineStore.imDeliveryMethod.length > 0
+                ? extractedFilters.onlineStore.imDeliveryMethod
+                : baseFilters.onlineStore.imDeliveryMethod,
+            imPaymentMethod:
+              extractedFilters.onlineStore.imPaymentMethod.length > 0
+                ? extractedFilters.onlineStore.imPaymentMethod
+                : baseFilters.onlineStore.imPaymentMethod,
+            imStatusOrder:
+              extractedFilters.onlineStore.imStatusOrder.length > 0
+                ? extractedFilters.onlineStore.imStatusOrder
+                : baseFilters.onlineStore.imStatusOrder,
+            imPromo:
+              extractedFilters.onlineStore.imPromo.length > 0
+                ? extractedFilters.onlineStore.imPromo
+                : baseFilters.onlineStore.imPromo,
+            imReceiveInterval:
+              extractedFilters.onlineStore.imReceiveInterval.length > 0
+                ? extractedFilters.onlineStore.imReceiveInterval
+                : baseFilters.onlineStore.imReceiveInterval,
           },
         };
+
+        // Используем новый показатель в values
+        const newValues = [parentIndicator];
 
         // Запрашиваем только график
         getGraph({
@@ -513,9 +660,9 @@ const Report: FC = () => {
             dateStart: payload.filterDate.dateStart,
             dateEnd: payload.filterDate.dateEnd,
           },
-          filters: preparedFilters,
+          filters: mergedFilters,
           groups: [dateFilterValue], // Используем значение из DateFilterStore
-          values: payload.values,
+          values: newValues,
         }).then((response) => {
           if (response) {
             setGraph(response);

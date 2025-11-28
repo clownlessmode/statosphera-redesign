@@ -64,8 +64,8 @@ export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
             </span>
             <div className="col-span-3 flex flex-col gap-2">
               {/* Поля ввода */}
-              <div className="flex gap-2 items-end">
-                <div className="flex-1 space-y-1">
+              <div className="flex gap-2 items-end max-md:flex-col">
+                <div className="flex-1 space-y-1 max-md:w-full">
                   <Label
                     htmlFor="name-declaration"
                     className="text-xs text-muted-foreground"
@@ -80,7 +80,7 @@ export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
                     className="bg-background"
                   />
                 </div>
-                <div className="flex-1 space-y-1">
+                <div className="flex-1 space-y-1 max-md:w-full">
                   <Label
                     htmlFor="dateEnd-declaration"
                     className="text-xs text-muted-foreground"
@@ -100,6 +100,7 @@ export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
                   variant="outline"
                   onClick={handleAdd}
                   disabled={!validation}
+                  className="max-md:w-full"
                 >
                   Сохранить
                 </Button>

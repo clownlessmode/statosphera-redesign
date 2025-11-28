@@ -38,7 +38,7 @@ export const ContactsEdit: FC<{
     position.trim();
 
   return (
-    <Card>
+    <Card className="max-md:max-h-[calc(100vh-256px)] max-md:overflow-y-auto scrollbar-hide">
       <CardHeader>
         <CardTitle>Редактировать контакты КМ</CardTitle>
       </CardHeader>
@@ -80,7 +80,7 @@ export const ContactsEdit: FC<{
                 return (
                   <div className="col-span-2 flex flex-col gap-4">
                     {/* Форма добавления */}
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2 max-md:flex max-md:flex-col">
                       <div className="space-y-1">
                         <Label
                           htmlFor="name-AdditionalContact"

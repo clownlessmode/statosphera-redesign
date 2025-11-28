@@ -13,12 +13,12 @@ export const ProfileModal = ({ farmer }: { farmer: FarmersResponse }) => {
       <DialogTrigger asChild>
         <Button variant="outline">
           <Eye />
-          Посмотреть
+          <span className="max-md:hidden">Посмотреть</span>
         </Button>
       </DialogTrigger>
       <DialogContent
         aria-describedby={undefined}
-        className="min-w-[80vw] max-h-[80vh] overflow-y-auto scrollbar-hide"
+        className="min-w-[80vw] max-h-[80vh] overflow-y-auto scrollbar-hide max-md:max-h-[calc(100vh-256px)]"
       >
         <FarmerProfileCard profile={farmer} />
       </DialogContent>

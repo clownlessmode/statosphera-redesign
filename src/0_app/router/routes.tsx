@@ -409,7 +409,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.FARMERS,
     variant: "private",
     element: <Farmers />,
-    allowedRoles: [ROLES.ADMIN, ROLES.MANAGER],
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER_MANAGER],
     layout: Sidebar,
     label: "Фермеры",
   },

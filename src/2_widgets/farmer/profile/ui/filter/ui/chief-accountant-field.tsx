@@ -22,7 +22,7 @@ export const ChiefAccountantFields: FC<ChiefAccountantFieldsProps> = ({
   const { getValues } = useFormContext();
 
   return (
-    <div className="grid grid-cols-3 gap-2 items-start">
+    <div className="grid grid-cols-3 gap-2 items-start max-md:flex max-md:flex-col">
       <span className="col-span-3 text-sm flex gap-0.5 leading-none font-medium select-none">
         Главный бухгалтер<span className="text-destructive">*</span>
       </span>
@@ -30,7 +30,7 @@ export const ChiefAccountantFields: FC<ChiefAccountantFieldsProps> = ({
         name="chiefAccountant.name"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">ФИО</FormLabel>
             <FormControl>
               <Input
@@ -60,7 +60,7 @@ export const ChiefAccountantFields: FC<ChiefAccountantFieldsProps> = ({
         name="chiefAccountant.phone"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">
               Номер телефона
             </FormLabel>
@@ -87,7 +87,7 @@ export const ChiefAccountantFields: FC<ChiefAccountantFieldsProps> = ({
         name="chiefAccountant.email"
         control={control}
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="max-md:w-full">
             <FormLabel className="text-xs text-muted-foreground">
               Email
             </FormLabel>

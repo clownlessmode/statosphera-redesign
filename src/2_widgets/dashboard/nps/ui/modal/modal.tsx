@@ -1,4 +1,3 @@
-import { Button } from "@shared/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,25 +8,17 @@ import {
 } from "@shared/ui/dialog";
 import { Separator } from "@shared/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
-import {
-  ArrowUpRightIcon,
-  Building2,
-  ChartBar,
-  Map,
-  Store,
-} from "lucide-react";
+import { Building2, ChartBar, Map, Store } from "lucide-react";
 import { useTourState } from "@entities/lessons";
 import { Cities, Regions, Stores, Summary } from "./tabs";
 
-export const Modal = () => {
+export const Modal = ({ children }: { children: React.ReactNode }) => {
   const isTourActive = useTourState();
 
   return (
     <Dialog modal={!isTourActive}>
-      <DialogTrigger asChild>
-        <Button className="w-full" data-testid="nps-details-button">
-          Подробнее <ArrowUpRightIcon />
-        </Button>
+      <DialogTrigger asChild className="cursor-pointer hover:bg-card/80">
+        {children}
       </DialogTrigger>
       <DialogContent
         className="w-full max-xxs:h-full max-md:overflow-y-auto scrollbar-hide md:w-3xl md:max-w-none! h-fit min-h-[600px] flex flex-col"

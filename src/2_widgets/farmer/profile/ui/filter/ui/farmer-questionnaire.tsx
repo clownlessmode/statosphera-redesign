@@ -34,6 +34,7 @@ import { useFarmer } from "@entities/farmer";
 import { useSession } from "@entities/session";
 import formatDateIso from "@shared/lib/format-date-iso";
 import { STEPS_FIELDS } from "../config/constant";
+import { useIsMobile } from "@shared/hooks";
 
 interface FarmerQuestionnaireProps {
   level?: number;
@@ -51,6 +52,7 @@ export default function FarmerQuestionnaire({
   const { updateFilters } = useFarmerProfileStore();
   const { session } = useSession();
   const { updateProfile, uploadPhoto } = useFarmer(session?.idUser);
+  const isMobile = useIsMobile();
 
   // Эффект для инициализации формы данными, если включен режим редактирования
   useEffect(() => {
@@ -146,14 +148,18 @@ export default function FarmerQuestionnaire({
   };
 
   return (
-    <Card className={cn(data && "gap-1 p-4")}>
+    <Card className={cn(data && "gap-1 p-4 max-md:mb-14 max-md:content-box")}>
       {data && (
-        <CardHeader className="flex flex-row justify-end py-1.5">
-          <Button className="w-max" variant="outline" onClick={handleCancel}>
+        <CardHeader className="flex flex-row justify-end py-1.5 max-md:fixed max-md:bottom-0 max-md:inset-x-0 max-md:z-10 max-md:px-6 max-md:mb-4">
+          <Button
+            className="w-max max-md:w-full max-md:h-10"
+            variant="outline"
+            onClick={handleCancel}
+          >
             Отменить
           </Button>
           <Button
-            className="w-max"
+            className="w-max max-md:w-full max-md:h-10"
             disabled={!getChangedFields(data, form.getValues())}
             onClick={handleSave}
           >
@@ -162,27 +168,117 @@ export default function FarmerQuestionnaire({
           </Button>
         </CardHeader>
       )}
-      <CardContent className="py-2">
+      <CardContent className="py-2 max-md:p-0">
         <form
           className={cn(
-            "flex flex-row gap-4 justify-center w-150",
+            "flex flex-row gap-4 justify-center w-150 max-md:w-full",
             data && "w-full flex-col",
           )}
         >
           <Form {...form}>
             <div
               className={cn(
-                "grid-cols-[1fr_min-content] gap-4 w-full",
-                level === 0 ? "grid" : "hidden",
+                "grid-cols-[1fr_min-content] gap-4 w-full max-md:grid-cols-1",
+                level === 0
+                  ? "grid max-md:flex max-md:flex-col max-md:px-4"
+                  : "hidden",
                 data && "grid",
               )}
             >
               <div
                 className={cn(
                   "flex flex-col gap-4",
-                  data && "grid grid-cols-3",
+                  data && "grid grid-cols-3 max-md:flex max-md:flex-col",
                 )}
               >
+                {isMobile && (
+                  <FormField
+                    control={form.control}
+                    name="photo"
+                    render={({ field }) => {
+                      const hasError = !!form.formState.errors.photo;
+                      const showPreview = field.value?.[0] && !hasError;
+
+                      return (
+                        <FormItem className="h-full w-max flex flex-col gap-2 max-md:w-full max-md:items-center max-md:justify-center max-md:gap-4 max-md:py-2">
+                          <FormLabel className="gap-0.5">
+                            Фото <span className="text-destructive">*</span>
+                          </FormLabel>
+                          <Card
+                            style={{
+                              backgroundImage: showPreview
+                                ? `url(${URL.createObjectURL(field.value[0])})`
+                                : data?.photo
+                                  ? `url(${data.photo})`
+                                  : "none",
+                            }}
+                            className={cn(
+                              "size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover relative max-md:size-[150px] max-md:rounded-full",
+                              hasError && "border-destructive border-2",
+                            )}
+                          >
+                            {!showPreview && !data?.photo && (
+                              <User className="absolute inset-0 size-full p-12 text-muted-foreground" />
+                            )}
+                          </Card>
+                          <FormControl>
+                            <div className="flex flex-col items-center gap-2">
+                              <Label
+                                htmlFor="photo-upload"
+                                className="flex items-center w-full gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-background"
+                              >
+                                <Upload className="h-4 w-4" />
+                                Выбрать фото
+                              </Label>
+                              <Input
+                                id="photo-upload"
+                                type="file"
+                                accept="image/jpeg, image/png, image/webp"
+                                className="hidden"
+                                onChange={(event) => {
+                                  if (
+                                    event.target.files?.[0]?.size &&
+                                    event.target.files?.[0]?.size >
+                                      10 * 1024 * 1024
+                                  ) {
+                                    toast.error(
+                                      "Файл слишком большой (максимум 10MB)",
+                                    );
+                                    return;
+                                  }
+                                  if (
+                                    event.target.files?.[0]?.type &&
+                                    ![
+                                      "image/jpeg",
+                                      "image/png",
+                                      "image/webp",
+                                    ].includes(event.target.files?.[0]?.type)
+                                  ) {
+                                    toast.error("Неверный формат файла");
+                                    return;
+                                  }
+                                  if (
+                                    event.target.files &&
+                                    event.target.files.length > 0
+                                  ) {
+                                    field.onChange(event.target.files);
+                                    updateFilters("photo", event.target.files);
+                                  }
+                                }}
+                              />
+                              {showPreview && (
+                                <span className="text-sm text-muted-foreground max-md:hidden">
+                                  {field.value?.[0]?.name}
+                                </span>
+                              )}
+                            </div>
+                          </FormControl>
+                          <FormMessage className="text-center" />
+                        </FormItem>
+                      );
+                    }}
+                  />
+                )}
                 <FormField
                   name="organizationName"
                   control={form.control}
@@ -686,97 +782,100 @@ export default function FarmerQuestionnaire({
                   }}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="photo"
-                render={({ field }) => {
-                  const hasError = !!form.formState.errors.photo;
-                  const showPreview = field.value?.[0] && !hasError;
+              {!isMobile && (
+                <FormField
+                  control={form.control}
+                  name="photo"
+                  render={({ field }) => {
+                    const hasError = !!form.formState.errors.photo;
+                    const showPreview = field.value?.[0] && !hasError;
 
-                  return (
-                    <FormItem className="h-full w-max flex flex-col gap-2">
-                      <FormLabel className="gap-0.5">
-                        Фото <span className="text-destructive">*</span>
-                      </FormLabel>
-                      <Card
-                        style={{
-                          backgroundImage: showPreview
-                            ? `url(${URL.createObjectURL(field.value[0])})`
-                            : data?.photo
-                              ? `url(${data.photo})`
-                              : "none",
-                        }}
-                        className={cn(
-                          "size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover relative",
-                          hasError && "border-destructive border-2",
-                        )}
-                      >
-                        {!showPreview && !data?.photo && (
-                          <User className="absolute inset-0 size-full p-12 text-muted-foreground" />
-                        )}
-                      </Card>
-                      <FormControl>
-                        <div className="flex flex-col items-center gap-2">
-                          <Label
-                            htmlFor="photo-upload"
-                            className="flex items-center w-full gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-background"
-                          >
-                            <Upload className="h-4 w-4" />
-                            Выбрать фото
-                          </Label>
-                          <Input
-                            id="photo-upload"
-                            type="file"
-                            accept="image/jpeg, image/png, image/webp"
-                            className="hidden"
-                            onChange={(event) => {
-                              if (
-                                event.target.files?.[0]?.size &&
-                                event.target.files?.[0]?.size > 10 * 1024 * 1024
-                              ) {
-                                toast.error(
-                                  "Файл слишком большой (максимум 10MB)",
-                                );
-                                return;
-                              }
-                              if (
-                                event.target.files?.[0]?.type &&
-                                ![
-                                  "image/jpeg",
-                                  "image/png",
-                                  "image/webp",
-                                ].includes(event.target.files?.[0]?.type)
-                              ) {
-                                toast.error("Неверный формат файла");
-                                return;
-                              }
-                              if (
-                                event.target.files &&
-                                event.target.files.length > 0
-                              ) {
-                                field.onChange(event.target.files);
-                                updateFilters("photo", event.target.files);
-                              }
-                            }}
-                          />
-                          {showPreview && (
-                            <span className="text-sm text-muted-foreground">
-                              {field.value?.[0]?.name}
-                            </span>
+                    return (
+                      <FormItem className="h-full w-max flex flex-col gap-2">
+                        <FormLabel className="gap-0.5">
+                          Фото <span className="text-destructive">*</span>
+                        </FormLabel>
+                        <Card
+                          style={{
+                            backgroundImage: showPreview
+                              ? `url(${URL.createObjectURL(field.value[0])})`
+                              : data?.photo
+                                ? `url(${data.photo})`
+                                : "none",
+                          }}
+                          className={cn(
+                            "size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover relative",
+                            hasError && "border-destructive border-2",
                           )}
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-center" />
-                    </FormItem>
-                  );
-                }}
-              />
+                        >
+                          {!showPreview && !data?.photo && (
+                            <User className="absolute inset-0 size-full p-12 text-muted-foreground" />
+                          )}
+                        </Card>
+                        <FormControl>
+                          <div className="flex flex-col items-center gap-2">
+                            <Label
+                              htmlFor="photo-upload"
+                              className="flex items-center w-full gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-background"
+                            >
+                              <Upload className="h-4 w-4" />
+                              Выбрать фото
+                            </Label>
+                            <Input
+                              id="photo-upload"
+                              type="file"
+                              accept="image/jpeg, image/png, image/webp"
+                              className="hidden"
+                              onChange={(event) => {
+                                if (
+                                  event.target.files?.[0]?.size &&
+                                  event.target.files?.[0]?.size >
+                                    10 * 1024 * 1024
+                                ) {
+                                  toast.error(
+                                    "Файл слишком большой (максимум 10MB)",
+                                  );
+                                  return;
+                                }
+                                if (
+                                  event.target.files?.[0]?.type &&
+                                  ![
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/webp",
+                                  ].includes(event.target.files?.[0]?.type)
+                                ) {
+                                  toast.error("Неверный формат файла");
+                                  return;
+                                }
+                                if (
+                                  event.target.files &&
+                                  event.target.files.length > 0
+                                ) {
+                                  field.onChange(event.target.files);
+                                  updateFilters("photo", event.target.files);
+                                }
+                              }}
+                            />
+                            {showPreview && (
+                              <span className="text-sm text-muted-foreground">
+                                {field.value?.[0]?.name}
+                              </span>
+                            )}
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-center" />
+                      </FormItem>
+                    );
+                  }}
+                />
+              )}
             </div>
 
             <div
               className={cn(
                 "flex-col gap-4 w-full",
-                level === 1 ? "flex" : "hidden",
+                level === 1 ? "flex max-md:flex-col max-md:px-4" : "hidden",
                 data && "flex",
               )}
             >

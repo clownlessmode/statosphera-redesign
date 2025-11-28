@@ -141,7 +141,8 @@ const Sidebar = ({
         url: ROUTES_PATH.FARMERS,
         icon: Tractor,
         disabled:
-          session?.role !== ROLES.ADMIN && session?.role !== ROLES.FARMER,
+          session?.role !== ROLES.FARMER_MANAGER &&
+          session?.role !== ROLES.ADMIN,
       },
       {
         title: "Админ панель",
@@ -196,6 +197,7 @@ const Sidebar = ({
         title: "Чаты",
         url: ROUTES_PATH.CHAT,
         icon: MessageCircle,
+        disabled: true,
       },
       {
         title: "Дайджесты",

@@ -66,6 +66,7 @@ export interface RequestDtoKmContacts {
 }
 
 export interface ProfileResponse {
+  idUser: string;
   organizationName: string;
   phoneOrganization: string;
   emailOrganization: string;
