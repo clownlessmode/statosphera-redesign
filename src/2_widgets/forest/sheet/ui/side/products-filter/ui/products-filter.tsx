@@ -119,7 +119,6 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isSubGroupsLoading}
                       onOpenChange={handleOpenSubgroupsSelect}
                       onValueChange={(value) => {
-                        console.log(value);
                         field.onChange(value);
                         updateProductFilter("oneLvlGroupProduct", value);
                       }}

@@ -10,11 +10,29 @@ import ClearFilters from "./clear-filter";
 import { useForm } from "../model";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { FC } from "react";
-import { MultipleInput } from "@shared/ui/multiple-input";
+import { MultiSelect } from "@shared/ui/multiselect";
+import { useTypePayment } from "../model/hooks/use-typePayment";
+import { useDiscountType } from "../model/hooks/use-discountType";
 
 const RecieptsFilter: FC = () => {
   const form = useForm();
-  const { updateCheckFilter } = useFiltersStore();
+  const { updateCheckFilter, getApiPayload } = useFiltersStore();
+  const payload = getApiPayload();
+
+  const {
+    typePaymentOptions,
+    handleOpenTypePaymentSelect,
+    isTypePaymentLoading,
+    savedTypePaymentLabels,
+  } = useTypePayment(payload);
+
+  const {
+    discountTypeOptions,
+    handleOpenDiscountTypeSelect,
+    isDiscountTypeLoading,
+    savedDiscountTypeLabels,
+  } = useDiscountType(payload);
+
   return (
     <Card className="w-full mr-4">
       <CardHeader>
@@ -34,13 +52,18 @@ const RecieptsFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Тип оплаты</FormLabel>
-                    <MultipleInput
-                      placeholder="Введите тип оплаты"
+                    <MultiSelect
                       value={field.value?.map(String) || []}
+                      options={typePaymentOptions}
+                      isLoading={isTypePaymentLoading}
+                      onOpenChange={handleOpenTypePaymentSelect}
                       onValueChange={(value) => {
                         field.onChange(value);
-                        updateCheckFilter("typePayment", value.map(String));
+                        updateCheckFilter("typePayment", value);
                       }}
+                      externalLabels={savedTypePaymentLabels}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите тип оплаты"
                     />
                   </FormItem>
                 );
@@ -73,13 +96,18 @@ const RecieptsFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Скидки</FormLabel>
-                    <MultipleInput
-                      placeholder="Введите скидки"
+                    <MultiSelect
                       value={field.value?.map(String) || []}
+                      options={discountTypeOptions}
+                      isLoading={isDiscountTypeLoading}
+                      onOpenChange={handleOpenDiscountTypeSelect}
                       onValueChange={(value) => {
                         field.onChange(value);
-                        updateCheckFilter("discountType", value.map(String));
+                        updateCheckFilter("discountType", value);
                       }}
+                      externalLabels={savedDiscountTypeLabels}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите скидки"
                     />
                   </FormItem>
                 );

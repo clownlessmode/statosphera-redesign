@@ -2,7 +2,7 @@ import {
   Calendar,
   CircleDotDashed,
   //Combine,
-  //Grid2x2Check,
+  Grid2x2Check,
   Receipt,
   ShoppingBasket,
   Store,
@@ -11,7 +11,7 @@ import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
 import { GroupingFilter } from "../../side/grouping-filter";
-//import { IndicatorsFilter } from "../../side/indicators-filter";
+import { IndicatorsFilter } from "../../side/indicators-filter";
 //import { LoyaltyFilter } from "../../side/loyalty-filter"; добавить потом
 import { RecieptsFilter } from "../../side/reciepts-filter";
 //import { UniqueFilters } from "../../side/uniques-filter";
@@ -53,11 +53,11 @@ export const grouping = [
 ];
 
 export const indicators = [
-  //{
-  //  title: "Показатели",
-  //  icon: Grid2x2Check,
-  //  component: IndicatorsFilter,
-  //},
+  {
+    title: "Показатели",
+    icon: Grid2x2Check,
+    component: IndicatorsFilter,
+  },
   //{
   //  title: "Уникальные значения",
   //  icon: Combine,

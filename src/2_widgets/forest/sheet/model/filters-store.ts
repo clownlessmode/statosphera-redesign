@@ -260,8 +260,8 @@ export type FiltersState = {
     //  article: ARTICLE_WRITE_OFF[];
     //};
   };
-  //uniques: string[];
-  //indicators: string[];
+  uniques: string[];
+  indicators: string[];
   values: string[];
   sorts: {
     sort: "asc" | "desc";
@@ -310,12 +310,12 @@ export type FiltersState = {
   updatePagination: (limit: number, offset: number) => void;
   updateGroups: (groups: string[]) => void;
   //updateUniques: (uniques: string[]) => void;
-  //updateIndicators: (indicators: string[]) => void;
+  updateIndicators: (indicators: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
-    //| "uniques"
-    //| "indicators"
+    | "uniques"
+    | "indicators"
     | "updateStoreFilter"
     | "updateProductFilter"
     | "updateCheckFilter"
@@ -328,7 +328,7 @@ export type FiltersState = {
     | "updatePagination"
     | "updateGroups"
     //| "updateUniques"
-    //| "updateIndicators"
+    | "updateIndicators"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -349,7 +349,7 @@ const initialState: Omit<
   | "updatePagination"
   | "updateGroups"
   //| "updateUniques"
-  //| "updateIndicators"
+  | "updateIndicators"
   | "resetAllFilters"
   | "getApiPayload"
 > = {
@@ -396,8 +396,8 @@ const initialState: Omit<
     //},
   },
   values: ["proceeds"],
-  //uniques: [],
-  //indicators: ["proceeds"],
+  uniques: [],
+  indicators: ["proceeds"],
   sorts: {
     sort: "desc",
     colId: [],
@@ -494,11 +494,11 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
   //    values: [...uniques, ...get().indicators], // Автоматически обновляем values
   //  }),
 
-  //updateIndicators: (indicators) =>
-  //  set({
-  //    indicators,
-  //    values: [...get().uniques, ...indicators], // Автоматически обновляем values
-  //  }),
+  updateIndicators: (indicators) =>
+    set({
+      indicators,
+      values: [...get().uniques, ...indicators], // Автоматически обновляем values
+    }),
 
   resetAllFilters: () => set(initialState),
 
