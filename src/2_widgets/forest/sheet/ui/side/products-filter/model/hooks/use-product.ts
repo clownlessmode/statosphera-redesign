@@ -1,6 +1,6 @@
-import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
-import { useFilters } from "@entities/report/model/api/filters/products/controller";
-import { NomenklaturaFilterResponse } from "@entities/report/model/api/filters/products/types";
+import { processFiltersDto } from "@entities/forest/model/api/filters/data/service";
+import { useFilters } from "@entities/forest/model/api/filters/products/controller";
+import { NomenklaturaFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";

@@ -1,6 +1,6 @@
 import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
-import { useFilters } from "@entities/report/model/api/filters/shops/controller";
-import { CitiesFilterResponse } from "@entities/report/model/api/filters/shops/service";
+import { useFilters } from "@entities/forest/model/api/filters/shops/controller";
+import { CitiesFilterResponse } from "@entities/forest/model/api/filters/shops/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
@@ -26,8 +26,8 @@ export const useCities = (allData: any) => {
     try {
       const response = await getCities(processFiltersDto(allData));
       const apiOptions = response.map((city: CitiesFilterResponse) => ({
-        label: city.storeCity,
-        value: String(JSON.stringify(city.cityId || [])),
+        label: city.nameCity,
+        value: String(JSON.stringify(city.idCity || [])),
       }));
 
       setCitiesOptions(apiOptions);

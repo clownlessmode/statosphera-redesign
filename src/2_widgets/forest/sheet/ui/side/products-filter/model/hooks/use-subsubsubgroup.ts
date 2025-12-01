@@ -1,40 +1,40 @@
 import { processFiltersDto } from "@entities/forest/model/api/filters/data/service";
 import { useFilters } from "@entities/forest/model/api/filters/products/controller";
-import { SubSubGroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
+import { SubSubSubGroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
 
-interface SubsubgroupStore {
-  savedSubsubgroupLabels: MultiSelectOption[];
-  setSubsubgroupLabels: (opts: MultiSelectOption[]) => void;
+interface SubsubsubgroupStore {
+  savedSubsubsubgroupLabels: MultiSelectOption[];
+  setSubsubsubgroupLabels: (opts: MultiSelectOption[]) => void;
 }
 
-const useSubsubgroupStore = create<SubsubgroupStore>((set) => ({
-  savedSubsubgroupLabels: [],
-  setSubsubgroupLabels: (opts) => set({ savedSubsubgroupLabels: opts }),
+const useSubsubsubgroupStore = create<SubsubsubgroupStore>((set) => ({
+  savedSubsubsubgroupLabels: [],
+  setSubsubsubgroupLabels: (opts) => set({ savedSubsubsubgroupLabels: opts }),
 }));
 
-export const useSubsubgroup = (allData: any) => {
-  const [subsubgroupOptions, setSubsubgroupOptions] = useState<
+export const useSubsubsubgroup = (allData: any) => {
+  const [subsubsubgroupOptions, setSubsubsubgroupOptions] = useState<
     MultiSelectOption[]
   >([]);
-  const { getSubSubGroups, isSubsubgroupsLoading } = useFilters();
-  const { savedSubsubgroupLabels, setSubsubgroupLabels } =
-    useSubsubgroupStore();
+  const { getSubSubSubGroups, isSubSubSubGroupsLoading } = useFilters();
+  const { savedSubsubsubgroupLabels, setSubsubsubgroupLabels } =
+    useSubsubsubgroupStore();
 
-  const handleOpenSubsubgroupsSelect = async (isOpen: boolean) => {
+  const handleOpenSubsubsubgroupsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubSubGroups(processFiltersDto(allData));
+      const response = await getSubSubSubGroups(processFiltersDto(allData));
 
       // Группируем элементы по названию и объединяем ID
       const groupedMap = new Map<string, number[]>();
 
-      response.forEach((subsubgroup: SubSubGroupFilterResponse) => {
-        const name = subsubgroup.twoLvlGroupName;
-        const ids = subsubgroup.idTwoLvlGroupProduct || [];
+      response.forEach((subsubsubgroup: SubSubSubGroupFilterResponse) => {
+        const name = subsubsubgroup.threeLvlGroupName;
+        const ids = subsubsubgroup.idThreeLvlGroupProduct || [];
 
         if (groupedMap.has(name)) {
           // Объединяем ID для существующего названия
@@ -55,19 +55,19 @@ export const useSubsubgroup = (allData: any) => {
         }),
       );
 
-      setSubsubgroupOptions(apiOptions);
-      setSubsubgroupLabels(apiOptions);
+      setSubsubsubgroupOptions(apiOptions);
+      setSubsubsubgroupLabels(apiOptions);
     } catch (error) {
-      setSubsubgroupOptions([]);
-      setSubsubgroupLabels([]);
+      setSubsubsubgroupOptions([]);
+      setSubsubsubgroupLabels([]);
       console.error("Ошибка при загрузке подподгрупп:", error);
     }
   };
 
   return {
-    handleOpenSubsubgroupsSelect,
-    subsubgroupOptions,
-    isSubsubgroupsLoading,
-    savedSubsubgroupLabels,
+    handleOpenSubsubsubgroupsSelect,
+    subsubsubgroupOptions,
+    isSubSubSubGroupsLoading,
+    savedSubsubsubgroupLabels,
   };
 };

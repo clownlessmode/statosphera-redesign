@@ -1,6 +1,6 @@
 import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
-import { useFilters } from "@entities/report/model/api/filters/shops/controller";
-import { RegionsFilterResponse } from "@entities/report/model/api/filters/shops/service";
+import { useFilters } from "@entities/forest/model/api/filters/shops/controller";
+import { RegionsFilterResponse } from "@entities/forest/model/api/filters/shops/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
@@ -26,8 +26,8 @@ export const useRegions = (allData: any) => {
     try {
       const response = await getRegions(processFiltersDto(allData));
       const apiOptions = response.map((region: RegionsFilterResponse) => ({
-        label: region.storeRegion,
-        value: String(JSON.stringify(region.regionId || [])),
+        label: region.nameRegion,
+        value: String(JSON.stringify(region.idRegion || [])),
       }));
 
       setRegionsOptions(apiOptions);

@@ -21,6 +21,7 @@ import {
   useSubgroup,
   useSubsubgroup,
   useProduct,
+  useSubsubsubgroup,
 } from "../model";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { cn } from "@shared/lib/utils";
@@ -62,6 +63,13 @@ const ProductsFilter: FC<Props> = ({ className }) => {
     savedProductLabels,
   } = useProduct(payload);
 
+  const {
+    savedSubsubsubgroupLabels,
+    subsubsubgroupOptions,
+    handleOpenSubsubsubgroupsSelect,
+    isSubSubSubGroupsLoading,
+  } = useSubsubsubgroup(payload);
+
   return (
     <Card className="w-full md:mr-4 max-md:overflow-y-auto scrollbar-hide">
       <CardHeader>
@@ -87,9 +95,8 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isGroupsLoading}
                       onOpenChange={handleOpenGroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
-                        field.onChange(numeric);
-                        updateProductFilter("idGroupProduct", numeric);
+                        field.onChange(value);
+                        updateProductFilter("idGroupProduct", value);
                       }}
                       externalLabels={savedGroupLabels}
                       defaultValue={field.value?.map(String)}
@@ -112,9 +119,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isSubGroupsLoading}
                       onOpenChange={handleOpenSubgroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
-                        field.onChange(numeric);
-                        updateProductFilter("oneLvlGroupProduct", numeric);
+                        console.log(value);
+                        field.onChange(value);
+                        updateProductFilter("oneLvlGroupProduct", value);
                       }}
                       externalLabels={savedSubgroupLabels}
                       defaultValue={field.value?.map(String)}
@@ -127,158 +134,50 @@ const ProductsFilter: FC<Props> = ({ className }) => {
             <FormField
               control={form.control}
               name="twoLvlGroupProduct"
-              render={({ field }) => {
-                const currentValues = field.value?.map(String) || [];
-
-                // Нормализуем разбитые ID, объединяя их обратно в группы
-                const normalizeValues = (
-                  values: string[],
-                  savedLabels: any[],
-                ): string[] => {
-                  const result: string[] = [];
-
-                  values.forEach((value) => {
-                    // Ищем точное совпадение
-                    if (savedLabels.find((label) => label.value === value)) {
-                      result.push(value);
-                      return;
-                    }
-
-                    // Если точного совпадения нет, ищем одиночные ID в группах
-                    try {
-                      const parsedValue = JSON.parse(value);
-                      if (
-                        Array.isArray(parsedValue) &&
-                        parsedValue.length === 1
-                      ) {
-                        const matchingLabel = savedLabels.find((label) => {
-                          try {
-                            const labelIds = JSON.parse(label.value);
-                            return (
-                              Array.isArray(labelIds) &&
-                              labelIds.includes(parsedValue[0])
-                            );
-                          } catch {
-                            return false;
-                          }
-                        });
-                        if (matchingLabel) {
-                          result.push(matchingLabel.value);
-                        }
-                      }
-                    } catch {
-                      result.push(value);
-                    }
-                  });
-
-                  return [...new Set(result)];
-                };
-
-                const normalizedValues = normalizeValues(
-                  currentValues,
-                  savedSubsubgroupLabels,
-                );
-
-                return (
-                  <FormItem>
-                    <FormLabel>Подподгруппа</FormLabel>
-                    <FormControl>
-                      <MultiSelect
-                        value={normalizedValues}
-                        options={subsubgroupOptions}
-                        isLoading={isSubsubgroupsLoading}
-                        onOpenChange={handleOpenSubsubgroupsSelect}
-                        onValueChange={(value) => {
-                          const numeric = value.map(Number);
-                          field.onChange(numeric);
-                          updateProductFilter("twoLvlGroupProduct", numeric);
-                        }}
-                        externalLabels={savedSubsubgroupLabels}
-                        defaultValue={normalizedValues}
-                        placeholder="Выберите подподгруппу"
-                      />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Подподгруппа</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value?.map(String) || []}
+                      options={subsubgroupOptions}
+                      isLoading={isSubsubgroupsLoading}
+                      onOpenChange={handleOpenSubsubgroupsSelect}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        updateProductFilter("twoLvlGroupProduct", value);
+                      }}
+                      externalLabels={savedSubsubgroupLabels}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите подподгруппу"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
               name="threeLvlGroupProduct"
-              render={({ field }) => {
-                const currentValues = field.value?.map(String) || [];
-
-                // Нормализуем разбитые ID, объединяя их обратно в группы
-                const normalizeValues = (
-                  values: string[],
-                  savedLabels: any[],
-                ): string[] => {
-                  const result: string[] = [];
-
-                  values.forEach((value) => {
-                    // Ищем точное совпадение
-                    if (savedLabels.find((label) => label.value === value)) {
-                      result.push(value);
-                      return;
-                    }
-
-                    // Если точного совпадения нет, ищем одиночные ID в группах
-                    try {
-                      const parsedValue = JSON.parse(value);
-                      if (
-                        Array.isArray(parsedValue) &&
-                        parsedValue.length === 1
-                      ) {
-                        const matchingLabel = savedLabels.find((label) => {
-                          try {
-                            const labelIds = JSON.parse(label.value);
-                            return (
-                              Array.isArray(labelIds) &&
-                              labelIds.includes(parsedValue[0])
-                            );
-                          } catch {
-                            return false;
-                          }
-                        });
-                        if (matchingLabel) {
-                          result.push(matchingLabel.value);
-                        }
-                      }
-                    } catch {
-                      result.push(value);
-                    }
-                  });
-
-                  return [...new Set(result)];
-                };
-
-                const normalizedValues = normalizeValues(
-                  currentValues,
-                  savedSubsubgroupLabels,
-                );
-
-                return (
-                  <FormItem>
-                    <FormLabel>Подподподгруппа</FormLabel>
-                    <FormControl>
-                      <MultiSelect
-                        value={normalizedValues}
-                        options={subsubgroupOptions}
-                        isLoading={isSubsubgroupsLoading}
-                        onOpenChange={handleOpenSubsubgroupsSelect}
-                        onValueChange={(value) => {
-                          const numeric = value.map(Number);
-                          field.onChange(numeric);
-                          updateProductFilter("threeLvlGroupProduct", numeric);
-                        }}
-                        externalLabels={savedSubsubgroupLabels}
-                        defaultValue={normalizedValues}
-                        placeholder="Выберите подподгруппу"
-                      />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Подподподгруппа</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      value={field.value?.map(String) || []}
+                      options={subsubsubgroupOptions}
+                      isLoading={isSubSubSubGroupsLoading}
+                      onOpenChange={handleOpenSubsubsubgroupsSelect}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        updateProductFilter("threeLvlGroupProduct", value);
+                      }}
+                      externalLabels={savedSubsubsubgroupLabels}
+                      defaultValue={field.value?.map(String)}
+                      placeholder="Выберите подподгруппу"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
@@ -293,9 +192,8 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isProductLoading}
                       onOpenChange={handleOpenProductSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
-                        field.onChange(numeric);
-                        updateProductFilter("idProduct", numeric);
+                        field.onChange(value);
+                        updateProductFilter("idProduct", value);
                       }}
                       externalLabels={savedProductLabels}
                       defaultValue={field.value?.map(String)}

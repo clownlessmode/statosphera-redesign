@@ -1,9 +1,9 @@
 import { MultiSelectOption } from "@shared/ui/multiselect";
-import { useFilters } from "@entities/report/model/api/filters/shops/controller";
+import { useFilters } from "@entities/forest/model/api/filters/shops/controller";
 import { useState } from "react";
-import { ShopsFilterResponse } from "@entities/report/model/api/filters/shops/service";
+import { ShopsFilterResponse } from "@entities/forest/model/api/filters/shops/types";
 import { create } from "zustand";
-import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
+import { processFiltersDto } from "@entities/forest/model/api/filters/data/service";
 
 interface ShopsStore {
   savedShopLabels: MultiSelectOption[];
@@ -26,7 +26,7 @@ export const useShops = (allData: any) => {
     try {
       const response = await getShops(processFiltersDto(allData));
       const apiOptions = response.map((shop: ShopsFilterResponse) => ({
-        label: shop.storeName,
+        label: shop.nameStore,
         value: String(JSON.stringify(shop.idStore || [])),
       }));
 

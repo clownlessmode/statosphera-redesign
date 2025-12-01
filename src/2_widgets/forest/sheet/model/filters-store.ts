@@ -229,15 +229,15 @@ export type FiltersState = {
     };
     store: {
       idStore: string[];
-      idCity: number[];
-      idRegion: number[];
+      idCity: string[];
+      idRegion: string[];
     };
     product: {
-      idProduct: number[];
-      idGroupProduct: number[];
-      oneLvlGroupProduct: number[];
-      twoLvlGroupProduct: number[];
-      threeLvlGroupProduct: number[];
+      idProduct: string[];
+      idGroupProduct: string[];
+      oneLvlGroupProduct: string[];
+      twoLvlGroupProduct: string[];
+      threeLvlGroupProduct: string[];
       dishMeasureUnit: string[];
     };
     check: {

@@ -68,9 +68,8 @@ export const ShopsFilter: FC = () => {
                       isLoading={isRegionsLoading}
                       onOpenChange={handleOpenRegionsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
-                        field.onChange(numeric);
-                        updateStoreFilter("idRegion", numeric);
+                        field.onChange(value);
+                        updateStoreFilter("idRegion", value);
                       }}
                       externalLabels={savedRegionLabels}
                       defaultValue={field.value?.map(String)}
@@ -93,9 +92,8 @@ export const ShopsFilter: FC = () => {
                       isLoading={isCitiesLoading}
                       onOpenChange={handleOpenCitiesSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(Number);
-                        field.onChange(numeric);
-                        updateStoreFilter("idCity", numeric);
+                        field.onChange(value);
+                        updateStoreFilter("idCity", value);
                       }}
                       externalLabels={savedCityLabels}
                       defaultValue={field.value?.map(String)}

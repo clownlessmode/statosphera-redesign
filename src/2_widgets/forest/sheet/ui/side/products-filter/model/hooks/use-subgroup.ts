@@ -1,6 +1,6 @@
-import { processFiltersDtoForOptions } from "@entities/report/model/api/filters/data/service";
-import { useFilters } from "@entities/report/model/api/filters/products/controller";
-import { SubgroupFilterResponse } from "@entities/report/model/api/filters/products/types";
+import { processFiltersDto } from "@entities/forest/model/api/filters/data/service";
+import { useFilters } from "@entities/forest/model/api/filters/products/controller";
+import { SubgroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
@@ -26,13 +26,13 @@ export const useSubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubGroups(processFiltersDtoForOptions(allData));
+      const response = await getSubGroups(processFiltersDto(allData));
 
       const groupedMap = new Map<string, number[]>();
 
       response.forEach((subgroup: SubgroupFilterResponse) => {
-        const name = subgroup.subGroups;
-        const ids = subgroup.idSubGroups || [];
+        const name = subgroup.oneLvlGroupName;
+        const ids = subgroup.idOneLvlGroupProduct || [];
 
         if (groupedMap.has(name)) {
           const existingIds = groupedMap.get(name)!;

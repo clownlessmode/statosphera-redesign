@@ -1,6 +1,6 @@
-import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
-import { useFilters } from "@entities/report/model/api/filters/products/controller";
-import { GroupMainFilterResponse } from "@entities/report/model/api/filters/products/types";
+import { processFiltersDto } from "@entities/forest/model/api/filters/data/service";
+import { useFilters } from "@entities/forest/model/api/filters/products/controller";
+import { GroupMainFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
@@ -26,8 +26,8 @@ export const useGroup = (allData: any) => {
     try {
       const response = await getGroups(processFiltersDto(allData));
       const apiOptions = response.map((group: GroupMainFilterResponse) => ({
-        label: group.groupsMain,
-        value: String(JSON.stringify(group.idGroupsMain || [])),
+        label: group.groupMainName,
+        value: String(JSON.stringify(group.idProductGroup || [])),
       }));
       setGroupOptions(apiOptions);
       setGroupLabels(apiOptions);
