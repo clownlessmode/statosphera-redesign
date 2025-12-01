@@ -36,18 +36,17 @@ const RecieptsFilter: FC = () => {
                     <FormLabel htmlFor="">Тип оплаты</FormLabel>
                     <MultipleInput
                       placeholder="Введите тип оплаты"
-                      value={field.value?.map(Number) || []}
+                      value={field.value?.map(String) || []}
                       onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateCheckFilter("typePayment", numericValues);
+                        field.onChange(value);
+                        updateCheckFilter("typePayment", value.map(String));
                       }}
                     />
                   </FormItem>
                 );
               }}
             />
-            <FormField
+            {/*<FormField
               control={form.control}
               name="checkNumber"
               render={({ field }) => {
@@ -66,7 +65,7 @@ const RecieptsFilter: FC = () => {
                   </FormItem>
                 );
               }}
-            />
+            />*/}
             <FormField
               control={form.control}
               name="discountType"
@@ -76,11 +75,10 @@ const RecieptsFilter: FC = () => {
                     <FormLabel htmlFor="">Скидки</FormLabel>
                     <MultipleInput
                       placeholder="Введите скидки"
-                      value={field.value?.map(Number) || []}
+                      value={field.value?.map(String) || []}
                       onValueChange={(value) => {
-                        const numericValues = value.map(Number);
-                        field.onChange(numericValues);
-                        updateCheckFilter("discountType", numericValues);
+                        field.onChange(value);
+                        updateCheckFilter("discountType", value.map(String));
                       }}
                     />
                   </FormItem>

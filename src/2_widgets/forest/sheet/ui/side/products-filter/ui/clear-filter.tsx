@@ -25,33 +25,20 @@ const ClearFilters: FC<Props> = ({ form }) => {
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
   }, [resetSignal]);
   const handleClearFilters = () => {
-    updateProductFilter("groupFranchise", []);
-    updateProductFilter("ppProducts", null);
-    updateProductFilter("subDivisionProducts", []);
-    updateProductFilter("subGroups", []);
-    updateProductFilter("subSubGroups", []);
-    updateProductFilter("typeProducts", []);
-    updateProductFilter("teamProducts", []);
-    updateProductFilter("directionProducts", []);
-    updateProductFilter("groupsEconomist", []);
-    updateProductFilter("idGroupMain", []);
+    updateProductFilter("idGroupProduct", []);
+    updateProductFilter("oneLvlGroupProduct", []);
+    updateProductFilter("twoLvlGroupProduct", []);
+    updateProductFilter("threeLvlGroupProduct", []);
     updateProductFilter("idProduct", []);
-    updateProductFilter("seasonalityProducts", []);
-    updateProductFilter("managerAuto", []);
+    updateProductFilter("dishMeasureUnit", []);
+
     form.reset({
-      groupFranchise: [],
-      ppProducts: null,
-      subDivisionProducts: [],
-      subGroups: [],
-      subSubGroups: [],
-      typeProducts: [],
-      teamProducts: [],
-      directionProducts: [],
-      groupsEconomist: [],
-      idGroupMain: [],
+      idGroupProduct: [],
+      oneLvlGroupProduct: [],
+      twoLvlGroupProduct: [],
+      threeLvlGroupProduct: [],
       idProduct: [],
-      seasonalityProducts: [],
-      managerAuto: [],
+      dishMeasureUnit: [],
     });
   };
   const isMobile = useIsMobile();

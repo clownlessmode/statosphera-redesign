@@ -1,7 +1,7 @@
-import { Badge } from "@shared/ui/badge";
-import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
-import { useIndicatorList } from "@widgets/forest/sheet/ui/side/indicators-filter";
-import { useUniqueValues } from "@widgets/forest/sheet/ui/side/uniques-filter";
+//import { Badge } from "@shared/ui/badge";
+//import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
+//import { useIndicatorList } from "@widgets/forest/sheet/ui/side/indicators-filter";
+//import { useUniqueValues } from "@widgets/forest/sheet/ui/side/uniques-filter";
 // Компонент для отображения уникальных значений
 
 type WithChildren<T = any> = {
@@ -30,47 +30,55 @@ export function getLabelByValue(
 
   return undefined;
 }
-export function UniqueBadges({ tab }: { tab: string }) {
-  const { uniques } = useFiltersStore();
-  const uniqueList = useUniqueValues(tab as any);
+//export function UniqueBadges({ tab }: { tab: string }) {
+//const { uniques } = useFiltersStore();
+//const uniqueList = useUniqueValues(tab as any);
 
-  if (!uniques || uniques.length === 0) return null;
+//if (!uniques || uniques.length === 0) return null;
 
-  return (
-    <>
-      {uniques.map((unique, index) => (
+//return (
+// <>
+{
+  /*{uniques.map((unique, index) => (
         <Badge key={`unique-${index}`} className="flex-shrink-0">
           {getLabelByValue(uniqueList, unique) || unique}
         </Badge>
-      ))}
-    </>
-  );
+      ))}*/
 }
+//</>
+//);
+//}
 
-export function IndicatorBadges({ tab }: { tab: string }) {
-  const { indicators } = useFiltersStore();
-  const indicatorList = useIndicatorList(tab as any);
+//export function IndicatorBadges({ tab }: { tab: string }) {
+//const { indicators } = useFiltersStore();
+//const indicatorList = useIndicatorList(tab as any);
 
-  if (!indicators || indicators.length === 0) return null;
+//if (!indicators || indicators.length === 0) return null;
 
-  return (
-    <>
-      {indicators.map((indicator, index) => (
+//return (
+//<>
+{
+  /*{indicators.map((indicator, index) => (
         <Badge key={`indicator-${index}`} className="flex-shrink-0">
           {getLabelByValue(indicatorList, indicator) || indicator}
         </Badge>
-      ))}
-    </>
-  );
+      ))}*/
 }
+//</>
+//);
+//}
 
-export function ForestBadges({ tab }: { tab: string }) {
-  return (
-    <div className="flex-1 min-w-0 overflow-x-auto">
-      <div className="flex gap-2 flex-nowrap w-max ">
-        <UniqueBadges tab={tab} />
-        <IndicatorBadges tab={tab} />
-      </div>
-    </div>
-  );
+//export function ForestBadges({ tab }: { tab: string }) {
+//return (
+//<div className="flex-1 min-w-0 overflow-x-auto">
+//<div className="flex gap-2 flex-nowrap w-max ">
+{
+  /*<UniqueBadges tab={tab} />*/
 }
+{
+  /*<IndicatorBadges tab={tab} />*/
+}
+//</div>
+//</div>
+//);
+//}

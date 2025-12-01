@@ -4,8 +4,12 @@ import { useForm as useHookForm } from "react-hook-form";
 import { defaultValues, FormValues, schema } from "../../config";
 
 export const useForm = () => {
-  const { dateStart, dateEnd } = useFiltersStore((state) => state.filterDate);
-  const { timeStart, timeEnd } = useFiltersStore((state) => state.filterTime);
+  const { dateStart, dateEnd } = useFiltersStore(
+    (state) => state.filters.filterDate,
+  );
+  const { timeStart, timeEnd } = useFiltersStore(
+    (state) => state.filters.filterTime,
+  );
 
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),

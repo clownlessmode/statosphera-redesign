@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@shared/ui/button";
 import { FilterBadges } from "./filter-badges";
 import { GroupBadges } from "./group-badges";
-import { ForestBadges } from "./values-badges";
+//import { ForestBadges } from "./values-badges";
 import { Card } from "@shared/ui/card";
 import { Filter, BarChart3, Layers3 } from "lucide-react";
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import {
   filters,
   grouping,
-  indicators,
+  //indicators,
 } from "@widgets/forest/sheet/ui/commerce/model/tabs";
 
 const animationVariants = {
@@ -36,8 +36,8 @@ const FiltersAccordeon = ({
   };
 
   const targetFilterValue = filters.length > 0 ? filters[0].title : null;
-  const targetIndicatorValue =
-    indicators.length > 0 ? indicators[0].title : null;
+  //const targetIndicatorValue =
+  //  indicators.length > 0 ? indicators[0].title : null;
   const targetGroupingValue = grouping.length > 0 ? grouping[0].title : null;
   return (
     <AnimatePresence>
@@ -75,7 +75,7 @@ const FiltersAccordeon = ({
 
           {/* Показатели */}
           <Card
-            onClick={() => handleOpenSheet(targetIndicatorValue)}
+            //onClick={() => handleOpenSheet(targetIndicatorValue)}
             className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
           >
             <div className="flex items-center gap-1">
@@ -84,7 +84,7 @@ const FiltersAccordeon = ({
             </div>
             <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
               <div className="inline-flex gap-1">
-                <ForestBadges tab={tab} />
+                {/*<ForestBadges tab={tab} />*/}
               </div>
             </div>
             <Button

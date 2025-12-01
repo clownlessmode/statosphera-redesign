@@ -68,7 +68,7 @@ export const ShopsFilter: FC = () => {
                       isLoading={isRegionsLoading}
                       onOpenChange={handleOpenRegionsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
+                        const numeric = value.map(Number);
                         field.onChange(numeric);
                         updateStoreFilter("idRegion", numeric);
                       }}
@@ -93,7 +93,7 @@ export const ShopsFilter: FC = () => {
                       isLoading={isCitiesLoading}
                       onOpenChange={handleOpenCitiesSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
+                        const numeric = value.map(Number);
                         field.onChange(numeric);
                         updateStoreFilter("idCity", numeric);
                       }}

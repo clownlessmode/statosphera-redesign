@@ -76,7 +76,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
           <form className={cn("flex flex-col gap-4 w-full", className)}>
             <FormField
               control={form.control}
-              name="idGroupMain"
+              name="idGroupProduct"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Группа</FormLabel>
@@ -87,9 +87,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isGroupsLoading}
                       onOpenChange={handleOpenGroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
+                        const numeric = value.map(Number);
                         field.onChange(numeric);
-                        updateProductFilter("idGroupMain", value);
+                        updateProductFilter("idGroupProduct", numeric);
                       }}
                       externalLabels={savedGroupLabels}
                       defaultValue={field.value?.map(String)}
@@ -101,7 +101,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
             />
             <FormField
               control={form.control}
-              name="subGroups"
+              name="oneLvlGroupProduct"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Подгруппа</FormLabel>
@@ -112,9 +112,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isSubGroupsLoading}
                       onOpenChange={handleOpenSubgroupsSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
+                        const numeric = value.map(Number);
                         field.onChange(numeric);
-                        updateProductFilter("subGroups", numeric);
+                        updateProductFilter("oneLvlGroupProduct", numeric);
                       }}
                       externalLabels={savedSubgroupLabels}
                       defaultValue={field.value?.map(String)}
@@ -126,7 +126,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
             />
             <FormField
               control={form.control}
-              name="subSubGroups"
+              name="twoLvlGroupProduct"
               render={({ field }) => {
                 const currentValues = field.value?.map(String) || [];
 
@@ -189,9 +189,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                         isLoading={isSubsubgroupsLoading}
                         onOpenChange={handleOpenSubsubgroupsSelect}
                         onValueChange={(value) => {
-                          const numeric = value.map(String);
+                          const numeric = value.map(Number);
                           field.onChange(numeric);
-                          updateProductFilter("subSubGroups", numeric);
+                          updateProductFilter("twoLvlGroupProduct", numeric);
                         }}
                         externalLabels={savedSubsubgroupLabels}
                         defaultValue={normalizedValues}
@@ -204,7 +204,7 @@ const ProductsFilter: FC<Props> = ({ className }) => {
             />
             <FormField
               control={form.control}
-              name="subSubGroups"
+              name="threeLvlGroupProduct"
               render={({ field }) => {
                 const currentValues = field.value?.map(String) || [];
 
@@ -267,9 +267,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                         isLoading={isSubsubgroupsLoading}
                         onOpenChange={handleOpenSubsubgroupsSelect}
                         onValueChange={(value) => {
-                          const numeric = value.map(String);
+                          const numeric = value.map(Number);
                           field.onChange(numeric);
-                          updateProductFilter("subSubGroups", numeric);
+                          updateProductFilter("threeLvlGroupProduct", numeric);
                         }}
                         externalLabels={savedSubsubgroupLabels}
                         defaultValue={normalizedValues}
@@ -293,9 +293,9 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                       isLoading={isProductLoading}
                       onOpenChange={handleOpenProductSelect}
                       onValueChange={(value) => {
-                        const numeric = value.map(String);
+                        const numeric = value.map(Number);
                         field.onChange(numeric);
-                        updateProductFilter("idProduct", value);
+                        updateProductFilter("idProduct", numeric);
                       }}
                       externalLabels={savedProductLabels}
                       defaultValue={field.value?.map(String)}

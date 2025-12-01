@@ -12,7 +12,7 @@ import {
 } from "@shared/ui/view-tabs";
 import { Separator } from "@shared/ui/separator";
 import { CombinedSubmitButton } from "./submit-button";
-import { filters, grouping, indicators } from "../model/tabs";
+import { filters, grouping } from "../model/tabs";
 import { Eraser } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { useFormResetStore } from "@widgets/forest/sheet/model/reset-store";
@@ -74,22 +74,6 @@ const CommerceInner = () => {
               ))}
             </ViewTabsGroupContent>
           </ViewTabsGroup>
-          <Separator />
-          <ViewTabsGroup>
-            <ViewTabsLabel>Показатели</ViewTabsLabel>
-            <ViewTabsGroupContent>
-              {indicators.map((item, index) => (
-                <ViewTabsTrigger
-                  value={item.title}
-                  icon={item.icon}
-                  key={`indicator-trigger-${index}`}
-                >
-                  {item.title}
-                </ViewTabsTrigger>
-              ))}
-            </ViewTabsGroupContent>
-          </ViewTabsGroup>
-          <Separator />
           <CombinedSubmitButton />
         </ViewTabsList>
       )}
@@ -123,14 +107,6 @@ const CommerceInner = () => {
             <item.component />
           </ViewTabsContent>
         ))}
-        {indicators.map((item, index) => (
-          <ViewTabsContent
-            value={item.title}
-            key={`indicator-content-${index}`}
-          >
-            <item.component />
-          </ViewTabsContent>
-        ))}
       </div>
     </>
   );
@@ -142,9 +118,7 @@ const Commerce = () => {
       ? filters[0].title
       : grouping.length > 0
         ? grouping[0].title
-        : indicators.length > 0
-          ? indicators[0].title
-          : "";
+        : "";
 
   return (
     <ViewTabs

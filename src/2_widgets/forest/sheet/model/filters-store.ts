@@ -219,81 +219,50 @@ if (today.getDate() === 1) {
 export type FiltersState = {
   // Основная структура данных
   filters: {
+    filterDate: {
+      dateStart: string;
+      dateEnd: string;
+    };
+    filterTime: {
+      timeStart: string;
+      timeEnd: string;
+    };
     store: {
       idStore: string[];
-      idCity: string[];
-      idRegion: string[];
-      idManager: string[];
-      storeCondition: string[];
-      ageGroup: AGE_GROUP[];
-      idLegalEntity: string[];
-      channel: FRS_CHANNEL[];
-      district: string[];
+      idCity: number[];
+      idRegion: number[];
     };
     product: {
-      groupFranchise: string[];
-      ppProducts: boolean | null;
-      subDivisionProducts: string[];
-      subGroups: string[];
-      subSubGroups: string[];
-      typeProducts: string[];
-      teamProducts: string[];
-      directionProducts: string[];
-      groupsEconomist: string[];
-      groupsMain: string[];
-      idGroupMain: string[];
-      idProduct: string[];
-      seasonalityProducts: string[];
-      managerAuto: string[];
+      idProduct: number[];
+      idGroupProduct: number[];
+      oneLvlGroupProduct: number[];
+      twoLvlGroupProduct: number[];
+      threeLvlGroupProduct: number[];
+      dishMeasureUnit: string[];
     };
     check: {
-      tabNumber: number[];
-      containsBankQr: boolean | null;
-      paymentClass: "Безналичный" | "Наличный" | null;
-      shift: number[];
-      cashBox: number[];
-      checkNumber: number[];
-      numberfield: number[];
-      type: ("Продажа" | "Возврат")[];
-      discountType: number[];
-      typePayment: number[];
+      typePayment: string[];
+      discountType: string[];
     };
-    loyal: {
-      isLoyal: boolean | null;
-      cardNumber: string[];
-      sex: "M" | "Ж" | null;
-      guidDiscount: string[];
-      guidBonus: string[];
-      ageStart: number | null;
-      ageEnd: number | null;
-      groupAge: string[];
-      colorsDiscount: string[];
-    };
-    onlineStore: {
-      isIm: boolean | null;
-      imTypeOrder: string[];
-      imDeliveryMethod: string[];
-      imPaymentMethod: string[];
-      imStatusOrder: string[];
-      imReceiveInterval: string[];
-      imPromo: string[];
-    };
-    writeoff: {
-      indicator: OPERATION_WRITE_OFF[];
-      article: ARTICLE_WRITE_OFF[];
-    };
+    //loyal: {
+    //  isLoyal: boolean | null;
+    //  cardNumber: string[];
+    //  sex: "M" | "Ж" | null;
+    //  guidDiscount: string[];
+    //  guidBonus: string[];
+    //  ageStart: number | null;
+    //  ageEnd: number | null;
+    //  groupAge: string[];
+    //  colorsDiscount: string[];
+    //};
+    //writeoff: {
+    //  indicator: OPERATION_WRITE_OFF[];
+    //  article: ARTICLE_WRITE_OFF[];
+    //};
   };
-  uniques: string[];
-  indicators: string[];
+  //uniques: string[];
+  //indicators: string[];
   values: string[];
-  filterDate: {
-    dateStart: string;
-    dateEnd: string;
-  };
-  filterTime: {
-    timeStart: string;
-    timeEnd: string;
-  };
   sorts: {
     sort: "asc" | "desc";
     colId: string[];
@@ -318,17 +287,17 @@ export type FiltersState = {
     value: FiltersState["filters"]["check"][K],
   ) => void;
 
-  updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
-    key: K,
-    value: FiltersState["filters"]["loyal"][K],
-  ) => void;
+  //updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
+  //  key: K,
+  //  value: FiltersState["filters"]["loyal"][K],
+  //) => void;
 
-  updateOnlineStoreFilter: <
-    K extends keyof FiltersState["filters"]["onlineStore"],
-  >(
-    key: K,
-    value: FiltersState["filters"]["onlineStore"][K],
-  ) => void;
+  //updateOnlineStoreFilter: <
+  //  K extends keyof FiltersState["filters"]["onlineStore"],
+  //>(
+  //  key: K,
+  //  value: FiltersState["filters"]["onlineStore"][K],
+  //) => void;
 
   // updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
   //   key: K,
@@ -340,26 +309,26 @@ export type FiltersState = {
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
   updatePagination: (limit: number, offset: number) => void;
   updateGroups: (groups: string[]) => void;
-  updateUniques: (uniques: string[]) => void;
-  updateIndicators: (indicators: string[]) => void;
+  //updateUniques: (uniques: string[]) => void;
+  //updateIndicators: (indicators: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
-    | "uniques"
-    | "indicators"
+    //| "uniques"
+    //| "indicators"
     | "updateStoreFilter"
     | "updateProductFilter"
     | "updateCheckFilter"
-    | "updateLoyalFilter"
-    | "updateOnlineStoreFilter"
-    | "updateWriteoffFilter"
+    //| "updateLoyalFilter"
+    //| "updateOnlineStoreFilter"
+    //| "updateWriteoffFilter"
     | "updateDateFilter"
     | "updateTimeFilter"
     | "updateSorts"
     | "updatePagination"
     | "updateGroups"
-    | "updateUniques"
-    | "updateIndicators"
+    //| "updateUniques"
+    //| "updateIndicators"
     | "resetAllFilters"
     | "getApiPayload"
   >;
@@ -371,95 +340,64 @@ const initialState: Omit<
   | "updateStoreFilter"
   | "updateProductFilter"
   | "updateCheckFilter"
-  | "updateLoyalFilter"
-  | "updateOnlineStoreFilter"
-  | "updateWriteoffFilter"
+  //| "updateLoyalFilter"
+  //| "updateOnlineStoreFilter"
+  //| "updateWriteoffFilter"
   | "updateDateFilter"
   | "updateTimeFilter"
   | "updateSorts"
   | "updatePagination"
   | "updateGroups"
-  | "updateUniques"
-  | "updateIndicators"
+  //| "updateUniques"
+  //| "updateIndicators"
   | "resetAllFilters"
   | "getApiPayload"
 > = {
   filters: {
+    filterDate: {
+      dateStart,
+      dateEnd,
+    },
+    filterTime: {
+      timeStart: "",
+      timeEnd: "",
+    },
     store: {
       idStore: [],
       idCity: [],
       idRegion: [],
-      idManager: [],
-      storeCondition: [],
-      ageGroup: [],
-      idLegalEntity: [],
-      channel: [],
-      district: [],
     },
     product: {
-      groupFranchise: [],
-      ppProducts: null,
-      subDivisionProducts: [],
-      subGroups: [],
-      subSubGroups: [],
-      typeProducts: [],
-      teamProducts: [],
-      directionProducts: [],
-      groupsEconomist: [],
-      groupsMain: [],
-      idGroupMain: [],
       idProduct: [],
-      seasonalityProducts: [],
-      managerAuto: [],
+      idGroupProduct: [],
+      oneLvlGroupProduct: [],
+      twoLvlGroupProduct: [],
+      threeLvlGroupProduct: [],
+      dishMeasureUnit: [],
     },
     check: {
-      tabNumber: [],
-      containsBankQr: null,
-      paymentClass: null,
-      shift: [],
-      cashBox: [],
-      checkNumber: [],
-      numberfield: [],
-      type: [],
       discountType: [],
       typePayment: [],
     },
-    loyal: {
-      isLoyal: null,
-      cardNumber: [],
-      sex: null,
-      guidDiscount: [],
-      guidBonus: [],
-      ageStart: null,
-      ageEnd: null,
-      colorsDiscount: [],
-      groupAge: [],
-    },
-    onlineStore: {
-      isIm: null,
-      imTypeOrder: [],
-      imDeliveryMethod: [],
-      imPaymentMethod: [],
-      imStatusOrder: [],
-      imReceiveInterval: [],
-      imPromo: [],
-    },
-    writeoff: {
-      indicator: [],
-      article: [],
-    },
+    //loyal: {
+    //  isLoyal: null,
+    //  cardNumber: [],
+    //  sex: null,
+    //  guidDiscount: [],
+    //  guidBonus: [],
+    //  ageStart: null,
+    //  ageEnd: null,
+    //  colorsDiscount: [],
+    //  groupAge: [],
+    //},
+    //writeoff: {
+    //  indicator: [],
+    //  article: [],
+    //},
   },
   values: ["proceeds"],
-  uniques: [],
-  indicators: ["proceeds"],
-  filterDate: {
-    dateStart,
-    dateEnd,
-  },
-  filterTime: {
-    timeStart: "",
-    timeEnd: "",
-  },
+  //uniques: [],
+  //indicators: ["proceeds"],
   sorts: {
     sort: "desc",
     colId: [],
@@ -504,28 +442,28 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       },
     })),
 
-  updateLoyalFilter: (key, value) => {
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        loyal: {
-          ...state.filters.loyal,
-          [key]: value,
-        },
-      },
-    }));
-  },
+  //updateLoyalFilter: (key, value) => {
+  //  set((state) => ({
+  //    filters: {
+  //      ...state.filters,
+  //      loyal: {
+  //        ...state.filters.loyal,
+  //        [key]: value,
+  //      },
+  //    },
+  //  }));
+  //},
 
-  updateOnlineStoreFilter: (key, value) =>
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        onlineStore: {
-          ...state.filters.onlineStore,
-          [key]: value,
-        },
-      },
-    })),
+  //updateOnlineStoreFilter: (key, value) =>
+  //  set((state) => ({
+  //    filters: {
+  //      ...state.filters,
+  //      onlineStore: {
+  //        ...state.filters.onlineStore,
+  //        [key]: value,
+  //      },
+  //    },
+  //  })),
 
   // updateWriteoffFilter: (key, value) =>
   //   set((state) => ({
@@ -539,10 +477,10 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
   //   })),
 
   updateDateFilter: (dateStart, dateEnd) =>
-    set({ filterDate: { dateStart, dateEnd } }),
+    set({ filters: { ...get().filters, filterDate: { dateStart, dateEnd } } }),
 
   updateTimeFilter: (timeStart, timeEnd) =>
-    set({ filterTime: { timeStart, timeEnd } }),
+    set({ filters: { ...get().filters, filterTime: { timeStart, timeEnd } } }),
 
   updateSorts: (sort, colId) => set({ sorts: { sort, colId } }),
 
@@ -550,17 +488,17 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
 
   updateGroups: (groups) => set({ groups }),
 
-  updateUniques: (uniques) =>
-    set({
-      uniques,
-      values: [...uniques, ...get().indicators], // Автоматически обновляем values
-    }),
+  //updateUniques: (uniques) =>
+  //  set({
+  //    uniques,
+  //    values: [...uniques, ...get().indicators], // Автоматически обновляем values
+  //  }),
 
-  updateIndicators: (indicators) =>
-    set({
-      indicators,
-      values: [...get().uniques, ...indicators], // Автоматически обновляем values
-    }),
+  //updateIndicators: (indicators) =>
+  //  set({
+  //    indicators,
+  //    values: [...get().uniques, ...indicators], // Автоматически обновляем values
+  //  }),
 
   resetAllFilters: () => set(initialState),
 
@@ -569,8 +507,6 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
     return {
       filters: state.filters,
       values: state.values,
-      filterDate: state.filterDate,
-      filterTime: state.filterTime,
       sorts: state.sorts,
       limit: state.limit,
       offset: state.offset,

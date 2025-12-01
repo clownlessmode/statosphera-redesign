@@ -94,12 +94,9 @@ export class ForestService {
   static async getForestTotal(
     dto: FilterApiPayload,
   ): Promise<ForestTotalResponse> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { limit, offset, ...payload } = dto;
-
     const response = await api.post<any>(
       "iiko/data_total",
-      processFiltersDto(payload),
+      processFiltersDto(dto),
     );
     return response.data;
   }

@@ -30,22 +30,10 @@ const ClearFilters: FC<Props> = ({ form }) => {
     updateStoreFilter("idStore", []);
     updateStoreFilter("idCity", []);
     updateStoreFilter("idRegion", []);
-    updateStoreFilter("idManager", []);
-    updateStoreFilter("storeCondition", []);
-    updateStoreFilter("ageGroup", []);
-    updateStoreFilter("idLegalEntity", []);
-    updateStoreFilter("channel", []);
-    updateStoreFilter("district", []);
     form.reset({
       idStore: [],
       idCity: [],
       idRegion: [],
-      idManager: [],
-      storeCondition: [],
-      ageGroup: [],
-      idLegalEntity: [],
-      channel: [],
-      district: [],
     });
   };
   const isMobile = useIsMobile();

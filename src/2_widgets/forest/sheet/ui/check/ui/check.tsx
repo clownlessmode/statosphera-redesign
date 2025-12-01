@@ -14,7 +14,7 @@ import { Separator } from "@shared/ui/separator";
 
 import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
-import { filters, grouping, indicators } from "../model/tabs";
+import { filters, grouping } from "../model/tabs";
 import { Button } from "@shared/ui/button";
 import { Eraser } from "lucide-react";
 import { useIsMobile } from "@shared/hooks/use-mobile";
@@ -79,7 +79,7 @@ const CheckInner = () => {
           <ViewTabsGroup>
             <ViewTabsLabel>Показатели</ViewTabsLabel>
             <ViewTabsGroupContent>
-              {indicators.map((item) => (
+              {/*{indicators.map((item) => (
                 <ViewTabsTrigger
                   value={item.title}
                   icon={item.icon}
@@ -87,7 +87,7 @@ const CheckInner = () => {
                 >
                   {item.title}
                 </ViewTabsTrigger>
-              ))}
+              ))}*/}
             </ViewTabsGroupContent>
           </ViewTabsGroup>
           <Separator />
@@ -124,11 +124,11 @@ const CheckInner = () => {
             <item.component />
           </ViewTabsContent>
         ))}
-        {indicators.map((item) => (
+        {/*{indicators.map((item) => (
           <ViewTabsContent value={item.title} key={item.title}>
             <item.component />
           </ViewTabsContent>
-        ))}
+        ))}*/}
       </div>
     </>
   );
@@ -137,7 +137,10 @@ const CheckInner = () => {
 export default function Check() {
   // берём дефолтное значение, как и в Commerce
   const defaultValue =
-    filters[0]?.title || grouping[0]?.title || indicators[0]?.title || "";
+    filters[0]?.title ||
+    grouping[0]?.title ||
+    //|| indicators[0]?.title
+    "";
 
   return (
     <ViewTabs

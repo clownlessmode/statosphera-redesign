@@ -6,62 +6,36 @@ import { processArrayableValue } from "@shared/lib/arrayable-string";
 
 export const useForm = () => {
   const {
-    directionProducts,
-    groupFranchise,
-    groupsEconomist,
-    idGroupMain,
     idProduct,
-    managerAuto,
-    ppProducts,
-    seasonalityProducts,
-    subDivisionProducts,
-    subGroups,
-    subSubGroups,
-    teamProducts,
-    typeProducts,
+    idGroupProduct,
+    oneLvlGroupProduct,
+    twoLvlGroupProduct,
+    threeLvlGroupProduct,
+    dishMeasureUnit,
   } = useFiltersStore((state) => state.filters.product);
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      directionProducts: processArrayableValue(
-        directionProducts,
-        defaultValues.directionProducts,
-      ),
-      groupFranchise: processArrayableValue(
-        groupFranchise,
-        defaultValues.groupFranchise,
-      ),
-      groupsEconomist: processArrayableValue(
-        groupsEconomist,
-        defaultValues.groupsEconomist,
-      ),
-      idGroupMain: processArrayableValue(
-        idGroupMain,
-        defaultValues.idGroupMain,
-      ),
       idProduct: processArrayableValue(idProduct, defaultValues.idProduct),
-      managerAuto: managerAuto || defaultValues.managerAuto,
-      ppProducts: ppProducts || defaultValues.ppProducts,
-      seasonalityProducts: processArrayableValue(
-        seasonalityProducts,
-        defaultValues.seasonalityProducts,
+      idGroupProduct: processArrayableValue(
+        idGroupProduct,
+        defaultValues.idGroupProduct,
       ),
-      subDivisionProducts: processArrayableValue(
-        subDivisionProducts,
-        defaultValues.subDivisionProducts,
+      oneLvlGroupProduct: processArrayableValue(
+        oneLvlGroupProduct,
+        defaultValues.oneLvlGroupProduct,
       ),
-      subGroups: processArrayableValue(subGroups, defaultValues.subGroups),
-      subSubGroups: processArrayableValue(
-        subSubGroups,
-        defaultValues.subSubGroups,
+      twoLvlGroupProduct: processArrayableValue(
+        twoLvlGroupProduct,
+        defaultValues.twoLvlGroupProduct,
       ),
-      teamProducts: processArrayableValue(
-        teamProducts,
-        defaultValues.teamProducts,
+      threeLvlGroupProduct: processArrayableValue(
+        threeLvlGroupProduct,
+        defaultValues.threeLvlGroupProduct,
       ),
-      typeProducts: processArrayableValue(
-        typeProducts,
-        defaultValues.typeProducts,
+      dishMeasureUnit: processArrayableValue(
+        dishMeasureUnit,
+        defaultValues.dishMeasureUnit,
       ),
     },
     mode: "onSubmit",

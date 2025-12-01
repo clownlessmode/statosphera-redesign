@@ -45,7 +45,7 @@ export const CombinedSubmitButton = ({
 }: React.ComponentProps<"button">) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useTableVersionStore();
-  const { getApiPayload, filterDate } = useFiltersStore();
+  const { getApiPayload, filters } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError, clearAll } = useForestStore();
   const { getGraph, getTable, getTotal } = useForest();
   const { setCount } = useCountStore();
@@ -57,10 +57,10 @@ export const CombinedSubmitButton = ({
     return (
       groups.length === 0 ||
       values.length === 0 ||
-      !isValidDate(filterDate.dateStart) ||
-      !isValidDate(filterDate.dateEnd)
+      !isValidDate(filters.filterDate.dateStart) ||
+      !isValidDate(filters.filterDate.dateEnd)
     );
-  }, [getApiPayload, filterDate.dateStart, filterDate.dateEnd]);
+  }, [getApiPayload, filters.filterDate.dateStart, filters.filterDate.dateEnd]);
 
   const handleSubmit = async () => {
     clearAll();
@@ -78,19 +78,19 @@ export const CombinedSubmitButton = ({
           groups: [value],
           filters: {
             ...allData.filters,
-            loyal: {
-              ...allData.filters.loyal,
-              ageStart:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageStart,
-              ageEnd:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageEnd,
-            },
+            //loyal: {
+            //  ...allData.filters.loyal,
+            //  ageStart:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageStart,
+            //  ageEnd:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageEnd,
+            //},
           },
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
@@ -98,19 +98,19 @@ export const CombinedSubmitButton = ({
           ...allData,
           filters: {
             ...allData.filters,
-            loyal: {
-              ...allData.filters.loyal,
-              ageStart:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageStart,
-              ageEnd:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageEnd,
-            },
+            //loyal: {
+            //  ...allData.filters.loyal,
+            //  ageStart:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageStart,
+            //  ageEnd:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageEnd,
+            //},
           },
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),
@@ -118,19 +118,19 @@ export const CombinedSubmitButton = ({
           ...allData,
           filters: {
             ...allData.filters,
-            loyal: {
-              ...allData.filters.loyal,
-              ageStart:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageStart,
-              ageEnd:
-                allData.filters.loyal.ageStart === 0 &&
-                allData.filters.loyal.ageEnd === 100
-                  ? null
-                  : allData.filters.loyal.ageEnd,
-            },
+            //loyal: {
+            //  ...allData.filters.loyal,
+            //  ageStart:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageStart,
+            //  ageEnd:
+            //    allData.filters.loyal.ageStart === 0 &&
+            //    allData.filters.loyal.ageEnd === 100
+            //      ? null
+            //      : allData.filters.loyal.ageEnd,
+            //},
           },
           sorts: { colId: [allData.values[0]], sort: "desc" },
         }),

@@ -72,38 +72,39 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
 };
 
 export function FilterBadges({ tab }: { tab: string }) {
-  const { filters, filterDate, filterTime } = useFiltersStore();
+  const { filters } = useFiltersStore();
 
   const renderBadges = () => {
     const badges: JSX.Element[] = [];
 
     // 1. Сначала добавляем период (если есть)
-    if (filterDate?.dateStart && filterDate?.dateEnd) {
+    if (filters.filterDate?.dateStart && filters.filterDate?.dateEnd) {
       badges.push(
         <Badge key="date-range">
           {`Период: ${formatDate(
-            filterDate.dateStart,
+            filters.filterDate.dateStart,
             "dd.MM.yyyy",
-          )} - ${formatDate(filterDate.dateEnd, "dd.MM.yyyy")}`}
+          )} - ${formatDate(filters.filterDate.dateEnd, "dd.MM.yyyy")}`}
         </Badge>,
       );
     }
 
     // 2. Затем фильтры по времени
-    if (filterTime?.timeStart) {
+    if (filters.filterTime?.timeStart) {
       badges.push(
-        <Badge key="time-start">{`Время от: ${filterTime.timeStart}`}</Badge>,
+        <Badge key="time-start">{`Время от: ${filters.filterTime.timeStart}`}</Badge>,
       );
     }
-    if (filterTime?.timeEnd) {
+    if (filters.filterTime?.timeEnd) {
       badges.push(
-        <Badge key="time-end">{`Время до: ${filterTime.timeEnd}`}</Badge>,
+        <Badge key="time-end">{`Время до: ${filters.filterTime.timeEnd}`}</Badge>,
       );
     }
 
     // 3. Остальные фильтры с подсчетом количества
     Object.entries(filters).forEach(([sectionKey, sectionValue]) => {
       if (typeof sectionValue !== "object" || sectionValue === null) return;
+      if (sectionKey === "filterDate" || sectionKey === "filterTime") return;
 
       const activeFilters = Object.entries(sectionValue).filter(([, value]) => {
         // Убираем имя для первого параметра

@@ -1,3 +1,3 @@
-import IndicatorsFilter from "./indicators-filter";
+//import IndicatorsFilter from "./indicators-filter";
 
-export { IndicatorsFilter };
+//export { IndicatorsFilter };

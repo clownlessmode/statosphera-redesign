@@ -36,41 +36,18 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       idStore: [],
       idCity: [],
       idRegion: [],
-      storeCondition: [],
-      ageGroup: [],
-      channel: [],
     },
     product: {
       idProduct: [],
-      idGroupMain: [],
-      groupFranchise: [],
-      subGroups: [],
-      subSubGroups: [],
-      typeProducts: [],
-      teamProducts: [],
-      directionProducts: [],
-      groupsEconomist: [],
-      seasonalityProducts: [],
-      managerAuto: [],
+      idGroupProduct: [],
+      oneLvlGroupProduct: [],
+      twoLvlGroupProduct: [],
+      threeLvlGroupProduct: [],
+      dishMeasureUnit: [],
     },
     check: {
-      tabNumber: [],
-      cashBox: [],
-      idCheck: [],
-      type: [],
-    },
-    loyal: {
-      cardNumber: [],
-      sex: [],
-      colorsDiscount: [],
-    },
-    onlineStore: {
-      imTypeOrder: [],
-      imDeliveryMethod: [],
-      imPaymentMethod: [],
-      imStatusOrder: [],
-      imPromo: [],
-      imReceiveInterval: [],
+      typePayment: [],
+      discountType: [],
     },
   };
   for (const currentRow of selectedRows) {
@@ -285,7 +262,7 @@ const Forest: FC = () => {
   const { value: dateFilterValue } = useDateFilterStore();
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
-  const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
+  const { getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
   console.log("allData:", allData);
   const prepareLine = usePreparedStackedLine();
@@ -349,10 +326,6 @@ const Forest: FC = () => {
         const payload = getApiPayload();
         getGraph({
           ...payload,
-          filterDate: {
-            dateStart: payload.filterDate.dateStart,
-            dateEnd: payload.filterDate.dateEnd,
-          },
           filters: initialFiltersRef.current.filters,
           groups: [dateFilterValue],
           values: initialFiltersRef.current.values,
@@ -394,35 +367,34 @@ const Forest: FC = () => {
             extractedFilters.product.idProduct.length > 0
               ? extractedFilters.product.idProduct
               : payload.filters.product.idProduct,
-          idGroupMain:
-            extractedFilters.product.idGroupMain.length > 0
-              ? extractedFilters.product.idGroupMain
-              : payload.filters.product.idGroupMain,
-        },
-        loyal: {
-          ...payload.filters.loyal,
-          ageStart:
-            payload.filters.loyal.ageStart === 0 &&
-            payload.filters.loyal.ageEnd === 100
-              ? null
-              : payload.filters.loyal.ageStart,
-          ageEnd:
-            payload.filters.loyal.ageStart === 0 &&
-            payload.filters.loyal.ageEnd === 100
-              ? null
-              : payload.filters.loyal.ageEnd,
+          idGroupProduct:
+            extractedFilters.product.idGroupProduct.length > 0
+              ? extractedFilters.product.idGroupProduct
+              : payload.filters.product.idGroupProduct,
+          oneLvlGroupProduct:
+            extractedFilters.product.oneLvlGroupProduct.length > 0
+              ? extractedFilters.product.oneLvlGroupProduct
+              : payload.filters.product.oneLvlGroupProduct,
+          twoLvlGroupProduct:
+            extractedFilters.product.twoLvlGroupProduct.length > 0
+              ? extractedFilters.product.twoLvlGroupProduct
+              : payload.filters.product.twoLvlGroupProduct,
+          threeLvlGroupProduct:
+            extractedFilters.product.threeLvlGroupProduct.length > 0
+              ? extractedFilters.product.threeLvlGroupProduct
+              : payload.filters.product.threeLvlGroupProduct,
+          dishMeasureUnit:
+            extractedFilters.product.dishMeasureUnit.length > 0
+              ? extractedFilters.product.dishMeasureUnit
+              : payload.filters.product.dishMeasureUnit,
         },
       };
 
       // Запрашиваем только график с новыми фильтрами
       getGraph({
         ...payload,
-        filterDate: {
-          dateStart: payload.filterDate.dateStart,
-          dateEnd: payload.filterDate.dateEnd,
-        },
         filters: mergedFilters,
-        groups: [dateFilterValue], // Используем значение из DateFilterStore
+        groups: [dateFilterValue],
         values: payload.values,
       }).then((response) => {
         if (response) {
@@ -475,15 +447,6 @@ const Forest: FC = () => {
               break;
             }
           }
-        }
-
-        // Обновляем показатели
-        if (isFieldAnIndicator) {
-          updateIndicators([parentIndicator]);
-          updateUniques([]);
-        } else {
-          updateUniques([parentIndicator]);
-          updateIndicators([]);
         }
 
         // Извлекаем фильтры из строки, на которую кликнули
@@ -656,12 +619,8 @@ const Forest: FC = () => {
         // Запрашиваем только график
         getGraph({
           ...payload,
-          filterDate: {
-            dateStart: payload.filterDate.dateStart,
-            dateEnd: payload.filterDate.dateEnd,
-          },
           filters: mergedFilters,
-          groups: [dateFilterValue], // Используем значение из DateFilterStore
+          groups: [dateFilterValue],
           values: newValues,
         }).then((response) => {
           if (response) {
@@ -676,8 +635,6 @@ const Forest: FC = () => {
     [
       indicators,
       uniques,
-      updateIndicators,
-      updateUniques,
       getApiPayload,
       getGraph,
       setGraph,
@@ -741,25 +698,8 @@ const Forest: FC = () => {
 
       const requestPromise = getTable({
         ...payload,
-        filterDate: {
-          dateStart: payload.filterDate.dateStart,
-          dateEnd: payload.filterDate.dateEnd,
-        },
         filters: {
           ...payload.filters,
-          loyal: {
-            ...payload.filters.loyal,
-            ageStart:
-              payload.filters.loyal.ageStart === 0 &&
-              allData.filters.loyal.ageEnd === 100
-                ? null
-                : payload.filters.loyal.ageStart,
-            ageEnd:
-              payload.filters.loyal.ageStart === 0 &&
-              allData.filters.loyal.ageEnd === 100
-                ? null
-                : payload.filters.loyal.ageEnd,
-          },
         },
         offset: startRow,
         limit: endRow - startRow,

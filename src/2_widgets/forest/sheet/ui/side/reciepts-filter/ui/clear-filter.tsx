@@ -26,15 +26,9 @@ const ClearFilters: FC<Props> = ({ form }) => {
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
   }, [resetSignal]);
   const handleClearFilters = () => {
-    updateCheckFilter("tabNumber", []);
-    updateCheckFilter("shift", []);
-    updateCheckFilter("checkNumber", []);
     updateCheckFilter("discountType", []);
     updateCheckFilter("typePayment", []);
     form.reset({
-      tabNumber: [],
-      shift: [],
-      checkNumber: [],
       discountType: [],
       typePayment: [],
     });

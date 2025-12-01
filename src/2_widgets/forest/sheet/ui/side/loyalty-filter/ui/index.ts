@@ -1,3 +1,3 @@
-import LoyaltyFilter from "./loyalty-filter";
+//import LoyaltyFilter from "./loyalty-filter";
 
-export { LoyaltyFilter };
+//export { LoyaltyFilter };

@@ -19,7 +19,7 @@ import { create } from "zustand";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { useSearchParams } from "react-router";
 import { useForestStore } from "@widgets/forest/sheet/model/forest-store";
-import { useReport } from "@entities/report/model/api/filters/data/controller";
+import { useForest } from "@entities/forest/model/api/filters/data/controller";
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
@@ -43,7 +43,7 @@ const DateDropdown = () => {
 
   const allData = getApiPayload();
   // const disabled = allData.groups.length === 0 || allData.values.length === 0;
-  const { getGraph } = useReport();
+  const { getGraph } = useForest();
   const { value, setValue } = useDateFilterStore();
   const handleSubmit = async (value: DateFilterValue) => {
     try {

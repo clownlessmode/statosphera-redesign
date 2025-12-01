@@ -3,7 +3,6 @@ import { Eraser } from "lucide-react";
 import { FC, useEffect, useRef } from "react";
 import { FormValues } from "../config";
 import { UseFormReturn } from "react-hook-form";
-import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { useFormResetStore } from "@widgets/forest/sheet/model/reset-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 
@@ -12,7 +11,6 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateUniques } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
   const isMobile = useIsMobile();
   const didMountRef = useRef(false);
@@ -26,7 +24,6 @@ const ClearFilters: FC<Props> = ({ form }) => {
   }, [resetSignal]);
 
   const handleClearFilters = () => {
-    updateUniques([]);
     form.reset({
       proceeds: [],
     });
