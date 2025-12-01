@@ -1,4 +1,4 @@
-import { processFiltersDtoForOptions } from "@entities/report/model/api/filters/data/service";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 import { useFilters } from "@entities/report/model/api/filters/products/controller";
 import { SubgroupFilterResponse } from "@entities/report/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
@@ -26,7 +26,7 @@ export const useSubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubGroups(processFiltersDtoForOptions(allData));
+      const response = await getSubGroups(processFiltersDto(allData));
 
       const groupedMap = new Map<string, number[]>();
 
