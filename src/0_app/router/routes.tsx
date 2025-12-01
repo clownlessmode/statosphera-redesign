@@ -35,8 +35,8 @@ import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
+import { FarmerChat } from "@pages/farmer/chat";
 import { Farmers } from "@pages/farmers";
-//import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -397,14 +397,14 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Аналитика фермера",
   },
-  //{
-  //  path: ROUTES_PATH.CHAT,
-  //  variant: "private",
-  //  element: <Chat />,
-  //  allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
-  //  layout: Sidebar,
-  //  label: "Чаты",
-  //},
+  {
+    path: ROUTES_PATH.CHAT,
+    variant: "private",
+    element: <FarmerChat />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
+    label: "Чаты",
+  },
   {
     path: ROUTES_PATH.FARMERS,
     variant: "private",
