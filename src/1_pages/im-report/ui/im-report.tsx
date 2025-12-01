@@ -11,7 +11,6 @@ import { Button } from "@shared/ui/button";
 import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import UniversalTable from "@pages/report/ui/table";
-import { calculateTotalRow } from "@pages/report/ui/table/utils";
 import { columnDefs } from "@shared/constants/table-columns";
 import { toast } from "sonner";
 import { IMService } from "../api/service";
@@ -38,7 +37,7 @@ export const IMReport = () => {
     [store, filters, filterDate, groups],
   );
 
-  const { imTable } = useIM(mock);
+  const { imTable, isIMTableLoading } = useIM(mock);
 
   // Автоматически открываем модалку группировок, если групп нет
   useEffect(() => {
@@ -51,23 +50,6 @@ export const IMReport = () => {
   const combinedData = useMemo(() => {
     return imTable || [];
   }, [imTable]);
-
-  // Вычисляем итоговую строку с суммой всех числовых полей
-  const totalData = useMemo(() => {
-    if (!combinedData || combinedData.length === 0) return [];
-    const total = calculateTotalRow(combinedData);
-    // Округляем все числовые значения до 2 знаков после запятой для корректного отображения
-    const formattedTotal: Record<string, any> = {};
-    Object.keys(total).forEach((key) => {
-      const value = total[key];
-      if (typeof value === "number") {
-        formattedTotal[key] = Math.round(value * 100) / 100;
-      } else {
-        formattedTotal[key] = value;
-      }
-    });
-    return [formattedTotal];
-  }, [combinedData]);
 
   const handleExportReport = async () => {
     setIsExporting(true);
@@ -161,8 +143,8 @@ export const IMReport = () => {
           <UniversalTable
             selectionType="multiple"
             data={combinedData as any}
-            totalData={totalData as any}
             columnDefs={columnDefs}
+            isLoading={isIMTableLoading}
             data-testid="data-table"
           />
         )}
