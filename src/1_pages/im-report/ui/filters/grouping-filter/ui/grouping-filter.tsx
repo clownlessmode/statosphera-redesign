@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
 import { Calendar, Layers3 } from "lucide-react";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 
 import { DAYS } from "../config";
 import { useLoyaltyFiltersStore } from "../../filters-store";
@@ -35,16 +35,14 @@ const GroupingFilter: FC<GroupingFilterProps> = ({ open, onOpenChange }) => {
 
   const { updateGroups } = useLoyaltyFiltersStore();
 
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      const groups = [...(values.days || [])].filter(
-        (item): item is string => item !== undefined,
-      );
-
-      updateGroups(groups);
-    });
-    return () => subscription.unsubscribe();
-  }, [form, updateGroups]);
+  const handleApply = () => {
+    const values = form.getValues();
+    const groups = [...(values.days || [])].filter(
+      (item): item is string => item !== undefined,
+    );
+    updateGroups(groups);
+    setIsOpen(false);
+  };
 
   const filterFields = useMemo(
     () =>
@@ -147,6 +145,23 @@ const GroupingFilter: FC<GroupingFilterProps> = ({ open, onOpenChange }) => {
                       />
                     ),
                 )}
+                <div className="flex flex-row gap-2 justify-end mt-4 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full"
+                  >
+                    Отмена
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleApply}
+                    className="w-full"
+                  >
+                    Применить
+                  </Button>
+                </div>
               </form>
             </Form>
           </CardContent>

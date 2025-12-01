@@ -34,4 +34,8 @@ export interface UniversalTableProps {
    * Массив выбранных строк для синхронизации с внешним состоянием
    */
   selectedRows?: any[];
+  /**
+   * Состояние загрузки данных
+   */
+  isLoading?: boolean;
 }

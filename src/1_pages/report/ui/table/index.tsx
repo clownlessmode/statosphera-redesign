@@ -30,6 +30,7 @@ export default function UniversalTable({
   onSortChange,
   selectionType = "single",
   selectedRows = [],
+  isLoading = false,
 }: Props) {
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -137,6 +138,24 @@ export default function UniversalTable({
     }
   }, [selectedRows]);
 
+  // Убираем тень и обводку у overlay загрузки
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      .ag-overlay-loading-center {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        padding: 0 !important;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <div
       className={`rounded-[16px] overflow-hidden border border-border h-full w-full flex-1 ${
@@ -178,6 +197,10 @@ export default function UniversalTable({
         }}
         onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
         overlayNoRowsTemplate="Нет данных для отображения"
+        overlayLoadingTemplate={
+          '<div class="ag-overlay-loading-center" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;"><div style="width: 50px; height: 50px; border: 4px solid rgba(0,0,0,0.1); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div><div style="margin-top: 16px; text-align: center; font-size: 14px; color: hsl(var(--foreground));">Загрузка данных...</div><style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style></div>'
+        }
+        loading={isLoading && (!data || data.length === 0)}
         onGridReady={(params) => {
           const api = params.api;
           gridApiRef.current = api;
