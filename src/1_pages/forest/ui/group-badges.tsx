@@ -8,7 +8,6 @@ import {
   GEO,
   ID,
   LOYAL,
-  ONLINE,
   PRODUCT,
 } from "@widgets/forest/sheet/ui/side/grouping-filter";
 
@@ -19,7 +18,6 @@ const allGroups = [
   ...GEO,
   ...PRODUCT,
   ...LOYAL,
-  ...ONLINE,
   ...ID,
   {
     label: "Час",

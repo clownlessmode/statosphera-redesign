@@ -29,9 +29,9 @@ import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-// import { useNavigate } from "react-router";
+
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
-  const filters: any = {
+  const filters = {
     store: {
       idStore: [],
       idCity: [],
@@ -50,193 +50,31 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       discountType: [],
     },
   };
+
+  const mapping: Record<string, string[]> = {
+    // Store
+    id_store: filters.store.idStore,
+    id_city: filters.store.idCity,
+    id_region: filters.store.idRegion,
+
+    // Product
+    id_product: filters.product.idProduct,
+    group_id: filters.product.idGroupProduct,
+    idSubGroups: filters.product.oneLvlGroupProduct,
+    idSubSubGroups: filters.product.twoLvlGroupProduct,
+    idSubSubSubGroups: filters.product.threeLvlGroupProduct,
+
+    // Check
+    typePayment: filters.check.typePayment,
+    discountType: filters.check.discountType,
+  };
+
   for (const currentRow of selectedRows) {
-    if (
-      currentRow.id_store &&
-      !filters.store.idStore.includes(currentRow.id_store)
-    ) {
-      filters.store.idStore.push(currentRow.id_store);
-    }
-    if (
-      currentRow.id_city &&
-      !filters.store.idCity.includes(currentRow.id_city)
-    ) {
-      filters.store.idCity.push(currentRow.id_city);
-    }
-    if (
-      currentRow.id_region &&
-      !filters.store.idRegion.includes(currentRow.id_region)
-    ) {
-      filters.store.idRegion.push(currentRow.id_region);
-    }
-    if (
-      currentRow.storeCondition &&
-      !filters.store.storeCondition.includes(currentRow.storeCondition)
-    ) {
-      filters.store.storeCondition.push(currentRow.storeCondition);
-    }
-    if (
-      currentRow.ageGroup &&
-      !filters.store.ageGroup.includes(currentRow.ageGroup)
-    ) {
-      filters.store.ageGroup.push(currentRow.ageGroup);
-    }
-    if (
-      currentRow.channel &&
-      !filters.store.channel.includes(currentRow.channel)
-    ) {
-      filters.store.channel.push(currentRow.channel);
-    }
-    if (
-      currentRow.id_product &&
-      !filters.product.idProduct.includes(currentRow.id_product)
-    ) {
-      filters.product.idProduct.push(currentRow.id_product);
-    }
-    if (
-      currentRow.group_id &&
-      !filters.product.idGroupMain.includes(currentRow.group_id)
-    ) {
-      filters.product.idGroupMain.push(currentRow.group_id);
-    }
-    if (
-      currentRow.idGroupsFranchise &&
-      !filters.product.groupFranchise.includes(currentRow.idGroupsFranchise)
-    ) {
-      filters.product.groupFranchise.push(currentRow.idGroupsFranchise);
-    }
-    if (
-      currentRow.idSubGroups &&
-      !filters.product.subGroups.includes(currentRow.idSubGroups)
-    ) {
-      filters.product.subGroups.push(currentRow.idSubGroups);
-    }
-    if (
-      currentRow.idSubSubGroups &&
-      !filters.product.subSubGroups.includes(currentRow.idSubSubGroups)
-    ) {
-      filters.product.subSubGroups.push(currentRow.idSubSubGroups);
-    }
-    if (
-      currentRow.idTypeProducts &&
-      !filters.product.typeProducts.includes(currentRow.idTypeProducts)
-    ) {
-      filters.product.typeProducts.push(currentRow.idTypeProducts);
-    }
-    if (
-      currentRow.idTeamProducts &&
-      !filters.product.teamProducts.includes(currentRow.idTeamProducts)
-    ) {
-      filters.product.teamProducts.push(currentRow.idTeamProducts);
-    }
-    if (
-      currentRow.idDirectionProducts &&
-      !filters.product.directionProducts.includes(
-        currentRow.idDirectionProducts,
-      )
-    ) {
-      filters.product.directionProducts.push(currentRow.idDirectionProducts);
-    }
-    if (
-      currentRow.idGroupsEconomist &&
-      !filters.product.groupsEconomist.includes(currentRow.idGroupsEconomist)
-    ) {
-      filters.product.groupsEconomist.push(currentRow.idGroupsEconomist);
-    }
-    if (
-      currentRow.idSeasonalityProducts &&
-      !filters.product.seasonalityProducts.includes(
-        currentRow.idSeasonalityProducts,
-      )
-    ) {
-      filters.product.seasonalityProducts.push(
-        currentRow.idSeasonalityProducts,
-      );
-    }
-    if (
-      currentRow.idManagerAuto &&
-      !filters.product.managerAuto.includes(currentRow.idManagerAuto)
-    ) {
-      filters.product.managerAuto.push(currentRow.idManagerAuto);
-    }
-    if (
-      currentRow.tabNumber &&
-      !filters.check.tabNumber.includes(currentRow.tabNumber)
-    ) {
-      filters.check.tabNumber.push(currentRow.tabNumber);
-    }
-    if (
-      currentRow.cashBox &&
-      !filters.check.cashBox.includes(currentRow.cashBox)
-    ) {
-      filters.check.cashBox.push(currentRow.cashBox);
-    }
-    if (
-      currentRow.idCheck &&
-      !filters.check.idCheck.includes(currentRow.idCheck)
-    ) {
-      filters.check.idCheck.push(currentRow.idCheck);
-    }
-    if (currentRow.type && !filters.check.type.includes(currentRow.type)) {
-      filters.check.type.push(currentRow.type);
-    }
-    if (
-      currentRow.colorsDiscount &&
-      !filters.loyal.colorsDiscount.includes(currentRow.colorsDiscount)
-    ) {
-      filters.loyal.colorsDiscount.push(currentRow.colorsDiscount);
-    }
-    if (
-      currentRow.cardNumber &&
-      !filters.loyal.cardNumber.includes(currentRow.cardNumber)
-    ) {
-      filters.loyal.cardNumber.push(currentRow.cardNumber);
-    }
-    if (
-      currentRow.sexLoyal &&
-      !filters.loyal.sex.includes(currentRow.sexLoyal)
-    ) {
-      filters.loyal.sex.push(currentRow.sexLoyal);
-    }
-    if (
-      currentRow.imTypeOrder &&
-      !filters.onlineStore.imTypeOrder.includes(currentRow.imTypeOrder)
-    ) {
-      filters.onlineStore.imTypeOrder.push(currentRow.imTypeOrder);
-    }
-    if (
-      currentRow.imDeliveryMethod &&
-      !filters.onlineStore.imDeliveryMethod.includes(
-        currentRow.imDeliveryMethod,
-      )
-    ) {
-      filters.onlineStore.imDeliveryMethod.push(currentRow.imDeliveryMethod);
-    }
-    if (
-      currentRow.imPaymentMethod &&
-      !filters.onlineStore.imPaymentMethod.includes(currentRow.imPaymentMethod)
-    ) {
-      filters.onlineStore.imPaymentMethod.push(currentRow.imPaymentMethod);
-    }
-    if (
-      currentRow.imStatusOrder &&
-      !filters.onlineStore.imStatusOrder.includes(currentRow.imStatusOrder)
-    ) {
-      filters.onlineStore.imStatusOrder.push(currentRow.imStatusOrder);
-    }
-    if (
-      currentRow.imPromo &&
-      !filters.onlineStore.imPromo.includes(currentRow.imPromo)
-    ) {
-      filters.onlineStore.imPromo.push(currentRow.imPromo);
-    }
-    if (
-      currentRow.imReceiveInterval &&
-      !filters.onlineStore.imReceiveInterval.includes(
-        currentRow.imReceiveInterval,
-      )
-    ) {
-      filters.onlineStore.imReceiveInterval.push(currentRow.imReceiveInterval);
+    for (const [rowKey, targetArray] of Object.entries(mapping)) {
+      const value = currentRow[rowKey];
+      if (value && !targetArray.includes(value)) {
+        targetArray.push(value);
+      }
     }
   }
 
@@ -479,18 +317,6 @@ const Forest: FC = () => {
               extractedFilters.store.idRegion.length > 0
                 ? extractedFilters.store.idRegion
                 : baseFilters.store.idRegion,
-            storeCondition:
-              extractedFilters.store.storeCondition.length > 0
-                ? extractedFilters.store.storeCondition
-                : baseFilters.store.storeCondition,
-            ageGroup:
-              extractedFilters.store.ageGroup.length > 0
-                ? extractedFilters.store.ageGroup
-                : baseFilters.store.ageGroup,
-            channel:
-              extractedFilters.store.channel.length > 0
-                ? extractedFilters.store.channel
-                : baseFilters.store.channel,
           },
           product: {
             ...baseFilters.product,
@@ -498,119 +324,60 @@ const Forest: FC = () => {
               extractedFilters.product.idProduct.length > 0
                 ? extractedFilters.product.idProduct
                 : baseFilters.product.idProduct,
-            idGroupMain:
-              extractedFilters.product.idGroupMain.length > 0
-                ? extractedFilters.product.idGroupMain
-                : baseFilters.product.idGroupMain,
-            groupFranchise:
-              extractedFilters.product.groupFranchise.length > 0
-                ? extractedFilters.product.groupFranchise
-                : baseFilters.product.groupFranchise,
-            subGroups:
-              extractedFilters.product.subGroups.length > 0
-                ? extractedFilters.product.subGroups
-                : baseFilters.product.subGroups,
-            subSubGroups:
-              extractedFilters.product.subSubGroups.length > 0
-                ? extractedFilters.product.subSubGroups
-                : baseFilters.product.subSubGroups,
-            typeProducts:
-              extractedFilters.product.typeProducts.length > 0
-                ? extractedFilters.product.typeProducts
-                : baseFilters.product.typeProducts,
-            teamProducts:
-              extractedFilters.product.teamProducts.length > 0
-                ? extractedFilters.product.teamProducts
-                : baseFilters.product.teamProducts,
-            directionProducts:
-              extractedFilters.product.directionProducts.length > 0
-                ? extractedFilters.product.directionProducts
-                : baseFilters.product.directionProducts,
-            groupsEconomist:
-              extractedFilters.product.groupsEconomist.length > 0
-                ? extractedFilters.product.groupsEconomist
-                : baseFilters.product.groupsEconomist,
-            seasonalityProducts:
-              extractedFilters.product.seasonalityProducts.length > 0
-                ? extractedFilters.product.seasonalityProducts
-                : baseFilters.product.seasonalityProducts,
-            managerAuto:
-              extractedFilters.product.managerAuto.length > 0
-                ? extractedFilters.product.managerAuto
-                : baseFilters.product.managerAuto,
+            oneLvlGroupProduct:
+              extractedFilters.product.oneLvlGroupProduct.length > 0
+                ? extractedFilters.product.oneLvlGroupProduct
+                : baseFilters.product.oneLvlGroupProduct,
+            twoLvlGroupProduct:
+              extractedFilters.product.twoLvlGroupProduct.length > 0
+                ? extractedFilters.product.twoLvlGroupProduct
+                : baseFilters.product.twoLvlGroupProduct,
+            threeLvlGroupProduct:
+              extractedFilters.product.threeLvlGroupProduct.length > 0
+                ? extractedFilters.product.threeLvlGroupProduct
+                : baseFilters.product.threeLvlGroupProduct,
+            dishMeasureUnit:
+              extractedFilters.product.dishMeasureUnit.length > 0
+                ? extractedFilters.product.dishMeasureUnit
+                : baseFilters.product.dishMeasureUnit,
           },
           check: {
             ...baseFilters.check,
-            tabNumber:
-              extractedFilters.check.tabNumber.length > 0
-                ? extractedFilters.check.tabNumber
-                : baseFilters.check.tabNumber,
-            cashBox:
-              extractedFilters.check.cashBox.length > 0
-                ? extractedFilters.check.cashBox
-                : baseFilters.check.cashBox,
-            idCheck:
-              extractedFilters.check.idCheck.length > 0
-                ? extractedFilters.check.idCheck
-                : baseFilters.check.idCheck,
-            type:
-              extractedFilters.check.type.length > 0
-                ? extractedFilters.check.type
-                : baseFilters.check.type,
+            typePayment:
+              extractedFilters.check.typePayment.length > 0
+                ? extractedFilters.check.typePayment
+                : baseFilters.check.typePayment,
+            discountType:
+              extractedFilters.check.discountType.length > 0
+                ? extractedFilters.check.discountType
+                : baseFilters.check.discountType,
           },
-          loyal: {
-            ...baseFilters.loyal,
-            cardNumber:
-              extractedFilters.loyal.cardNumber.length > 0
-                ? extractedFilters.loyal.cardNumber
-                : baseFilters.loyal.cardNumber,
-            sex:
-              extractedFilters.loyal.sex.length > 0
-                ? extractedFilters.loyal.sex
-                : baseFilters.loyal.sex,
-            colorsDiscount:
-              extractedFilters.loyal.colorsDiscount &&
-              extractedFilters.loyal.colorsDiscount.length > 0
-                ? extractedFilters.loyal.colorsDiscount
-                : baseFilters.loyal.colorsDiscount || [],
-            ageStart:
-              baseFilters.loyal.ageStart === 0 &&
-              baseFilters.loyal.ageEnd === 100
-                ? null
-                : baseFilters.loyal.ageStart,
-            ageEnd:
-              baseFilters.loyal.ageStart === 0 &&
-              baseFilters.loyal.ageEnd === 100
-                ? null
-                : baseFilters.loyal.ageEnd,
-          },
-          onlineStore: {
-            ...baseFilters.onlineStore,
-            imTypeOrder:
-              extractedFilters.onlineStore.imTypeOrder.length > 0
-                ? extractedFilters.onlineStore.imTypeOrder
-                : baseFilters.onlineStore.imTypeOrder,
-            imDeliveryMethod:
-              extractedFilters.onlineStore.imDeliveryMethod.length > 0
-                ? extractedFilters.onlineStore.imDeliveryMethod
-                : baseFilters.onlineStore.imDeliveryMethod,
-            imPaymentMethod:
-              extractedFilters.onlineStore.imPaymentMethod.length > 0
-                ? extractedFilters.onlineStore.imPaymentMethod
-                : baseFilters.onlineStore.imPaymentMethod,
-            imStatusOrder:
-              extractedFilters.onlineStore.imStatusOrder.length > 0
-                ? extractedFilters.onlineStore.imStatusOrder
-                : baseFilters.onlineStore.imStatusOrder,
-            imPromo:
-              extractedFilters.onlineStore.imPromo.length > 0
-                ? extractedFilters.onlineStore.imPromo
-                : baseFilters.onlineStore.imPromo,
-            imReceiveInterval:
-              extractedFilters.onlineStore.imReceiveInterval.length > 0
-                ? extractedFilters.onlineStore.imReceiveInterval
-                : baseFilters.onlineStore.imReceiveInterval,
-          },
+          //loyal: {
+          //  ...baseFilters.loyal,
+          //  cardNumber:
+          //    extractedFilters.loyal.cardNumber.length > 0
+          //      ? extractedFilters.loyal.cardNumber
+          //      : baseFilters.loyal.cardNumber,
+          //  sex:
+          //    extractedFilters.loyal.sex.length > 0
+          //      ? extractedFilters.loyal.sex
+          //      : baseFilters.loyal.sex,
+          //  colorsDiscount:
+          //    extractedFilters.loyal.colorsDiscount &&
+          //    extractedFilters.loyal.colorsDiscount.length > 0
+          //      ? extractedFilters.loyal.colorsDiscount
+          //      : baseFilters.loyal.colorsDiscount || [],
+          //  ageStart:
+          //    baseFilters.loyal.ageStart === 0 &&
+          //    baseFilters.loyal.ageEnd === 100
+          //      ? null
+          //      : baseFilters.loyal.ageStart,
+          //  ageEnd:
+          //    baseFilters.loyal.ageStart === 0 &&
+          //    baseFilters.loyal.ageEnd === 100
+          //      ? null
+          //      : baseFilters.loyal.ageEnd,
+          //},
         };
 
         // Используем новый показатель в values

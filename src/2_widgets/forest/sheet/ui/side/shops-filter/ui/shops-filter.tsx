@@ -43,8 +43,6 @@ export const ShopsFilter: FC = () => {
     isShopsLoading,
   } = useShops(payload);
 
-  console.log(savedShopLabels);
-
   return (
     <Card className="w-full mr-4">
       <CardHeader>

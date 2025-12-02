@@ -1,7 +1,7 @@
 import {
   Calendar,
   CircleDotDashed,
-  //Combine,
+  Combine,
   Grid2x2Check,
   Receipt,
   ShoppingBasket,
@@ -14,7 +14,7 @@ import { GroupingFilter } from "../../side/grouping-filter";
 import { IndicatorsFilter } from "../../side/indicators-filter";
 //import { LoyaltyFilter } from "../../side/loyalty-filter"; добавить потом
 import { RecieptsFilter } from "../../side/reciepts-filter";
-//import { UniqueFilters } from "../../side/uniques-filter";
+import { UniqueFilters } from "../../side/uniques-filter";
 
 export const filters = [
   {
@@ -58,9 +58,9 @@ export const indicators = [
     icon: Grid2x2Check,
     component: IndicatorsFilter,
   },
-  //{
-  //  title: "Уникальные значения",
-  //  icon: Combine,
-  //  component: UniqueFilters,
-  //},
+  {
+    title: "Уникальные значения",
+    icon: Combine,
+    component: UniqueFilters,
+  },
 ];

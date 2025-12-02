@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useTabStore } from "@widgets/report/sheet/model/url-store";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import {
   ViewTabs,
   ViewTabsContent,
@@ -11,8 +11,7 @@ import {
   useViewTabs,
 } from "@shared/ui/view-tabs";
 import { Separator } from "@shared/ui/separator";
-
-import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
+import { useFormResetStore } from "@widgets/forest/sheet/model/reset-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
 import { filters, grouping, indicators } from "../model/tabs";
 import { Button } from "@shared/ui/button";

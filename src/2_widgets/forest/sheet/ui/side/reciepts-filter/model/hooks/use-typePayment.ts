@@ -25,7 +25,7 @@ export const useTypePayment = (allData: any) => {
 
   const handleOpenTypePaymentSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
-
+    allData.filters.check.typePayment = [];
     try {
       const response = await getTypePayment(processFiltersDto(allData));
       const apiOptions = response.map(

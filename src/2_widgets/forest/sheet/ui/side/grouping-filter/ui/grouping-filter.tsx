@@ -10,7 +10,6 @@ import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
 import {
   BadgeCheck,
   Calendar,
-  Globe,
   MapPin,
   Receipt,
   ShoppingBasket,
@@ -19,7 +18,7 @@ import {
 import { FC, useEffect, useMemo } from "react";
 
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
-import { DAYS, GEO, ID, LOYAL, ONLINE, PRODUCT } from "../config";
+import { DAYS, GEO, ID, LOYAL, PRODUCT } from "../config";
 import {
   GROUPINGS,
   useFiltersStore,
@@ -46,14 +45,9 @@ const GroupingFilter: FC = () => {
   useEffect(() => {
     const subscription = form.watch((values) => {
       const groups = [
-        ...(values.channel || []),
         ...(values.days || []),
         ...(values.geo || []),
         ...(values.product || []),
-        ...(values.store || []),
-        ...(values.loyal || []),
-        ...(values.personal || []),
-        ...(values.online || []),
         ...(values.id || []),
       ].filter((item): item is string => item !== undefined);
 
@@ -94,13 +88,6 @@ const GroupingFilter: FC = () => {
           label: "Лояльность",
           icon: <BadgeCheck />,
           options: LOYAL,
-          visible: tab === "check",
-        },
-        {
-          name: "online",
-          label: "Интернет магазин",
-          icon: <Globe />,
-          options: ONLINE,
           visible: tab === "check",
         },
         {

@@ -1,23 +1,23 @@
 import {
-  ReportGraphResponse,
-  ReportTableResponse,
-  ReportTotalResponse,
-} from "@entities/report/model/api/filters/data/service";
+  ForestGraphResponse,
+  ForestTableResponse,
+  ForestTotalResponse,
+} from "@entities/forest/model/api/filters/data/service";
 import { ApiError } from "@shared/api/types";
 import { create } from "zustand";
 
 interface ForestStore {
-  graph: ReportGraphResponse | null;
-  total: ReportTotalResponse | null;
-  table: ReportTableResponse | null;
+  graph: ForestGraphResponse | null;
+  total: ForestTotalResponse | null;
+  table: ForestTableResponse | null;
   error: string | null;
   lastUpdate: number;
   isGraphLoading: boolean;
   isTableLoading: boolean;
   isTotalLoading: boolean;
-  setGraph: (data: ReportGraphResponse) => void;
-  setTotal: (data: ReportTotalResponse) => void;
-  setTable: (data: ReportTableResponse) => void;
+  setGraph: (data: ForestGraphResponse) => void;
+  setTotal: (data: ForestTotalResponse) => void;
+  setTable: (data: ForestTableResponse) => void;
   setError: (data: ApiError) => void;
   setGraphLoading: (loading: boolean) => void;
   setTableLoading: (loading: boolean) => void;

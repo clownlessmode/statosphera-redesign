@@ -1,4 +1,4 @@
-import { GROUPINGS } from "@widgets/report/sheet/model/filters-store";
+import { GROUPINGS } from "@widgets/forest/sheet/model/filters-store";
 
 export const DAYS = [
   {
@@ -77,18 +77,6 @@ export const LOYAL = [
   },
 ];
 
-export const ONLINE = [
-  {
-    label: "Способ оплаты",
-    value: GROUPINGS.IM_PAYMENT_METHOD,
-  },
-  {
-    label: "Период доставки",
-    value: GROUPINGS.IM_RECEIVE_INTERVAL,
-    disabled: true,
-  },
-];
-
 export const ID = [
   {
     label: "ID чека",
@@ -97,5 +85,15 @@ export const ID = [
   {
     label: "Номер кассы",
     value: GROUPINGS.CASH_BOX,
+    disabled: true,
+  },
+  {
+    label: "Способ оплаты",
+    value: GROUPINGS.PAYMENT_METHOD,
+  },
+  {
+    label: "Период доставки",
+    value: GROUPINGS.IM_RECEIVE_INTERVAL,
+    disabled: true,
   },
 ];

@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import { DiscountTypeFilterResponse, TypePaymentFilterResponse } from "./types";
-
-import { FilterApiPayload } from "@widgets/report/sheet/model/filters-store";
+import { FilterApiPayload } from "@widgets/forest/sheet/model/filters-store";
 import { CheckFilterService } from "./service";
 export const useFilters = () => {
   const queryClient = useQueryClient();

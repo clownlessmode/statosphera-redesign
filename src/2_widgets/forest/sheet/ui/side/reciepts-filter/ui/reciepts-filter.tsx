@@ -13,6 +13,13 @@ import { FC } from "react";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { useTypePayment } from "../model/hooks/use-typePayment";
 import { useDiscountType } from "../model/hooks/use-discountType";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+} from "@shared/ui/select";
 
 const RecieptsFilter: FC = () => {
   const form = useForm();
@@ -52,19 +59,30 @@ const RecieptsFilter: FC = () => {
                 return (
                   <FormItem>
                     <FormLabel htmlFor="">Тип оплаты</FormLabel>
-                    <MultiSelect
-                      value={field.value?.map(String) || []}
-                      options={typePaymentOptions}
-                      isLoading={isTypePaymentLoading}
+                    <Select
+                      value={field.value?.[0] || ""}
+                      disabled={isTypePaymentLoading}
                       onOpenChange={handleOpenTypePaymentSelect}
                       onValueChange={(value) => {
-                        field.onChange(value);
-                        updateCheckFilter("typePayment", value);
+                        field.onChange([value]);
+                        updateCheckFilter("typePayment", [value]);
                       }}
-                      externalLabels={savedTypePaymentLabels}
-                      defaultValue={field.value?.map(String)}
-                      placeholder="Выберите тип оплаты"
-                    />
+                    >
+                      <SelectTrigger className="w-full bg-background!">
+                        <SelectValue placeholder="Выберите тип оплаты">
+                          {savedTypePaymentLabels.find(
+                            (label) => label.value === field.value?.[0],
+                          )?.label || ""}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {typePaymentOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormItem>
                 );
               }}

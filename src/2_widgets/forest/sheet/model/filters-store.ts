@@ -19,8 +19,9 @@ export enum FULL_GROUPS_SERVER {
   STORE_CONDITION = "storeCondition",
   GROUP = "group",
   PRODUCT = "product",
-  SUBGROUPS = "subGroups",
-  SUBSUBGROUPS = "subSubGroups",
+  SUBGROUPS = "oneLvlGroupProduct",
+  SUBSUBGROUPS = "twoLvlGroupProduct",
+  SUBSUBSUBGROUPS = "threeLvlGroupProduct",
   GROUP_ECONOMIST = "groupsEconomist",
   TYPE_PRODUCT = "typeProducts",
   CARD_NUMBER = "cardNumber",
@@ -28,7 +29,7 @@ export enum FULL_GROUPS_SERVER {
   ID_CHECK = "idCheck",
   IM_TYPE_ORDER = "imTypeOrder",
   IM_DELIVERY_METHOD = "imDeliveryMethod",
-  IM_PAYMENT_METHOD = "imPaymentMethod",
+  PAYMENT_METHOD = "typePayment",
   IM_STATUS_ORDER = "imStatusOrder",
   IM_PROMO = "imPromo",
   IM_RECEIVE_INTERVAL = "imReceiveInterval",
@@ -99,7 +100,7 @@ export enum GROUPINGS {
   CASH_BOX = FULL_GROUPS_SERVER.CASH_BOX,
   IM_TYPE_ORDER = FULL_GROUPS_SERVER.IM_TYPE_ORDER,
   IM_DELIVERY_METHOD = FULL_GROUPS_SERVER.IM_DELIVERY_METHOD,
-  IM_PAYMENT_METHOD = FULL_GROUPS_SERVER.IM_PAYMENT_METHOD,
+  PAYMENT_METHOD = FULL_GROUPS_SERVER.PAYMENT_METHOD,
   IM_STATUS_ORDER = FULL_GROUPS_SERVER.IM_STATUS_ORDER,
   IM_PROMO = FULL_GROUPS_SERVER.IM_PROMO,
   IM_RECEIVE_INTERVAL = FULL_GROUPS_SERVER.IM_RECEIVE_INTERVAL,
@@ -309,7 +310,7 @@ export type FiltersState = {
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
   updatePagination: (limit: number, offset: number) => void;
   updateGroups: (groups: string[]) => void;
-  //updateUniques: (uniques: string[]) => void;
+  updateUniques: (uniques: string[]) => void;
   updateIndicators: (indicators: string[]) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
@@ -327,7 +328,7 @@ export type FiltersState = {
     | "updateSorts"
     | "updatePagination"
     | "updateGroups"
-    //| "updateUniques"
+    | "updateUniques"
     | "updateIndicators"
     | "resetAllFilters"
     | "getApiPayload"
@@ -348,7 +349,7 @@ const initialState: Omit<
   | "updateSorts"
   | "updatePagination"
   | "updateGroups"
-  //| "updateUniques"
+  | "updateUniques"
   | "updateIndicators"
   | "resetAllFilters"
   | "getApiPayload"
@@ -488,11 +489,11 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
 
   updateGroups: (groups) => set({ groups }),
 
-  //updateUniques: (uniques) =>
-  //  set({
-  //    uniques,
-  //    values: [...uniques, ...get().indicators], // Автоматически обновляем values
-  //  }),
+  updateUniques: (uniques) =>
+    set({
+      uniques,
+      values: [...uniques, ...get().indicators], // Автоматически обновляем values
+    }),
 
   updateIndicators: (indicators) =>
     set({

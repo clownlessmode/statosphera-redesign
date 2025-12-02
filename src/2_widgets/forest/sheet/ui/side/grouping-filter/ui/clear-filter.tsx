@@ -29,13 +29,9 @@ const ClearFilters: FC<Props> = ({ form }) => {
     updateGroups([]);
     form.reset({
       days: [],
-      channel: [],
       geo: [],
-      store: [],
       product: [],
       loyal: [],
-      personal: [],
-      online: [],
       id: [],
     });
   };

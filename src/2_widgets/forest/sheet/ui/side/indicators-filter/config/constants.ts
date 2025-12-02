@@ -169,60 +169,6 @@ const all_indicators = [
     ],
   },
   {
-    id: COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
-    label: "Списания, вес",
-    value: COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
-    icon: MinusCircle,
-    children: [
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT,
-        label: "Списания, вес",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT,
-        tooltip:
-          "Общий вес списанных товаров в килограммах за выбранный период",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
-        label: "Списания, вес PM",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
-        tooltip: "Вес списанных товаров за предыдущий месяц",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
-        label: "Списания, вес MOM",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_MOM,
-        tooltip: "Изменение веса списаний по сравнению с предыдущим месяцем",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
-        label: "Списания, вес MOM%",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_MOM,
-        tooltip:
-          "Процентное изменение веса списаний относительно предыдущего месяца",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
-        label: "Списания, вес PY",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_LY,
-        tooltip: "Вес списанных товаров за аналогичный период прошлого года",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
-        label: "Списания, вес YOY",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_YOY,
-        tooltip:
-          "Изменение веса списаний по сравнению с аналогичным периодом прошлого года",
-      },
-      {
-        id: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
-        label: "Списания, вес YOY%",
-        value: COLUMN_KEY.WRITEOFF_WEIGHT_PERCENT_YOY,
-        tooltip:
-          "Процентное изменение веса списаний относительно аналогичного периода прошлого года",
-      },
-    ],
-  },
-  {
     id: COLUMN_KEY.WRITEOFF_COUNT_GROUP,
     label: "Списания, кол-во",
     value: COLUMN_KEY.WRITEOFF_COUNT_GROUP,

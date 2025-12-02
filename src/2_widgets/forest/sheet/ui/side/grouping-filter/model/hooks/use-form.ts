@@ -1,15 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
 
-import {
-  GEO,
-  PRODUCT,
-  LOYAL,
-  ONLINE,
-  ID,
-  FormValues,
-  schema,
-} from "../../config";
+import { GEO, PRODUCT, LOYAL, ID, FormValues, schema } from "../../config";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 
 export const useForm = ({
@@ -33,7 +25,6 @@ export const useForm = ({
       geo: match(extractValues(GEO)),
       product: match(extractValues(PRODUCT)),
       loyal: match(extractValues(LOYAL)),
-      online: match(extractValues(ONLINE)),
       id: match(extractValues(ID)),
     },
     mode: "all",

@@ -2,13 +2,12 @@ import {
   Calendar,
   CircleDotDashed,
   Grid2x2Check,
-  //Combine,
-  //Grid2x2Check,
+  Combine,
   ShoppingBasket,
   Store,
 } from "lucide-react";
 
-//import { UniqueFilters } from "../../side/uniques-filter";
+import { UniqueFilters } from "../../side/uniques-filter";
 import { DateFilter } from "../../side/date-filter";
 import { ShopsFilter } from "../../side/shops-filter";
 import { ProductsFilter } from "../../side/products-filter";
@@ -47,9 +46,9 @@ export const indicators = [
     icon: Grid2x2Check,
     component: IndicatorsFilter,
   },
-  //{
-  //  title: "Уникальные значения",
-  //  icon: Combine,
-  //  component: UniqueFilters,
-  //},
+  {
+    title: "Уникальные значения",
+    icon: Combine,
+    component: UniqueFilters,
+  },
 ];
