@@ -51,6 +51,10 @@ export const PRODUCT = [
     value: GROUPINGS.SUBSUBGROUPS,
   },
   {
+    label: "Подподподгруппа",
+    value: GROUPINGS.SUBSUBSUBGROUPS,
+  },
+  {
     label: "Номенклатура",
     value: GROUPINGS.PRODUCT,
   },
@@ -59,6 +63,7 @@ export const LOYAL = [
   {
     label: "Номер карты",
     value: GROUPINGS.CARD_NUMBER,
+    disabled: true,
   },
   {
     label: "Пол",

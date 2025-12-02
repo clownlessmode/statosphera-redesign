@@ -4316,6 +4316,7 @@ export enum ColumnsKeyGroupings {
   LEGAL_ENTITY = "legalEntity",
   IM_DELIVERY_METHOD = "imDeliveryMethod",
   IM_PAYMENT_METHOD = "imPaymentMethod",
+  PAYMENT_METHOD = "typePayment",
   IM_STATUS_ORDER = "imStatusOrder",
   IM_RECEIVE_INTERVAL = "imReceiveInterval",
   IM_PROMO = "imPromo",
@@ -4339,6 +4340,10 @@ export enum ColumnsKeyGroupings {
   ID_CHECK = "idCheck",
   SUB_GROUPS = "subGroups",
   SUB_SUB_GROUPS = "subSubGroups",
+  GROUP_FOREST = "idGroupProduct",
+  SUB_GROUPS_FOREST = "oneLvlGroupProduct",
+  SUB_SUB_GROUPS_FOREST = "twoLvlGroupProduct",
+  SUB_SUB_SUB_GROUPS_FOREST = "threeLvlGroupProduct",
   GROUPS_ECONOMIST = "groupsEconomist",
   GROUPS_FRANCHISE = "groupsFranchise",
   TYPE_PRODUCTS = "typeProducts",
@@ -4371,6 +4376,7 @@ export const groupingColumns: ColumnGroup[] = [
   { label: "Источник заказа", value: ColumnsKeyGroupings.IM_TYPE_ORDER },
   { label: "Способ доставки", value: ColumnsKeyGroupings.IM_DELIVERY_METHOD },
   { label: "Способ оплаты", value: ColumnsKeyGroupings.IM_PAYMENT_METHOD },
+  { label: "Способ оплаты", value: ColumnsKeyGroupings.PAYMENT_METHOD },
   { label: "Статусы", value: ColumnsKeyGroupings.IM_STATUS_ORDER },
   { label: "Промо", value: ColumnsKeyGroupings.IM_PROMO },
   { label: "Период доставки", value: ColumnsKeyGroupings.IM_RECEIVE_INTERVAL },
@@ -4380,6 +4386,13 @@ export const groupingColumns: ColumnGroup[] = [
   { label: "Структура продаж", value: ColumnsKeyGroupings.GROUPS_FRANCHISE },
   { label: "Подгруппа", value: ColumnsKeyGroupings.SUB_GROUPS },
   { label: "Подподгруппа", value: ColumnsKeyGroupings.SUB_SUB_GROUPS },
+  { label: "Группа", value: ColumnsKeyGroupings.GROUP_FOREST },
+  { label: "Подгруппа", value: ColumnsKeyGroupings.SUB_GROUPS_FOREST },
+  { label: "Подподгруппа", value: ColumnsKeyGroupings.SUB_SUB_GROUPS_FOREST },
+  {
+    label: "Подподподгруппа",
+    value: ColumnsKeyGroupings.SUB_SUB_SUB_GROUPS_FOREST,
+  },
   { label: "Тип поставщика", value: ColumnsKeyGroupings.TYPE_PRODUCTS },
   { label: "Сезоность", value: ColumnsKeyGroupings.SEASONALITY_PRODUCTS },
   {
@@ -4501,6 +4514,15 @@ export const tableConfig: ColDef<any>[] = [
   },
   { headerName: "Подгруппа", field: ColumnsKeyGroupings.SUB_GROUPS },
   { headerName: "Подподгруппа", field: ColumnsKeyGroupings.SUB_SUB_GROUPS },
+  { headerName: "Подгруппа", field: ColumnsKeyGroupings.SUB_GROUPS_FOREST },
+  {
+    headerName: "Подподгруппа",
+    field: ColumnsKeyGroupings.SUB_SUB_GROUPS_FOREST,
+  },
+  {
+    headerName: "Подподподгруппа",
+    field: ColumnsKeyGroupings.SUB_SUB_SUB_GROUPS_FOREST,
+  },
   { headerName: "Поставщик", field: ColumnsKeyGroupings.TYPE_PRODUCTS },
   { headerName: "Сезоность", field: ColumnsKeyGroupings.SEASONALITY_PRODUCTS },
   {
@@ -4594,6 +4616,11 @@ export const tableConfig: ColDef<any>[] = [
     cellStyle: { textAlign: "left" },
   },
   {
+    headerName: "Группа",
+    field: ColumnsKeyGroupings.GROUP_FOREST,
+    cellStyle: { textAlign: "left" },
+  },
+  {
     field: ColumnsKeyGroupings.PRODUCT,
     headerName: "Номенклатура",
     cellStyle: { textAlign: "left" },
@@ -4616,6 +4643,11 @@ export const tableConfig: ColDef<any>[] = [
   {
     headerName: "Способ оплаты",
     field: ColumnsKeyGroupings.IM_PAYMENT_METHOD,
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    headerName: "Способ оплаты",
+    field: ColumnsKeyGroupings.PAYMENT_METHOD,
     cellStyle: { textAlign: "left" },
   },
   {
