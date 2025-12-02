@@ -19,15 +19,15 @@ const MarkupSkeleton = ({ tv }: { tv?: boolean }) => {
       <div className="flex flex-col  gap-1">
         <CardHeader className="flex justify-between items-center">
           <CardTitle>
-            <Skeleton className="w-[56px] h-[16px] bg-muted-foreground rounded-md" />
+            <Skeleton className="w-[56px] h-[16px] bg-muted-foreground rounded-md flex" />
           </CardTitle>
         </CardHeader>
         <CardContent className="leading-none text-sm">
-          <Skeleton className="w-[150px] h-[14px] bg-muted-foreground rounded-md" />
+          <Skeleton className="w-[150px] h-[14px] bg-muted-foreground rounded-md flex" />
         </CardContent>
       </div>
       <CardFooter className="text-3xl font-bold items-start flex flex-row text-left w-fit">
-        <Skeleton className="w-[100px] h-[36px] bg-muted-foreground rounded-md" />
+        <Skeleton className="w-[100px] h-[36px] bg-muted-foreground rounded-md flex" />
       </CardFooter>
     </Card>
   );
