@@ -34,18 +34,19 @@ const FarmerChat: FC = () => {
           </CardHeader>
           <CardHeader className="flex flex-row justify-center items-center py-4 col-span-1 row-span-1 w-full h-full">
             <CardTitle>
-              <h1 className="text-xl w-full text-center">Ваши чаты</h1>
+              <h1 className="text-lg w-full text-center">Ваши чаты</h1>
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-4 p-4 h-full w-full bg-background justify-end col-span-1 row-span-1">
+          <CardContent className="flex flex-col gap-4 px-4 pb-4 h-full w-full justify-end col-span-1 row-span-1">
+            <div className="flex flex-col gap-2 bg-background flex-1"></div>
             <div className="flex flex-row gap-2">
-              <Input />
+              <Input className="bg-foreground/10" />
               <Button>
                 <Send />
               </Button>
             </div>
           </CardContent>
-          <CardContent className="col-span-1 row-span-1 w-full h-full flex flex-col gap-4 px-2">
+          <CardContent className="col-span-1 row-span-1 w-full h-full flex flex-col gap-4 px-2 min-h-0">
             <div className="flex flex-row gap-2 w-full h-max relative">
               <Input
                 placeholder="Поиск..."
@@ -53,17 +54,37 @@ const FarmerChat: FC = () => {
               />
               <SearchIcon className="size-4 text-muted-foreground h-full absolute left-2 top-0 py-2 z-10" />
             </div>
-            <ul>
-              <li className="grid grid-cols-[50px_1fr] gap-3 hover:bg-accent/20 rounded-xl p-2">
+            <ul className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto scrollbar-hide">
+              <li className="grid grid-cols-[45px_1fr] gap-3 bg-background/70 rounded-xl px-4 py-2.5 hover:cursor-pointer">
                 <Card
                   style={{
                     backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
                   }}
-                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[50px] rounded-full"
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
                 />
                 <div className="flex flex-col gap-1 py-1">
                   <div className="flex flex-row gap-2 justify-between">
                     <span className="text-sm font-medium">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs">12:00</span>
+                  </div>
+                  <span className="text-xs line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
                       ИП ГКФХ Кузнецова И.В.
                     </span>
                     <span className="text-xs text-muted-foreground">12:00</span>
@@ -74,16 +95,16 @@ const FarmerChat: FC = () => {
                   </span>
                 </div>
               </li>
-              <li className="grid grid-cols-[50px_1fr] gap-3 hover:bg-accent/20 rounded-xl p-2">
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
                 <Card
                   style={{
                     backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
                   }}
-                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[50px] rounded-full"
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
                 />
                 <div className="flex flex-col gap-1 py-1">
                   <div className="flex flex-row gap-2 justify-between">
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-semibold">
                       ИП ГКФХ Кузнецова И.В.
                     </span>
                     <span className="text-xs text-muted-foreground">12:00</span>
@@ -94,16 +115,156 @@ const FarmerChat: FC = () => {
                   </span>
                 </div>
               </li>
-              <li className="grid grid-cols-[50px_1fr] gap-3 hover:bg-accent/20 rounded-xl p-2">
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
                 <Card
                   style={{
                     backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
                   }}
-                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[50px] rounded-full"
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
                 />
                 <div className="flex flex-col gap-1 py-1">
                   <div className="flex flex-row gap-2 justify-between">
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
+                      ИП ГКФХ Кузнецова И.В.
+                    </span>
+                    <span className="text-xs text-muted-foreground">12:00</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground line-clamp-1">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, quos.
+                  </span>
+                </div>
+              </li>
+              <li className="grid grid-cols-[45px_1fr] gap-3 rounded-xl px-4 py-2.5 hover:bg-foreground/5 hover:cursor-pointer">
+                <Card
+                  style={{
+                    backgroundImage: `url(https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/farmer/photo/2803/photo_photo_2025-11-18_08-46-08.jpg.webp)`,
+                  }}
+                  className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[45px] rounded-full"
+                />
+                <div className="flex flex-col gap-1 py-1">
+                  <div className="flex flex-row gap-2 justify-between">
+                    <span className="text-sm font-semibold">
                       ИП ГКФХ Кузнецова И.В.
                     </span>
                     <span className="text-xs text-muted-foreground">12:00</span>
