@@ -12,8 +12,8 @@ const HoursRevenueSkeleton = ({ tv }: { tv?: boolean }) => {
       )}
     >
       <CardHeader>
-        <CardTitle>
-          <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
+        <CardTitle className="flex justify-center">
+          <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md flex" />
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
