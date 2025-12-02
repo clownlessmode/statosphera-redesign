@@ -1,7 +1,7 @@
 const DonutChartSkeleton = () => {
   return (
     <div className="w-full h-full flex items-center justify-center relative ">
-      <div className="h-[calc(100%-70px)] aspect-square rounded-full bg-muted z-10 mt-auto" />
+      <div className="h-[70%] aspect-square rounded-full bg-muted-foreground z-10 animate-pulse" />
     </div>
   );
 };

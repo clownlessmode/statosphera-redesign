@@ -20,7 +20,12 @@ export const Stores = ({ tv, best, worst }: StoresProps) => {
 
   if (isAllNpsLoading || !allNps) {
     return (
-      <Card className="animate-pulse h-full flex justify-center items-center ">
+      <Card
+        className={cn(
+          "animate-pulse h-full flex justify-center items-center",
+          tv && "border-0 shadow-none h-full",
+        )}
+      >
         <Spinner />
       </Card>
     );

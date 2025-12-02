@@ -42,7 +42,7 @@ const Markup = ({ percent, proceeds, isLoading, tv }: MarkupProps) => {
               tv && "text-md",
             )}
           >
-            <p className="w-full">{percent ? `${percent}%` : null}</p>
+            <p className="w-full">{percent ? `${percent}%` : "Нет данных"}</p>
             <p className="w-full text-xs text-muted-foreground">
               {proceeds
                 ? `${proceeds.toLocaleString().replace(/,/g, " ")}₽`

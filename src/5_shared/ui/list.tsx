@@ -63,13 +63,13 @@ export const List: FC<Props> = memo(
             !tv ? "max-h-[250px]" : "px-0",
           )}
         >
-          {isLoading ? (
+          {isLoading || !displayOptions || displayOptions.length === 0 ? (
             <>
-              <Skeleton className="w-1/2 h-4" />
-              <Skeleton className="w-1/2 h-4" />
-              <Skeleton className="w-1/2 h-4" />
-              <Skeleton className="w-1/2 h-4" />
-              <Skeleton className="w-1/2 h-4" />
+              <Skeleton className="w-full h-10 bg-muted-foreground rounded-md flex" />
+              <Skeleton className="w-full h-10 bg-muted-foreground rounded-md flex" />
+              <Skeleton className="w-full h-10 bg-muted-foreground rounded-md flex" />
+              <Skeleton className="w-full h-10 bg-muted-foreground rounded-md flex" />
+              <Skeleton className="w-full h-10 bg-muted-foreground rounded-md flex" />
             </>
           ) : (
             displayOptions?.map((option, arrayIndex) => {
