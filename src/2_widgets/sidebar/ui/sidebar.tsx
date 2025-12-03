@@ -20,6 +20,7 @@ import {
   ChartColumn,
   MessageCircle,
   Tractor,
+  User,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -197,7 +198,11 @@ const Sidebar = ({
         title: "Чаты",
         url: ROUTES_PATH.CHAT,
         icon: MessageCircle,
-        disabled: true,
+      },
+      {
+        title: "Менеджеры",
+        url: ROUTES_PATH.CHAT,
+        icon: User,
       },
       {
         title: "Дайджесты",
