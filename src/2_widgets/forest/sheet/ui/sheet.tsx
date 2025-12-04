@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import Commerce from "./commerce/ui/commerce";
 import { Check } from "./check";
 import { useTabStore } from "../model/url-store";
+import { WriteOff } from "./write-off";
 import { useFormResetStore } from "../model/reset-store";
 
 export default function ForestFiltersSheet() {
@@ -22,8 +23,14 @@ export default function ForestFiltersSheet() {
     return param !== "false";
   };
 
-  const getTabFromParam = (param: string | null): "commerce" | "check" => {
-    return param === "check" ? "check" : "commerce";
+  const getTabFromParam = (
+    param: string | null,
+  ): "commerce" | "check" | "write-off" => {
+    return param === "check"
+      ? "check"
+      : param === "write-off"
+        ? "write-off"
+        : "commerce";
   };
 
   const [open, setOpen] = useState(getOpenFromParam(openParam));
@@ -49,7 +56,7 @@ export default function ForestFiltersSheet() {
   const { triggerReset } = useFormResetStore();
   const handleTabChange = (value: string) => {
     triggerReset();
-    if (value === "commerce" || value === "check") {
+    if (value === "commerce" || value === "check" || value === "write-off") {
       setTab(value);
       searchParams.set("tab", value);
       setSearchParams(searchParams, { replace: true });
@@ -71,6 +78,7 @@ export default function ForestFiltersSheet() {
               <TabsList className="w-full rounded-none h-full md:py-2 md:px-4 md:h-fit">
                 <TabsTrigger value="commerce">Коммерческая</TabsTrigger>
                 <TabsTrigger value="check">Чековая</TabsTrigger>
+                <TabsTrigger value="write-off">Списания</TabsTrigger>
               </TabsList>
             </SheetHeader>
             <TabsContent value="commerce" className="md:pr-4 md:px-2">
@@ -78,6 +86,9 @@ export default function ForestFiltersSheet() {
             </TabsContent>
             <TabsContent value="check" className="md:pr-4 md:px-2">
               <Check />
+            </TabsContent>
+            <TabsContent value="write-off" className="md:pr-4 md:px-2">
+              <WriteOff />
             </TabsContent>
           </Tabs>
         </div>

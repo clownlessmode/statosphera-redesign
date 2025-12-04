@@ -4,6 +4,8 @@ import { GroupMainFilterResponse } from "@entities/forest/model/api/filters/prod
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/products-write-off/controller";
 
 interface GroupStore {
   savedGroupLabels: MultiSelectOption[];
@@ -17,14 +19,22 @@ const useGroupStore = create<GroupStore>((set) => ({
 
 export const useGroup = (allData: any) => {
   const [groupOptions, setGroupOptions] = useState<MultiSelectOption[]>([]);
+  const tab = useTabStore((state) => state.tab);
   const { getGroups, isGroupsLoading } = useFilters();
+  const {
+    getGroups: getGroupsWriteOff,
+    isGroupsLoading: isGroupsLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { savedGroupLabels, setGroupLabels } = useGroupStore();
 
   const handleOpenGroupsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getGroups(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getGroupsWriteOff(processFiltersDto(allData))
+          : await getGroups(processFiltersDto(allData));
       const apiOptions = response.map((group: GroupMainFilterResponse) => ({
         label: group.groupMainName,
         value: String(JSON.stringify(group.idProductGroup || [])),
@@ -41,7 +51,8 @@ export const useGroup = (allData: any) => {
   return {
     handleOpenGroupsSelect,
     groupOptions,
-    isGroupsLoading,
+    isGroupsLoading:
+      tab === "write-off" ? isGroupsLoadingWriteOff : isGroupsLoading,
     savedGroupLabels,
   };
 };

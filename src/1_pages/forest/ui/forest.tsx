@@ -24,11 +24,10 @@ import { useIndicatorList } from "@widgets/forest/sheet/ui/side/indicators-filte
 import { useUniqueValues } from "@widgets/forest/sheet/ui/side/uniques-filter";
 import { SavedReports } from "@features/reports/saved-reports";
 import { SaveReport } from "@features/reports/save-report";
-import { Link } from "react-router";
-import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useWriteOffController } from "@entities/forest/model/api/filters/data-write-off/controller";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters = {
@@ -106,6 +105,8 @@ const Forest: FC = () => {
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } = useForestStore();
   const { getTable, getGraph } = useForest();
+  const { getTable: getWriteOffTable, getGraph: getWriteOffGraph } =
+    useWriteOffController();
   const { table: initialRows, total: initialTotalRows } = useForestStore();
   const { tab } = useTabStore();
   const indicators = useIndicatorList(tab);
@@ -229,18 +230,34 @@ const Forest: FC = () => {
       };
 
       // Запрашиваем только график с новыми фильтрами
-      getGraph({
-        ...payload,
-        filters: mergedFilters,
-        groups: [dateFilterValue],
-        values: payload.values,
-      }).then((response) => {
+      const requestPromise =
+        tab === "write-off"
+          ? getWriteOffGraph({
+              ...payload,
+              filters: mergedFilters,
+              groups: [dateFilterValue],
+              values: payload.values,
+            })
+          : getGraph({
+              ...payload,
+              filters: mergedFilters,
+              groups: [dateFilterValue],
+              values: payload.values,
+            });
+      requestPromise.then((response) => {
         if (response) {
           setGraph(response);
         }
       });
     },
-    [selectedRows, getApiPayload, getGraph, setGraph, dateFilterValue], // Добавляем в зависимости
+    [
+      selectedRows,
+      getApiPayload,
+      getGraph,
+      getWriteOffGraph,
+      setGraph,
+      dateFilterValue,
+    ], // Добавляем в зависимости
   );
 
   // Обработчик клика на ячейку для установки показателя
@@ -463,23 +480,42 @@ const Forest: FC = () => {
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
           : { colId: [payload.values[0]], sort: "desc" as "asc" | "desc" };
 
-      const requestPromise = getTable({
-        ...payload,
-        filters: {
-          ...payload.filters,
-        },
-        offset: startRow,
-        limit: endRow - startRow,
-        sorts: sorts,
-        groups: payload.groups,
-      });
+      const requestPromise =
+        tab === "write-off"
+          ? getWriteOffTable({
+              ...payload,
+              filters: {
+                ...payload.filters,
+              },
+              offset: startRow,
+              limit: endRow - startRow,
+              sorts: sorts,
+              groups: payload.groups,
+            })
+          : getTable({
+              ...payload,
+              filters: {
+                ...payload.filters,
+              },
+              offset: startRow,
+              limit: endRow - startRow,
+              sorts: sorts,
+              groups: payload.groups,
+            });
 
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
       return requestPromise;
     },
-    [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],
+    [
+      getTable,
+      getWriteOffTable,
+      initialRows,
+      initialTotalRows,
+      getApiPayload,
+      allData.filters,
+    ],
   );
 
   const handleClearFilters = () => {
@@ -513,69 +549,33 @@ const Forest: FC = () => {
                 <SavedReports />
               </div>
             ),
-            left: !isMobile && (
-              <div className="ml-6 -mb-4 flex flex-row gap-1">
-                <Button
-                  variant="outline"
-                  className="border-b-0! rounded-b-none!"
-                >
-                  {tab === "commerce" ? "Коммерческая" : "Чековая"}
-                </Button>
-                <Link to={ROUTES_PATH.WRITE_OFF}>
-                  <Button
-                    variant="outline"
-                    className="border-b-0! rounded-b-none! opacity-50"
-                  >
-                    Списания
-                  </Button>
-                </Link>
-              </div>
-            ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 p-4">
           {isMobile && (
-            <div className="w-full flex flex-col gap-2">
-              <div className="w-full h-full flex flex-row">
-                <Button
-                  variant="outline"
-                  className="border-0 rounded-none! rounded-tl-3xl!  h-10 w-1/2 px-1"
-                >
-                  {tab === "commerce" ? "Коммерческая" : "Чековая"}
-                </Button>
-                <Link to={ROUTES_PATH.WRITE_OFF} className="w-1/2">
-                  <Button
-                    variant="outline"
-                    className="opacity-50 border-0 border-b-1 border-l-1 rounded-none! rounded-tr-3xl! w-full h-10 px-1"
-                  >
-                    Списания
-                  </Button>
-                </Link>
-              </div>
-              <div className="w-full flex flex-row gap-2 justify-between px-4">
-                <DownloadReport rows={table?.totalRows || 0} />
-                <SaveReport />
-                <SavedReports />
-                <DateDropdown />
-                <Button
-                  className="w-fit"
-                  size="default"
-                  variant="outline"
-                  onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                >
-                  <Cog className="text-primary/80" />
-                </Button>
-                <Button
-                  size="default"
-                  onClick={() => {
-                    handleClearFilters();
-                    setIsFiltersOpen(true);
-                  }}
-                  variant="outline"
-                >
-                  <Eraser className="text-primary/80" />
-                </Button>
-              </div>
+            <div className="w-full flex flex-row gap-2 justify-between">
+              <DownloadReport rows={table?.totalRows || 0} />
+              <SaveReport />
+              <SavedReports />
+              <DateDropdown />
+              <Button
+                className="w-fit"
+                size="default"
+                variant="outline"
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+              >
+                <Cog className="text-primary/80" />
+              </Button>
+              <Button
+                size="default"
+                onClick={() => {
+                  handleClearFilters();
+                  setIsFiltersOpen(true);
+                }}
+                variant="outline"
+              >
+                <Eraser className="text-primary/80" />
+              </Button>
             </div>
           )}
           <div
@@ -674,7 +674,7 @@ const Forest: FC = () => {
               onRowClick={handleRowClick}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
-              className="w-full max-md:mx-auto max-md:w-[calc(100%-32px)]"
+              className="w-full"
             />
           ) : (
             <div

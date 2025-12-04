@@ -25,6 +25,9 @@ import {
 } from "../model";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { cn } from "@shared/lib/utils";
+import { DISH_MEASURE_UNIT } from "../config/constants";
+import CheckboxCards from "@shared/ui/checkbox-cards";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 
 interface Props {
   className?: string;
@@ -32,6 +35,7 @@ interface Props {
 
 const ProductsFilter: FC<Props> = ({ className }) => {
   const { updateProductFilter, getApiPayload } = useFiltersStore();
+  const { tab } = useTabStore();
   const payload = getApiPayload();
   const form = useForm();
 
@@ -82,6 +86,28 @@ const ProductsFilter: FC<Props> = ({ className }) => {
       <CardContent>
         <Form {...form}>
           <form className={cn("flex flex-col gap-4 w-full", className)}>
+            {tab !== "write-off" && (
+              <FormField
+                control={form.control}
+                name="dishMeasureUnit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Единицы измерения</FormLabel>
+                    <FormControl>
+                      <CheckboxCards
+                        {...field}
+                        options={DISH_MEASURE_UNIT}
+                        onChange={(values) => {
+                          field.onChange(values);
+                          updateProductFilter("dishMeasureUnit", values);
+                        }}
+                        className="grid-cols-3"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="idGroupProduct"

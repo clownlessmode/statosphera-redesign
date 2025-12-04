@@ -648,7 +648,7 @@ export function excludeIndicators(
     .filter((group): group is IndicatorGroup => Boolean(group));
 }
 
-export const useIndicatorList = (type: "check" | "commerce") => {
+export const useIndicatorList = (type: "check" | "commerce" | "write-off") => {
   const CHECK = excludeIndicators(all_indicators, [
     COLUMN_KEY.GROUP_TURNOVER_GOODS,
     COLUMN_KEY.WEIGHT_GROUP,

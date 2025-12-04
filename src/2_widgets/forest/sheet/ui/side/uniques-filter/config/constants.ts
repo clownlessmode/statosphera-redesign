@@ -192,7 +192,7 @@ export function excludeIndicators(
     .filter((group): group is IndicatorGroup => Boolean(group));
 }
 
-export const useUniqueValues = (type: "check" | "commerce") => {
+export const useUniqueValues = (type: "check" | "commerce" | "write-off") => {
   const filtered = sortGroups(all_unique);
   const check = excludeIndicators(filtered, []);
   const commerce = excludeIndicators(filtered, [

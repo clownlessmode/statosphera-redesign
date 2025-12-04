@@ -17,6 +17,7 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       twoLvlGroupProduct: "Подподгруппы",
       threeLvlGroupProduct: "Подподподгруппы",
       idProduct: "Товары",
+      dishMeasureUnit: "Единицы измерения",
     },
     check: {
       checkNumber: "Номера чеков",
@@ -34,10 +35,9 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       groupAge: "Возрастные группы",
       colorsDiscount: "Цвета скидок",
     },
-    // writeoff: {
-    //   indicator: "Показатели списания",
-    //   article: "Статьи списания",
-    // },
+    account: {
+      idAccount: "Причины списания",
+    },
   };
 
   return labels[sectionKey]?.[filterKey] || filterKey;

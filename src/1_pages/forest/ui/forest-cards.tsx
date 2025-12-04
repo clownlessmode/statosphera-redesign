@@ -3,7 +3,6 @@ import { ForestCard } from "./forest-card";
 
 const ForestCards = ({
   graph,
-
   isFiltersOpen,
 }: {
   graph: ReportGraphResponse | null;

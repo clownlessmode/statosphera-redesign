@@ -2,8 +2,10 @@ import { processFiltersDto } from "@entities/forest/model/api/filters/data/servi
 import { useFilters } from "@entities/forest/model/api/filters/products/controller";
 import { SubgroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useState } from "react";
 import { create } from "zustand";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/products-write-off/controller";
 
 interface SubgroupStore {
   savedSubgroupLabels: MultiSelectOption[];
@@ -19,14 +21,22 @@ export const useSubgroup = (allData: any) => {
   const [subgroupOptions, setSubgroupOptions] = useState<MultiSelectOption[]>(
     [],
   );
+  const tab = useTabStore((state) => state.tab);
   const { getSubGroups, isSubGroupsLoading } = useFilters();
+  const {
+    getSubGroups: getSubGroupsWriteOff,
+    isSubGroupsLoading: isSubGroupsLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { savedSubgroupLabels, setSubgroupLabels } = useSubgroupStore();
 
   const handleOpenSubgroupsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubGroups(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getSubGroupsWriteOff(processFiltersDto(allData))
+          : await getSubGroups(processFiltersDto(allData));
 
       const groupedMap = new Map<string, number[]>();
 
@@ -61,7 +71,8 @@ export const useSubgroup = (allData: any) => {
   return {
     handleOpenSubgroupsSelect,
     subgroupOptions,
-    isSubGroupsLoading,
+    isSubGroupsLoading:
+      tab === "write-off" ? isSubGroupsLoadingWriteOff : isSubGroupsLoading,
     savedSubgroupLabels,
   };
 };

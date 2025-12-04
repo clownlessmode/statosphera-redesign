@@ -58,6 +58,10 @@ export const PRODUCT = [
     label: "Номенклатура",
     value: GROUPINGS.PRODUCT,
   },
+  {
+    label: "Единица измерения",
+    value: GROUPINGS.DISH_MEASURE_UNIT,
+  },
 ];
 export const LOYAL = [
   {
@@ -100,5 +104,12 @@ export const ID = [
     label: "Период доставки",
     value: GROUPINGS.IM_RECEIVE_INTERVAL,
     disabled: true,
+  },
+];
+
+export const WRITE_OFF = [
+  {
+    label: "Тип списания",
+    value: GROUPINGS.ACCOUNT_NAME,
   },
 ];

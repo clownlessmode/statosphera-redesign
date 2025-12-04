@@ -62,6 +62,8 @@ export enum FULL_GROUPS_SERVER {
   TYPE = "type",
   ID_DISCOUNT = "idDiscount",
   DISCOUNT_TYPE = "discountType",
+  ACCOUNT_NAME = "accountName",
+  DISH_MEASURE_UNIT = "dishMeasureUnit",
 }
 
 export enum GROUPINGS {
@@ -105,6 +107,8 @@ export enum GROUPINGS {
   IM_STATUS_ORDER = FULL_GROUPS_SERVER.IM_STATUS_ORDER,
   IM_PROMO = FULL_GROUPS_SERVER.IM_PROMO,
   IM_RECEIVE_INTERVAL = FULL_GROUPS_SERVER.IM_RECEIVE_INTERVAL,
+  ACCOUNT_NAME = FULL_GROUPS_SERVER.ACCOUNT_NAME,
+  DISH_MEASURE_UNIT = FULL_GROUPS_SERVER.DISH_MEASURE_UNIT,
 }
 
 export enum GROUP_COLUMN_CHECK_GRAPH {
@@ -257,10 +261,9 @@ export type FiltersState = {
     //  groupAge: string[];
     //  colorsDiscount: string[];
     //};
-    //writeoff: {
-    //  indicator: OPERATION_WRITE_OFF[];
-    //  article: ARTICLE_WRITE_OFF[];
-    //};
+    account: {
+      idAccount: number[];
+    };
   };
   uniques: string[];
   indicators: string[];
@@ -294,17 +297,10 @@ export type FiltersState = {
   //  value: FiltersState["filters"]["loyal"][K],
   //) => void;
 
-  //updateOnlineStoreFilter: <
-  //  K extends keyof FiltersState["filters"]["onlineStore"],
-  //>(
-  //  key: K,
-  //  value: FiltersState["filters"]["onlineStore"][K],
-  //) => void;
-
-  // updateWriteoffFilter: <K extends keyof FiltersState["filters"]["writeoff"]>(
-  //   key: K,
-  //   value: FiltersState["filters"]["writeoff"][K],
-  // ) => void;
+  updateWriteoffFilter: <K extends keyof FiltersState["filters"]["account"]>(
+    key: K,
+    value: FiltersState["filters"]["account"][K],
+  ) => void;
 
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
   updateTimeFilter: (timeStart: string, timeEnd: string) => void;
@@ -322,8 +318,7 @@ export type FiltersState = {
     | "updateProductFilter"
     | "updateCheckFilter"
     //| "updateLoyalFilter"
-    //| "updateOnlineStoreFilter"
-    //| "updateWriteoffFilter"
+    | "updateWriteoffFilter"
     | "updateDateFilter"
     | "updateTimeFilter"
     | "updateSorts"
@@ -343,8 +338,7 @@ const initialState: Omit<
   | "updateProductFilter"
   | "updateCheckFilter"
   //| "updateLoyalFilter"
-  //| "updateOnlineStoreFilter"
-  //| "updateWriteoffFilter"
+  | "updateWriteoffFilter"
   | "updateDateFilter"
   | "updateTimeFilter"
   | "updateSorts"
@@ -392,10 +386,9 @@ const initialState: Omit<
     //  colorsDiscount: [],
     //  groupAge: [],
     //},
-    //writeoff: {
-    //  indicator: [],
-    //  article: [],
-    //},
+    account: {
+      idAccount: [],
+    },
   },
   values: ["proceeds"],
   uniques: [],
@@ -456,27 +449,16 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
   //  }));
   //},
 
-  //updateOnlineStoreFilter: (key, value) =>
-  //  set((state) => ({
-  //    filters: {
-  //      ...state.filters,
-  //      onlineStore: {
-  //        ...state.filters.onlineStore,
-  //        [key]: value,
-  //      },
-  //    },
-  //  })),
-
-  // updateWriteoffFilter: (key, value) =>
-  //   set((state) => ({
-  //     filters: {
-  //       ...state.filters,
-  //       writeoff: {
-  //         ...state.filters.writeoff,
-  //         [key]: value,
-  //       },
-  //     },
-  //   })),
+  updateWriteoffFilter: (key, value) =>
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        account: {
+          ...state.filters.account,
+          [key]: value,
+        },
+      },
+    })),
 
   updateDateFilter: (dateStart, dateEnd) =>
     set({ filters: { ...get().filters, filterDate: { dateStart, dateEnd } } }),

@@ -22,21 +22,21 @@ export const useForest = () => {
 
   const table = useMutation<ForestTableResponse, ApiError, FilterApiPayload>({
     mutationFn: async (dto: FilterApiPayload) => {
-      const response = await ForestService.getForestTable(dto);
+      const response = await ForestService.getTable(dto);
       queryClient.invalidateQueries({ queryKey: ["forest-table"] });
       return response;
     },
   });
   const total = useMutation<ForestTotalResponse, ApiError, FilterApiPayload>({
     mutationFn: async (dto: FilterApiPayload) => {
-      const response = await ForestService.getForestTotal(dto);
+      const response = await ForestService.getTotal(dto);
       queryClient.invalidateQueries({ queryKey: ["forest-total"] });
       return response;
     },
   });
   const graph = useMutation<ForestGraphResponse, ApiError, FilterApiPayload>({
     mutationFn: async (dto: FilterApiPayload) => {
-      const response = await ForestService.getForestGraph(dto);
+      const response = await ForestService.getGraph(dto);
       queryClient.invalidateQueries({ queryKey: ["forest-graph"] });
       return response;
     },

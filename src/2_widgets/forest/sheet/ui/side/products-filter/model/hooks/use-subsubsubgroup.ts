@@ -2,8 +2,10 @@ import { processFiltersDto } from "@entities/forest/model/api/filters/data/servi
 import { useFilters } from "@entities/forest/model/api/filters/products/controller";
 import { SubSubSubGroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useState } from "react";
 import { create } from "zustand";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/products-write-off/controller";
 
 interface SubsubsubgroupStore {
   savedSubsubsubgroupLabels: MultiSelectOption[];
@@ -19,7 +21,12 @@ export const useSubsubsubgroup = (allData: any) => {
   const [subsubsubgroupOptions, setSubsubsubgroupOptions] = useState<
     MultiSelectOption[]
   >([]);
+  const tab = useTabStore((state) => state.tab);
   const { getSubSubSubGroups, isSubSubSubGroupsLoading } = useFilters();
+  const {
+    getSubSubSubGroups: getSubSubSubGroupsWriteOff,
+    isSubSubSubGroupsLoading: isSubSubSubGroupsLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { savedSubsubsubgroupLabels, setSubsubsubgroupLabels } =
     useSubsubsubgroupStore();
 
@@ -27,7 +34,10 @@ export const useSubsubsubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubSubSubGroups(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getSubSubSubGroupsWriteOff(processFiltersDto(allData))
+          : await getSubSubSubGroups(processFiltersDto(allData));
 
       // Группируем элементы по названию и объединяем ID
       const groupedMap = new Map<string, number[]>();
@@ -67,7 +77,10 @@ export const useSubsubsubgroup = (allData: any) => {
   return {
     handleOpenSubsubsubgroupsSelect,
     subsubsubgroupOptions,
-    isSubSubSubGroupsLoading,
+    isSubSubSubGroupsLoading:
+      tab === "write-off"
+        ? isSubSubSubGroupsLoadingWriteOff
+        : isSubSubSubGroupsLoading,
     savedSubsubsubgroupLabels,
   };
 };

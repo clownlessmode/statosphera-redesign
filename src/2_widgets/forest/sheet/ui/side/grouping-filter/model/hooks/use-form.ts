@@ -1,7 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-
-import { GEO, PRODUCT, LOYAL, ID, FormValues, schema } from "../../config";
+import {
+  GEO,
+  PRODUCT,
+  LOYAL,
+  ID,
+  FormValues,
+  schema,
+  WRITE_OFF,
+} from "../../config";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 
 export const useForm = ({
@@ -26,6 +33,7 @@ export const useForm = ({
       product: match(extractValues(PRODUCT)),
       loyal: match(extractValues(LOYAL)),
       id: match(extractValues(ID)),
+      writeOff: match(extractValues(WRITE_OFF)),
     },
     mode: "all",
   });

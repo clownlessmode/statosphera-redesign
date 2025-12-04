@@ -74,26 +74,28 @@ const FiltersAccordeon = ({
           </Card>
 
           {/* Показатели */}
-          <Card
-            onClick={() => handleOpenSheet(targetIndicatorValue)}
-            className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
-          >
-            <div className="flex items-center gap-1">
-              <BarChart3 className="size-4 flex-shrink-0" />
-              <p className="text-sm flex-shrink-0">Показатели:</p>
-            </div>
-            <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
-              <div className="inline-flex gap-1">
-                <ForestBadges tab={tab} />
-              </div>
-            </div>
-            <Button
-              size="sm"
-              className="w-full max-md:mt-2 md:w-[220px] md:flex-shrink-0 md:justify-between"
+          {tab !== "write-off" && (
+            <Card
+              onClick={() => handleOpenSheet(targetIndicatorValue)}
+              className="items-center gap-1 p-2 flex flex-row flex-wrap md:grid md:grid-cols-[auto_1fr_auto]"
             >
-              Изменить показатели <BarChart3 className="size-4" />
-            </Button>
-          </Card>
+              <div className="flex items-center gap-1">
+                <BarChart3 className="size-4 flex-shrink-0" />
+                <p className="text-sm flex-shrink-0">Показатели:</p>
+              </div>
+              <div className="min-w-0 overflow-x-auto scrollbar-hide whitespace-nowrap">
+                <div className="inline-flex gap-1">
+                  <ForestBadges tab={tab} />
+                </div>
+              </div>
+              <Button
+                size="sm"
+                className="w-full max-md:mt-2 md:w-[220px] md:flex-shrink-0 md:justify-between"
+              >
+                Изменить показатели <BarChart3 className="size-4" />
+              </Button>
+            </Card>
+          )}
 
           {/* Группировки */}
           <Card

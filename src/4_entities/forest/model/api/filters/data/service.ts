@@ -75,27 +75,21 @@ export function processFiltersDtoForOptions(dto: any): any {
   return dto; //возвроащает данные как есть
 }
 export class ForestService {
-  static async getForestTable(
-    dto: FilterApiPayload,
-  ): Promise<ForestTableResponse> {
-    const response = await api.post<any>("iiko/data", processFiltersDto(dto));
+  static async getTable(dto: FilterApiPayload): Promise<ForestTableResponse> {
+    const response = await api.post<any>("/iiko/data", processFiltersDto(dto));
 
     return response.data;
   }
-  static async getForestGraph(
-    dto: FilterApiPayload,
-  ): Promise<ForestGraphResponse> {
+  static async getGraph(dto: FilterApiPayload): Promise<ForestGraphResponse> {
     const response = await api.post<any>(
-      "iiko/graphic",
+      "/iiko/graphic",
       processFiltersDto(dto),
     );
     return response.data;
   }
-  static async getForestTotal(
-    dto: FilterApiPayload,
-  ): Promise<ForestTotalResponse> {
+  static async getTotal(dto: FilterApiPayload): Promise<ForestTotalResponse> {
     const response = await api.post<any>(
-      "iiko/data_total",
+      "/iiko/data_total",
       processFiltersDto(dto),
     );
     return response.data;

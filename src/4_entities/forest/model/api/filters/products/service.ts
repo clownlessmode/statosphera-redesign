@@ -9,7 +9,7 @@ import {
 
 export class FiltersProductsService {
   static async getGroup(dto: any): Promise<GroupMainFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_group", {
+    const response = await api.post<any>("/iiko/filters_group", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -22,7 +22,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getSubGroup(dto: any): Promise<SubgroupFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_one_lvl_group", {
+    const response = await api.post<any>("/iiko/filters_one_lvl_group", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -35,7 +35,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getSubSubGroup(dto: any): Promise<SubSubGroupFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_two_lvl_group", {
+    const response = await api.post<any>("/iiko/filters_two_lvl_group", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -50,7 +50,7 @@ export class FiltersProductsService {
   static async getSubSubSubGroup(
     dto: any,
   ): Promise<SubSubSubGroupFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_three_lvl_group", {
+    const response = await api.post<any>("/iiko/filters_three_lvl_group", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -65,7 +65,7 @@ export class FiltersProductsService {
   static async getNomenklatura(
     dto: any,
   ): Promise<NomenklaturaFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_product", {
+    const response = await api.post<any>("/iiko/filters_product", {
       ...dto,
       filters: {
         ...dto.filters,

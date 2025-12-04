@@ -9,6 +9,7 @@ import {
   ID,
   LOYAL,
   PRODUCT,
+  WRITE_OFF,
 } from "@widgets/forest/sheet/ui/side/grouping-filter";
 
 import { Link } from "react-router";
@@ -19,6 +20,7 @@ const allGroups = [
   ...PRODUCT,
   ...LOYAL,
   ...ID,
+  ...WRITE_OFF,
   {
     label: "Час",
     value: GROUPINGS.HOUR,

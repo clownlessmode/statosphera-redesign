@@ -4,6 +4,8 @@ import { RegionsFilterResponse } from "@entities/forest/model/api/filters/shops/
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/shops-write-off/controller";
 
 interface RegionsStore {
   savedRegionLabels: MultiSelectOption[];
@@ -17,14 +19,22 @@ export const useRegionsStore = create<RegionsStore>((set) => ({
 
 export const useRegions = (allData: any) => {
   const [regionsOptions, setRegionsOptions] = useState<MultiSelectOption[]>([]);
+  const tab = useTabStore((state) => state.tab);
   const { getRegions, isRegionsLoading } = useFilters();
+  const {
+    getRegions: getRegionsWriteOff,
+    isRegionsLoading: isRegionsLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { setRegionLabels, savedRegionLabels } = useRegionsStore();
 
   const handleOpenRegionsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getRegions(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getRegionsWriteOff(processFiltersDto(allData))
+          : await getRegions(processFiltersDto(allData));
       const apiOptions = response.map((region: RegionsFilterResponse) => ({
         label: region.nameRegion,
         value: String(JSON.stringify(region.idRegion || [])),
@@ -42,7 +52,8 @@ export const useRegions = (allData: any) => {
   return {
     regionsOptions,
     handleOpenRegionsSelect,
-    isRegionsLoading,
+    isRegionsLoading:
+      tab === "write-off" ? isRegionsLoadingWriteOff : isRegionsLoading,
     savedRegionLabels, // ← доступен в компоненте
   };
 };

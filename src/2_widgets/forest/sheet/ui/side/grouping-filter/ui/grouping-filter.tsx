@@ -18,7 +18,7 @@ import {
 import { FC, useEffect, useMemo } from "react";
 
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
-import { DAYS, GEO, ID, LOYAL, PRODUCT } from "../config";
+import { DAYS, GEO, ID, LOYAL, PRODUCT, WRITE_OFF } from "../config";
 import {
   GROUPINGS,
   useFiltersStore,
@@ -49,6 +49,7 @@ const GroupingFilter: FC = () => {
         ...(values.geo || []),
         ...(values.product || []),
         ...(values.id || []),
+        ...(values.writeOff || []),
       ].filter((item): item is string => item !== undefined);
 
       updateGroups(groups);
@@ -80,7 +81,12 @@ const GroupingFilter: FC = () => {
           name: "product",
           label: "Продукт",
           icon: <ShoppingBasket />,
-          options: PRODUCT,
+          options:
+            tab === "write-off"
+              ? PRODUCT.filter(
+                  (item) => item.value !== GROUPINGS.DISH_MEASURE_UNIT,
+                )
+              : PRODUCT,
           visible: true,
         },
         {
@@ -97,6 +103,13 @@ const GroupingFilter: FC = () => {
           options: ID,
           className: "grid-cols-3",
           visible: tab === "check",
+        },
+        {
+          name: "writeOff",
+          label: "Списания",
+          icon: <Receipt />,
+          options: WRITE_OFF,
+          visible: tab === "write-off",
         },
       ] as const,
     [tab],

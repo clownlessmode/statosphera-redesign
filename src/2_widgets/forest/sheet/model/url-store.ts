@@ -2,8 +2,8 @@
 import { create } from "zustand";
 
 type TabState = {
-  tab: "commerce" | "check";
-  setTab: (tab: "commerce" | "check") => void;
+  tab: "commerce" | "check" | "write-off";
+  setTab: (tab: "commerce" | "check" | "write-off") => void;
 
   group: string;
   setGroup: (group: string) => void;

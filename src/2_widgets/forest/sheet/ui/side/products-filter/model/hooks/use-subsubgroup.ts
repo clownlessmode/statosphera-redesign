@@ -2,8 +2,10 @@ import { processFiltersDto } from "@entities/forest/model/api/filters/data/servi
 import { useFilters } from "@entities/forest/model/api/filters/products/controller";
 import { SubSubGroupFilterResponse } from "@entities/forest/model/api/filters/products/types";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useState } from "react";
 import { create } from "zustand";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/products-write-off/controller";
 
 interface SubsubgroupStore {
   savedSubsubgroupLabels: MultiSelectOption[];
@@ -19,7 +21,12 @@ export const useSubsubgroup = (allData: any) => {
   const [subsubgroupOptions, setSubsubgroupOptions] = useState<
     MultiSelectOption[]
   >([]);
+  const tab = useTabStore((state) => state.tab);
   const { getSubSubGroups, isSubsubgroupsLoading } = useFilters();
+  const {
+    getSubSubGroups: getSubSubGroupsWriteOff,
+    isSubsubgroupsLoading: isSubsubgroupsLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { savedSubsubgroupLabels, setSubsubgroupLabels } =
     useSubsubgroupStore();
 
@@ -27,7 +34,10 @@ export const useSubsubgroup = (allData: any) => {
     if (!isOpen) return;
 
     try {
-      const response = await getSubSubGroups(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getSubSubGroupsWriteOff(processFiltersDto(allData))
+          : await getSubSubGroups(processFiltersDto(allData));
 
       // Группируем элементы по названию и объединяем ID
       const groupedMap = new Map<string, number[]>();
@@ -67,7 +77,10 @@ export const useSubsubgroup = (allData: any) => {
   return {
     handleOpenSubsubgroupsSelect,
     subsubgroupOptions,
-    isSubsubgroupsLoading,
+    isSubsubgroupsLoading:
+      tab === "write-off"
+        ? isSubsubgroupsLoadingWriteOff
+        : isSubsubgroupsLoading,
     savedSubsubgroupLabels,
   };
 };

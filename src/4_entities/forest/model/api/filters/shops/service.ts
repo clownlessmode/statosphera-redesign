@@ -7,7 +7,7 @@ import {
 
 export class FiltersShopsService {
   static async getRegions(dto: any): Promise<RegionsFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_region", {
+    const response = await api.post<any>("/iiko/filters_region", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -20,7 +20,7 @@ export class FiltersShopsService {
     return response.data;
   }
   static async getCities(dto: any): Promise<CitiesFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_city", {
+    const response = await api.post<any>("/iiko/filters_city", {
       ...dto,
       filters: {
         ...dto.filters,
@@ -33,7 +33,7 @@ export class FiltersShopsService {
     return response.data;
   }
   static async getShops(dto: any): Promise<ShopsFilterResponse[]> {
-    const response = await api.post<any>("iiko/filters_store", {
+    const response = await api.post<any>("/iiko/filters_store", {
       ...dto,
       filters: {
         ...dto.filters,

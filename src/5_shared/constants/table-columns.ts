@@ -443,6 +443,13 @@ export enum COLUMN_KEY {
   APP_LOYAL_PERCENT_MOM = "appLoyalPercentMoM",
   APP_LOYAL_PERCENT_LY = "appLoyalPercentLY",
   APP_LOYAL_PERCENT_YOY = "appLoyalPercentYoY",
+  AMOUNT_WRITE_OFF = "amountWriteOff",
+  AMOUNT_WRITE_OFF_LY = "amountWriteOffLY",
+  AMOUNT_WRITE_OFF_YOY = "amountWriteOffYoY",
+  AMOUNT_WRITE_OFF_YOY_PERCENT = "amountWriteOffYoYPercent",
+  AMOUNT_WRITE_OFF_LM = "amountWriteOffLM",
+  AMOUNT_WRITE_OFF_MOM = "amountWriteOffMoM",
+  AMOUNT_WRITE_OFF_MOM_PERCENT = "amountWriteOffMoMPercent",
   // Доля продаж им
   ONLINE_STORE_GROUP = "onlineStoreGroup",
   ONLINE_STORE_SHARE = "onlineStoreSharePercent",
@@ -4286,6 +4293,54 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF,
+    headerName: "Списания, кол-во PM",
+    headerTooltip: "Списания, кол-во PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_MOM,
+    headerName: "Списания, кол-во MOM",
+    headerTooltip: "Списания, кол-во MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_MOM_PERCENT,
+    headerName: "Списания, кол-во MOM%",
+    headerTooltip: "Списания, кол-во MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_LY,
+    headerName: "Списания, кол-во PY",
+    headerTooltip: "Списания, кол-во PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_YOY,
+    headerName: "Списания, кол-во YOY",
+    headerTooltip: "Списания, кол-во YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_YOY_PERCENT,
+    headerName: "Списания, кол-во YOY%",
+    headerTooltip: "Списания, кол-во YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
   },
 ];
 

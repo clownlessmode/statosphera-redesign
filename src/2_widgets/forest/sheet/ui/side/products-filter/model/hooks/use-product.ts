@@ -4,6 +4,8 @@ import { NomenklaturaFilterResponse } from "@entities/forest/model/api/filters/p
 import { MultiSelectOption } from "@shared/ui/multiselect";
 import { useState } from "react";
 import { create } from "zustand";
+import { useTabStore } from "@widgets/forest/sheet/model/url-store";
+import { useFiltersWriteOff } from "@entities/forest/model/api/filters/products-write-off/controller";
 
 interface ProductStore {
   savedProductLabels: MultiSelectOption[];
@@ -17,14 +19,22 @@ const useProductStore = create<ProductStore>((set) => ({
 
 export const useProduct = (allData: any) => {
   const [productOptions, setProductOptions] = useState<MultiSelectOption[]>([]);
+  const tab = useTabStore((state) => state.tab);
   const { getNomenklatura, isNomenklaturaLoading } = useFilters();
+  const {
+    getNomenklatura: getNomenklaturaWriteOff,
+    isNomenklaturaLoading: isNomenklaturaLoadingWriteOff,
+  } = useFiltersWriteOff();
   const { savedProductLabels, setProductLabels } = useProductStore();
 
   const handleOpenProductSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getNomenklatura(processFiltersDto(allData));
+      const response =
+        tab === "write-off"
+          ? await getNomenklaturaWriteOff(processFiltersDto(allData))
+          : await getNomenklatura(processFiltersDto(allData));
       const apiOptions = response.map(
         (product: NomenklaturaFilterResponse) => ({
           label: product.productName
@@ -45,7 +55,10 @@ export const useProduct = (allData: any) => {
   return {
     handleOpenProductSelect,
     productOptions,
-    isProductLoading: isNomenklaturaLoading,
+    isProductLoading:
+      tab === "write-off"
+        ? isNomenklaturaLoadingWriteOff
+        : isNomenklaturaLoading,
     savedProductLabels,
   };
 };
