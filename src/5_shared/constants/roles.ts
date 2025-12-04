@@ -9,4 +9,6 @@ export enum ROLES {
   OFFICE_UNION = "office_union",
   SERVICE_MANAGER = "service",
   ZAVOD = "zavod_volkov",
+  FARMER = "farmer",
+  FARMER_MANAGER = "farmer_manager",
 }

@@ -1,0 +1,38 @@
+import { Badge } from "@shared/ui/badge";
+import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
+import {
+  DAYS,
+  GEO,
+  PRODUCT,
+} from "@widgets/farmer/analytics/sheet/ui/side/grouping-filter";
+
+import { Link } from "react-router";
+
+const allGroups = [...DAYS, ...GEO, ...PRODUCT];
+// Создаем маппинг value -> label
+const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
+  (acc, item) => {
+    acc[item.value] = item.label;
+    return acc;
+  },
+  {},
+);
+
+export function GroupBadges() {
+  const { groups } = useFiltersStore();
+
+  if (!groups || groups.length === 0) return null;
+
+  return (
+    <Link
+      to={`/analytics/?open=true&group=${groups.join(",")}`}
+      className="flex gap-2 flex-nowrap w-max"
+    >
+      {groups.map((group, index) => (
+        <Badge key={`group-${index}`}>
+          {groupValueToLabelMap[group] || group}
+        </Badge>
+      ))}
+    </Link>
+  );
+}

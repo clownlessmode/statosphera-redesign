@@ -8,6 +8,7 @@ import { Link } from "react-router";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
 import { LogIn } from "lucide-react";
+
 interface Props {
   title?: string;
   actions?: {
@@ -17,6 +18,7 @@ interface Props {
   };
   isAdmin?: boolean;
 }
+
 const Header: FC<Props> = ({ title, actions, isAdmin }) => {
   const { isMobile } = useSidebar();
   const { session } = useSession();

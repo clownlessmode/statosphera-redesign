@@ -16,6 +16,7 @@ import { Separator } from "@shared/ui/separator";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Link } from "react-router";
 import { Logout } from "@features/authorization/log-out";
+import { ROLES } from "@shared/constants/roles";
 const ProfileBadge = () => {
   const { session } = useSession();
   return (
@@ -41,7 +42,13 @@ const ProfileBadge = () => {
           <Link to={ROUTES_PATH.NOTIFICATIONS}>
             <DropdownMenuItem>Уведомления</DropdownMenuItem>
           </Link>
-          <DropdownMenuItem disabled>Профиль</DropdownMenuItem>
+          {session?.role === ROLES.FARMER ? (
+            <Link to={ROUTES_PATH.FARMER}>
+              <DropdownMenuItem>Профиль</DropdownMenuItem>
+            </Link>
+          ) : (
+            <DropdownMenuItem disabled>Профиль</DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Безопасность</DropdownMenuLabel>
