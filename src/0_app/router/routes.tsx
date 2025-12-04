@@ -21,7 +21,6 @@ import { ROLES } from "@shared/constants/roles";
 import { Products } from "@pages/products";
 import { WriteOff } from "@pages/write-off/ui/write-off";
 import { Loyalty } from "@pages/loyalty";
-
 import { AdminNotifications } from "@pages/admin/admin-notifications";
 import { AdminDigests } from "@pages/admin/admin-digests";
 import { AdminRolesPage } from "@pages/admin/admin-roles";
@@ -34,6 +33,9 @@ import { IM } from "@pages/im";
 import { Monitoring } from "@pages/monitoring";
 import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
+import { FarmerProfile } from "@pages/farmer/profile";
+import { FarmerAnalytics } from "@pages/farmer/analytics";
+import { Farmers } from "@pages/farmers";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -88,6 +90,15 @@ export const ROUTES_PATH = {
   GRILL: "/grill",
   IM: "/im",
 
+  // Фермеры
+  FARMER: "/farmer",
+  FARMERS: "/farmers",
+  ANALYTICS: "/analytics",
+  CHAT: "/chat",
+
+  // Профиль
+  PROFILE: "/profile",
+
   // Списания
   WRITE_OFF: "/write-off",
 
@@ -105,6 +116,9 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <TV />,
     label: "TV",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.IM,
@@ -112,6 +126,9 @@ export const ROUTES: RouteConfig[] = [
     element: <IM />,
     label: "Интернет-магазин",
     layout: Sidebar,
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
@@ -126,6 +143,9 @@ export const ROUTES: RouteConfig[] = [
     element: <IMReport />,
     label: "Отчет ИМ",
     layout: Sidebar,
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.ADMIN_DIGESTS,
@@ -154,7 +174,9 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.DASHBOARD,
     variant: "private",
     allowedRoles: [
-      ...Object.values(ROLES).filter((role) => role !== ROLES.SERVICE_MANAGER),
+      ...Object.values(ROLES).filter(
+        (role) => role !== ROLES.SERVICE_MANAGER && role !== ROLES.FARMER,
+      ),
     ],
     element: <Dashboard />,
     layout: Sidebar,
@@ -194,6 +216,9 @@ export const ROUTES: RouteConfig[] = [
     element: <DemocracyPage />,
     layout: Sidebar,
     label: "Предложения",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.LESSONS,
@@ -201,6 +226,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Lessons />,
     layout: Sidebar,
     label: "Обучение",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.ROADMAP,
@@ -208,6 +236,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Roadmap />,
     layout: Sidebar,
     label: "Роадмап",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.NOT_FOUND,
@@ -229,6 +260,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Stores />,
     layout: Sidebar,
     label: "Магазины",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.WRITE_OFF,
@@ -236,6 +270,9 @@ export const ROUTES: RouteConfig[] = [
     element: <WriteOff />,
     layout: Sidebar,
     label: "Списания",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.SUMMARY,
@@ -243,6 +280,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Summary />,
     layout: Sidebar,
     label: "Парные продажи",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.REPORT,
@@ -250,6 +290,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Report />,
     layout: Sidebar,
     label: "Отчеты",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.PRODUCTS,
@@ -257,6 +300,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Products />,
     layout: Sidebar,
     label: "Продукты",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.SALES_DYNAMICS,
@@ -264,6 +310,9 @@ export const ROUTES: RouteConfig[] = [
     element: <SalesDynamics />,
     layout: Sidebar,
     label: "Динамика продаж",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.MONITORING,
@@ -271,6 +320,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Monitoring />,
     layout: Sidebar,
     label: "Мониторинг сетей",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.GRILL,
@@ -286,6 +338,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Standarts />,
     layout: Sidebar,
     label: "Стандарты",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.STANDART,
@@ -293,6 +348,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Standart />,
     layout: Sidebar,
     label: "Стандарт",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.LOYALTY,
@@ -300,6 +358,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Loyalty />,
     layout: Sidebar,
     label: "Лояльность",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.RFM,
@@ -307,6 +368,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Rfm />,
     layout: Sidebar,
     label: "РФМ",
+    allowedRoles: [
+      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
+    ],
   },
   {
     path: ROUTES_PATH.UNLOAD,
@@ -316,6 +380,38 @@ export const ROUTES: RouteConfig[] = [
     allowedUsers: [107, 200, 2816],
     layout: Sidebar,
     label: "Выгрузка",
+  },
+  {
+    path: ROUTES_PATH.FARMER,
+    variant: "private",
+    element: <FarmerProfile />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
+    label: "Профиль фермера",
+  },
+  {
+    path: ROUTES_PATH.ANALYTICS,
+    variant: "private",
+    element: <FarmerAnalytics />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
+    label: "Аналитика фермера",
+  },
+  //{
+  //  path: ROUTES_PATH.CHAT,
+  //  variant: "private",
+  //  element: <Chat />,
+  //  allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+  //  layout: Sidebar,
+  //  label: "Чаты",
+  //},
+  {
+    path: ROUTES_PATH.FARMERS,
+    variant: "private",
+    element: <Farmers />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER_MANAGER],
+    layout: Sidebar,
+    label: "Фермеры",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
