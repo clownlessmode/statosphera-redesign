@@ -141,4 +141,5 @@ export const tarotUsers: string[] = [
   "101",
   "107",
   "18",
+  "2710",
 ];

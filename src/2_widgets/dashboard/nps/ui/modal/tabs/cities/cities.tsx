@@ -17,7 +17,12 @@ export const Cities = ({ tv, best, worst }: CitiesProps) => {
 
   if (isAllNpsLoading || !allNps) {
     return (
-      <Card className="animate-pulse h-full flex justify-center items-center ">
+      <Card
+        className={cn(
+          "animate-pulse h-full flex justify-center items-center",
+          tv && "border-0 shadow-none",
+        )}
+      >
         <Spinner />
       </Card>
     );
