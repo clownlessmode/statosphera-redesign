@@ -223,7 +223,7 @@ export const Loyalty = () => {
   }, [mock]);
 
   const isMobile = useIsMobile();
-
+  console.log(loyalCard2);
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header
@@ -336,32 +336,29 @@ export const Loyalty = () => {
               />
               <ValueCard
                 title="Начислено бонусов"
-                unit="M"
+                unit={(loyalCard2?.bonusAccrual ?? 0) >= 1000000 ? "М" : "Т"}
                 value={loyalCard2?.bonusAccrual ?? 0}
-                formatter={(value) =>
-                  Math.round(value / 1000).toLocaleString("ru-RU")
-                }
+                formatter={(value) => {
+                  if (value >= 1000000) {
+                    return (value / 10000 / 100).toFixed(2);
+                  } else {
+                    return (value / 1000).toFixed(2);
+                  }
+                }}
                 isLoading={isLoyalCard2Loading}
               />
               <ValueCard
                 title="Списано бонусов"
-                unit="M"
-                value={loyalCard2?.bonusWriteOff ?? 0 / 1000000}
-                formatter={(value) =>
-                  Math.round(value / 1000).toLocaleString("ru-RU")
-                }
+                unit={(loyalCard2?.bonusWriteOff ?? 0) >= 1000000 ? "М" : "Т"}
+                value={loyalCard2?.bonusWriteOff ?? 0}
+                formatter={(value) => {
+                  if (value >= 1000000) {
+                    return (value / 10000 / 100).toFixed(2);
+                  } else {
+                    return (value / 1000).toFixed(2);
+                  }
+                }}
                 isLoading={isLoyalCard2Loading}
-              />
-              <ValueCard
-                title="Остаток бонусов M"
-                isLoading={true}
-                value={400000000 / 1000000}
-                unit="M"
-              />
-              <ValueCard
-                title="Бонусы на 1 пользователя M"
-                isLoading={true}
-                value={148}
               />
               {isMobile && (
                 <>
@@ -374,11 +371,19 @@ export const Loyalty = () => {
                   <ValueCard
                     title="Доп. выручка"
                     isLoading={isLoyalCard2Loading}
-                    value={(loyalCard2?.proceedsAdditionalLoyal ?? 0) / 1000000}
-                    unit="M"
-                    formatter={(value) =>
-                      Math.round(value * 1000).toLocaleString("ru-RU")
+                    unit={
+                      (loyalCard2?.proceedsAdditionalLoyal ?? 0) >= 1000000
+                        ? "М"
+                        : "Т"
                     }
+                    value={loyalCard2?.proceedsAdditionalLoyal ?? 0}
+                    formatter={(value) => {
+                      if (value >= 1000000) {
+                        return (value / 10000 / 100).toFixed(2);
+                      } else {
+                        return (value / 1000).toFixed(2);
+                      }
+                    }}
                   />
                   <ValueCard
                     title="Доля доп. выручки"
@@ -408,11 +413,19 @@ export const Loyalty = () => {
                 <ValueCard
                   title="Доп. выручка"
                   isLoading={isLoyalCard2Loading}
-                  value={(loyalCard2?.proceedsAdditionalLoyal ?? 0) / 1000000}
-                  unit="M"
-                  formatter={(value) =>
-                    Math.round(value * 1000).toLocaleString("ru-RU")
+                  unit={
+                    (loyalCard2?.proceedsAdditionalLoyal ?? 0) >= 1000000
+                      ? "М"
+                      : "Т"
                   }
+                  value={loyalCard2?.proceedsAdditionalLoyal ?? 0}
+                  formatter={(value) => {
+                    if (value >= 1000000) {
+                      return (value / 10000 / 100).toFixed(2);
+                    } else {
+                      return (value / 1000).toFixed(2);
+                    }
+                  }}
                 />
                 <ValueCard
                   title="Доля доп. выручки"
