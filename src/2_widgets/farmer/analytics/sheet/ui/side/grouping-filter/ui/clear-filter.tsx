@@ -30,7 +30,11 @@ const ClearFilters: FC<Props> = ({ form }) => {
     form.reset({
       days: [],
       geo: [],
+      store: [],
       product: [],
+      loyal: [],
+      online: [],
+      id: [],
     });
   };
   const isMobile = useIsMobile();

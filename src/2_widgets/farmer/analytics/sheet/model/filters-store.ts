@@ -311,6 +311,23 @@ export type FiltersState = {
     value: FiltersState["filters"]["product"][K],
   ) => void;
 
+  updateCheckFilter: <K extends keyof FiltersState["filters"]["check"]>(
+    key: K,
+    value: FiltersState["filters"]["check"][K],
+  ) => void;
+
+  updateLoyalFilter: <K extends keyof FiltersState["filters"]["loyal"]>(
+    key: K,
+    value: FiltersState["filters"]["loyal"][K],
+  ) => void;
+
+  updateOnlineStoreFilter: <
+    K extends keyof FiltersState["filters"]["onlineStore"],
+  >(
+    key: K,
+    value: FiltersState["filters"]["onlineStore"][K],
+  ) => void;
+
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
   updateTimeFilter: (timeStart: string, timeEnd: string) => void;
   updateSorts: (sort: "asc" | "desc", colId: string[]) => void;
@@ -325,6 +342,9 @@ export type FiltersState = {
     | "indicators"
     | "updateStoreFilter"
     | "updateProductFilter"
+    | "updateCheckFilter"
+    | "updateLoyalFilter"
+    | "updateOnlineStoreFilter"
     | "updateDateFilter"
     | "updateTimeFilter"
     | "updateSorts"
@@ -342,6 +362,9 @@ const initialState: Omit<
   FiltersState,
   | "updateStoreFilter"
   | "updateProductFilter"
+  | "updateCheckFilter"
+  | "updateLoyalFilter"
+  | "updateOnlineStoreFilter"
   | "updateDateFilter"
   | "updateTimeFilter"
   | "updateSorts"
@@ -454,6 +477,40 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
         ...state.filters,
         product: {
           ...state.filters.product,
+          [key]: value,
+        },
+      },
+    })),
+
+  updateCheckFilter: (key, value) =>
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        check: {
+          ...state.filters.check,
+          [key]: value,
+        },
+      },
+    })),
+
+  updateLoyalFilter: (key, value) => {
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        loyal: {
+          ...state.filters.loyal,
+          [key]: value,
+        },
+      },
+    }));
+  },
+
+  updateOnlineStoreFilter: (key, value) =>
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        onlineStore: {
+          ...state.filters.onlineStore,
           [key]: value,
         },
       },

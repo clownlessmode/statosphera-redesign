@@ -3,14 +3,16 @@ import {
   CircleDotDashed,
   Combine,
   Grid2x2Check,
+  ShoppingBasket,
   Store,
 } from "lucide-react";
 
 import { UniqueFilters } from "../../side/uniques-filter";
 import { DateFilter } from "../../side/date-filter";
-import { ShopsProductFilter } from "../../side/shops-product-filter";
+import { ShopsFilter } from "../../side/shops-filter";
 import { GroupingFilter } from "../../side/grouping-filter";
 import { IndicatorsFilter } from "../../side/indicators-filter";
+import { ProductsFilter } from "../../side/products-filter";
 
 export const filters = [
   {
@@ -19,9 +21,14 @@ export const filters = [
     component: DateFilter,
   },
   {
-    title: "Магазины и продукты",
+    title: "Магазины",
     icon: Store,
-    component: ShopsProductFilter,
+    component: ShopsFilter,
+  },
+  {
+    title: "Продукты",
+    icon: ShoppingBasket,
+    component: ProductsFilter,
   },
 ];
 

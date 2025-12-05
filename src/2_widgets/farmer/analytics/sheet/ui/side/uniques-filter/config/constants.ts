@@ -1,6 +1,6 @@
 import { COLUMN_KEY } from "@shared/constants/table-columns";
 import { sortGroups } from "@shared/lib/sort-groups";
-import { Landmark, Map, ShoppingBag } from "lucide-react";
+import { CreditCard, Landmark, Map, Receipt, ShoppingBag } from "lucide-react";
 
 const all_unique = [
   {
@@ -90,6 +90,64 @@ const all_unique = [
       },
     ],
   },
+  {
+    id: "cardNumberUniqueGroup",
+    label: "Номера карт",
+    value: "cardNumberUniqueGroup",
+    icon: CreditCard,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER,
+        label: "Номера карт",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER,
+        tooltip:
+          "Количество уникальных карт лояльности, использованных при оплате. Показывает, сколько разных клиентов воспользовались своими картами",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_LM,
+        label: "Номера карт PM",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_LM,
+        tooltip:
+          "Количество уникальных карт лояльности, применённых в предыдущем месяце. Отражает активность постоянных клиентов",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_LY,
+        label: "Номера карт PY",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_LY,
+        tooltip:
+          "Количество уникальных карт лояльности за аналогичный период прошлого года. Позволяет оценить рост базы лояльных клиентов",
+      },
+    ],
+  },
+  {
+    id: "checkUniqueGroup",
+    label: "Чек",
+    value: "checkUniqueGroup",
+    icon: Receipt,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK,
+        label: "Чек",
+        value: COLUMN_KEY.UNIQUE_CHECK,
+        tooltip:
+          "Количество уникальных чеков. Основной показатель активности покупок",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_LM,
+        label: "Чек PM",
+        value: COLUMN_KEY.UNIQUE_CHECK_LM,
+        tooltip:
+          "Количество чеков в предыдущем месяце. Позволяет анализировать месячную динамику продаж",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_LY,
+        label: "Чек PY",
+        value: COLUMN_KEY.UNIQUE_CHECK_LY,
+        tooltip:
+          "Количество чеков за аналогичный период прошлого года. Основной показатель для годового сравнения",
+      },
+    ],
+  },
 ];
 
 interface IndicatorGroup {
@@ -128,12 +186,13 @@ export function excludeIndicators(
     .filter((group): group is IndicatorGroup => Boolean(group));
 }
 
-export const useUniqueValues = () => {
+export const useUniqueValues = (tab: "check" | "commerce") => {
   const filtered = sortGroups(all_unique);
+  const check = excludeIndicators(filtered, []);
   const commerce = excludeIndicators(filtered, [
     "cardNumberUniqueGroup",
     "checkUniqueGroup",
   ]);
 
-  return commerce;
+  return tab === "check" ? check : commerce;
 };

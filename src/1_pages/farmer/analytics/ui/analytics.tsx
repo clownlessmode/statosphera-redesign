@@ -12,7 +12,6 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
-import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
@@ -23,6 +22,8 @@ import { useUniqueValues } from "@widgets/farmer/analytics/sheet/ui/side/uniques
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { DownloadFarmer } from "@features/farmer/download";
+import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -280,15 +281,15 @@ const FarmerAnalytics: FC = () => {
   const lastRequestKey = useRef<string>("");
   const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
   const allData = getApiPayload();
-
+  const { tab } = useTabStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } =
     useFarmerAnalyticsStore();
   const { getTable, getGraph } = useReport();
   const { table: initialRows, total: initialTotalRows } =
     useFarmerAnalyticsStore();
-  const indicators = useIndicatorList();
-  const uniques = useUniqueValues();
+  const indicators = useIndicatorList(tab);
+  const uniques = useUniqueValues(tab);
 
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!graph);
@@ -650,7 +651,7 @@ const FarmerAnalytics: FC = () => {
           actions={{
             right: !isMobile && (
               <div className="flex flex-row gap-2">
-                <DownloadReport rows={table?.totalRows || 0} />
+                <DownloadFarmer rows={table?.totalRows || 0} />
               </div>
             ),
           }}
@@ -659,7 +660,7 @@ const FarmerAnalytics: FC = () => {
           {isMobile && (
             <div className="w-full flex flex-col gap-2">
               <div className="w-full flex flex-row gap-2 justify-between px-4">
-                <DownloadReport rows={table?.totalRows || 0} />
+                <DownloadFarmer rows={table?.totalRows || 0} />
                 <DateDropdown />
                 <Button
                   className="w-fit"

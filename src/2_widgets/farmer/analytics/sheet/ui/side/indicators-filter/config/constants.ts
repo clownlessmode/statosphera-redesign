@@ -1,6 +1,6 @@
 import { COLUMN_KEY } from "@shared/constants/table-columns";
 
-import { DollarSign, Percent, ShoppingCart } from "lucide-react";
+import { DollarSign, Percent, ShoppingCart, TicketPercent } from "lucide-react";
 
 const all_indicators = [
   {
@@ -103,6 +103,45 @@ const all_indicators = [
     ],
   },
   {
+    id: COLUMN_KEY.GROUP_DISCOUNT_PERCENT,
+    label: "Скидка %",
+    value: COLUMN_KEY.GROUP_DISCOUNT_PERCENT,
+    icon: TicketPercent,
+    children: [
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT,
+        label: "Скидка %",
+        value: COLUMN_KEY.DISCOUNT_PERCENT,
+        tooltip: "Средний процент скидки от общей стоимости покупок",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_LM,
+        label: "Скидки % PM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_LM,
+        tooltip: "Средний процент скидки за предыдущий месяц",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_MOM_PERCENT,
+        label: "Скидки % MoM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_MOM_PERCENT,
+        tooltip: "Изменение процента скидки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_LY,
+        label: "Скидки %  PY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_LY,
+        tooltip: "Средний процент скидки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_YOY_PERCENT,
+        label: "Скидки % YoY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_YOY_PERCENT,
+        tooltip:
+          "Изменение процента скидки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
     id: "salesUniqueGroup",
     label: "Кол. Продаж",
     value: "salesUniqueGroup",
@@ -189,7 +228,18 @@ export function excludeIndicators(
     .filter((group): group is IndicatorGroup => Boolean(group));
 }
 
-export const useIndicatorList = () => {
+export const useIndicatorList = (tab: "check" | "commerce") => {
+  const CHECK = excludeIndicators(all_indicators, [
+    COLUMN_KEY.GROUP_TURNOVER_GOODS,
+    COLUMN_KEY.WEIGHT_GROUP,
+    "writeOffGroup",
+    "writeOffPercentGroup",
+    "writeOffWeightGroup",
+    "writeOffCountGroup",
+    "openingBalanceGroup",
+    "finalBalanceGroup",
+    "itrGroup",
+  ]);
   const COMMERCE = excludeIndicators(all_indicators, [
     "avgCheckGroup",
     "checkGroup",
@@ -198,6 +248,9 @@ export const useIndicatorList = () => {
     COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
     COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
   ]);
+  if (tab === "check") {
+    return CHECK;
+  }
   return COMMERCE;
 };
 
