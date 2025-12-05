@@ -38,24 +38,24 @@ export const schema = z.object({
   legalAddress: z.string().min(1, "Обязательное поле"),
   postalAddress: z.string().min(1, "Обязательное поле"),
   workshopAddress: z.string().min(1, "Обязательное поле"),
-  ogrn: z
-    .string()
-    .min(1, "Обязательное поле")
-    .refine((val) => validateOgrn(val), {
+  ogrn: z.union([
+    z.literal(""),
+    z.string().refine((val) => validateOgrn(val), {
       message: "Некорректный ОГРН",
     }),
+  ]),
   okpo: z.union([
     z.literal(""),
     z.string().refine((val) => isValidOkpo(val), {
       message: "Некорректный ОКПО",
     }),
   ]),
-  okved: z
-    .string()
-    .min(1, "Обязательное поле")
-    .refine((val) => /^(\d{2}(\.\d{1,2})?(\.\d{1,2})?)$/.test(val), {
+  okved: z.union([
+    z.literal(""),
+    z.string().refine((val) => /^(\d{2}(\.\d{1,2})?(\.\d{1,2})?)$/.test(val), {
       message: "Некорректный ОКВЭД",
     }),
+  ]),
   declarations: z.array(
     z.object({
       nameDeclaration: z.string().min(1),

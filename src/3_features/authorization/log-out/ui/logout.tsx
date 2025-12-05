@@ -17,22 +17,31 @@ import { DropdownMenuItem } from "@shared/ui/dropdown-menu";
 import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 
-const Logout = () => {
+interface Props {
+  children?: React.ReactNode; // Добавляем поддержку children
+}
+
+const Logout = ({ children }: Props) => {
   const { clearSession } = useSession();
   const navigate = useNavigate();
   const handleLogout = () => {
     clearSession();
     navigate(ROUTES_PATH.LOGIN);
   };
+
+  const defaultTrigger = (
+    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+      Выйти из системы
+      <DropdownMenuShortcut>
+        <LogOutIcon />
+      </DropdownMenuShortcut>
+    </DropdownMenuItem>
+  );
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          Выйти из системы
-          <DropdownMenuShortcut>
-            <LogOutIcon />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
+        {children || defaultTrigger}
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-xs">
         <AlertDialogHeader>

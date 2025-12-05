@@ -109,7 +109,7 @@ export default function FarmerProfileCard({
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">ОГРН</span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.ogrn}
+                      {profile.ogrn ? profile.ogrn : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -121,7 +121,7 @@ export default function FarmerProfileCard({
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">ОКВЭД</span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.okved}
+                      {profile.okved ? profile.okved : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -197,7 +197,7 @@ export default function FarmerProfileCard({
                   </span>
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">
-                      Юридический адрес
+                      Юридический адрес / место жительства
                     </span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
                       {profile.legalAddress}

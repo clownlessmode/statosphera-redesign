@@ -13,17 +13,26 @@ import { FC } from "react";
 
 interface MainContactFieldsProps {
   control: Control<any>;
+  children?: React.ReactNode;
 }
 
-export const MainContactFields: FC<MainContactFieldsProps> = ({ control }) => {
+export const MainContactFields: FC<MainContactFieldsProps> = ({
+  control,
+  children,
+}) => {
   const { updateFilters } = useFarmerProfileStore();
   const { getValues } = useFormContext();
 
   return (
     <div className="grid grid-cols-2 gap-2 items-start max-md:flex max-md:flex-col">
-      <span className="col-span-2 text-sm flex gap-0.5 leading-none font-medium select-none">
-        Основной контакт<span className="text-destructive">*</span>
-      </span>
+      <div className="col-span-2 flex items-center justify-between gap-2 w-full max-xxs:gap-0">
+        <span className="text-sm flex gap-0.5 leading-none font-medium select-none">
+          <span>
+            Основной контакт<span className="text-destructive ml-0.5">*</span>
+          </span>
+        </span>
+        {children}
+      </div>
       <FormField
         name="mainContact.name"
         control={control}
