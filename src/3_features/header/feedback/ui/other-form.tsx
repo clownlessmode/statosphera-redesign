@@ -41,7 +41,7 @@ const OtherForm: FC<Props> = ({ setIsOpen }) => {
               <FormControl>
                 <Textarea
                   placeholder="Опишите проблему"
-                  className="h-63 max-h-63 md:resize-y md:h-[100px] md:max-h-[20vh]"
+                  className="h-63 max-md:max-h-63 md:resize-y md:h-50 md:max-h-50"
                   rows={4}
                   {...field}
                 />
