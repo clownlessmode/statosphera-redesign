@@ -641,7 +641,7 @@ const FarmerAnalytics: FC = () => {
     useFarmerAnalyticsStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
-  console.log(total);
+
   return (
     <>
       <Sheet />

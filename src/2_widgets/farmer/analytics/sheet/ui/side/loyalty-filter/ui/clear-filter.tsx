@@ -26,8 +26,8 @@ const ClearFilters: FC<Props> = ({ form }) => {
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
   }, [resetSignal]);
   const handleClearFilters = () => {
-    updateLoyalFilter("ageEnd", 100);
-    updateLoyalFilter("ageStart", 0);
+    updateLoyalFilter("ageEnd", null);
+    updateLoyalFilter("ageStart", null);
     updateLoyalFilter("cardNumber", []);
     updateLoyalFilter("isLoyal", null);
     updateLoyalFilter("cardNumber", []);

@@ -43,7 +43,6 @@ export const MainContactFields: FC<MainContactFieldsProps> = ({
               <Input
                 {...field}
                 value={field.value || ""}
-                type="tel"
                 placeholder="Введите ФИО"
                 className="bg-background"
                 onChange={(e) => {

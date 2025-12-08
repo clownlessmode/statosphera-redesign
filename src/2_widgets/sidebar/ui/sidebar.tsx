@@ -18,7 +18,7 @@ import {
   Store,
   Vote,
   ChartColumn,
-  MessageCircle,
+  //  MessageCircle,
   Tractor,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -196,12 +196,12 @@ const Sidebar = ({
         allowedRoles: [ROLES.ADMIN],
         icon: ChartColumn,
       },
-      {
-        title: "Чаты",
-        url: "#",
-        icon: MessageCircle,
-        disabled: true,
-      },
+      //{
+      //  title: "Чаты",
+      //  url: "#",
+      //  icon: MessageCircle,
+      //  disabled: true,
+      //},
       {
         title: "Дайджесты",
         url: ROUTES_PATH.DIGESTS,

@@ -1,12 +1,17 @@
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-import { ContactsEdit } from "@widgets/farmer/profile/ui/filter/ui/contacts-edit";
 import { Pencil } from "lucide-react";
-import { FC, useState } from "react";
+import { FC, Suspense, useState } from "react";
 import { useContactsStore } from "@widgets/farmer/profile/model/profile-store";
 import { useFarmer } from "@entities/farmer/api/controller";
 import { toast } from "sonner";
 import { FarmersResponse } from "@pages/farmers/config";
+import Spinner from "@shared/ui/spinner";
+import { lazy } from "react";
+
+const ContactsEdit = lazy(
+  () => import("@widgets/farmer/profile/ui/filter/ui/contacts-edit"),
+);
 
 export const ContactsEditModal: FC<{ farmer: FarmersResponse }> = ({
   farmer,
@@ -36,8 +41,16 @@ export const ContactsEditModal: FC<{ farmer: FarmersResponse }> = ({
         </Button>
       </DialogTrigger>
       <DialogContent aria-describedby={undefined} className="">
-        <ContactsEdit contacts={farmer.kmContacts} />
-        <Button onClick={handleSave}>Сохранить</Button>
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center min-h-[200px] w-full">
+              <Spinner />
+            </div>
+          }
+        >
+          <ContactsEdit contacts={farmer.kmContacts} />
+          <Button onClick={handleSave}>Сохранить</Button>
+        </Suspense>
       </DialogContent>
     </Dialog>
   );

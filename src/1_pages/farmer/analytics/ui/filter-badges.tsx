@@ -10,10 +10,39 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       idStore: "Магазины",
       idCity: "Города",
       idRegion: "Регионы",
+      storeCondition: "Состояние",
+      ageGroup: "Возрастная группа",
       district: "Районы",
     },
     product: {
+      subGroups: "Подгруппы",
+      subSubGroups: "Подподгруппы",
+      idGroupMain: "Основные группы",
       idProduct: "Товары",
+      seasonalityProducts: "Сезонность",
+    },
+    check: {
+      paymentClass: "Классы оплаты",
+      type: "Типы чеков",
+    },
+    loyal: {
+      isLoyal: "Лояльные клиенты",
+      cardNumber: "Номера карт",
+      sex: "Пол",
+      guidDiscount: "Скидки",
+      guidBonus: "Бонусы",
+      ageStart: "Возраст от",
+      ageEnd: "Возраст до",
+      groupAge: "Возрастные группы",
+    },
+    onlineStore: {
+      isIm: "Онлайн-заказы",
+      imTypeOrder: "Типы заказов",
+      imDeliveryMethod: "Способы доставки",
+      imPaymentMethod: "Способы оплаты",
+      imStatusOrder: "Статусы заказов",
+      imReceiveInterval: "Интервалы получения",
+      imPromo: "Промо",
     },
   };
 
@@ -65,12 +94,23 @@ export function FilterBadges() {
 
       // Для каждого активного фильтра показываем количество выбранных значений
       activeFilters.forEach(([filterKey, value]) => {
-        const count = Array.isArray(value) ? value.length : 1;
-        badges.push(
-          <Badge key={`${sectionKey}-${filterKey}`}>
-            {`${getFilterLabel(sectionKey, filterKey)}: ${count}`}
-          </Badge>,
-        );
+        if (
+          sectionKey === "loyal" &&
+          (filterKey === "ageStart" || filterKey === "ageEnd")
+        ) {
+          badges.push(
+            <Badge key={`${sectionKey}-${filterKey}`}>
+              {`${getFilterLabel(sectionKey, filterKey)}: ${value}`}
+            </Badge>,
+          );
+        } else {
+          const count = Array.isArray(value) ? value.length : 1;
+          badges.push(
+            <Badge key={`${sectionKey}-${filterKey}`}>
+              {`${getFilterLabel(sectionKey, filterKey)}: ${count}`}
+            </Badge>,
+          );
+        }
       });
     });
 

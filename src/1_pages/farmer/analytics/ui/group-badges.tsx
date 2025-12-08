@@ -4,11 +4,23 @@ import {
   DAYS,
   GEO,
   PRODUCT,
+  SHOP,
+  LOYAL,
+  ONLINE,
+  ID,
 } from "@widgets/farmer/analytics/sheet/ui/side/grouping-filter";
 
 import { Link } from "react-router";
 
-const allGroups = [...DAYS, ...GEO, ...PRODUCT];
+const allGroups = [
+  ...DAYS,
+  ...GEO,
+  ...PRODUCT,
+  ...SHOP,
+  ...LOYAL,
+  ...ONLINE,
+  ...ID,
+];
 // Создаем маппинг value -> label
 const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
   (acc, item) => {

@@ -21,6 +21,10 @@ export const DAYS = [
     label: "День",
     value: GROUPINGS.DAY,
   },
+  {
+    label: "Час",
+    value: GROUPINGS.HOUR,
+  },
 ];
 
 export const GEO = [

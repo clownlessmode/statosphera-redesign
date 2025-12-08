@@ -555,7 +555,6 @@ export default function FarmerQuestionnaire({
                         <Input
                           {...field}
                           value={field.value || ""}
-                          type="tel"
                           placeholder="Введите ОКВЭД"
                           className="bg-background"
                           onChange={(e) => {
