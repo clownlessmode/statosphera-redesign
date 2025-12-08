@@ -21,8 +21,8 @@ export const Summary = ({ tv }: { tv?: boolean }) => {
   }, []);
   const isMobile = useIsMobile();
 
-  if (isSummaryNpsLoading || isNpsGraphLoading) {
-    return <SummarySkeleton />;
+  if (isSummaryNpsLoading || isNpsGraphLoading || !summaryNps) {
+    return <SummarySkeleton tv={tv} />;
   }
 
   return (
