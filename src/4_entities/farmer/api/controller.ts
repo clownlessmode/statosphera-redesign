@@ -7,21 +7,23 @@ import {
   RequestDtoKmContacts,
   RequestDtoPhoto,
 } from "../config";
+import { ROLES } from "@shared/constants/roles";
 
-export const useFarmer = (idUser?: number) => {
+export const useFarmer = (idUser?: number, role?: string) => {
   const queryClient = useQueryClient();
+  const isFarmer = role === ROLES.FARMER || role === ROLES.ADMIN;
 
   const checkProfile = useQuery<boolean, ApiError>({
-    queryKey: ["checkProfile"],
+    queryKey: ["checkProfile", idUser],
     queryFn: async () => {
       const response = await FarmerService.checkProfile(idUser!);
       return response;
     },
-    enabled: !!idUser,
+    enabled: !!idUser && isFarmer,
   });
 
   const getProfile = useQuery<ProfileResponse, ApiError>({
-    queryKey: ["farmer"],
+    queryKey: ["farmer", idUser],
     queryFn: async () => {
       const response = await FarmerService.getProfile(idUser!);
       return response;

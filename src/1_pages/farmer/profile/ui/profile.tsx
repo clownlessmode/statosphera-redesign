@@ -24,7 +24,7 @@ const FarmerProfile: FC = () => {
     profile: profileData,
     profileStatus,
     isCheckProfileLoading,
-  } = useFarmer(session?.idUser);
+  } = useFarmer(session?.idUser, session?.role);
   const { getApiPayload } = useFarmerProfileStore();
   const form = useForm();
 
