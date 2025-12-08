@@ -28,7 +28,7 @@ const Feedback = () => {
           <p className="hidden lg:block">Обратная связь</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-md:h-max">
+      <DialogContent className="max-md:h-max min-h-0">
         <DialogHeader>
           <DialogTitle className="justify-between w-full flex">
             <span>Обратная связь</span>
