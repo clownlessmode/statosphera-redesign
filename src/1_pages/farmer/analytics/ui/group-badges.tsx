@@ -1,5 +1,8 @@
 import { Badge } from "@shared/ui/badge";
-import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
+import {
+  GROUPINGS,
+  useFiltersStore,
+} from "@widgets/farmer/analytics/sheet/model/filters-store";
 import {
   DAYS,
   GEO,
@@ -20,6 +23,10 @@ const allGroups = [
   ...LOYAL,
   ...ONLINE,
   ...ID,
+  {
+    label: "Час",
+    value: GROUPINGS.HOUR,
+  },
 ];
 // Создаем маппинг value -> label
 const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
