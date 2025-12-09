@@ -72,16 +72,24 @@ const ShopsFilter = () => {
     fetchShops();
   }, []);
 
-  useEffect(() => {
-    if (selectedMyShops) {
-      form.setValue("idStore", session?.idStore as number[]);
-      updateFilters("idStore", session?.idStore as number[]);
-    }
-    if (!selectedMyShops) {
-      form.setValue("idStore", []);
-      updateFilters("idStore", []);
-    }
-  }, [selectedMyShops]);
+  const handleApply = () => {
+    const values = form.getValues();
+    // Применяем все фильтры из формы
+    if (values.channel)
+      updateFilters("channel", values.channel as FRS_CHANNEL[]);
+    if (values.storeCondition)
+      updateFilters(
+        "storeCondition",
+        values.storeCondition as STORE_CONDITIONS[],
+      );
+    if (values.ageGroup)
+      updateFilters("ageGroup", values.ageGroup as AGE_GROUP[]);
+    if (values.idManager) updateFilters("idManager", values.idManager);
+    if (values.idRegion) updateFilters("idRegion", values.idRegion);
+    if (values.idCity) updateFilters("idCity", values.idCity);
+    if (values.idStore) updateFilters("idStore", values.idStore);
+    setIsOpen(false);
+  };
   const { CHANNEL_SHOP } = useChannel();
   const isMobile = useIsMobile();
 
@@ -114,7 +122,14 @@ const ShopsFilter = () => {
               <Button
                 className="w-full mb-6"
                 variant={selectedMyShops ? "default" : "outline"}
-                onClick={() => setSelectedMyShops(!selectedMyShops)}
+                onClick={() => {
+                  setSelectedMyShops(!selectedMyShops);
+                  if (!selectedMyShops) {
+                    form.setValue("idStore", session?.idStore as number[]);
+                  } else {
+                    form.setValue("idStore", []);
+                  }
+                }}
               >
                 {selectedMyShops ? "Снять выбор" : "Выбрать мои магазины"}
                 {selectedMyShops ? (
@@ -138,7 +153,6 @@ const ShopsFilter = () => {
                           {...field}
                           onChange={(values) => {
                             field.onChange(values as FRS_CHANNEL[]);
-                            updateFilters("channel", values as FRS_CHANNEL[]);
                           }}
                           options={CHANNEL_SHOP}
                           className="grid-cols-1 xxs:grid-cols-2 md:grid-cols-3"
@@ -159,10 +173,6 @@ const ShopsFilter = () => {
                           disabled={selectedMyShops}
                           onChange={(values) => {
                             field.onChange(values);
-                            updateFilters(
-                              "storeCondition",
-                              values as STORE_CONDITIONS[],
-                            );
                           }}
                           options={status}
                           className="grid-cols-2"
@@ -186,7 +196,6 @@ const ShopsFilter = () => {
                           disableCheck
                           onChange={(values) => {
                             field.onChange(values);
-                            updateFilters("ageGroup", values as AGE_GROUP[]);
                           }}
                           options={time}
                           className="grid-cols-2 md:grid-cols-4"
@@ -214,7 +223,6 @@ const ShopsFilter = () => {
                             onValueChange={(value) => {
                               const numericValues = value.map(Number);
                               field.onChange(numericValues);
-                              updateFilters("idManager", numericValues);
                             }}
                             defaultValue={field.value?.map(String)}
                             placeholder="Выберите партнеров"
@@ -240,7 +248,6 @@ const ShopsFilter = () => {
                           onValueChange={(value) => {
                             const numericValues = value.map(Number);
                             field.onChange(numericValues);
-                            updateFilters("idRegion", numericValues);
                           }}
                           defaultValue={field.value?.map(String)}
                           placeholder="Выберите регионы"
@@ -265,7 +272,6 @@ const ShopsFilter = () => {
                           onValueChange={(value) => {
                             const numericValues = value.map(Number);
                             field.onChange(numericValues);
-                            updateFilters("idCity", numericValues);
                           }}
                           defaultValue={field.value?.map(String)}
                           placeholder="Выберите города"
@@ -291,7 +297,6 @@ const ShopsFilter = () => {
                           onValueChange={(value) => {
                             const numericValues = value.map(Number);
                             field.onChange(numericValues);
-                            updateFilters(field.name, numericValues);
                           }}
                           placeholder="Выберите магазины"
                         />
@@ -300,6 +305,23 @@ const ShopsFilter = () => {
                     </FormItem>
                   )}
                 />
+                <div className="flex flex-row gap-2 justify-end mt-4 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full"
+                  >
+                    Отмена
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleApply}
+                    className="w-full"
+                  >
+                    Применить
+                  </Button>
+                </div>
               </form>
             </Form>
           </CardContent>

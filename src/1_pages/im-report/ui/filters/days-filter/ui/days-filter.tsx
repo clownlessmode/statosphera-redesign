@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ClearFilters } from "@features/clear-filters";
 import { DateRangePicker } from "@shared/ui/date-range-picker";
 import { format, parseISO } from "date-fns";
@@ -57,13 +57,12 @@ const DaysFilter = () => {
     setDateRange(start, end);
   };
 
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      updateDateFilter(values.dateStart || "", values.dateEnd || "");
-      updateFilterDate(values.dateStart || "", values.dateEnd || "");
-    });
-    return () => subscription.unsubscribe();
-  }, [form, updateDateFilter, updateFilterDate]);
+  const handleApply = () => {
+    const values = form.getValues();
+    updateDateFilter(values.dateStart || "", values.dateEnd || "");
+    updateFilterDate(values.dateStart || "", values.dateEnd || "");
+    setIsOpen(false);
+  };
 
   const dateRangeValue = {
     from: form.getValues("dateStart")
@@ -157,6 +156,23 @@ const DaysFilter = () => {
                     onClick={() => handleButtonClick("lastMonth")}
                   >
                     <History className="h-4 w-4 mr-1" /> Прошлый месяц
+                  </Button>
+                </div>
+                <div className="flex flex-row gap-2 justify-end mt-4 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full"
+                  >
+                    Отмена
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={handleApply}
+                    className="w-full"
+                  >
+                    Применить
                   </Button>
                 </div>
               </form>

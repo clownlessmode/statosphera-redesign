@@ -9,7 +9,7 @@ const TopWriteOffSkeleton = ({ tv }: { tv?: boolean }) => {
       {!tv && (
         <CardHeader>
           <CardTitle>
-            <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
+            <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md flex" />
           </CardTitle>
         </CardHeader>
       )}

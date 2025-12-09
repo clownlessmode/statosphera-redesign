@@ -12,7 +12,7 @@ export const Nps = ({ tv }: { tv?: boolean }) => {
     useNpsController();
   const { series } = useGraphColors();
 
-  if (isSummaryNpsLoading || isSummaryNpsError) {
+  if (isSummaryNpsLoading || isSummaryNpsError || !summaryNps) {
     return <NpsSkeleton />;
   }
 

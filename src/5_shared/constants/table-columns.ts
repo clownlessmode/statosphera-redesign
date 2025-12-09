@@ -197,6 +197,16 @@ export enum COLUMN_KEY {
   CUMULATIVE_PROCEEDS_YOY = "cumulativeProceedsYoY",
   CUMULATIVE_PROCEEDS_YOY_PERCENT = "cumulativeProceedsYoYPercent",
 
+  // ----------------- Выручка для фермера -----------------
+  GROUP_FARMER_PRICE = "groupFarmerPrice",
+  FARMER_PRICE = "farmerPrice",
+  FARMER_PRICE_LM = "farmerPriceLM",
+  FARMER_PRICE_MOM = "farmerPriceMoM",
+  FARMER_PRICE_MOM_PERCENT = "farmerPriceMoMPercent",
+  FARMER_PRICE_LY = "farmerPriceLY",
+  FARMER_PRICE_YOY = "farmerPriceYoY",
+  FARMER_PRICE_YOY_PERCENT = "farmerPriceYoYPercent",
+
   // ----------------- Выручка планы -----------------
   PLAN_PROCEEDS = "planProceeds",
   PLAN_PROCEEDS_EXECUTION_PERCENT = "planProceedsExecutionPercent",
@@ -5032,6 +5042,203 @@ export const tableConfig: ColDef<any>[] = [
     headerTooltip: "Выручка по кюаркоду",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE,
+    headerName: "Выручка",
+    headerTooltip: "Выручка",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_LM,
+    headerName: "Выручка PM",
+    headerTooltip: "В прошлом месяце",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_MOM,
+    headerName: "Выручка MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_MOM_PERCENT,
+    headerName: "Выручка MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_LY,
+    headerName: "Выручка PY",
+    headerClass: "column",
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_YOY,
+    headerName: "Выручка YoY",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_YOY_PERCENT,
+    headerName: "Выручка YoY %",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
     filter: "agNumberColumnFilter",
     filterParams: {
       buttons: ["reset", "apply"],

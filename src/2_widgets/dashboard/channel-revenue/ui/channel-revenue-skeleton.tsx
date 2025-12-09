@@ -7,8 +7,8 @@ const ChannelRevenueSkeleton = ({ tv }: { tv?: boolean }) => {
   return (
     <Card className={cn("w-full h-[400px] flex flex-col", tv && "h-full")}>
       <CardHeader>
-        <CardTitle>
-          <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md" />
+        <CardTitle className="flex justify-center">
+          <Skeleton className="w-[70%] h-[20px] bg-muted-foreground rounded-md flex" />
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1">

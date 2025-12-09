@@ -343,14 +343,24 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         className="flex-1 min-h-80"
         overlayNoRowsTemplate="Нет данных для отображения"
         defaultColDef={defaultColDef}
-        onRowClicked={(e) => onRowClick?.(e.data)}
-        onCellClicked={(e) =>
+        onRowClicked={(e) => {
+          // Игнорируем клики по закрепленной итоговой строке
+          if (e.node.rowPinned === "top") {
+            return;
+          }
+          onRowClick?.(e.data);
+        }}
+        onCellClicked={(e) => {
+          // Игнорируем клики по закрепленной итоговой строке
+          if (e.node.rowPinned === "top") {
+            return;
+          }
           onCellClick?.({
             rowData: e.data,
             field: e.colDef.field ?? "",
             value: e.value,
-          })
-        }
+          });
+        }}
       />
     </div>
   );
