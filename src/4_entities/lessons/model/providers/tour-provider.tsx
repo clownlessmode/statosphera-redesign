@@ -17,6 +17,7 @@ interface TourContextType {
   nextStep: () => void;
   prevStep: () => void;
   isActive: boolean;
+  currentStep: number;
 }
 
 const TourContext = createContext<TourContextType | null>(null);
@@ -221,6 +222,7 @@ const TourController: React.FC<{ children: React.ReactNode }> = ({
     nextStep,
     prevStep,
     isActive: isOpen,
+    currentStep,
   };
 
   return (

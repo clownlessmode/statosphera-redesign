@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTourProvider } from "@entities/lessons";
+import { useNavigate } from "react-router";
 
 interface DashboardJoyrideProps {
   children: React.ReactNode;
@@ -64,10 +65,10 @@ export const dashboardStepData = [
     position: "top" as const,
   },
   {
-    selector: "[data-testid='nps-details-button']",
+    selector: "[data-testid='nps-widget']",
     title: "Открыть NPS аналитику",
     description:
-      "Нажмите 'Подробнее' для детальной NPS аналитики по городам, регионам и магазинам сети.",
+      "Нажмите на элемент для детальной NPS аналитики по городам, регионам и магазинам сети.",
     position: "top" as const,
     hideNextButton: true, // Скрываем кнопку "Далее"
     action: "open-nps-modal", // Специальное действие для открытия модалки
@@ -278,10 +279,11 @@ export const dashboardStepData = [
 export const DashboardJoyride: React.FC<DashboardJoyrideProps> = ({
   children,
 }) => {
-  const { startTour, isActive, nextStep } = useTourProvider();
+  const { startTour, isActive, nextStep, currentStep, stopTour } =
+    useTourProvider();
   const [waitingForModal, setWaitingForModal] = useState(false);
   const [modalTourActive, setModalTourActive] = useState(false);
-
+  const navigate = useNavigate();
   // Создаем шаги из данных
   const steps = dashboardStepData.map((step) => ({
     selector: step.selector,
@@ -313,17 +315,28 @@ export const DashboardJoyride: React.FC<DashboardJoyrideProps> = ({
   useEffect(() => {
     if (!isActive) return;
 
-    // Если это шаг с кнопкой "Подробнее" NPS
-    const handleButtonClick = () => {
-      setWaitingForModal(true);
+    const openModalStepIndex = dashboardStepData.findIndex(
+      (step) => step.action === "open-nps-modal",
+    );
+
+    // Если это шаг с элементом NPS
+    const handleNpsWidgetClick = () => {
+      if (currentStep === openModalStepIndex) {
+        setWaitingForModal(true);
+      } else {
+        stopTour();
+        setTimeout(() => {
+          navigate("/lessons");
+        }, 100);
+      }
     };
 
-    const button = document.querySelector("[data-testid='nps-details-button']");
+    const button = document.querySelector("[data-testid='nps-widget']");
     if (button) {
-      button.addEventListener("click", handleButtonClick);
-      return () => button.removeEventListener("click", handleButtonClick);
+      button.addEventListener("click", handleNpsWidgetClick);
+      return () => button.removeEventListener("click", handleNpsWidgetClick);
     }
-  }, [isActive]);
+  }, [isActive, currentStep]);
 
   // Отслеживание кликов по табам для автоматического перехода
   useEffect(() => {
