@@ -287,7 +287,9 @@ const Report: FC = () => {
   const lastRequestKey = useRef<string>("");
   const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
   const allData = getApiPayload();
-
+  const [selectedIndicator, setSelectedIndicator] = useState<string | null>(
+    null,
+  );
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } = useReportStore();
   const { getTable, getGraph } = useReport();
@@ -476,15 +478,15 @@ const Report: FC = () => {
             }
           }
         }
-
+        setSelectedIndicator(parentIndicator);
         // Обновляем показатели
-        if (isFieldAnIndicator) {
-          updateIndicators([parentIndicator]);
-          updateUniques([]);
-        } else {
-          updateUniques([parentIndicator]);
-          updateIndicators([]);
-        }
+        //if (isFieldAnIndicator) {
+        //  updateIndicators([parentIndicator]);
+        //  updateUniques([]);
+        //} else {
+        //  updateUniques([parentIndicator]);
+        //  updateIndicators([]);
+        //}
 
         // Извлекаем фильтры из строки, на которую кликнули
         const extractedFilters = extractFiltersFromRow(info.rowData, [
@@ -759,6 +761,7 @@ const Report: FC = () => {
   );
 
   const handleClearFilters = () => {
+    setSelectedIndicator(null);
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -921,8 +924,14 @@ const Report: FC = () => {
                   option={{
                     title: {
                       text:
-                        getLabelByValue(indicators, allData.values[0]) ||
-                        getLabelByValue(uniques, allData.values[0]),
+                        getLabelByValue(
+                          indicators,
+                          selectedIndicator || allData.values[0],
+                        ) ||
+                        getLabelByValue(
+                          uniques,
+                          selectedIndicator || allData.values[0],
+                        ),
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],
