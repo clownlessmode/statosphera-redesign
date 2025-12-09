@@ -36,6 +36,7 @@ import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
 import { Farmers } from "@pages/farmers";
+import { Forest } from "@pages/forest";
 //import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -98,6 +99,7 @@ export const ROUTES_PATH = {
 
   // Профиль
   PROFILE: "/profile",
+  FOREST: "/forest",
 
   // Списания
   WRITE_OFF: "/write-off",
@@ -412,6 +414,15 @@ export const ROUTES: RouteConfig[] = [
     allowedRoles: [ROLES.ADMIN, ROLES.FARMER_MANAGER],
     layout: Sidebar,
     label: "Фермеры",
+  },
+  {
+    path: ROUTES_PATH.FOREST,
+    variant: "private",
+    element: <Forest />,
+    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [2758],
+    layout: Sidebar,
+    label: "Проект Лес",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
