@@ -21,7 +21,7 @@ const ValueCard: React.FC<ValueCardProps> & { Skeleton: React.FC } = ({
         <CardTitle className="font-normal">{title}</CardTitle>
       </CardHeader>
       <CardContent className="text-3xl font-bold max-md:text-xl">
-        {value.toLocaleString()} {suffix}
+        {value?.toLocaleString()} {suffix}
       </CardContent>
     </Card>
   );
