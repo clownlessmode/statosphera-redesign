@@ -14,6 +14,7 @@ export enum COLUMN_KEY {
 
   //Причины списания
   OPS = "ops",
+  ACCOUNT_NAME = "accountName",
 
   // Бонусы начисление
   BONUS_ACCRUAL_GROUP = "bonusAccrualGroup",
@@ -303,13 +304,21 @@ export enum COLUMN_KEY {
   PLAN_SHARE_OF_PAYMENTS_QC_FORECAST_PERCENT = "planShareOfPaymentsQcForecastPercent",
   // -----------------------------------------------
   GROUP_DISCOUNT = "groupDiscount",
-  DISCOUNT = "discountPrice",
-  DISCOUNT_LM = "discountPriceLM",
-  DISCOUNT_MOM = "discountPriceMoM",
-  DISCOUNT_MOM_PERCENT = "discountPriceMoMPercent",
-  DISCOUNT_LY = "discountPriceLY",
-  DISCOUNT_YOY = "discountPriceYoY",
-  DISCOUNT_YOY_PERCENT = "discountPriceYoYPercent",
+  DISCOUNT = "discount",
+  DISCOUNT_LM = "discountLM",
+  DISCOUNT_MOM = "discountMoM",
+  DISCOUNT_MOM_PERCENT = "discountMoMPercent",
+  DISCOUNT_LY = "discountLY",
+  DISCOUNT_YOY = "discountYoY",
+  DISCOUNT_YOY_PERCENT = "discountYoYPercent",
+  GROUP_DISCOUNT_FOREST = "groupDiscountPrice",
+  DISCOUNT_FOREST = "discountPrice",
+  DISCOUNT_FOREST_LM = "discountPriceLM",
+  DISCOUNT_FOREST_MOM = "discountPriceMoM",
+  DISCOUNT_FOREST_MOM_PERCENT = "discountPriceMoMPercent",
+  DISCOUNT_FOREST_LY = "discountPriceLY",
+  DISCOUNT_FOREST_YOY = "discountPriceYoY",
+  DISCOUNT_FOREST_YOY_PERCENT = "discountPriceYoYPercent",
   CUMULATIVE_DISCOUNT_TODAY_YEAR = "cumulativeDiscountTodayYear",
   CUMULATIVE_DISCOUNT_LAST_YEAR = "cumulativeDiscountLastYear",
   CUMULATIVE_DISCOUNT_YOY = "cumulativeDiscountYoY",
@@ -2458,6 +2467,97 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.DISCOUNT_FOREST,
+    headerName: "Скидка, руб.",
+    headerTooltip: "Скидка",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_LM,
+    headerName: "Скидки, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_MOM,
+    headerName: "Скидки, руб. MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_MOM_PERCENT,
+    headerName: "Скидки, руб. MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_LY,
+    headerName: "Скидки, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_YOY,
+    headerName: "Скидки, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_YOY_PERCENT,
+    headerName: "Скидки, руб. YoY%",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.DISCOUNT_PERCENT,
     headerName: "Скидка %",
     headerTooltip: "Скидка %",
@@ -4011,6 +4111,15 @@ export const tableColumns: ColDef<any>[] = [
     pinned: "left",
     cellDataType: "string",
     valueGetter: (params) => params.data?.ops,
+  },
+  {
+    field: COLUMN_KEY.ACCOUNT_NAME,
+    headerName: "Причина списания",
+    headerTooltip: "Причина списания",
+    minWidth: 180,
+    pinned: "left",
+    cellDataType: "string",
+    valueGetter: (params) => params.data?.accountName,
   },
   {
     field: COLUMN_KEY.PROCEEDS_IM_LM,

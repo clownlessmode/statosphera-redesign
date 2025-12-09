@@ -474,49 +474,49 @@ const all_indicators = [
     icon: Tags,
     children: [
       {
-        id: COLUMN_KEY.DISCOUNT,
+        id: COLUMN_KEY.DISCOUNT_FOREST,
         label: "Скидка, руб.",
-        value: COLUMN_KEY.DISCOUNT,
+        value: COLUMN_KEY.DISCOUNT_FOREST,
         tooltip:
           "Общая сумма предоставленных скидок в рублях за выбранный период",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_LM,
+        id: COLUMN_KEY.DISCOUNT_FOREST_LM,
         label: "Скидки, руб. PM",
-        value: COLUMN_KEY.DISCOUNT_LM,
+        value: COLUMN_KEY.DISCOUNT_FOREST_LM,
         tooltip:
           "Сумма скидок за предыдущий месяц для анализа скидочной политики",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_MOM,
+        id: COLUMN_KEY.DISCOUNT_FOREST_MOM,
         label: "Скидки, руб. MoM",
-        value: COLUMN_KEY.DISCOUNT_MOM,
+        value: COLUMN_KEY.DISCOUNT_FOREST_MOM,
         tooltip: "Изменение суммы скидок по сравнению с предыдущим месяцем",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_MOM_PERCENT,
+        id: COLUMN_KEY.DISCOUNT_FOREST_MOM_PERCENT,
         label: "Скидки, руб. MoM %",
-        value: COLUMN_KEY.DISCOUNT_MOM_PERCENT,
+        value: COLUMN_KEY.DISCOUNT_FOREST_MOM_PERCENT,
         tooltip:
           "Процентное изменение суммы скидок относительно предыдущего месяца",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_LY,
+        id: COLUMN_KEY.DISCOUNT_FOREST_LY,
         label: "Скидки, руб. PY",
-        value: COLUMN_KEY.DISCOUNT_LY,
+        value: COLUMN_KEY.DISCOUNT_FOREST_LY,
         tooltip: "Сумма скидок за аналогичный период прошлого года",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_YOY,
+        id: COLUMN_KEY.DISCOUNT_FOREST_YOY,
         label: "Скидки, руб. YoY",
-        value: COLUMN_KEY.DISCOUNT_YOY,
+        value: COLUMN_KEY.DISCOUNT_FOREST_YOY,
         tooltip:
           "Изменение суммы скидок по сравнению с аналогичным периодом прошлого года",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_YOY_PERCENT,
+        id: COLUMN_KEY.DISCOUNT_FOREST_YOY_PERCENT,
         label: "Скидки, руб. YoY%",
-        value: COLUMN_KEY.DISCOUNT_YOY_PERCENT,
+        value: COLUMN_KEY.DISCOUNT_FOREST_YOY_PERCENT,
         tooltip:
           "Процентное изменение суммы скидок относительно аналогичного периода прошлого года",
       },
