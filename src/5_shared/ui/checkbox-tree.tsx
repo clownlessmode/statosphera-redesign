@@ -17,6 +17,7 @@ export interface CheckboxTreeItem {
   openIcon?: LucideIcon;
   value: string;
   children?: CheckboxTreeItem[];
+  disabled?: boolean;
 }
 
 interface CheckboxTreeProps {
@@ -146,7 +147,7 @@ function CheckboxTreeInner({
           onChange={onChange}
           onBlur={onBlur}
           name={name}
-          disabled={disabled}
+          disabled={disabled || item.disabled}
           allLeafValues={allLeafValues}
           level={level}
         />
@@ -220,103 +221,139 @@ function CheckboxTreeNode({
   };
 
   return (
-    <li className={cn("my-1", disabled && "cursor-not-allowed!")}>
-      <div
-        className={cn(
-          "group gap-0 flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
-          treeVariants.item,
-          allChildrenSelected && treeVariants.selected,
-        )}
-      >
-        {hasChildren ? (
-          <button
-            type="button"
-            onClick={toggleExpand}
-            disabled={disabled}
-            aria-label={expanded ? "Collapse" : "Expand"}
+    <>
+      {disabled ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <li className="my-1 cursor-not-allowed!">
+              <div
+                className={cn(
+                  "group gap-0 flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
+                  treeVariants.item,
+                )}
+              >
+                {hasChildren ? (
+                  <button>
+                    <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1" />
+                  </button>
+                ) : (
+                  <div className="w-4" />
+                )}
+                <Checkbox className="h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 opacity-50 cursor-not-allowed" />
+                <label className="text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 select-none cursor-not-allowed opacity-70">
+                  <TreeIcon item={item} />
+                  {item.label}
+                </label>
+              </div>
+            </li>
+          </TooltipTrigger>
+          <TooltipContent
+            sideOffset={0}
+            className="w-max h-fit p-2 text-center"
+            side="top"
           >
-            <ChevronRight
-              className={cn(
-                expanded && "rotate-90",
-                "h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1",
-              )}
-            />
-          </button>
-        ) : (
-          <div className="w-4" />
-        )}
-        <Checkbox
-          id={`${name}-${item.id}`}
-          checked={allChildrenSelected}
-          onCheckedChange={handleChange}
-          onBlur={onBlur}
-          disabled={disabled}
-          className={cn(
-            "h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent",
-            "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            isIndeterminate &&
-              "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
-            allChildrenSelected &&
-              "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
-            disabled && "opacity-50 cursor-not-allowed",
-          )}
-          ref={(el: any) => {
-            if (el) {
-              el.indeterminate = isIndeterminate;
-            }
-          }}
-        />
-        <label
-          htmlFor={`${name}-${item.id}`}
-          className={cn(
-            "text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none",
-            disabled && "cursor-not-allowed opacity-70",
-            isIndeterminate && "text-foreground",
-            allChildrenSelected && "text-foreground",
-          )}
-        >
-          <TreeIcon item={item} />
-          {item.label}
-          <div className="ml-2">
-            {item.tooltip && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
-                </TooltipTrigger>
-                <TooltipContent
-                  sideOffset={10}
-                  className="w-[300px] h-fit p-2 text-center"
-                  side="right"
-                >
-                  {item.tooltip}
-                </TooltipContent>
-              </Tooltip>
+            Несовместимо с другими показателями
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <li className={cn("my-1", disabled && "cursor-not-allowed!")}>
+          <div
+            className={cn(
+              "group gap-0 flex flex-1 w-full items-center py-2 transition-all hover:bg-background rounded-md cursor-pointer",
+              treeVariants.item,
+              allChildrenSelected && treeVariants.selected,
             )}
+          >
+            {hasChildren ? (
+              <button
+                type="button"
+                onClick={toggleExpand}
+                disabled={disabled}
+                aria-label={expanded ? "Collapse" : "Expand"}
+              >
+                <ChevronRight
+                  className={cn(
+                    expanded && "rotate-90",
+                    "h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1",
+                  )}
+                />
+              </button>
+            ) : (
+              <div className="w-4" />
+            )}
+            <Checkbox
+              id={`${name}-${item.id}`}
+              checked={allChildrenSelected}
+              onCheckedChange={handleChange}
+              onBlur={onBlur}
+              disabled={disabled}
+              className={cn(
+                "h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent",
+                "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                isIndeterminate &&
+                  "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
+                allChildrenSelected &&
+                  "bg-accent text-accent-foreground dark:bg-accent dark:text-accent-foreground",
+                disabled && "opacity-50 cursor-not-allowed",
+              )}
+              ref={(el: any) => {
+                if (el) {
+                  el.indeterminate = isIndeterminate;
+                }
+              }}
+            />
+            <label
+              htmlFor={`${name}-${item.id}`}
+              className={cn(
+                "text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none",
+                disabled && "cursor-not-allowed opacity-70",
+                isIndeterminate && "text-foreground",
+                allChildrenSelected && "text-foreground",
+              )}
+            >
+              <TreeIcon item={item} />
+              {item.label}
+              <div className="ml-2">
+                {item.tooltip && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
+                    </TooltipTrigger>
+                    <TooltipContent
+                      sideOffset={10}
+                      className="w-[300px] h-fit p-2 text-center"
+                      side="right"
+                    >
+                      {item.tooltip}
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+              </div>
+              {hasChildren && selectedCount > 0 && (
+                <Badge className="ml-1 text-[10px] rounded-sm px-1.5">
+                  {selectedCount}
+                </Badge>
+              )}
+            </label>
           </div>
-          {hasChildren && selectedCount > 0 && (
-            <Badge className="ml-1 text-[10px] rounded-sm px-1.5">
-              {selectedCount}
-            </Badge>
+          {hasChildren && expanded && (
+            <div className="relative mt-1">
+              <div className="absolute left-[15px] top-0 h-full w-px bg-border" />
+              <CheckboxTreeInner
+                items={item.children!}
+                selectedValues={selectedValues}
+                onChange={onChange}
+                onBlur={onBlur}
+                name={name}
+                disabled={disabled}
+                allLeafValues={allLeafValues}
+                level={level + 1}
+              />
+            </div>
           )}
-        </label>
-      </div>
-
-      {hasChildren && expanded && (
-        <div className="relative mt-1">
-          <div className="absolute left-[15px] top-0 h-full w-px bg-border" />
-          <CheckboxTreeInner
-            items={item.children!}
-            selectedValues={selectedValues}
-            onChange={onChange}
-            onBlur={onBlur}
-            name={name}
-            disabled={disabled}
-            allLeafValues={allLeafValues}
-            level={level + 1}
-          />
-        </div>
+        </li>
       )}
-    </li>
+    </>
   );
 }
 const TreeIcon = ({

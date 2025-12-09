@@ -699,13 +699,15 @@ const Report: FC = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
+      const payload = getApiPayload();
+
       const requestKey = JSON.stringify({
         startRow,
         endRow,
         sortModel,
-        values: getApiPayload().values,
-        groups: getApiPayload().groups,
-        filters: getApiPayload().filters,
+        values: payload.values,
+        groups: payload.groups,
+        filters: payload.filters,
       });
 
       if (
@@ -715,25 +717,6 @@ const Report: FC = () => {
         return requestCache.current[requestKey];
       }
 
-      if (
-        startRow === 0 &&
-        initialRows &&
-        initialRows.data.length > 0 &&
-        sortModel.length === 0
-      ) {
-        const result = {
-          data: initialRows.data.slice(startRow, endRow),
-          totalRows: initialTotalRows,
-        };
-
-        const cachedPromise = Promise.resolve(result);
-        requestCache.current[requestKey] = (await cachedPromise) as any;
-        lastRequestKey.current = requestKey;
-
-        return cachedPromise;
-      }
-
-      const payload = getApiPayload();
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
