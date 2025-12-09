@@ -4,6 +4,7 @@ import { DownloadReportService } from "./service";
 import { toast } from "sonner";
 import { DownloadReportResponse } from "./types";
 import { DownloadReportRequest } from "./types";
+import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
 
 export const useDownloadReportController = () => {
   const queryClient = useQueryClient();
@@ -15,7 +16,7 @@ export const useDownloadReportController = () => {
   >({
     mutationFn: (dto: DownloadReportRequest) =>
       toast
-        .promise(DownloadReportService.downloadReport(dto), {
+        .promise(DownloadReportService.downloadReport(processFiltersDto(dto)), {
           loading: "Генерация файла",
           success: () => {
             queryClient.invalidateQueries({ queryKey: ["report-table"] });
