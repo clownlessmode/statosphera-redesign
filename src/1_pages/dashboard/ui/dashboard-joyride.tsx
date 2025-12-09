@@ -319,6 +319,17 @@ export const DashboardJoyride: React.FC<DashboardJoyrideProps> = ({
       (step) => step.action === "open-nps-modal",
     );
 
+    if (currentStep <= openModalStepIndex) {
+      const closeButton = document.querySelector(
+        "[data-testid='nps-modal-close']",
+      );
+      if (closeButton) {
+        (closeButton as HTMLElement).click();
+        setModalTourActive(false); // Сбрасываем флаг, что мы в туре модалки
+        setWaitingForModal(false); // Сбрасываем ожидание
+      }
+    }
+
     // Если это шаг с элементом NPS
     const handleNpsWidgetClick = () => {
       if (currentStep === openModalStepIndex) {
