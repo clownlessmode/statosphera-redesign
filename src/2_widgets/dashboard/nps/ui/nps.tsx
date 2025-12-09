@@ -84,7 +84,7 @@ export const Nps = ({ tv }: { tv?: boolean }) => {
           "w-full items-center justify-center px-8 gap-2 h-full",
           tv && "border-0",
         )}
-        data-testid="nps-widget"
+        data-testid="eNps-widget"
       >
         <div className="relative inline-block">
           <motion.h1
