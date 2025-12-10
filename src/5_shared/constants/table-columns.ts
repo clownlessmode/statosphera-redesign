@@ -4501,6 +4501,7 @@ export enum ColumnsKeyGroupings {
   CHANNEL = "channel",
   GROUP = "group",
   PRODUCT = "product",
+  MEASURE_UNIT = "dishMeasureUnit",
   STORE_CONDITION = "storeCondition",
   AGE_GROUP = "ageGroup",
   YEAR = "year",
@@ -4797,6 +4798,11 @@ export const tableConfig: ColDef<any>[] = [
   {
     field: ColumnsKeyGroupings.PRODUCT,
     headerName: "Номенклатура",
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    field: ColumnsKeyGroupings.MEASURE_UNIT,
+    headerName: "Еденица измерения",
     cellStyle: { textAlign: "left" },
   },
   {
@@ -5420,6 +5426,35 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.WRITE_OFF_YOY_PERCENT,
+    headerName: "Списания, руб. YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.WRITE_OFF_PERCENT,
     headerName: "Списания %",
     headerTooltip: "Списания %",
@@ -5452,35 +5487,6 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.WRITE_OFF_PERCENT_LM,
     headerName: "Списания % PM",
     headerTooltip: "Прошлый месяц",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
-      }
-    },
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITE_OFF_YOY_PERCENT,
-    headerName: "Списания, руб. YoY %",
-    headerTooltip: "Процент изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {

@@ -669,7 +669,13 @@ const Forest: FC = () => {
             <InfinityTable
               maxRows={table.totalRows}
               fetchData={fetchData as any}
-              totalData={total as any}
+              totalData={
+                Array.isArray(total)
+                  ? total
+                  : (total as any)?.data
+                    ? (total as any).data
+                    : [total]
+              }
               onCellClick={handleCellClick}
               onRowClick={handleRowClick}
               selectedRows={selectedRows}
