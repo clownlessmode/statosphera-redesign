@@ -48,6 +48,7 @@ const GroupingFilter: FC = () => {
         ...(values.days || []),
         ...(values.geo || []),
         ...(values.product || []),
+        ...(values.loyal || []),
         ...(values.id || []),
         ...(values.writeOff || []),
       ].filter((item): item is string => item !== undefined);
