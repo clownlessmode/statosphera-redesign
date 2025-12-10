@@ -28,6 +28,7 @@ import useForm from "../model/hook";
 import { useLoyaltyFiltersStore } from "../../filters-store";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { MAX_DATE, MIN_DATE } from "../model/constants";
 
 const DaysFilter = () => {
   const form = useForm();
@@ -114,6 +115,8 @@ const DaysFilter = () => {
                         Промежуток даты
                       </FormLabel>
                       <DateRangePicker
+                        min={MIN_DATE}
+                        max={MAX_DATE}
                         onChange={handleDateRangeChange}
                         className="w-full"
                         value={dateRangeValue}

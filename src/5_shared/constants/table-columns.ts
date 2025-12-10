@@ -14,6 +14,7 @@ export enum COLUMN_KEY {
 
   //Причины списания
   OPS = "ops",
+  ACCOUNT_NAME = "accountName",
 
   // Бонусы начисление
   BONUS_ACCRUAL_GROUP = "bonusAccrualGroup",
@@ -320,6 +321,14 @@ export enum COLUMN_KEY {
   DISCOUNT_LY = "discountLY",
   DISCOUNT_YOY = "discountYoY",
   DISCOUNT_YOY_PERCENT = "discountYoYPercent",
+  GROUP_DISCOUNT_FOREST = "groupDiscountPrice",
+  DISCOUNT_FOREST = "discountPrice",
+  DISCOUNT_FOREST_LM = "discountPriceLM",
+  DISCOUNT_FOREST_MOM = "discountPriceMoM",
+  DISCOUNT_FOREST_MOM_PERCENT = "discountPriceMoMPercent",
+  DISCOUNT_FOREST_LY = "discountPriceLY",
+  DISCOUNT_FOREST_YOY = "discountPriceYoY",
+  DISCOUNT_FOREST_YOY_PERCENT = "discountPriceYoYPercent",
   CUMULATIVE_DISCOUNT_TODAY_YEAR = "cumulativeDiscountTodayYear",
   CUMULATIVE_DISCOUNT_LAST_YEAR = "cumulativeDiscountLastYear",
   CUMULATIVE_DISCOUNT_YOY = "cumulativeDiscountYoY",
@@ -453,6 +462,13 @@ export enum COLUMN_KEY {
   APP_LOYAL_PERCENT_MOM = "appLoyalPercentMoM",
   APP_LOYAL_PERCENT_LY = "appLoyalPercentLY",
   APP_LOYAL_PERCENT_YOY = "appLoyalPercentYoY",
+  AMOUNT_WRITE_OFF = "amountWriteOff",
+  AMOUNT_WRITE_OFF_LY = "amountWriteOffLY",
+  AMOUNT_WRITE_OFF_YOY = "amountWriteOffYoY",
+  AMOUNT_WRITE_OFF_YOY_PERCENT = "amountWriteOffYoYPercent",
+  AMOUNT_WRITE_OFF_LM = "amountWriteOffLM",
+  AMOUNT_WRITE_OFF_MOM = "amountWriteOffMoM",
+  AMOUNT_WRITE_OFF_MOM_PERCENT = "amountWriteOffMoMPercent",
   // Доля продаж им
   ONLINE_STORE_GROUP = "onlineStoreGroup",
   ONLINE_STORE_SHARE = "onlineStoreSharePercent",
@@ -2461,6 +2477,97 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.DISCOUNT_FOREST,
+    headerName: "Скидка, руб.",
+    headerTooltip: "Скидка",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_LM,
+    headerName: "Скидки, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_MOM,
+    headerName: "Скидки, руб. MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_MOM_PERCENT,
+    headerName: "Скидки, руб. MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_LY,
+    headerName: "Скидки, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_YOY,
+    headerName: "Скидки, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_FOREST_YOY_PERCENT,
+    headerName: "Скидки, руб. YoY%",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.DISCOUNT_PERCENT,
     headerName: "Скидка %",
     headerTooltip: "Скидка %",
@@ -4016,6 +4123,15 @@ export const tableColumns: ColDef<any>[] = [
     valueGetter: (params) => params.data?.ops,
   },
   {
+    field: COLUMN_KEY.ACCOUNT_NAME,
+    headerName: "Причина списания",
+    headerTooltip: "Причина списания",
+    minWidth: 180,
+    pinned: "left",
+    cellDataType: "string",
+    valueGetter: (params) => params.data?.accountName,
+  },
+  {
     field: COLUMN_KEY.PROCEEDS_IM_LM,
     headerName: "Выручка ИМ PM",
     headerTooltip: "Выручка интернет-магазина за последний месяц",
@@ -4297,6 +4413,54 @@ export const tableColumns: ColDef<any>[] = [
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
   },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF,
+    headerName: "Списания, кол-во PM",
+    headerTooltip: "Списания, кол-во PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_MOM,
+    headerName: "Списания, кол-во MOM",
+    headerTooltip: "Списания, кол-во MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_MOM_PERCENT,
+    headerName: "Списания, кол-во MOM%",
+    headerTooltip: "Списания, кол-во MOM%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_LY,
+    headerName: "Списания, кол-во PY",
+    headerTooltip: "Списания, кол-во PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_YOY,
+    headerName: "Списания, кол-во YOY",
+    headerTooltip: "Списания, кол-во YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.AMOUNT_WRITE_OFF_YOY_PERCENT,
+    headerName: "Списания, кол-во YOY%",
+    headerTooltip: "Списания, кол-во YOY%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
 ];
 
 export type Column = {
@@ -4326,6 +4490,7 @@ export enum ColumnsKeyGroupings {
   LEGAL_ENTITY = "legalEntity",
   IM_DELIVERY_METHOD = "imDeliveryMethod",
   IM_PAYMENT_METHOD = "imPaymentMethod",
+  PAYMENT_METHOD = "typePayment",
   IM_STATUS_ORDER = "imStatusOrder",
   IM_RECEIVE_INTERVAL = "imReceiveInterval",
   IM_PROMO = "imPromo",
@@ -4336,6 +4501,7 @@ export enum ColumnsKeyGroupings {
   CHANNEL = "channel",
   GROUP = "group",
   PRODUCT = "product",
+  MEASURE_UNIT = "dishMeasureUnit",
   STORE_CONDITION = "storeCondition",
   AGE_GROUP = "ageGroup",
   YEAR = "year",
@@ -4349,6 +4515,10 @@ export enum ColumnsKeyGroupings {
   ID_CHECK = "idCheck",
   SUB_GROUPS = "subGroups",
   SUB_SUB_GROUPS = "subSubGroups",
+  GROUP_FOREST = "idGroupProduct",
+  SUB_GROUPS_FOREST = "oneLvlGroupProduct",
+  SUB_SUB_GROUPS_FOREST = "twoLvlGroupProduct",
+  SUB_SUB_SUB_GROUPS_FOREST = "threeLvlGroupProduct",
   GROUPS_ECONOMIST = "groupsEconomist",
   GROUPS_FRANCHISE = "groupsFranchise",
   TYPE_PRODUCTS = "typeProducts",
@@ -4381,6 +4551,7 @@ export const groupingColumns: ColumnGroup[] = [
   { label: "Источник заказа", value: ColumnsKeyGroupings.IM_TYPE_ORDER },
   { label: "Способ доставки", value: ColumnsKeyGroupings.IM_DELIVERY_METHOD },
   { label: "Способ оплаты", value: ColumnsKeyGroupings.IM_PAYMENT_METHOD },
+  { label: "Способ оплаты", value: ColumnsKeyGroupings.PAYMENT_METHOD },
   { label: "Статусы", value: ColumnsKeyGroupings.IM_STATUS_ORDER },
   { label: "Промо", value: ColumnsKeyGroupings.IM_PROMO },
   { label: "Период доставки", value: ColumnsKeyGroupings.IM_RECEIVE_INTERVAL },
@@ -4390,6 +4561,13 @@ export const groupingColumns: ColumnGroup[] = [
   { label: "Структура продаж", value: ColumnsKeyGroupings.GROUPS_FRANCHISE },
   { label: "Подгруппа", value: ColumnsKeyGroupings.SUB_GROUPS },
   { label: "Подподгруппа", value: ColumnsKeyGroupings.SUB_SUB_GROUPS },
+  { label: "Группа", value: ColumnsKeyGroupings.GROUP_FOREST },
+  { label: "Подгруппа", value: ColumnsKeyGroupings.SUB_GROUPS_FOREST },
+  { label: "Подподгруппа", value: ColumnsKeyGroupings.SUB_SUB_GROUPS_FOREST },
+  {
+    label: "Подподподгруппа",
+    value: ColumnsKeyGroupings.SUB_SUB_SUB_GROUPS_FOREST,
+  },
   { label: "Тип поставщика", value: ColumnsKeyGroupings.TYPE_PRODUCTS },
   { label: "Сезоность", value: ColumnsKeyGroupings.SEASONALITY_PRODUCTS },
   {
@@ -4511,6 +4689,15 @@ export const tableConfig: ColDef<any>[] = [
   },
   { headerName: "Подгруппа", field: ColumnsKeyGroupings.SUB_GROUPS },
   { headerName: "Подподгруппа", field: ColumnsKeyGroupings.SUB_SUB_GROUPS },
+  { headerName: "Подгруппа", field: ColumnsKeyGroupings.SUB_GROUPS_FOREST },
+  {
+    headerName: "Подподгруппа",
+    field: ColumnsKeyGroupings.SUB_SUB_GROUPS_FOREST,
+  },
+  {
+    headerName: "Подподподгруппа",
+    field: ColumnsKeyGroupings.SUB_SUB_SUB_GROUPS_FOREST,
+  },
   { headerName: "Поставщик", field: ColumnsKeyGroupings.TYPE_PRODUCTS },
   { headerName: "Сезоность", field: ColumnsKeyGroupings.SEASONALITY_PRODUCTS },
   {
@@ -4604,8 +4791,18 @@ export const tableConfig: ColDef<any>[] = [
     cellStyle: { textAlign: "left" },
   },
   {
+    headerName: "Группа",
+    field: ColumnsKeyGroupings.GROUP_FOREST,
+    cellStyle: { textAlign: "left" },
+  },
+  {
     field: ColumnsKeyGroupings.PRODUCT,
     headerName: "Номенклатура",
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    field: ColumnsKeyGroupings.MEASURE_UNIT,
+    headerName: "Еденица измерения",
     cellStyle: { textAlign: "left" },
   },
   {
@@ -4626,6 +4823,11 @@ export const tableConfig: ColDef<any>[] = [
   {
     headerName: "Способ оплаты",
     field: ColumnsKeyGroupings.IM_PAYMENT_METHOD,
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    headerName: "Способ оплаты",
+    field: ColumnsKeyGroupings.PAYMENT_METHOD,
     cellStyle: { textAlign: "left" },
   },
   {
@@ -5224,6 +5426,35 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.WRITE_OFF_YOY_PERCENT,
+    headerName: "Списания, руб. YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.WRITE_OFF_PERCENT,
     headerName: "Списания %",
     headerTooltip: "Списания %",
@@ -5256,35 +5487,6 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.WRITE_OFF_PERCENT_LM,
     headerName: "Списания % PM",
     headerTooltip: "Прошлый месяц",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
-      }
-    },
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITE_OFF_YOY_PERCENT,
-    headerName: "Списания, руб. YoY %",
-    headerTooltip: "Процент изменения по сравнению с прошлым годом",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {

@@ -16,6 +16,7 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Store,
+  TreePine,
   Vote,
   ChartColumn,
   //  MessageCircle,
@@ -125,6 +126,12 @@ const Sidebar = ({
         title: "Мониторинг сетей",
         url: ROUTES_PATH.MONITORING,
         icon: Globe,
+      },
+      {
+        title: "Проект Лес",
+        url: ROUTES_PATH.FOREST,
+        icon: TreePine,
+        disabled: session?.role !== ROLES.ADMIN && session?.idUser !== 2758,
       },
       {
         title: "Гриль",

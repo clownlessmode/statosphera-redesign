@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@shared/ui/card";
 import { CheckboxTree } from "@shared/ui/checkbox-tree";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { Form, FormField, FormControl, FormItem } from "@shared/ui/form";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { Badge } from "@shared/ui/badge";
@@ -17,6 +17,7 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useTypeCheckStore } from "../../grouping-filter/model/hooks/use-type-checked";
 import { cn } from "@shared/lib/utils";
 import { Sparkles } from "lucide-react";
+import { COLUMN_KEY } from "@shared/constants/table-columns";
 
 const IndicatorsFilter: FC = () => {
   const { tab } = useTabStore();
@@ -79,17 +80,67 @@ const IndicatorsFilter: FC = () => {
             <FormField
               control={form.control}
               name="proceeds"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <CheckboxTree
-                      {...field}
-                      data={indicators}
-                      disabled={isTypeCheckSelected}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
+              render={({ field }) => {
+                // Определяем список групп бонусов
+                const bonusGroupKeys = [
+                  COLUMN_KEY.BONUS_ACCRUAL_GROUP,
+                  COLUMN_KEY.BONUS_WRITEOFF_GROUP,
+                  COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
+                  COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
+                ];
+
+                const bonusChildrenKeys = indicators
+                  .filter((group) =>
+                    bonusGroupKeys.includes(
+                      group.value as string as COLUMN_KEY,
+                    ),
+                  )
+                  .flatMap((group) =>
+                    group.children.map((child) => child.value),
+                  );
+
+                const currentValues = field.value || [];
+
+                const hasBonusSelected = currentValues.some((val) =>
+                  bonusChildrenKeys.includes(val),
+                );
+
+                const hasOtherSelected = currentValues.some(
+                  (val) => !bonusChildrenKeys.includes(val),
+                );
+
+                const preparedData = useMemo(() => {
+                  if (hasBonusSelected) {
+                    return indicators.map((item) => ({
+                      ...item,
+                      disabled: !bonusGroupKeys.includes(
+                        item.value as string as COLUMN_KEY,
+                      ),
+                    }));
+                  } else if (hasOtherSelected) {
+                    return indicators.map((item) => ({
+                      ...item,
+                      disabled: bonusGroupKeys.includes(
+                        item.value as string as COLUMN_KEY,
+                      ),
+                    }));
+                  } else {
+                    return indicators;
+                  }
+                }, [indicators, hasBonusSelected, hasOtherSelected]);
+
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <CheckboxTree
+                        {...field}
+                        data={preparedData}
+                        disabled={isTypeCheckSelected}
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
             />
           </form>
         </Form>

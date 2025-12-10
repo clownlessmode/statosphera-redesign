@@ -23,7 +23,10 @@ export default function SavedReports() {
           <Star /> {!isMobile && "Сохраненные отчеты"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent
+        className="p-0 rounded-xl border-none"
+        aria-describedby={undefined}
+      >
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle className="flex flex-row gap-2">
