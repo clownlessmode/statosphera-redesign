@@ -49,9 +49,8 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   actions,
   actionsIndex = 0,
   className,
-  onRowClick,
   onCellClick,
-
+  onSelectionChange,
   dataVersion = 0,
   maxRows,
   selectedRows = [],
@@ -332,7 +331,15 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
         getRowStyle={getRowStyle}
-        suppressRowClickSelection={true}
+        rowSelection={{
+          mode: "multiRow",
+          enableClickSelection: false, // Включаем выбор по клику
+          headerCheckbox: false, // ЯВНО ОТКЛЮЧАЕМ чекбокс в заголовке
+        }}
+        onSelectionChanged={(e) => {
+          const selectedRows = e.api.getSelectedRows();
+          onSelectionChange?.(selectedRows);
+        }}
         suppressCellFocus={true}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
@@ -348,7 +355,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           if (e.node.rowPinned === "top") {
             return;
           }
-          onRowClick?.(e.data);
         }}
         onCellClicked={(e) => {
           // Игнорируем клики по закрепленной итоговой строке
