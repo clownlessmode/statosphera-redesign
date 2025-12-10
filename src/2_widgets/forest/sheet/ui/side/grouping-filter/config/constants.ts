@@ -67,7 +67,6 @@ export const LOYAL = [
   {
     label: "Номер карты",
     value: GROUPINGS.CARD_NUMBER,
-    disabled: true,
   },
   {
     label: "Пол",
