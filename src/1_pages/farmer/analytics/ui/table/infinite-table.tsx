@@ -55,7 +55,6 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   dataVersion = 0,
   maxRows,
   selectedRows = [],
-  rowSelection = "multiple",
 }) => {
   const selectedRowsRef = useRef(selectedRows);
   const gridRef = useRef<AgGridReact>(null);
@@ -336,8 +335,15 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         pinnedTopRowData={pinnedTopData}
         theme={agTheme}
         getRowStyle={getRowStyle}
-        rowSelection={rowSelection}
-        onSelectionChanged={(e) => onSelectionChange?.(e.api.getSelectedRows())}
+        rowSelection={{
+          mode: "multiRow",
+          enableClickSelection: false, // Включаем выбор по клику
+          headerCheckbox: false, // ЯВНО ОТКЛЮЧАЕМ чекбокс в заголовке
+        }}
+        onSelectionChanged={(e) => {
+          const selectedRows = e.api.getSelectedRows();
+          onSelectionChange?.(selectedRows);
+        }}
         getRowId={(params) => params.data?.id || JSON.stringify(params.data)}
         onSortChanged={() => {
           gridApiRef.current?.purgeInfiniteCache();
