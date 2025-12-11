@@ -281,6 +281,9 @@ const FarmerAnalytics: FC = () => {
   const lastRequestKey = useRef<string>("");
   const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
   const allData = getApiPayload();
+  const [selectedIndicator, setSelectedIndicator] = useState<string | null>(
+    null,
+  );
   const { tab } = useTabStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } =
@@ -309,38 +312,14 @@ const FarmerAnalytics: FC = () => {
     }
   }, [graph, table, total, allData.filters, allData.values]);
 
-  const handleRowClick = useCallback(
-    (rowData: any) => {
-      // Проверяем, есть ли уже эта строка в выбранных
-      const isRowSelected = selectedRows.some(
-        (row) =>
-          // Сравниваем по нескольким ключевым полям
-          row.id_store === rowData.id_store &&
-          row.id_product === rowData.id_product &&
-          row.id_city === rowData.id_city,
-      );
-
-      let newSelectedRows;
-      if (isRowSelected) {
-        // Убираем строку из выбранных
-        newSelectedRows = selectedRows.filter(
-          (row) =>
-            !(
-              row.id_store === rowData.id_store &&
-              row.id_product === rowData.id_product &&
-              row.id_city === rowData.id_city
-            ),
-        );
-      } else {
-        // Добавляем строку к выбранным
-        newSelectedRows = [...selectedRows, rowData];
-      }
+  const handleSelectionChange = useCallback(
+    (newSelectedRows: any[]) => {
+      // Сравниваем, изменился ли выбор реально, чтобы избежать лишних запросов
 
       setSelectedRows(newSelectedRows);
 
       // Если нет выбранных строк, восстанавливаем начальный график
       if (newSelectedRows.length === 0 && initialFiltersRef.current) {
-        // Делаем новый запрос с начальными фильтрами, но текущей группировкой
         const payload = getApiPayload();
         getGraph({
           ...payload,
@@ -354,18 +333,19 @@ const FarmerAnalytics: FC = () => {
         }).then((response) => {
           if (response) {
             setGraph(response);
+            setSelectedIndicator(null);
           }
         });
         return;
       }
 
-      // Извлекаем фильтры из всех выбранных строк
-      const extractedFilters = extractFiltersFromRow(rowData, newSelectedRows);
+      const extractedFilters = extractFiltersFromRow(
+        newSelectedRows[0],
+        newSelectedRows,
+      );
 
-      // Делаем запрос за новыми данными для графика с извлеченными фильтрами
       const payload = getApiPayload();
 
-      // Создаем новые фильтры, объединяя текущие с извлеченными
       const mergedFilters = {
         ...payload.filters,
         store: {
@@ -408,8 +388,7 @@ const FarmerAnalytics: FC = () => {
               : payload.filters.loyal.ageEnd,
         },
       };
-
-      // Запрашиваем только график с новыми фильтрами
+      // Запрашиваем график
       getGraph({
         ...payload,
         filterDate: {
@@ -417,15 +396,16 @@ const FarmerAnalytics: FC = () => {
           dateEnd: payload.filterDate.dateEnd,
         },
         filters: mergedFilters,
-        groups: [dateFilterValue], // Используем значение из DateFilterStore
+        groups: [dateFilterValue],
         values: payload.values,
       }).then((response) => {
         if (response) {
           setGraph(response);
+          setSelectedIndicator(payload.values[0]);
         }
       });
     },
-    [selectedRows, getApiPayload, getGraph, setGraph, dateFilterValue], // Добавляем в зависимости
+    [getApiPayload, getGraph, setGraph, dateFilterValue],
   );
 
   // Обработчик клика на ячейку для установки показателя
@@ -472,35 +452,194 @@ const FarmerAnalytics: FC = () => {
           }
         }
 
-        // Обновляем показатели
-        if (isFieldAnIndicator) {
-          updateIndicators([parentIndicator]);
-          updateUniques([]);
-        } else {
-          updateUniques([parentIndicator]);
-          updateIndicators([]);
-        }
-
-        // Делаем запрос за новыми данными для графика
         const payload = getApiPayload();
 
-        // Подготавливаем фильтры с корректной обработкой loyal
-        const preparedFilters = {
-          ...payload.filters,
-          loyal: {
-            ...payload.filters.loyal,
-            ageStart:
-              payload.filters.loyal.ageStart === 0 &&
-              payload.filters.loyal.ageEnd === 100
-                ? null
-                : payload.filters.loyal.ageStart,
-            ageEnd:
-              payload.filters.loyal.ageStart === 0 &&
-              payload.filters.loyal.ageEnd === 100
-                ? null
-                : payload.filters.loyal.ageEnd,
-          },
-        };
+        // Используем начальные фильтры как базу, если они есть
+        const baseFilters = initialFiltersRef.current
+          ? initialFiltersRef.current.filters
+          : payload.filters;
+
+        let mergedFilters;
+
+        if (selectedRows.length > 0) {
+          // Если есть выбранные строки, фильтруем по ним
+          const extractedFilters = extractFiltersFromRow(
+            info.rowData,
+            selectedRows,
+          );
+
+          mergedFilters = {
+            ...baseFilters,
+            store: {
+              ...baseFilters.store,
+              idStore:
+                extractedFilters.store.idStore.length > 0
+                  ? extractedFilters.store.idStore
+                  : baseFilters.store.idStore,
+              idCity:
+                extractedFilters.store.idCity.length > 0
+                  ? extractedFilters.store.idCity
+                  : baseFilters.store.idCity,
+              idRegion:
+                extractedFilters.store.idRegion.length > 0
+                  ? extractedFilters.store.idRegion
+                  : baseFilters.store.idRegion,
+              storeCondition:
+                extractedFilters.store.storeCondition.length > 0
+                  ? extractedFilters.store.storeCondition
+                  : baseFilters.store.storeCondition,
+              ageGroup:
+                extractedFilters.store.ageGroup.length > 0
+                  ? extractedFilters.store.ageGroup
+                  : baseFilters.store.ageGroup,
+              channel:
+                extractedFilters.store.channel.length > 0
+                  ? extractedFilters.store.channel
+                  : baseFilters.store.channel,
+            },
+            product: {
+              ...baseFilters.product,
+              idProduct:
+                extractedFilters.product.idProduct.length > 0
+                  ? extractedFilters.product.idProduct
+                  : baseFilters.product.idProduct,
+              idGroupMain:
+                extractedFilters.product.idGroupMain.length > 0
+                  ? extractedFilters.product.idGroupMain
+                  : baseFilters.product.idGroupMain,
+              groupFranchise:
+                extractedFilters.product.groupFranchise.length > 0
+                  ? extractedFilters.product.groupFranchise
+                  : baseFilters.product.groupFranchise,
+              subGroups:
+                extractedFilters.product.subGroups.length > 0
+                  ? extractedFilters.product.subGroups
+                  : baseFilters.product.subGroups,
+              subSubGroups:
+                extractedFilters.product.subSubGroups.length > 0
+                  ? extractedFilters.product.subSubGroups
+                  : baseFilters.product.subSubGroups,
+              typeProducts:
+                extractedFilters.product.typeProducts.length > 0
+                  ? extractedFilters.product.typeProducts
+                  : baseFilters.product.typeProducts,
+              teamProducts:
+                extractedFilters.product.teamProducts.length > 0
+                  ? extractedFilters.product.teamProducts
+                  : baseFilters.product.teamProducts,
+              directionProducts:
+                extractedFilters.product.directionProducts.length > 0
+                  ? extractedFilters.product.directionProducts
+                  : baseFilters.product.directionProducts,
+              groupsEconomist:
+                extractedFilters.product.groupsEconomist.length > 0
+                  ? extractedFilters.product.groupsEconomist
+                  : baseFilters.product.groupsEconomist,
+              seasonalityProducts:
+                extractedFilters.product.seasonalityProducts.length > 0
+                  ? extractedFilters.product.seasonalityProducts
+                  : baseFilters.product.seasonalityProducts,
+              managerAuto:
+                extractedFilters.product.managerAuto.length > 0
+                  ? extractedFilters.product.managerAuto
+                  : baseFilters.product.managerAuto,
+            },
+            check: {
+              ...baseFilters.check,
+              tabNumber:
+                extractedFilters.check.tabNumber.length > 0
+                  ? extractedFilters.check.tabNumber
+                  : baseFilters.check.tabNumber,
+              cashBox:
+                extractedFilters.check.cashBox.length > 0
+                  ? extractedFilters.check.cashBox
+                  : baseFilters.check.cashBox,
+              idCheck:
+                extractedFilters.check.idCheck.length > 0
+                  ? extractedFilters.check.idCheck
+                  : baseFilters.check.idCheck,
+              type:
+                extractedFilters.check.type.length > 0
+                  ? extractedFilters.check.type
+                  : baseFilters.check.type,
+            },
+            loyal: {
+              ...baseFilters.loyal,
+              cardNumber:
+                extractedFilters.loyal.cardNumber.length > 0
+                  ? extractedFilters.loyal.cardNumber
+                  : baseFilters.loyal.cardNumber,
+              sex:
+                extractedFilters.loyal.sex.length > 0
+                  ? extractedFilters.loyal.sex
+                  : baseFilters.loyal.sex,
+              colorsDiscount:
+                extractedFilters.loyal.colorsDiscount &&
+                extractedFilters.loyal.colorsDiscount.length > 0
+                  ? extractedFilters.loyal.colorsDiscount
+                  : baseFilters.loyal.colorsDiscount || [],
+              ageStart:
+                baseFilters.loyal.ageStart === 0 &&
+                baseFilters.loyal.ageEnd === 100
+                  ? null
+                  : baseFilters.loyal.ageStart,
+              ageEnd:
+                baseFilters.loyal.ageStart === 0 &&
+                baseFilters.loyal.ageEnd === 100
+                  ? null
+                  : baseFilters.loyal.ageEnd,
+            },
+            onlineStore: {
+              ...baseFilters.onlineStore,
+              imTypeOrder:
+                extractedFilters.onlineStore.imTypeOrder.length > 0
+                  ? extractedFilters.onlineStore.imTypeOrder
+                  : baseFilters.onlineStore.imTypeOrder,
+              imDeliveryMethod:
+                extractedFilters.onlineStore.imDeliveryMethod.length > 0
+                  ? extractedFilters.onlineStore.imDeliveryMethod
+                  : baseFilters.onlineStore.imDeliveryMethod,
+              imPaymentMethod:
+                extractedFilters.onlineStore.imPaymentMethod.length > 0
+                  ? extractedFilters.onlineStore.imPaymentMethod
+                  : baseFilters.onlineStore.imPaymentMethod,
+              imStatusOrder:
+                extractedFilters.onlineStore.imStatusOrder.length > 0
+                  ? extractedFilters.onlineStore.imStatusOrder
+                  : baseFilters.onlineStore.imStatusOrder,
+              imPromo:
+                extractedFilters.onlineStore.imPromo.length > 0
+                  ? extractedFilters.onlineStore.imPromo
+                  : baseFilters.onlineStore.imPromo,
+              imReceiveInterval:
+                extractedFilters.onlineStore.imReceiveInterval.length > 0
+                  ? extractedFilters.onlineStore.imReceiveInterval
+                  : baseFilters.onlineStore.imReceiveInterval,
+            },
+          };
+        } else {
+          // Если НЕТ выбранных строк, используем БАЗОВЫЕ фильтры (все строки)
+          mergedFilters = {
+            ...baseFilters,
+            // Для loyal нужно перенести логику ageStart/ageEnd
+            loyal: {
+              ...baseFilters.loyal,
+              ageStart:
+                baseFilters.loyal.ageStart === 0 &&
+                baseFilters.loyal.ageEnd === 100
+                  ? null
+                  : baseFilters.loyal.ageStart,
+              ageEnd:
+                baseFilters.loyal.ageStart === 0 &&
+                baseFilters.loyal.ageEnd === 100
+                  ? null
+                  : baseFilters.loyal.ageEnd,
+            },
+          };
+        }
+
+        // Используем новый показатель в values
+        const newValues = [parentIndicator];
 
         // Запрашиваем только график
         getGraph({
@@ -509,17 +648,17 @@ const FarmerAnalytics: FC = () => {
             dateStart: payload.filterDate.dateStart,
             dateEnd: payload.filterDate.dateEnd,
           },
-          filters: preparedFilters,
+          filters: mergedFilters,
           groups: [dateFilterValue], // Используем значение из DateFilterStore
-          values: payload.values,
+          values: newValues,
         }).then((response) => {
           if (response) {
             setGraph(response);
+            if (newValues[0]) {
+              setSelectedIndicator(newValues[0]);
+            }
           }
         });
-      } else {
-        // Если кликнули не на показатель, вызываем обработчик строки
-        handleRowClick(info.rowData);
       }
     },
     [
@@ -530,11 +669,11 @@ const FarmerAnalytics: FC = () => {
       getApiPayload,
       getGraph,
       setGraph,
-      handleRowClick,
       graph,
       table,
       total,
-      dateFilterValue, // Добавляем в зависимости
+      dateFilterValue,
+      selectedRows,
     ],
   );
 
@@ -608,6 +747,7 @@ const FarmerAnalytics: FC = () => {
   );
 
   const handleClearFilters = () => {
+    setSelectedIndicator(null);
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -714,6 +854,7 @@ const FarmerAnalytics: FC = () => {
                             // Восстанавливаем начальный график
                             if (initialFiltersRef.current) {
                               setGraph(initialFiltersRef.current.graph);
+                              setSelectedIndicator(null);
                             }
                           }}
                           size="sm"
@@ -733,8 +874,14 @@ const FarmerAnalytics: FC = () => {
                   option={{
                     title: {
                       text:
-                        getLabelByValue(indicators, allData.values[0]) ||
-                        getLabelByValue(uniques, allData.values[0]),
+                        getLabelByValue(
+                          indicators,
+                          selectedIndicator || allData.values[0],
+                        ) ||
+                        getLabelByValue(
+                          uniques,
+                          selectedIndicator || allData.values[0],
+                        ),
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],
@@ -758,7 +905,7 @@ const FarmerAnalytics: FC = () => {
               fetchData={fetchData as any}
               totalData={total as any}
               onCellClick={handleCellClick}
-              onRowClick={handleRowClick}
+              onSelectionChange={handleSelectionChange}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
               className="w-full max-md:mx-auto max-md:w-[calc(100%-32px)]"
