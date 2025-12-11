@@ -7,7 +7,7 @@ import {
   SheetHeader,
 } from "@shared/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
-
+import Check from "./check/ui/check";
 import Commerce from "./commerce/ui/commerce";
 import { useTabStore } from "../model/url-store";
 import { useFormResetStore } from "../model/reset-store";
@@ -63,16 +63,21 @@ export default function AnalyticsFiltersSheet() {
         close={false}
         forceMount
         className="scrol max-md:w-full"
+        aria-describedby={undefined}
       >
         <div>
           <Tabs value={tab} onValueChange={handleTabChange} className="gap-0">
             <SheetHeader className="p-0 border-b border-border shadow-sm">
               <TabsList className="w-full rounded-none h-full md:py-2 md:px-4 md:h-fit">
                 <TabsTrigger value="commerce">Коммерческая</TabsTrigger>
+                <TabsTrigger value="check">Чековая</TabsTrigger>
               </TabsList>
             </SheetHeader>
             <TabsContent value="commerce" className="md:pr-4 md:px-2">
               <Commerce />
+            </TabsContent>
+            <TabsContent value="check" className="md:pr-4 md:px-2">
+              <Check />
             </TabsContent>
           </Tabs>
         </div>

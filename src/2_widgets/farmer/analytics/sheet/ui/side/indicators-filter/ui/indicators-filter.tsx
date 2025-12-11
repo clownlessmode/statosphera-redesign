@@ -16,9 +16,11 @@ import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-s
 import { useTypeCheckStore } from "../../grouping-filter/model/hooks/use-type-checked";
 import { cn } from "@shared/lib/utils";
 import { Sparkles } from "lucide-react";
+import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
 
 const IndicatorsFilter: FC = () => {
-  const indicators = useIndicatorList();
+  const { tab } = useTabStore();
+  const indicators = useIndicatorList(tab);
   const { updateIndicators } = useFiltersStore();
   const form = useForm();
 

@@ -12,7 +12,6 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
-import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
@@ -23,6 +22,8 @@ import { useUniqueValues } from "@widgets/farmer/analytics/sheet/ui/side/uniques
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { DownloadFarmer } from "@features/farmer/download";
+import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -280,15 +281,15 @@ const FarmerAnalytics: FC = () => {
   const lastRequestKey = useRef<string>("");
   const { getApiPayload, updateIndicators, updateUniques } = useFiltersStore();
   const allData = getApiPayload();
-
+  const { tab } = useTabStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } =
     useFarmerAnalyticsStore();
   const { getTable, getGraph } = useReport();
   const { table: initialRows, total: initialTotalRows } =
     useFarmerAnalyticsStore();
-  const indicators = useIndicatorList();
-  const uniques = useUniqueValues();
+  const indicators = useIndicatorList(tab);
+  const uniques = useUniqueValues(tab);
 
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!graph);
@@ -547,13 +548,15 @@ const FarmerAnalytics: FC = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
+      const payload = getApiPayload();
+
       const requestKey = JSON.stringify({
         startRow,
         endRow,
         sortModel,
-        values: getApiPayload().values,
-        groups: getApiPayload().groups,
-        filters: getApiPayload().filters,
+        values: payload.values,
+        groups: payload.groups,
+        filters: payload.filters,
       });
 
       if (
@@ -563,25 +566,6 @@ const FarmerAnalytics: FC = () => {
         return requestCache.current[requestKey];
       }
 
-      if (
-        startRow === 0 &&
-        initialRows &&
-        initialRows.data.length > 0 &&
-        sortModel.length === 0
-      ) {
-        const result = {
-          data: initialRows.data.slice(startRow, endRow),
-          totalRows: initialTotalRows,
-        };
-
-        const cachedPromise = Promise.resolve(result);
-        requestCache.current[requestKey] = (await cachedPromise) as any;
-        lastRequestKey.current = requestKey;
-
-        return cachedPromise;
-      }
-
-      const payload = getApiPayload();
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
@@ -640,7 +624,7 @@ const FarmerAnalytics: FC = () => {
     useFarmerAnalyticsStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
-  console.log(total);
+
   return (
     <>
       <Sheet />
@@ -650,7 +634,7 @@ const FarmerAnalytics: FC = () => {
           actions={{
             right: !isMobile && (
               <div className="flex flex-row gap-2">
-                <DownloadReport rows={table?.totalRows || 0} />
+                <DownloadFarmer rows={table?.totalRows || 0} />
               </div>
             ),
           }}
@@ -658,8 +642,8 @@ const FarmerAnalytics: FC = () => {
         <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
           {isMobile && (
             <div className="w-full flex flex-col gap-2">
-              <div className="w-full flex flex-row gap-2 justify-between px-4">
-                <DownloadReport rows={table?.totalRows || 0} />
+              <div className="w-full flex flex-row gap-2 justify-between px-4 pt-2">
+                <DownloadFarmer rows={table?.totalRows || 0} />
                 <DateDropdown />
                 <Button
                   className="w-fit"

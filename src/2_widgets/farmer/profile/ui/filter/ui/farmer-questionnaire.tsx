@@ -12,7 +12,7 @@ import { Input } from "@shared/ui/input";
 import { PhoneInput } from "@shared/ui/phone-input";
 import { Textarea } from "@shared/ui/textarea";
 import DateInput from "@shared/ui/date-input";
-import { Save, Upload, User, X } from "lucide-react";
+import { ClipboardPaste, Save, Upload, User, X } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@shared/ui/label";
 import AddressInput from "@shared/ui/address-input";
@@ -35,7 +35,7 @@ import { useSession } from "@entities/session";
 import formatDateIso from "@shared/lib/format-date-iso";
 import { STEPS_FIELDS } from "../config/constant";
 import { useIsMobile } from "@shared/hooks";
-
+import { Separator } from "@shared/ui/separator";
 interface FarmerQuestionnaireProps {
   level?: number;
   data?: ProfileResponse;
@@ -147,6 +147,52 @@ export default function FarmerQuestionnaire({
     }
   };
 
+  const handleAutoFill = (
+    section: "chiefAccountant" | "responsiblePerson" | "mainContact",
+  ) => {
+    const { managerName, phoneOrganization, emailOrganization } =
+      form.getValues();
+
+    if (!managerName && !phoneOrganization && !emailOrganization) {
+      toast.error("Сначала заполните данные руководителя");
+      return;
+    }
+
+    const commonData = {
+      name: managerName,
+      phone: phoneOrganization,
+      email: emailOrganization,
+    };
+
+    let dataToSet: any;
+
+    switch (section) {
+      case "chiefAccountant":
+        dataToSet = {
+          ...commonData,
+          position: "Главный бухгалтер" as const,
+        };
+        break;
+      case "responsiblePerson":
+        dataToSet = {
+          ...commonData,
+          position: "Ответственное лицо" as const,
+        };
+        break;
+      case "mainContact":
+        dataToSet = {
+          ...commonData,
+          position: "Руководитель",
+        };
+        break;
+    }
+
+    if (dataToSet) {
+      form.setValue(section, dataToSet, { shouldValidate: true });
+      updateFilters(section, dataToSet);
+    }
+  };
+
   return (
     <Card className={cn(data && "gap-1 p-4 max-md:mb-14 max-md:content-box")}>
       {data && (
@@ -201,8 +247,11 @@ export default function FarmerQuestionnaire({
 
                       return (
                         <FormItem className="h-full w-max flex flex-col gap-2 max-md:w-full max-md:items-center max-md:justify-center max-md:gap-4 max-md:py-2">
-                          <FormLabel className="gap-0.5">
-                            Фото <span className="text-destructive">*</span>
+                          <FormLabel>
+                            <span>
+                              Фото
+                              <span className="text-destructive ml-0.5">*</span>
+                            </span>
                           </FormLabel>
                           <Card
                             style={{
@@ -284,9 +333,11 @@ export default function FarmerQuestionnaire({
                   control={form.control}
                   render={({ field }) => (
                     <FormItem className={cn(data && "col-span-3")}>
-                      <FormLabel className="gap-0.5">
-                        Название организации
-                        <span className="text-destructive">*</span>
+                      <FormLabel>
+                        <span>
+                          Название организации
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -312,14 +363,17 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="managerName"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">
-                        ФИО руководителя{" "}
-                        <span className="text-destructive">*</span>
+                      <FormLabel>
+                        <span>
+                          ФИО руководителя
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -346,14 +400,17 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="phoneOrganization"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">
-                        Телефон организации
-                        <span className="text-destructive">*</span>
+                      <FormLabel>
+                        <span>
+                          Телефон организации
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <PhoneInput
@@ -373,14 +430,17 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="emailOrganization"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">
-                        Email организации{" "}
-                        <span className="text-destructive">*</span>
+                      <FormLabel>
+                        <span>
+                          Email организации
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -400,6 +460,7 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="nds"
                   control={form.control}
@@ -429,14 +490,13 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="ogrn"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">
-                        ОГРН <span className="text-destructive">*</span>
-                      </FormLabel>
+                      <FormLabel>ОГРН</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -457,6 +517,7 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="okpo"
                   control={form.control}
@@ -483,19 +544,17 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="okved"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">
-                        ОКВЭД <span className="text-destructive">*</span>
-                      </FormLabel>
+                      <FormLabel className="gap-0.5">ОКВЭД</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           value={field.value || ""}
-                          type="tel"
                           placeholder="Введите ОКВЭД"
                           className="bg-background"
                           onChange={(e) => {
@@ -511,6 +570,7 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="startDateOfCooperation"
                   control={form.control}
@@ -538,6 +598,7 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="dateOfFirstDelivery"
                   control={form.control}
@@ -565,14 +626,17 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="bankDetails"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem className={cn(data && "col-span-3")}>
-                      <FormLabel className="gap-0.5">
-                        Банковские реквизиты
-                        <span className="text-destructive">*</span>
+                      <FormLabel>
+                        <span>
+                          Банковские реквизиты
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
                       </FormLabel>
                       <FormControl>
                         <Textarea
@@ -596,6 +660,7 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="inn"
                   control={form.control}
@@ -630,8 +695,11 @@ export default function FarmerQuestionnaire({
 
                     return (
                       <FormItem className={cn(data && "col-span-3")}>
-                        <FormLabel className="gap-0.5">
-                          ИНН<span className="text-destructive">*</span>
+                        <FormLabel>
+                          <span>
+                            ИНН
+                            <span className="text-destructive ml-0.5">*</span>
+                          </span>
                         </FormLabel>
                         <div className="flex gap-0.5">
                           <FormControl>
@@ -690,6 +758,7 @@ export default function FarmerQuestionnaire({
                     );
                   }}
                 />
+                {level !== undefined && <Separator />}
                 <FormField
                   name="kpp"
                   control={form.control}
@@ -792,8 +861,11 @@ export default function FarmerQuestionnaire({
 
                     return (
                       <FormItem className="h-full w-max flex flex-col gap-2">
-                        <FormLabel className="gap-0.5">
-                          Фото <span className="text-destructive">*</span>
+                        <FormLabel>
+                          <span>
+                            Фото
+                            <span className="text-destructive ml-0.5">*</span>
+                          </span>
                         </FormLabel>
                         <Card
                           style={{
@@ -871,7 +943,6 @@ export default function FarmerQuestionnaire({
                 />
               )}
             </div>
-
             <div
               className={cn(
                 "flex-col gap-4 w-full",
@@ -884,9 +955,11 @@ export default function FarmerQuestionnaire({
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="gap-0.5">
-                      Юридический адрес{" "}
-                      <span className="text-destructive">*</span>
+                    <FormLabel>
+                      <span>
+                        Юридический адрес / место жительства
+                        <span className="text-destructive ml-0.5">*</span>
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <AddressInput
@@ -904,13 +977,17 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
+              {level !== undefined && <Separator />}
               <FormField
                 name="postalAddress"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="gap-0.5">
-                      Почтовый адрес <span className="text-destructive">*</span>
+                    <FormLabel>
+                      <span>
+                        Почтовый адрес
+                        <span className="text-destructive ml-0.5">*</span>
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <AddressInput
@@ -928,13 +1005,17 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
+              {level !== undefined && <Separator />}
               <FormField
                 name="workshopAddress"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="gap-0.5">
-                      Адрес цеха <span className="text-destructive">*</span>
+                    <FormLabel>
+                      <span>
+                        Адрес цеха
+                        <span className="text-destructive ml-0.5">*</span>
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <AddressInput
@@ -952,19 +1033,72 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
-              <ChiefAccountantFields control={form.control} />
-              <ResponsiblePersonFields control={form.control} />
-              <MainContactFields control={form.control} />
+              {level !== undefined && <Separator />}
+              <ChiefAccountantFields control={form.control}>
+                {level && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="max-md:px-0!"
+                      onClick={() => handleAutoFill("chiefAccountant")}
+                    >
+                      Данные руководителя
+                      <ClipboardPaste />
+                    </Button>
+                  </div>
+                )}
+              </ChiefAccountantFields>
+              {level !== undefined && <Separator />}
+              <ResponsiblePersonFields control={form.control}>
+                {level && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="max-md:px-0!"
+                      onClick={() => handleAutoFill("responsiblePerson")}
+                    >
+                      Данные руководителя
+                      <ClipboardPaste />
+                    </Button>
+                  </div>
+                )}
+              </ResponsiblePersonFields>
+              {level !== undefined && <Separator />}
+              <MainContactFields control={form.control}>
+                {level && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="max-md:px-0!"
+                      onClick={() => handleAutoFill("mainContact")}
+                    >
+                      Данные руководителя
+                      <ClipboardPaste />
+                    </Button>
+                  </div>
+                )}
+              </MainContactFields>
+              {level !== undefined && <Separator />}
               <AdditionalContactsFields control={form.control} />
+              {level !== undefined && <Separator />}
               <DeclarationsField control={form.control} />
+              {level !== undefined && <Separator />}
               <FormField
                 name="companyHistory"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem className={cn(data && "col-span-3")}>
-                    <FormLabel className="gap-0.5">
-                      История компании
-                      <span className="text-destructive">*</span>
+                    <FormLabel>
+                      <span>
+                        История компании
+                        <span className="text-destructive ml-0.5">*</span>
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <Textarea

@@ -147,7 +147,7 @@ const SuggestionForm: FC<Props> = ({ setIsOpen }) => {
               <FormControl>
                 <Textarea
                   placeholder="Опишите проблему"
-                  className="max-h-16 md:resize-y md:max-h-[20vh]"
+                  className="max-md:max-h-16 md:resize-y md:max-h-[20vh]"
                   {...field}
                 />
               </FormControl>

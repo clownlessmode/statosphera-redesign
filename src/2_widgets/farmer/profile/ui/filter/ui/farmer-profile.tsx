@@ -3,10 +3,13 @@ import { ProfileResponse } from "@entities/farmer";
 import { Separator } from "@shared/ui/separator";
 import { Button } from "@shared/ui/button";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
-import FarmerQuestionnaire from "./farmer-questionnaire";
+import { Suspense, useState } from "react";
 import useForm from "../model/hook";
 import { useSession } from "@entities/session";
+import { lazy } from "react";
+import Spinner from "@shared/ui/spinner";
+
+const FarmerQuestionnaire = lazy(() => import("./farmer-questionnaire"));
 
 export default function FarmerProfileCard({
   profile,
@@ -23,11 +26,19 @@ export default function FarmerProfileCard({
   return (
     <>
       {isEdit ? (
-        <FarmerQuestionnaire
-          form={form}
-          data={profile}
-          handleCancel={handleEdit}
-        />
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center h-[calc(100vh-96px)] w-full">
+              <Spinner />
+            </div>
+          }
+        >
+          <FarmerQuestionnaire
+            form={form}
+            data={profile}
+            handleCancel={handleEdit}
+          />
+        </Suspense>
       ) : (
         <Card className="w-full gap-4 p-4">
           <CardHeader className="flex flex-wrap justify-between items-center gap-2 max-md:grid max-md:grid-cols-[1fr_max-content]">
@@ -50,7 +61,7 @@ export default function FarmerProfileCard({
                   }}
                   className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[150px] rounded-full"
                 />
-                {profile.kmContacts.length > 0 && (
+                {profile.kmContacts.length > 0 ? (
                   <div className="w-full h-full flex flex-col gap-2">
                     <span className="font-semibold text-accent text-lg">
                       Контакты КМ
@@ -68,6 +79,13 @@ export default function FarmerProfileCard({
                         <span className="text-sm w-fit">{contact.phone}</span>
                       </div>
                     ))}
+                  </div>
+                ) : (
+                  <div className="w-full h-max flex flex-col gap-1 py-2 px-4 border-accent border-2 rounded-xl">
+                    <span className="font-semibold text-accent text-lg">
+                      Контакты КМ
+                    </span>
+                    <span className="text-base font-medium">Не указаны</span>
                   </div>
                 )}
               </div>
@@ -109,7 +127,7 @@ export default function FarmerProfileCard({
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">ОГРН</span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.ogrn}
+                      {profile.ogrn ? profile.ogrn : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -121,7 +139,7 @@ export default function FarmerProfileCard({
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">ОКВЭД</span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.okved}
+                      {profile.okved ? profile.okved : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -197,7 +215,7 @@ export default function FarmerProfileCard({
                   </span>
                   <div className="flex flex-col gap-2">
                     <span className="text-sm text-muted-foreground">
-                      Юридический адрес
+                      Юридический адрес / место жительства
                     </span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
                       {profile.legalAddress}
@@ -329,7 +347,7 @@ export default function FarmerProfileCard({
                   }}
                   className="size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0"
                 />
-                {profile.kmContacts.length > 0 && (
+                {profile.kmContacts.length > 0 ? (
                   <div className="w-full h-full flex flex-col gap-2">
                     <span className="text-base font-semibold text-accent">
                       Контакты КМ
@@ -347,6 +365,13 @@ export default function FarmerProfileCard({
                         <span className="text-sm w-fit">{contact.phone}</span>
                       </div>
                     ))}
+                  </div>
+                ) : (
+                  <div className="w-full h-max flex flex-col gap-2 p-4 border-accent border-2 rounded-xl">
+                    <span className="text-base font-semibold text-accent">
+                      Контакты КМ
+                    </span>
+                    <span className="text-sm font-medium">Не указаны</span>
                   </div>
                 )}
               </div>

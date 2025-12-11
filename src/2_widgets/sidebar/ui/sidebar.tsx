@@ -19,7 +19,7 @@ import {
   TreePine,
   Vote,
   ChartColumn,
-  MessageCircle,
+  //  MessageCircle,
   Tractor,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -40,14 +40,17 @@ import { ROLES } from "@shared/constants/roles";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useFarmer } from "@entities/farmer/api/controller";
 
 const Sidebar = ({
   children,
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
   const { session } = useSession();
+  const { profileStatus } = useFarmer(session?.idUser);
   const { tab } = useTabStore();
   const { tab: tabWriteOff } = useTabStoreWriteOff();
+
   const data = {
     navMain: [
       {
@@ -200,12 +203,12 @@ const Sidebar = ({
         allowedRoles: [ROLES.ADMIN],
         icon: ChartColumn,
       },
-      {
-        title: "Чаты",
-        url: ROUTES_PATH.CHAT,
-        icon: MessageCircle,
-        disabled: true,
-      },
+      //{
+      //  title: "Чаты",
+      //  url: "#",
+      //  icon: MessageCircle,
+      //  disabled: true,
+      //},
       {
         title: "Дайджесты",
         url: ROUTES_PATH.DIGESTS,
@@ -229,51 +232,53 @@ const Sidebar = ({
 
   return (
     <>
-      {session && (
-        <SidebarComponent collapsible="icon" {...props}>
-          {isMobile ? (
-            session?.role !== ROLES.FARMER ? (
-              <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
+      {session &&
+        ((session?.role === ROLES.FARMER && profileStatus) ||
+          session?.role !== ROLES.FARMER) && (
+          <SidebarComponent collapsible="icon" {...props}>
+            {isMobile ? (
+              session?.role !== ROLES.FARMER ? (
+                <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
+                  <Logotype size={isCollapsed ? "sm" : "md"} />
+                </Link>
+              ) : (
+                <div onClick={toggleSidebar} className="py-2 pl-2">
+                  <Logotype size={isCollapsed ? "sm" : "md"} />
+                </div>
+              )
+            ) : session?.role !== ROLES.FARMER ? (
+              <Link to="/" className="py-2 pl-2">
                 <Logotype size={isCollapsed ? "sm" : "md"} />
               </Link>
             ) : (
-              <div onClick={toggleSidebar} className="py-2 pl-2">
+              <div className="py-2 pl-2">
                 <Logotype size={isCollapsed ? "sm" : "md"} />
               </div>
-            )
-          ) : session?.role !== ROLES.FARMER ? (
-            <Link to="/" className="py-2 pl-2">
-              <Logotype size={isCollapsed ? "sm" : "md"} />
-            </Link>
-          ) : (
-            <div className="py-2 pl-2">
-              <Logotype size={isCollapsed ? "sm" : "md"} />
-            </div>
-          )}
-          <SidebarContent>
-            <NavMain
-              items={
-                session?.role === ROLES.FARMER
-                  ? dataFarmer.navMain
-                  : data.navMain
-              }
-            />
-          </SidebarContent>
-          <SidebarRail />
-          <SidebarMenu>
-            <NavSecondary
-              items={
-                session?.role === ROLES.FARMER
-                  ? dataFarmer.navSecondary
-                  : data.navSecondary
-              }
-              isCollapsed={isCollapsed}
-              toggleSidebar={toggleSidebar}
-              className="mt-auto"
-            />
-          </SidebarMenu>
-        </SidebarComponent>
-      )}
+            )}
+            <SidebarContent>
+              <NavMain
+                items={
+                  session?.role === ROLES.FARMER
+                    ? dataFarmer.navMain
+                    : data.navMain
+                }
+              />
+            </SidebarContent>
+            <SidebarRail />
+            <SidebarMenu>
+              <NavSecondary
+                items={
+                  session?.role === ROLES.FARMER
+                    ? dataFarmer.navSecondary
+                    : data.navSecondary
+                }
+                isCollapsed={isCollapsed}
+                toggleSidebar={toggleSidebar}
+                className="mt-auto"
+              />
+            </SidebarMenu>
+          </SidebarComponent>
+        )}
 
       {children}
     </>

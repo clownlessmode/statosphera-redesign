@@ -1,7 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm as useHookForm } from "react-hook-form";
-
-import { GEO, PRODUCT, FormValues, schema } from "../../config";
+import {
+  GEO,
+  SHOP,
+  PRODUCT,
+  LOYAL,
+  ONLINE,
+  ID,
+  FormValues,
+  schema,
+} from "../../config";
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
 
 export const useForm = ({
@@ -23,7 +31,11 @@ export const useForm = ({
     defaultValues: {
       days: match(extractValues(daysOptions)), // <= сюда передаётся динамический список
       geo: match(extractValues(GEO)),
+      store: match(extractValues(SHOP)),
       product: match(extractValues(PRODUCT)),
+      loyal: match(extractValues(LOYAL)),
+      online: match(extractValues(ONLINE)),
+      id: match(extractValues(ID)),
     },
     mode: "all",
   });

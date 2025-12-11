@@ -24,7 +24,7 @@ const FarmerProfile: FC = () => {
     profile: profileData,
     profileStatus,
     isCheckProfileLoading,
-  } = useFarmer(session?.idUser);
+  } = useFarmer(session?.idUser, session?.role);
   const { getApiPayload } = useFarmerProfileStore();
   const form = useForm();
 
@@ -96,7 +96,7 @@ const FarmerProfile: FC = () => {
 
   return (
     <div className="bg-muted h-full w-full p-2 flex flex-col max-w-full gap-2">
-      {profileStatus && profile && <Header title="Профиль" />}
+      <Header title={profileStatus && profile ? "Профиль" : "Анкета"} />
       {!profileStatus && (
         <div className="rounded-3xl bg-background flex flex-col items-center justify-center min-h-screen max-h-max p-4">
           <div className="w-max flex flex-col gap-4 max-md:w-full">

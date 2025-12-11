@@ -50,25 +50,29 @@ const Digests = () => {
     // }
 
     // Если нет сессии, показываем только director и groupCompany
-    const allowedTypes = session
-      ? ["analytics", "director", "franchise", "groupCompany"]
-      : ["director", "groupCompany"];
+    const allowedTypes =
+      session && session.role !== ROLES.FARMER
+        ? ["analytics", "director", "franchise", "groupCompany"]
+        : ["director", "groupCompany"];
 
     const filtered = {
-      analytics: session
-        ? digests?.filter((digest) => digest.type === "analytics")
-        : [],
+      analytics:
+        session && session.role !== ROLES.FARMER
+          ? digests?.filter((digest) => digest.type === "analytics")
+          : [],
       director: digests?.filter((digest) => digest.type === "director"),
-      franchise: session
-        ? digests?.filter((digest) => digest.type === "franchise")
-        : [],
+      franchise:
+        session && session.role !== ROLES.FARMER
+          ? digests?.filter((digest) => digest.type === "franchise")
+          : [],
       groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
     };
 
     // Для вкладки "Все" показываем только разрешенные типы
-    const allDigests = session
-      ? digests
-      : digests?.filter((digest) => allowedTypes.includes(digest.type));
+    const allDigests =
+      session && session.role !== ROLES.FARMER
+        ? digests
+        : digests?.filter((digest) => allowedTypes.includes(digest.type));
 
     return {
       ...filtered,
@@ -116,7 +120,7 @@ const Digests = () => {
                   )}
                 </TabsTrigger>
 
-                {session && (
+                {session && session.role !== ROLES.FARMER && (
                   <TabsTrigger
                     value="analytics"
                     className="w-full justify-between gap-4 max-md:py-2"
@@ -148,7 +152,7 @@ const Digests = () => {
                   )}
                 </TabsTrigger>
 
-                {session && (
+                {session && session.role !== ROLES.FARMER && (
                   <TabsTrigger
                     value="franchise"
                     className="w-full justify-between gap-4 max-md:py-2"
