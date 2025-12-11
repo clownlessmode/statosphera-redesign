@@ -12,11 +12,12 @@ import { Header } from "@widgets/header";
 import Spinner from "@shared/ui/spinner";
 import { STEPS_FIELDS } from "@widgets/farmer/profile/ui/filter/config/constant";
 import formatDateIso from "@shared/lib/format-date-iso";
+import { useSessionController } from "@entities/session/api/controller";
 
 const FarmerProfile: FC = () => {
   const [level, setLevel] = useState<number>(0);
   const [profile, setProfile] = useState<ProfileResponse | null>(null);
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const {
     createProfile,
     uploadPhoto,
@@ -27,7 +28,7 @@ const FarmerProfile: FC = () => {
   } = useFarmer(session?.idUser, session?.role);
   const { getApiPayload } = useFarmerProfileStore();
   const form = useForm();
-
+  const { getUpdatedSession } = useSessionController();
   useEffect(() => {
     if (profileData && profileStatus) {
       setProfile(profileData);
@@ -73,6 +74,10 @@ const FarmerProfile: FC = () => {
           });
           await uploadPhoto({ photo: photo[0] });
           toast.success("Профиль успешно создан");
+          const { data: newSession } = await getUpdatedSession();
+          if (newSession && newSession?.idUser === session?.idUser) {
+            setSession(newSession);
+          }
           checkProfile();
         } catch (error: any) {
           console.error(error);

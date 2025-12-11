@@ -36,6 +36,8 @@ import formatDateIso from "@shared/lib/format-date-iso";
 import { STEPS_FIELDS } from "../config/constant";
 import { useIsMobile } from "@shared/hooks";
 import { Separator } from "@shared/ui/separator";
+import { useSessionController } from "@entities/session/api/controller";
+
 interface FarmerQuestionnaireProps {
   level?: number;
   data?: ProfileResponse;
@@ -50,10 +52,10 @@ export default function FarmerQuestionnaire({
   handleCancel,
 }: FarmerQuestionnaireProps) {
   const { updateFilters } = useFarmerProfileStore();
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const { updateProfile, uploadPhoto } = useFarmer(session?.idUser);
   const isMobile = useIsMobile();
-
+  const { getUpdatedSession } = useSessionController();
   // Эффект для инициализации формы данными, если включен режим редактирования
   useEffect(() => {
     if (data) {
@@ -136,6 +138,10 @@ export default function FarmerQuestionnaire({
           }
 
           toast.success("Профиль успешно обновлен");
+          const { data: newSession } = await getUpdatedSession(); // Исправлено здесь
+          if (newSession && newSession.idUser === session?.idUser) {
+            setSession(newSession);
+          }
           handleCancel?.();
         } catch (error: any) {
           console.error(error);

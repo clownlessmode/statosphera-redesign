@@ -1,19 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import { SessionService } from "./service";
+import { Session } from "../model/types";
 
 export const useSessionController = () => {
-  const updateSession = useQuery<void, ApiError>({
+  const updateSession = useQuery<Session, ApiError>({
     queryKey: ["session"],
-    queryFn: async () => {
+    queryFn: async (): Promise<Session> => {
       const response = await SessionService.updateSession();
       return response;
     },
   });
 
   return {
-    getSession: updateSession.refetch,
-    isGetSessionLoading: updateSession.isPending,
-    session: updateSession.data,
+    getUpdatedSession: updateSession.refetch,
+    isUpdatedSessionLoading: updateSession.isPending,
+    updatedSession: updateSession.data,
   };
 };
