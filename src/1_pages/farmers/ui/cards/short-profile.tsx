@@ -2,10 +2,13 @@ import { Card, CardContent } from "@shared/ui/card";
 import { FarmersResponse } from "../../config";
 import { ContactsEditModal } from "./contacts-edit-modal";
 import { ProfileModal } from "./profile-modal";
+import { cn } from "@shared/lib/utils";
 
 export const ShortProfile = ({ farmer }: { farmer: FarmersResponse }) => {
   return (
-    <Card>
+    <Card
+      className={cn(farmer.kmContacts.length === 0 && "border-accent border-2")}
+    >
       <CardContent className="grid grid-cols-[max-content_1fr_1fr_1fr_1fr_max-content] gap-4 items-center max-md:grid-cols-[max-content_1fr_max-content]">
         <Card
           style={{ backgroundImage: `url(${farmer.photo})` }}

@@ -6,8 +6,6 @@ export const STEPS_FIELDS = [
     "managerName",
     "phoneOrganization",
     "emailOrganization",
-    "ogrn",
-    "okved",
     "bankDetails",
     "inn",
   ],

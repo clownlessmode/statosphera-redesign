@@ -35,9 +35,9 @@ import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
+//import { FarmerChat } from "@pages/farmer/chat";
 import { Farmers } from "@pages/farmers";
 import { Forest } from "@pages/forest";
-//import { Unload } from "@pages/unload";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -402,7 +402,7 @@ export const ROUTES: RouteConfig[] = [
   //{
   //  path: ROUTES_PATH.CHAT,
   //  variant: "private",
-  //  element: <Chat />,
+  //  element: <FarmerChat />,
   //  allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
   //  layout: Sidebar,
   //  label: "Чаты",

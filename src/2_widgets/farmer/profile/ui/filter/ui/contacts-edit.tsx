@@ -11,7 +11,7 @@ import { Label } from "@shared/ui/label";
 import { toast } from "sonner";
 import { FarmersResponse } from "@pages/farmers/config";
 
-export const ContactsEdit: FC<{
+const ContactsEdit: FC<{
   contacts: FarmersResponse["kmContacts"];
 }> = ({ contacts }) => {
   const form = useContactsEdit();
@@ -206,3 +206,5 @@ export const ContactsEdit: FC<{
     </Card>
   );
 };
+
+export default ContactsEdit;

@@ -7,12 +7,20 @@ import {
 } from "@shared/ui/card";
 import CheckboxCards from "@shared/ui/checkbox-cards";
 import { Form, FormField, FormItem, FormLabel } from "@shared/ui/form";
-import { Calendar, MapPin, ShoppingBasket } from "lucide-react";
+import {
+  BadgeCheck,
+  Calendar,
+  Globe,
+  MapPin,
+  Receipt,
+  ShoppingBasket,
+  Store,
+} from "lucide-react";
 
 import { FC, useEffect, useMemo } from "react";
 
 import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
-import { DAYS, GEO, PRODUCT } from "../config";
+import { DAYS, GEO, ID, LOYAL, ONLINE, PRODUCT, SHOP } from "../config";
 import {
   GROUPINGS,
   useFiltersStore,
@@ -42,6 +50,10 @@ const GroupingFilter: FC = () => {
         ...(values.days || []),
         ...(values.geo || []),
         ...(values.product || []),
+        ...(values.store || []),
+        ...(values.loyal || []),
+        ...(values.online || []),
+        ...(values.id || []),
       ].filter((item): item is string => item !== undefined);
 
       updateGroups(groups);
@@ -70,11 +82,40 @@ const GroupingFilter: FC = () => {
           visible: true,
         },
         {
+          name: "store",
+          label: "Магазин",
+          icon: <Store />,
+          options: SHOP,
+          visible: true,
+        },
+        {
           name: "product",
           label: "Продукт",
           icon: <ShoppingBasket />,
           options: PRODUCT,
           visible: true,
+        },
+        {
+          name: "loyal",
+          label: "Лояльность",
+          icon: <BadgeCheck />,
+          options: LOYAL,
+          visible: tab === "check",
+        },
+        {
+          name: "online",
+          label: "Интернет магазин",
+          icon: <Globe />,
+          options: ONLINE,
+          visible: tab === "check",
+        },
+        {
+          name: "id",
+          label: "Чек",
+          icon: <Receipt />,
+          options: ID,
+          className: "grid-cols-3",
+          visible: tab === "check",
         },
       ] as const,
     [tab],

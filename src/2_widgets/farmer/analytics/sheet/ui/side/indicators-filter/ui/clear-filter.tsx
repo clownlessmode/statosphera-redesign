@@ -28,7 +28,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
   const handleClearFilters = () => {
     updateIndicators([]);
     form.reset({
-      proceeds: ["proceeds"],
+      proceeds: ["farmerPrice"],
     });
   };
 

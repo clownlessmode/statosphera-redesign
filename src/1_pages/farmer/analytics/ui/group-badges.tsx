@@ -1,14 +1,33 @@
 import { Badge } from "@shared/ui/badge";
-import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
+import {
+  GROUPINGS,
+  useFiltersStore,
+} from "@widgets/farmer/analytics/sheet/model/filters-store";
 import {
   DAYS,
   GEO,
   PRODUCT,
+  SHOP,
+  LOYAL,
+  ONLINE,
+  ID,
 } from "@widgets/farmer/analytics/sheet/ui/side/grouping-filter";
 
 import { Link } from "react-router";
 
-const allGroups = [...DAYS, ...GEO, ...PRODUCT];
+const allGroups = [
+  ...DAYS,
+  ...GEO,
+  ...PRODUCT,
+  ...SHOP,
+  ...LOYAL,
+  ...ONLINE,
+  ...ID,
+  {
+    label: "Час",
+    value: GROUPINGS.HOUR,
+  },
+];
 // Создаем маппинг value -> label
 const groupValueToLabelMap = allGroups.reduce<Record<string, string>>(
   (acc, item) => {

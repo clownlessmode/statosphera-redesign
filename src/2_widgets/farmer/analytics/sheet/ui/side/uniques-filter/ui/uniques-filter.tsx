@@ -14,9 +14,11 @@ import { useForm } from "../model";
 import ClearFilters from "./clear-filter";
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
 import { cn } from "@shared/lib/utils";
+import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
 
 export const UniqueFilters: FC = () => {
-  const uniques = useUniqueValues();
+  const { tab } = useTabStore();
+  const uniques = useUniqueValues(tab);
   const { updateUniques } = useFiltersStore();
   const form = useForm();
 

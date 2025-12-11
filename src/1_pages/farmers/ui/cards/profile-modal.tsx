@@ -1,9 +1,14 @@
 import { FarmersResponse } from "@pages/farmers/config";
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-import FarmerProfileCard from "@widgets/farmer/profile/ui/filter/ui/farmer-profile";
 import { Eye } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import Spinner from "@shared/ui/spinner";
+import { lazy } from "react";
+
+const FarmerProfileCard = lazy(
+  () => import("@widgets/farmer/profile/ui/filter/ui/farmer-profile"),
+);
 
 export const ProfileModal = ({ farmer }: { farmer: FarmersResponse }) => {
   const [open, setOpen] = useState(false);
@@ -20,7 +25,15 @@ export const ProfileModal = ({ farmer }: { farmer: FarmersResponse }) => {
         aria-describedby={undefined}
         className="min-w-[80vw] max-h-[80vh] overflow-y-auto scrollbar-hide max-md:max-h-[calc(100vh-256px)]"
       >
-        <FarmerProfileCard profile={farmer} />
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center min-h-[200px] w-full">
+              <Spinner />
+            </div>
+          }
+        >
+          <FarmerProfileCard profile={farmer} />
+        </Suspense>
       </DialogContent>
     </Dialog>
   );

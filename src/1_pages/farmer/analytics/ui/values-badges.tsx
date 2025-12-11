@@ -1,5 +1,6 @@
 import { Badge } from "@shared/ui/badge";
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
+import { useTabStore } from "@widgets/farmer/analytics/sheet/model/url-store";
 import { useIndicatorList } from "@widgets/farmer/analytics/sheet/ui/side/indicators-filter";
 import { useUniqueValues } from "@widgets/farmer/analytics/sheet/ui/side/uniques-filter";
 // Компонент для отображения уникальных значений
@@ -31,8 +32,9 @@ export function getLabelByValue(
   return undefined;
 }
 export function UniqueBadges() {
+  const { tab } = useTabStore();
   const { uniques } = useFiltersStore();
-  const uniqueList = useUniqueValues();
+  const uniqueList = useUniqueValues(tab);
 
   if (!uniques || uniques.length === 0) return null;
 
@@ -48,8 +50,9 @@ export function UniqueBadges() {
 }
 
 export function IndicatorBadges() {
+  const { tab } = useTabStore();
   const { indicators } = useFiltersStore();
-  const indicatorList = useIndicatorList();
+  const indicatorList = useIndicatorList(tab);
 
   if (!indicators || indicators.length === 0) return null;
 
