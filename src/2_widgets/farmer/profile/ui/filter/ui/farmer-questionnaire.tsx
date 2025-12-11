@@ -496,13 +496,13 @@ export default function FarmerQuestionnaire({
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>ОГРН</FormLabel>
+                      <FormLabel>ОГРН / ОГРНИП</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           value={field.value || ""}
                           type="tel"
-                          placeholder="Введите ОГРН"
+                          placeholder="Введите ОГРН / ОГРНИП"
                           className="bg-background"
                           onChange={(e) => {
                             const value = e.target.value.replace(/\D/g, "");
