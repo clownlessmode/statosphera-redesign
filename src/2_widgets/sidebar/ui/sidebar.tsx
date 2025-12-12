@@ -128,7 +128,9 @@ const Sidebar = ({
         title: "Проект Лес",
         url: ROUTES_PATH.FOREST,
         icon: TreePine,
-        disabled: session?.role !== ROLES.ADMIN && session?.idUser !== 2758,
+        disabled:
+          session?.role !== ROLES.ADMIN &&
+          ![2758, 2564].includes(session?.idUser ?? -1),
       },
       {
         title: "Гриль",

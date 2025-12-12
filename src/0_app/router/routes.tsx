@@ -218,9 +218,7 @@ export const ROUTES: RouteConfig[] = [
     element: <DemocracyPage />,
     layout: Sidebar,
     label: "Предложения",
-    allowedRoles: [
-      ...Object.values(ROLES).filter((role) => role !== ROLES.FARMER),
-    ],
+    allowedRoles: [ROLES.ADMIN],
   },
   {
     path: ROUTES_PATH.LESSONS,
