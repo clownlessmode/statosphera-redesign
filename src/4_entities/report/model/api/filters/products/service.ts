@@ -13,7 +13,6 @@ import {
   TypeSenderFilterResponse,
   NomenklaturaFilterResponse,
 } from "./types";
-import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 
 export class FiltersProductsService {
   static async getFranchise(dto: any): Promise<FranchiseFilterResponse[]> {
@@ -73,8 +72,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -147,8 +146,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -221,8 +220,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -295,8 +294,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -369,8 +368,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -443,8 +442,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -517,8 +516,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -591,8 +590,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -665,8 +664,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -739,8 +738,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -813,8 +812,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -889,8 +888,8 @@ export class FiltersProductsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
