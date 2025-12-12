@@ -313,7 +313,7 @@ export default function FarmerProfileCard({
                   {profile.declarations.length > 0 ? (
                     profile.declarations.map((declaration, index) => (
                       <DeclarationShowPhotoModal
-                        photoDeclaration={declaration.photoDeclaration}
+                        declaration={declaration}
                         key={index}
                       >
                         <div className="flex flex-col gap-1 bg-background p-4 rounded-md w-fit max-md:w-full">

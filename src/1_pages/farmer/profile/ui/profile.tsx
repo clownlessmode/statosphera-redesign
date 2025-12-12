@@ -30,6 +30,7 @@ const FarmerProfile: FC = () => {
   const { getApiPayload } = useFarmerProfileStore();
   const form = useForm();
   const { getUpdatedSession } = useSessionController();
+
   useEffect(() => {
     if (profileData && profileStatus) {
       setProfile(profileData);
@@ -102,7 +103,14 @@ const FarmerProfile: FC = () => {
 
   return (
     <div className="bg-muted h-full w-full p-2 flex flex-col max-w-full gap-2">
-      <Header title={profileStatus && profile ? "Профиль" : "Анкета"} />
+      <Header
+        title={profileStatus && profile ? "Профиль" : "Анкета"}
+        actions={{
+          right: profileStatus && profile && (
+            <DeclarationEditPhotoModal declarations={profile.declarations} />
+          ),
+        }}
+      />
       {!profileStatus && (
         <div className="rounded-3xl bg-background flex flex-col items-center justify-center min-h-screen max-h-max p-4">
           <div className="w-max flex flex-col gap-4 max-md:w-full">
@@ -120,17 +128,6 @@ const FarmerProfile: FC = () => {
           <FarmerProfileCard profile={profile} />
         </div>
       )}
-      {profileStatus &&
-        profile &&
-        profile.declarations.some(
-          (declaration) => !declaration.photoDeclaration,
-        ) && (
-          <DeclarationEditPhotoModal
-            declarations={profile.declarations}
-            showButton={false}
-            showModal={true}
-          />
-        )}
     </div>
   );
 };

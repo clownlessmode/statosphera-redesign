@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
-import DateInput from "@shared/ui/date-input"; // Проверь импорт
+import DateInput from "@shared/ui/date-input";
 import { Label } from "@shared/ui/label";
 import { X } from "lucide-react";
 import { toast } from "sonner";
@@ -9,22 +9,12 @@ import { isValid, parse } from "date-fns";
 import { FormField, FormMessage } from "@shared/ui/form";
 import { Control } from "react-hook-form";
 import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
-import { DeclarationEditPhotoModal } from "../modal/declaration-edit-photo-modal";
 
 interface DeclarationFieldProps {
   control: Control<any>;
-  declarations?: {
-    idDeclarations: number;
-    nameDeclaration: string;
-    dateEndDeclaration: string;
-    photoDeclaration: string | null;
-  }[];
 }
 
-export const DeclarationField: FC<DeclarationFieldProps> = ({
-  control,
-  declarations,
-}) => {
+export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
   const { updateFilters } = useFarmerProfileStore();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -114,9 +104,6 @@ export const DeclarationField: FC<DeclarationFieldProps> = ({
                 >
                   Сохранить
                 </Button>
-                {declarations && (
-                  <DeclarationEditPhotoModal declarations={declarations} />
-                )}
               </div>
 
               {/* Список */}

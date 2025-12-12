@@ -1,6 +1,6 @@
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
-import { Camera, Check, Upload, X } from "lucide-react";
+import { Check, ScanText, Upload, X } from "lucide-react";
 import { FC, Fragment, Suspense, useEffect, useState } from "react";
 import { useFarmer } from "@entities/farmer/api/controller";
 import { toast } from "sonner";
@@ -20,18 +20,16 @@ import { cn } from "@shared/lib/utils";
 
 export const DeclarationEditPhotoModal: FC<{
   declarations: ProfileResponse["declarations"];
-  showButton?: boolean;
-  showModal?: boolean;
-}> = ({ declarations, showButton = true, showModal = false }) => {
+}> = ({ declarations }) => {
   const [open, setOpen] = useState(false);
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const { uploadDeclarationPhoto } = useFarmer();
 
   useEffect(() => {
-    if (showModal) {
+    if (declarations.some((declaration) => !declaration.photoDeclaration)) {
       setOpen(true);
     }
-  }, []);
+  }, [declarations]);
 
   const handleUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -55,13 +53,11 @@ export const DeclarationEditPhotoModal: FC<{
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {showButton && (
-        <DialogTrigger asChild>
-          <Button variant="outline">
-            <Camera />
-          </Button>
-        </DialogTrigger>
-      )}
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <ScanText /> Фото деклараций
+        </Button>
+      </DialogTrigger>
       <DialogContent aria-describedby={undefined}>
         <Suspense
           fallback={
@@ -169,6 +165,11 @@ export const DeclarationEditPhotoModal: FC<{
                   <Separator />
                 </Fragment>
               ))}
+              {declarations.length === 0 && (
+                <span className="text-sm text-muted-foreground text-center py-4">
+                  У вас нет деклараций
+                </span>
+              )}
             </CardContent>
           </Card>
         </Suspense>

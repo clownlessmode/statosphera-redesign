@@ -908,10 +908,10 @@ export default function FarmerQuestionnaire({
                                 if (
                                   event.target.files?.[0]?.size &&
                                   event.target.files?.[0]?.size >
-                                    10 * 1024 * 1024
+                                    5 * 1024 * 1024
                                 ) {
                                   toast.error(
-                                    "Файл слишком большой (максимум 10MB)",
+                                    "Файл слишком большой (максимум 5MB)",
                                   );
                                   return;
                                 }
@@ -1093,14 +1093,7 @@ export default function FarmerQuestionnaire({
               {level !== undefined && <Separator />}
               <AdditionalContactsField control={form.control} />
               {level !== undefined && <Separator />}
-              {data ? (
-                <DeclarationField
-                  control={form.control}
-                  declarations={data.declarations}
-                />
-              ) : (
-                <DeclarationField control={form.control} />
-              )}
+              <DeclarationField control={form.control} />
               {level !== undefined && <Separator />}
               <FormField
                 name="companyHistory"
