@@ -22,7 +22,7 @@ const DeclarationShowPhotoModal: FC<{
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="w-max h-max p-0!"
+          className="w-max h-max p-0! max-md:w-full"
           disabled={!declaration.photoDeclaration}
         >
           {children}
@@ -31,9 +31,7 @@ const DeclarationShowPhotoModal: FC<{
       <DialogContent aria-describedby={undefined}>
         <Card className="gap-2">
           <CardHeader>
-            <CardTitle className="min-w-0 text-balance text-ellipsis overflow-ellipsis">
-              {declaration.nameDeclaration}
-            </CardTitle>
+            <CardTitle>{declaration.nameDeclaration}</CardTitle>
             <CardDescription>
               Дата окончания:
               <span className="text-sm text-muted-foreground">

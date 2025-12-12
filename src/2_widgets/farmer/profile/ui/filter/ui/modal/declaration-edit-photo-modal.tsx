@@ -55,10 +55,10 @@ export const DeclarationEditPhotoModal: FC<{
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <ScanText /> Фото деклараций
+          <ScanText /> <span className="max-md:hidden">Фото деклараций</span>
         </Button>
       </DialogTrigger>
-      <DialogContent aria-describedby={undefined}>
+      <DialogContent aria-describedby={undefined} className="md:min-w-[35vw]">
         <Suspense
           fallback={
             <div className="flex justify-center items-center min-h-[200px] w-full">
@@ -69,7 +69,7 @@ export const DeclarationEditPhotoModal: FC<{
           <Card className="gap-2">
             <CardHeader>
               <CardTitle>Фотографии деклараций</CardTitle>
-              <CardDescription className="flex flex-row gap-4 items-center justify-center py-2">
+              <CardDescription className="flex flex-row gap-4 items-center justify-center py-2 max-xs:flex-col max-xss:gap-2">
                 <div className="flex flex-row gap-1 items-center">
                   <Check className="size-4 text-green-500" />
                   <span className="text-sm text-muted-foreground">
@@ -88,28 +88,26 @@ export const DeclarationEditPhotoModal: FC<{
               <Separator />
               {declarations.map((declaration) => (
                 <Fragment key={declaration.idDeclarations}>
-                  <div className="flex flex-row gap-4 items-center justify-between">
-                    <div className="grid grid-cols-[1fr_max-content] gap-2 w-full px-2">
+                  <div className="flex flex-row gap-4 items-center justify-between max-md:flex-col max-md:gap-2">
+                    <div className="grid grid-cols-[1fr_max-content] gap-2 w-full px-2 items-center max-md:grid-cols-1 max-md:px-0">
                       <div className="flex flex-row gap-2 items-center min-w-0">
                         {declaration.photoDeclaration ? (
                           <Check className="size-4 text-green-500 shrink-0" />
                         ) : (
                           <X className="size-4 text-red-500 shrink-0" />
                         )}
-                        <span className="text-base font-medium truncate">
+                        <span className="text-base font-normal break-all max-md:text-sm">
                           {declaration.nameDeclaration}
                         </span>
                       </div>
-                      <span className="text-sm text-muted-foreground align-middle">
-                        <span className="align-middle">
-                          до {declaration.dateEndDeclaration}
-                        </span>
+                      <span className="text-sm text-muted-foreground align-middle max-md:text-xs max-md:text-right">
+                        до {declaration.dateEndDeclaration}
                       </span>
                     </div>
                     <Label
                       htmlFor={`upload-declaration-photo-${declaration.idDeclarations}`}
                       className={cn(
-                        "flex items-center gap-2 py-1.5 px-2.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-background",
+                        "flex items-center gap-2 py-1.5 px-2.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-background max-md:w-full max-md:justify-center max-md:text-xs",
                         loadingId === declaration.idDeclarations &&
                           "opacity-50 cursor-not-allowed",
                       )}
@@ -118,7 +116,7 @@ export const DeclarationEditPhotoModal: FC<{
                         <Spinner className="size-4" />
                       ) : (
                         <>
-                          <Upload className="size-4" />{" "}
+                          <Upload className="size-4 max-md:size-3" />{" "}
                           {declaration.photoDeclaration
                             ? "Заменить"
                             : "Загрузить"}

@@ -111,9 +111,9 @@ export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
                 {(field.value || []).map((decl: any, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md text-sm border"
+                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md text-sm border max-w-full max-md:grid max-md:grid-cols-[1fr_max-content]"
                   >
-                    <div className="flex flex-col">
+                    <div className="flex flex-col max-md:overflow-hidden">
                       <span className="text-sm font-medium">
                         {decl.nameDeclaration}
                       </span>
