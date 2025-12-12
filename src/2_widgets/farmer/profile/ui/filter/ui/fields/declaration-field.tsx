@@ -9,12 +9,22 @@ import { isValid, parse } from "date-fns";
 import { FormField, FormMessage } from "@shared/ui/form";
 import { Control } from "react-hook-form";
 import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
+import { DeclarationEditPhotoModal } from "../modal/declaration-edit-photo-modal";
 
-interface DeclarationsFieldProps {
+interface DeclarationFieldProps {
   control: Control<any>;
+  declarations?: {
+    idDeclarations: number;
+    nameDeclaration: string;
+    dateEndDeclaration: string;
+    photoDeclaration: string | null;
+  }[];
 }
 
-export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
+export const DeclarationField: FC<DeclarationFieldProps> = ({
+  control,
+  declarations,
+}) => {
   const { updateFilters } = useFarmerProfileStore();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -104,6 +114,9 @@ export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
                 >
                   Сохранить
                 </Button>
+                {declarations && (
+                  <DeclarationEditPhotoModal declarations={declarations} />
+                )}
               </div>
 
               {/* Список */}

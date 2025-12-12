@@ -8,6 +8,7 @@ import useForm from "../model/hook";
 import { useSession } from "@entities/session";
 import { lazy } from "react";
 import Spinner from "@shared/ui/spinner";
+import DeclarationShowPhotoModal from "./modal/declaration-show-photo-modal";
 
 const FarmerQuestionnaire = lazy(() => import("./farmer-questionnaire"));
 
@@ -311,17 +312,19 @@ export default function FarmerProfileCard({
                   </span>
                   {profile.declarations.length > 0 ? (
                     profile.declarations.map((declaration, index) => (
-                      <div
+                      <DeclarationShowPhotoModal
+                        photoDeclaration={declaration.photoDeclaration}
                         key={index}
-                        className="flex flex-col gap-1 bg-background p-4 rounded-md w-fit max-md:w-full"
                       >
-                        <span className="text-base font-medium max-md:font-normal max-md:text-sm">
-                          {declaration.nameDeclaration}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          Дата окончания: {declaration.dateEndDeclaration}
-                        </span>
-                      </div>
+                        <div className="flex flex-col gap-1 bg-background p-4 rounded-md w-fit max-md:w-full">
+                          <span className="text-base font-medium max-md:font-normal max-md:text-sm">
+                            {declaration.nameDeclaration}
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            Дата окончания: {declaration.dateEndDeclaration}
+                          </span>
+                        </div>
+                      </DeclarationShowPhotoModal>
                     ))
                   ) : (
                     <span className="text-base font-medium max-md:font-normal">

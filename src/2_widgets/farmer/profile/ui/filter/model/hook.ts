@@ -33,7 +33,7 @@ const useForm = () => {
     mainContact,
     additionalContacts,
     companyHistory,
-  } = useFarmerProfileStore((state) => state.filters);
+  } = useFarmerProfileStore((state) => state.data);
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {

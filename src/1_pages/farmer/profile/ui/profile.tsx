@@ -13,6 +13,7 @@ import Spinner from "@shared/ui/spinner";
 import { STEPS_FIELDS } from "@widgets/farmer/profile/ui/filter/config/constant";
 import formatDateIso from "@shared/lib/format-date-iso";
 import { useSessionController } from "@entities/session/api/controller";
+import { DeclarationEditPhotoModal } from "@widgets/farmer/profile/ui/filter/ui/modal/declaration-edit-photo-modal";
 
 const FarmerProfile: FC = () => {
   const [level, setLevel] = useState<number>(0);
@@ -119,6 +120,17 @@ const FarmerProfile: FC = () => {
           <FarmerProfileCard profile={profile} />
         </div>
       )}
+      {profileStatus &&
+        profile &&
+        profile.declarations.some(
+          (declaration) => !declaration.photoDeclaration,
+        ) && (
+          <DeclarationEditPhotoModal
+            declarations={profile.declarations}
+            showButton={false}
+            showModal={true}
+          />
+        )}
     </div>
   );
 };

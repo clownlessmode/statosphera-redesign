@@ -15,12 +15,11 @@ export interface RequestDto {
   ogrn: string;
   okpo: string;
   okved: string;
-  declarations:
-    | {
-        nameDeclaration: string;
-        dateEndDeclaration: string;
-      }[]
-    | [];
+  declarations: {
+    nameDeclaration: string;
+    dateEndDeclaration: string;
+    photoDeclaration?: string;
+  }[];
   startDateOfCooperation: string | null;
   dateOfFirstDelivery: string | null;
   chiefAccountant: {
@@ -41,18 +40,17 @@ export interface RequestDto {
     email: string;
     position: string;
   };
-  additionalContacts:
-    | {
-        name: string;
-        phone: string;
-        email: string;
-        position: string;
-      }[]
-    | [];
+  additionalContacts: {
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+  }[];
 }
 
 export interface RequestDtoPhoto {
   photo: File;
+  idDeclaration?: number;
 }
 
 export interface RequestDtoKmContacts {
@@ -103,22 +101,18 @@ export interface ProfileResponse {
     phone: string;
     position: string;
   };
-  additionalContacts:
-    | [
-        {
-          name: string;
-          email: string;
-          phone: string;
-          position: string;
-        },
-      ]
-    | [];
-  declarations:
-    | {
-        nameDeclaration: string;
-        dateEndDeclaration: string;
-      }[]
-    | [];
+  additionalContacts: {
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+  }[];
+  declarations: {
+    idDeclarations: number;
+    nameDeclaration: string;
+    dateEndDeclaration: string;
+    photoDeclaration: string | null;
+  }[];
   kmContacts: {
     name: string;
     email: string;

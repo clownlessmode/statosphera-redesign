@@ -36,32 +36,26 @@ export interface FarmersResponse {
     phone: string;
     position: string;
   };
-  additionalContacts: [
-    {
-      name: string;
-      email: string;
-      phone: string;
-      position: string;
-    },
-  ];
+  additionalContacts:
+    | [
+        {
+          name: string;
+          email: string;
+          phone: string;
+          position: string;
+        },
+      ]
+    | [];
   kmContacts: {
     name: string;
     email: string;
     phone: string;
     position: string;
   }[];
-  declarations: [
-    {
-      nameDeclaration: string;
-      dateEndDeclaration: string;
-    },
-    {
-      nameDeclaration: string;
-      dateEndDeclaration: string;
-    },
-    {
-      nameDeclaration: string;
-      dateEndDeclaration: string;
-    },
-  ];
+  declarations: {
+    idDeclarations: number;
+    nameDeclaration: string;
+    dateEndDeclaration: string;
+    photoDeclaration: string | null;
+  }[];
 }

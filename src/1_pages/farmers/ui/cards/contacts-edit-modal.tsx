@@ -9,8 +9,9 @@ import { FarmersResponse } from "@pages/farmers/config";
 import Spinner from "@shared/ui/spinner";
 import { lazy } from "react";
 
-const ContactsEdit = lazy(
-  () => import("@widgets/farmer/profile/ui/filter/ui/contacts-edit"),
+const ContactsEditField = lazy(
+  () =>
+    import("@widgets/farmer/profile/ui/filter/ui/fields/contacts-edit-field"),
 );
 
 export const ContactsEditModal: FC<{ farmer: FarmersResponse }> = ({
@@ -48,7 +49,7 @@ export const ContactsEditModal: FC<{ farmer: FarmersResponse }> = ({
             </div>
           }
         >
-          <ContactsEdit contacts={farmer.kmContacts} />
+          <ContactsEditField contacts={farmer.kmContacts} />
           <Button onClick={handleSave}>Сохранить</Button>
         </Suspense>
       </DialogContent>

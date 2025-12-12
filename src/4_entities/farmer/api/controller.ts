@@ -47,6 +47,18 @@ export const useFarmer = (idUser?: number, role?: string) => {
     },
   });
 
+  const uploadDeclarationPhoto = useMutation<
+    void,
+    ApiError,
+    Required<RequestDtoPhoto>
+  >({
+    mutationFn: async (dto: Required<RequestDtoPhoto>) => {
+      const response = await FarmerService.uploadDeclarationPhoto(dto);
+      queryClient.invalidateQueries({ queryKey: ["farmer"] });
+      return response;
+    },
+  });
+
   const updateProfile = useMutation<void, ApiError, RequestDto>({
     mutationFn: async (dto: RequestDto) => {
       const response = await FarmerService.updateProfile(dto);
@@ -74,6 +86,8 @@ export const useFarmer = (idUser?: number, role?: string) => {
     isCreateProfileLoading: createProfile.isPending,
     uploadPhoto: uploadPhoto.mutateAsync,
     isUploadPhotoLoading: uploadPhoto.isPending,
+    uploadDeclarationPhoto: uploadDeclarationPhoto.mutateAsync,
+    isUploadDeclarationPhotoLoading: uploadDeclarationPhoto.isPending,
     updateProfile: updateProfile.mutateAsync,
     isUpdateProfileLoading: updateProfile.isPending,
     updateKmContacts: updateKmContacts.mutateAsync,
