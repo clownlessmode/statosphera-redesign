@@ -583,7 +583,6 @@ const Report: FC = () => {
                 extractedFilters.loyal.colorsDiscount.length > 0
                   ? extractedFilters.loyal.colorsDiscount
                   : baseFilters.loyal.colorsDiscount || [],
-              // ... ageStart/ageEnd копируем как есть из baseFilters или payload ...
               ageStart:
                 baseFilters.loyal.ageStart === 0 &&
                 baseFilters.loyal.ageEnd === 100
@@ -627,7 +626,6 @@ const Report: FC = () => {
           // Если НЕТ выбранных строк, используем БАЗОВЫЕ фильтры (все строки)
           mergedFilters = {
             ...baseFilters,
-            // Для loyal нужно перенести логику ageStart/ageEnd
             loyal: {
               ...baseFilters.loyal,
               ageStart:
