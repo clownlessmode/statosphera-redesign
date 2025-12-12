@@ -13,7 +13,7 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "@shared/lib/utils";
 import DateDropdown from "./date-dropdown";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
-import { DownloadReport } from "@features/reports/download";
+import { DownloadForest } from "@features/forest/download";
 import { useForest } from "@entities/forest/model/api/filters/data/controller";
 import InfinityTable from "./table/infinite-table";
 import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
@@ -101,6 +101,9 @@ const Forest: FC = () => {
   const lastRequestKey = useRef<string>("");
   const { getApiPayload } = useFiltersStore();
   const allData = getApiPayload();
+  const [selectedIndicator, setSelectedIndicator] = useState<string | null>(
+    null,
+  );
   console.log("allData:", allData);
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } = useForestStore();
@@ -130,59 +133,45 @@ const Forest: FC = () => {
     }
   }, [graph, table, total, allData.filters, allData.values]);
 
-  const handleRowClick = useCallback(
-    (rowData: any) => {
-      // Проверяем, есть ли уже эта строка в выбранных
-      const isRowSelected = selectedRows.some(
-        (row) =>
-          // Сравниваем по нескольким ключевым полям
-          row.id_store === rowData.id_store &&
-          row.id_product === rowData.id_product &&
-          row.id_city === rowData.id_city,
-      );
-
-      let newSelectedRows;
-      if (isRowSelected) {
-        // Убираем строку из выбранных
-        newSelectedRows = selectedRows.filter(
-          (row) =>
-            !(
-              row.id_store === rowData.id_store &&
-              row.id_product === rowData.id_product &&
-              row.id_city === rowData.id_city
-            ),
-        );
-      } else {
-        // Добавляем строку к выбранным
-        newSelectedRows = [...selectedRows, rowData];
-      }
-
+  const handleSelectionChange = useCallback(
+    (newSelectedRows: any[]) => {
       setSelectedRows(newSelectedRows);
 
       // Если нет выбранных строк, восстанавливаем начальный график
       if (newSelectedRows.length === 0 && initialFiltersRef.current) {
-        // Делаем новый запрос с начальными фильтрами, но текущей группировкой
         const payload = getApiPayload();
-        getGraph({
-          ...payload,
-          filters: initialFiltersRef.current.filters,
-          groups: [dateFilterValue],
-          values: initialFiltersRef.current.values,
-        }).then((response) => {
+
+        const requestPromise =
+          tab === "write-off"
+            ? getWriteOffGraph({
+                ...payload,
+                filters: initialFiltersRef.current.filters,
+                groups: [dateFilterValue],
+                values: initialFiltersRef.current.values,
+              })
+            : getGraph({
+                ...payload,
+                filters: initialFiltersRef.current.filters,
+                groups: [dateFilterValue],
+                values: initialFiltersRef.current.values,
+              });
+
+        requestPromise.then((response) => {
           if (response) {
             setGraph(response);
+            setSelectedIndicator(null);
           }
         });
         return;
       }
 
-      // Извлекаем фильтры из всех выбранных строк
-      const extractedFilters = extractFiltersFromRow(rowData, newSelectedRows);
+      const extractedFilters = extractFiltersFromRow(
+        newSelectedRows[0],
+        newSelectedRows,
+      );
 
-      // Делаем запрос за новыми данными для графика с извлеченными фильтрами
       const payload = getApiPayload();
 
-      // Создаем новые фильтры, объединяя текущие с извлеченными
       const mergedFilters = {
         ...payload.filters,
         store: {
@@ -227,9 +216,20 @@ const Forest: FC = () => {
               ? extractedFilters.product.dishMeasureUnit
               : payload.filters.product.dishMeasureUnit,
         },
+        check: {
+          ...payload.filters.check, // Добавляем check секцию, если она нужна
+          typePayment:
+            extractedFilters.check.typePayment.length > 0
+              ? extractedFilters.check.typePayment
+              : payload.filters.check.typePayment,
+          discountType:
+            extractedFilters.check.discountType.length > 0
+              ? extractedFilters.check.discountType
+              : payload.filters.check.discountType,
+        },
       };
 
-      // Запрашиваем только график с новыми фильтрами
+      // Запрашиваем график
       const requestPromise =
         tab === "write-off"
           ? getWriteOffGraph({
@@ -244,20 +244,15 @@ const Forest: FC = () => {
               groups: [dateFilterValue],
               values: payload.values,
             });
+
       requestPromise.then((response) => {
         if (response) {
           setGraph(response);
+          setSelectedIndicator(payload.values[0]);
         }
       });
     },
-    [
-      selectedRows,
-      getApiPayload,
-      getGraph,
-      getWriteOffGraph,
-      setGraph,
-      dateFilterValue,
-    ], // Добавляем в зависимости
+    [getApiPayload, getGraph, getWriteOffGraph, setGraph, dateFilterValue, tab],
   );
 
   // Обработчик клика на ячейку для установки показателя
@@ -304,11 +299,6 @@ const Forest: FC = () => {
           }
         }
 
-        // Извлекаем фильтры из строки, на которую кликнули
-        const extractedFilters = extractFiltersFromRow(info.rowData, [
-          info.rowData,
-        ]);
-
         // Делаем запрос за новыми данными для графика
         const payload = getApiPayload();
 
@@ -317,85 +307,96 @@ const Forest: FC = () => {
           ? initialFiltersRef.current.filters
           : payload.filters;
 
-        // Создаем новые фильтры, объединяя начальные с извлеченными из строки
-        const mergedFilters = {
-          ...baseFilters,
-          store: {
-            ...baseFilters.store,
-            idStore:
-              extractedFilters.store.idStore.length > 0
-                ? extractedFilters.store.idStore
-                : baseFilters.store.idStore,
-            idCity:
-              extractedFilters.store.idCity.length > 0
-                ? extractedFilters.store.idCity
-                : baseFilters.store.idCity,
-            idRegion:
-              extractedFilters.store.idRegion.length > 0
-                ? extractedFilters.store.idRegion
-                : baseFilters.store.idRegion,
-          },
-          product: {
-            ...baseFilters.product,
-            idProduct:
-              extractedFilters.product.idProduct.length > 0
-                ? extractedFilters.product.idProduct
-                : baseFilters.product.idProduct,
-            oneLvlGroupProduct:
-              extractedFilters.product.oneLvlGroupProduct.length > 0
-                ? extractedFilters.product.oneLvlGroupProduct
-                : baseFilters.product.oneLvlGroupProduct,
-            twoLvlGroupProduct:
-              extractedFilters.product.twoLvlGroupProduct.length > 0
-                ? extractedFilters.product.twoLvlGroupProduct
-                : baseFilters.product.twoLvlGroupProduct,
-            threeLvlGroupProduct:
-              extractedFilters.product.threeLvlGroupProduct.length > 0
-                ? extractedFilters.product.threeLvlGroupProduct
-                : baseFilters.product.threeLvlGroupProduct,
-            dishMeasureUnit:
-              extractedFilters.product.dishMeasureUnit.length > 0
-                ? extractedFilters.product.dishMeasureUnit
-                : baseFilters.product.dishMeasureUnit,
-          },
-          check: {
-            ...baseFilters.check,
-            typePayment:
-              extractedFilters.check.typePayment.length > 0
-                ? extractedFilters.check.typePayment
-                : baseFilters.check.typePayment,
-            discountType:
-              extractedFilters.check.discountType.length > 0
-                ? extractedFilters.check.discountType
-                : baseFilters.check.discountType,
-          },
-          //loyal: {
-          //  ...baseFilters.loyal,
-          //  cardNumber:
-          //    extractedFilters.loyal.cardNumber.length > 0
-          //      ? extractedFilters.loyal.cardNumber
-          //      : baseFilters.loyal.cardNumber,
-          //  sex:
-          //    extractedFilters.loyal.sex.length > 0
-          //      ? extractedFilters.loyal.sex
-          //      : baseFilters.loyal.sex,
-          //  colorsDiscount:
-          //    extractedFilters.loyal.colorsDiscount &&
-          //    extractedFilters.loyal.colorsDiscount.length > 0
-          //      ? extractedFilters.loyal.colorsDiscount
-          //      : baseFilters.loyal.colorsDiscount || [],
-          //  ageStart:
-          //    baseFilters.loyal.ageStart === 0 &&
-          //    baseFilters.loyal.ageEnd === 100
-          //      ? null
-          //      : baseFilters.loyal.ageStart,
-          //  ageEnd:
-          //    baseFilters.loyal.ageStart === 0 &&
-          //    baseFilters.loyal.ageEnd === 100
-          //      ? null
-          //      : baseFilters.loyal.ageEnd,
-          //},
-        };
+        let mergedFilters;
+
+        if (selectedRows.length > 0) {
+          const extractedFilters = extractFiltersFromRow(
+            info.rowData,
+            selectedRows,
+          );
+
+          mergedFilters = {
+            ...baseFilters,
+            store: {
+              ...baseFilters.store,
+              idStore:
+                extractedFilters.store.idStore.length > 0
+                  ? extractedFilters.store.idStore
+                  : baseFilters.store.idStore,
+              idCity:
+                extractedFilters.store.idCity.length > 0
+                  ? extractedFilters.store.idCity
+                  : baseFilters.store.idCity,
+              idRegion:
+                extractedFilters.store.idRegion.length > 0
+                  ? extractedFilters.store.idRegion
+                  : baseFilters.store.idRegion,
+            },
+            product: {
+              ...baseFilters.product,
+              idProduct:
+                extractedFilters.product.idProduct.length > 0
+                  ? extractedFilters.product.idProduct
+                  : baseFilters.product.idProduct,
+              oneLvlGroupProduct:
+                extractedFilters.product.oneLvlGroupProduct.length > 0
+                  ? extractedFilters.product.oneLvlGroupProduct
+                  : baseFilters.product.oneLvlGroupProduct,
+              twoLvlGroupProduct:
+                extractedFilters.product.twoLvlGroupProduct.length > 0
+                  ? extractedFilters.product.twoLvlGroupProduct
+                  : baseFilters.product.twoLvlGroupProduct,
+              threeLvlGroupProduct:
+                extractedFilters.product.threeLvlGroupProduct.length > 0
+                  ? extractedFilters.product.threeLvlGroupProduct
+                  : baseFilters.product.threeLvlGroupProduct,
+              dishMeasureUnit:
+                extractedFilters.product.dishMeasureUnit.length > 0
+                  ? extractedFilters.product.dishMeasureUnit
+                  : baseFilters.product.dishMeasureUnit,
+            },
+            check: {
+              ...baseFilters.check,
+              typePayment:
+                extractedFilters.check.typePayment.length > 0
+                  ? extractedFilters.check.typePayment
+                  : baseFilters.check.typePayment,
+              discountType:
+                extractedFilters.check.discountType.length > 0
+                  ? extractedFilters.check.discountType
+                  : baseFilters.check.discountType,
+            },
+            //loyal: {
+            //  ...baseFilters.loyal,
+            //  cardNumber:
+            //    extractedFilters.loyal.cardNumber.length > 0
+            //      ? extractedFilters.loyal.cardNumber
+            //      : baseFilters.loyal.cardNumber,
+            //  sex:
+            //    extractedFilters.loyal.sex.length > 0
+            //      ? extractedFilters.loyal.sex
+            //      : baseFilters.loyal.sex,
+            //  colorsDiscount:
+            //    extractedFilters.loyal.colorsDiscount &&
+            //    extractedFilters.loyal.colorsDiscount.length > 0
+            //      ? extractedFilters.loyal.colorsDiscount
+            //      : baseFilters.loyal.colorsDiscount || [],
+            //  ageStart:
+            //    baseFilters.loyal.ageStart === 0 &&
+            //    baseFilters.loyal.ageEnd === 100
+            //      ? null
+            //      : baseFilters.loyal.ageStart,
+            //  ageEnd:
+            //    baseFilters.loyal.ageStart === 0 &&
+            //    baseFilters.loyal.ageEnd === 100
+            //      ? null
+            //      : baseFilters.loyal.ageEnd,
+            //},
+          };
+        } else {
+          // Если строки не выбраны -> используем базовые фильтры (все строки)
+          mergedFilters = baseFilters;
+        }
 
         // Используем новый показатель в values
         const newValues = [parentIndicator];
@@ -409,11 +410,11 @@ const Forest: FC = () => {
         }).then((response) => {
           if (response) {
             setGraph(response);
+            if (newValues[0]) {
+              setSelectedIndicator(newValues[0]);
+            }
           }
         });
-      } else {
-        // Если кликнули не на показатель, вызываем обработчик строки
-        handleRowClick(info.rowData);
       }
     },
     [
@@ -422,11 +423,12 @@ const Forest: FC = () => {
       getApiPayload,
       getGraph,
       setGraph,
-      handleRowClick,
       graph,
       table,
       total,
-      dateFilterValue, // Добавляем в зависимости
+      dateFilterValue,
+      selectedRows,
+      tab,
     ],
   );
 
@@ -519,6 +521,7 @@ const Forest: FC = () => {
   );
 
   const handleClearFilters = () => {
+    setSelectedIndicator(null);
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -544,7 +547,7 @@ const Forest: FC = () => {
           actions={{
             right: !isMobile && (
               <div className="flex flex-row gap-2">
-                <DownloadReport rows={table?.totalRows || 0} />
+                <DownloadForest rows={table?.totalRows || 0} tab={tab} />
                 <SaveReport />
                 <SavedReports />
               </div>
@@ -554,7 +557,7 @@ const Forest: FC = () => {
         <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 p-4">
           {isMobile && (
             <div className="w-full flex flex-row gap-2 justify-between">
-              <DownloadReport rows={table?.totalRows || 0} />
+              <DownloadForest rows={table?.totalRows || 0} tab={tab} />
               <SaveReport />
               <SavedReports />
               <DateDropdown />
@@ -626,6 +629,7 @@ const Forest: FC = () => {
                             // Восстанавливаем начальный график
                             if (initialFiltersRef.current) {
                               setGraph(initialFiltersRef.current.graph);
+                              setSelectedIndicator(null);
                             }
                           }}
                           size="sm"
@@ -645,8 +649,14 @@ const Forest: FC = () => {
                   option={{
                     title: {
                       text:
-                        getLabelByValue(indicators, allData.values[0]) ||
-                        getLabelByValue(uniques, allData.values[0]),
+                        getLabelByValue(
+                          indicators,
+                          selectedIndicator || allData.values[0],
+                        ) ||
+                        getLabelByValue(
+                          uniques,
+                          selectedIndicator || allData.values[0],
+                        ),
                     },
                     legend: {
                       data: ["Выбранный период", "Прошлый год"],
@@ -677,7 +687,7 @@ const Forest: FC = () => {
                     : [total]
               }
               onCellClick={handleCellClick}
-              onRowClick={handleRowClick}
+              onSelectionChange={handleSelectionChange}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
               className="w-full"

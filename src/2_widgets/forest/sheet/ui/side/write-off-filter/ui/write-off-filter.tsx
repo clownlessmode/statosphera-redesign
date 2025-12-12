@@ -12,7 +12,7 @@ import { FC } from "react";
 import { useForm } from "../model";
 import { WRITE_OFF_ACCOUNTS } from "../config/constants";
 import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
-import { ClearFilters } from "@features/clear-filters";
+import ClearFilters from "./clear-filter";
 
 export const WriteOffFilter: FC = () => {
   const form = useForm();
