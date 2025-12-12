@@ -1,5 +1,4 @@
 import { api } from "@shared/api/api";
-import { endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 export interface PartnersFilterResponse {
   nameManager: string;
   idManager: number[];
@@ -92,8 +91,8 @@ export class FiltersShopsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
@@ -171,8 +170,8 @@ export class FiltersShopsService {
       uniques: [],
       indicators: ["proceeds"],
       filterDate: {
-        dateStart: format(startOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
-        dateEnd: format(endOfMonth(subMonths(new Date(), 1)), "yyyy-MM-dd"),
+        dateStart: dto.filterDate.dateStart,
+        dateEnd: dto.filterDate.dateEnd,
       },
       filterTime: {
         timeStart: "",
