@@ -90,6 +90,7 @@ export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
                   <DateInput
                     id="dateEnd-declaration"
                     value={date}
+                    limitToday={false}
                     onChange={(val) => setDate(val)}
                     placeholder="Введите дату"
                     className="bg-background"
