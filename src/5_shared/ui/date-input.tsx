@@ -8,12 +8,20 @@ interface DateInputProps
   value: string;
   placeholder?: string;
   className?: string;
+  limitToday?: boolean; // Ограничивает дату сегодняшним днем
   onChange: (value: string) => void;
 }
 
 const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
   (
-    { value, onChange, placeholder = "Введите дату", className, ...props },
+    {
+      value,
+      onChange,
+      placeholder = "Введите дату",
+      className,
+      limitToday = true,
+      ...props
+    },
     ref,
   ) => {
     const formatDateOnInput = (value: string): string => {
@@ -34,7 +42,7 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
           "dd.MM.yyyy",
           new Date(),
         );
-        if (isValid(enteredDate) && enteredDate > new Date()) {
+        if (limitToday && isValid(enteredDate) && enteredDate > new Date()) {
           return format(new Date(), "dd.MM.yyyy"); // Возвращаем сегодняшнюю дату
         }
       }
