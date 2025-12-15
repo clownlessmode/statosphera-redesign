@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
-import DateInput from "@shared/ui/date-input"; // Проверь импорт
+import DateInput from "@shared/ui/date-input";
 import { Label } from "@shared/ui/label";
 import { X } from "lucide-react";
 import { toast } from "sonner";
@@ -10,11 +10,11 @@ import { FormField, FormMessage } from "@shared/ui/form";
 import { Control } from "react-hook-form";
 import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
 
-interface DeclarationsFieldProps {
+interface DeclarationFieldProps {
   control: Control<any>;
 }
 
-export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
+export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
   const { updateFilters } = useFarmerProfileStore();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -111,9 +111,9 @@ export const DeclarationsField: FC<DeclarationsFieldProps> = ({ control }) => {
                 {(field.value || []).map((decl: any, index: number) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md text-sm border"
+                    className="flex items-center justify-between bg-background gap-2 py-1.5 px-3 rounded-md text-sm border max-w-full max-md:grid max-md:grid-cols-[1fr_max-content]"
                   >
-                    <div className="flex flex-col">
+                    <div className="flex flex-col max-md:overflow-hidden">
                       <span className="text-sm font-medium">
                         {decl.nameDeclaration}
                       </span>

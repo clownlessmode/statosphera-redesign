@@ -24,11 +24,11 @@ import { Button } from "@shared/ui/button";
 import { useEffect, useState } from "react";
 import isValidInn from "@shared/lib/check-inn";
 import isValidKpp from "@shared/lib/check-kpp";
-import { DeclarationsField } from "./declaration-field";
-import { ResponsiblePersonFields } from "./responsible-person-filed";
-import { ChiefAccountantFields } from "./chief-accountant-field";
-import { MainContactFields } from "./main-contact-fields";
-import { AdditionalContactsFields } from "./additional-contacts-fields";
+import { DeclarationField } from "./fields/declaration-field";
+import { ResponsiblePersonField } from "./fields/responsible-person-filed";
+import { ChiefAccountantField } from "./fields/chief-accountant-field";
+import { MainContactField } from "./fields/main-contact-field";
+import { AdditionalContactsField } from "./fields/additional-contacts-field";
 import { ProfileResponse } from "@entities/farmer/config";
 import { useFarmer } from "@entities/farmer";
 import { useSession } from "@entities/session";
@@ -36,6 +36,8 @@ import formatDateIso from "@shared/lib/format-date-iso";
 import { STEPS_FIELDS } from "../config/constant";
 import { useIsMobile } from "@shared/hooks";
 import { Separator } from "@shared/ui/separator";
+import { useSessionController } from "@entities/session/api/controller";
+
 interface FarmerQuestionnaireProps {
   level?: number;
   data?: ProfileResponse;
@@ -50,10 +52,10 @@ export default function FarmerQuestionnaire({
   handleCancel,
 }: FarmerQuestionnaireProps) {
   const { updateFilters } = useFarmerProfileStore();
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const { updateProfile, uploadPhoto } = useFarmer(session?.idUser);
   const isMobile = useIsMobile();
-
+  const { getUpdatedSession } = useSessionController();
   // Эффект для инициализации формы данными, если включен режим редактирования
   useEffect(() => {
     if (data) {
@@ -136,6 +138,10 @@ export default function FarmerQuestionnaire({
           }
 
           toast.success("Профиль успешно обновлен");
+          const { data: newSession } = await getUpdatedSession(); // Исправлено здесь
+          if (newSession && newSession.idUser === session?.idUser) {
+            setSession(newSession);
+          }
           handleCancel?.();
         } catch (error: any) {
           console.error(error);
@@ -888,7 +894,7 @@ export default function FarmerQuestionnaire({
                           <div className="flex flex-col items-center gap-2">
                             <Label
                               htmlFor="photo-upload"
-                              className="flex items-center w-full gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-background"
+                              className="flex items-center justify-center w-full gap-2 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-background"
                             >
                               <Upload className="h-4 w-4" />
                               Выбрать фото
@@ -902,10 +908,10 @@ export default function FarmerQuestionnaire({
                                 if (
                                   event.target.files?.[0]?.size &&
                                   event.target.files?.[0]?.size >
-                                    10 * 1024 * 1024
+                                    5 * 1024 * 1024
                                 ) {
                                   toast.error(
-                                    "Файл слишком большой (максимум 10MB)",
+                                    "Файл слишком большой (максимум 5MB)",
                                   );
                                   return;
                                 }
@@ -1034,7 +1040,7 @@ export default function FarmerQuestionnaire({
                 )}
               />
               {level !== undefined && <Separator />}
-              <ChiefAccountantFields control={form.control}>
+              <ChiefAccountantField control={form.control}>
                 {level && (
                   <div className="flex items-center gap-2">
                     <Button
@@ -1049,9 +1055,9 @@ export default function FarmerQuestionnaire({
                     </Button>
                   </div>
                 )}
-              </ChiefAccountantFields>
+              </ChiefAccountantField>
               {level !== undefined && <Separator />}
-              <ResponsiblePersonFields control={form.control}>
+              <ResponsiblePersonField control={form.control}>
                 {level && (
                   <div className="flex items-center gap-2">
                     <Button
@@ -1066,9 +1072,9 @@ export default function FarmerQuestionnaire({
                     </Button>
                   </div>
                 )}
-              </ResponsiblePersonFields>
+              </ResponsiblePersonField>
               {level !== undefined && <Separator />}
-              <MainContactFields control={form.control}>
+              <MainContactField control={form.control}>
                 {level && (
                   <div className="flex items-center gap-2">
                     <Button
@@ -1083,11 +1089,11 @@ export default function FarmerQuestionnaire({
                     </Button>
                   </div>
                 )}
-              </MainContactFields>
+              </MainContactField>
               {level !== undefined && <Separator />}
-              <AdditionalContactsFields control={form.control} />
+              <AdditionalContactsField control={form.control} />
               {level !== undefined && <Separator />}
-              <DeclarationsField control={form.control} />
+              <DeclarationField control={form.control} />
               {level !== undefined && <Separator />}
               <FormField
                 name="companyHistory"

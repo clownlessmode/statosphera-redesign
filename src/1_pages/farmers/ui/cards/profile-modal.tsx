@@ -1,4 +1,4 @@
-import { FarmersResponse } from "@pages/farmers/config";
+import { ProfileResponse } from "@entities/farmer";
 import { Button } from "@shared/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Eye } from "lucide-react";
@@ -10,7 +10,7 @@ const FarmerProfileCard = lazy(
   () => import("@widgets/farmer/profile/ui/filter/ui/farmer-profile"),
 );
 
-export const ProfileModal = ({ farmer }: { farmer: FarmersResponse }) => {
+export const ProfileModal = ({ farmer }: { farmer: ProfileResponse }) => {
   const [open, setOpen] = useState(false);
 
   return (

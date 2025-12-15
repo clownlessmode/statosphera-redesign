@@ -654,6 +654,7 @@ const FarmerAnalytics: FC = () => {
         }).then((response) => {
           if (response) {
             setGraph(response);
+            console.log(newValues[0]);
             if (newValues[0]) {
               setSelectedIndicator(newValues[0]);
             }
@@ -741,6 +742,7 @@ const FarmerAnalytics: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
+      setSelectedIndicator(null);
       return requestPromise;
     },
     [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],
