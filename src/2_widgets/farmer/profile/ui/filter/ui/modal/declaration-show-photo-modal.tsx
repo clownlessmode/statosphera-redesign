@@ -39,7 +39,7 @@ const DeclarationShowPhotoModal: FC<{
               </span>
             </CardDescription>
           </CardHeader>
-          <CardContent className="relative">
+          <CardContent className="relative min-h-20">
             {isLoading && (
               <span className="absolute inset-0 flex items-center justify-center text-center text-base font-medium text-muted-foreground">
                 Загрузка фото...

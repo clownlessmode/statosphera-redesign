@@ -86,83 +86,89 @@ export const DeclarationEditPhotoModal: FC<{
             </CardHeader>
             <CardContent className="flex flex-col gap-4 max-h-[300px] overflow-y-auto">
               <Separator />
-              {declarations.map((declaration) => (
-                <Fragment key={declaration.idDeclarations}>
-                  <div className="flex flex-row gap-4 items-center justify-between max-md:flex-col max-md:gap-2">
-                    <div className="grid grid-cols-[1fr_max-content] gap-2 w-full px-2 items-center max-md:grid-cols-1 max-md:px-0">
-                      <div className="flex flex-row gap-2 items-center min-w-0">
-                        {declaration.photoDeclaration ? (
-                          <Check className="size-4 text-green-500 shrink-0" />
-                        ) : (
-                          <X className="size-4 text-red-500 shrink-0" />
-                        )}
-                        <span className="text-base font-normal break-all max-md:text-sm">
-                          {declaration.nameDeclaration}
+              {declarations
+                .sort(
+                  (a, b) =>
+                    Number(!!a.photoDeclaration) - Number(!!b.photoDeclaration),
+                )
+                .map((declaration) => (
+                  <Fragment key={declaration.idDeclarations}>
+                    <div className="flex flex-row gap-4 items-center justify-between max-md:flex-col max-md:gap-2">
+                      <div className="grid grid-cols-[1fr_max-content] gap-2 w-full px-2 items-center max-md:grid-cols-1 max-md:px-0">
+                        <div className="flex flex-row gap-2 items-center min-w-0">
+                          {declaration.photoDeclaration ? (
+                            <Check className="size-4 text-green-500 shrink-0" />
+                          ) : (
+                            <X className="size-4 text-red-500 shrink-0" />
+                          )}
+                          <span className="text-base font-normal break-all max-md:text-sm">
+                            {declaration.nameDeclaration}
+                          </span>
+                        </div>
+                        <span className="text-sm text-muted-foreground align-middle max-md:text-xs max-md:text-right">
+                          до {declaration.dateEndDeclaration}
                         </span>
                       </div>
-                      <span className="text-sm text-muted-foreground align-middle max-md:text-xs max-md:text-right">
-                        до {declaration.dateEndDeclaration}
-                      </span>
+                      <Label
+                        htmlFor={`upload-declaration-photo-${declaration.idDeclarations}`}
+                        className={cn(
+                          "flex items-center gap-2 py-1.5 px-2.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-background max-md:w-full max-md:justify-center max-md:text-xs",
+                          loadingId === declaration.idDeclarations &&
+                            "opacity-50 cursor-not-allowed",
+                          declaration.photoDeclaration && "gap-2.5",
+                        )}
+                      >
+                        {loadingId === declaration.idDeclarations ? (
+                          <Spinner className="size-4" />
+                        ) : (
+                          <>
+                            <Upload className="size-4 max-md:size-3" />{" "}
+                            {declaration.photoDeclaration
+                              ? "Заменить"
+                              : "Загрузить"}
+                          </>
+                        )}
+                      </Label>
+                      <Input
+                        id={`upload-declaration-photo-${declaration.idDeclarations}`}
+                        type="file"
+                        accept="image/jpeg, image/png, image/webp"
+                        className="hidden"
+                        disabled={loadingId === declaration.idDeclarations}
+                        onChange={(event) => {
+                          if (
+                            event.target.files?.[0]?.size &&
+                            event.target.files?.[0]?.size > 5 * 1024 * 1024
+                          ) {
+                            toast.error("Файл слишком большой (максимум 5MB)");
+                            event.target.value = "";
+                            return;
+                          }
+                          if (
+                            event.target.files?.[0]?.type &&
+                            !["image/jpeg", "image/png", "image/webp"].includes(
+                              event.target.files?.[0]?.type,
+                            )
+                          ) {
+                            toast.error("Неверный формат файла");
+                            event.target.value = "";
+                            return;
+                          }
+                          if (
+                            event.target.files &&
+                            event.target.files.length > 0
+                          ) {
+                            handleUpload(event, {
+                              idDeclaration: declaration.idDeclarations,
+                            });
+                            event.target.value = "";
+                          }
+                        }}
+                      />
                     </div>
-                    <Label
-                      htmlFor={`upload-declaration-photo-${declaration.idDeclarations}`}
-                      className={cn(
-                        "flex items-center gap-2 py-1.5 px-2.5 border border-gray-300 rounded-lg cursor-pointer hover:bg-background max-md:w-full max-md:justify-center max-md:text-xs",
-                        loadingId === declaration.idDeclarations &&
-                          "opacity-50 cursor-not-allowed",
-                      )}
-                    >
-                      {loadingId === declaration.idDeclarations ? (
-                        <Spinner className="size-4" />
-                      ) : (
-                        <>
-                          <Upload className="size-4 max-md:size-3" />{" "}
-                          {declaration.photoDeclaration
-                            ? "Заменить"
-                            : "Загрузить"}
-                        </>
-                      )}
-                    </Label>
-                    <Input
-                      id={`upload-declaration-photo-${declaration.idDeclarations}`}
-                      type="file"
-                      accept="image/jpeg, image/png, image/webp"
-                      className="hidden"
-                      disabled={loadingId === declaration.idDeclarations}
-                      onChange={(event) => {
-                        if (
-                          event.target.files?.[0]?.size &&
-                          event.target.files?.[0]?.size > 5 * 1024 * 1024
-                        ) {
-                          toast.error("Файл слишком большой (максимум 5MB)");
-                          event.target.value = "";
-                          return;
-                        }
-                        if (
-                          event.target.files?.[0]?.type &&
-                          !["image/jpeg", "image/png", "image/webp"].includes(
-                            event.target.files?.[0]?.type,
-                          )
-                        ) {
-                          toast.error("Неверный формат файла");
-                          event.target.value = "";
-                          return;
-                        }
-                        if (
-                          event.target.files &&
-                          event.target.files.length > 0
-                        ) {
-                          handleUpload(event, {
-                            idDeclaration: declaration.idDeclarations,
-                          });
-                          event.target.value = "";
-                        }
-                      }}
-                    />
-                  </div>
-                  <Separator />
-                </Fragment>
-              ))}
+                    <Separator />
+                  </Fragment>
+                ))}
               {declarations.length === 0 && (
                 <span className="text-sm text-muted-foreground text-center py-4">
                   У вас нет деклараций

@@ -16,6 +16,7 @@ export interface RequestDto {
   okpo: string;
   okved: string;
   declarations: {
+    idDeclarations: number;
     nameDeclaration: string;
     dateEndDeclaration: string;
     photoDeclaration?: string;
