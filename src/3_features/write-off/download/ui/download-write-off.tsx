@@ -25,7 +25,7 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
 
   const payload = getApiPayload();
 
-  const handleDownloadReport = async () => {
+  const handleDownloadWriteOff = async () => {
     if (tab === "write-off") {
       await downloadWriteOff(payload);
     } else if (tab === "write-off-equip") {
@@ -65,14 +65,14 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
           <Button
             disabled={isExcelDisabled || isAllDisabled}
             className="w-full bg-green-500"
-            //onClick={() => handleDownloadReport("excel")}
+            //onClick={() => handleDownloadWriteOff("excel")}
           >
             Excel
           </Button>
           <Button
             disabled={isAllDisabled}
             className="w-full bg-rose-500"
-            onClick={() => handleDownloadReport()}
+            onClick={() => handleDownloadWriteOff()}
           >
             CSV
           </Button>
