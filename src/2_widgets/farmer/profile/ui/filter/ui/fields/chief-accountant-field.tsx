@@ -11,12 +11,12 @@ import { PhoneInput } from "@shared/ui/phone-input";
 import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
 import { FC } from "react";
 
-interface ChiefAccountantFieldsProps {
+interface ChiefAccountantFieldProps {
   control: Control<any>;
   children?: React.ReactNode;
 }
 
-export const ChiefAccountantFields: FC<ChiefAccountantFieldsProps> = ({
+export const ChiefAccountantField: FC<ChiefAccountantFieldProps> = ({
   control,
   children,
 }) => {

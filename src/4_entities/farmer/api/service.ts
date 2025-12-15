@@ -28,6 +28,22 @@ export class FarmerService {
     return response.data;
   }
 
+  static async uploadDeclarationPhoto(dto: Required<RequestDtoPhoto>) {
+    const formData = new FormData();
+    formData.append("photo", dto.photo);
+    formData.append("idDeclaration", dto.idDeclaration.toString());
+    const response = await api.post(
+      "/profile/upload-declaration-photo",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  }
+
   static async updateProfile(dto: RequestDto) {
     const response = await api.put("/profile/update-profile", dto);
     return response.data;

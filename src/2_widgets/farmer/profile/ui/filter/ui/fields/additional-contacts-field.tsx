@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Control } from "react-hook-form";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
@@ -9,13 +9,13 @@ import { toast } from "sonner";
 import { FormField, FormMessage } from "@shared/ui/form";
 import { useFarmerProfileStore } from "@widgets/farmer/profile/model/profile-store";
 
-interface AdditionalContactsFieldsProps {
+interface AdditionalContactsFieldProps {
   control: Control<any>;
 }
 
-export const AdditionalContactsFields = ({
+export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
   control,
-}: AdditionalContactsFieldsProps) => {
+}) => {
   const { updateFilters } = useFarmerProfileStore();
 
   // Локальное состояние для формы добавления нового контакта

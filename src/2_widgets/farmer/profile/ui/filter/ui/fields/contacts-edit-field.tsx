@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Form, FormField, FormMessage } from "@shared/ui/form";
 import { Input } from "@shared/ui/input";
 import { PhoneInput } from "@shared/ui/phone-input";
-import { useContactsEdit } from "../model/hook";
+import { useContactsEdit } from "../../model/hook";
 import { useContactsStore } from "@widgets/farmer/profile/model/profile-store";
 import { Button } from "@shared/ui/button";
 import { X } from "lucide-react";
@@ -11,7 +11,7 @@ import { Label } from "@shared/ui/label";
 import { toast } from "sonner";
 import { FarmersResponse } from "@pages/farmers/config";
 
-const ContactsEdit: FC<{
+const ContactsEditField: FC<{
   contacts: FarmersResponse["kmContacts"];
 }> = ({ contacts }) => {
   const form = useContactsEdit();
@@ -207,4 +207,4 @@ const ContactsEdit: FC<{
   );
 };
 
-export default ContactsEdit;
+export default ContactsEditField;

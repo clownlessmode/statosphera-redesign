@@ -743,6 +743,7 @@ const Report: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
+      setSelectedIndicator(null);
       return requestPromise;
     },
     [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],

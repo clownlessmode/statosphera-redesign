@@ -508,6 +508,7 @@ const Forest: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
+      setSelectedIndicator(null);
       return requestPromise;
     },
     [

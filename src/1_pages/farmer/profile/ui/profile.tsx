@@ -12,11 +12,13 @@ import { Header } from "@widgets/header";
 import Spinner from "@shared/ui/spinner";
 import { STEPS_FIELDS } from "@widgets/farmer/profile/ui/filter/config/constant";
 import formatDateIso from "@shared/lib/format-date-iso";
+import { useSessionController } from "@entities/session/api/controller";
+import { DeclarationEditPhotoModal } from "@widgets/farmer/profile/ui/filter/ui/modal/declaration-edit-photo-modal";
 
 const FarmerProfile: FC = () => {
   const [level, setLevel] = useState<number>(0);
   const [profile, setProfile] = useState<ProfileResponse | null>(null);
-  const { session } = useSession();
+  const { session, setSession } = useSession();
   const {
     createProfile,
     uploadPhoto,
@@ -27,6 +29,7 @@ const FarmerProfile: FC = () => {
   } = useFarmer(session?.idUser, session?.role);
   const { getApiPayload } = useFarmerProfileStore();
   const form = useForm();
+  const { getUpdatedSession } = useSessionController();
 
   useEffect(() => {
     if (profileData && profileStatus) {
@@ -73,6 +76,10 @@ const FarmerProfile: FC = () => {
           });
           await uploadPhoto({ photo: photo[0] });
           toast.success("Профиль успешно создан");
+          const { data: newSession } = await getUpdatedSession();
+          if (newSession && newSession?.idUser === session?.idUser) {
+            setSession(newSession);
+          }
           checkProfile();
         } catch (error: any) {
           console.error(error);
@@ -96,7 +103,14 @@ const FarmerProfile: FC = () => {
 
   return (
     <div className="bg-muted h-full w-full p-2 flex flex-col max-w-full gap-2">
-      <Header title={profileStatus && profile ? "Профиль" : "Анкета"} />
+      <Header
+        title={profileStatus && profile ? "Профиль" : "Анкета"}
+        actions={{
+          right: profileStatus && profile && (
+            <DeclarationEditPhotoModal declarations={profile.declarations} />
+          ),
+        }}
+      />
       {!profileStatus && (
         <div className="rounded-3xl bg-background flex flex-col items-center justify-center min-h-screen max-h-max p-4">
           <div className="w-max flex flex-col gap-4 max-md:w-full">

@@ -8,6 +8,7 @@ import useForm from "../model/hook";
 import { useSession } from "@entities/session";
 import { lazy } from "react";
 import Spinner from "@shared/ui/spinner";
+import DeclarationShowPhotoModal from "./modal/declaration-show-photo-modal";
 
 const FarmerQuestionnaire = lazy(() => import("./farmer-questionnaire"));
 
@@ -40,14 +41,17 @@ export default function FarmerProfileCard({
           />
         </Suspense>
       ) : (
-        <Card className="w-full gap-4 p-4">
-          <CardHeader className="flex flex-wrap justify-between items-center gap-2 max-md:grid max-md:grid-cols-[1fr_max-content]">
-            <CardTitle className="text-2xl font-semibold py-2 max-md:text-xl max-md:truncate">
+        <Card className="w-full gap-4 p-4 max-md:relative max-md:mb-14 max-md:content-box">
+          <CardHeader className="grid grid-cols-[1fr_max-content] items-center gap-2 max-md:px-2">
+            <CardTitle className="text-2xl font-semibold py-2 max-md:text-xl">
               {profile.organizationName}
             </CardTitle>
             {session?.idUser === Number(profile.idUser) && (
-              <Button onClick={handleEdit}>
-                <Pencil /> <span className="max-md:hidden">Редактировать</span>
+              <Button
+                onClick={handleEdit}
+                className="max-md:h-10 max-md:fixed max-md:bottom-0 max-md:inset-x-0 max-md:z-10 max-md:mx-6 max-md:mb-6"
+              >
+                <Pencil /> Редактировать
               </Button>
             )}
             <Separator className="max-md:col-span-2" />
@@ -311,17 +315,19 @@ export default function FarmerProfileCard({
                   </span>
                   {profile.declarations.length > 0 ? (
                     profile.declarations.map((declaration, index) => (
-                      <div
+                      <DeclarationShowPhotoModal
+                        declaration={declaration}
                         key={index}
-                        className="flex flex-col gap-1 bg-background p-4 rounded-md w-fit max-md:w-full"
                       >
-                        <span className="text-base font-medium max-md:font-normal max-md:text-sm">
-                          {declaration.nameDeclaration}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          Дата окончания: {declaration.dateEndDeclaration}
-                        </span>
-                      </div>
+                        <div className="flex flex-col gap-1 bg-background p-4 rounded-md w-fit max-md:w-full">
+                          <span className="text-base font-medium max-md:font-normal max-md:text-sm text-wrap text-start overflow-hidden">
+                            {declaration.nameDeclaration}
+                          </span>
+                          <span className="text-sm text-muted-foreground text-left">
+                            Дата окончания: {declaration.dateEndDeclaration}
+                          </span>
+                        </div>
+                      </DeclarationShowPhotoModal>
                     ))
                   ) : (
                     <span className="text-base font-medium max-md:font-normal">

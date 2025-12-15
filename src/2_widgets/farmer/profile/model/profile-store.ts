@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import formatDateIso from "@shared/lib/format-date-iso";
 
-interface Filters {
+interface Data {
   photo: FileList;
   organizationName: string;
   managerName: string;
@@ -51,13 +51,13 @@ interface Filters {
 }
 
 interface FarmerFiltersState {
-  filters: Filters;
-  updateFilters: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
-  getApiPayload: () => Filters;
+  data: Data;
+  updateFilters: <K extends keyof Data>(key: K, value: Data[K]) => void;
+  getApiPayload: () => Data;
 }
 
 const initialFilters = {
-  filters: {
+  data: {
     photo: [] as unknown as FileList,
     organizationName: "",
     managerName: "",
@@ -104,24 +104,24 @@ export const useFarmerProfileStore = create<FarmerFiltersState>((set, get) => ({
   updateFilters: (key, value) =>
     set((state) => {
       return {
-        filters: {
-          ...state.filters,
+        data: {
+          ...state.data,
           [key]: value,
         },
       };
     }),
 
   getApiPayload: () => {
-    const { filters } = get();
+    const { data } = get();
 
     return {
-      ...filters,
-      declarations: filters.declarations.map((d) => ({
+      ...data,
+      declarations: data.declarations.map((d) => ({
         ...d,
         dateEndDeclaration: formatDateIso(d.dateEndDeclaration),
       })),
-      startDateOfCooperation: formatDateIso(filters.startDateOfCooperation),
-      dateOfFirstDelivery: formatDateIso(filters.dateOfFirstDelivery),
+      startDateOfCooperation: formatDateIso(data.startDateOfCooperation),
+      dateOfFirstDelivery: formatDateIso(data.dateOfFirstDelivery),
     };
   },
 }));
