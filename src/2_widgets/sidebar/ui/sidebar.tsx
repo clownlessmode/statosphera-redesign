@@ -133,7 +133,9 @@ const Sidebar = ({
         icon: TreePine,
         disabled:
           session?.role !== ROLES.ADMIN &&
-          ![2758, 2564].includes(session?.idUser ?? -1),
+          ![2758, 2564, 2758, 2564, 59, 156, 14, 19].includes(
+            session?.idUser ?? -1,
+          ),
       },
       {
         title: "Гриль",
