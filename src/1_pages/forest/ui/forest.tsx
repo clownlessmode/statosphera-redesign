@@ -4,7 +4,6 @@ import { Sheet } from "@widgets/forest/sheet";
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
-import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useForestStore } from "@widgets/forest/sheet/model/forest-store";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
@@ -16,7 +15,6 @@ import { useFiltersStore } from "@widgets/forest/sheet/model/filters-store";
 import { DownloadForest } from "@features/forest/download";
 import { useForest } from "@entities/forest/model/api/filters/data/controller";
 import InfinityTable from "./table/infinite-table";
-import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { create } from "zustand";
 import ForestCards from "./forest-cards";
 import { getLabelByValue } from "./values-badges";
@@ -28,6 +26,8 @@ import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useWriteOffController } from "@entities/forest/model/api/filters/data-write-off/controller";
+import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
+import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters = {
@@ -702,9 +702,9 @@ const Forest: FC = () => {
             >
               {!isLoading ? (
                 error ? (
-                  <NotFoundFilters />
+                  <NotFoundFiltersNY />
                 ) : (
-                  <NotSelectedFilters />
+                  <NotSelectedFiltersNY />
                 )
               ) : (
                 <Spinner />

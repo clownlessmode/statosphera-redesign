@@ -19,12 +19,12 @@ import UniversalTable from "@pages/report/ui/table";
 import { columnDefs } from "@shared/constants/table-columns";
 import { Dialog, DialogContent, DialogTrigger } from "@shared/ui/dialog";
 import { Input } from "@shared/ui/input";
-import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { AnimatePresence } from "motion/react";
 import FiltersAccordeon from "@pages/report/ui/filters";
-import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { WriteOffTotalResponse } from "@pages/write-off/api/types";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
+import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
 
 // Функция для умного извлечения фильтров на основе текущих группировок
 function extractFiltersBasedOnGrouping(
@@ -1488,7 +1488,7 @@ export const AllWriteOffs = ({
           />
         )}
         <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
-          {error ? <NotFoundFilters /> : <NotSelectedFilters />}
+          {error ? <NotFoundFiltersNY /> : <NotSelectedFiltersNY />}
         </div>
       </div>
     );
@@ -1627,7 +1627,7 @@ export const AllWriteOffs = ({
               />
             ) : (
               <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-end mb-[10%]">
-                {error ? <NotFoundFilters /> : <NotSelectedFilters />}
+                {error ? <NotFoundFiltersNY /> : <NotSelectedFiltersNY />}
               </div>
             )}
           </div>
