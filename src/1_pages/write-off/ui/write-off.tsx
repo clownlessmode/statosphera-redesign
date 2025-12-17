@@ -8,12 +8,16 @@ import { Button } from "@shared/ui/button";
 import { ROUTES_PATH } from "@app/router/routes";
 import { useTabStore as useReportTabStore } from "@widgets/report/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useWriteOffStore } from "../model/write-off-store";
+import { DownloadWriteOff } from "@features/write-off/download";
 
 export const WriteOff = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(true); // Показываем фильтры при первом открытии
   const isMobile = useIsMobile();
   const tab = useTabStore((state) => state.tab);
   const reportTab = useReportTabStore((state) => state.tab);
+  const { table } = useWriteOffStore();
+
   return (
     <>
       <WriteOffFiltersSheet />
@@ -39,6 +43,7 @@ export const WriteOff = () => {
                 </Button>
               </div>
             ),
+            right: <DownloadWriteOff rows={table?.totalRows || 0} tab={tab} />,
           }}
         />
         <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:pb-4 max-md:*:px-4 *:first:px-0 max-md:*:last:px-0 md:p-4 max-md:gap-2">
