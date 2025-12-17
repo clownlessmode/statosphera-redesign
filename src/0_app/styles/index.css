@@ -91,6 +91,41 @@ button:active {
     grabbing !important;
 }
 
+/* Конфетный border */
+@layer components {
+  .bg-candy {
+    border-color: transparent;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+
+    background-image:
+      linear-gradient(var(--card), var(--card)),
+      repeating-linear-gradient(
+        -45deg,
+        rgb(255, 255, 255, 0.5),
+        rgb(255, 255, 255, 0.5) 10px,
+        rgb(229, 0, 70, 0.5) 10px,
+        rgb(229, 0, 70, 0.5) 20px
+      );
+
+    border-width: 2px;
+    border-style: solid;
+  }
+
+  .dark .bg-candy {
+    border-color: transparent;
+    background-image:
+      linear-gradient(var(--card), var(--card)),
+      repeating-linear-gradient(
+        -45deg,
+        rgb(255, 255, 255, 0.5),
+        rgb(255, 255, 255, 0.5) 10px,
+        rgb(229, 0, 70, 0.5) 10px,
+        rgb(229, 0, 70, 0.5) 20px
+      );
+  }
+}
+
 .ag-theme-alpine .selected-row,
 .ag-theme-alpine-dark .selected-row {
   background-color: rgba(255, 0, 0, 0.9) !important;
