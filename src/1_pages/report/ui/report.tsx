@@ -4,7 +4,6 @@ import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
-import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import FiltersAccordeon from "./filters";
 import { Button } from "@shared/ui/button";
@@ -16,7 +15,6 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { DownloadReport } from "@features/reports/download";
 import { useReport } from "@entities/report/model/api/filters/data/controller";
 import InfinityTable from "./table/infinite-table";
-import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 import { create } from "zustand";
 import ReportCards from "./report-cards";
 import { getLabelByValue } from "./values-badges";
@@ -29,6 +27,8 @@ import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
+import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
 // import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -960,9 +960,9 @@ const Report: FC = () => {
             >
               {!isLoading ? (
                 error ? (
-                  <NotFoundFilters />
+                  <NotFoundFiltersNY />
                 ) : (
-                  <NotSelectedFilters />
+                  <NotSelectedFiltersNY />
                 )
               ) : (
                 <Spinner />
