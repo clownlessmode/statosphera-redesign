@@ -65,6 +65,7 @@ export default function WriteOffFiltersSheet() {
         close={false}
         forceMount
         className="scrol max-md:w-full"
+        aria-describedby={undefined}
       >
         <div>
           <Tabs value={tab} onValueChange={handleTabChange} className="gap-0">
