@@ -5,6 +5,8 @@ import { ROUTES } from "./routes";
 import { Suspense } from "react";
 import PageSkeleton from "@shared/ui/page-skeleton";
 import { TourProvider } from "@entities/lessons";
+import Snowfall from "react-snowfall";
+import Santa from "@shared/ui/santa";
 //import { RatingProvider } from "@widgets/rating";
 
 const AppRouter = () => {
@@ -12,6 +14,20 @@ const AppRouter = () => {
     <AnimatePresence mode="wait">
       <BrowserRouter>
         <TourProvider>
+          <Snowfall
+            color="#d5dbf7"
+            snowflakeCount={140}
+            speed={[0.5, 1.7]}
+            wind={[-0.8, 0.8]}
+            style={{
+              position: "fixed",
+              width: "100vw",
+              height: "100vh",
+              zIndex: 1000,
+              pointerEvents: "none",
+            }}
+          />
+          <Santa />
           {/* <RatingProvider /> */}
           <Routes>
             {ROUTES.map((route) => (

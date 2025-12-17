@@ -8,7 +8,6 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useFiltersStore } from "@widgets/rfm/model/filters-store";
 import { useEffect, useState } from "react";
 import { SegmentsCard } from "./cards";
-import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
 import { AllGistogram } from "./graphs/allGistogram";
 import { TreemapTopGroupProduct } from "./graphs/treemapTopGroupProduct";
@@ -44,6 +43,7 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import InfoModal from "./info-modal";
+import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
 
 interface Filters {
   data: {
@@ -457,7 +457,7 @@ export const Rfm = () => {
           </>
         ) : (
           <div className="my-[10%] flex h-full w-full justify-center items-center dark:opacity-70">
-            <NotSelectedFilters />
+            <NotSelectedFiltersNY />
           </div>
         )}
       </div>

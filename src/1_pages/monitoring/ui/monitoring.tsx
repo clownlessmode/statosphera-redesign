@@ -19,9 +19,9 @@ import {
   Save,
 } from "lucide-react";
 import { Button } from "@shared/ui/button";
-import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import { cn } from "@shared/lib/utils";
 import { useIsMobile } from "@shared/hooks";
+import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
 
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
@@ -331,7 +331,7 @@ export const Monitoring = () => {
         {!isProductsLoading ? (
           !debouncedSearch || debouncedSearch.trim() === "" ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
-              <NotSelectedFilters />
+              <NotSelectedFiltersNY />
               <div className="text-muted-foreground space-y-2 mt-4">
                 <p className="text-lg font-medium">
                   Введите запрос для получения результатов

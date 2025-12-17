@@ -21,7 +21,7 @@ export const Slider = ({
       if (document.hidden) return;
 
       setComponentIndex((prev) => (prev + 1) % components.length);
-    }, 8000);
+    }, 6000);
 
     return () => {
       clearInterval(interval);
