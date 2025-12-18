@@ -17,7 +17,10 @@ export const Modal = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Dialog modal={!isTourActive}>
-      <DialogTrigger asChild className="cursor-pointer hover:bg-card/80">
+      <DialogTrigger
+        asChild
+        className="cursor-pointer *hover:bg-card/80* hover:bg-[#e50046]"
+      >
         {children}
       </DialogTrigger>
       <DialogContent
