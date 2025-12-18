@@ -39,6 +39,7 @@ export interface InfinityTableProps {
   maxRows?: number;
   selectedRows?: any[];
   rowSelection?: "single" | "multiple";
+  showCheckbox?: boolean;
 }
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
@@ -55,6 +56,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
   dataVersion = 0,
   maxRows,
   selectedRows = [],
+  showCheckbox = false,
 }) => {
   const selectedRowsRef = useRef(selectedRows);
   const gridRef = useRef<AgGridReact>(null);
@@ -271,6 +273,16 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
   useEffect(() => {
     selectedRowsRef.current = selectedRows;
+
+    if (gridApiRef.current) {
+      // Если внешнее состояние выбора очищено, снимаем выбор в гриде
+      if (!selectedRows || selectedRows.length === 0) {
+        gridApiRef.current.deselectAll();
+      }
+
+      // Принудительно обновляем все видимые строки при изменении selectedRows
+      gridApiRef.current.redrawRows();
+    }
   }, [selectedRows]);
 
   const isEqual = useCallback((obj1: any, obj2: any) => {
@@ -339,6 +351,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
           mode: "multiRow",
           enableClickSelection: false, // Включаем выбор по клику
           headerCheckbox: false, // ЯВНО ОТКЛЮЧАЕМ чекбокс в заголовке
+          checkboxes: showCheckbox,
         }}
         onSelectionChanged={(e) => {
           const selectedRows = e.api.getSelectedRows();

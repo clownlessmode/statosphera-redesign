@@ -2,7 +2,14 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/forest/sheet";
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
-import { useCallback, useEffect, useRef, useState, type FC } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+  useMemo,
+} from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { useForestStore } from "@widgets/forest/sheet/model/forest-store";
 import FiltersAccordeon from "./filters";
@@ -30,49 +37,29 @@ import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-n
 import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
-  const filters = {
+  const filters: any = {
     store: {
-      idStore: [],
-      idCity: [],
-      idRegion: [],
+      store: [],
+      city: [],
+      region: [],
     },
     product: {
-      idProduct: [],
-      idGroupProduct: [],
-      oneLvlGroupProduct: [],
-      twoLvlGroupProduct: [],
-      threeLvlGroupProduct: [],
-      dishMeasureUnit: [],
-    },
-    check: {
-      typePayment: [],
-      discountType: [],
+      product: [],
     },
   };
 
-  const mapping: Record<string, string[]> = {
-    // Store
-    id_store: filters.store.idStore,
-    id_city: filters.store.idCity,
-    id_region: filters.store.idRegion,
-
-    // Product
-    id_product: filters.product.idProduct,
-    group_id: filters.product.idGroupProduct,
-    idSubGroups: filters.product.oneLvlGroupProduct,
-    idSubSubGroups: filters.product.twoLvlGroupProduct,
-    idSubSubSubGroups: filters.product.threeLvlGroupProduct,
-
-    // Check
-    typePayment: filters.check.typePayment,
-    discountType: filters.check.discountType,
+  const mapping: Record<string, any[]> = {
+    id_store: filters.store.store,
+    id_city: filters.store.city,
+    id_region: filters.store.region,
+    id_product: filters.product.product,
   };
 
   for (const currentRow of selectedRows) {
-    for (const [rowKey, targetArray] of Object.entries(mapping)) {
-      const value = currentRow[rowKey];
-      if (value && !targetArray.includes(value)) {
-        targetArray.push(value);
+    for (const key in mapping) {
+      const val = currentRow[key];
+      if (val != null && !mapping[key].includes(val)) {
+        mapping[key].push(val);
       }
     }
   }
@@ -104,7 +91,6 @@ const Forest: FC = () => {
   const [selectedIndicator, setSelectedIndicator] = useState<string | null>(
     null,
   );
-  console.log("allData:", allData);
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } = useForestStore();
   const { getTable, getGraph } = useForest();
@@ -177,55 +163,24 @@ const Forest: FC = () => {
         store: {
           ...payload.filters.store,
           idStore:
-            extractedFilters.store.idStore.length > 0
-              ? extractedFilters.store.idStore
+            extractedFilters.store.store.length > 0
+              ? extractedFilters.store.store
               : payload.filters.store.idStore,
           idCity:
-            extractedFilters.store.idCity.length > 0
-              ? extractedFilters.store.idCity
+            extractedFilters.store.city.length > 0
+              ? extractedFilters.store.city
               : payload.filters.store.idCity,
           idRegion:
-            extractedFilters.store.idRegion.length > 0
-              ? extractedFilters.store.idRegion
+            extractedFilters.store.region.length > 0
+              ? extractedFilters.store.region
               : payload.filters.store.idRegion,
         },
         product: {
           ...payload.filters.product,
           idProduct:
-            extractedFilters.product.idProduct.length > 0
-              ? extractedFilters.product.idProduct
+            extractedFilters.product.product.length > 0
+              ? extractedFilters.product.product
               : payload.filters.product.idProduct,
-          idGroupProduct:
-            extractedFilters.product.idGroupProduct.length > 0
-              ? extractedFilters.product.idGroupProduct
-              : payload.filters.product.idGroupProduct,
-          oneLvlGroupProduct:
-            extractedFilters.product.oneLvlGroupProduct.length > 0
-              ? extractedFilters.product.oneLvlGroupProduct
-              : payload.filters.product.oneLvlGroupProduct,
-          twoLvlGroupProduct:
-            extractedFilters.product.twoLvlGroupProduct.length > 0
-              ? extractedFilters.product.twoLvlGroupProduct
-              : payload.filters.product.twoLvlGroupProduct,
-          threeLvlGroupProduct:
-            extractedFilters.product.threeLvlGroupProduct.length > 0
-              ? extractedFilters.product.threeLvlGroupProduct
-              : payload.filters.product.threeLvlGroupProduct,
-          dishMeasureUnit:
-            extractedFilters.product.dishMeasureUnit.length > 0
-              ? extractedFilters.product.dishMeasureUnit
-              : payload.filters.product.dishMeasureUnit,
-        },
-        check: {
-          ...payload.filters.check, // Добавляем check секцию, если она нужна
-          typePayment:
-            extractedFilters.check.typePayment.length > 0
-              ? extractedFilters.check.typePayment
-              : payload.filters.check.typePayment,
-          discountType:
-            extractedFilters.check.discountType.length > 0
-              ? extractedFilters.check.discountType
-              : payload.filters.check.discountType,
         },
       };
 
@@ -530,6 +485,7 @@ const Forest: FC = () => {
     bumpDataVersion();
   };
   useEffect(() => {
+    setSelectedRows([]);
     requestCache.current = {};
     lastRequestKey.current = "";
     bumpDataVersion();
@@ -538,6 +494,20 @@ const Forest: FC = () => {
   const { isGraphLoading, isTableLoading, isTotalLoading } = useForestStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
+
+  const showCheckbox = useMemo(() => {
+    return [
+      //"city",
+      //"store",
+      //"region",
+      //"group",
+      //"oneLvlGroupProduct",
+      //"twoLvlGroupProduct",
+      //"threeLvlGroupProduct",
+      //"dishMeasureUnit",
+      "product",
+    ].some((item) => allData.groups.includes(item));
+  }, [allData.groups]);
 
   return (
     <>
@@ -691,6 +661,7 @@ const Forest: FC = () => {
               onSelectionChange={handleSelectionChange}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
+              showCheckbox={showCheckbox && tab !== "write-off"}
               className="w-full"
             />
           ) : (

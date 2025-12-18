@@ -1,7 +1,14 @@
 import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/farmer/analytics/sheet";
-import { useCallback, useEffect, useRef, useState, type FC } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+  useMemo,
+} from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { useFarmerAnalyticsStore } from "@widgets/farmer/analytics/sheet/model/analytics-store";
 import FiltersAccordeon from "./filters";
@@ -757,6 +764,7 @@ const FarmerAnalytics: FC = () => {
     bumpDataVersion();
   };
   useEffect(() => {
+    setSelectedRows([]);
     requestCache.current = {};
     lastRequestKey.current = "";
     bumpDataVersion();
@@ -766,6 +774,18 @@ const FarmerAnalytics: FC = () => {
     useFarmerAnalyticsStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
+
+  const showCheckbox = useMemo(() => {
+    return [
+      "city",
+      "region",
+      "group",
+      "subGroups",
+      "subSubGroups",
+      "product",
+      "store",
+    ].some((item) => allData.groups.includes(item));
+  }, [allData.groups]);
 
   return (
     <>
@@ -911,6 +931,7 @@ const FarmerAnalytics: FC = () => {
               selectedRows={selectedRows}
               dataVersion={dataVersion}
               className="w-full max-md:mx-auto max-md:w-[calc(100%-32px)]"
+              showCheckbox={showCheckbox}
             />
           ) : (
             <div
