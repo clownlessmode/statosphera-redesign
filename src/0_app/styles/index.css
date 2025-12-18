@@ -366,6 +366,10 @@ button:active {
   place-items: center;
 }
 
+.ag-selection-checkbox {
+  margin-right: 0;
+}
+
 .echarts-for-react {
   border-radius: var(--radius);
 }

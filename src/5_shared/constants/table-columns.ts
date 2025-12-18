@@ -184,7 +184,7 @@ export enum COLUMN_KEY {
   // ----------------- Выручка -----------------
   GROUP_PROCEEDS = "groupProceeds",
   GROUP_PLAN_PROCEEDS = "groupPlanProceeds",
-  STORE_NAME = "storeName",
+  STORE_NAME = "store",
   PROCEEDS = "proceeds",
   PROCEEDS_LM = "proceedsLM",
   PROCEEDS_MOM = "proceedsMoM",
@@ -1374,10 +1374,8 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Магазин",
     cellStyle: { textAlign: "left" },
     pinned: "left",
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    suppressHeaderMenuButton: true,
+    minWidth: 180,
+    cellDataType: "string",
   },
   {
     field: COLUMN_KEY.PROCEEDS,
@@ -4603,9 +4601,24 @@ export enum ColumnsKeyId {
   SUBDIVISION_PRODUCTS_ID = "idSubdivisionProducts",
   MANAGER_AUTO_ID = "idManagerAuto",
   GROUPS_FRANCHISE_ID = "idGroupsFranchise",
+  ONE_LVL_GROUP_PRODUCT_ID = "idOneLvlGroupProduct",
+  TWO_LVL_GROUP_PRODUCT_ID = "idTwoLvlGroupProduct",
+  THREE_LVL_GROUP_PRODUCT_ID = "idThreeLvlGroupProduct",
 }
 // Конфиг таблицы
 export const tableConfig: ColDef<any>[] = [
+  {
+    field: ColumnsKeyId.ONE_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
+  {
+    field: ColumnsKeyId.TWO_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
+  {
+    field: ColumnsKeyId.THREE_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
   {
     field: ColumnsKeyId.SEASONALITY_PRODUCTS_ID,
     hide: true,

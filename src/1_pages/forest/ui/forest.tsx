@@ -45,6 +45,9 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
     },
     product: {
       product: [],
+      oneLvlGroupProduct: [],
+      twoLvlGroupProduct: [],
+      threeLvlGroupProduct: [],
     },
   };
 
@@ -53,6 +56,9 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
     id_city: filters.store.city,
     id_region: filters.store.region,
     id_product: filters.product.product,
+    idOneLvlGroupProduct: filters.product.oneLvlGroupProduct,
+    idTwoLvlGroupProduct: filters.product.twoLvlGroupProduct,
+    idThreeLvlGroupProduct: filters.product.threeLvlGroupProduct,
   };
 
   for (const currentRow of selectedRows) {
@@ -63,7 +69,7 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       }
     }
   }
-
+  console.log(selectedRows);
   return filters;
 }
 
@@ -156,6 +162,8 @@ const Forest: FC = () => {
         newSelectedRows,
       );
 
+      console.log(newSelectedRows[0]);
+
       const payload = getApiPayload();
 
       const mergedFilters = {
@@ -181,6 +189,18 @@ const Forest: FC = () => {
             extractedFilters.product.product.length > 0
               ? extractedFilters.product.product
               : payload.filters.product.idProduct,
+          oneLvlGroupProduct:
+            extractedFilters.product.oneLvlGroupProduct.length > 0
+              ? extractedFilters.product.oneLvlGroupProduct
+              : payload.filters.product.oneLvlGroupProduct,
+          twoLvlGroupProduct:
+            extractedFilters.product.twoLvlGroupProduct.length > 0
+              ? extractedFilters.product.twoLvlGroupProduct
+              : payload.filters.product.twoLvlGroupProduct,
+          threeLvlGroupProduct:
+            extractedFilters.product.threeLvlGroupProduct.length > 0
+              ? extractedFilters.product.threeLvlGroupProduct
+              : payload.filters.product.threeLvlGroupProduct,
         },
       };
 
@@ -397,13 +417,15 @@ const Forest: FC = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
+      const payload = getApiPayload();
+
       const requestKey = JSON.stringify({
         startRow,
         endRow,
         sortModel,
-        values: getApiPayload().values,
-        groups: getApiPayload().groups,
-        filters: getApiPayload().filters,
+        values: payload.values,
+        groups: payload.groups,
+        filters: payload.filters,
       });
 
       if (
@@ -413,29 +435,13 @@ const Forest: FC = () => {
         return requestCache.current[requestKey];
       }
 
-      if (
-        startRow === 0 &&
-        initialRows &&
-        initialRows.data.length > 0 &&
-        sortModel.length === 0
-      ) {
-        const result = {
-          data: initialRows.data.slice(startRow, endRow),
-          totalRows: initialTotalRows,
-        };
-
-        const cachedPromise = Promise.resolve(result);
-        requestCache.current[requestKey] = (await cachedPromise) as any;
-        lastRequestKey.current = requestKey;
-
-        return cachedPromise;
-      }
-
-      const payload = getApiPayload();
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
-          : { colId: [payload.values[0]], sort: "desc" as "asc" | "desc" };
+          : {
+              colId: tab !== "write-off" ? [payload.values[0]] : ["costPrice"],
+              sort: "desc" as "asc" | "desc",
+            };
 
       const requestPromise =
         tab === "write-off"
@@ -483,6 +489,7 @@ const Forest: FC = () => {
     requestCache.current = {}; // Полная очистка кэша
     lastRequestKey.current = "";
     bumpDataVersion();
+    setSelectedRows([]);
   };
   useEffect(() => {
     setSelectedRows([]);
