@@ -801,7 +801,7 @@ const FarmerAnalytics: FC = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
           {isMobile && (
             <div className="w-full flex flex-col gap-2">
               <div className="w-full flex flex-row gap-2 justify-between px-4 pt-2">

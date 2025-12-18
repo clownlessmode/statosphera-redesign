@@ -12,6 +12,10 @@ const useSecretCode = (
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = Date.now();
 
+      if (typeof inputBuffer.current !== "string") {
+        inputBuffer.current = "";
+      }
+
       if (inputBuffer.current === "" || now - startTime.current > timeout) {
         inputBuffer.current = e.key;
         startTime.current = now;
@@ -19,7 +23,12 @@ const useSecretCode = (
         inputBuffer.current += e.key;
       }
 
-      if (inputBuffer.current.includes(secretCode)) {
+      const buffer =
+        typeof inputBuffer.current === "string"
+          ? inputBuffer.current
+          : String(inputBuffer.current ?? "");
+
+      if (buffer.includes(secretCode)) {
         onMatch();
         inputBuffer.current = "";
         startTime.current = 0;

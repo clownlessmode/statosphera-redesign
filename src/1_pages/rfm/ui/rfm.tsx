@@ -380,7 +380,7 @@ export const Rfm = () => {
       />
       <div
         className={cn(
-          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)] max-md:pb-18",
+          "rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-124px)] max-md:pb-18",
           appliedFilters?.data?.rfmList?.length === 0 &&
             !isMobile &&
             "justify-center",

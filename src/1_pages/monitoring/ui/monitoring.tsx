@@ -178,7 +178,7 @@ export const Monitoring = () => {
           ),
         }}
       />
-      <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col">
+      <div className="rounded-3xl min-h-[calc(100vh-124px)] bg-background p-4 gap-4 flex flex-col">
         <Card>
           <CardContent className="flex flex-col md:flex-row gap-2">
             <Input
