@@ -117,7 +117,7 @@ export const IMReport = () => {
           ),
         }}
       />
-      <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col max-md:gap-2">
+      <div className="rounded-3xl min-h-[calc(100vh-124px)] bg-background p-4 gap-4 flex flex-col max-md:gap-2">
         <div className="flex flex-row justify-end gap-2 2xl:hidden">
           <DaysFilter />
           <ShopsFilter />
