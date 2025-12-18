@@ -347,9 +347,29 @@ button:active {
   justify-content: center !important;
   text-align: center !important;
 }
+.ag-checkbox-input-wrapper {
+  border: 1px solid var(--border) !important;
+  border-color: var(--primary) !important;
+  border-radius: 100% !important;
+}
+
+.ag-checkbox-input-wrapper:not(.ag-checked) {
+  background-color: inherit !important;
+}
+
+.ag-checkbox-input-wrapper.ag-checked::after {
+  background-color: var(--foreground) !important;
+}
+
+.ag-cell:has(.ag-selection-checkbox) {
+  display: grid;
+  place-items: center;
+}
+
 .echarts-for-react {
   border-radius: var(--radius);
 }
+
 .ag-cell {
   text-align: center;
 }

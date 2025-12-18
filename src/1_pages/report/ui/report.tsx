@@ -2,7 +2,14 @@ import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedS
 import { Header } from "@widgets/header";
 import { Sheet } from "@widgets/report/sheet";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
-import { useCallback, useEffect, useRef, useState, type FC } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FC,
+  useMemo,
+} from "react";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import { useReportStore } from "@widgets/report/sheet/model/report-store";
 import FiltersAccordeon from "./filters";
@@ -305,6 +312,7 @@ const Report: FC = () => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
   const initialFiltersRef = useRef<any>(null);
+
   useEffect(() => {
     if (!initialFiltersRef.current && graph && table && total) {
       initialFiltersRef.current = {
@@ -756,8 +764,11 @@ const Report: FC = () => {
     requestCache.current = {}; // Полная очистка кэша
     lastRequestKey.current = "";
     bumpDataVersion();
+    setSelectedRows([]);
   };
+
   useEffect(() => {
+    setSelectedRows([]);
     requestCache.current = {};
     lastRequestKey.current = "";
     bumpDataVersion();
@@ -766,6 +777,18 @@ const Report: FC = () => {
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
+
+  const showCheckbox = useMemo(() => {
+    return [
+      "city",
+      "region",
+      "group",
+      "subGroups",
+      "subSubGroups",
+      "product",
+      "store",
+    ].some((item) => allData.groups.includes(item));
+  }, [allData.groups]);
 
   return (
     <>
@@ -949,6 +972,7 @@ const Report: FC = () => {
               onSelectionChange={handleSelectionChange}
               selectedRows={selectedRows}
               dataVersion={dataVersion}
+              showCheckbox={showCheckbox}
               className="w-full max-md:mx-auto max-md:w-[calc(100%-32px)]"
             />
           ) : (
