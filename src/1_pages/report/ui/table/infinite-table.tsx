@@ -149,6 +149,32 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         );
       }
 
+      if (showCheckbox) {
+        mergedDefs.unshift(
+          withSkeleton({
+            headerName: "",
+            field: "__select__",
+            cellStyle: {
+              display: "flex",
+              flex: 1,
+              border: "none",
+              justifyContent: "center",
+              alignItems: "center",
+            },
+            resizable: false,
+            pinned: "left",
+            sortable: false,
+            headerCheckboxSelection: true,
+            checkboxSelection: true,
+            lockPosition: true,
+            suppressMovable: true,
+            filter: false,
+            width: 50,
+            valueFormatter: () => "",
+          }),
+        );
+      }
+
       mergedDefs.push({
         headerName: "",
         field: "__filler__",
@@ -174,7 +200,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
       columnsSetRef.current = true;
     },
-    [actions, actionsIndex],
+    [actions, actionsIndex, showCheckbox],
   );
 
   const datasource: IDatasource = useMemo(
@@ -341,9 +367,9 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
         getRowStyle={getRowStyle}
         rowSelection={{
           mode: "multiRow",
-          enableClickSelection: false, // Включаем выбор по клику
-          headerCheckbox: false, // ЯВНО ОТКЛЮЧАЕМ чекбокс в заголовке
-          checkboxes: showCheckbox,
+          enableClickSelection: false,
+          headerCheckbox: false,
+          checkboxes: false,
         }}
         onSelectionChanged={(e) => {
           const selectedRows = e.api.getSelectedRows();
