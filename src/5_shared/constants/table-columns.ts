@@ -1371,16 +1371,6 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
-    field: COLUMN_KEY.STORE,
-    headerName: "Магазин",
-    cellStyle: { textAlign: "left" },
-    pinned: "left",
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    suppressHeaderMenuButton: true,
-  },
-  {
     field: COLUMN_KEY.STORE_NAME,
     headerName: "Магазин",
     cellStyle: { textAlign: "left" },
