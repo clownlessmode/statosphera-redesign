@@ -184,7 +184,8 @@ export enum COLUMN_KEY {
   // ----------------- Выручка -----------------
   GROUP_PROCEEDS = "groupProceeds",
   GROUP_PLAN_PROCEEDS = "groupPlanProceeds",
-  STORE_NAME = "store",
+  STORE = "store",
+  STORE_NAME = "storeName",
   PROCEEDS = "proceeds",
   PROCEEDS_LM = "proceedsLM",
   PROCEEDS_MOM = "proceedsMoM",
@@ -1374,8 +1375,10 @@ export const tableColumns: ColDef<any>[] = [
     headerName: "Магазин",
     cellStyle: { textAlign: "left" },
     pinned: "left",
-    minWidth: 180,
-    cellDataType: "string",
+    resizable: true,
+    wrapText: true,
+    autoHeight: true,
+    suppressHeaderMenuButton: true,
   },
   {
     field: COLUMN_KEY.PROCEEDS,
