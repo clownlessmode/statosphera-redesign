@@ -197,16 +197,6 @@ export enum COLUMN_KEY {
   CUMULATIVE_PROCEEDS_YOY = "cumulativeProceedsYoY",
   CUMULATIVE_PROCEEDS_YOY_PERCENT = "cumulativeProceedsYoYPercent",
 
-  // ----------------- Выручка для фермера -----------------
-  GROUP_FARMER_PRICE = "groupFarmerPrice",
-  FARMER_PRICE = "farmerPrice",
-  FARMER_PRICE_LM = "farmerPriceLM",
-  FARMER_PRICE_MOM = "farmerPriceMoM",
-  FARMER_PRICE_MOM_PERCENT = "farmerPriceMoMPercent",
-  FARMER_PRICE_LY = "farmerPriceLY",
-  FARMER_PRICE_YOY = "farmerPriceYoY",
-  FARMER_PRICE_YOY_PERCENT = "farmerPriceYoYPercent",
-
   // ----------------- Выручка планы -----------------
   PLAN_PROCEEDS = "planProceeds",
   PLAN_PROCEEDS_EXECUTION_PERCENT = "planProceedsExecutionPercent",
@@ -312,6 +302,219 @@ export enum COLUMN_KEY {
   PLAN_SHARE_OF_PAYMENTS_QC_EXECUTION_PERCENT = "planShareOfPaymentsQcExecutionPercent",
   PLAN_SHARE_OF_PAYMENTS_QC_FORECAST = "planShareOfPaymentsQcForecast",
   PLAN_SHARE_OF_PAYMENTS_QC_FORECAST_PERCENT = "planShareOfPaymentsQcForecastPercent",
+
+  // ----------------- Выручка для фермера -----------------
+  GROUP_FARMER_PRICE = "groupFarmerPrice",
+  FARMER_PRICE = "farmerPrice",
+  FARMER_PRICE_LM = "farmerPriceLM",
+  FARMER_PRICE_MOM = "farmerPriceMoM",
+  FARMER_PRICE_MOM_PERCENT = "farmerPriceMoMPercent",
+  FARMER_PRICE_LY = "farmerPriceLY",
+  FARMER_PRICE_YOY = "farmerPriceYoY",
+  FARMER_PRICE_YOY_PERCENT = "farmerPriceYoYPercent",
+
+  // ----------------- Ночные магазины (показатели) -----------------
+
+  // Выручка (день)
+  GROUP_PROCEEDS_DAY = "groupProceedsDay",
+  PROCEEDS_DAY = "proceedsDay",
+  PROCEEDS_DAY_LY = "proceedsDayLY",
+  PROCEEDS_DAY_YOY = "proceedsDayYoY",
+  PROCEEDS_DAY_YOY_PERCENT = "proceedsDayYoYPercent",
+  PROCEEDS_DAY_LM = "proceedsDayLM",
+  PROCEEDS_DAY_MOM = "proceedsDayMoM",
+  PROCEEDS_DAY_MOM_PERCENT = "proceedsDayMoMPercent",
+
+  // Выручка (ночь)
+  GROUP_PROCEEDS_NIGHT = "groupProceedsNight",
+  PROCEEDS_NIGHT = "proceedsNight",
+  PROCEEDS_NIGHT_LY = "proceedsNightLY",
+  PROCEEDS_NIGHT_YOY = "proceedsNightYoY",
+  PROCEEDS_NIGHT_YOY_PERCENT = "proceedsNightYoYPercent",
+  PROCEEDS_NIGHT_LM = "proceedsNightLM",
+  PROCEEDS_NIGHT_MOM = "proceedsNightMoM",
+  PROCEEDS_NIGHT_MOM_PERCENT = "proceedsNightMoMPercent",
+
+  // Процент выручки (ночь)
+  GROUP_PERCENTAGE_PROCEEDS_NIGHT = "groupPercentageProceedsNight",
+  PERCENTAGE_PROCEEDS_NIGHT = "percentageProceedsNight",
+  PERCENTAGE_PROCEEDS_NIGHT_LY = "percentageProceedsNightLY",
+  PERCENTAGE_PROCEEDS_NIGHT_YOY = "percentageProceedsNightYoY",
+  PERCENTAGE_PROCEEDS_NIGHT_LM = "percentageProceedsNightLM",
+  PERCENTAGE_PROCEEDS_NIGHT_MOM = "percentageProceedsNightMoM",
+
+  // Валовая прибыль (день)
+  GROUP_PROFIT_DAY = "groupProfitDay",
+  PROFIT_DAY = "profitDay",
+  PROFIT_DAY_LM = "profitDayLM",
+  PROFIT_DAY_MOM = "profitDayMoM",
+  PROFIT_DAY_MOM_PERCENT = "profitDayMoMPercent",
+  PROFIT_DAY_LY = "profitDayLY",
+  PROFIT_DAY_YOY = "profitDayYoY",
+  PROFIT_DAY_YOY_PERCENT = "profitDayYoYPercent",
+
+  // Валовая прибыль (ночь)
+  GROUP_PROFIT_NIGHT = "groupProfitNight",
+  PROFIT_NIGHT = "profitNight",
+  PROFIT_NIGHT_LM = "profitNightLM",
+  PROFIT_NIGHT_MOM = "profitNightMoM",
+  PROFIT_NIGHT_MOM_PERCENT = "profitNightMoMPercent",
+  PROFIT_NIGHT_LY = "profitNightLY",
+  PROFIT_NIGHT_YOY = "profitNightYoY",
+  PROFIT_NIGHT_YOY_PERCENT = "profitNightYoYPercent",
+
+  // Процент прибыли (ночь)
+  GROUP_PERCENTAGE_PROFIT_NIGHT = "groupPercentageProfitNight",
+  PERCENTAGE_PROFIT_NIGHT = "percentageProfitNight",
+  PERCENTAGE_PROFIT_NIGHT_LY = "percentageProfitNightLY",
+  PERCENTAGE_PROFIT_NIGHT_YOY = "percentageProfitNightYoY",
+  PERCENTAGE_PROFIT_NIGHT_LM = "percentageProfitNightLM",
+  PERCENTAGE_PROFIT_NIGHT_MOM = "percentageProfitNightMoM",
+
+  // Наценка (день)
+  GROUP_MARKUP_PERCENT_DAY = "groupMarkupPercentDay",
+  MARKUP_PERCENT_DAY = "markupPercentDay",
+  MARKUP_PERCENT_DAY_LY = "markupPercentDayLY",
+  MARKUP_PERCENT_DAY_YOY = "markupPercentDayYoY",
+  MARKUP_PERCENT_DAY_YOY_PERCENT = "markupPercentDayYoYPercent",
+  MARKUP_PERCENT_DAY_LM = "markupPercentDayLM",
+  MARKUP_PERCENT_DAY_MOM = "markupPercentDayMoM",
+  MARKUP_PERCENT_DAY_MOM_PERCENT = "markupPercentDayMoMPercent",
+
+  // Наценка (ночь)
+  GROUP_MARKUP_PERCENT_NIGHT = "groupMarkupPercentNight",
+  MARKUP_PERCENT_NIGHT = "markupPercentNight",
+  MARKUP_PERCENT_NIGHT_LY = "markupPercentNightLY",
+  MARKUP_PERCENT_NIGHT_YOY = "markupPercentNightYoY",
+  MARKUP_PERCENT_NIGHT_YOY_PERCENT = "markupPercentNightYoYPercent",
+  MARKUP_PERCENT_NIGHT_LM = "markupPercentNightLM",
+  MARKUP_PERCENT_NIGHT_MOM = "markupPercentNightMoM",
+  MARKUP_PERCENT_NIGHT_MOM_PERCENT = "markupPercentNightMoMPercent",
+
+  // Наценка без скидки (день)
+  GROUP_MARKUP_DISCOUNT_PERCENT_DAY = "groupMarkupDiscountPercentDay",
+  MARKUP_DISCOUNT_PERCENT_DAY = "markupDiscountPercentDay",
+  MARKUP_DISCOUNT_PERCENT_DAY_LM = "markupDiscountPercentDayLM",
+  MARKUP_DISCOUNT_PERCENT_DAY_MOM = "markupDiscountPercentDayMoM",
+  MARKUP_DISCOUNT_PERCENT_DAY_LY = "markupDiscountPercentDayLY",
+  MARKUP_DISCOUNT_PERCENT_DAY_YOY = "markupDiscountPercentDayYoY",
+
+  // Наценка без скидки (ночь)
+  GROUP_MARKUP_DISCOUNT_PERCENT_NIGHT = "groupMarkupDiscountPercentNight",
+  MARKUP_DISCOUNT_PERCENT_NIGHT = "markupDiscountPercentNight",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_LM = "markupDiscountPercentNightLM",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_MOM = "markupDiscountPercentNightMoM",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_LY = "markupDiscountPercentNightLY",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_YOY = "markupDiscountPercentNightYoY",
+
+  // Себестоимость (день)
+  GROUP_COST_PRICE_DAY = "groupCostPriceDay",
+  COST_PRICE_DAY = "costPriceDay",
+  COST_PRICE_DAY_LM = "costPriceDayLM",
+  COST_PRICE_DAY_MOM = "costPriceDayMoM",
+  COST_PRICE_DAY_MOM_PERCENT = "costPriceDayMoMPercent",
+  COST_PRICE_DAY_LY = "costPriceDayLY",
+  COST_PRICE_DAY_YOY = "costPriceDayYoY",
+  COST_PRICE_DAY_YOY_PERCENT = "costPriceDayYoYPercent",
+
+  // Себестоимость (ночь)
+  GROUP_COST_PRICE_NIGHT = "groupCostPriceNight",
+  COST_PRICE_NIGHT = "costPriceNight",
+  COST_PRICE_NIGHT_LM = "costPriceNightLM",
+  COST_PRICE_NIGHT_MOM = "costPriceNightMoM",
+  COST_PRICE_NIGHT_MOM_PERCENT = "costPriceNightMoMPercent",
+  COST_PRICE_NIGHT_LY = "costPriceNightLY",
+  COST_PRICE_NIGHT_YOY = "costPriceNightYoY",
+  COST_PRICE_NIGHT_YOY_PERCENT = "costPriceNightYoYPercent",
+
+  // Скидки (день)
+  GROUP_DISCOUNT_DAY = "groupDiscountDay",
+  DISCOUNT_DAY = "discountDay",
+  DISCOUNT_DAY_LY = "discountDayLY",
+  DISCOUNT_DAY_YOY = "discountDayYoY",
+  DISCOUNT_DAY_YOY_PERCENT = "discountDayYoYPercent",
+  DISCOUNT_DAY_LM = "discountDayLM",
+  DISCOUNT_DAY_MOM = "discountDayMoM",
+  DISCOUNT_DAY_MOM_PERCENT = "discountDayMoMPercent",
+
+  // Скидки (ночь)
+  GROUP_DISCOUNT_NIGHT = "groupDiscountNight",
+  DISCOUNT_NIGHT = "discountNight",
+  DISCOUNT_NIGHT_LY = "discountNightLY",
+  DISCOUNT_NIGHT_YOY = "discountNightYoY",
+  DISCOUNT_NIGHT_YOY_PERCENT = "discountNightYoYPercent",
+  DISCOUNT_NIGHT_LM = "discountNightLM",
+  DISCOUNT_NIGHT_MOM = "discountNightMoM",
+  DISCOUNT_NIGHT_MOM_PERCENT = "discountNightMoMPercent",
+
+  // Скидки в процентах (день)
+  GROUP_DISCOUNT_PERCENT_DAY = "groupDiscountPercentDay",
+  DISCOUNT_PERCENT_DAY = "discountPercentDay",
+  DISCOUNT_PERCENT_DAY_LY = "discountPercentDayLY",
+  DISCOUNT_PERCENT_DAY_YOY_PERCENT = "discountPercentDayYoYPercent",
+  DISCOUNT_PERCENT_DAY_LM = "discountPercentDayLM",
+  DISCOUNT_PERCENT_DAY_MOM_PERCENT = "discountPercentDayMoMPercent",
+
+  // Скидки в процентах (ночь)
+  GROUP_DISCOUNT_PERCENT_NIGHT = "groupDiscountPercentNight",
+  DISCOUNT_PERCENT_NIGHT = "discountPercentNight",
+  DISCOUNT_PERCENT_NIGHT_LY = "discountPercentNightLY",
+  DISCOUNT_PERCENT_NIGHT_YOY_PERCENT = "discountPercentNightYoYPercent",
+  DISCOUNT_PERCENT_NIGHT_LM = "discountPercentNightLM",
+  DISCOUNT_PERCENT_NIGHT_MOM_PERCENT = "discountPercentNightMoMPercent",
+
+  // Количество продаж (день)
+  GROUP_COUNT_SALES_DAY = "groupCountSalesDay",
+  COUNT_SALES_DAY = "countSalesDay",
+  COUNT_SALES_DAY_LM = "countSalesDayLM",
+  COUNT_SALES_DAY_MOM = "countSalesDayMoM",
+  COUNT_SALES_DAY_MOM_PERCENT = "countSalesDayMoMPercent",
+  COUNT_SALES_DAY_LY = "countSalesDayLY",
+  COUNT_SALES_DAY_YOY = "countSalesDayYoY",
+  COUNT_SALES_DAY_YOY_PERCENT = "countSalesDayYoYPercent",
+
+  // Количество продаж (ночь)
+  GROUP_COUNT_SALES_NIGHT = "groupCountSalesNight",
+  COUNT_SALES_NIGHT = "countSalesNight",
+  COUNT_SALES_NIGHT_LM = "countSalesNightLM",
+  COUNT_SALES_NIGHT_MOM = "countSalesNightMoM",
+  COUNT_SALES_NIGHT_MOM_PERCENT = "countSalesNightMoMPercent",
+  COUNT_SALES_NIGHT_LY = "countSalesNightLY",
+  COUNT_SALES_NIGHT_YOY = "countSalesNightYoY",
+  COUNT_SALES_NIGHT_YOY_PERCENT = "countSalesNightYoYPercent",
+
+  // Средний чек (день)
+  GROUP_AVG_CHECK_DAY = "groupAvgCheckDay",
+  AVG_CHECK_DAY = "avgCheckDay",
+  AVG_CHECK_DAY_LM = "avgCheckDayLM",
+  AVG_CHECK_DAY_MOM = "avgCheckDayMoM",
+  AVG_CHECK_DAY_MOM_PERCENT = "avgCheckDayMoMPercent",
+  AVG_CHECK_DAY_LY = "avgCheckDayLY",
+  AVG_CHECK_DAY_YOY = "avgCheckDayYoY",
+  AVG_CHECK_DAY_YOY_PERCENT = "avgCheckDayYoYPercent",
+
+  // Средний чек (ночь)
+  GROUP_AVG_CHECK_NIGHT = "groupAvgCheckNight",
+  AVG_CHECK_NIGHT = "avgCheckNight",
+  AVG_CHECK_NIGHT_LM = "avgCheckNightLM",
+  AVG_CHECK_NIGHT_MOM = "avgCheckNightMoM",
+  AVG_CHECK_NIGHT_MOM_PERCENT = "avgCheckNightMoMPercent",
+  AVG_CHECK_NIGHT_LY = "avgCheckNightLY",
+  AVG_CHECK_NIGHT_YOY = "avgCheckNightYoY",
+  AVG_CHECK_NIGHT_YOY_PERCENT = "avgCheckNightYoYPercent",
+
+  // ----------------- Ночные магазины (уникальные значения) -----------------
+
+  // Количество уникальных чеков (день)
+  UNIQUE_CHECK_DAY = "uniqueCheckDay",
+  UNIQUE_CHECK_DAY_LY = "uniqueCheckDayLY",
+  UNIQUE_CHECK_DAY_LM = "uniqueCheckDayLM",
+
+  // Количество уникальных чеков (ночь)
+  UNIQUE_CHECK_NIGHT = "uniqueCheckNight",
+  UNIQUE_CHECK_NIGHT_LY = "uniqueCheckNightLY",
+  UNIQUE_CHECK_NIGHT_LM = "uniqueCheckNightLM",
+
   // -----------------------------------------------
   GROUP_DISCOUNT = "groupDiscount",
   DISCOUNT = "discount",

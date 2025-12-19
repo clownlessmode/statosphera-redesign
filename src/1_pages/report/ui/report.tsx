@@ -777,7 +777,7 @@ const Report: FC = () => {
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
-
+  console.log(allData);
   const showCheckbox = useMemo(() => {
     return [
       "city",
