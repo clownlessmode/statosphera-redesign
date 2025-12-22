@@ -62,7 +62,7 @@ const FiltersInner: FC<FiltersProps> = ({ isLoading, setShowFilters }) => {
           </ViewTabsGroup>
         </ViewTabsList>
       )}
-      <div className="flex flex-col gap-4 pb-20 w-3/4 max-md:w-full">
+      <div className="flex flex-col gap-4 pb-34 w-3/4 max-md:w-full">
         <div
           key={resetKey}
           className="flex flex-col md:overflow-auto gap-4 md:pt-4 scrollbar-hide max-md:pb-17"
