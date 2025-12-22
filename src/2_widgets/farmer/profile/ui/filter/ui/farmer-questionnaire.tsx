@@ -1101,10 +1101,7 @@ export default function FarmerQuestionnaire({
                 render={({ field }) => (
                   <FormItem className={cn(data && "col-span-3")}>
                     <FormLabel>
-                      <span>
-                        История компании
-                        <span className="text-destructive ml-0.5">*</span>
-                      </span>
+                      <span>История компании</span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
