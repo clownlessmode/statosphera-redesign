@@ -1,5 +1,6 @@
 import { COLUMN_KEY } from "@shared/constants/table-columns";
 import { sortGroups } from "@shared/lib/sort-groups";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import {
   CreditCard,
   Landmark,
@@ -186,6 +187,357 @@ const all_unique = [
   },
 ];
 
+const unique_night_shops = [
+  {
+    id: "storeUniqueGroupDay",
+    label: "Дневные магазины",
+    value: "storeUniqueGroupDay",
+    icon: ShoppingBag,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_DAY,
+        label: "Дневные магазины",
+        value: COLUMN_KEY.UNIQUE_STORE_DAY,
+        tooltip:
+          "Количество уникальных магазинов, где были совершены покупки за выбранный период. Например: если покупали в 5 разных магазинах сети, значение будет 5",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
+        label: "Дневные магазины PM",
+        value: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
+        tooltip:
+          "Количество уникальных магазинов, где были покупки в предыдущем месяце. Позволяет сравнить активность торговых точек",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
+        label: "Дневные магазины PY",
+        value: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
+        tooltip:
+          "Количество уникальных магазинов за аналогичный период прошлого года. Помогает оценить развитие сети в годовом сравнении",
+      },
+    ],
+  },
+  {
+    id: "storeUniqueGroupNight",
+    label: "Ночные магазины",
+    value: "storeUniqueGroupNight",
+    icon: ShoppingBag,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_NIGHT,
+        label: "Ночные магазины",
+        value: COLUMN_KEY.UNIQUE_STORE_NIGHT,
+        tooltip:
+          "Количество уникальных магазинов, где были совершены покупки за выбранный период. Например: если покупали в 5 разных магазинах сети, значение будет 5",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
+        label: "Ночные магазины PM",
+        value: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
+        tooltip:
+          "Количество уникальных магазинов, где были покупки в предыдущем месяце. Позволяет сравнить активность торговых точек",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
+        label: "Ночные магазины PY",
+        value: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
+        tooltip:
+          "Количество уникальных магазинов за аналогичный период прошлого года. Помогает оценить развитие сети в годовом сравнении",
+      },
+    ],
+  },
+  {
+    id: "channelUniqueGroupDay",
+    label: "Дневные каналы",
+    value: "channelUniqueGroupDay",
+    icon: Share2,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
+        label: "Дневные каналы",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
+        tooltip:
+          "Количество уникальных каналов продаж. Показывает разнообразие точек контакта с клиентами",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
+        label: "Дневные каналы PM",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
+        tooltip:
+          "Количество каналов продаж, использованных в предыдущем месяце. Полезно для анализа изменений в дистрибуции",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
+        label: "Дневные каналы PY",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
+        tooltip:
+          "Количество каналов продаж за аналогичный период прошлого года. Покажет, добавились ли новые способы покупок",
+      },
+    ],
+  },
+  {
+    id: "channelUniqueGroupNight",
+    label: "Ночные каналы",
+    value: "channelUniqueGroupNight",
+    icon: Share2,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
+        label: "Ночные каналы",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
+        tooltip:
+          "Количество уникальных каналов продаж. Показывает разнообразие точек контакта с клиентами",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
+        label: "Ночные каналы PM",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
+        tooltip:
+          "Количество каналов продаж, использованных в предыдущем месяце. Полезно для анализа изменений в дистрибуции",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
+        label: "Ночные каналы PY",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
+        tooltip:
+          "Количество каналов продаж за аналогичный период прошлого года. Покажет, добавились ли новые способы покупок",
+      },
+    ],
+  },
+  {
+    id: "regionUniqueGroupDay",
+    label: "Дневные регионы",
+    value: "regionUniqueGroupDay",
+    icon: Map,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_DAY,
+        label: "Ночные регионы",
+        value: COLUMN_KEY.UNIQUE_REGION_DAY,
+        tooltip:
+          "Количество регионов, где были зафиксированы покупки. Отражает географический охват сети",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
+        label: "Ночные регионы PM",
+        value: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
+        tooltip:
+          "Количество регионов с покупками в предыдущем месяце. Показывает стабильность регионального присутствия",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
+        label: "Ночные регионы PY",
+        value: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
+        tooltip:
+          "Количество регионов с покупками год назад. Помогает оценить расширение или сокращение географии продаж",
+      },
+    ],
+  },
+  {
+    id: "regionUniqueGroupNight",
+    label: "Ночные регионы",
+    value: "regionUniqueGroupNight",
+    icon: Map,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_NIGHT,
+        label: "Ночные регионы",
+        value: COLUMN_KEY.UNIQUE_REGION_NIGHT,
+        tooltip:
+          "Количество регионов, где были зафиксированы покупки. Отражает географический охват сети",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
+        label: "Ночные регионы PM",
+        value: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
+        tooltip:
+          "Количество регионов с покупками в предыдущем месяце. Показывает стабильность регионального присутствия",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
+        label: "Ночные регионы PY",
+        value: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
+        tooltip:
+          "Количество регионов с покупками год назад. Помогает оценить расширение или сокращение географии продаж",
+      },
+    ],
+  },
+  {
+    id: "cityUniqueGroupDay",
+    label: "Дневные города",
+    value: "cityUniqueGroupDay",
+    icon: Landmark,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_DAY,
+        label: "Дневные города",
+        value: COLUMN_KEY.UNIQUE_CITY_DAY,
+        tooltip:
+          "Количество городов, где совершались покупки. Например: если покупали в Кемерово, Новосибирске и Анжеро-Судженске - значение будет 3",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
+        label: "Дневные города PM",
+        value: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
+        tooltip:
+          "Количество городов с покупками в прошлом месяце. Показывает активность в населенных пунктах",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
+        label: "Дневные города PY",
+        value: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
+        tooltip:
+          "Количество городов с покупками год назад. Демонстрирует динамику городского покрытия",
+      },
+    ],
+  },
+  {
+    id: "cityUniqueGroupNight",
+    label: "Ночные города",
+    value: "cityUniqueGroupNight",
+    icon: Landmark,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_NIGHT,
+        label: "Ночные города",
+        value: COLUMN_KEY.UNIQUE_CITY_NIGHT,
+        tooltip:
+          "Количество городов, где совершались покупки. Например: если покупали в Кемерово, Новосибирске и Анжеро-Судженске - значение будет 3",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
+        label: "Ночные города PM",
+        value: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
+        tooltip:
+          "Количество городов с покупками в прошлом месяце. Показывает активность в населенных пунктах",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
+        label: "Ночные города PY",
+        value: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
+        tooltip:
+          "Количество городов с покупками год назад. Демонстрирует динамику городского покрытия",
+      },
+    ],
+  },
+  {
+    id: "cardNumberUniqueGroupDay",
+    label: "Дневные номера карт",
+    value: "cardNumberUniqueGroupDay",
+    icon: CreditCard,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY,
+        label: "Дневные номера карт",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY,
+        tooltip:
+          "Количество уникальных карт лояльности, использованных при оплате. Показывает, сколько разных клиентов воспользовались своими картами",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LM,
+        label: "Дневные номера карт PM",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LM,
+        tooltip:
+          "Количество уникальных карт лояльности, применённых в предыдущем месяце. Отражает активность постоянных клиентов",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LY,
+        label: "Дневные номера карт PY",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LY,
+        tooltip:
+          "Количество уникальных карт лояльности за аналогичный период прошлого года. Позволяет оценить рост базы лояльных клиентов",
+      },
+    ],
+  },
+  {
+    id: "cardNumberUniqueGroupNight",
+    label: "Ночные номера карт",
+    value: "cardNumberUniqueGroupNight",
+    icon: CreditCard,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT,
+        label: "Ночные номера карт",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT,
+        tooltip:
+          "Количество уникальных карт лояльности, использованных при оплате. Показывает, сколько разных клиентов воспользовались своими картами",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LM,
+        label: "Ночные номера карт PM",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LM,
+        tooltip:
+          "Количество уникальных карт лояльности, применённых в предыдущем месяце. Отражает активность постоянных клиентов",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LY,
+        label: "Ночные номера карт PY",
+        value: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LY,
+        tooltip:
+          "Количество уникальных карт лояльности за аналогичный период прошлого года. Позволяет оценить рост базы лояльных клиентов",
+      },
+    ],
+  },
+  {
+    id: "checkUniqueGroupDay",
+    label: "Дневные чеки",
+    value: "checkUniqueGroupDay",
+    icon: Receipt,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_DAY,
+        label: "Дневные чеки",
+        value: COLUMN_KEY.UNIQUE_CHECK_DAY,
+        tooltip:
+          "Количество уникальных чеков. Основной показатель активности покупок",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_DAY_LM,
+        label: "Дневные чеки PM",
+        value: COLUMN_KEY.UNIQUE_CHECK_DAY_LM,
+        tooltip:
+          "Количество чеков в предыдущем месяце. Позволяет анализировать месячную динамику продаж",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_DAY_LY,
+        label: "Дневные чеки PY",
+        value: COLUMN_KEY.UNIQUE_CHECK_DAY_LY,
+        tooltip:
+          "Количество чеков за аналогичный период прошлого года. Основной показатель для годового сравнения",
+      },
+    ],
+  },
+  {
+    id: "checkUniqueGroupNight",
+    label: "Ночные чеки",
+    value: "checkUniqueGroupNight",
+    icon: Receipt,
+    children: [
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_NIGHT,
+        label: "Ночные чеки",
+        value: COLUMN_KEY.UNIQUE_CHECK_NIGHT,
+        tooltip:
+          "Количество уникальных чеков. Основной показатель активности покупок",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LM,
+        label: "Ночные чеки PM",
+        value: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LM,
+        tooltip:
+          "Количество чеков в предыдущем месяце. Позволяет анализировать месячную динамику продаж",
+      },
+      {
+        id: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LY,
+        label: "Ночные чеки PY",
+        value: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LY,
+        tooltip:
+          "Количество чеков за аналогичный период прошлого года. Основной показатель для годового сравнения",
+      },
+    ],
+  },
+];
+
 interface IndicatorGroup {
   id: string;
   label: string;
@@ -223,6 +575,7 @@ export function excludeIndicators(
 }
 
 export const useUniqueValues = (type: "check" | "commerce") => {
+  const { nightShops } = useFiltersStore();
   const filtered = sortGroups(all_unique);
   const check = excludeIndicators(filtered, []);
   const commerce = excludeIndicators(filtered, [
@@ -230,5 +583,11 @@ export const useUniqueValues = (type: "check" | "commerce") => {
     "checkUniqueGroup",
   ]);
 
-  return type === "check" ? check : commerce;
+  if (type === "check" && nightShops) {
+    return unique_night_shops;
+  }
+  if (type === "check") {
+    return check;
+  }
+  return commerce;
 };

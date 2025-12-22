@@ -505,6 +505,56 @@ export enum COLUMN_KEY {
 
   // ----------------- Ночные магазины (уникальные значения) -----------------
 
+  // Количество уникальных городов (день)
+  UNIQUE_CITY_DAY = "uniqueCityDay",
+  UNIQUE_CITY_DAY_LY = "uniqueCityDayLY",
+  UNIQUE_CITY_DAY_LM = "uniqueCityDayLM",
+
+  // Количество уникальных городов (ночь)
+  UNIQUE_CITY_NIGHT = "uniqueCityNight",
+  UNIQUE_CITY_NIGHT_LY = "uniqueCityNightLY",
+  UNIQUE_CITY_NIGHT_LM = "uniqueCityNightLM",
+
+  // Количество уникальных каналов (день)
+  UNIQUE_CHANNEL_DAY = "uniqueChannelDay",
+  UNIQUE_CHANNEL_DAY_LY = "uniqueChannelDayLY",
+  UNIQUE_CHANNEL_DAY_LM = "uniqueChannelDayLM",
+
+  // Количество уникальных каналов (ночь)
+  UNIQUE_CHANNEL_NIGHT = "uniqueChannelNight",
+  UNIQUE_CHANNEL_NIGHT_LY = "uniqueChannelNightLY",
+  UNIQUE_CHANNEL_NIGHT_LM = "uniqueChannelNightLM",
+
+  // Количество уникальных магазинов (день)
+  UNIQUE_STORE_DAY = "uniqueStoreDay",
+  UNIQUE_STORE_DAY_LY = "uniqueStoreDayLY",
+  UNIQUE_STORE_DAY_LM = "uniqueStoreDayLM",
+
+  // Количество уникальных магазинов (ночь)
+  UNIQUE_STORE_NIGHT = "uniqueStoreNight",
+  UNIQUE_STORE_NIGHT_LY = "uniqueStoreNightLY",
+  UNIQUE_STORE_NIGHT_LM = "uniqueStoreNightLM",
+
+  // Количество уникальных номеров карт (день)
+  UNIQUE_CARD_NUMBER_DAY = "uniqueCardNumberDay",
+  UNIQUE_CARD_NUMBER_DAY_LY = "uniqueCardNumberDayLY",
+  UNIQUE_CARD_NUMBER_DAY_LM = "uniqueCardNumberDayLM",
+
+  // Количество уникальных номеров карт (ночь)
+  UNIQUE_CARD_NUMBER_NIGHT = "uniqueCardNumberNight",
+  UNIQUE_CARD_NUMBER_NIGHT_LY = "uniqueCardNumberNightLY",
+  UNIQUE_CARD_NUMBER_NIGHT_LM = "uniqueCardNumberNightLM",
+
+  // Количество уникальных регионов (день)
+  UNIQUE_REGION_DAY = "uniqueRegionDay",
+  UNIQUE_REGION_DAY_LY = "uniqueRegionDayLY",
+  UNIQUE_REGION_DAY_LM = "uniqueRegionDayLM",
+
+  // Количество уникальных регионов (ночь)
+  UNIQUE_REGION_NIGHT = "uniqueRegionNight",
+  UNIQUE_REGION_NIGHT_LY = "uniqueRegionNightLY",
+  UNIQUE_REGION_NIGHT_LM = "uniqueRegionNightLM",
+
   // Количество уникальных чеков (день)
   UNIQUE_CHECK_DAY = "uniqueCheckDay",
   UNIQUE_CHECK_DAY_LY = "uniqueCheckDayLY",
@@ -4664,6 +4714,2286 @@ export const tableColumns: ColDef<any>[] = [
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
   },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY,
+    headerName: "Дневная выручка",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_LM,
+    headerName: "Дневная выручка PM",
+    headerTooltip: "В прошлом месяце",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_MOM,
+    headerName: "Дневная выручка MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_MOM_PERCENT,
+    headerName: "Дневная выручка MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_LY,
+    headerName: "Дневная выручка PY",
+    headerClass: "column",
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_YOY,
+    headerName: "Дневная выручка YoY",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_YOY_PERCENT,
+    headerName: "Дневная выручка YoY %",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT,
+    headerName: "Ночная выручка",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_LM,
+    headerName: "Ночная выручка PM",
+    headerTooltip: "В прошлом месяце",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_MOM,
+    headerName: "Ночная выручка MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_MOM_PERCENT,
+    headerName: "Ночная выручка MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_LY,
+    headerName: "Ночная выручка PY",
+    headerClass: "column",
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_YOY,
+    headerName: "Ночная выручка YoY",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_YOY_PERCENT,
+    headerName: "Ночная выручка YoY %",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT,
+    headerName: "Ночная выручка %",
+    headerTooltip: "Ночная выручка %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
+    headerName: "Ночная выручка % PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_MOM,
+    headerName: "Ночная выручка % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LY,
+    headerName: "Ночная выручка %  PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_YOY,
+    headerName: "Ночная выручка % YoY",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY,
+    headerName: "Дневная валовая прибыль, руб.",
+    headerTooltip: "Валовая прибыль",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_LM,
+    headerName: "Дневная валовая прибыль PM, руб.",
+    headerTooltip: "Валовая прибыль за предыдущий месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_MOM,
+    headerName: "Дневная валовая прибыль MoM, руб.",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_MOM_PERCENT,
+    headerName: "Дневная валовая прибыль MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_LY,
+    headerName: "Дневная валовая прибыль PY, руб.",
+    headerTooltip: "Валовая прибыль за прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_YOY,
+    headerName: "Дневная валовая прибыль YoY, руб.",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_YOY_PERCENT,
+    headerName: "Дневная валовая прибыль YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT,
+    headerName: "Ночная валовая прибыль, руб.",
+    headerTooltip: "Валовая прибыль",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_LM,
+    headerName: "Ночная валовая прибыль PM, руб.",
+    headerTooltip: "Валовая прибыль за предыдущий месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_MOM,
+    headerName: "Ночная валовая прибыль MoM, руб.",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_MOM_PERCENT,
+    headerName: "Ночная валовая прибыль MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_LY,
+    headerName: "Ночная валовая прибыль PY, руб.",
+    headerTooltip: "Валовая прибыль за прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_YOY,
+    headerName: "Ночная валовая прибыль YoY, руб.",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_YOY_PERCENT,
+    headerName: "Ночная валовая прибыль YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT,
+    headerName: "Ночная прибыль %",
+    headerTooltip: "Ночная прибыль %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
+    headerName: "Ночная прибыль % PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_MOM,
+    headerName: "Ночная прибыль % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LY,
+    headerName: "Ночная прибыль % PY",
+    headerTooltip: "Наценка за прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_YOY,
+    headerName: "Ночная прибыль % YoY",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY,
+    headerName: "Дневная наценка %",
+    headerTooltip: "Наценка %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
+    headerName: "Дневная наценка % PM",
+    headerTooltip: "Наценка за предыдущий месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_MOM,
+    headerName: "Дневная наценка % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_MOM_PERCENT,
+    headerName: "Дневная наценка % MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_LY,
+    headerName: "Дневная наценка % PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_YOY,
+    headerName: "Дневная наценка % YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_YOY_PERCENT,
+    headerName: "Дневная наценка % YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT,
+    headerName: "Ночная наценка %",
+    headerTooltip: "Наценка %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
+    headerName: "Ночная наценка % PM",
+    headerTooltip: "Наценка за предыдущий месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_MOM,
+    headerName: "Ночная наценка % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_MOM_PERCENT,
+    headerName: "Ночная наценка % MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LY,
+    headerName: "Ночная наценка % PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_YOY,
+    headerName: "Ночная наценка % YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_YOY_PERCENT,
+    headerName: "Ночная наценка % YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY,
+    headerName: "Дневная наценка % без скидки",
+    headerTooltip: "Наценка % без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
+    headerName: "Дневная наценка % без скидки PM",
+    headerTooltip: "Наценка % без учета скидки PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_MOM,
+    headerName: "Дневная наценка % без скидки MOM",
+    headerTooltip: "Наценка % без учета скидки MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LY,
+    headerName: "Дневная наценка % без скидки PY",
+    headerTooltip: "Наценка % без учета скидки PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_YOY,
+    headerName: "Дневная наценка % без скидки YOY",
+    headerTooltip: "Наценка % без учета скидки YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT,
+    headerName: "Ночная наценка % без скидки",
+    headerTooltip: "Наценка % без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
+    headerName: "Ночная наценка % без скидки PM",
+    headerTooltip: "Наценка % без учета скидки PM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_MOM,
+    headerName: "Ночная наценка % без скидки MOM",
+    headerTooltip: "Наценка % без учета скидки MOM",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LY,
+    headerName: "Ночная наценка % без скидки PY",
+    headerTooltip: "Наценка % без скидки PY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_YOY,
+    headerName: "Ночная наценка % без скидки YOY",
+    headerTooltip: "Наценка % без учета скидки YOY",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY,
+    headerName: "Дневная себестоимость, руб.",
+    headerTooltip: "Себестоимость",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_LM,
+    headerName: "Дневная себестоимость, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_MOM,
+    headerName: "Дневная себестоимость, руб. MOM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_MOM_PERCENT,
+    headerName: "Дневная себестоимость, руб. MOM%",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_LY,
+    headerName: "Дневная себестоимость, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_YOY,
+    headerName: "Дневная себестоимость, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_YOY_PERCENT,
+    headerName: "Дневная себестоимость, руб. YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT,
+    headerName: "Ночная себестоимость, руб.",
+    headerTooltip: "Себестоимость",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_LM,
+    headerName: "Ночная себестоимость, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_MOM,
+    headerName: "Ночная себестоимость, руб. MOM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_MOM_PERCENT,
+    headerName: "Ночная себестоимость, руб. MOM%",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_LY,
+    headerName: "Ночная себестоимость, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_YOY,
+    headerName: "Ночная себестоимость, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_YOY_PERCENT,
+    headerName: "Ночная себестоимость, руб. YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY,
+    headerName: "Дневная скидка, руб.",
+    headerTooltip: "Скидка",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_LM,
+    headerName: "Дневная скидка, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_MOM,
+    headerName: "Дневная скидка, руб. MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_MOM_PERCENT,
+    headerName: "Дневная скидка, руб. MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_LY,
+    headerName: "Дневная скидка, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_YOY,
+    headerName: "Дневная скидка, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_YOY_PERCENT,
+    headerName: "Дневная скидка, руб. YoY%",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT,
+    headerName: "Ночная скидка, руб.",
+    headerTooltip: "Скидка",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_LM,
+    headerName: "Ночная скидка, руб. PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_MOM,
+    headerName: "Ночная скидка, руб. MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_MOM_PERCENT,
+    headerName: "Ночная скидка, руб. MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_LY,
+    headerName: "Ночная скидка, руб. PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_YOY,
+    headerName: "Ночная скидка, руб. YoY",
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_YOY_PERCENT,
+    headerName: "Ночная скидка, руб. YoY%",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY,
+    headerName: "Дневная скидка %",
+    headerTooltip: "Скидка %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
+    headerName: "Дневная скидка % PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_MOM_PERCENT,
+    headerName: "Дневная скидка % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LY,
+    headerName: "Дневная скидка %  PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_YOY_PERCENT,
+    headerName: "Дневная скидка % YoY",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT,
+    headerName: "Ночная скидка %",
+    headerTooltip: "Скидка %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LM,
+    headerName: "Ночная скидка % PM",
+    headerTooltip: "Прошлый месяц",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_MOM_PERCENT,
+    headerName: "Ночная скидка % MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LY,
+    headerName: "Ночная скидка %  PY",
+    headerTooltip: "Прошлый год",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_YOY_PERCENT,
+    headerName: "Ночная скидка % YoY",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж",
+    headerTooltip: "Кол. продаж",
+    field: COLUMN_KEY.COUNT_SALES_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж MoM",
+    field: COLUMN_KEY.COUNT_SALES_DAY_MOM,
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж MoM%",
+    field: COLUMN_KEY.COUNT_SALES_DAY_MOM_PERCENT,
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж PM",
+    field: COLUMN_KEY.COUNT_SALES_DAY_LM,
+    headerTooltip: "В прошлом месяце",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж PY",
+    field: COLUMN_KEY.COUNT_SALES_DAY_LY,
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж YoY",
+    field: COLUMN_KEY.COUNT_SALES_DAY_YOY,
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Дневное кол. продаж YoY%",
+    field: COLUMN_KEY.COUNT_SALES_DAY_YOY_PERCENT,
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж",
+    headerTooltip: "Кол. продаж",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж MoM",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_MOM,
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж MoM%",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_MOM_PERCENT,
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж PM",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_LM,
+    headerTooltip: "В прошлом месяце",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж PY",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_LY,
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж YoY",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_YOY,
+    headerTooltip: "Изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ночное кол. продаж YoY%",
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_YOY_PERCENT,
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY,
+    headerName: "Дневной ср. чек",
+    headerTooltip: "Ср. чек",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_LM,
+    headerName: "Дневной ср. чек PM",
+    headerTooltip: "В прошлом месяце",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_MOM,
+    headerName: "Дневной ср. чек MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_MOM_PERCENT,
+    headerName: "Дневной ср. чек MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_LY,
+    headerName: "Дневной ср. чек  PY",
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_YOY,
+    headerName: "Дневной ср. чек YoY",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_YOY_PERCENT,
+    headerName: "Дневной ср. чек YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT,
+    headerName: "Ночной ср. чек",
+    headerTooltip: "Ср. чек",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_LM,
+    headerName: "Ночной ср. чек PM",
+    headerTooltip: "В прошлом месяце",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_MOM,
+    headerName: "Ночной ср. чек MoM",
+    headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_MOM_PERCENT,
+    headerName: "Ночной ср. чек MoM %",
+    headerTooltip: "Процент изменения по сравнению с прошлым месяцем",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_LY,
+    headerName: "Ночной ср. чек  PY",
+    headerTooltip: "В прошлом году",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_YOY,
+    headerName: "Ночной ср. чек YoY",
+    headerTooltip: "Изменение по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_YOY_PERCENT,
+    headerName: "Ночной ср. чек YoY %",
+    headerTooltip: "Процент изменения по сравнению с прошлым годом",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
 ];
 
 export type Column = {
@@ -8096,6 +10426,762 @@ export const tableConfig: ColDef<any>[] = [
   {
     headerName: "Ун. номер карты PY",
     field: COLUMN_KEY.UNIQUE_CARD_NUMBER_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные магазины",
+    field: COLUMN_KEY.UNIQUE_STORE_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные магазины PM",
+    field: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные магазины PY",
+    field: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные магазины",
+    field: COLUMN_KEY.UNIQUE_STORE_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные магазины PM",
+    field: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные магазины PY",
+    field: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные номера карт",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные номера карт PM",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные номера карт PY",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные номера карт",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные номера карт PM",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные номера карт PY",
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные чеки",
+    field: COLUMN_KEY.UNIQUE_CHECK_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные чеки PM",
+    field: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные чеки PY",
+    field: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные чеки",
+    field: COLUMN_KEY.UNIQUE_CHECK_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные чеки PM",
+    field: COLUMN_KEY.UNIQUE_CHECK_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные чеки PY",
+    field: COLUMN_KEY.UNIQUE_CHECK_DAY_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные регионы",
+    field: COLUMN_KEY.UNIQUE_REGION_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные регионы PM",
+    field: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные регионы PY",
+    field: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные регионы",
+    field: COLUMN_KEY.UNIQUE_REGION_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные регионы PM",
+    field: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные регионы PY",
+    field: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные города",
+    field: COLUMN_KEY.UNIQUE_CITY_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные города PM",
+    field: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные города PY",
+    field: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные города",
+    field: COLUMN_KEY.UNIQUE_CITY_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные города PM",
+    field: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные города PY",
+    field: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные каналы",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные каналы PM",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. ночные каналы PY",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные каналы",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные каналы PM",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Ун. дневные каналы PY",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",

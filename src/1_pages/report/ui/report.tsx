@@ -385,6 +385,14 @@ const Report: FC = () => {
             extractedFilters.product.idGroupMain.length > 0
               ? extractedFilters.product.idGroupMain
               : payload.filters.product.idGroupMain,
+          subGroups:
+            extractedFilters.product.subGroups.length > 0
+              ? extractedFilters.product.subGroups
+              : payload.filters.product.subGroups,
+          subSubGroups:
+            extractedFilters.product.subSubGroups.length > 0
+              ? extractedFilters.product.subSubGroups
+              : payload.filters.product.subSubGroups,
         },
         loyal: {
           ...payload.filters.loyal,
@@ -777,7 +785,7 @@ const Report: FC = () => {
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
   const isMobile = useIsMobile();
   const isLoading = isGraphLoading || isTableLoading || isTotalLoading;
-  console.log(allData);
+
   const showCheckbox = useMemo(() => {
     return [
       "city",

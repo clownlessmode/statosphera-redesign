@@ -111,7 +111,12 @@ const CheckInner = () => {
         ) : (
           <>
             <div className="flex flex-col gap-2">
-              <Button onClick={() => triggerReset()}>
+              <Button
+                onClick={() => {
+                  triggerReset();
+                  updateNightShops(false);
+                }}
+              >
                 Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
               </Button>
               <Button

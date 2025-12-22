@@ -1304,7 +1304,7 @@ const all_indicators = [
   },
 ];
 
-const all_indicators_night_shops = [
+const indicators_night_shops = [
   {
     id: COLUMN_KEY.GROUP_PROCEEDS_DAY,
     label: "Дневная выручка, руб.",
@@ -1313,49 +1313,49 @@ const all_indicators_night_shops = [
     children: [
       {
         id: COLUMN_KEY.PROCEEDS_DAY,
-        label: "Выручка, руб.",
+        label: "Дневная выручка, руб.",
         value: COLUMN_KEY.PROCEEDS_DAY,
         tooltip:
           "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_LM,
-        label: "Выручка, руб. PM",
+        label: "Дневная выручка, руб. PM",
         value: COLUMN_KEY.PROCEEDS_DAY_LM,
         tooltip:
           "Выручка за предыдущий месяц. Позволяет сравнить текущие результаты с прошлым месяцем",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_MOM,
-        label: "Выручка, руб. MOM",
+        label: "Дневная выручка, руб. MOM",
         value: COLUMN_KEY.PROCEEDS_DAY_MOM,
         tooltip:
           "Разница в выручке между текущим и предыдущим месяцем в абсолютных значениях",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_MOM_PERCENT,
-        label: "Выручка, руб. MOM%",
+        label: "Дневная выручка, руб. MOM%",
         value: COLUMN_KEY.PROCEEDS_DAY_MOM_PERCENT,
         tooltip:
           "Процентное изменение выручки по сравнению с предыдущим месяцем",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_LY,
-        label: "Выручка, руб. PY",
+        label: "Дневная выручка, руб. PY",
         value: COLUMN_KEY.PROCEEDS_DAY_LY,
         tooltip:
           "Выручка за аналогичный период прошлого года для годового сравнения",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_YOY,
-        label: "Выручка, руб. YOY",
+        label: "Дневная выручка, руб. YOY",
         value: COLUMN_KEY.PROCEEDS_DAY_YOY,
         tooltip:
           "Разница в выручке между текущим периодом и аналогичным периодом прошлого года",
       },
       {
         id: COLUMN_KEY.PROCEEDS_DAY_YOY_PERCENT,
-        label: "Выручка, руб. YOY%",
+        label: "Дневная выручка, руб. YOY%",
         value: COLUMN_KEY.PROCEEDS_DAY_YOY_PERCENT,
         tooltip:
           "Процентное изменение выручки по сравнению с аналогичным периодом прошлого года",
@@ -2297,7 +2297,7 @@ const all_indicators_night_shops = [
       {
         id: COLUMN_KEY.AVG_CHECK_NIGHT_YOY,
         label: "Ночной ср. Чек YoY",
-        value: COLUMN_KEY.AVG_CHECK_DAY_YOY,
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_YOY,
         tooltip:
           "Изменение среднего чека по сравнению с аналогичным периодом прошлого года",
       },
@@ -2365,7 +2365,7 @@ export const useIndicatorList = (type: "check" | "commerce") => {
     COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
   ]);
   if (type === "check" && nightShops) {
-    return all_indicators_night_shops;
+    return indicators_night_shops;
   }
   if (type === "check") {
     return CHECK;
