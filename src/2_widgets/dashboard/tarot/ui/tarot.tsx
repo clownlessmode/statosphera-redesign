@@ -839,7 +839,7 @@ const Tarot = () => {
     <Card className="w-full h-[400px] flex flex-col relative overflow-hidden">
       <CardHeader>
         <CardTitle className="text-center max-md:text-sm">
-          Гадание на картах Таро
+          Гадание на Таро картах
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex items-center justify-center relative">
