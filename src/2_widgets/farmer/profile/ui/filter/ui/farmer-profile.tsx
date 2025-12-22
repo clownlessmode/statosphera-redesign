@@ -61,7 +61,7 @@ export default function FarmerProfileCard({
               <div className="w-full h-full flex-col gap-6 hidden max-md:flex items-center max-w-full">
                 <Card
                   style={{
-                    backgroundImage: `url(${profile.photo})`,
+                    backgroundImage: `url("${profile.photo}")`,
                   }}
                   className="aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0 size-[150px] rounded-full"
                 />
@@ -349,7 +349,7 @@ export default function FarmerProfileCard({
               <div className="w-full h-full flex flex-col gap-6 max-w-[300px] max-md:hidden">
                 <Card
                   style={{
-                    backgroundImage: `url(${profile.photo})`,
+                    backgroundImage: `url("${profile.photo}")`,
                   }}
                   className="size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover shrink-0"
                 />

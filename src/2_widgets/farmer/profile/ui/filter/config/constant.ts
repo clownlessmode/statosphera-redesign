@@ -17,6 +17,5 @@ export const STEPS_FIELDS = [
     "chiefAccountant",
     "responsiblePerson",
     "mainContact",
-    "companyHistory",
   ],
 ];
