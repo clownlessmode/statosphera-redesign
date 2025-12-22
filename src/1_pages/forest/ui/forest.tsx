@@ -435,6 +435,27 @@ const Forest: FC = () => {
         return requestCache.current[requestKey];
       }
 
+      if (
+        startRow === 0 &&
+        initialRows &&
+        initialRows.data.length > 0 &&
+        sortModel.length === 0
+      ) {
+        const result = {
+          data: initialRows.data.slice(startRow, endRow),
+
+          totalRows: initialTotalRows,
+        };
+
+        const cachedPromise = Promise.resolve(result);
+
+        requestCache.current[requestKey] = (await cachedPromise) as any;
+
+        lastRequestKey.current = requestKey;
+
+        return cachedPromise;
+      }
+
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
