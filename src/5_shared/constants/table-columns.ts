@@ -506,35 +506,20 @@ export enum COLUMN_KEY {
 
   // ----------------- Ночные магазины (уникальные значения) -----------------
 
-  // Количество уникальных городов (день)
-  UNIQUE_CITY_DAY = "uniqueCityDay",
-  UNIQUE_CITY_DAY_LY = "uniqueCityDayLY",
-  UNIQUE_CITY_DAY_LM = "uniqueCityDayLM",
+  // Количество уникальных городов
+  UNIQUE_CITY_NS = "uniqueCityNightStore",
+  UNIQUE_CITY_NS_LY = "uniqueCityNightStoreLY",
+  UNIQUE_CITY_NS_LM = "uniqueCityNightStoreLM",
 
-  // Количество уникальных городов (ночь)
-  UNIQUE_CITY_NIGHT = "uniqueCityNight",
-  UNIQUE_CITY_NIGHT_LY = "uniqueCityNightLY",
-  UNIQUE_CITY_NIGHT_LM = "uniqueCityNightLM",
+  // Количество уникальных каналов
+  UNIQUE_CHANNEL_NS = "uniqueChannelNightStore",
+  UNIQUE_CHANNEL_NS_LY = "uniqueChannelNightStoreLY",
+  UNIQUE_CHANNEL_NS_LM = "uniqueChannelNightStoreLM",
 
-  // Количество уникальных каналов (день)
-  UNIQUE_CHANNEL_DAY = "uniqueChannelDay",
-  UNIQUE_CHANNEL_DAY_LY = "uniqueChannelDayLY",
-  UNIQUE_CHANNEL_DAY_LM = "uniqueChannelDayLM",
-
-  // Количество уникальных каналов (ночь)
-  UNIQUE_CHANNEL_NIGHT = "uniqueChannelNight",
-  UNIQUE_CHANNEL_NIGHT_LY = "uniqueChannelNightLY",
-  UNIQUE_CHANNEL_NIGHT_LM = "uniqueChannelNightLM",
-
-  // Количество уникальных магазинов (день)
-  UNIQUE_STORE_DAY = "uniqueStoreDay",
-  UNIQUE_STORE_DAY_LY = "uniqueStoreDayLY",
-  UNIQUE_STORE_DAY_LM = "uniqueStoreDayLM",
-
-  // Количество уникальных магазинов (ночь)
-  UNIQUE_STORE_NIGHT = "uniqueStoreNight",
-  UNIQUE_STORE_NIGHT_LY = "uniqueStoreNightLY",
-  UNIQUE_STORE_NIGHT_LM = "uniqueStoreNightLM",
+  // Количество уникальных магазинов
+  UNIQUE_STORE_NS = "uniqueStoreNightStore",
+  UNIQUE_STORE_NS_LY = "uniqueStoreNightStoreLY",
+  UNIQUE_STORE_NS_LM = "uniqueStoreNightStoreLM",
 
   // Количество уникальных номеров карт (день)
   UNIQUE_CARD_NUMBER_DAY = "uniqueCardNumberDay",
@@ -546,15 +531,10 @@ export enum COLUMN_KEY {
   UNIQUE_CARD_NUMBER_NIGHT_LY = "uniqueCardNumberNightLY",
   UNIQUE_CARD_NUMBER_NIGHT_LM = "uniqueCardNumberNightLM",
 
-  // Количество уникальных регионов (день)
-  UNIQUE_REGION_DAY = "uniqueRegionDay",
-  UNIQUE_REGION_DAY_LY = "uniqueRegionDayLY",
-  UNIQUE_REGION_DAY_LM = "uniqueRegionDayLM",
-
-  // Количество уникальных регионов (ночь)
-  UNIQUE_REGION_NIGHT = "uniqueRegionNight",
-  UNIQUE_REGION_NIGHT_LY = "uniqueRegionNightLY",
-  UNIQUE_REGION_NIGHT_LM = "uniqueRegionNightLM",
+  // Количество уникальных регионов
+  UNIQUE_REGION_NS = "uniqueRegionNightStore",
+  UNIQUE_REGION_NS_LY = "uniqueRegionNightStoreLY",
+  UNIQUE_REGION_NS_LM = "uniqueRegionNightStoreLM",
 
   // Количество уникальных чеков (день)
   UNIQUE_CHECK_DAY = "uniqueCheckDay",
@@ -10461,8 +10441,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные магазины",
-    field: COLUMN_KEY.UNIQUE_STORE_NIGHT,
+    headerName: "Ун. магазины",
+    field: COLUMN_KEY.UNIQUE_STORE_NS,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10482,8 +10462,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные магазины PM",
-    field: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
+    headerName: "Ун. магазины PM",
+    field: COLUMN_KEY.UNIQUE_STORE_NS_LM,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10503,71 +10483,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные магазины PY",
-    field: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные магазины",
-    field: COLUMN_KEY.UNIQUE_STORE_DAY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные магазины PM",
-    field: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные магазины PY",
-    field: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
+    headerName: "Ун. магазины PY",
+    field: COLUMN_KEY.UNIQUE_STORE_NS_LY,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10839,8 +10756,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные регионы",
-    field: COLUMN_KEY.UNIQUE_REGION_NIGHT,
+    headerName: "Ун. регионы",
+    field: COLUMN_KEY.UNIQUE_REGION_NS,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10860,8 +10777,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные регионы PM",
-    field: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
+    headerName: "Ун. регионы PM",
+    field: COLUMN_KEY.UNIQUE_REGION_NS_LM,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10881,8 +10798,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные регионы PY",
-    field: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
+    headerName: "Ун. регионы PY",
+    field: COLUMN_KEY.UNIQUE_REGION_NS_LY,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10902,8 +10819,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. дневные регионы",
-    field: COLUMN_KEY.UNIQUE_REGION_DAY,
+    headerName: "Ун. города",
+    field: COLUMN_KEY.UNIQUE_CITY_NS,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10923,8 +10840,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. дневные регионы PM",
-    field: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
+    headerName: "Ун. города PM",
+    field: COLUMN_KEY.UNIQUE_CITY_NS_LM,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10944,8 +10861,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. дневные регионы PY",
-    field: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
+    headerName: "Ун. города PY",
+    field: COLUMN_KEY.UNIQUE_CITY_NS_LY,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10965,8 +10882,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные города",
-    field: COLUMN_KEY.UNIQUE_CITY_NIGHT,
+    headerName: "Ун. каналы",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NS,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -10986,8 +10903,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные города PM",
-    field: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
+    headerName: "Ун. каналы PM",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NS_LM,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",
@@ -11007,197 +10924,8 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
-    headerName: "Ун. ночные города PY",
-    field: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные города",
-    field: COLUMN_KEY.UNIQUE_CITY_DAY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные города PM",
-    field: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные города PY",
-    field: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. ночные каналы",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. ночные каналы PM",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. ночные каналы PY",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные каналы",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные каналы PM",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    filter: "agNumberColumnFilter",
-    filterParams: {
-      buttons: ["reset", "apply"],
-      filterOptions: [
-        {
-          displayKey: "betweenExclusive",
-          displayName: "Между",
-          predicate: ([fv1, fv2]: any[], cellValue: any) =>
-            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
-          numberOfInputs: 2,
-        },
-      ],
-
-      maxNumConditions: 1,
-    },
-  },
-  {
-    headerName: "Ун. дневные каналы PY",
-    field: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
+    headerName: "Ун. каналы PY",
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NS_LY,
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     filter: "agNumberColumnFilter",

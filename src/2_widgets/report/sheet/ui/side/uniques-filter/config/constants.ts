@@ -189,232 +189,116 @@ const all_unique = [
 
 const unique_night_shops = [
   {
-    id: "storeUniqueGroupDay",
-    label: "Дневные магазины",
-    value: "storeUniqueGroupDay",
+    id: "storeUniqueNightStoreGroup",
+    label: "Магазины",
+    value: "storeUniqueNightStoreGroup",
     icon: ShoppingBag,
     children: [
       {
-        id: COLUMN_KEY.UNIQUE_STORE_DAY,
-        label: "Дневные магазины",
-        value: COLUMN_KEY.UNIQUE_STORE_DAY,
+        id: COLUMN_KEY.UNIQUE_STORE_NS,
+        label: "Магазины",
+        value: COLUMN_KEY.UNIQUE_STORE_NS,
         tooltip:
           "Количество уникальных магазинов, где были совершены покупки за выбранный период. Например: если покупали в 5 разных магазинах сети, значение будет 5",
       },
       {
-        id: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
-        label: "Дневные магазины PM",
-        value: COLUMN_KEY.UNIQUE_STORE_DAY_LM,
+        id: COLUMN_KEY.UNIQUE_STORE_NS_LM,
+        label: "Магазины PM",
+        value: COLUMN_KEY.UNIQUE_STORE_NS_LM,
         tooltip:
           "Количество уникальных магазинов, где были покупки в предыдущем месяце. Позволяет сравнить активность торговых точек",
       },
       {
-        id: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
-        label: "Дневные магазины PY",
-        value: COLUMN_KEY.UNIQUE_STORE_DAY_LY,
+        id: COLUMN_KEY.UNIQUE_STORE_NS_LY,
+        label: "Магазины PY",
+        value: COLUMN_KEY.UNIQUE_STORE_NS_LY,
         tooltip:
           "Количество уникальных магазинов за аналогичный период прошлого года. Помогает оценить развитие сети в годовом сравнении",
       },
     ],
   },
   {
-    id: "storeUniqueGroupNight",
-    label: "Ночные магазины",
-    value: "storeUniqueGroupNight",
-    icon: ShoppingBag,
-    children: [
-      {
-        id: COLUMN_KEY.UNIQUE_STORE_NIGHT,
-        label: "Ночные магазины",
-        value: COLUMN_KEY.UNIQUE_STORE_NIGHT,
-        tooltip:
-          "Количество уникальных магазинов, где были совершены покупки за выбранный период. Например: если покупали в 5 разных магазинах сети, значение будет 5",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
-        label: "Ночные магазины PM",
-        value: COLUMN_KEY.UNIQUE_STORE_NIGHT_LM,
-        tooltip:
-          "Количество уникальных магазинов, где были покупки в предыдущем месяце. Позволяет сравнить активность торговых точек",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
-        label: "Ночные магазины PY",
-        value: COLUMN_KEY.UNIQUE_STORE_NIGHT_LY,
-        tooltip:
-          "Количество уникальных магазинов за аналогичный период прошлого года. Помогает оценить развитие сети в годовом сравнении",
-      },
-    ],
-  },
-  {
-    id: "channelUniqueGroupDay",
-    label: "Дневные каналы",
-    value: "channelUniqueGroupDay",
+    id: "channelUniqueGroup",
+    label: "Каналы",
+    value: "channelUniqueGroup",
     icon: Share2,
     children: [
       {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
-        label: "Дневные каналы",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY,
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NS,
+        label: "Каналы",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NS,
         tooltip:
           "Количество уникальных каналов продаж. Показывает разнообразие точек контакта с клиентами",
       },
       {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
-        label: "Дневные каналы PM",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LM,
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NS_LM,
+        label: "Каналы PM",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NS_LM,
         tooltip:
           "Количество каналов продаж, использованных в предыдущем месяце. Полезно для анализа изменений в дистрибуции",
       },
       {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
-        label: "Дневные каналы PY",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_DAY_LY,
+        id: COLUMN_KEY.UNIQUE_CHANNEL_NS_LY,
+        label: "Каналы PY",
+        value: COLUMN_KEY.UNIQUE_CHANNEL_NS_LY,
         tooltip:
           "Количество каналов продаж за аналогичный период прошлого года. Покажет, добавились ли новые способы покупок",
       },
     ],
   },
   {
-    id: "channelUniqueGroupNight",
-    label: "Ночные каналы",
-    value: "channelUniqueGroupNight",
-    icon: Share2,
-    children: [
-      {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
-        label: "Ночные каналы",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT,
-        tooltip:
-          "Количество уникальных каналов продаж. Показывает разнообразие точек контакта с клиентами",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
-        label: "Ночные каналы PM",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LM,
-        tooltip:
-          "Количество каналов продаж, использованных в предыдущем месяце. Полезно для анализа изменений в дистрибуции",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
-        label: "Ночные каналы PY",
-        value: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LY,
-        tooltip:
-          "Количество каналов продаж за аналогичный период прошлого года. Покажет, добавились ли новые способы покупок",
-      },
-    ],
-  },
-  {
-    id: "regionUniqueGroupDay",
-    label: "Дневные регионы",
-    value: "regionUniqueGroupDay",
+    id: "regionUniqueGroup",
+    label: "Регионы",
+    value: "regionUniqueGroup",
     icon: Map,
     children: [
       {
-        id: COLUMN_KEY.UNIQUE_REGION_DAY,
-        label: "Ночные регионы",
-        value: COLUMN_KEY.UNIQUE_REGION_DAY,
+        id: COLUMN_KEY.UNIQUE_REGION_NS,
+        label: "Регионы",
+        value: COLUMN_KEY.UNIQUE_REGION_NS,
         tooltip:
           "Количество регионов, где были зафиксированы покупки. Отражает географический охват сети",
       },
       {
-        id: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
-        label: "Ночные регионы PM",
-        value: COLUMN_KEY.UNIQUE_REGION_DAY_LM,
+        id: COLUMN_KEY.UNIQUE_REGION_NS_LM,
+        label: "Регионы PM",
+        value: COLUMN_KEY.UNIQUE_REGION_NS_LM,
         tooltip:
           "Количество регионов с покупками в предыдущем месяце. Показывает стабильность регионального присутствия",
       },
       {
-        id: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
-        label: "Ночные регионы PY",
-        value: COLUMN_KEY.UNIQUE_REGION_DAY_LY,
+        id: COLUMN_KEY.UNIQUE_REGION_NS_LY,
+        label: "Регионы PY",
+        value: COLUMN_KEY.UNIQUE_REGION_NS_LY,
         tooltip:
           "Количество регионов с покупками год назад. Помогает оценить расширение или сокращение географии продаж",
       },
     ],
   },
   {
-    id: "regionUniqueGroupNight",
-    label: "Ночные регионы",
-    value: "regionUniqueGroupNight",
-    icon: Map,
-    children: [
-      {
-        id: COLUMN_KEY.UNIQUE_REGION_NIGHT,
-        label: "Ночные регионы",
-        value: COLUMN_KEY.UNIQUE_REGION_NIGHT,
-        tooltip:
-          "Количество регионов, где были зафиксированы покупки. Отражает географический охват сети",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
-        label: "Ночные регионы PM",
-        value: COLUMN_KEY.UNIQUE_REGION_NIGHT_LM,
-        tooltip:
-          "Количество регионов с покупками в предыдущем месяце. Показывает стабильность регионального присутствия",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
-        label: "Ночные регионы PY",
-        value: COLUMN_KEY.UNIQUE_REGION_NIGHT_LY,
-        tooltip:
-          "Количество регионов с покупками год назад. Помогает оценить расширение или сокращение географии продаж",
-      },
-    ],
-  },
-  {
-    id: "cityUniqueGroupDay",
-    label: "Дневные города",
-    value: "cityUniqueGroupDay",
+    id: "cityUniqueGroup",
+    label: "Города",
+    value: "cityUniqueGroup",
     icon: Landmark,
     children: [
       {
-        id: COLUMN_KEY.UNIQUE_CITY_DAY,
-        label: "Дневные города",
-        value: COLUMN_KEY.UNIQUE_CITY_DAY,
+        id: COLUMN_KEY.UNIQUE_CITY_NS,
+        label: "Города",
+        value: COLUMN_KEY.UNIQUE_CITY_NS,
         tooltip:
           "Количество городов, где совершались покупки. Например: если покупали в Кемерово, Новосибирске и Анжеро-Судженске - значение будет 3",
       },
       {
-        id: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
-        label: "Дневные города PM",
-        value: COLUMN_KEY.UNIQUE_CITY_DAY_LM,
+        id: COLUMN_KEY.UNIQUE_CITY_NS_LM,
+        label: "Города PM",
+        value: COLUMN_KEY.UNIQUE_CITY_NS_LM,
         tooltip:
           "Количество городов с покупками в прошлом месяце. Показывает активность в населенных пунктах",
       },
       {
-        id: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
-        label: "Дневные города PY",
-        value: COLUMN_KEY.UNIQUE_CITY_DAY_LY,
-        tooltip:
-          "Количество городов с покупками год назад. Демонстрирует динамику городского покрытия",
-      },
-    ],
-  },
-  {
-    id: "cityUniqueGroupNight",
-    label: "Ночные города",
-    value: "cityUniqueGroupNight",
-    icon: Landmark,
-    children: [
-      {
-        id: COLUMN_KEY.UNIQUE_CITY_NIGHT,
-        label: "Ночные города",
-        value: COLUMN_KEY.UNIQUE_CITY_NIGHT,
-        tooltip:
-          "Количество городов, где совершались покупки. Например: если покупали в Кемерово, Новосибирске и Анжеро-Судженске - значение будет 3",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
-        label: "Ночные города PM",
-        value: COLUMN_KEY.UNIQUE_CITY_NIGHT_LM,
-        tooltip:
-          "Количество городов с покупками в прошлом месяце. Показывает активность в населенных пунктах",
-      },
-      {
-        id: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
-        label: "Ночные города PY",
-        value: COLUMN_KEY.UNIQUE_CITY_NIGHT_LY,
+        id: COLUMN_KEY.UNIQUE_CITY_NS_LY,
+        label: "Города PY",
+        value: COLUMN_KEY.UNIQUE_CITY_NS_LY,
         tooltip:
           "Количество городов с покупками год назад. Демонстрирует динамику городского покрытия",
       },
