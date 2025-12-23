@@ -711,6 +711,8 @@ const Report: FC = () => {
         startRow,
         endRow,
         sortModel,
+        filterDate: payload.filterDate,
+        filterTime: payload.filterTime,
         values: payload.values,
         groups: payload.groups,
         filters: payload.filters,
@@ -721,6 +723,27 @@ const Report: FC = () => {
         (await requestCache.current[requestKey])
       ) {
         return requestCache.current[requestKey];
+      }
+
+      if (
+        startRow === 0 &&
+        initialRows &&
+        initialRows.data.length > 0 &&
+        sortModel.length === 0
+      ) {
+        const result = {
+          data: initialRows.data.slice(startRow, endRow),
+
+          totalRows: initialTotalRows,
+        };
+
+        const cachedPromise = Promise.resolve(result);
+
+        requestCache.current[requestKey] = (await cachedPromise) as any;
+
+        lastRequestKey.current = requestKey;
+
+        return cachedPromise;
       }
 
       const sorts =

@@ -184,6 +184,7 @@ export enum COLUMN_KEY {
   // ----------------- Выручка -----------------
   GROUP_PROCEEDS = "groupProceeds",
   GROUP_PLAN_PROCEEDS = "groupPlanProceeds",
+  STORE = "store",
   STORE_NAME = "storeName",
   PROCEEDS = "proceeds",
   PROCEEDS_LM = "proceedsLM",
@@ -7136,9 +7137,24 @@ export enum ColumnsKeyId {
   SUBDIVISION_PRODUCTS_ID = "idSubdivisionProducts",
   MANAGER_AUTO_ID = "idManagerAuto",
   GROUPS_FRANCHISE_ID = "idGroupsFranchise",
+  ONE_LVL_GROUP_PRODUCT_ID = "idOneLvlGroupProduct",
+  TWO_LVL_GROUP_PRODUCT_ID = "idTwoLvlGroupProduct",
+  THREE_LVL_GROUP_PRODUCT_ID = "idThreeLvlGroupProduct",
 }
 // Конфиг таблицы
 export const tableConfig: ColDef<any>[] = [
+  {
+    field: ColumnsKeyId.ONE_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
+  {
+    field: ColumnsKeyId.TWO_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
+  {
+    field: ColumnsKeyId.THREE_LVL_GROUP_PRODUCT_ID,
+    hide: true,
+  },
   {
     field: ColumnsKeyId.SEASONALITY_PRODUCTS_ID,
     hide: true,

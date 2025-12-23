@@ -39,20 +39,26 @@ import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-yea
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
     store: {
-      store: [],
-      city: [],
-      region: [],
+      idStore: [],
+      idCity: [],
+      idRegion: [],
     },
     product: {
-      product: [],
+      idProduct: [],
+      oneLvlGroupProduct: [],
+      twoLvlGroupProduct: [],
+      threeLvlGroupProduct: [],
     },
   };
 
   const mapping: Record<string, any[]> = {
-    id_store: filters.store.store,
-    id_city: filters.store.city,
-    id_region: filters.store.region,
-    id_product: filters.product.product,
+    id_store: filters.store.idStore,
+    id_city: filters.store.idCity,
+    id_region: filters.store.idRegion,
+    id_product: filters.product.idProduct,
+    idOneLvlGroupProduct: filters.product.oneLvlGroupProduct,
+    idTwoLvlGroupProduct: filters.product.twoLvlGroupProduct,
+    idThreeLvlGroupProduct: filters.product.threeLvlGroupProduct,
   };
 
   for (const currentRow of selectedRows) {
@@ -63,7 +69,6 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       }
     }
   }
-
   return filters;
 }
 
@@ -163,24 +168,36 @@ const Forest: FC = () => {
         store: {
           ...payload.filters.store,
           idStore:
-            extractedFilters.store.store.length > 0
-              ? extractedFilters.store.store
+            extractedFilters.store.idStore.length > 0
+              ? extractedFilters.store.idStore
               : payload.filters.store.idStore,
           idCity:
-            extractedFilters.store.city.length > 0
-              ? extractedFilters.store.city
+            extractedFilters.store.idCity.length > 0
+              ? extractedFilters.store.idCity
               : payload.filters.store.idCity,
           idRegion:
-            extractedFilters.store.region.length > 0
-              ? extractedFilters.store.region
+            extractedFilters.store.idRegion.length > 0
+              ? extractedFilters.store.idRegion
               : payload.filters.store.idRegion,
         },
         product: {
           ...payload.filters.product,
           idProduct:
-            extractedFilters.product.product.length > 0
-              ? extractedFilters.product.product
+            extractedFilters.product.idProduct.length > 0
+              ? extractedFilters.product.idProduct
               : payload.filters.product.idProduct,
+          oneLvlGroupProduct:
+            extractedFilters.product.oneLvlGroupProduct.length > 0
+              ? extractedFilters.product.oneLvlGroupProduct
+              : payload.filters.product.oneLvlGroupProduct,
+          twoLvlGroupProduct:
+            extractedFilters.product.twoLvlGroupProduct.length > 0
+              ? extractedFilters.product.twoLvlGroupProduct
+              : payload.filters.product.twoLvlGroupProduct,
+          threeLvlGroupProduct:
+            extractedFilters.product.threeLvlGroupProduct.length > 0
+              ? extractedFilters.product.threeLvlGroupProduct
+              : payload.filters.product.threeLvlGroupProduct,
         },
       };
 
@@ -272,6 +289,8 @@ const Forest: FC = () => {
 
           mergedFilters = {
             ...baseFilters,
+            filterDate: payload.filters.filterDate,
+            filterTime: payload.filters.filterTime,
             store: {
               ...baseFilters.store,
               idStore:
@@ -305,52 +324,15 @@ const Forest: FC = () => {
                 extractedFilters.product.threeLvlGroupProduct.length > 0
                   ? extractedFilters.product.threeLvlGroupProduct
                   : baseFilters.product.threeLvlGroupProduct,
-              dishMeasureUnit:
-                extractedFilters.product.dishMeasureUnit.length > 0
-                  ? extractedFilters.product.dishMeasureUnit
-                  : baseFilters.product.dishMeasureUnit,
             },
-            check: {
-              ...baseFilters.check,
-              typePayment:
-                extractedFilters.check.typePayment.length > 0
-                  ? extractedFilters.check.typePayment
-                  : baseFilters.check.typePayment,
-              discountType:
-                extractedFilters.check.discountType.length > 0
-                  ? extractedFilters.check.discountType
-                  : baseFilters.check.discountType,
-            },
-            //loyal: {
-            //  ...baseFilters.loyal,
-            //  cardNumber:
-            //    extractedFilters.loyal.cardNumber.length > 0
-            //      ? extractedFilters.loyal.cardNumber
-            //      : baseFilters.loyal.cardNumber,
-            //  sex:
-            //    extractedFilters.loyal.sex.length > 0
-            //      ? extractedFilters.loyal.sex
-            //      : baseFilters.loyal.sex,
-            //  colorsDiscount:
-            //    extractedFilters.loyal.colorsDiscount &&
-            //    extractedFilters.loyal.colorsDiscount.length > 0
-            //      ? extractedFilters.loyal.colorsDiscount
-            //      : baseFilters.loyal.colorsDiscount || [],
-            //  ageStart:
-            //    baseFilters.loyal.ageStart === 0 &&
-            //    baseFilters.loyal.ageEnd === 100
-            //      ? null
-            //      : baseFilters.loyal.ageStart,
-            //  ageEnd:
-            //    baseFilters.loyal.ageStart === 0 &&
-            //    baseFilters.loyal.ageEnd === 100
-            //      ? null
-            //      : baseFilters.loyal.ageEnd,
-            //},
           };
         } else {
           // Если строки не выбраны -> используем базовые фильтры (все строки)
-          mergedFilters = baseFilters;
+          mergedFilters = {
+            ...baseFilters,
+            filterDate: payload.filters.filterDate,
+            filterTime: payload.filters.filterTime,
+          };
         }
 
         // Используем новый показатель в values
@@ -397,13 +379,17 @@ const Forest: FC = () => {
       endRow: number;
       sortModel?: { colId: string; sort: "asc" | "desc" }[];
     }) => {
+      const payload = getApiPayload();
+
       const requestKey = JSON.stringify({
         startRow,
         endRow,
         sortModel,
-        values: getApiPayload().values,
-        groups: getApiPayload().groups,
-        filters: getApiPayload().filters,
+        filterDate: JSON.stringify(allData.filters.filterDate),
+        filterTime: JSON.stringify(allData.filters.filterTime),
+        values: payload.values,
+        groups: payload.groups,
+        filters: payload.filters,
       });
 
       if (
@@ -421,21 +407,26 @@ const Forest: FC = () => {
       ) {
         const result = {
           data: initialRows.data.slice(startRow, endRow),
+
           totalRows: initialTotalRows,
         };
 
         const cachedPromise = Promise.resolve(result);
+
         requestCache.current[requestKey] = (await cachedPromise) as any;
+
         lastRequestKey.current = requestKey;
 
         return cachedPromise;
       }
 
-      const payload = getApiPayload();
       const sorts =
         sortModel.length > 0
           ? { colId: [sortModel[0].colId], sort: sortModel[0].sort }
-          : { colId: [payload.values[0]], sort: "desc" as "asc" | "desc" };
+          : {
+              colId: tab !== "write-off" ? [payload.values[0]] : ["costPrice"],
+              sort: "desc" as "asc" | "desc",
+            };
 
       const requestPromise =
         tab === "write-off"
@@ -473,6 +464,7 @@ const Forest: FC = () => {
       initialTotalRows,
       getApiPayload,
       allData.filters,
+      tab,
     ],
   );
 
@@ -483,7 +475,9 @@ const Forest: FC = () => {
     requestCache.current = {}; // Полная очистка кэша
     lastRequestKey.current = "";
     bumpDataVersion();
+    setSelectedRows([]);
   };
+
   useEffect(() => {
     setSelectedRows([]);
     requestCache.current = {};

@@ -34,7 +34,7 @@ export const schema = z.object({
       invalid_type_error: "Обязательное поле",
     })
     .min(1, "Обязательное поле"),
-  companyHistory: z.string().min(1, "Обязательное поле"),
+  companyHistory: z.string(),
   legalAddress: z.string().min(1, "Обязательное поле"),
   postalAddress: z.string().min(1, "Обязательное поле"),
   workshopAddress: z.string().min(1, "Обязательное поле"),
