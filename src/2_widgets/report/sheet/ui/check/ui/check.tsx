@@ -16,15 +16,17 @@ import { useFormResetStore } from "@widgets/report/sheet/model/reset-store";
 import { CombinedSubmitButton } from "../../commerce/ui/submit-button";
 import { filters, grouping, indicators } from "../model/tabs";
 import { Button } from "@shared/ui/button";
-import { Eraser } from "lucide-react";
+import { Eraser, Moon } from "lucide-react";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useSearchParams } from "react-router";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 const CheckInner = () => {
   const { targetViewValue, setTargetViewValue } = useTabStore();
   const { scrollTo } = useViewTabs();
   const { triggerReset } = useFormResetStore();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { nightShops, updateNightShops } = useFiltersStore();
 
   useEffect(() => {
     if (targetViewValue) {
@@ -108,9 +110,23 @@ const CheckInner = () => {
           </div>
         ) : (
           <>
-            <Button onClick={() => triggerReset()}>
-              Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                onClick={() => {
+                  triggerReset();
+                  updateNightShops(false);
+                }}
+              >
+                Очистить все фильтры <Eraser className="h-4 w-4 ml-1" />
+              </Button>
+              <Button
+                size="default"
+                variant={nightShops ? "default" : "outline"}
+                onClick={() => updateNightShops(!nightShops)}
+              >
+                Ночные магазины <Moon className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
             <Separator />
           </>
         )}
