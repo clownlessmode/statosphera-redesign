@@ -299,6 +299,7 @@ export type FiltersState = {
   limit: number;
   offset: number;
   groups: string[];
+  nightShops: boolean;
 
   // Методы обновления состояния
   updateStoreFilter: <K extends keyof FiltersState["filters"]["store"]>(
@@ -340,6 +341,7 @@ export type FiltersState = {
   updateGroups: (groups: string[]) => void;
   updateUniques: (uniques: string[]) => void;
   updateIndicators: (indicators: string[]) => void;
+  updateNightShops: (nightShops: boolean) => void;
   resetAllFilters: () => void;
   getApiPayload: () => Omit<
     FiltersState,
@@ -359,6 +361,8 @@ export type FiltersState = {
     | "updateUniques"
     | "updateIndicators"
     | "resetAllFilters"
+    | "nightShops"
+    | "updateNightShops"
     | "getApiPayload"
   >;
 };
@@ -379,6 +383,7 @@ const initialState: Omit<
   | "updateGroups"
   | "updateUniques"
   | "updateIndicators"
+  | "updateNightShops"
   | "resetAllFilters"
   | "getApiPayload"
 > = {
@@ -463,6 +468,7 @@ const initialState: Omit<
   limit: 100,
   offset: 0,
   groups: [],
+  nightShops: false,
 };
 
 export const useFiltersStore = create<FiltersState>((set, get) => ({
@@ -558,7 +564,9 @@ export const useFiltersStore = create<FiltersState>((set, get) => ({
       values: [...get().uniques, ...indicators], // Автоматически обновляем values
     }),
 
-  resetAllFilters: () => set(initialState),
+  updateNightShops: (nightShops) => set({ nightShops }),
+
+  resetAllFilters: () => set({ ...initialState }),
 
   getApiPayload: () => {
     const state = get();
