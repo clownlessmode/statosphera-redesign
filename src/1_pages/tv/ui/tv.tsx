@@ -419,9 +419,9 @@ export const TV = () => {
               <Suspense fallback={<LastMonthRevenuNSSkeleton tv={true} />}>
                 {!isNightShopsLoading && nightShops?.monthProceed ? (
                   <LastMonthRevenuNS
-                    dataCurrent={nightShops.monthProceed.dataCurrent}
-                    dataPast={nightShops.monthProceed.dataPast}
-                    dynamic={nightShops.monthProceed.dynamic}
+                    dataCurrent={nightShops.lastMonthProceed.dataCurrent}
+                    dataPast={nightShops.lastMonthProceed.dataPast}
+                    dynamic={nightShops.lastMonthProceed.dynamic}
                     isLoading={isNightShopsLoading}
                     tv={true}
                   />
