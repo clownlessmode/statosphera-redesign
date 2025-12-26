@@ -130,6 +130,18 @@ const CheckInner = () => {
             <Separator />
           </>
         )}
+        {isMobile && (
+          <>
+            <Button
+              size="default"
+              variant={nightShops ? "default" : "outline"}
+              onClick={() => updateNightShops(!nightShops)}
+            >
+              Ночные магазины <Moon className="h-4 w-4 ml-1" />
+            </Button>
+            <Separator />
+          </>
+        )}
         {filters.map((item) => (
           <ViewTabsContent value={item.title} key={item.title}>
             <item.component />

@@ -78,7 +78,10 @@ export class NightStoresService {
     return response.data;
   }
   static async getShops(dto: Pick<RequestDto, "filters">) {
-    const response = await api.post("store/night-store-shop", dto.filters);
+    const response = await api.post(
+      "store/night-store-shop",
+      dto.filters.store,
+    );
     return response.data;
   }
 }

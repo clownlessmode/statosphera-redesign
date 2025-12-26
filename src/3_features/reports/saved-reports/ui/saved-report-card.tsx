@@ -444,179 +444,17 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
       // Применяем фильтры в основной store
       applyFiltersToStore();
 
-      // Формируем параметры для API с правильным маппингом
+      // Получаем обновленные данные из store после применения фильтров
+      const updatedPayload = getApiPayload();
+
+      console.log("=== API ЗАПРОС ===");
+      console.log("Обновленный payload из store:", updatedPayload);
+      console.log("Фильтры магазинов из store:", updatedPayload.filters.store);
+
+      // Используем данные из store, а не из data.report.filters
       const apiPayload: FilterApiPayload = {
-        filters: {
-          store: {
-            idStore: Array.isArray(data.report.filters.stores)
-              ? data.report.filters.stores
-              : [],
-            idCity: Array.isArray(data.report.filters.cities)
-              ? data.report.filters.cities
-              : [],
-            idRegion: Array.isArray(data.report.filters.regions)
-              ? data.report.filters.regions
-              : [],
-            idManager: Array.isArray(data.report.filters.managers)
-              ? data.report.filters.managers
-              : [],
-            storeCondition: Array.isArray(data.report.filters.storeStatus)
-              ? data.report.filters.storeStatus
-              : [],
-            ageGroup: Array.isArray(data.report.filters.ageStatus)
-              ? data.report.filters.ageStatus
-              : [],
-            idLegalEntity: [],
-            channel: Array.isArray(data.report.filters.channel)
-              ? data.report.filters.channel
-              : [],
-            district: [],
-          },
-          product: {
-            groupFranchise: Array.isArray(
-              data.report.filters.product?.groupFranchise,
-            )
-              ? data.report.filters.product.groupFranchise
-              : Array.isArray(data.report.filters.product?.groupsFranchise)
-                ? data.report.filters.product.groupsFranchise
-                : [],
-            ppProducts: data.report.filters.product?.ppProducts ?? null,
-            subDivisionProducts: Array.isArray(
-              data.report.filters.product?.subDivisionProducts,
-            )
-              ? data.report.filters.product.subDivisionProducts
-              : [],
-            subGroups: Array.isArray(data.report.filters.product?.subGroups)
-              ? data.report.filters.product.subGroups
-              : [],
-            subSubGroups: Array.isArray(
-              data.report.filters.product?.subSubGroups,
-            )
-              ? data.report.filters.product.subSubGroups
-              : [],
-            typeProducts: Array.isArray(
-              data.report.filters.product?.typeProducts,
-            )
-              ? data.report.filters.product.typeProducts
-              : [],
-            teamProducts: Array.isArray(
-              data.report.filters.product?.teamProducts,
-            )
-              ? data.report.filters.product.teamProducts
-              : [],
-            directionProducts: Array.isArray(
-              data.report.filters.product?.directionProducts,
-            )
-              ? data.report.filters.product.directionProducts
-              : [],
-            groupsEconomist: Array.isArray(
-              data.report.filters.product?.groupsEconomist,
-            )
-              ? data.report.filters.product.groupsEconomist
-              : [],
-            groupsMain: Array.isArray(data.report.filters.product?.groupsMain)
-              ? data.report.filters.product.groupsMain
-              : [],
-            idGroupMain: Array.isArray(data.report.filters.product?.idGroupMain)
-              ? data.report.filters.product.idGroupMain
-              : Array.isArray(data.report.filters.product?.groups)
-                ? data.report.filters.product.groups
-                : [],
-            idProduct: Array.isArray(data.report.filters.product?.idProduct)
-              ? data.report.filters.product.idProduct
-              : Array.isArray(data.report.filters.product?.products)
-                ? data.report.filters.product.products
-                : [],
-            seasonalityProducts: Array.isArray(
-              data.report.filters.product?.seasonalityProducts,
-            )
-              ? data.report.filters.product.seasonalityProducts
-              : [],
-            managerAuto: Array.isArray(data.report.filters.product?.managerAuto)
-              ? data.report.filters.product.managerAuto
-              : [],
-          },
-          check: {
-            tabNumber: Array.isArray(data.report.filters.check?.tabNumber)
-              ? data.report.filters.check.tabNumber
-              : [],
-            containsBankQr: data.report.filters.check?.containsBankQr ?? null,
-            paymentClass: data.report.filters.check?.paymentClass ?? null,
-            shift: Array.isArray(data.report.filters.check?.shift)
-              ? data.report.filters.check.shift
-              : [],
-            cashBox: Array.isArray(data.report.filters.check?.cashBox)
-              ? data.report.filters.check.cashBox
-              : [],
-            checkNumber: Array.isArray(data.report.filters.check?.checkNumber)
-              ? data.report.filters.check.checkNumber
-              : [],
-            numberfield: Array.isArray(data.report.filters.check?.numberfield)
-              ? data.report.filters.check.numberfield
-              : [],
-            type: [],
-          },
-          loyal: {
-            colorsDiscount: Array.isArray(
-              data.report.filters.loyal?.colorsDiscount,
-            )
-              ? data.report.filters.loyal.colorsDiscount
-              : [],
-            isLoyal: data.report.filters.loyal?.isLoyal ?? null,
-            cardNumber: Array.isArray(data.report.filters.loyal?.cardNumber)
-              ? data.report.filters.loyal.cardNumber
-              : [],
-            sex: data.report.filters.loyal?.sex ?? null,
-            guidDiscount: Array.isArray(data.report.filters.loyal?.guidDiscount)
-              ? data.report.filters.loyal.guidDiscount
-              : [],
-            guidBonus: Array.isArray(data.report.filters.loyal?.guidBonus)
-              ? data.report.filters.loyal.guidBonus
-              : [],
-            ageStart: data.report.filters.loyal?.ageStart ?? null,
-            ageEnd: data.report.filters.loyal?.ageEnd ?? null,
-            groupAge: Array.isArray(data.report.filters.loyal?.groupAge)
-              ? data.report.filters.loyal.groupAge
-              : [],
-          },
-          onlineStore: {
-            isIm: data.report.filters.onlineStore?.isIm ?? null,
-            imTypeOrder: Array.isArray(
-              data.report.filters.onlineStore?.imTypeOrder,
-            )
-              ? data.report.filters.onlineStore.imTypeOrder
-              : [],
-            imDeliveryMethod: Array.isArray(
-              data.report.filters.onlineStore?.imDeliveryMethod,
-            )
-              ? data.report.filters.onlineStore.imDeliveryMethod
-              : [],
-            imPaymentMethod: Array.isArray(
-              data.report.filters.onlineStore?.imPaymentMethod,
-            )
-              ? data.report.filters.onlineStore.imPaymentMethod
-              : [],
-            imStatusOrder: Array.isArray(
-              data.report.filters.onlineStore?.imStatusOrder,
-            )
-              ? data.report.filters.onlineStore.imStatusOrder
-              : [],
-            imReceiveInterval: Array.isArray(
-              data.report.filters.onlineStore?.imReceiveInterval,
-            )
-              ? data.report.filters.onlineStore.imReceiveInterval
-              : [],
-            imPromo: Array.isArray(data.report.filters.onlineStore?.imPromo)
-              ? data.report.filters.onlineStore.imPromo
-              : [],
-          },
-          writeoff: {
-            indicator: [],
-            article: [],
-          },
-        },
-        values: [...data.report.values, ...(data.report.uniqueValues || [])],
-        groups: data.report.groups,
+        ...updatedPayload,
+        // Переопределяем только те поля, которые могут отличаться
         filterDate: {
           dateStart: data.report.filterDate.dateStart,
           dateEnd: data.report.filterDate.dateEnd,
@@ -626,14 +464,13 @@ const SavedReportCard = ({ data, onOpenChange }: SavedReportCardProps) => {
           timeEnd: "",
         },
         sorts: {
-          colId: [data.report.values[0]], // Берем первый показатель
+          colId: [updatedPayload.values[0] || data.report.values[0]],
           sort: "desc",
         },
         limit: 100,
         offset: 0,
       };
 
-      console.log("=== API ЗАПРОС ===");
       console.log("API Payload для графика:", {
         ...apiPayload,
         values: [apiPayload.values[0]],
