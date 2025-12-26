@@ -89,12 +89,23 @@ export function FilterBadges({ tab }: { tab: string }) {
 
       // Для каждого активного фильтра показываем количество выбранных значений
       activeFilters.forEach(([filterKey, value]) => {
-        const count = Array.isArray(value) ? value.length : 1;
-        badges.push(
-          <Badge key={`${sectionKey}-${filterKey}`}>
-            {`${getFilterLabel(sectionKey, filterKey)}: ${count}`}
-          </Badge>,
-        );
+        if (
+          sectionKey === "loyal" &&
+          (filterKey === "ageStart" || filterKey === "ageEnd")
+        ) {
+          badges.push(
+            <Badge key={`${sectionKey}-${filterKey}`}>
+              {`${getFilterLabel(sectionKey, filterKey)}: ${value}`}
+            </Badge>,
+          );
+        } else {
+          const count = Array.isArray(value) ? value.length : 1;
+          badges.push(
+            <Badge key={`${sectionKey}-${filterKey}`}>
+              {`${getFilterLabel(sectionKey, filterKey)}: ${count}`}
+            </Badge>,
+          );
+        }
       });
     });
 
