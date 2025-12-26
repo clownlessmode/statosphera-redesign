@@ -31,7 +31,7 @@ const Header: FC<Props> = ({ title, actions, isAdmin }) => {
   return (
     <>
       {/* Гирлянда */}
-      <div className="min-w-0 w-full min-h-12.5 relative overflow-hidden">
+      <div className="min-w-0 w-full min-h-12.5 relative overflow-hidden max-md:hidden">
         <ChristmasLights />
       </div>
       {isAdmin && (

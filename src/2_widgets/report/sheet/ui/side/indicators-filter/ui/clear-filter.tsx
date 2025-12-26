@@ -13,6 +13,7 @@ interface Props {
 
 const ClearFilters: FC<Props> = ({ form }) => {
   const { updateIndicators } = useFiltersStore();
+  const { nightShops, updateNightShops } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
   const isMobile = useIsMobile();
   const didMountRef = useRef(false);
@@ -23,12 +24,13 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return;
     }
     handleClearFilters();
+    updateNightShops(false);
   }, [resetSignal]);
 
   const handleClearFilters = () => {
     updateIndicators([]);
     form.reset({
-      proceeds: ["proceeds"],
+      proceeds: nightShops ? ["proceedsDay"] : ["proceeds"],
     });
   };
 
