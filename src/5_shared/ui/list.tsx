@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   title: string;
+  titleBtn?: React.ReactNode;
   isLoading?: boolean;
   arrows?: boolean;
   className?: string;
@@ -21,7 +22,7 @@ interface Props {
   }[];
 }
 export const List: FC<Props> = memo(
-  ({ options, title, isLoading, arrows, className, tv, suffix }) => {
+  ({ options, title, titleBtn, isLoading, arrows, className, tv, suffix }) => {
     // Оптимизация: ограничиваем количество отображаемых элементов для TV режима
     const displayOptions =
       tv && options && options.length > 10 ? options.slice(0, 10) : options;
@@ -55,7 +56,15 @@ export const List: FC<Props> = memo(
     return (
       <Card className={cn("w-full", className)}>
         <CardHeader className="text-center">
-          <CardTitle className="max-md:text-sm">{title}</CardTitle>
+          <CardTitle className="max-md:text-sm">
+            {titleBtn ? (
+              <div className="flex flex-row justify-center items-center gap-1">
+                {title} {titleBtn}
+              </div>
+            ) : (
+              title
+            )}
+          </CardTitle>
         </CardHeader>
         <CardContent
           className={cn(
