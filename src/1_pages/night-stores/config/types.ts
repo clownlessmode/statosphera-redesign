@@ -150,3 +150,20 @@ export interface AllCardResponse {
   countUniqueCheck: number;
   avgLengthCheck: number;
 }
+
+export interface PartnersFilterResponse {
+  nameManager: string;
+  idManager: number[];
+}
+export interface RegionsFilterResponse {
+  storeRegion: string;
+  regionId: number;
+}
+export interface CitiesFilterResponse {
+  storeCity: string;
+  cityId: number;
+}
+export interface ShopsFilterResponse {
+  storeName: string;
+  idStore: number[];
+}

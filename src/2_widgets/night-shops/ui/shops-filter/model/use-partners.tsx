@@ -1,17 +1,17 @@
-import { PartnersFilterResponse } from "@pages/sales-dynamics/model/api/service";
+import { PartnersFilterResponse, RequestDto } from "@pages/night-stores/config";
 import { useState } from "react";
 import { MultiSelectOption } from "@shared/ui/multiselect";
-import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
+import { useNightStores } from "@pages/night-stores/api/controller";
 
-export const usePartners = (allData: any) => {
+export const usePartners = (dto: Pick<RequestDto, "filters">) => {
   const [partnerOptions, setPartnerOptions] = useState<MultiSelectOption[]>([]);
-  const { getPartners, isPartnersLoading } = useSalesDynamicsController();
+  const { getPartners, isPartnersLoading } = useNightStores();
 
   const handleOpenPartnersSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getPartners(allData);
+      const response = await getPartners(dto);
       const apiOptions = response.map((partner: PartnersFilterResponse) => ({
         label: partner.nameManager,
         value: String(partner.idManager?.[0] || ""),

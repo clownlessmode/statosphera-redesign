@@ -4,10 +4,14 @@ import { NightStoresService } from "./service";
 import {
   AllCardResponse,
   BarGraphResponse,
+  CitiesFilterResponse,
   LineGraphResponse,
   NightSalesWeekdayNomenclatureResponse,
   NightSalesWeekdayResponse,
+  PartnersFilterResponse,
+  RegionsFilterResponse,
   RequestDto,
+  ShopsFilterResponse,
   TopNightStoreResponse,
   TopNomenclatureResponse,
   TopSubgroupsResponse,
@@ -140,6 +144,52 @@ export const useNightStores = () => {
     },
   });
 
+  const partners = useMutation<
+    PartnersFilterResponse[],
+    ApiError,
+    Pick<RequestDto, "filters">
+  >({
+    mutationFn: async (dto: Pick<RequestDto, "filters">) => {
+      const response = await NightStoresService.getPartners(dto);
+      queryClient.invalidateQueries({ queryKey: ["partners"] });
+      return response;
+    },
+  });
+
+  const regions = useMutation<
+    RegionsFilterResponse[],
+    ApiError,
+    Pick<RequestDto, "filters">
+  >({
+    mutationFn: async (dto: Pick<RequestDto, "filters">) => {
+      const response = await NightStoresService.getRegions(dto);
+      queryClient.invalidateQueries({ queryKey: ["regions"] });
+      return response;
+    },
+  });
+  const cities = useMutation<
+    CitiesFilterResponse[],
+    ApiError,
+    Pick<RequestDto, "filters">
+  >({
+    mutationFn: async (dto: Pick<RequestDto, "filters">) => {
+      const response = await NightStoresService.getCities(dto);
+      queryClient.invalidateQueries({ queryKey: ["cities"] });
+      return response;
+    },
+  });
+  const shops = useMutation<
+    ShopsFilterResponse[],
+    ApiError,
+    Pick<RequestDto, "filters">
+  >({
+    mutationFn: async (dto: Pick<RequestDto, "filters">) => {
+      const response = await NightStoresService.getShops(dto);
+      queryClient.invalidateQueries({ queryKey: ["shops"] });
+      return response;
+    },
+  });
+
   return {
     getTopNightStore: topNightStore.mutateAsync,
     isTopNightStoreLoading: topNightStore.isPending,
@@ -166,5 +216,13 @@ export const useNightStores = () => {
     isProceedsGraphLoading: proceedsGraph.isPending,
     getAllCard: allCard.mutateAsync,
     isAllCardLoading: allCard.isPending,
+    getPartners: partners.mutateAsync,
+    isPartnersLoading: partners.isPending,
+    getRegions: regions.mutateAsync,
+    isRegionsLoading: regions.isPending,
+    getCities: cities.mutateAsync,
+    isCitiesLoading: cities.isPending,
+    getShops: shops.mutateAsync,
+    isShopsLoading: shops.isPending,
   };
 };

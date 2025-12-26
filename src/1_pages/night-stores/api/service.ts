@@ -64,4 +64,33 @@ export class NightStoresService {
     const response = await api.post("night-store/all-card-data", dto);
     return response.data;
   }
+
+  static async getPartners(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("store/night-manager", {
+      filters: {
+        store: { ...dto.filters },
+      },
+    });
+    return response.data;
+  }
+  static async getRegions(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("filters/night-region", {
+      filters: {
+        store: { ...dto.filters },
+      },
+    });
+    return response.data;
+  }
+  static async getCities(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("filters/night-city", {
+      filters: {
+        store: { ...dto.filters },
+      },
+    });
+    return response.data;
+  }
+  static async getShops(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("store/night-store-shop", dto.filters);
+    return response.data;
+  }
 }

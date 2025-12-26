@@ -41,21 +41,21 @@ import ClearFilters from "./clear-filters";
 
 const ShopsFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const form = useForm();
-  const { updateStoreFilters } = useNightStoresFiltersStore();
-  const filters = useNightStoresFiltersStore((state) => state.filters);
-  const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
-    usePartners({ filters });
-  const { handleOpenRegionsSelect, isRegionsLoading, regionsOptions } =
-    useRegions({ filters });
-  const { citiesOptions, handleOpenCitiesSelect, isCitiesLoading } = useCities({
-    filters,
-  });
-  const { handleOpenShopsSelect, isShopsLoading, shopsOptions } = useShops({
-    filters,
-  });
+  const isMobile = useIsMobile();
   const { isMyShopsMode } = useMyShopsStore();
   const { session } = useSession();
+  const form = useForm();
+  const { updateStoreFilters } = useNightStoresFiltersStore();
+  const { handleOpenPartnersSelect, isPartnersLoading, partnerOptions } =
+    usePartners({ filters: { store: form.watch() } });
+  const { handleOpenRegionsSelect, isRegionsLoading, regionsOptions } =
+    useRegions({ filters: { store: form.watch() } });
+  const { citiesOptions, handleOpenCitiesSelect, isCitiesLoading } = useCities({
+    filters: { store: form.watch() },
+  });
+  const { handleOpenShopsSelect, isShopsLoading, shopsOptions } = useShops({
+    filters: { store: form.watch() },
+  });
 
   useEffect(() => {
     form.reset();
@@ -85,8 +85,6 @@ const ShopsFilter = () => {
     setIsOpen(false);
   };
 
-  const isMobile = useIsMobile();
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -97,8 +95,8 @@ const ShopsFilter = () => {
           ) : (
             "Найти магазины"
           )}
-          {filters.store.idStore.length > 0 && (
-            <Badge>{filters.store.idStore.length}</Badge>
+          {form.watch("idStore").length > 0 && (
+            <Badge>{form.watch("idStore").length}</Badge>
           )}
         </Button>
       </DialogTrigger>

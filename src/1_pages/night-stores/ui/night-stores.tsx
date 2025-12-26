@@ -330,7 +330,6 @@ export const NightStores = () => {
                 name: group.dayName,
                 count: `${group[indicator.value as keyof typeof group].toLocaleString()}`,
               }))}
-              className="[&_[data-slot=card-content]]:gap-0.5 [&_>_div]:text-sm"
             />
           </div>
           <div className="grid grid-cols-2 gap-2 max-md:grid-cols-1">

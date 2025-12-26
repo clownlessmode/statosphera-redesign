@@ -1,16 +1,16 @@
-import { ShopsFilterResponse } from "@pages/sales-dynamics/model/api/service";
+import { RequestDto, ShopsFilterResponse } from "@pages/night-stores/config";
 import { useState } from "react";
 import { MultiSelectOption } from "@shared/ui/multiselect";
-import { useSalesDynamicsController } from "@pages/sales-dynamics/model/api/controller";
+import { useNightStores } from "@pages/night-stores/api/controller";
 
-export const useShops = (allData: any) => {
+export const useShops = (dto: Pick<RequestDto, "filters">) => {
   const [shopsOptions, setShopsOptions] = useState<MultiSelectOption[]>([]);
-  const { getShops, isShopsLoading } = useSalesDynamicsController();
+  const { getShops, isShopsLoading } = useNightStores();
   const handleOpenShopsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getShops(allData);
+      const response = await getShops(dto);
       const apiOptions = response.map((shop: ShopsFilterResponse) => ({
         label: shop.storeName,
         value: String(shop.idStore?.[0] || ""),
