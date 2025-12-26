@@ -20,6 +20,7 @@ import {
   AgeSalesGraphResponse,
   AvarageCheckAgeGroupGraphResponse,
   RevenueGroupsGraphResponse,
+  CountLoyalCardLineResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -149,6 +150,28 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const countLoyalCardLine = useMutation<
+    CountLoyalCardLineResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getCountLoyalCardLine(dto);
+      return response;
+    },
+  });
+  const getLoyalCardData = async (dto: RequestDto) => {
+    const [loyalCard2Data, countLoyalCardLineData] = await Promise.all([
+      loyalCard2.mutateAsync(dto),
+      countLoyalCardLine.mutateAsync(dto),
+    ]);
+    return [
+      {
+        ...loyalCard2Data[0],
+        ...countLoyalCardLineData[0],
+      },
+    ];
+  };
   const ageGroupsGraph = useMutation<
     AgeGroupsGraphResponse,
     ApiError,
@@ -237,8 +260,9 @@ export const useLoyal = () => {
     isAppLoyalGraphLoading: appLoyalGraph.isPending,
     getTopActions: topActions.mutateAsync,
     isTopActionsLoading: topActions.isPending,
-    getLoyalCard2: loyalCard2.mutateAsync,
-    isLoyalCard2Loading: loyalCard2.isPending,
+    getLoyalCardData,
+    isLoyalCardDataLoading:
+      loyalCard2.isPending || countLoyalCardLine.isPending,
     getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
     isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
     getAgeSalesGraph: ageSalesGraph.mutateAsync,

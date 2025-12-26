@@ -20,6 +20,7 @@ import {
   AgeSalesGraphResponse,
   AvarageCheckAgeGroupGraphResponse,
   RevenueGroupsGraphResponse,
+  CountLoyalCardLineResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -106,7 +107,9 @@ export const Loyalty = () => {
   const [topActions, setTopActions] = useState<TopActionsResponse[]>([]);
   const [noSales30DaysUser, setNoSales30DaysUser] =
     useState<NoSales30DaysUserResponse>();
-  const [loyalCard2, setLoyalCard2] = useState<LoyalCard2Response>();
+  const [loyalCard2, setLoyalCard2] = useState<
+    LoyalCard2Response & CountLoyalCardLineResponse
+  >();
   const [ageGroupsGraph, setAgeGroupsGraph] = useState<AgeGroupsGraphResponse>({
     xAxis: [],
     legend: [],
@@ -154,8 +157,8 @@ export const Loyalty = () => {
     getAppLoyalGraph,
     getTopActions,
     isTopActionsLoading,
-    getLoyalCard2,
-    isLoyalCard2Loading,
+    getLoyalCardData,
+    isLoyalCardDataLoading,
     getAgeGroupsGraph,
     isAgeGroupsGraphLoading,
     getAgeCircleGraph,
@@ -201,7 +204,7 @@ export const Loyalty = () => {
     getNoSales30DaysUser(mock).then((data) => {
       setNoSales30DaysUser(data);
     });
-    getLoyalCard2(mock).then((data) => {
+    getLoyalCardData(mock).then((data) => {
       setLoyalCard2(data[0]);
     });
     getAgeGroupsGraph(mock).then((data) => {
@@ -324,7 +327,7 @@ export const Loyalty = () => {
               <ValueCard
                 title="Уникальных"
                 value={loyalCard2?.uniqueCardNumber ?? 0}
-                isLoading={isLoyalCard2Loading}
+                isLoading={isLoyalCardDataLoading}
                 formatter={(value) => value.toLocaleString()}
               />
               <ValueCard
@@ -332,7 +335,7 @@ export const Loyalty = () => {
                 value={loyalCard2?.appLoyalPercent ?? 0}
                 unit="%"
                 formatter={(value) => (value ? value.toFixed(1) : "0")}
-                isLoading={isLoyalCard2Loading}
+                isLoading={isLoyalCardDataLoading}
               />
               <ValueCard
                 title="Начислено бонусов"
@@ -345,7 +348,7 @@ export const Loyalty = () => {
                     return (value / 1000).toFixed(2);
                   }
                 }}
-                isLoading={isLoyalCard2Loading}
+                isLoading={isLoyalCardDataLoading}
               />
               <ValueCard
                 title="Списано бонусов"
@@ -358,19 +361,19 @@ export const Loyalty = () => {
                     return (value / 1000).toFixed(2);
                   }
                 }}
-                isLoading={isLoyalCard2Loading}
+                isLoading={isLoyalCardDataLoading}
               />
               {isMobile && (
                 <>
                   <ValueCard
                     title="Частота покупок"
                     value={loyalCard2?.frequencySalesLoyal ?? 0}
-                    isLoading={isLoyalCard2Loading}
+                    isLoading={isLoyalCardDataLoading}
                     formatter={(value) => (value ? value.toFixed(1) : "0")}
                   />
                   <ValueCard
                     title="Доп. выручка"
-                    isLoading={isLoyalCard2Loading}
+                    isLoading={isLoyalCardDataLoading}
                     unit={
                       (loyalCard2?.proceedsAdditionalLoyal ?? 0) >= 1000000
                         ? "М"
@@ -388,7 +391,7 @@ export const Loyalty = () => {
                   <ValueCard
                     title="Доля доп. выручки"
                     formatter={(value) => (value ? value.toFixed(1) : "0")}
-                    isLoading={isLoyalCard2Loading}
+                    isLoading={isLoyalCardDataLoading}
                     value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                     unit="%"
                   />
@@ -407,12 +410,12 @@ export const Loyalty = () => {
                 <ValueCard
                   title="Частота покупок"
                   value={loyalCard2?.frequencySalesLoyal ?? 0}
-                  isLoading={isLoyalCard2Loading}
+                  isLoading={isLoyalCardDataLoading}
                   formatter={(value) => (value ? value.toFixed(1) : "0")}
                 />
                 <ValueCard
                   title="Доп. выручка"
-                  isLoading={isLoyalCard2Loading}
+                  isLoading={isLoyalCardDataLoading}
                   unit={
                     (loyalCard2?.proceedsAdditionalLoyal ?? 0) >= 1000000
                       ? "М"
@@ -430,7 +433,7 @@ export const Loyalty = () => {
                 <ValueCard
                   title="Доля доп. выручки"
                   formatter={(value) => (value ? value.toFixed(1) : "0")}
-                  isLoading={isLoyalCard2Loading}
+                  isLoading={isLoyalCardDataLoading}
                   value={loyalCard2?.proceedsAdditionalLoyalPercent ?? 0}
                   unit="%"
                 />
