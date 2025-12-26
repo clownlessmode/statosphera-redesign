@@ -21,6 +21,7 @@ import {
   ChartColumn,
   //  MessageCircle,
   Tractor,
+  Moon,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -136,6 +137,11 @@ const Sidebar = ({
           ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
             session?.idUser ?? -1,
           ),
+      },
+      {
+        title: "Ночные магазины",
+        url: ROUTES_PATH.NIGHT_STORES,
+        icon: Moon,
       },
       {
         title: "Гриль",
