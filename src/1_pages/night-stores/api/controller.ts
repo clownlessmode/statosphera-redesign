@@ -167,6 +167,7 @@ export const useNightStores = () => {
       return response;
     },
   });
+
   const cities = useMutation<
     CitiesFilterResponse[],
     ApiError,
