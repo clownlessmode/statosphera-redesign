@@ -160,18 +160,6 @@ export const useLoyal = () => {
       return response;
     },
   });
-  const getLoyalCardData = async (dto: RequestDto) => {
-    const [loyalCard2Data, countLoyalCardLineData] = await Promise.all([
-      loyalCard2.mutateAsync(dto),
-      countLoyalCardLine.mutateAsync(dto),
-    ]);
-    return [
-      {
-        ...loyalCard2Data[0],
-        ...countLoyalCardLineData[0],
-      },
-    ];
-  };
   const ageGroupsGraph = useMutation<
     AgeGroupsGraphResponse,
     ApiError,
@@ -260,9 +248,10 @@ export const useLoyal = () => {
     isAppLoyalGraphLoading: appLoyalGraph.isPending,
     getTopActions: topActions.mutateAsync,
     isTopActionsLoading: topActions.isPending,
-    getLoyalCardData,
-    isLoyalCardDataLoading:
-      loyalCard2.isPending || countLoyalCardLine.isPending,
+    getLoyalCard2: loyalCard2.mutateAsync,
+    isLoyalCard2Loading: loyalCard2.isPending,
+    getCountLoyalCardLine: countLoyalCardLine.mutateAsync,
+    isCountLoyalCardLineLoading: countLoyalCardLine.isPending,
     getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
     isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
     getAgeSalesGraph: ageSalesGraph.mutateAsync,
