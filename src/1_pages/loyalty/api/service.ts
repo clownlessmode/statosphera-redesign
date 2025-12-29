@@ -64,6 +64,11 @@ export class LoyaltyService {
     return response.data;
   }
 
+  static async getCountLoyalCardLine(dto: RequestDto) {
+    const response = await api.post("loyal/count-loyal-card-line", dto);
+    return response.data;
+  }
+
   static async getAgeGroupsGraph(dto: RequestDto) {
     const response = await api.post("loyal/frequency-sales-loyal", dto);
     return response.data;

@@ -20,6 +20,7 @@ import {
   AgeSalesGraphResponse,
   AvarageCheckAgeGroupGraphResponse,
   RevenueGroupsGraphResponse,
+  CountLoyalCardLineResponse,
 } from "../config";
 
 export const useLoyal = () => {
@@ -149,6 +150,16 @@ export const useLoyal = () => {
       return response;
     },
   });
+  const countLoyalCardLine = useMutation<
+    CountLoyalCardLineResponse[],
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await LoyaltyService.getCountLoyalCardLine(dto);
+      return response;
+    },
+  });
   const ageGroupsGraph = useMutation<
     AgeGroupsGraphResponse,
     ApiError,
@@ -239,6 +250,8 @@ export const useLoyal = () => {
     isTopActionsLoading: topActions.isPending,
     getLoyalCard2: loyalCard2.mutateAsync,
     isLoyalCard2Loading: loyalCard2.isPending,
+    getCountLoyalCardLine: countLoyalCardLine.mutateAsync,
+    isCountLoyalCardLineLoading: countLoyalCardLine.isPending,
     getAgeGroupsGraph: ageGroupsGraph.mutateAsync,
     isAgeGroupsGraphLoading: ageGroupsGraph.isPending,
     getAgeSalesGraph: ageSalesGraph.mutateAsync,
