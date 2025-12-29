@@ -7,6 +7,7 @@ import PageSkeleton from "@shared/ui/page-skeleton";
 import { TourProvider } from "@entities/lessons";
 import Snowfall from "react-snowfall";
 import Santa from "@shared/ui/santa";
+import { ReportUpdProvider } from "@widgets/report-upd";
 //import { RatingProvider } from "@widgets/rating";
 
 const AppRouter = () => {
@@ -29,6 +30,7 @@ const AppRouter = () => {
           />
           <Santa />
           {/* <RatingProvider /> */}
+          <ReportUpdProvider />
           <Routes>
             {ROUTES.map((route) => (
               <Route

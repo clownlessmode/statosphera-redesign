@@ -25,14 +25,20 @@ export const useForm = () => {
       proceeds:
         indicators && indicators.length > 0
           ? indicators
-          : defaultValues.proceeds,
+          : nightShops
+            ? defaultValues.nightProceeds
+            : defaultValues.proceeds,
     },
     mode: "all",
   });
 
   useEffect(() => {
     const resolved =
-      indicators && indicators.length > 0 ? indicators : defaultValues.proceeds;
+      indicators && indicators.length > 0
+        ? indicators
+        : nightShops
+          ? defaultValues.nightProceeds
+          : defaultValues.proceeds;
 
     form.reset({ proceeds: resolved });
     updateIndicators(resolved);
