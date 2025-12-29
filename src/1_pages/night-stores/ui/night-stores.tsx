@@ -14,6 +14,7 @@ import {
   TopNightStoreResponse,
   TopNomenclatureResponse,
   TopSubgroupsResponse,
+  HeatmapNightStoresResponse,
 } from "../config/types";
 import { List } from "@shared/ui/list";
 import { TopNightStoreCards } from "./cards/top-night-store-cards";
@@ -27,6 +28,8 @@ import AgeAvgCheckGraph from "./graphs/age-avg-check-graph";
 import UniqueCheckGraph from "./graphs/unique-check-graph";
 import GraphProceeds from "./graphs/graph-proceeds";
 import WeekdayNomenclatureCard from "./cards/weekday-nomenclature-card";
+import { HeatmapNightStores } from "./graphs/heatmap-night-data";
+import { GraphDate } from "@widgets/night-shops/ui/graph-date";
 
 export const NightStores = () => {
   const {
@@ -54,6 +57,8 @@ export const NightStores = () => {
     isAgeAvgCheckGraphLoading,
     getUniqueCheckGraph,
     isUniqueCheckGraphLoading,
+    getHeatmapNightStores,
+    isHeatmapNightStoresLoading,
   } = useNightStores();
 
   const [allCard, setAllCard] = useState<AllCardResponse | null>(null);
@@ -86,10 +91,13 @@ export const NightStores = () => {
   const [hourProceedsGraph, setHourProceedsGraph] = useState<
     BarGraphResponse["data"] | null
   >(null);
+  const [heatmapNightStores, setHeatmapNightStores] =
+    useState<HeatmapNightStoresResponse | null>(null);
 
   const filters = useNightStoresFiltersStore((state) => state.filters);
   const filterDate = useNightStoresFiltersStore((state) => state.filterDate);
   const indicator = useIndicatorFilterStore((state) => state.indicator);
+  const group = useNightStoresFiltersStore((state) => state.group);
 
   useEffect(() => {
     getAllCard({ filters, filterDate }).then((response) => {
@@ -112,25 +120,31 @@ export const NightStores = () => {
         setNightSalesWeekdayNomenclature(response);
       },
     );
-    getAgeProceedsGraph({ filters, filterDate }).then((response) => {
+  }, [filters, filterDate]);
+
+  useEffect(() => {
+    getAgeProceedsGraph({ filters, filterDate, group }).then((response) => {
       setAgeProceedsGraph(response.graph);
     });
-    getAgeCountCheckGraph({ filters, filterDate }).then((response) => {
+    getAgeCountCheckGraph({ filters, filterDate, group }).then((response) => {
       setAgeCountCheckGraph(response.graph);
     });
-    getAgeAvgCheckGraph({ filters, filterDate }).then((response) => {
+    getAgeAvgCheckGraph({ filters, filterDate, group }).then((response) => {
       setAgeAvgCheckGraph(response.graph);
     });
-    getHourProceedsGraph({ filters, filterDate }).then((response) => {
-      setHourProceedsGraph(response.data);
-    });
-    getUniqueCheckGraph({ filters, filterDate }).then((response) => {
-      setUniqueCheckGraph(response.data);
-    });
-    getProceedsGraph({ filters, filterDate }).then((response) => {
+    getProceedsGraph({ filters, filterDate, group }).then((response) => {
       setProceedsGraph(response.graph);
     });
-  }, [filters, filterDate]);
+    getHourProceedsGraph({ filters, filterDate, group }).then((response) => {
+      setHourProceedsGraph(response.data);
+    });
+    getUniqueCheckGraph({ filters, filterDate, group }).then((response) => {
+      setUniqueCheckGraph(response.data);
+    });
+    getHeatmapNightStores({ filters, filterDate, group }).then((response) => {
+      setHeatmapNightStores(response);
+    });
+  }, [filters, filterDate, group]);
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -138,6 +152,7 @@ export const NightStores = () => {
       <div className="rounded-3xl px-4 py-4 gap-2 md:gap-4 h-full flex flex-col w-full bg-background min-h-[calc(100vh-64px)]">
         <div className="flex flex-row gap-2 justify-between md:justify-end">
           <IndicatorDropdown />
+          <GraphDate />
           <DaysFilter />
           <ShopsFilter />
         </div>
@@ -342,6 +357,10 @@ export const NightStores = () => {
               graph={uniqueCheckGraph}
             />
           </div>
+          <HeatmapNightStores
+            graph={heatmapNightStores}
+            isLoading={isHeatmapNightStoresLoading}
+          />
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ import {
   TopNightStoreResponse,
   TopNomenclatureResponse,
   TopSubgroupsResponse,
+  HeatmapNightStoresResponse,
 } from "../config/types";
 
 export const useNightStores = () => {
@@ -144,6 +145,18 @@ export const useNightStores = () => {
     },
   });
 
+  const heatmapNightStores = useMutation<
+    HeatmapNightStoresResponse,
+    ApiError,
+    RequestDto
+  >({
+    mutationFn: async (dto: RequestDto) => {
+      const response = await NightStoresService.getHeatmapNightStores(dto);
+      queryClient.invalidateQueries({ queryKey: ["heatmapNightStores"] });
+      return response;
+    },
+  });
+
   const partners = useMutation<
     PartnersFilterResponse[],
     ApiError,
@@ -217,6 +230,8 @@ export const useNightStores = () => {
     isProceedsGraphLoading: proceedsGraph.isPending,
     getAllCard: allCard.mutateAsync,
     isAllCardLoading: allCard.isPending,
+    getHeatmapNightStores: heatmapNightStores.mutateAsync,
+    isHeatmapNightStoresLoading: heatmapNightStores.isPending,
     getPartners: partners.mutateAsync,
     isPartnersLoading: partners.isPending,
     getRegions: regions.mutateAsync,
