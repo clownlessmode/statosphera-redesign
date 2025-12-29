@@ -20,11 +20,13 @@ interface NightStoresFiltersState {
     dateStart: string;
     dateEnd: string;
   };
+  group: "day" | "week" | "month" | "quarter" | "year";
   updateStoreFilters: <K extends keyof Filters["store"]>(
     key: K,
     value: Filters["store"][K],
   ) => void;
   updateDateFilter: (dateStart: string, dateEnd: string) => void;
+  updateGroup: (group: "day" | "week" | "month" | "quarter" | "year") => void;
 }
 const today = new Date();
 
@@ -59,6 +61,7 @@ const initialState = {
     dateStart,
     dateEnd,
   },
+  group: "day" as const,
 };
 
 export const useNightStoresFiltersStore = create<NightStoresFiltersState>(
@@ -77,6 +80,10 @@ export const useNightStoresFiltersStore = create<NightStoresFiltersState>(
     updateDateFilter: (dateStart, dateEnd) =>
       set({
         filterDate: { dateStart, dateEnd },
+      }),
+    updateGroup: (group) =>
+      set({
+        group,
       }),
   }),
 );

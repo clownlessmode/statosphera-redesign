@@ -65,18 +65,26 @@ export class NightStoresService {
     return response.data;
   }
 
+  static async getHeatmapNightStores(dto: RequestDto) {
+    const response = await api.post("night-store/heat-map-night-data", dto);
+    return response.data;
+  }
+
   static async getPartners(dto: Pick<RequestDto, "filters">) {
     const response = await api.post("store/night-manager", dto);
     return response.data;
   }
+
   static async getRegions(dto: Pick<RequestDto, "filters">) {
     const response = await api.post("filters/night-region", dto);
     return response.data;
   }
+
   static async getCities(dto: Pick<RequestDto, "filters">) {
     const response = await api.post("filters/night-city", dto);
     return response.data;
   }
+
   static async getShops(dto: Pick<RequestDto, "filters">) {
     const response = await api.post(
       "store/night-store-shop",

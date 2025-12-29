@@ -9,17 +9,9 @@ export const ReportUpdProvider = () => {
   const location = useLocation();
   const { isOpen, checkAndShow, handleSubmitted } = useReportUpd();
   const previousPathRef = useRef<string | null>(null);
-  const isFirstMountRef = useRef<boolean>(true);
   const { session } = useSession();
 
   useEffect(() => {
-    // Пропускаем первую загрузку страницы
-    if (isFirstMountRef.current) {
-      isFirstMountRef.current = false;
-      previousPathRef.current = location.pathname;
-      return;
-    }
-
     // Не показываем модалку на странице авторизации
     if (location.pathname === "/login") {
       previousPathRef.current = location.pathname;
