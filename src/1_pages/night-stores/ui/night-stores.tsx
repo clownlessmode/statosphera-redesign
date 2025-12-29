@@ -120,6 +120,15 @@ export const NightStores = () => {
         setNightSalesWeekdayNomenclature(response);
       },
     );
+    getHourProceedsGraph({ filters, filterDate }).then((response) => {
+      setHourProceedsGraph(response.data);
+    });
+    getUniqueCheckGraph({ filters, filterDate }).then((response) => {
+      setUniqueCheckGraph(response.data);
+    });
+    getHeatmapNightStores({ filters, filterDate }).then((response) => {
+      setHeatmapNightStores(response);
+    });
   }, [filters, filterDate]);
 
   useEffect(() => {
@@ -134,15 +143,6 @@ export const NightStores = () => {
     });
     getProceedsGraph({ filters, filterDate, group }).then((response) => {
       setProceedsGraph(response.graph);
-    });
-    getHourProceedsGraph({ filters, filterDate, group }).then((response) => {
-      setHourProceedsGraph(response.data);
-    });
-    getUniqueCheckGraph({ filters, filterDate, group }).then((response) => {
-      setUniqueCheckGraph(response.data);
-    });
-    getHeatmapNightStores({ filters, filterDate, group }).then((response) => {
-      setHeatmapNightStores(response);
     });
   }, [filters, filterDate, group]);
 
