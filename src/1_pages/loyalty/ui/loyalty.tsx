@@ -240,7 +240,7 @@ export const Loyalty = () => {
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
               <Button variant="outline" className="border-b-0! rounded-b-none!">
-                Лояльность
+                Дашборд
               </Button>
               <Button
                 variant="outline"
@@ -307,7 +307,7 @@ export const Loyalty = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="loyalty">Дашборд</SelectItem>
               <SelectItem value="rfm">RFM</SelectItem>
               <SelectItem value="unload">Выгрузка</SelectItem>
             </SelectContent>

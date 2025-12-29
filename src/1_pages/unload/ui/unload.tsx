@@ -92,7 +92,7 @@ export const Unload = () => {
                 className="border-b-0! rounded-b-none! opacity-50"
                 onClick={() => navigate(ROUTES_PATH.LOYALTY)}
               >
-                Лояльность
+                Дашборд
               </Button>
               <Button
                 variant="outline"
@@ -156,7 +156,7 @@ export const Unload = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="loyalty">Дашборд</SelectItem>
               <SelectItem value="rfm">RFM</SelectItem>
               <SelectItem value="unload">Выгрузка</SelectItem>
             </SelectContent>
