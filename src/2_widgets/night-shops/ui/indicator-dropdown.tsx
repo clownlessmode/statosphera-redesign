@@ -37,17 +37,17 @@ const IndicatorDropdown = () => {
 
   const options = [
     {
-      label: "По ночной выручке",
+      label: "по ночной выручке",
       icon: <Moon className="w-4 h-4" />,
       value: "proceedsNight",
     },
     {
-      label: "По дневной выручке",
+      label: "по дневной выручке",
       icon: <Sun className="w-4 h-4" />,
       value: "proceedsDay",
     },
     {
-      label: "По вхождениям",
+      label: "по вхождениям",
       icon: <Percent className="w-4 h-4" />,
       value: "percentageProceedsNight",
     },
@@ -63,7 +63,7 @@ const IndicatorDropdown = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={isMobile ? "default" : "sm"}>
           <DollarSign className="text-primary/80" />
-          {!isMobile && selectedLabel}
+          {!isMobile && `Отображение топов ${selectedLabel}`}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

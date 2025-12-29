@@ -16,6 +16,7 @@ export interface RequestDto {
     dateStart: string;
     dateEnd: string;
   };
+  group?: "day" | "week" | "month" | "quarter" | "year";
 }
 
 export interface TopNightStoreResponse {
@@ -149,6 +150,59 @@ export interface AllCardResponse {
   countUniqueProducts: number;
   countUniqueCheck: number;
   avgLengthCheck: number;
+}
+
+export interface HeatmapNightStoresResponse {
+  proceeds: {
+    xAxis: string[];
+    yAxis: string[];
+    min: number;
+    max: number;
+    matrixData: [number, number, number][];
+    datesDict: {
+      [key: string]: string;
+    };
+  };
+  profit: {
+    xAxis: string[];
+    yAxis: string[];
+    min: number;
+    max: number;
+    matrixData: [number, number, number][];
+    datesDict: {
+      [key: string]: string;
+    };
+  };
+  uniqueCheck: {
+    xAxis: string[];
+    yAxis: string[];
+    min: number;
+    max: number;
+    matrixData: [number, number, number][];
+    datesDict: {
+      [key: string]: string;
+    };
+  };
+  avgCheck: {
+    xAxis: string[];
+    yAxis: string[];
+    min: number;
+    max: number;
+    matrixData: [number, number, number][];
+    datesDict: {
+      [key: string]: string;
+    };
+  };
+  uniqueCardNumber: {
+    xAxis: string[];
+    yAxis: string[];
+    min: number;
+    max: number;
+    matrixData: [number, number, number][];
+    datesDict: {
+      [key: string]: string;
+    };
+  };
 }
 
 export interface PartnersFilterResponse {
