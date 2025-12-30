@@ -2,6 +2,7 @@ import { processFiltersDto } from "@entities/report/model/api/filters/data/servi
 import { useFilters } from "@entities/report/model/api/filters/shops/controller";
 import { RegionsFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
 import { create } from "zustand";
 
@@ -17,14 +18,22 @@ export const useRegionsStore = create<RegionsStore>((set) => ({
 
 export const useRegions = (allData: any) => {
   const [regionsOptions, setRegionsOptions] = useState<MultiSelectOption[]>([]);
-  const { getRegions, isRegionsLoading } = useFilters();
+  const {
+    getRegionsNightStores,
+    isRegionsNightStoresLoading,
+    getRegions,
+    isRegionsLoading,
+  } = useFilters();
   const { setRegionLabels, savedRegionLabels } = useRegionsStore();
+  const { nightShops } = useFiltersStore();
 
   const handleOpenRegionsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getRegions(processFiltersDto(allData));
+      const response = nightShops
+        ? await getRegionsNightStores(processFiltersDto(allData))
+        : await getRegions(processFiltersDto(allData));
       const apiOptions = response.map((region: RegionsFilterResponse) => ({
         label: region.storeRegion,
         value: String(JSON.stringify(region.regionId || [])),
@@ -42,7 +51,9 @@ export const useRegions = (allData: any) => {
   return {
     regionsOptions,
     handleOpenRegionsSelect,
-    isRegionsLoading,
+    isRegionsLoading: nightShops
+      ? isRegionsNightStoresLoading
+      : isRegionsLoading,
     savedRegionLabels, // ← доступен в компоненте
   };
 };
