@@ -85,7 +85,7 @@ const ErrorForm: FC<Props> = ({ setIsOpen }) => {
                     <SelectValue placeholder="Выберите раздел" />
                   </SelectTrigger>
                   <SelectContent>
-                    {ROUTES.map((route) => (
+                    {ROUTES.filter((route) => route.label).map((route) => (
                       <SelectItem
                         key={route.path}
                         value={route.label as string}

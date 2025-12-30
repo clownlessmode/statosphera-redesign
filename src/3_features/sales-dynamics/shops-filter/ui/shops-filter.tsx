@@ -110,6 +110,7 @@ const ShopsFilter = () => {
       <DialogContent
         className="p-0 rounded-xl border-none max-xs:h-[calc(100vh-128px)] max-md:h-max"
         data-testid="shops-filter-modal"
+        aria-describedby={undefined}
         onInteractOutside={(e) => {
           // Предотвращаем закрытие модалки при активном туре
           if (isTourActive) {
