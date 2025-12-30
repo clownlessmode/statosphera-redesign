@@ -85,14 +85,20 @@ const SuggestionForm: FC<Props> = ({ setIsOpen }) => {
                     <SelectValue placeholder="Выберите раздел" />
                   </SelectTrigger>
                   <SelectContent>
-                    {ROUTES.filter((route) => route.label).map((route) => (
-                      <SelectItem
-                        key={route.path}
-                        value={route.label as string}
-                      >
-                        {route.label}
-                      </SelectItem>
-                    ))}
+                    {ROUTES.filter((route) => route.label)
+                      .sort((a, b) => {
+                        const labelA = (a.label || "").toLowerCase();
+                        const labelB = (b.label || "").toLowerCase();
+                        return labelA.localeCompare(labelB, "ru");
+                      })
+                      .map((route) => (
+                        <SelectItem
+                          key={route.path}
+                          value={route.label as string}
+                        >
+                          {route.label}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </FormControl>
