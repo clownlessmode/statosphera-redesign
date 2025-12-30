@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateStoreFilter } = useFiltersStore();
+  const { updateStoreFilter, nightShops } = useFiltersStore();
   const { toggleMyShopsMode } = useMyShopsStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
@@ -26,7 +26,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return; // ⛔ пропускаем первое срабатывание
     }
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
-  }, [resetSignal]);
+  }, [resetSignal, nightShops]);
 
   const handleClearFilters = () => {
     toggleMyShopsMode(false);

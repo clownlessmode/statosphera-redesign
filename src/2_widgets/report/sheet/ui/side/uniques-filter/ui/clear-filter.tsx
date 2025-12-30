@@ -12,7 +12,7 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateUniques } = useFiltersStore();
+  const { updateUniques, nightShops } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
   const isMobile = useIsMobile();
   const didMountRef = useRef(false);
@@ -23,7 +23,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return;
     }
     handleClearFilters();
-  }, [resetSignal]);
+  }, [resetSignal, nightShops]);
 
   const handleClearFilters = () => {
     updateUniques([]);

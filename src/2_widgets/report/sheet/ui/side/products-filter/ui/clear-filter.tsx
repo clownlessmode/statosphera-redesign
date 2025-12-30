@@ -12,9 +12,8 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateProductFilter } = useFiltersStore();
+  const { updateProductFilter, nightShops } = useFiltersStore();
   const resetSignal = useFormResetStore((s) => s.resetSignal);
-
   const didMountRef = useRef(false);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return; // ⛔ пропускаем первое срабатывание
     }
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
-  }, [resetSignal]);
+  }, [resetSignal, nightShops]);
   const handleClearFilters = () => {
     updateProductFilter("groupFranchise", []);
     updateProductFilter("ppProducts", null);
