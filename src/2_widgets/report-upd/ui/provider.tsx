@@ -13,7 +13,7 @@ export const ReportUpdProvider = () => {
 
   useEffect(() => {
     // Не показываем модалку на странице авторизации
-    if (location.pathname === "/login") {
+    if (location.pathname === "/login" || location.pathname === "/tv") {
       previousPathRef.current = location.pathname;
       return;
     }
