@@ -24,18 +24,18 @@ const ProfileBadge = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" data-testid="user-menu">
           <User />
-          <p className="hidden lg:block">
+          <div className="hidden lg:block">
             {formatShortName(session?.userName)}
-          </p>
+          </div>
           <ChevronDown className="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel className="block lg:hidden">
-          <p>
+          <div>
             {formatShortName(session?.userName)}
             <Separator className="w-full mt-2" />
-          </p>
+          </div>
         </DropdownMenuLabel>
         <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
         <DropdownMenuGroup>

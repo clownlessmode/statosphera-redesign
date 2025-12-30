@@ -92,7 +92,10 @@ const DaysFilter = () => {
             : "Даты"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 rounded-xl border-none">
+      <DialogContent
+        className="p-0 rounded-xl border-none"
+        aria-describedby={undefined}
+      >
         <Card className="w-full mr-4">
           <CardHeader>
             <CardTitle>Дата</CardTitle>

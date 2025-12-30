@@ -122,6 +122,7 @@ export default function StoresFiltersSheet() {
         close={false}
         forceMount
         className="scrol max-md:w-full"
+        aria-describedby={undefined}
       >
         <div>
           <Tabs defaultValue="filters" className="gap-0">

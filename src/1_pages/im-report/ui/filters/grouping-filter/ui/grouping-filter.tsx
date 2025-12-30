@@ -74,7 +74,10 @@ const GroupingFilter: FC<GroupingFilterProps> = ({ open, onOpenChange }) => {
           {selectedGroups.length > 0 && <Badge>{selectedGroups.length}</Badge>}
         </Button>
       </DialogTrigger>
-      <DialogContent className="p-0 max-xxs:h-[calc(100vh-128px)] max-md:h-max rounded-xl border-none">
+      <DialogContent
+        className="p-0 max-xxs:h-[calc(100vh-128px)] max-md:h-max rounded-xl border-none"
+        aria-describedby={undefined}
+      >
         <Card className="w-full mr-4 max-md:overflow-y-auto scrollbar-hide">
           <CardHeader>
             <CardTitle>Группировка</CardTitle>

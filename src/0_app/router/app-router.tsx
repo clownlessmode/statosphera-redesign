@@ -8,6 +8,7 @@ import { TourProvider } from "@entities/lessons";
 import Snowfall from "react-snowfall";
 import Santa from "@shared/ui/santa";
 import { ReportUpdProvider } from "@widgets/report-upd";
+import { NewYearCursorProvider } from "@widgets/new-year-cursor/new-year-cursor-provider";
 //import { RatingProvider } from "@widgets/rating";
 
 const AppRouter = () => {
@@ -29,8 +30,9 @@ const AppRouter = () => {
             }}
           />
           <Santa />
-          {/* <RatingProvider /> */}
+          <NewYearCursorProvider />
           <ReportUpdProvider />
+          {/* <RatingProvider /> */}
           <Routes>
             {ROUTES.map((route) => (
               <Route

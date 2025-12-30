@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ShopsFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { create } from "zustand";
 import { processFiltersDto } from "@entities/report/model/api/filters/data/service";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 interface ShopsStore {
   savedShopLabels: MultiSelectOption[];
@@ -17,14 +18,22 @@ export const useShopsStore = create<ShopsStore>((set) => ({
 
 export const useShops = (allData: any) => {
   const [shopsOptions, setShopsOptions] = useState<MultiSelectOption[]>([]);
-  const { getShops, isShopsLoading } = useFilters();
+  const {
+    getShopsNightStores,
+    isShopsNightStoresLoading,
+    getShops,
+    isShopsLoading,
+  } = useFilters();
   const { setShopLabels, savedShopLabels } = useShopsStore();
+  const { nightShops } = useFiltersStore();
 
   const handleOpenShopsSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getShops(processFiltersDto(allData));
+      const response = nightShops
+        ? await getShopsNightStores(processFiltersDto(allData))
+        : await getShops(processFiltersDto(allData));
       const apiOptions = response.map((shop: ShopsFilterResponse) => ({
         label: shop.storeName,
         value: String(JSON.stringify(shop.idStore || [])),
@@ -42,7 +51,7 @@ export const useShops = (allData: any) => {
   return {
     shopsOptions,
     handleOpenShopsSelect,
-    isShopsLoading,
+    isShopsLoading: nightShops ? isShopsNightStoresLoading : isShopsLoading,
     savedShopLabels,
   };
 };

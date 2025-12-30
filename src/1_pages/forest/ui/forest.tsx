@@ -519,7 +519,7 @@ const Forest: FC = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] gap-4 max-md:gap-2 p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] max-md:h-full gap-4 max-md:gap-2 p-4">
           {isMobile && (
             <div className="w-full flex flex-row gap-2 justify-between">
               <DownloadForest rows={table?.totalRows || 0} tab={tab} />

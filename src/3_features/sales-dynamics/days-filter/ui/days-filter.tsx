@@ -94,6 +94,7 @@ const DaysFilter = () => {
       <DialogContent
         className="p-0 rounded-xl border-none"
         data-testid="days-filter-modal"
+        aria-describedby={undefined}
         onInteractOutside={(e) => {
           // Предотвращаем закрытие модалки при активном туре
           if (isTourActive) {

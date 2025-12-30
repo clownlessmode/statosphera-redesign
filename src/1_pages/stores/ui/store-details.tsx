@@ -30,7 +30,10 @@ const StoreDetails: FC<Props> = ({ open, onOpenChange, idStore }) => {
   const { store, isStoreLoading } = useStoresController(idStore as number);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-full max-xs:text-xs md:max-w-[80vw]!">
+      <DialogContent
+        className="w-full max-xs:text-xs md:max-w-[80vw]!"
+        aria-describedby={undefined}
+      >
         {isStoreLoading ? (
           <div className="flex justify-center items-center h-full md:min-h-[70vh] w-full">
             <Spinner />

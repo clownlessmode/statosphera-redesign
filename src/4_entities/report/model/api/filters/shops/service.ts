@@ -1,3 +1,4 @@
+import { RequestDto } from "@pages/night-stores/config";
 import { api } from "@shared/api/api";
 export interface PartnersFilterResponse {
   nameManager: string;
@@ -192,6 +193,29 @@ export class FiltersShopsService {
       ...dto.filters.store,
       idStore: [],
     });
+    return response.data;
+  }
+
+  static async getPartnersNightStores(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("store/night-manager", dto);
+    return response.data;
+  }
+
+  static async getRegionsNightStores(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("filters/night-region", dto);
+    return response.data;
+  }
+
+  static async getCitiesNightStores(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post("filters/night-city", dto);
+    return response.data;
+  }
+
+  static async getShopsNightStores(dto: Pick<RequestDto, "filters">) {
+    const response = await api.post(
+      "store/night-store-shop",
+      dto.filters.store,
+    );
     return response.data;
   }
 }
