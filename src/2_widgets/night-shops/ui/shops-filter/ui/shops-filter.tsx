@@ -89,12 +89,7 @@ const ShopsFilter = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size={isMobile ? "default" : "sm"}>
-          <Store />{" "}
-          {isMobile ? (
-            <span className="max-xs:hidden">Магазины</span>
-          ) : (
-            "Найти магазины"
-          )}
+          <Store /> {isMobile ? "Магазины" : "Найти магазины"}
           {form.watch("idStore").length > 0 && (
             <Badge>{form.watch("idStore").length}</Badge>
           )}
