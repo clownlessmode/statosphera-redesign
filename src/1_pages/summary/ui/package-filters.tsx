@@ -13,19 +13,21 @@ export const PackageFilters: React.FC = () => {
   // );
 
   return (
-    <Button size={"default"} variant="outline">
-      <Switch
-        id="package"
-        checked={!packageFilter}
-        onCheckedChange={(checked) => updatePackage(!checked)}
-      />
-      <Label htmlFor="package">Скрыть пакеты</Label>
-      {/* <Switch
+    <Button size={"default"} asChild variant="outline">
+      <div>
+        <Switch
+          id="package"
+          checked={!packageFilter}
+          onCheckedChange={(checked) => updatePackage(!checked)}
+        />
+        <Label htmlFor="package">Скрыть пакеты</Label>
+        {/* <Switch
         id="fastSearch"
         checked={fastSearch}
         onCheckedChange={(checked) => updateFastSearch(checked)}
       />
       <Label htmlFor="fastSearch">Быстрый поиск</Label> */}
+      </div>
     </Button>
   );
 };

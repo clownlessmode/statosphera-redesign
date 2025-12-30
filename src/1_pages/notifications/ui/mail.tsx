@@ -26,7 +26,7 @@ interface MailProps {
   navCollapsedSize: number;
 }
 
-export function Mails({ mails, defaultLayout = [20, 32, 48] }: MailProps) {
+export function Mails({ mails, defaultLayout = [20, 40, 60] }: MailProps) {
   const { selected, setSelected } = useMail();
   const isMobile = useIsMobile();
   return (

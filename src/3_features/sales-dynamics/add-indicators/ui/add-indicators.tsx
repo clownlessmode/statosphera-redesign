@@ -88,6 +88,7 @@ const AddIndicators: FC<Props> = ({ defaultValues }) => {
       <DialogContent
         className="p-0 rounded-xl border-none"
         data-testid="indicators-modal"
+        aria-describedby={undefined}
         onInteractOutside={(e) => {
           // Предотвращаем закрытие модалки при активном туре
           if (isTourActive) {

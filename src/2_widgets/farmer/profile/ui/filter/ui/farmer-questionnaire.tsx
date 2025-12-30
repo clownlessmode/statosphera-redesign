@@ -264,7 +264,7 @@ export default function FarmerQuestionnaire({
                               backgroundImage: showPreview
                                 ? `url(${URL.createObjectURL(field.value[0])})`
                                 : data?.photo
-                                  ? `url(${data.photo})`
+                                  ? `url("${data.photo}")`
                                   : "none",
                             }}
                             className={cn(
@@ -878,7 +878,7 @@ export default function FarmerQuestionnaire({
                             backgroundImage: showPreview
                               ? `url(${URL.createObjectURL(field.value[0])})`
                               : data?.photo
-                                ? `url(${data.photo})`
+                                ? `url("${data.photo}")`
                                 : "none",
                           }}
                           className={cn(

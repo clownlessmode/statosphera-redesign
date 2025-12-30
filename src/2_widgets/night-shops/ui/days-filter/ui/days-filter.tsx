@@ -77,13 +77,19 @@ const DaysFilter = () => {
       <DialogTrigger asChild>
         <Button variant="outline" size={isMobile ? "default" : "sm"}>
           <CalendarDays />{" "}
-          {form.getValues("dateStart")
-            ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
-            : ""}{" "}
-          –{" "}
-          {form.getValues("dateEnd")
-            ? format(parseISO(form.getValues("dateEnd")), "dd.MM.yyyy")
-            : "Даты"}
+          {isMobile ? (
+            "Дата"
+          ) : (
+            <>
+              {form.getValues("dateStart")
+                ? format(parseISO(form.getValues("dateStart")), "dd.MM.yyyy")
+                : ""}{" "}
+              –{" "}
+              {form.getValues("dateEnd")
+                ? format(parseISO(form.getValues("dateEnd")), "dd.MM.yyyy")
+                : "Даты"}
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent
