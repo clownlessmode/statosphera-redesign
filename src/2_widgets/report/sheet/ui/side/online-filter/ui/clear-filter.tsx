@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateOnlineStoreFilter } = useFiltersStore();
+  const { updateOnlineStoreFilter, nightShops } = useFiltersStore();
 
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
@@ -25,7 +25,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return;
     }
     handleClearFilters();
-  }, [resetSignal]);
+  }, [resetSignal, nightShops]);
   const handleClearFilters = () => {
     updateOnlineStoreFilter("isIm", null);
     updateOnlineStoreFilter("imTypeOrder", [] as any);

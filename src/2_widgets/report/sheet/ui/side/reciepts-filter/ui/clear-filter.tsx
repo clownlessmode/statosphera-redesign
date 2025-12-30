@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ClearFilters: FC<Props> = ({ form }) => {
-  const { updateCheckFilter } = useFiltersStore();
+  const { updateCheckFilter, nightShops } = useFiltersStore();
 
   const resetSignal = useFormResetStore((s) => s.resetSignal);
 
@@ -25,7 +25,7 @@ const ClearFilters: FC<Props> = ({ form }) => {
       return; // ⛔ пропускаем первое срабатывание
     }
     handleClearFilters(); // ✅ вызываем только после нажатия "Очистить все фильтры"
-  }, [resetSignal]);
+  }, [resetSignal, nightShops]);
   const handleClearFilters = () => {
     updateCheckFilter("tabNumber", []);
     updateCheckFilter("containsBankQr", null);
