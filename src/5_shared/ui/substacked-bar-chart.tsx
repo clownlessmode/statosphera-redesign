@@ -1,6 +1,9 @@
 import ReactECharts from "echarts-for-react";
 import { EChartsOption } from "echarts";
 import { useGraphColors } from "@shared/hooks/use-graph-colors";
+import { useEffect, useRef } from "react";
+import { useIsMobile } from "@shared/hooks/use-mobile";
+import * as echarts from "echarts";
 
 type SeriesData = {
   name: string;
@@ -17,6 +20,7 @@ type BarChartMultiSeriesProps = {
     bottom?: number;
   };
   customColors?: string[];
+  mirror?: number;
 };
 
 export const BarChartMultiSeries = ({
@@ -27,8 +31,30 @@ export const BarChartMultiSeries = ({
   title,
   grid,
   customColors,
+  mirror,
 }: BarChartMultiSeriesProps) => {
   const colors = useGraphColors();
+  const chartRef = useRef<ReactECharts>(null);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (mirror === undefined) return;
+    const groupId = mirror.toString();
+    const instance = chartRef.current?.getEchartsInstance();
+    if (instance) {
+      // даём каждому чарту одну и ту же группу
+      instance.group = groupId;
+      // подключаем синхронизацию по группе
+      echarts.connect(groupId);
+    }
+
+    if (isMobile) instance?.resize();
+
+    return () => {
+      // при размонтировании можно отключить эту группу
+      echarts.disConnect(groupId);
+    };
+  }, [mirror, isMobile]);
 
   // Базовые настройки для label
   const labelOption = {
@@ -120,6 +146,7 @@ export const BarChartMultiSeries = ({
   return (
     <div className="w-full h-full">
       <ReactECharts
+        ref={chartRef}
         option={option}
         style={{ height: "100%", width: "100%" }}
         className="w-full h-full"

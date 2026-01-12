@@ -1,4 +1,5 @@
 import { COLUMN_KEY } from "@shared/constants/table-columns";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 
 import {
   ArrowUpRight,
@@ -1302,6 +1303,1015 @@ const all_indicators = [
     ],
   },
 ];
+
+const indicators_night_shops = [
+  {
+    id: COLUMN_KEY.GROUP_PROCEEDS_DAY,
+    label: "Дневная выручка, руб.",
+    value: COLUMN_KEY.GROUP_PROCEEDS_DAY,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY,
+        label: "Дневная выручка, руб.",
+        value: COLUMN_KEY.PROCEEDS_DAY,
+        tooltip:
+          "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_LM,
+        label: "Дневная выручка, руб. PM",
+        value: COLUMN_KEY.PROCEEDS_DAY_LM,
+        tooltip:
+          "Выручка за предыдущий месяц. Позволяет сравнить текущие результаты с прошлым месяцем",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_MOM,
+        label: "Дневная выручка, руб. MOM",
+        value: COLUMN_KEY.PROCEEDS_DAY_MOM,
+        tooltip:
+          "Разница в выручке между текущим и предыдущим месяцем в абсолютных значениях",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_MOM_PERCENT,
+        label: "Дневная выручка, руб. MOM%",
+        value: COLUMN_KEY.PROCEEDS_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение выручки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_LY,
+        label: "Дневная выручка, руб. PY",
+        value: COLUMN_KEY.PROCEEDS_DAY_LY,
+        tooltip:
+          "Выручка за аналогичный период прошлого года для годового сравнения",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_YOY,
+        label: "Дневная выручка, руб. YOY",
+        value: COLUMN_KEY.PROCEEDS_DAY_YOY,
+        tooltip:
+          "Разница в выручке между текущим периодом и аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_YOY_PERCENT,
+        label: "Дневная выручка, руб. YOY%",
+        value: COLUMN_KEY.PROCEEDS_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение выручки по сравнению с аналогичным периодом прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PROCEEDS_NIGHT,
+    label: "Ночная выручка, руб.",
+    value: COLUMN_KEY.GROUP_PROCEEDS_NIGHT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT,
+        label: "Ночная выручка, руб.",
+        value: COLUMN_KEY.PROCEEDS_NIGHT,
+        tooltip:
+          "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_LM,
+        label: "Ночная выручка, руб. PM",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_LM,
+        tooltip:
+          "Выручка за предыдущий месяц. Позволяет сравнить текущие результаты с прошлым месяцем",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_MOM,
+        label: "Ночная выручка, руб. MOM",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_MOM,
+        tooltip:
+          "Разница в выручке между текущим и предыдущим месяцем в абсолютных значениях",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_MOM_PERCENT,
+        label: "Ночная выручка, руб. MOM%",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение выручки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_LY,
+        label: "Ночная выручка, руб. PY",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_LY,
+        tooltip:
+          "Выручка за аналогичный период прошлого года для годового сравнения",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_YOY,
+        label: "Ночная выручка, руб. YOY",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_YOY,
+        tooltip:
+          "Разница в выручке между текущим периодом и аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_YOY_PERCENT,
+        label: "Ночная выручка, руб. YOY%",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение выручки по сравнению с аналогичным периодом прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PERCENTAGE_PROCEEDS_NIGHT,
+    label: "Ночная выручка, %",
+    value: COLUMN_KEY.GROUP_PERCENTAGE_PROCEEDS_NIGHT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT,
+        label: "Ночная выручка, %",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
+        label: "Ночная выручка, % PM",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку за предыдущий месяц. Позволяет сравнить текущие результаты с прошлым месяцем",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_MOM,
+        label: "Ночная выручка, % MOM",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_MOM,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку между текущим и предыдущим месяцем в абсолютных значениях",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_MOM,
+        label: "Ночная выручка, % MOM%",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_MOM,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку процентное изменение выручки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LY,
+        label: "Ночная выручка, % PY",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LY,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку за аналогичный период прошлого года для годового сравнения",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_YOY,
+        label: "Ночная выручка, % YOY",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_YOY,
+        tooltip:
+          "Процент вхождения выручки ночных магазинов в общую выручку разница в выручке между текущим периодом и аналогичным периодом прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PROFIT_DAY,
+    label: "Дневная валовая прибыль, руб.",
+    value: COLUMN_KEY.GROUP_PROFIT_DAY,
+    icon: ArrowUpRight,
+    children: [
+      {
+        id: COLUMN_KEY.PROFIT_DAY,
+        label: "Дневная валовая прибыль, руб.",
+        value: COLUMN_KEY.PROFIT_DAY,
+        tooltip:
+          "Разность между выручкой и себестоимостью проданных товаров. Основной показатель прибыльности",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_LM,
+        label: "Дневная валовая прибыль, руб. PM",
+        value: COLUMN_KEY.PROFIT_DAY_LM,
+        tooltip:
+          "Валовая прибыль за предыдущий месяц для сравнения результатов",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_MOM,
+        label: "Дневная валовая прибыль, руб. MoM",
+        value: COLUMN_KEY.PROFIT_DAY_MOM,
+        tooltip:
+          "Изменение валовой прибыли по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_MOM_PERCENT,
+        label: "Дневная валовая прибыль, руб. MoM %",
+        value: COLUMN_KEY.PROFIT_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение валовой прибыли относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_LY,
+        label: "Дневная валовая прибыль, руб. PY",
+        value: COLUMN_KEY.PROFIT_DAY_LY,
+        tooltip: "Валовая прибыль за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_YOY,
+        label: "Дневная валовая прибыль, руб. YoY",
+        value: COLUMN_KEY.PROFIT_DAY_YOY,
+        tooltip:
+          "Изменение валовой прибыли по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_YOY_PERCENT,
+        label: "Дневная валовая прибыль, руб. YoY %",
+        value: COLUMN_KEY.PROFIT_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение валовой прибыли относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PROFIT_NIGHT,
+    label: "Ночная валовая прибыль, руб.",
+    value: COLUMN_KEY.GROUP_PROFIT_NIGHT,
+    icon: ArrowUpRight,
+    children: [
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT,
+        label: "Ночная валовая прибыль, руб.",
+        value: COLUMN_KEY.PROFIT_NIGHT,
+        tooltip:
+          "Разность между выручкой и себестоимостью проданных товаров. Основной показатель прибыльности",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_LM,
+        label: "Ночная валовая прибыль, руб. PM",
+        value: COLUMN_KEY.PROFIT_NIGHT_LM,
+        tooltip:
+          "Валовая прибыль за предыдущий месяц для сравнения результатов",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_MOM,
+        label: "Ночная валовая прибыль, руб. MoM",
+        value: COLUMN_KEY.PROFIT_NIGHT_MOM,
+        tooltip:
+          "Изменение валовой прибыли по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_MOM_PERCENT,
+        label: "Ночная валовая прибыль, руб. MoM %",
+        value: COLUMN_KEY.PROFIT_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение валовой прибыли относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_LY,
+        label: "Ночная валовая прибыль, руб. PY",
+        value: COLUMN_KEY.PROFIT_NIGHT_LY,
+        tooltip: "Валовая прибыль за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_YOY,
+        label: "Ночная валовая прибыль, руб. YoY",
+        value: COLUMN_KEY.PROFIT_NIGHT_YOY,
+        tooltip:
+          "Изменение валовой прибыли по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_YOY_PERCENT,
+        label: "Ночная валовая прибыль, руб. YoY %",
+        value: COLUMN_KEY.PROFIT_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение валовой прибыли относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_PERCENTAGE_PROFIT_NIGHT,
+    label: "Ночная прибыль, %",
+    value: COLUMN_KEY.GROUP_PERCENTAGE_PROFIT_NIGHT,
+    icon: ArrowUpRight,
+    children: [
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT,
+        label: "Ночная прибыль, %",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT,
+        tooltip:
+          "Процент вхождения прибыли ночных магазинов в общую прибыль за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
+        label: "Ночная прибыль, % PM",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
+        tooltip:
+          "Процент вхождения прибыли ночных магазинов в общую прибыль за предыдущий месяц. Позволяет сравнить текущие результаты с прошлым месяцем",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_MOM,
+        label: "Ночная прибыль, % MoM",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_MOM,
+        tooltip:
+          "Процент вхождения прибыли ночных магазинов в общую прибыль между текущим и предыдущим месяцем в абсолютных значениях",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LY,
+        label: "Ночная прибыль, % PY",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LY,
+        tooltip:
+          "Процент вхождения прибыли ночных магазинов в общую прибыль за аналогичный период прошлого года для годового сравнения",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_YOY,
+        label: "Ночная прибыль, % YoY",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_YOY,
+        tooltip:
+          "Процент вхождения прибыли ночных магазинов в общую прибыль разница в прибыли между текущим периодом и аналогичным периодом прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARKUP_PERCENT_DAY,
+    label: "Дневная наценка, %",
+    value: COLUMN_KEY.GROUP_MARKUP_PERCENT_DAY,
+    icon: Tag,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY,
+        label: "Дневная наценка, %",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY,
+        tooltip:
+          "Процент наценки на товар. Показывает, на сколько процентов цена продажи превышает себестоимость",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
+        label: "Дневная наценка, % PM",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
+        tooltip:
+          "Процент наценки за предыдущий месяц для анализа ценовой политики",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_MOM,
+        label: "Дневная наценка, % MoM",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_MOM,
+        tooltip: "Изменение процента наценки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_LY,
+        label: "Дневная наценка, % PY",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_LY,
+        tooltip: "Процент наценки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_YOY,
+        label: "Дневная наценка, % YoY",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_YOY,
+        tooltip:
+          "Изменение процента наценки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARKUP_PERCENT_NIGHT,
+    label: "Ночная наценка, %",
+    value: COLUMN_KEY.GROUP_MARKUP_PERCENT_NIGHT,
+    icon: Tag,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT,
+        label: "Ночная наценка, %",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT,
+        tooltip:
+          "Процент наценки на товар. Показывает, на сколько процентов цена продажи превышает себестоимость",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
+        label: "Ночная наценка, % PM",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
+        tooltip:
+          "Процент наценки за предыдущий месяц для анализа ценовой политики",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_MOM,
+        label: "Ночная наценка, % MoM",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_MOM,
+        tooltip: "Изменение процента наценки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LY,
+        label: "Ночная наценка, % PY",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LY,
+        tooltip: "Процент наценки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_YOY,
+        label: "Ночная наценка, % YoY",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_YOY,
+        tooltip:
+          "Изменение процента наценки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARKUP_DISCOUNT_PERCENT_DAY,
+    label: "Дневная наценка без скидки, %",
+    value: COLUMN_KEY.GROUP_MARKUP_DISCOUNT_PERCENT_DAY,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY,
+        label: "Дневная наценка без скидки, %",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY,
+        tooltip:
+          "Процент наценки без учета предоставленных скидок. Показывает первоначальную наценку",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
+        label: "Дневная наценка без скидки, % PM",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
+        tooltip: "Наценка без скидки за предыдущий месяц",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_MOM,
+        label: "Дневная наценка без скидки, % MOM%",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_MOM,
+        tooltip:
+          "Изменение наценки без скидки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LY,
+        label: "Дневная наценка без скидки, % PY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LY,
+        tooltip: "Наценка без скидки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_YOY,
+        label: "Дневная наценка без скидки, % YOY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_YOY,
+        tooltip:
+          "Изменение наценки без скидки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_MARKUP_DISCOUNT_PERCENT_NIGHT,
+    label: "Ночная наценка без скидки, %",
+    value: COLUMN_KEY.GROUP_MARKUP_DISCOUNT_PERCENT_NIGHT,
+    icon: DollarSign,
+    children: [
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT,
+        label: "Ночная наценка без скидки, %",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT,
+        tooltip:
+          "Процент наценки без учета предоставленных скидок. Показывает первоначальную наценку",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
+        label: "Ночная наценка без скидки, % PM",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
+        tooltip: "Наценка без скидки за предыдущий месяц",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_MOM,
+        label: "Ночная наценка без скидки, % MOM%",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_MOM,
+        tooltip:
+          "Изменение наценки без скидки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LY,
+        label: "Ночная наценка без скидки, % PY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LY,
+        tooltip: "Наценка без скидки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_YOY,
+        label: "Ночная наценка без скидки, % YOY",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_YOY,
+        tooltip:
+          "Изменение наценки без скидки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_COST_PRICE_DAY,
+    label: "Дневная себестоимость, руб.",
+    value: COLUMN_KEY.GROUP_COST_PRICE_DAY,
+    icon: ShoppingBag,
+    children: [
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY,
+        label: "Дневная себестоимость, руб.",
+        value: COLUMN_KEY.COST_PRICE_DAY,
+        tooltip:
+          "Общая стоимость приобретения или производства проданных товаров",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_LM,
+        label: "Дневная себестоимость, руб. PM",
+        value: COLUMN_KEY.COST_PRICE_DAY_LM,
+        tooltip:
+          "Себестоимость за предыдущий месяц для анализа изменения затрат",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_MOM,
+        label: "Дневная себестоимость, руб. MOM",
+        value: COLUMN_KEY.COST_PRICE_DAY_MOM,
+        tooltip:
+          "Изменение себестоимости по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_MOM_PERCENT,
+        label: "Дневная себестоимость, руб. MOM%",
+        value: COLUMN_KEY.COST_PRICE_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение себестоимости относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_LY,
+        label: "Дневная себестоимость, руб. PY",
+        value: COLUMN_KEY.COST_PRICE_DAY_LY,
+        tooltip: "Себестоимость за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_YOY,
+        label: "Дневная себестоимость, руб. YOY",
+        value: COLUMN_KEY.COST_PRICE_DAY_YOY,
+        tooltip:
+          "Изменение себестоимости по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_YOY_PERCENT,
+        label: "Дневная себестоимость, руб. YoY %",
+        value: COLUMN_KEY.COST_PRICE_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение себестоимости относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_COST_PRICE_NIGHT,
+    label: "Ночная себестоимость, руб.",
+    value: COLUMN_KEY.GROUP_COST_PRICE_NIGHT,
+    icon: ShoppingBag,
+    children: [
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT,
+        label: "Ночная себестоимость, руб.",
+        value: COLUMN_KEY.COST_PRICE_NIGHT,
+        tooltip:
+          "Общая стоимость приобретения или производства проданных товаров",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_LM,
+        label: "Ночная себестоимость, руб. PM",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_LM,
+        tooltip:
+          "Себестоимость за предыдущий месяц для анализа изменения затрат",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_MOM,
+        label: "Ночная себестоимость, руб. MOM",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_MOM,
+        tooltip:
+          "Изменение себестоимости по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_MOM_PERCENT,
+        label: "Ночная себестоимость, руб. MOM%",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение себестоимости относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_LY,
+        label: "Ночная себестоимость, руб. PY",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_LY,
+        tooltip: "Себестоимость за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_YOY,
+        label: "Ночная себестоимость, руб. YOY",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_YOY,
+        tooltip:
+          "Изменение себестоимости по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_YOY_PERCENT,
+        label: "Ночная себестоимость, руб. YoY %",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение себестоимости относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_DISCOUNT_DAY,
+    label: "Дневная скидка, руб.",
+    value: COLUMN_KEY.GROUP_DISCOUNT_DAY,
+    icon: Tags,
+    children: [
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY,
+        label: "Дневная скидка, руб.",
+        value: COLUMN_KEY.DISCOUNT_DAY,
+        tooltip:
+          "Общая сумма предоставленных скидок в рублях за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_LM,
+        label: "Дневная скидка, руб. PM",
+        value: COLUMN_KEY.DISCOUNT_DAY_LM,
+        tooltip:
+          "Сумма скидок за предыдущий месяц для анализа скидочной политики",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_MOM,
+        label: "Дневная скидка, руб. MoM",
+        value: COLUMN_KEY.DISCOUNT_DAY_MOM,
+        tooltip: "Изменение суммы скидок по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_MOM_PERCENT,
+        label: "Дневная скидка, руб. MoM %",
+        value: COLUMN_KEY.DISCOUNT_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение суммы скидок относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_LY,
+        label: "Дневная скидка, руб. PY",
+        value: COLUMN_KEY.DISCOUNT_DAY_LY,
+        tooltip: "Сумма скидок за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_YOY,
+        label: "Дневная скидка, руб. YoY",
+        value: COLUMN_KEY.DISCOUNT_DAY_YOY,
+        tooltip:
+          "Изменение суммы скидок по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_YOY_PERCENT,
+        label: "Дневная скидка, руб. YoY%",
+        value: COLUMN_KEY.DISCOUNT_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение суммы скидок относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_DISCOUNT_NIGHT,
+    label: "Ночная скидка, руб.",
+    value: COLUMN_KEY.GROUP_DISCOUNT_NIGHT,
+    icon: Tags,
+    children: [
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT,
+        label: "Ночная скидка, руб.",
+        value: COLUMN_KEY.DISCOUNT_NIGHT,
+        tooltip:
+          "Общая сумма предоставленных скидок в рублях за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_LM,
+        label: "Ночная скидка, руб. PM",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_LM,
+        tooltip:
+          "Сумма скидок за предыдущий месяц для анализа скидочной политики",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_MOM,
+        label: "Ночная скидка, руб. MoM",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_MOM,
+        tooltip: "Изменение суммы скидок по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_MOM_PERCENT,
+        label: "Ночная скидка, руб. MoM %",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение суммы скидок относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_LY,
+        label: "Ночная скидка, руб. PY",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_LY,
+        tooltip: "Сумма скидок за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_YOY,
+        label: "Ночная скидка, руб. YoY",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_YOY,
+        tooltip:
+          "Изменение суммы скидок по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_YOY_PERCENT,
+        label: "Ночная скидка, руб. YoY%",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение суммы скидок относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_DISCOUNT_PERCENT_DAY,
+    label: "Дневная скидка %",
+    value: COLUMN_KEY.GROUP_DISCOUNT_PERCENT_DAY,
+    icon: TicketPercent,
+    children: [
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY,
+        label: "Дневная скидка %",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY,
+        tooltip: "Средний процент скидки от общей стоимости покупок",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
+        label: "Дневная скидка % PM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
+        tooltip: "Средний процент скидки за предыдущий месяц",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_MOM_PERCENT,
+        label: "Дневная скидка % MoM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_MOM_PERCENT,
+        tooltip: "Изменение процента скидки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LY,
+        label: "Дневная скидка %  PY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LY,
+        tooltip: "Средний процент скидки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_YOY_PERCENT,
+        label: "Дневная скидка % YoY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_YOY_PERCENT,
+        tooltip:
+          "Изменение процента скидки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_DISCOUNT_PERCENT_NIGHT,
+    label: "Ночная скидка %",
+    value: COLUMN_KEY.GROUP_DISCOUNT_PERCENT_NIGHT,
+    icon: TicketPercent,
+    children: [
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT,
+        label: "Ночная скидка %",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT,
+        tooltip: "Средний процент скидки от общей стоимости покупок",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LM,
+        label: "Ночная скидка % PM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LM,
+        tooltip: "Средний процент скидки за предыдущий месяц",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_MOM_PERCENT,
+        label: "Ночная скидка % MoM",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_MOM_PERCENT,
+        tooltip: "Изменение процента скидки по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LY,
+        label: "Ночная скидка %  PY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LY,
+        tooltip: "Средний процент скидки за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_YOY_PERCENT,
+        label: "Ночная скидка % YoY",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Изменение процента скидки относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_COUNT_SALES_DAY,
+    label: "Дневное кол. продаж",
+    value: COLUMN_KEY.GROUP_COUNT_SALES_DAY,
+    icon: ShoppingCart,
+    children: [
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY,
+        label: "Дневное кол. продаж",
+        value: COLUMN_KEY.COUNT_SALES_DAY,
+        tooltip: "Общее количество проданных единиц товара за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_LM,
+        label: "Дневное кол. продаж PM",
+        value: COLUMN_KEY.COUNT_SALES_DAY_LM,
+        tooltip:
+          "Количество продаж за предыдущий месяц для сравнения активности",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_MOM,
+        label: "Кол. Продаж MoM",
+        value: COLUMN_KEY.COUNT_SALES_DAY_MOM,
+        tooltip:
+          "Изменение количества продаж по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_MOM_PERCENT,
+        label: "Дневное кол. продаж MoM%",
+        value: COLUMN_KEY.COUNT_SALES_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение количества продаж относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_LY,
+        label: "Дневное кол. продаж PY",
+        value: COLUMN_KEY.COUNT_SALES_DAY_LY,
+        tooltip: "Количество продаж за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_YOY,
+        label: "Дневное кол. продаж YoY",
+        value: COLUMN_KEY.COUNT_SALES_DAY_YOY,
+        tooltip:
+          "Изменение количества продаж по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_YOY_PERCENT,
+        label: "Дневное кол. продаж YoY%",
+        value: COLUMN_KEY.COUNT_SALES_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение количества продаж относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_COUNT_SALES_NIGHT,
+    label: "Ночное кол. продаж",
+    value: COLUMN_KEY.GROUP_COUNT_SALES_NIGHT,
+    icon: ShoppingCart,
+    children: [
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT,
+        label: "Ночное кол. продаж",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT,
+        tooltip: "Общее количество проданных единиц товара за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_LM,
+        label: "Ночное кол. продаж PM",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_LM,
+        tooltip:
+          "Количество продаж за предыдущий месяц для сравнения активности",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_MOM,
+        label: "Кол. Продаж MoM",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_MOM,
+        tooltip:
+          "Изменение количества продаж по сравнению с предыдущим месяцем",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_MOM_PERCENT,
+        label: "Ночное кол. продаж MoM%",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение количества продаж относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_LY,
+        label: "Ночное кол. продаж PY",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_LY,
+        tooltip: "Количество продаж за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_YOY,
+        label: "Ночное кол. продаж YoY",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_YOY,
+        tooltip:
+          "Изменение количества продаж по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_YOY_PERCENT,
+        label: "Ночное кол. продаж YoY%",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение количества продаж относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_AVG_CHECK_DAY,
+    label: "Дневной средний чек",
+    value: COLUMN_KEY.GROUP_AVG_CHECK_DAY,
+    icon: Receipt,
+    children: [
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY,
+        label: "Дневной ср. чек",
+        value: COLUMN_KEY.AVG_CHECK_DAY,
+        tooltip:
+          "Средняя сумма одной покупки. Рассчитывается как выручка, деленная на количество чеков",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_LM,
+        label: "Дневной ср. Чек PM",
+        value: COLUMN_KEY.AVG_CHECK_DAY_LM,
+        tooltip:
+          "Средний чек за предыдущий месяц для анализа покупательского поведения",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_MOM,
+        label: "Дневной ср. Чек MoM",
+        value: COLUMN_KEY.AVG_CHECK_DAY_MOM,
+        tooltip:
+          "Изменение среднего чека по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_MOM_PERCENT,
+        label: "Дневной ср. Чек MoM %",
+        value: COLUMN_KEY.AVG_CHECK_DAY_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение среднего чека относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_LY,
+        label: "Дневной ср. Чек  PY",
+        value: COLUMN_KEY.AVG_CHECK_DAY_LY,
+        tooltip: "Средний чек за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_YOY,
+        label: "Дневной ср. Чек YoY",
+        value: COLUMN_KEY.AVG_CHECK_DAY_YOY,
+        tooltip:
+          "Изменение среднего чека по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_YOY_PERCENT,
+        label: "Дневной ср. Чек YoY %",
+        value: COLUMN_KEY.AVG_CHECK_DAY_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение среднего чека относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+  {
+    id: COLUMN_KEY.GROUP_AVG_CHECK_NIGHT,
+    label: "Ночной средний чек",
+    value: COLUMN_KEY.GROUP_AVG_CHECK_NIGHT,
+    icon: Receipt,
+    children: [
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT,
+        label: "Ночной ср. чек",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT,
+        tooltip:
+          "Средняя сумма одной покупки. Рассчитывается как выручка, деленная на количество чеков",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_LM,
+        label: "Ночной ср. Чек PM",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_LM,
+        tooltip:
+          "Средний чек за предыдущий месяц для анализа покупательского поведения",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_MOM,
+        label: "Ночной ср. Чек MoM",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_MOM,
+        tooltip:
+          "Изменение среднего чека по сравнению с предыдущим месяцем в рублях",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_MOM_PERCENT,
+        label: "Ночной ср. Чек MoM %",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_MOM_PERCENT,
+        tooltip:
+          "Процентное изменение среднего чека относительно предыдущего месяца",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_LY,
+        label: "Ночной ср. Чек  PY",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_LY,
+        tooltip: "Средний чек за аналогичный период прошлого года",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_YOY,
+        label: "Ночной ср. Чек YoY",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_YOY,
+        tooltip:
+          "Изменение среднего чека по сравнению с аналогичным периодом прошлого года",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_YOY_PERCENT,
+        label: "Ночной ср. Чек YoY %",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_YOY_PERCENT,
+        tooltip:
+          "Процентное изменение среднего чека относительно аналогичного периода прошлого года",
+      },
+    ],
+  },
+];
+
 interface IndicatorGroup {
   id: string;
   label: string;
@@ -1334,6 +2344,7 @@ export function excludeIndicators(
 }
 
 export const useIndicatorList = (type: "check" | "commerce") => {
+  const { nightShops } = useFiltersStore();
   const CHECK = excludeIndicators(all_indicators, [
     COLUMN_KEY.GROUP_TURNOVER_GOODS,
     COLUMN_KEY.WEIGHT_GROUP,
@@ -1353,6 +2364,9 @@ export const useIndicatorList = (type: "check" | "commerce") => {
     COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
     COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
   ]);
+  if (type === "check" && nightShops) {
+    return indicators_night_shops;
+  }
   if (type === "check") {
     return CHECK;
   }

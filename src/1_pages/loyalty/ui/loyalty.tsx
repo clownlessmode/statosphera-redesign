@@ -20,6 +20,7 @@ import {
   AgeSalesGraphResponse,
   AvarageCheckAgeGroupGraphResponse,
   RevenueGroupsGraphResponse,
+  CountLoyalCardLineResponse,
 } from "../config";
 
 import { TopLoyalStoreCards } from "./cards/top-loyal-store-cards";
@@ -107,6 +108,8 @@ export const Loyalty = () => {
   const [noSales30DaysUser, setNoSales30DaysUser] =
     useState<NoSales30DaysUserResponse>();
   const [loyalCard2, setLoyalCard2] = useState<LoyalCard2Response>();
+  const [countLoyalCardLine, setCountLoyalCardLine] =
+    useState<CountLoyalCardLineResponse>();
   const [ageGroupsGraph, setAgeGroupsGraph] = useState<AgeGroupsGraphResponse>({
     xAxis: [],
     legend: [],
@@ -156,6 +159,8 @@ export const Loyalty = () => {
     isTopActionsLoading,
     getLoyalCard2,
     isLoyalCard2Loading,
+    getCountLoyalCardLine,
+    isCountLoyalCardLineLoading,
     getAgeGroupsGraph,
     isAgeGroupsGraphLoading,
     getAgeCircleGraph,
@@ -204,6 +209,9 @@ export const Loyalty = () => {
     getLoyalCard2(mock).then((data) => {
       setLoyalCard2(data[0]);
     });
+    getCountLoyalCardLine(mock).then((data) => {
+      setCountLoyalCardLine(data[0]);
+    });
     getAgeGroupsGraph(mock).then((data) => {
       setAgeGroupsGraph(data);
     });
@@ -232,7 +240,7 @@ export const Loyalty = () => {
           left: !isMobile && (
             <div className="ml-6 -mb-4 flex flex-row gap-1">
               <Button variant="outline" className="border-b-0! rounded-b-none!">
-                Лояльность
+                Дашборд
               </Button>
               <Button
                 variant="outline"
@@ -299,7 +307,7 @@ export const Loyalty = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="loyalty">Дашборд</SelectItem>
               <SelectItem value="rfm">RFM</SelectItem>
               <SelectItem value="unload">Выгрузка</SelectItem>
             </SelectContent>
@@ -323,8 +331,8 @@ export const Loyalty = () => {
             <div className="flex flex-row max-md:grid max-md:grid-cols-2 gap-2 w-full h-full">
               <ValueCard
                 title="Уникальных"
-                value={loyalCard2?.uniqueCardNumber ?? 0}
-                isLoading={isLoyalCard2Loading}
+                value={countLoyalCardLine?.uniqueCardNumber ?? 0}
+                isLoading={isCountLoyalCardLineLoading}
                 formatter={(value) => value.toLocaleString()}
               />
               <ValueCard

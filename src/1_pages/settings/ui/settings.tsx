@@ -286,7 +286,7 @@ export const Settings = () => {
         )}
       >
         <ViewTabs defaultValue="theme" className="w-full h-full flex">
-          <ViewTabsList className="py-4 min-w-[200px] flex-shrink-0 h-full overflow-y-auto scrollbar-hide">
+          <ViewTabsList className="py-4 min-w-[200px] flex-shrink-0 h-full overflow-y-auto scrollbar-hide max-md:hidden">
             <ViewTabsGroup>
               <ViewTabsGroupContent>
                 <ViewTabsTrigger value="theme" icon={Palette}>
@@ -305,8 +305,11 @@ export const Settings = () => {
           </ViewTabsList>
 
           <div className="flex-1 overflow-y-auto scrollbar-hide px-4 py-4 h-full">
-            <div className="flex flex-col gap-6  pb-8">
-              <ViewTabsContent value="theme" className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 pb-8 max-md:gap-2 max-md:pb-0">
+              <ViewTabsContent
+                value="theme"
+                className="flex flex-col gap-6 max-md:gap-2"
+              >
                 {/* Тема */}
                 <Card className="p-6">
                   <div className="flex flex-col gap-4">
@@ -986,7 +989,7 @@ export const Settings = () => {
 
               <ViewTabsContent
                 value="notifications"
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-6 max-md:gap-2"
               >
                 <Card className="p-6">
                   <div className="flex flex-col gap-4">
@@ -1015,7 +1018,7 @@ export const Settings = () => {
               {userHasEffectsAccess && (
                 <ViewTabsContent
                   value="effects"
-                  className="flex flex-col gap-6"
+                  className="flex flex-col gap-6 max-md:gap-2"
                 >
                   {/* Переключатели эффектов */}
                   <Card className="p-6">

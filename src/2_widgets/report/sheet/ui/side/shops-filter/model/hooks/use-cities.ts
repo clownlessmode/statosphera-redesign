@@ -2,6 +2,7 @@ import { processFiltersDto } from "@entities/report/model/api/filters/data/servi
 import { useFilters } from "@entities/report/model/api/filters/shops/controller";
 import { CitiesFilterResponse } from "@entities/report/model/api/filters/shops/service";
 import { MultiSelectOption } from "@shared/ui/multiselect";
+import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useState } from "react";
 import { create } from "zustand";
 
@@ -17,14 +18,22 @@ export const useCitiesStore = create<CitiesStore>((set) => ({
 
 export const useCities = (allData: any) => {
   const [citiesOptions, setCitiesOptions] = useState<MultiSelectOption[]>([]);
-  const { getCities, isCitiesLoading } = useFilters();
+  const {
+    getCitiesNightStores,
+    isCitiesNightStoresLoading,
+    getCities,
+    isCitiesLoading,
+  } = useFilters();
   const { setCityLabels, savedCityLabels } = useCitiesStore();
+  const { nightShops } = useFiltersStore();
 
   const handleOpenCitiesSelect = async (isOpen: boolean) => {
     if (!isOpen) return;
 
     try {
-      const response = await getCities(processFiltersDto(allData));
+      const response = nightShops
+        ? await getCitiesNightStores(processFiltersDto(allData))
+        : await getCities(processFiltersDto(allData));
       const apiOptions = response.map((city: CitiesFilterResponse) => ({
         label: city.storeCity,
         value: String(JSON.stringify(city.cityId || [])),
@@ -42,7 +51,7 @@ export const useCities = (allData: any) => {
   return {
     citiesOptions,
     handleOpenCitiesSelect,
-    isCitiesLoading,
+    isCitiesLoading: nightShops ? isCitiesNightStoresLoading : isCitiesLoading,
     savedCityLabels, // ← доступен в компоненте
   };
 };

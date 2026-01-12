@@ -10,7 +10,10 @@ interface SankeyChartProps {
   grid?: {
     bottom?: number;
   };
+  min?: number;
+  max?: number;
   formatter?: (params: any) => string;
+  formatNumber?: (value: number) => string;
 }
 
 export const HeatChart = ({
@@ -18,7 +21,10 @@ export const HeatChart = ({
   yAxisData,
   series,
   grid,
+  min = 0,
+  max = 500,
   formatter,
+  formatNumber,
 }: SankeyChartProps) => {
   const colors = useGraphColors();
   const isMobile = useIsMobile();
@@ -37,7 +43,7 @@ export const HeatChart = ({
     grid: {
       top: 20,
       left: !isMobile ? 40 : 30,
-      right: !isMobile ? 80 : 10,
+      right: !isMobile ? 100 : 10,
       bottom: grid?.bottom || 20,
     },
     xAxis: {
@@ -55,8 +61,8 @@ export const HeatChart = ({
       },
     },
     visualMap: {
-      min: 0,
-      max: 500,
+      min: min,
+      max: max,
       calculable: true,
       orient: !isMobile ? "vertical" : "horizontal",
       left: !isMobile ? "right" : "center",
@@ -68,12 +74,18 @@ export const HeatChart = ({
       inRange: {
         color: [colors.series[3], colors.series[0]],
       },
+      formatter: formatNumber
+        ? (value: any) => formatNumber(value as number)
+        : undefined,
     },
     series: {
       type: "heatmap",
       data: series,
       label: {
         show: !isMobile,
+        formatter: (params: any) => {
+          return formatNumber ? formatNumber(params.value[2]) : undefined;
+        },
       },
     } as any,
   };

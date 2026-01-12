@@ -27,8 +27,8 @@ import ForestCards from "./forest-cards";
 import { getLabelByValue } from "./values-badges";
 import { useIndicatorList } from "@widgets/forest/sheet/ui/side/indicators-filter";
 import { useUniqueValues } from "@widgets/forest/sheet/ui/side/uniques-filter";
-import { SavedReports } from "@features/reports/saved-reports";
-import { SaveReport } from "@features/reports/save-report";
+//import { SavedReports } from "@features/reports/saved-reports";
+//import { SaveReport } from "@features/reports/save-report";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
@@ -513,18 +513,18 @@ const Forest: FC = () => {
             right: !isMobile && (
               <div className="flex flex-row gap-2">
                 <DownloadForest rows={table?.totalRows || 0} tab={tab} />
-                <SaveReport />
-                <SavedReports />
+                {/*<SaveReport />
+                <SavedReports />*/}
               </div>
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] gap-4 max-md:gap-2 p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] max-md:h-full gap-4 max-md:gap-2 p-4">
           {isMobile && (
             <div className="w-full flex flex-row gap-2 justify-between">
               <DownloadForest rows={table?.totalRows || 0} tab={tab} />
-              <SaveReport />
-              <SavedReports />
+              {/*<SaveReport />
+              <SavedReports />*/}
               <DateDropdown />
               <Button
                 className="w-fit"

@@ -70,7 +70,6 @@ export interface TopActionsResponse {
 }
 
 export interface LoyalCard2Response {
-  uniqueCardNumber: 269510;
   uniqueCheckLoyal: 776779;
   uniqueCheck: 1404511;
   appLoyalPercent: 55.3;
@@ -81,6 +80,10 @@ export interface LoyalCard2Response {
   proceedsAdditionalLoyalPercent: 36.7;
   proceeds: 867600179;
   proceedsLoyal: 549410899;
+}
+
+export interface CountLoyalCardLineResponse {
+  uniqueCardNumber: number;
 }
 
 export interface AgeGroupsGraphResponse {

@@ -11,7 +11,7 @@ export const ShortProfile = ({ farmer }: { farmer: FarmersResponse }) => {
     >
       <CardContent className="grid grid-cols-[max-content_1fr_1fr_1fr_1fr_max-content] gap-4 items-center max-md:grid-cols-[max-content_1fr_max-content]">
         <Card
-          style={{ backgroundImage: `url(${farmer.photo})` }}
+          style={{ backgroundImage: `url("${farmer.photo}")` }}
           className="size-[50px] rounded-full aspect-square bg-accent bg-no-repeat bg-center bg-cover shrink-0"
         />
         <span className="truncate">{farmer.organizationName}</span>

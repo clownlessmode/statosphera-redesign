@@ -35,9 +35,9 @@ import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
-//import { FarmerChat } from "@pages/farmer/chat";
 import { Farmers } from "@pages/farmers";
 import { Forest } from "@pages/forest";
+import { NightStores } from "@pages/night-stores";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -110,6 +110,8 @@ export const ROUTES_PATH = {
   // Служебные страницы
   NOT_FOUND: "*",
   FORBIDDEN: "/forbidden",
+
+  NIGHT_STORES: "/night-stores",
 } as const;
 
 export const ROUTES: RouteConfig[] = [
@@ -421,6 +423,13 @@ export const ROUTES: RouteConfig[] = [
     allowedUsers: [2758, 2564, 59, 156, 14, 19, 200, 154],
     layout: Sidebar,
     label: "Проект Лес",
+  },
+  {
+    path: ROUTES_PATH.NIGHT_STORES,
+    variant: "private",
+    element: <NightStores />,
+    layout: Sidebar,
+    label: "Ночные магазины",
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,

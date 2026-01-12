@@ -1,8 +1,6 @@
 import { Logotype } from "@shared/ui/logotype";
 import {
   BookOpenIcon,
-  ChartBarStacked,
-  ChartLine,
   DollarSign,
   FileChartColumn,
   FileChartPieIcon,
@@ -16,11 +14,14 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Store,
-  TreePine,
   Vote,
   ChartColumn,
   //  MessageCircle,
   Tractor,
+  Moon,
+  ChartLine,
+  ChartBarStacked,
+  TreePine,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -47,6 +48,7 @@ const Sidebar = ({
   ...props
 }: React.ComponentProps<typeof SidebarComponent>) => {
   const { session } = useSession();
+  const isMobile = useIsMobile();
   const { profileStatus } = useFarmer(session?.idUser);
   const { tab } = useTabStore();
   const { tab: tabWriteOff } = useTabStoreWriteOff();
@@ -62,15 +64,73 @@ const Sidebar = ({
         icon: DollarSign,
         disabled: session?.role === ROLES.SERVICE_MANAGER,
       },
-      {
-        title: "Отчёты",
-        url:
-          session?.role === ROLES.SERVICE_MANAGER
-            ? ROUTES_PATH.DASHBOARD
-            : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
-        icon: FileChartColumn,
-        disabled: session?.role === ROLES.SERVICE_MANAGER,
-      },
+      ...(!isMobile
+        ? [
+            {
+              title: "Отчёты",
+              url:
+                session?.role === ROLES.SERVICE_MANAGER
+                  ? ROUTES_PATH.DASHBOARD
+                  : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+              icon: FileChartColumn,
+              children: [
+                {
+                  title: "Основные",
+                  url:
+                    session?.role === ROLES.SERVICE_MANAGER
+                      ? ROUTES_PATH.DASHBOARD
+                      : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+                  disabled: session?.role === ROLES.SERVICE_MANAGER,
+                },
+                {
+                  title: "Списания",
+                  url: `${ROUTES_PATH.WRITE_OFF}?tab=${tabWriteOff}&open=true`,
+                },
+                { title: "Парные продажи", url: ROUTES_PATH.SUMMARY },
+                {
+                  title: "Проект Лес",
+                  url: ROUTES_PATH.FOREST,
+                  disabled:
+                    session?.role !== ROLES.ADMIN &&
+                    ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
+                      session?.idUser ?? -1,
+                    ),
+                },
+              ],
+            },
+          ]
+        : [
+            {
+              title: "Отчёты",
+              url:
+                session?.role === ROLES.SERVICE_MANAGER
+                  ? ROUTES_PATH.DASHBOARD
+                  : `${ROUTES_PATH.REPORT}?open=true&tab=${tab}`,
+              icon: FileChartColumn,
+              disabled: session?.role === ROLES.SERVICE_MANAGER,
+            },
+            {
+              title: "Списания",
+              url: `${ROUTES_PATH.WRITE_OFF}?tab=${tabWriteOff}&open=true`,
+              icon: ChartLine,
+            },
+            {
+              title: "Парные продажи",
+              url: ROUTES_PATH.SUMMARY,
+              icon: ChartBarStacked,
+            },
+            {
+              title: "Проект Лес",
+              url: ROUTES_PATH.FOREST,
+              icon: TreePine,
+              disabled:
+                session?.role !== ROLES.ADMIN &&
+                ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
+                  session?.idUser ?? -1,
+                ),
+            },
+          ]),
+
       {
         title: "Дайджесты",
         url: ROUTES_PATH.DIGESTS,
@@ -106,17 +166,6 @@ const Sidebar = ({
         icon: Heart,
       },
       {
-        title: "Списания",
-        url: `${ROUTES_PATH.WRITE_OFF}?tab=${tabWriteOff}&open=true`,
-        icon: ChartLine,
-      },
-      // Поменять роль
-      {
-        title: "Парные продажи",
-        url: ROUTES_PATH.SUMMARY,
-        icon: ChartBarStacked,
-      },
-      {
         title: "Интернет-магазин",
         url: ROUTES_PATH.IM,
         icon: ShoppingBag,
@@ -128,14 +177,9 @@ const Sidebar = ({
         icon: Globe,
       },
       {
-        title: "Проект Лес",
-        url: ROUTES_PATH.FOREST,
-        icon: TreePine,
-        disabled:
-          session?.role !== ROLES.ADMIN &&
-          ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
-            session?.idUser ?? -1,
-          ),
+        title: "Ночные магазины",
+        url: ROUTES_PATH.NIGHT_STORES,
+        icon: Moon,
       },
       {
         title: "Гриль",
@@ -231,7 +275,6 @@ const Sidebar = ({
   };
 
   const { toggleSidebar, state } = useSidebar();
-  const isMobile = useIsMobile();
   const isCollapsed = state === "collapsed";
 
   return (
@@ -264,7 +307,13 @@ const Sidebar = ({
                 items={
                   session?.role === ROLES.FARMER
                     ? dataFarmer.navMain
-                    : data.navMain
+                    : session?.role === ROLES.ADMIN
+                      ? data.navMain
+                      : data.navMain.filter(
+                          (item) =>
+                            item.disabled === false ||
+                            item.disabled === undefined,
+                        )
                 }
               />
             </SidebarContent>
@@ -274,7 +323,13 @@ const Sidebar = ({
                 items={
                   session?.role === ROLES.FARMER
                     ? dataFarmer.navSecondary
-                    : data.navSecondary
+                    : session?.role === ROLES.ADMIN
+                      ? data.navSecondary
+                      : data.navSecondary.filter(
+                          (item) =>
+                            item.disabled === false ||
+                            item.disabled === undefined,
+                        )
                 }
                 isCollapsed={isCollapsed}
                 toggleSidebar={toggleSidebar}

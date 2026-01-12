@@ -321,7 +321,7 @@ export const Rfm = () => {
                 className="border-b-0! rounded-b-none! opacity-50"
                 onClick={() => navigate(ROUTES_PATH.LOYALTY)}
               >
-                Лояльность
+                Дашборд
               </Button>
               <Button variant="outline" className="border-b-0! rounded-b-none!">
                 RFM
@@ -392,7 +392,7 @@ export const Rfm = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="loyalty">Лояльность</SelectItem>
+              <SelectItem value="loyalty">Дашборд</SelectItem>
               <SelectItem value="rfm">RFM</SelectItem>
               <SelectItem value="unload">Выгрузка</SelectItem>
             </SelectContent>

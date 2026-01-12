@@ -62,6 +62,7 @@ export default function SummaryFiltersSheet() {
         close={false}
         forceMount
         className="scrol max-md:w-full"
+        aria-describedby={undefined}
       >
         <div>
           <Tabs className="gap-0">
