@@ -418,7 +418,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Forest />,
     allowedRoles: [ROLES.ADMIN],
-    allowedUsers: [2758, 2564, 59, 156, 14, 19, 200],
+    allowedUsers: [2758, 2564, 59, 156, 14, 19, 200, 154],
     layout: Sidebar,
     label: "Проект Лес",
   },
