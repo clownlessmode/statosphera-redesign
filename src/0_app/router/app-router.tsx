@@ -6,9 +6,7 @@ import { Suspense } from "react";
 import PageSkeleton from "@shared/ui/page-skeleton";
 import { TourProvider } from "@entities/lessons";
 import Snowfall from "react-snowfall";
-import Santa from "@shared/ui/santa";
 import { ReportUpdProvider } from "@widgets/report-upd";
-import { NewYearCursorProvider } from "@widgets/new-year-cursor/new-year-cursor-provider";
 //import { RatingProvider } from "@widgets/rating";
 
 const AppRouter = () => {
@@ -29,8 +27,6 @@ const AppRouter = () => {
               pointerEvents: "none",
             }}
           />
-          <Santa />
-          <NewYearCursorProvider />
           <ReportUpdProvider />
           {/* <RatingProvider /> */}
           <Routes>
