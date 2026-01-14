@@ -149,6 +149,7 @@ const SalesDynamics: FC = () => {
     fetchFirstGraph();
   }, [
     isLoading,
+    lfl,
     getApiPayload,
     filterDate,
     values,
@@ -174,6 +175,7 @@ const SalesDynamics: FC = () => {
     fetchSecondGraph();
   }, [
     isLoading,
+    lfl,
     getApiPayload,
     filterDate,
     values,
