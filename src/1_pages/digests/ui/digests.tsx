@@ -35,6 +35,9 @@ const Digests = () => {
 
   const { digests, isDigestsLoading } = useDigests();
 
+  const isExternalUser =
+    session?.role === ROLES.FARMER || session?.role === ROLES.FOREST;
+
   const filteredDigests = useMemo(() => {
     // Для сервисников только аналитика
     // if (session?.role === ROLES.SERVICE_MANAGER) {
@@ -51,18 +54,18 @@ const Digests = () => {
 
     // Если нет сессии, показываем только director и groupCompany
     const allowedTypes =
-      session && session.role !== ROLES.FARMER
+      session && !isExternalUser
         ? ["analytics", "director", "franchise", "groupCompany"]
         : ["director", "groupCompany"];
 
     const filtered = {
       analytics:
-        session && session.role !== ROLES.FARMER
+        session && !isExternalUser
           ? digests?.filter((digest) => digest.type === "analytics")
           : [],
       director: digests?.filter((digest) => digest.type === "director"),
       franchise:
-        session && session.role !== ROLES.FARMER
+        session && !isExternalUser
           ? digests?.filter((digest) => digest.type === "franchise")
           : [],
       groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
@@ -70,7 +73,7 @@ const Digests = () => {
 
     // Для вкладки "Все" показываем только разрешенные типы
     const allDigests =
-      session && session.role !== ROLES.FARMER
+      session && !isExternalUser
         ? digests
         : digests?.filter((digest) => allowedTypes.includes(digest.type));
 
@@ -78,7 +81,7 @@ const Digests = () => {
       ...filtered,
       all: allDigests,
     };
-  }, [digests, session]);
+  }, [digests, session, isExternalUser]);
 
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
@@ -120,7 +123,7 @@ const Digests = () => {
                   )}
                 </TabsTrigger>
 
-                {session && session.role !== ROLES.FARMER && (
+                {session && !isExternalUser && (
                   <TabsTrigger
                     value="analytics"
                     className="w-full justify-between gap-4 max-md:py-2"
@@ -152,7 +155,7 @@ const Digests = () => {
                   )}
                 </TabsTrigger>
 
-                {session && session.role !== ROLES.FARMER && (
+                {session && !isExternalUser && (
                   <TabsTrigger
                     value="franchise"
                     className="w-full justify-between gap-4 max-md:py-2"
