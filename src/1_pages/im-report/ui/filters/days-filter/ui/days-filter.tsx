@@ -28,6 +28,7 @@ import useForm from "../model/hook";
 import { useLoyaltyFiltersStore } from "../../filters-store";
 import { useSalesDynamicsFiltersStore } from "@pages/sales-dynamics/model/filters-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { MAX_DATE, MIN_DATE } from "../model/constants";
 
 const DaysFilter = () => {
   const form = useForm();
@@ -64,13 +65,12 @@ const DaysFilter = () => {
     setIsOpen(false);
   };
 
+  const dateStart = form.watch("dateStart");
+  const dateEnd = form.watch("dateEnd");
+
   const dateRangeValue = {
-    from: form.getValues("dateStart")
-      ? parseISO(form.getValues("dateStart"))
-      : undefined,
-    to: form.getValues("dateEnd")
-      ? parseISO(form.getValues("dateEnd"))
-      : undefined,
+    from: dateStart ? parseISO(dateStart) : undefined,
+    to: dateEnd ? parseISO(dateEnd) : undefined,
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -116,6 +116,8 @@ const DaysFilter = () => {
                         Промежуток даты
                       </FormLabel>
                       <DateRangePicker
+                        min={MIN_DATE}
+                        max={MAX_DATE}
                         onChange={handleDateRangeChange}
                         className="w-full"
                         value={dateRangeValue}
