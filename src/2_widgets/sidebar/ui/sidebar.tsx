@@ -42,6 +42,7 @@ import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useFarmer } from "@entities/farmer/api/controller";
+import { useCallback } from "react";
 
 const Sidebar = ({
   children,
@@ -243,19 +244,25 @@ const Sidebar = ({
     ],
   };
 
-  const dataFarmer = {
+  const dataExternalUser = {
     navMain: [
       {
         title: "Аналитика",
         url: ROUTES_PATH.ANALYTICS,
-        allowedRoles: [ROLES.ADMIN],
         icon: ChartColumn,
+        disabled: session?.role !== ROLES.FARMER,
+      },
+      {
+        title: "Проект Лес",
+        url: ROUTES_PATH.FOREST,
+        icon: TreePine,
+        disabled: session?.role !== ROLES.FOREST,
       },
       //{
       //  title: "Чаты",
       //  url: "#",
       //  icon: MessageCircle,
-      //  disabled: true,
+      //  disabled: session?.role !== ROLES.FARMER,
       //},
       {
         title: "Дайджесты",
@@ -277,60 +284,74 @@ const Sidebar = ({
   const { toggleSidebar, state } = useSidebar();
   const isCollapsed = state === "collapsed";
 
+  const isExternalUser =
+    session?.role === ROLES.FARMER || session?.role === ROLES.FOREST;
+
+  const getNavMainItems = useCallback(() => {
+    if (session?.role === ROLES.ADMIN) {
+      return data.navMain;
+    }
+
+    if (isExternalUser) {
+      return dataExternalUser.navMain.filter(
+        (item) => item.disabled === false || item.disabled === undefined,
+      );
+    }
+
+    return data.navMain.filter(
+      (item) => item.disabled === false || item.disabled === undefined,
+    );
+  }, [session?.role]);
+
+  const getNavSecondaryItems = useCallback(() => {
+    if (session?.role === ROLES.ADMIN) {
+      return data.navSecondary;
+    }
+
+    if (isExternalUser) {
+      return dataExternalUser.navSecondary.filter(
+        (item) => item.disabled === false || item.disabled === undefined,
+      );
+    }
+
+    return data.navSecondary.filter(
+      (item) => item.disabled === false || item.disabled === undefined,
+    );
+  }, [session?.role]);
+
   return (
     <>
       {session &&
         ((session?.role === ROLES.FARMER && profileStatus) ||
           session?.role !== ROLES.FARMER) && (
           <SidebarComponent collapsible="icon" {...props}>
-            {isMobile ? (
-              session?.role !== ROLES.FARMER ? (
-                <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
-                  <Logotype size={isCollapsed ? "sm" : "md"} />
-                </Link>
-              ) : (
-                <div onClick={toggleSidebar} className="py-2 pl-2">
-                  <Logotype size={isCollapsed ? "sm" : "md"} />
-                </div>
-              )
-            ) : session?.role !== ROLES.FARMER ? (
+            {isMobile && !isExternalUser && (
+              <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
+                <Logotype size={isCollapsed ? "sm" : "md"} />
+              </Link>
+            )}
+            {isMobile && isExternalUser && (
+              <div onClick={toggleSidebar} className="py-2 pl-2">
+                <Logotype size={isCollapsed ? "sm" : "md"} />
+              </div>
+            )}
+            {!isMobile && !isExternalUser && (
               <Link to="/" className="py-2 pl-2">
                 <Logotype size={isCollapsed ? "sm" : "md"} />
               </Link>
-            ) : (
+            )}
+            {!isMobile && isExternalUser && (
               <div className="py-2 pl-2">
                 <Logotype size={isCollapsed ? "sm" : "md"} />
               </div>
             )}
             <SidebarContent>
-              <NavMain
-                items={
-                  session?.role === ROLES.FARMER
-                    ? dataFarmer.navMain
-                    : session?.role === ROLES.ADMIN
-                      ? data.navMain
-                      : data.navMain.filter(
-                          (item) =>
-                            item.disabled === false ||
-                            item.disabled === undefined,
-                        )
-                }
-              />
+              <NavMain items={getNavMainItems()} />
             </SidebarContent>
             <SidebarRail />
             <SidebarMenu>
               <NavSecondary
-                items={
-                  session?.role === ROLES.FARMER
-                    ? dataFarmer.navSecondary
-                    : session?.role === ROLES.ADMIN
-                      ? data.navSecondary
-                      : data.navSecondary.filter(
-                          (item) =>
-                            item.disabled === false ||
-                            item.disabled === undefined,
-                        )
-                }
+                items={getNavSecondaryItems()}
                 isCollapsed={isCollapsed}
                 toggleSidebar={toggleSidebar}
                 className="mt-auto"
