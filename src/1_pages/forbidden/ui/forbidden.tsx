@@ -15,6 +15,9 @@ const Forbidden = () => {
     if (session?.role === ROLES.FARMER) {
       navigate(ROUTES_PATH.FARMER, { replace: true });
     }
+    if (session?.role === ROLES.FOREST) {
+      navigate(ROUTES_PATH.FOREST, { replace: true });
+    }
   }, [session, navigate]);
 
   return (
