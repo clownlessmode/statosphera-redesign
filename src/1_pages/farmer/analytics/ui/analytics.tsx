@@ -322,16 +322,26 @@ const FarmerAnalytics: FC = () => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
   const initialFiltersRef = useRef<any>(null);
+
   useEffect(() => {
-    if (!initialFiltersRef.current && graph && table && total) {
-      initialFiltersRef.current = {
-        filters: JSON.parse(JSON.stringify(allData.filters)),
-        values: [...allData.values],
-        groups: [dateFilterValue],
-        graph: graph,
-      };
+    if (graph && table && total) {
+      if (selectedRows.length === 0) {
+        initialFiltersRef.current = {
+          filters: JSON.parse(JSON.stringify(allData.filters)),
+          values: [...allData.values],
+          groups: [dateFilterValue],
+          graph: graph,
+        };
+      }
     }
-  }, [graph, table, total, allData.filters, allData.values]);
+  }, [
+    graph,
+    table,
+    total,
+    allData.filters,
+    allData.values,
+    selectedRows.length,
+  ]);
 
   const handleSelectionChange = useCallback(
     (newSelectedRows: any[]) => {
