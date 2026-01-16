@@ -282,7 +282,21 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
     set((state) => ({ dataVersion: state.dataVersion + 1 })),
 }));
 
+interface GraphVersionState {
+  graphVersion: number;
+  setGraphVersion: (version: number) => void;
+  bumpGraphVersion: () => void;
+}
+
+export const useGraphVersionStore = create<GraphVersionState>((set) => ({
+  graphVersion: 0,
+  setGraphVersion: (version: number) => set({ graphVersion: version }),
+  bumpGraphVersion: () =>
+    set((state) => ({ graphVersion: state.graphVersion + 1 })),
+}));
+
 const FarmerAnalytics: FC = () => {
+  const { graphVersion, bumpGraphVersion } = useGraphVersionStore();
   const { value: dateFilterValue } = useDateFilterStore();
   const requestCache = useRef<RequestCache>({});
   const lastRequestKey = useRef<string>("");
@@ -340,7 +354,7 @@ const FarmerAnalytics: FC = () => {
         }).then((response) => {
           if (response) {
             setGraph(response);
-            setSelectedIndicator(null);
+            bumpGraphVersion();
           }
         });
         return;
@@ -772,14 +786,14 @@ const FarmerAnalytics: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
-      setSelectedIndicator(null);
+      bumpGraphVersion();
       return requestPromise;
     },
     [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],
   );
 
   const handleClearFilters = () => {
-    setSelectedIndicator(null);
+    bumpGraphVersion();
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -792,6 +806,10 @@ const FarmerAnalytics: FC = () => {
     lastRequestKey.current = "";
     bumpDataVersion();
   }, [allData.filters, bumpDataVersion]);
+
+  useEffect(() => {
+    setSelectedIndicator(null);
+  }, [graphVersion]);
 
   const { isGraphLoading, isTableLoading, isTotalLoading } =
     useFarmerAnalyticsStore();
@@ -899,7 +917,7 @@ const FarmerAnalytics: FC = () => {
                             // Восстанавливаем начальный график
                             if (initialFiltersRef.current) {
                               setGraph(initialFiltersRef.current.graph);
-                              setSelectedIndicator(null);
+                              bumpGraphVersion();
                             }
                           }}
                           size="sm"

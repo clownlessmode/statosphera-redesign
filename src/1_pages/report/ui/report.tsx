@@ -288,6 +288,19 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
     set((state) => ({ dataVersion: state.dataVersion + 1 })),
 }));
 
+interface GraphVersionState {
+  graphVersion: number;
+  setGraphVersion: (version: number) => void;
+  bumpGraphVersion: () => void;
+}
+
+export const useGraphVersionStore = create<GraphVersionState>((set) => ({
+  graphVersion: 0,
+  setGraphVersion: (version: number) => set({ graphVersion: version }),
+  bumpGraphVersion: () =>
+    set((state) => ({ graphVersion: state.graphVersion + 1 })),
+}));
+
 const Report: FC = () => {
   const { value: dateFilterValue } = useDateFilterStore();
   const requestCache = useRef<RequestCache>({});
@@ -304,7 +317,7 @@ const Report: FC = () => {
   const { tab } = useTabStore();
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
-
+  const { graphVersion, bumpGraphVersion } = useGraphVersionStore();
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!graph);
   const { resetAllFilters } = useFiltersStore();
@@ -345,7 +358,7 @@ const Report: FC = () => {
         }).then((response) => {
           if (response) {
             setGraph(response);
-            setSelectedIndicator(null);
+            bumpGraphVersion();
           }
         });
         return;
@@ -782,14 +795,13 @@ const Report: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
-      setSelectedIndicator(null);
       return requestPromise;
     },
     [getTable, initialRows, initialTotalRows, getApiPayload, allData.filters],
   );
 
   const handleClearFilters = () => {
-    setSelectedIndicator(null);
+    bumpGraphVersion();
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -804,6 +816,10 @@ const Report: FC = () => {
     lastRequestKey.current = "";
     bumpDataVersion();
   }, [allData.filters, bumpDataVersion]);
+
+  useEffect(() => {
+    setSelectedIndicator(null);
+  }, [graphVersion]);
 
   const { isGraphLoading, isTableLoading, isTotalLoading } = useReportStore();
   const isMobile = useIsMobile();
@@ -948,7 +964,7 @@ const Report: FC = () => {
                             // Восстанавливаем начальный график
                             if (initialFiltersRef.current) {
                               setGraph(initialFiltersRef.current.graph);
-                              setSelectedIndicator(null);
+                              bumpGraphVersion();
                             }
                           }}
                           size="sm"

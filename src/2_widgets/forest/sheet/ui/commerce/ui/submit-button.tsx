@@ -6,7 +6,10 @@ import { useSearchParams } from "react-router";
 import { useDateFilterStore } from "@pages/forest/ui/date-dropdown";
 import { ApiError } from "@shared/api/types";
 import { useCallback } from "react";
-import { useTableVersionStore } from "@pages/forest/ui/forest";
+import {
+  useGraphVersionStore,
+  useTableVersionStore,
+} from "@pages/forest/ui/forest";
 import { useCountStore } from "@pages/forest/model/usCountStore";
 import { parseISO, isValid } from "date-fns";
 
@@ -45,6 +48,7 @@ export const CombinedSubmitButton = ({
 }: React.ComponentProps<"button">) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { bumpDataVersion } = useTableVersionStore();
+  const { bumpGraphVersion } = useGraphVersionStore();
   const { getApiPayload, filters } = useFiltersStore();
   const { setGraph, setTotal, setTable, setError, clearAll } = useForestStore();
   const { getGraph, getTable, getTotal } = useForest();
@@ -141,6 +145,7 @@ export const CombinedSubmitButton = ({
       setTable(table);
       setCount(table.totalRows);
       bumpDataVersion();
+      bumpGraphVersion();
     } catch (error) {
       console.error("Error fetching report:", error);
       setError(error as ApiError);
