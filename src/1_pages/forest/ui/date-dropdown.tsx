@@ -22,6 +22,7 @@ import { useForestStore } from "@widgets/forest/sheet/model/forest-store";
 import { useForest } from "@entities/forest/model/api/filters/data/controller";
 import { useTabStore } from "@widgets/forest/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { useGraphVersionStore } from "./forest";
 
 export type DateFilterValue = "day" | "week" | "month" | "quarter" | "year";
 
@@ -37,7 +38,7 @@ export const useDateFilterStore = create<DateFilterState>((set) => ({
 
 const DateDropdown = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { bumpGraphVersion } = useGraphVersionStore();
   const { getApiPayload } = useFiltersStore();
   const { setGraph } = useForestStore();
 
@@ -58,6 +59,7 @@ const DateDropdown = () => {
       ]);
 
       setGraph(graph);
+      bumpGraphVersion();
       const newParams = new URLSearchParams(searchParams);
       newParams.set("open", "false");
       setSearchParams(newParams);

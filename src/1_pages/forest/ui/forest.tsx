@@ -87,6 +87,19 @@ export const useTableVersionStore = create<TableVersionState>((set) => ({
     set((state) => ({ dataVersion: state.dataVersion + 1 })),
 }));
 
+interface GraphVersionState {
+  graphVersion: number;
+  setGraphVersion: (version: number) => void;
+  bumpGraphVersion: () => void;
+}
+
+export const useGraphVersionStore = create<GraphVersionState>((set) => ({
+  graphVersion: 0,
+  setGraphVersion: (version: number) => set({ graphVersion: version }),
+  bumpGraphVersion: () =>
+    set((state) => ({ graphVersion: state.graphVersion + 1 })),
+}));
+
 const Forest: FC = () => {
   const { value: dateFilterValue } = useDateFilterStore();
   const requestCache = useRef<RequestCache>({});
@@ -96,6 +109,7 @@ const Forest: FC = () => {
   const [selectedIndicator, setSelectedIndicator] = useState<string | null>(
     null,
   );
+  const { graphVersion, bumpGraphVersion } = useGraphVersionStore();
   const prepareLine = usePreparedStackedLine();
   const { graph, table, total, clearAll, error, setGraph } = useForestStore();
   const { getTable, getGraph } = useForest();
@@ -105,7 +119,6 @@ const Forest: FC = () => {
   const { tab } = useTabStore();
   const indicators = useIndicatorList(tab);
   const uniques = useUniqueValues(tab);
-
   const isCompleted = graph && table && total;
   const [isFiltersOpen, setIsFiltersOpen] = useState(!graph);
   const { resetAllFilters } = useFiltersStore();
@@ -150,7 +163,7 @@ const Forest: FC = () => {
         requestPromise.then((response) => {
           if (response) {
             setGraph(response);
-            setSelectedIndicator(null);
+            bumpGraphVersion();
           }
         });
         return;
@@ -454,7 +467,7 @@ const Forest: FC = () => {
       requestCache.current[requestKey] = requestPromise;
       lastRequestKey.current = requestKey;
 
-      setSelectedIndicator(null);
+      bumpGraphVersion();
       return requestPromise;
     },
     [
@@ -469,7 +482,7 @@ const Forest: FC = () => {
   );
 
   const handleClearFilters = () => {
-    setSelectedIndicator(null);
+    bumpGraphVersion();
     resetAllFilters();
     clearAll();
     requestCache.current = {}; // Полная очистка кэша
@@ -484,6 +497,10 @@ const Forest: FC = () => {
     lastRequestKey.current = "";
     bumpDataVersion();
   }, [allData.filters, bumpDataVersion]);
+
+  useEffect(() => {
+    setSelectedIndicator(null);
+  }, [graphVersion]);
 
   const { isGraphLoading, isTableLoading, isTotalLoading } = useForestStore();
   const isMobile = useIsMobile();
@@ -594,7 +611,7 @@ const Forest: FC = () => {
                             // Восстанавливаем начальный график
                             if (initialFiltersRef.current) {
                               setGraph(initialFiltersRef.current.graph);
-                              setSelectedIndicator(null);
+                              bumpGraphVersion();
                             }
                           }}
                           size="sm"
