@@ -61,7 +61,7 @@ export const HeatmapNightStores: FC<Props> = ({ graph, isLoading }) => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="proceeds">выручке</SelectItem>
-            <SelectItem value="profit">прибыли</SelectItem>
+            <SelectItem value="profit">валовой прибыли</SelectItem>
             <SelectItem value="uniqueCheck">чекам</SelectItem>
             <SelectItem value="avgCheck">среднему чеку</SelectItem>
             <SelectItem value="uniqueCardNumber">уникальным картам</SelectItem>

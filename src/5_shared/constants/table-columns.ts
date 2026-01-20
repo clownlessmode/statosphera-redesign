@@ -5477,13 +5477,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_DAY,
     headerName: "Дневная себестоимость, руб.",
     headerTooltip: "Себестоимость",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5491,13 +5490,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_DAY_LM,
     headerName: "Дневная себестоимость, руб. PM",
     headerTooltip: "Прошлый месяц",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5505,13 +5503,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_DAY_MOM,
     headerName: "Дневная себестоимость, руб. MOM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5533,13 +5530,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_DAY_LY,
     headerName: "Дневная себестоимость, руб. PY",
     headerTooltip: "Прошлый год",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5547,13 +5543,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_DAY_YOY,
     headerName: "Дневная себестоимость, руб. YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5575,13 +5570,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_NIGHT,
     headerName: "Ночная себестоимость, руб.",
     headerTooltip: "Себестоимость",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5589,13 +5583,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_NIGHT_LM,
     headerName: "Ночная себестоимость, руб. PM",
     headerTooltip: "Прошлый месяц",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5603,13 +5596,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_NIGHT_MOM,
     headerName: "Ночная себестоимость, руб. MOM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5631,13 +5623,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_NIGHT_LY,
     headerName: "Ночная себестоимость, руб. PY",
     headerTooltip: "Прошлый год",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
@@ -5645,13 +5636,12 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE_NIGHT_YOY,
     headerName: "Ночная себестоимость, руб. YoY",
     headerTooltip: "Изменения по сравнению с прошлым годом",
+    cellDataType: "number",
     valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
+      params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
-      } else if (params.value > 100) {
-        return { color: "#71DE56" };
       }
     },
   },
