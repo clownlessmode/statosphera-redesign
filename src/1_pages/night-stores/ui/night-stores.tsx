@@ -159,26 +159,6 @@ export const NightStores = () => {
         <div className="flex flex-col gap-4 max-md:gap-2">
           <div className="grid grid-cols-6 gap-2 max-md:grid-cols-2 max-md:*:text-xs">
             <ValueCard
-              title="Прибыль"
-              unit={(allCard?.profitNight ?? 0) >= 1000000 ? "М" : "Т"}
-              value={allCard?.profitNight ?? 0}
-              isLoading={isAllCardLoading}
-              formatter={(value) => {
-                if (value >= 1000000) {
-                  return (value / 10000 / 100).toFixed(2);
-                } else {
-                  return (value / 1000).toFixed(2);
-                }
-              }}
-            />
-            <ValueCard
-              title="Процент от общей прибыли"
-              unit="%"
-              value={allCard?.percentageProfitNight ?? 0}
-              isLoading={isAllCardLoading}
-              formatter={(value) => value.toLocaleString().replace(",", ".")}
-            />
-            <ValueCard
               title="Выручка"
               unit={(allCard?.proceedsNight ?? 0) >= 1000000 ? "М" : "Т"}
               value={allCard?.proceedsNight ?? 0}
@@ -192,9 +172,29 @@ export const NightStores = () => {
               }}
             />
             <ValueCard
-              title="Процент от общей выручки"
+              title="% от общей выручки"
               unit="%"
               value={allCard?.percentageProceedsNight ?? 0}
+              isLoading={isAllCardLoading}
+              formatter={(value) => value.toLocaleString().replace(",", ".")}
+            />
+            <ValueCard
+              title="Валовая прибыль"
+              unit={(allCard?.profitNight ?? 0) >= 1000000 ? "М" : "Т"}
+              value={allCard?.profitNight ?? 0}
+              isLoading={isAllCardLoading}
+              formatter={(value) => {
+                if (value >= 1000000) {
+                  return (value / 10000 / 100).toFixed(2);
+                } else {
+                  return (value / 1000).toFixed(2);
+                }
+              }}
+            />
+            <ValueCard
+              title="% от общей валовой прибыли"
+              unit="%"
+              value={allCard?.percentageProfitNight ?? 0}
               isLoading={isAllCardLoading}
               formatter={(value) => value.toLocaleString().replace(",", ".")}
             />
