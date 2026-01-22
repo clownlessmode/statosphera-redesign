@@ -149,7 +149,7 @@ export const Unload = () => {
           right: <InfoModal />,
         }}
       />
-      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col relative w-full bg-background min-h-[calc(100vh-64px)] overflow-hidden">
+      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col relative w-full bg-background h-[calc(100vh-64px)] overflow-hidden">
         <div className="md:hidden pt-4">
           <Select defaultValue="unload" onValueChange={handleSelectChange}>
             <SelectTrigger className="w-full">
