@@ -416,13 +416,6 @@ const Forest: FC = () => {
       });
 
       if (
-        requestKey === lastRequestKey.current &&
-        (await requestCache.current[requestKey])
-      ) {
-        return requestCache.current[requestKey];
-      }
-
-      if (
         startRow === 0 &&
         initialRows &&
         initialRows.data.length > 0 &&
