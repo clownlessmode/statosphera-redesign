@@ -92,7 +92,7 @@ export const Unload = () => {
                 className="border-b-0! rounded-b-none! opacity-50"
                 onClick={() => navigate(ROUTES_PATH.LOYALTY)}
               >
-                Дашборд
+                Лояльность
               </Button>
               <Button
                 variant="outline"
@@ -149,14 +149,14 @@ export const Unload = () => {
           right: <InfoModal />,
         }}
       />
-      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col relative w-full bg-background max-h-[calc(100vh-124px)] overflow-hidden">
+      <div className="rounded-3xl md:pr-4 max-md:px-4 gap-2 flex flex-col relative w-full bg-background min-h-[calc(100vh-64px)] overflow-hidden">
         <div className="md:hidden pt-4">
           <Select defaultValue="unload" onValueChange={handleSelectChange}>
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="loyalty">Дашборд</SelectItem>
+              <SelectItem value="loyalty">Лояльность</SelectItem>
               <SelectItem value="rfm">RFM</SelectItem>
               <SelectItem value="unload">Выгрузка</SelectItem>
             </SelectContent>
@@ -178,7 +178,7 @@ export const Unload = () => {
             </Tabs>
           )}
           {!showFilters && (
-            <div className="flex flex-col justify-between h-full md:h-screen md:pt-4 md:pb-34">
+            <div className="flex flex-col justify-between h-full md:h-screen md:pt-4 md:pb-20">
               <div className="flex flex-col gap-4 md:overflow-y-auto scrollbar-hide">
                 <div className="flex flex-row flex-wrap gap-2 items-center">
                   <span className="text-sm text-muted-foreground text-center">

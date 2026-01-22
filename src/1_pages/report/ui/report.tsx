@@ -34,8 +34,8 @@ import { ROUTES_PATH } from "@app/router/routes";
 import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
-import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
+import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 // import { useNavigate } from "react-router";
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -873,7 +873,7 @@ const Report: FC = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] max-md:h-full gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 max-md:pb-4 max-md:*:px-4 max-md:*:first:px-0 max-md:*:last:px-0 md:p-4">
           {isMobile && (
             <div className="w-full flex flex-col gap-2">
               <div className="w-full h-full flex flex-row">
@@ -1033,9 +1033,9 @@ const Report: FC = () => {
             >
               {!isLoading ? (
                 error ? (
-                  <NotFoundFiltersNY />
+                  <NotFoundFilters />
                 ) : (
-                  <NotSelectedFiltersNY />
+                  <NotSelectedFilters />
                 )
               ) : (
                 <Spinner />

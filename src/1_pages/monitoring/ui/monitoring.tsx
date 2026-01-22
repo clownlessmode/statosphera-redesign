@@ -21,7 +21,7 @@ import {
 import { Button } from "@shared/ui/button";
 import { cn } from "@shared/lib/utils";
 import { useIsMobile } from "@shared/hooks";
-import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
+import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
@@ -178,7 +178,7 @@ export const Monitoring = () => {
           ),
         }}
       />
-      <div className="rounded-3xl min-h-[calc(100vh-124px)] bg-background p-4 gap-4 flex flex-col">
+      <div className="rounded-3xl min-h-[calc(100vh-64px)] bg-background p-4 gap-4 flex flex-col">
         <Card>
           <CardContent className="flex flex-col md:flex-row gap-2">
             <Input
@@ -331,7 +331,7 @@ export const Monitoring = () => {
         {!isProductsLoading ? (
           !debouncedSearch || debouncedSearch.trim() === "" ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
-              <NotSelectedFiltersNY />
+              <NotSelectedFilters />
               <div className="text-muted-foreground space-y-2 mt-4">
                 <p className="text-lg font-medium">
                   Введите запрос для получения результатов

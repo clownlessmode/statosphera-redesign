@@ -12,7 +12,6 @@ import { useFarmer } from "@entities/farmer/api/controller";
 import { ROLES } from "@shared/constants/roles";
 import Logout from "@features/authorization/log-out/ui/logout";
 import { cn } from "@shared/lib/utils";
-import ChristmasLights from "@shared/ui/christmas-lights";
 
 interface Props {
   title?: string;
@@ -30,10 +29,6 @@ const Header: FC<Props> = ({ title, actions, isAdmin }) => {
   const { profileStatus } = useFarmer(session?.idUser);
   return (
     <>
-      {/* Гирлянда */}
-      <div className="min-w-0 w-full min-h-12.5 relative overflow-hidden max-md:hidden">
-        <ChristmasLights />
-      </div>
       {isAdmin && (
         <div
           className="h-2 -mt-2 -ml-2 w-[calc(100vw)] shadow-md"
