@@ -301,7 +301,7 @@ const Sidebar = ({
     return data.navMain.filter(
       (item) => item.disabled === false || item.disabled === undefined,
     );
-  }, [session?.role]);
+  }, [session?.role, isMobile]);
 
   const getNavSecondaryItems = useCallback(() => {
     if (session?.role === ROLES.ADMIN) {
@@ -317,7 +317,7 @@ const Sidebar = ({
     return data.navSecondary.filter(
       (item) => item.disabled === false || item.disabled === undefined,
     );
-  }, [session?.role]);
+  }, [session?.role, isMobile]);
 
   return (
     <>

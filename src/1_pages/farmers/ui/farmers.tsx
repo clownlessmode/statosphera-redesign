@@ -24,7 +24,7 @@ export const Farmers = () => {
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
       <Header title={`Фермеры`} />
-      <div className="rounded-3xl px-4 py-4 gap-4 h-[calc(100vh-124px)] min-h-0 flex flex-col w-full bg-background">
+      <div className="rounded-3xl px-4 py-4 gap-4 h-[calc(100vh-64px)] min-h-0 flex flex-col w-full bg-background">
         <Input
           placeholder="Поиск фермера"
           className="w-full"

@@ -33,8 +33,8 @@ import { useDateFilterStore } from "./date-dropdown";
 import Spinner from "@shared/ui/spinner";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { useWriteOffController } from "@entities/forest/model/api/filters/data-write-off/controller";
-import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
-import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
+import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 
 function extractFiltersFromRow(_row: any, selectedRows: any[]) {
   const filters: any = {
@@ -416,13 +416,6 @@ const Forest: FC = () => {
       });
 
       if (
-        requestKey === lastRequestKey.current &&
-        (await requestCache.current[requestKey])
-      ) {
-        return requestCache.current[requestKey];
-      }
-
-      if (
         startRow === 0 &&
         initialRows &&
         initialRows.data.length > 0 &&
@@ -546,7 +539,7 @@ const Forest: FC = () => {
             ),
           }}
         />
-        <div className="rounded-3xl bg-background flex flex-col h-[calc(100vh-124px)] max-md:h-full gap-4 max-md:gap-2 p-4">
+        <div className="rounded-3xl bg-background flex flex-col h-full gap-4 max-md:gap-2 p-4">
           {isMobile && (
             <div className="w-full flex flex-row gap-2 justify-between">
               <DownloadForest rows={table?.totalRows || 0} tab={tab} />
@@ -694,9 +687,9 @@ const Forest: FC = () => {
             >
               {!isLoading ? (
                 error ? (
-                  <NotFoundFiltersNY />
+                  <NotFoundFilters />
                 ) : (
-                  <NotSelectedFiltersNY />
+                  <NotSelectedFilters />
                 )
               ) : (
                 <Spinner />

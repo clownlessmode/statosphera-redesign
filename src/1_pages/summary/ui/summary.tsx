@@ -29,8 +29,8 @@ import { PackageFilters } from "./package-filters";
 import InfinityTable from "@pages/report/ui/table/infinite-table";
 import pluralize from "@shared/lib/pluralize";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import NotSelectedFiltersNY from "@shared/assets/capibara/not-selected-filters-new-year";
-import NotFoundFiltersNY from "@shared/assets/capibara/not-found-filters-new-year";
+import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
+import NotFoundFilters from "@shared/assets/capibara/not-found-filters";
 
 export const Summary = () => {
   const { getComparisonCards, getGraph } = useSummaryController();
@@ -309,7 +309,7 @@ export const Summary = () => {
           {!hasNomenklatura ? (
             <div className="flex flex-col gap-4 h-full w-full justify-center items-center ">
               <div className="dark:opacity-70">
-                <NotSelectedFiltersNY />
+                <NotSelectedFilters />
               </div>
 
               <div className="opacity-100">
@@ -520,13 +520,13 @@ export const Summary = () => {
                       </>
                     ) : (
                       <div className="flex flex-row gap-2 flex-1 dark:opacity-70 w-full justify-center items-center">
-                        <NotFoundFiltersNY />
+                        <NotFoundFilters />
                       </div>
                     )}
                   </>
                 ) : (
                   <div className="flex flex-row gap-2 h-full dark:opacity-70 w-full justify-center items-center">
-                    <NotSelectedFiltersNY />
+                    <NotSelectedFilters />
                   </div>
                 )}
               </div>
