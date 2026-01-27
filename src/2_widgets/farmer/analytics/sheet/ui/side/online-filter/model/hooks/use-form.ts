@@ -30,7 +30,7 @@ export const useForm = () => {
         defaultValues.imStatusOrder,
       ),
       imTypeOrder: imTypeOrder || defaultValues.imTypeOrder,
-      isIm: isIm || defaultValues.isIm,
+      isIm: isIm ?? defaultValues.isIm,
     },
     mode: "all",
   });
