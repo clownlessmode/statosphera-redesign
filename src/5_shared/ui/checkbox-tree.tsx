@@ -8,6 +8,7 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { Badge } from "./badge";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
 import { useIsMobile } from "@shared/hooks/use-mobile";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 export interface CheckboxTreeItem {
   id: string;
   label: string;
@@ -178,6 +179,9 @@ function CheckboxTreeNode({
   level,
 }: CheckboxTreeNodeProps) {
   const [expanded, setExpanded] = React.useState(false);
+  const [popoverOpen, setPopoverOpen] = React.useState(false);
+  const isMobile = useIsMobile();
+
   const hasChildren = item.children && item.children.length > 0;
 
   // All values of child elements (only at leaf level)
@@ -239,7 +243,10 @@ function CheckboxTreeNode({
                 ) : (
                   <div className="w-4" />
                 )}
-                <Checkbox className="h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 opacity-50 cursor-not-allowed" />
+                <Checkbox
+                  disabled
+                  className="h-4 w-4 shrink-0 rounded-sm border border-primary mr-1 bg-transparent ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 opacity-50 cursor-not-allowed"
+                />
                 <label className="text-sm flex flex-row items-center font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 select-none cursor-not-allowed opacity-70">
                   <TreeIcon item={item} />
                   {item.label}
@@ -314,20 +321,51 @@ function CheckboxTreeNode({
               <TreeIcon item={item} />
               {item.label}
               <div className="ml-2">
-                {item.tooltip && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
-                    </TooltipTrigger>
-                    <TooltipContent
-                      sideOffset={10}
-                      className="w-[300px] h-fit p-2 text-center"
-                      side="right"
+                {item.tooltip &&
+                  (isMobile ? (
+                    // Подсказки для мобильных устройств
+                    <Popover
+                      open={popoverOpen}
+                      onOpenChange={setPopoverOpen}
+                      modal={false}
                     >
-                      {item.tooltip}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
+                      <PopoverTrigger asChild>
+                        <button
+                          type="button"
+                          className="ml-2 p-1"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setPopoverOpen((prev) => !prev);
+                          }}
+                          onPointerDown={(e) => e.stopPropagation()}
+                        >
+                          <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-[40vw]! h-fit p-2 text-center bg-primary text-primary-foreground"
+                        side="bottom"
+                        onOpenAutoFocus={(e) => e.preventDefault()}
+                      >
+                        {item.tooltip}
+                      </PopoverContent>
+                    </Popover>
+                  ) : (
+                    // Подсказки для десктопных устройств
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground transition-colors" />
+                      </TooltipTrigger>
+                      <TooltipContent
+                        sideOffset={10}
+                        className="w-[300px] h-fit p-2 text-center"
+                        side="right"
+                      >
+                        {item.tooltip}
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
               </div>
               {hasChildren && selectedCount > 0 && (
                 <Badge className="ml-1 text-[10px] rounded-sm px-1.5">

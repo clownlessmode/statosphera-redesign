@@ -30,10 +30,19 @@ const IndicatorsFilter: FC = () => {
       const indicators = [...(values.proceeds || [])].filter(
         (item): item is string => item !== undefined,
       );
-      updateIndicators(indicators);
+
+      const current = useFiltersStore.getState().indicators || [];
+      const same =
+        indicators.length === current.length &&
+        indicators.every((v, i) => v === current[i]);
+
+      if (!same) {
+        updateIndicators(indicators);
+      }
     });
+
     return () => subscription.unsubscribe();
-  }, [form, updateIndicators]);
+  }, [form, tab, updateIndicators]);
 
   const { isTypeCheckSelected } = useTypeCheckStore();
 

@@ -31,7 +31,7 @@ export const useForm = () => {
         guidDiscount,
         defaultValues.guidDiscount,
       ),
-      isLoyal: isLoyal || defaultValues.isLoyal,
+      isLoyal: isLoyal ?? defaultValues.isLoyal,
       sex: sex || defaultValues.sex,
       colorsDiscount: colorsDiscount || defaultValues.colorsDiscount,
     },
