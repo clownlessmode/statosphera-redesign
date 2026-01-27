@@ -7,17 +7,8 @@ import { useTabStore } from "@widgets/report/sheet/model/url-store";
 
 export const useForm = () => {
   const indicators = useFiltersStore((state) => state.indicators);
-  const updateIndicators = useFiltersStore((state) => state.updateIndicators);
   const { nightShops } = useFiltersStore();
   const { tab } = useTabStore();
-
-  useEffect(() => {
-    if (nightShops && tab === "check") {
-      updateIndicators(defaultValues.nightProceeds);
-    } else {
-      updateIndicators(defaultValues.proceeds);
-    }
-  }, [nightShops, tab]);
 
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
@@ -33,15 +24,21 @@ export const useForm = () => {
   });
 
   useEffect(() => {
-    const resolved =
-      indicators && indicators.length > 0
-        ? indicators
-        : nightShops
-          ? defaultValues.nightProceeds
-          : defaultValues.proceeds;
+    if (nightShops && tab === "check") {
+      form.reset({ proceeds: defaultValues.nightProceeds });
+    } else {
+      form.reset({ proceeds: defaultValues.proceeds });
+    }
+  }, [nightShops, tab]);
 
-    form.reset({ proceeds: resolved });
-    updateIndicators(resolved);
+  useEffect(() => {
+    if (nightShops) {
+      const resolved =
+        indicators && indicators.length > 0
+          ? indicators
+          : defaultValues.nightProceeds;
+      form.reset({ proceeds: resolved });
+    }
   }, [indicators]);
 
   return form;
