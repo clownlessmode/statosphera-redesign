@@ -83,6 +83,7 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
     >
       <List
         title="Топ магазинов по выручке"
+        className="max-2xl:text-xs"
         isLoading={isLoading}
         suffix={indicatorValue === "percentageProceedsNight" ? " %" : " ₽"}
         options={top.map((store, index) => ({
@@ -93,7 +94,8 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
       />
       {data.some((store) => session?.idStore?.includes(store.idStore)) && (
         <List
-          title="Топ ваших магазинов"
+          title="Позиции ваших магазинов в топе"
+          className="max-2xl:text-xs"
           isLoading={isLoading}
           suffix={indicatorValue === "percentageProceedsNight" ? " %" : " ₽"}
           options={my.map((store) => {
@@ -112,6 +114,7 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
       )}
       <List
         title="Анти-топ магазинов по выручке"
+        className="max-2xl:text-xs"
         isLoading={isLoading}
         suffix={indicatorValue === "percentageProceedsNight" ? " %" : " ₽"}
         options={bottom.map((store, index) => {
