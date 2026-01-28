@@ -89,7 +89,7 @@ export const List: FC<Props> = memo(
                 <div
                   key={arrayIndex}
                   className={cn(
-                    "px-5 flex flex-row justify-between p-2 rounded-2xl gap-4",
+                    "px-5 flex flex-row justify-between p-2 rounded-2xl gap-2",
                     option.isHighlighted
                       ? "bg-primary text-primary-foreground"
                       : "bg-background",
@@ -102,10 +102,10 @@ export const List: FC<Props> = memo(
                     isInteractive && handleMouseLeave(arrayIndex)
                   }
                 >
-                  <div className="flex flex-row gap-3 items-center px-2">
+                  <div className="flex flex-row gap-2 items-center px-2">
                     <p
                       className={cn(
-                        "text-base font-bold",
+                        "text-base font-bold max-2xl:text-sm",
                         option.isHighlighted
                           ? "text-primary-foreground"
                           : "text-muted-foreground",
