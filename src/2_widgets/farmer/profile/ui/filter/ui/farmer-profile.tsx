@@ -20,7 +20,11 @@ export default function FarmerProfileCard({
   const [isEdit, setIsEdit] = useState(false);
   const form = useForm();
   const { session } = useSession();
+
   const handleEdit = () => {
+    if (isEdit) {
+      form.reset();
+    }
     setIsEdit(!isEdit);
   };
 
