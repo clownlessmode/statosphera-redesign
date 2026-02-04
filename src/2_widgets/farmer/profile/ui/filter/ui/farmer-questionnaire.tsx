@@ -37,6 +37,7 @@ import { STEPS_FIELDS } from "../config/constant";
 import { useIsMobile } from "@shared/hooks";
 import { Separator } from "@shared/ui/separator";
 import { useSessionController } from "@entities/session/api/controller";
+import { CropAvatarDialog } from "./crop-avatar-dialog";
 
 interface FarmerQuestionnaireProps {
   level?: number;
@@ -56,6 +57,9 @@ export default function FarmerQuestionnaire({
   const { updateProfile, uploadPhoto } = useFarmer(session?.idUser);
   const isMobile = useIsMobile();
   const { getUpdatedSession } = useSessionController();
+  const [isCropOpen, setIsCropOpen] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageName, setImageName] = useState("");
   // Эффект для инициализации формы данными, если включен режим редактирования
   useEffect(() => {
     if (data) {
@@ -199,8 +203,52 @@ export default function FarmerQuestionnaire({
     }
   };
 
+  const handlePhotoSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    event.target.value = "";
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Файл слишком большой (максимум 5MB)");
+      return;
+    }
+
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      toast.error("Неверный формат файла");
+      return;
+    }
+
+    setImageSrc(URL.createObjectURL(file));
+    setImageName(file.name);
+    setIsCropOpen(true);
+  };
+
+  const handleCropSave = (croppedFile: File) => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(croppedFile);
+    const fileList = dataTransfer.files;
+    form.setValue("photo", fileList, { shouldValidate: true });
+    updateFilters("photo", fileList);
+    if (imageSrc) URL.revokeObjectURL(imageSrc);
+    setImageSrc(null);
+    setIsCropOpen(false);
+  };
+
+  const handleCropClose = () => {
+    if (imageSrc) URL.revokeObjectURL(imageSrc);
+    setImageSrc(null);
+    setIsCropOpen(false);
+  };
+
   return (
     <Card className={cn(data && "gap-1 p-4 max-md:mb-14 max-md:content-box")}>
+      <CropAvatarDialog
+        open={isCropOpen}
+        imageSrc={imageSrc}
+        imageName={imageName}
+        onClose={handleCropClose}
+        onSave={handleCropSave}
+      />
       {data && (
         <CardHeader className="flex flex-row justify-end py-1.5 max-md:fixed max-md:bottom-0 max-md:inset-x-0 max-md:z-10 max-md:px-6 max-md:mb-4">
           <Button
@@ -290,36 +338,7 @@ export default function FarmerQuestionnaire({
                                 type="file"
                                 accept="image/jpeg, image/png, image/webp"
                                 className="hidden"
-                                onChange={(event) => {
-                                  if (
-                                    event.target.files?.[0]?.size &&
-                                    event.target.files?.[0]?.size >
-                                      10 * 1024 * 1024
-                                  ) {
-                                    toast.error(
-                                      "Файл слишком большой (максимум 10MB)",
-                                    );
-                                    return;
-                                  }
-                                  if (
-                                    event.target.files?.[0]?.type &&
-                                    ![
-                                      "image/jpeg",
-                                      "image/png",
-                                      "image/webp",
-                                    ].includes(event.target.files?.[0]?.type)
-                                  ) {
-                                    toast.error("Неверный формат файла");
-                                    return;
-                                  }
-                                  if (
-                                    event.target.files &&
-                                    event.target.files.length > 0
-                                  ) {
-                                    field.onChange(event.target.files);
-                                    updateFilters("photo", event.target.files);
-                                  }
-                                }}
+                                onChange={handlePhotoSelect}
                               />
                               {showPreview && (
                                 <span className="text-sm text-muted-foreground max-md:hidden">
@@ -904,36 +923,7 @@ export default function FarmerQuestionnaire({
                               type="file"
                               accept="image/jpeg, image/png, image/webp"
                               className="hidden"
-                              onChange={(event) => {
-                                if (
-                                  event.target.files?.[0]?.size &&
-                                  event.target.files?.[0]?.size >
-                                    5 * 1024 * 1024
-                                ) {
-                                  toast.error(
-                                    "Файл слишком большой (максимум 5MB)",
-                                  );
-                                  return;
-                                }
-                                if (
-                                  event.target.files?.[0]?.type &&
-                                  ![
-                                    "image/jpeg",
-                                    "image/png",
-                                    "image/webp",
-                                  ].includes(event.target.files?.[0]?.type)
-                                ) {
-                                  toast.error("Неверный формат файла");
-                                  return;
-                                }
-                                if (
-                                  event.target.files &&
-                                  event.target.files.length > 0
-                                ) {
-                                  field.onChange(event.target.files);
-                                  updateFilters("photo", event.target.files);
-                                }
-                              }}
+                              onChange={handlePhotoSelect}
                             />
                             {showPreview && (
                               <span className="text-sm text-muted-foreground">
