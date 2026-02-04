@@ -76,6 +76,7 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
           );
 
           const items = response.data.suggestions || [];
+          console.log(items);
           setSuggestions(items);
           setIsOpen(items.length > 0);
         } catch (error) {
@@ -90,6 +91,7 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
 
     const handleSelect = (suggestion: any) => {
       const {
+        postal_code,
         region_with_type,
         city_with_type,
         settlement_with_type,
@@ -103,6 +105,7 @@ const AddressInput = forwardRef<HTMLInputElement, AddressInputProps>(
       } = suggestion;
 
       const addressParts = [
+        postal_code,
         region_with_type,
         city_with_type,
         settlement_with_type,
