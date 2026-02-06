@@ -286,7 +286,7 @@ export const NightStores = () => {
                 `top${indicator.name}` as keyof typeof topNomenclature
               ]?.map((product) => ({
                 name: product.product,
-                count: `${product[indicator.value as keyof typeof product].toLocaleString()}`,
+                count: `${(product[indicator.value as keyof typeof product] ?? 0).toLocaleString()}`,
               }))}
             />
             <List
@@ -299,7 +299,7 @@ export const NightStores = () => {
                 `antiTop${indicator.name}` as keyof typeof topNomenclature
               ]?.map((product) => ({
                 name: product.product,
-                count: `${product[indicator.value as keyof typeof product].toLocaleString()}`,
+                count: `${(product[indicator.value as keyof typeof product] ?? 0).toLocaleString()}`,
               }))}
             />
             <WeekdayNomenclatureCard
@@ -317,7 +317,7 @@ export const NightStores = () => {
                 `top${indicator.name}` as keyof typeof topSubgroups
               ]?.map((group) => ({
                 name: group.subGroups,
-                count: `${group[indicator.value as keyof typeof group].toLocaleString()}`,
+                count: `${(group[indicator.value as keyof typeof group] ?? 0).toLocaleString()}`,
               }))}
             />
             <List
@@ -330,7 +330,7 @@ export const NightStores = () => {
                 `antiTop${indicator.name}` as keyof typeof topSubgroups
               ]?.map((group) => ({
                 name: group.subGroups,
-                count: `${group[indicator.value as keyof typeof group].toLocaleString()}`,
+                count: `${(group[indicator.value as keyof typeof group] ?? 0).toLocaleString()}`,
               }))}
             />
             <List
@@ -343,7 +343,7 @@ export const NightStores = () => {
                 `sort${indicator.name}` as keyof typeof nightSalesWeekday
               ]?.map((group) => ({
                 name: group.dayName,
-                count: `${group[indicator.value as keyof typeof group].toLocaleString()}`,
+                count: `${(group[indicator.value as keyof typeof group] ?? 0).toLocaleString()}`,
               }))}
             />
           </div>
