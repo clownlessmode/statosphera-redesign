@@ -88,7 +88,7 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
         suffix={indicatorValue === "percentageProceedsNight" ? " %" : " ₽"}
         options={top.map((store, index) => ({
           name: store.store,
-          count: `${store[indicatorValue as keyof typeof store].toLocaleString()}`,
+          count: `${(store[indicatorValue as keyof typeof store] ?? 0).toLocaleString()}`,
           index: index + 1,
         }))}
       />
@@ -105,7 +105,7 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
             const isUserStore = session?.idStore?.includes(store.idStore);
             return {
               name: store.store,
-              count: `${store[indicatorValue as keyof typeof store].toLocaleString()}`,
+              count: `${(store[indicatorValue as keyof typeof store] ?? 0).toLocaleString()}`,
               index: realIndex + 1,
               isHighlighted: isUserStore,
             };
@@ -120,7 +120,7 @@ export const TopNightStoreCards: FC<TopNightStoreProps> = ({
         options={bottom.map((store, index) => {
           return {
             name: store.store,
-            count: `${store[indicatorValue as keyof typeof store].toLocaleString()}`,
+            count: `${(store[indicatorValue as keyof typeof store] ?? 0).toLocaleString()}`,
             index: index + 1,
           };
         })}
