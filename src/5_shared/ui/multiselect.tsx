@@ -90,155 +90,30 @@ export const MultiSelect = React.forwardRef<
       value || defaultValue,
     );
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+    const [search, setSearch] = React.useState("");
+    const parentRef = React.useRef<HTMLDivElement>(null);
 
-    const MultiSelectList = ({
-      options,
-      selectedValues,
-      toggleOption,
-      toggleAll,
-      handleClear,
-      handlePopoverOpenChange,
-      isLoading,
-    }: {
-      options: MultiSelectOption[];
-      selectedValues: string[];
-      toggleOption: (option: string) => void;
-      toggleAll: () => void;
-      handleClear: () => void;
-      handlePopoverOpenChange: (open: boolean) => void;
-      isLoading: boolean;
-    }) => {
-      const [search, setSearch] = React.useState("");
-      const parentRef = React.useRef<HTMLDivElement>(null);
-
-      const filteredOptions = React.useMemo(() => {
-        if (!search) return options;
-        return options.filter((option) =>
-          option.label.toLowerCase().includes(search.toLowerCase()),
-        );
-      }, [options, search]);
-
-      const rowVirtualizer = useVirtualizer({
-        count: filteredOptions.length,
-        getScrollElement: () => parentRef.current,
-        estimateSize: () => 32,
-        overscan: 10,
-      });
-
-      return (
-        <Command shouldFilter={false}>
-          {!isLoading && options && options.length > 0 && (
-            <CommandInput
-              placeholder="Поиск..."
-              autoFocus
-              value={search}
-              onValueChange={setSearch}
-            />
-          )}
-          <CommandList ref={parentRef}>
-            {isLoading ? (
-              <CommandGroup>
-                {[...Array(4)].map((_, i) => (
-                  <CommandItem key={i} className="cursor-pointer">
-                    <Skeleton className="mr-2 size-5 bg-muted" />
-                    <Skeleton className="h-5 w-full bg-muted" />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ) : (
-              <>
-                <CommandEmpty>Ничего не найдено</CommandEmpty>
-                <CommandGroup>
-                  {options && options.length > 0 && (
-                    <CommandItem
-                      onSelect={toggleAll}
-                      className="cursor-pointer"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
-                          selectedValues.length === options.length
-                            ? "bg-primary text-foreground"
-                            : "opacity-50 [&_svg]:invisible",
-                        )}
-                      >
-                        <CheckIcon className="h-4 w-4 text-primary-foreground" />
-                      </div>
-                      <span>Выбрать всё</span>
-                    </CommandItem>
-                  )}
-                  <div
-                    style={{
-                      height: `${rowVirtualizer.getTotalSize()}px`,
-                      width: "100%",
-                      position: "relative",
-                    }}
-                  >
-                    {rowVirtualizer.getVirtualItems().map((virtualItem) => {
-                      const option = filteredOptions[virtualItem.index];
-                      return (
-                        <CommandItem
-                          key={option.value}
-                          ref={rowVirtualizer.measureElement}
-                          data-index={virtualItem.index}
-                          onSelect={() => toggleOption(option.value)}
-                          className="cursor-pointer absolute top-0 left-0 w-full"
-                          style={{
-                            transform: `translateY(${virtualItem.start}px)`,
-                          }}
-                        >
-                          <div
-                            className={cn(
-                              "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
-                              selectedValues.includes(option.value)
-                                ? "bg-primary text-foreground"
-                                : "opacity-50 [&_svg]:invisible",
-                            )}
-                          >
-                            <CheckIcon className="h-4 w-4 text-primary-foreground" />
-                          </div>
-                          {option.icon && (
-                            <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                          )}
-                          <span>{option.label}</span>
-                        </CommandItem>
-                      );
-                    })}
-                  </div>
-                </CommandGroup>
-              </>
-            )}
-          </CommandList>
-          <CommandSeparator />
-          <div className="flex items-center justify-between p-2">
-            {selectedValues.length > 0 && (
-              <>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="flex-1 justify-center cursor-pointer"
-                  onClick={handleClear}
-                >
-                  Очистить
-                </Button>
-                <Separator
-                  orientation="vertical"
-                  className="flex min-h-6 h-full"
-                />
-              </>
-            )}
-            <Button
-              type="button"
-              variant="ghost"
-              className="flex-1 justify-center cursor-pointer"
-              onClick={() => handlePopoverOpenChange(false)}
-            >
-              Закрыть
-            </Button>
-          </div>
-        </Command>
+    // 1. Ручная фильтрация
+    const filteredOptions = React.useMemo(() => {
+      if (!search) return options;
+      return options.filter((option) =>
+        option.label.toLowerCase().includes(search.toLowerCase()),
       );
-    };
+    }, [options, search]);
+
+    // 2. Виртуализатор
+    const rowVirtualizer = useVirtualizer({
+      count: filteredOptions.length,
+      getScrollElement: () => parentRef.current,
+      estimateSize: () => 32, // Примерная высота строки (CommandItem)
+      overscan: 10,
+    });
+
+    React.useEffect(() => {
+      if (isPopoverOpen) {
+        rowVirtualizer.scrollToOffset(0);
+      }
+    }, [isPopoverOpen]);
 
     React.useEffect(() => {
       if (value !== undefined) {
@@ -393,15 +268,120 @@ export const MultiSelect = React.forwardRef<
           align="start"
           onEscapeKeyDown={() => handlePopoverOpenChange(false)}
         >
-          <MultiSelectList
-            options={options}
-            selectedValues={selectedValues}
-            toggleOption={toggleOption}
-            toggleAll={toggleAll}
-            handleClear={handleClear}
-            handlePopoverOpenChange={handlePopoverOpenChange}
-            isLoading={isLoading}
-          />
+          <Command shouldFilter={false}>
+            {!isLoading && options && options.length > 0 && (
+              <CommandInput
+                placeholder="Поиск..."
+                autoFocus
+                value={search}
+                onValueChange={setSearch}
+              />
+            )}
+            <CommandList
+              ref={parentRef}
+              key={isPopoverOpen ? "open" : "closed"}
+            >
+              {isLoading ? (
+                <CommandGroup>
+                  {[...Array(4)].map((_, i) => (
+                    <CommandItem key={i} className="cursor-pointer">
+                      <Skeleton className="mr-2 size-5 bg-muted" />
+                      <Skeleton className="h-5 w-full bg-muted" />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ) : (
+                <>
+                  <CommandEmpty>Ничего не найдено</CommandEmpty>
+                  <CommandGroup>
+                    {options && options.length > 0 && (
+                      <CommandItem
+                        onSelect={toggleAll}
+                        className="cursor-pointer"
+                      >
+                        <div
+                          className={cn(
+                            "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
+                            selectedValues.length === options.length
+                              ? "bg-primary text-foreground"
+                              : "opacity-50 [&_svg]:invisible",
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4 text-primary-foreground" />
+                        </div>
+                        <span>Выбрать всё</span>
+                      </CommandItem>
+                    )}
+                    <div
+                      style={{
+                        height: `${rowVirtualizer.getTotalSize()}px`,
+                        width: "100%",
+                        position: "relative",
+                      }}
+                    >
+                      {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                        const option = filteredOptions[virtualItem.index];
+                        return (
+                          <CommandItem
+                            key={option.value}
+                            ref={rowVirtualizer.measureElement}
+                            data-index={virtualItem.index}
+                            onSelect={() => toggleOption(option.value)}
+                            className="cursor-pointer absolute top-0 left-0 w-full"
+                            style={{
+                              transform: `translateY(${virtualItem.start}px)`,
+                            }}
+                          >
+                            <div
+                              className={cn(
+                                "mr-2 flex h-5 w-5 items-center justify-center rounded-sm border border-primary",
+                                selectedValues.includes(option.value)
+                                  ? "bg-primary text-foreground"
+                                  : "opacity-50 [&_svg]:invisible",
+                              )}
+                            >
+                              <CheckIcon className="h-4 w-4 text-primary-foreground" />
+                            </div>
+                            {option.icon && (
+                              <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                            )}
+                            <span>{option.label}</span>
+                          </CommandItem>
+                        );
+                      })}
+                    </div>
+                  </CommandGroup>
+                </>
+              )}
+            </CommandList>
+            <CommandSeparator />
+            <div className="flex items-center justify-between p-2">
+              {selectedValues.length > 0 && (
+                <>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="flex-1 justify-center cursor-pointer"
+                    onClick={handleClear}
+                  >
+                    Очистить
+                  </Button>
+                  <Separator
+                    orientation="vertical"
+                    className="flex min-h-6 h-full"
+                  />
+                </>
+              )}
+              <Button
+                type="button"
+                variant="ghost"
+                className="flex-1 justify-center cursor-pointer"
+                onClick={() => handlePopoverOpenChange(false)}
+              >
+                Закрыть
+              </Button>
+            </div>
+          </Command>
         </PopoverContent>
       </Popover>
     );
