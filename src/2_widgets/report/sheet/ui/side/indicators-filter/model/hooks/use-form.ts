@@ -38,6 +38,8 @@ export const useForm = () => {
           ? indicators
           : defaultValues.nightProceeds;
       form.reset({ proceeds: resolved });
+    } else {
+      form.reset({ proceeds: indicators });
     }
   }, [indicators]);
 
