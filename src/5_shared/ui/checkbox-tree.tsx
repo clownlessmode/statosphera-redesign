@@ -237,9 +237,7 @@ function CheckboxTreeNode({
                 )}
               >
                 {hasChildren ? (
-                  <button>
-                    <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1" />
-                  </button>
+                  <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200 text-muted-foreground mr-1" />
                 ) : (
                   <div className="w-4" />
                 )}
