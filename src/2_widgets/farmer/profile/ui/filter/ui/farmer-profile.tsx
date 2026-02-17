@@ -266,7 +266,7 @@ export default function FarmerProfileCard({
                   </div>
                   <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
                     <span className="text-sm text-muted-foreground">
-                      Ответвенное лицо
+                      Ответственное лицо
                     </span>
                     <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
                       {profile.responsiblePerson.name}
