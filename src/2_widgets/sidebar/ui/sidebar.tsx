@@ -50,7 +50,7 @@ const Sidebar = ({
 }: React.ComponentProps<typeof SidebarComponent>) => {
   const { session } = useSession();
   const isMobile = useIsMobile();
-  const { profileStatus } = useFarmer(session?.idUser);
+  const { profileStatus } = useFarmer(session?.idUser, session?.role);
   const { tab } = useTabStore();
   const { tab: tabWriteOff } = useTabStoreWriteOff();
 
