@@ -22,6 +22,7 @@ import { Button } from "@shared/ui/button";
 import { cn } from "@shared/lib/utils";
 import { useIsMobile } from "@shared/hooks";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
+import formatDate from "@shared/lib/format-date";
 
 export const Monitoring = () => {
   const [search, setSearch] = useState("");
@@ -159,6 +160,42 @@ export const Monitoring = () => {
   };
 
   const isMobile = useIsMobile();
+
+  const renderSectionHeader = (title: string, items: any[]) => {
+    if (!items || items.length === 0) return null;
+
+    const latestDateIso = items.reduce((maxDate, item) => {
+      if (!item.updated_at) return maxDate;
+      if (!maxDate || new Date(item.updated_at) > new Date(maxDate)) {
+        return item.updated_at;
+      }
+      return maxDate;
+    }, null);
+
+    return (
+      <div className="flex flex-row items-baseline gap-3 mb-0 flex-wrap">
+        <h1 className="text-2xl font-bold">{title}</h1>
+        <span className="text-sm text-muted-foreground">
+          Найдено {items.length}{" "}
+          {
+            pluralize(items.length, ["продукт", "продукта", "продуктов"]).split(
+              " ",
+            )[1]
+          }
+        </span>
+
+        {latestDateIso && (
+          <>
+            <span className="text-muted-foreground/30 hidden sm:inline">|</span>
+            <span className="text-sm text-muted-foreground">
+              Последнее обновление: {formatDate(latestDateIso)}
+            </span>
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="bg-muted min-h-screen w-full p-2 flex flex-col gap-2">
       <Header
@@ -351,19 +388,7 @@ export const Monitoring = () => {
               <div className="w-full flex flex-col gap-6">
                 {yarcheProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Ярче</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {yarcheProducts?.length}{" "}
-                        {
-                          pluralize(yarcheProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Ярче", yarcheProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -393,19 +418,7 @@ export const Monitoring = () => {
                 )}
                 {magnitProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Магнит</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {magnitProducts?.length}{" "}
-                        {
-                          pluralize(magnitProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Магнит", magnitProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -436,19 +449,7 @@ export const Monitoring = () => {
                 )}
                 {metroProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Метро</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {metroProducts?.length}{" "}
-                        {
-                          pluralize(metroProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Метро", metroProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -479,19 +480,7 @@ export const Monitoring = () => {
                 )}
                 {lentaProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Лента</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {lentaProducts?.length}{" "}
-                        {
-                          pluralize(lentaProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Лента", lentaProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -521,19 +510,7 @@ export const Monitoring = () => {
                 )}
                 {pyaterochkaProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Пятёрочка</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {pyaterochkaProducts?.length}{" "}
-                        {
-                          pluralize(pyaterochkaProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Пятёрочка", pyaterochkaProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -563,19 +540,7 @@ export const Monitoring = () => {
                 )}
                 {zhiznmartProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Жизньмарт</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {zhiznmartProducts?.length}{" "}
-                        {
-                          pluralize(zhiznmartProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Жизньмарт", zhiznmartProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -605,19 +570,7 @@ export const Monitoring = () => {
                 )}
                 {azbukaVkusaProducts.length > 0 && (
                   <div className="w-full flex flex-col gap-4">
-                    <div className="flex flex-row items-center gap-2">
-                      <h1 className="text-2xl font-bold">Азбука вкуса</h1>
-                      <p className="text-sm text-muted-foreground">
-                        Найдено {azbukaVkusaProducts?.length}{" "}
-                        {
-                          pluralize(azbukaVkusaProducts?.length, [
-                            "продукт",
-                            "продукта",
-                            "продуктов",
-                          ]).split(" ")[1]
-                        }
-                      </p>
-                    </div>
+                    {renderSectionHeader("Азбука вкуса", azbukaVkusaProducts)}
                     <div className="border rounded-lg overflow-hidden">
                       <table className="w-full">
                         <thead className="bg-muted">
@@ -725,19 +678,7 @@ export const Monitoring = () => {
             <>
               {yarcheProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Ярче</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {yarcheProducts?.length}{" "}
-                      {
-                        pluralize(yarcheProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Ярче", yarcheProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -767,19 +708,7 @@ export const Monitoring = () => {
               )}
               {magnitProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Магнит</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {magnitProducts?.length}{" "}
-                      {
-                        pluralize(magnitProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Магнит", magnitProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -809,19 +738,7 @@ export const Monitoring = () => {
               )}
               {metroProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Метро</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {metroProducts?.length}{" "}
-                      {
-                        pluralize(metroProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Метро", metroProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -851,19 +768,7 @@ export const Monitoring = () => {
               )}
               {lentaProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Лента</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {lentaProducts?.length}{" "}
-                      {
-                        pluralize(lentaProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Лента", lentaProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -893,19 +798,7 @@ export const Monitoring = () => {
               )}
               {pyaterochkaProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Пятерочка</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {pyaterochkaProducts?.length}{" "}
-                      {
-                        pluralize(pyaterochkaProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Пятёрочка", pyaterochkaProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -935,19 +828,7 @@ export const Monitoring = () => {
               )}
               {zhiznmartProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Жизньмарт</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {zhiznmartProducts?.length}{" "}
-                      {
-                        pluralize(zhiznmartProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Жизньмарт", zhiznmartProducts)}
                   <div
                     className={
                       displayMode === "grid"
@@ -977,19 +858,7 @@ export const Monitoring = () => {
               )}
               {azbukaVkusaProducts.length > 0 && (
                 <div className="w-full flex flex-col gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <h1 className="text-2xl font-bold">Азбука вкуса</h1>
-                    <p className="text-sm text-muted-foreground">
-                      Найдено {azbukaVkusaProducts?.length}{" "}
-                      {
-                        pluralize(azbukaVkusaProducts?.length, [
-                          "продукт",
-                          "продукта",
-                          "продуктов",
-                        ]).split(" ")[1]
-                      }
-                    </p>
-                  </div>
+                  {renderSectionHeader("Азбука вкуса", azbukaVkusaProducts)}
                   <div
                     className={
                       displayMode === "grid"

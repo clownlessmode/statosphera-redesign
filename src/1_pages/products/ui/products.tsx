@@ -17,7 +17,9 @@ export const Products = () => {
 
   const { getApiPayload } = useFiltersStore();
 
-  const [appliedFilters, setAppliedFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState(() => {
+    return getApiPayload().filters.product || {};
+  });
   const { products, loadMore, isLoading, hasMore, isInitialLoading } =
     useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
 
@@ -117,14 +119,14 @@ export const Products = () => {
             <div className="flex flex-row gap-4 ml-8">
               <FilterModal onApplyFilters={handleApplyFilters} />
               <Button
-                variant={activeFilter === "all" ? "default" : "outline"}
-                onClick={handleAllProductsClick}
+                variant={activeFilter === "new" ? "default" : "outline"}
+                onClick={handleNewProductsClick}
               >
                 Новая номенклатура
               </Button>
               <Button
-                variant={activeFilter === "new" ? "default" : "outline"}
-                onClick={handleNewProductsClick}
+                variant={activeFilter === "all" ? "default" : "outline"}
+                onClick={handleAllProductsClick}
               >
                 Вся номенклатура
               </Button>
@@ -137,14 +139,14 @@ export const Products = () => {
           <div className="flex flex-row w-full mb-4 justify-between">
             <FilterModal onApplyFilters={handleApplyFilters} />
             <Button
-              variant={activeFilter === "all" ? "default" : "outline"}
-              onClick={handleAllProductsClick}
-            >
-              Новая<span className="max-sm:hidden">номенклатура</span>
-            </Button>
-            <Button
               variant={activeFilter === "new" ? "default" : "outline"}
               onClick={handleNewProductsClick}
+            >
+              Новая<span className="max-sm:hidden"> номенклатура</span>
+            </Button>
+            <Button
+              variant={activeFilter === "all" ? "default" : "outline"}
+              onClick={handleAllProductsClick}
             >
               Вся номенклатура
             </Button>
@@ -172,7 +174,8 @@ export const Products = () => {
               onClick={() => {
                 setShowWithoutGroups(true);
                 setActiveFilter("all");
-                setAppliedFilters({});
+                const currentPayload = getApiPayload();
+                setAppliedFilters(currentPayload.filters.product || {});
               }}
             >
               Сбросить фильтры
