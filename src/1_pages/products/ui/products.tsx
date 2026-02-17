@@ -53,7 +53,7 @@ export const Products = () => {
 
   const handleAllProductsClick = () => {
     setActiveFilter("all");
-    setShowWithoutGroups(true);
+    setShowWithoutGroups(false);
     // Обновляем фильтры при переключении, чтобы они корректно применялись
     const currentPayload = getApiPayload();
     setAppliedFilters(currentPayload.filters.product);
@@ -61,7 +61,7 @@ export const Products = () => {
 
   const handleNewProductsClick = () => {
     setActiveFilter("new");
-    setShowWithoutGroups(false);
+    setShowWithoutGroups(true);
     // Обновляем фильтры при переключении, чтобы они корректно применялись
     const currentPayload = getApiPayload();
     setAppliedFilters(currentPayload.filters.product);
