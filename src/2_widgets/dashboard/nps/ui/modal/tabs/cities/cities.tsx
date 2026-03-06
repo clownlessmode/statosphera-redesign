@@ -46,7 +46,7 @@ export const Cities = ({ tv, best, worst }: CitiesProps) => {
       )}
       {tv && worst && (
         <div className="col-span-full">
-          <h3 className="font-semibold text-center">Хучшие города по NPS</h3>
+          <h3 className="font-semibold text-center">Худшие города по NPS</h3>
         </div>
       )}
       {city.map((item) => {
