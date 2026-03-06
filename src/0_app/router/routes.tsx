@@ -38,6 +38,8 @@ import { FarmerAnalytics } from "@pages/farmer/analytics";
 import { Farmers } from "@pages/farmers";
 import { Forest } from "@pages/forest";
 import { NightStores } from "@pages/night-stores";
+import { Review } from "@pages/reviews";
+import { Attendance } from "@pages/attendance";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -107,6 +109,9 @@ export const ROUTES_PATH = {
   // Сводная таблица
   SUMMARY: "/summary",
 
+  //Отзывы
+  REVIEWS: "/reviews",
+  ATTENDANCE: "/attendance",
   // Служебные страницы
   NOT_FOUND: "*",
   FORBIDDEN: "/forbidden",
@@ -470,6 +475,24 @@ export const ROUTES: RouteConfig[] = [
     ],
     layout: Sidebar,
     label: "Ночные магазины",
+  },
+  {
+    path: ROUTES_PATH.REVIEWS,
+    variant: "private",
+    element: <Review />,
+    layout: Sidebar,
+    label: "Отзывы",
+    allowedUsers: [2739, 101],
+    allowedRoles: [ROLES.ADMIN],
+  },
+  {
+    path: ROUTES_PATH.ATTENDANCE,
+    variant: "private",
+    element: <Attendance />,
+    layout: Sidebar,
+    label: "Посещаемость",
+    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [191, 101],
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,

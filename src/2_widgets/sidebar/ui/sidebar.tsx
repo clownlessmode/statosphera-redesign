@@ -22,6 +22,8 @@ import {
   ChartLine,
   ChartBarStacked,
   TreePine,
+  MessageCircle,
+  PersonStanding,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -165,6 +167,16 @@ const Sidebar = ({
         title: "Лояльность",
         url: ROUTES_PATH.LOYALTY,
         icon: Heart,
+      },
+      {
+        title: "Отзывы",
+        url: ROUTES_PATH.REVIEWS,
+        icon: MessageCircle,
+      },
+      {
+        title: "Посещаемость",
+        url: ROUTES_PATH.ATTENDANCE,
+        icon: PersonStanding,
       },
       {
         title: "Интернет-магазин",
