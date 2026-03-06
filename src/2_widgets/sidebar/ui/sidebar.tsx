@@ -172,11 +172,17 @@ const Sidebar = ({
         title: "Отзывы",
         url: ROUTES_PATH.REVIEWS,
         icon: MessageCircle,
+        disabled:
+          session?.role !== ROLES.ADMIN &&
+          ![101, 2739].includes(session?.idUser ?? -1),
       },
       {
         title: "Посещаемость",
         url: ROUTES_PATH.ATTENDANCE,
         icon: PersonStanding,
+        disabled:
+          session?.role !== ROLES.ADMIN &&
+          ![101, 191].includes(session?.idUser ?? -1),
       },
       {
         title: "Интернет-магазин",
