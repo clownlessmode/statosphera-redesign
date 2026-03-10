@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from "react";
-import { format } from "date-fns";
 import { Header } from "@widgets/header";
 import { ProductCardSkeleton } from "./product-skeleton";
 import ProductCard from "@entities/product/product-card";
@@ -11,24 +10,12 @@ import { FilterModal } from "./filter-modal";
 import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { useProductInfiniteScroll } from "../model/hook";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import {
-  MIN_DATE,
-  MAX_DATE,
-} from "@widgets/report/sheet/ui/side/date-filter/config/constants";
 
 export const Products = () => {
   const [showWithoutGroups, setShowWithoutGroups] = useState(true);
   const [activeFilter, setActiveFilter] = useState<"all" | "new">("all");
 
-  const { getApiPayload, updateDateFilter } = useFiltersStore();
-
-  // фильтра отталкиались от периода времени в отчетах (пришлось поставить весь период)
-  useEffect(() => {
-    updateDateFilter(
-      format(MIN_DATE, "yyyy-MM-dd"),
-      format(MAX_DATE, "yyyy-MM-dd"),
-    );
-  }, [updateDateFilter]);
+  const { getApiPayload } = useFiltersStore();
 
   const [appliedFilters, setAppliedFilters] = useState(() => {
     return getApiPayload().filters.product || {};
