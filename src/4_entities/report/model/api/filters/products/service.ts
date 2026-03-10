@@ -833,6 +833,7 @@ export class FiltersProductsService {
     dto: any,
   ): Promise<NomenklaturaFilterResponse[]> {
     const response = await api.post<any>("products/filter", {
+      is_products: dto.is_products ?? false,
       filters: {
         product: {
           ...dto.filters.product,

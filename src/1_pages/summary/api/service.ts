@@ -29,7 +29,10 @@ export class SummaryService {
   ): Promise<SummaryNomenklaturaResponse[]> {
     const response = await api.post<SummaryNomenklaturaResponse[]>(
       "/products/current-period",
-      data,
+      {
+        ...data,
+        is_products: false,
+      },
     );
     return response.data;
   }

@@ -34,6 +34,10 @@ import { useFiltersStore } from "@widgets/report/sheet/model/filters-store";
 import { HEALTHY } from "../config";
 import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { cn } from "@shared/lib/utils";
+import {
+  useFilterDateOverride,
+  useIsProductsOverride,
+} from "./filter-date-override-context";
 
 interface Props {
   className?: string;
@@ -41,7 +45,17 @@ interface Props {
 
 const ProductsFilter: FC<Props> = ({ className }) => {
   const { updateProductFilter, getApiPayload } = useFiltersStore();
-  const payload = getApiPayload();
+  const basePayload = getApiPayload();
+  const dateOverride = useFilterDateOverride();
+  const isProductsOverride = useIsProductsOverride();
+
+  const payload = {
+    ...basePayload,
+    ...(dateOverride && { filterDate: dateOverride }),
+    ...(typeof isProductsOverride === "boolean" && {
+      is_products: isProductsOverride,
+    }),
+  };
   const form = useForm();
 
   const {
