@@ -76,12 +76,13 @@ export const Graph = ({ statsParams }: GraphProps) => {
       },
     ]);
 
+    const hasRotatedLabels = periods.length > 12;
     return {
       grid: {
         top: 20,
         left: 12,
         right: 12,
-        bottom: 20,
+        bottom: hasRotatedLabels ? 48 : 24,
         containLabel: true,
       },
       legend: { show: false },
@@ -103,10 +104,11 @@ export const Graph = ({ statsParams }: GraphProps) => {
       xAxis: {
         type: "category",
         data: periods,
-        axisLabel: { rotate: periods.length > 12 ? 45 : 0 },
+        axisLabel: { rotate: hasRotatedLabels ? 45 : 0 },
       },
       yAxis: {
         type: "value",
+        min: 0,
         axisLine: { show: false },
         axisTick: { show: false },
         splitLine: { show: true, lineStyle: { opacity: 0.2 } },

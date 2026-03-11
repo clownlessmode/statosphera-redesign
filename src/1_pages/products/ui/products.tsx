@@ -13,14 +13,14 @@ import { useIsMobile } from "@shared/hooks/use-mobile";
 
 export const Products = () => {
   const [showWithoutGroups, setShowWithoutGroups] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<"all" | "new">("all");
+  const [activeFilter, setActiveFilter] = useState<"all" | "new">("new");
 
   const { getApiPayload } = useFiltersStore();
 
   const [appliedFilters, setAppliedFilters] = useState(() => {
     return getApiPayload().filters.product || {};
   });
-  const { products, loadMore, isLoading, hasMore, isInitialLoading } =
+  const { products, loadMore, isLoading, hasMore, refetch, isInitialLoading } =
     useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
 
   // Автоматически обновляем фильтры при изменении состояния в store
@@ -173,7 +173,7 @@ export const Products = () => {
               className="mt-4"
               onClick={() => {
                 setShowWithoutGroups(true);
-                setActiveFilter("all");
+                setActiveFilter("new");
                 const currentPayload = getApiPayload();
                 setAppliedFilters(currentPayload.filters.product || {});
               }}
@@ -227,6 +227,7 @@ export const Products = () => {
             productLabels={productLabels ?? {}}
             onClose={handleCloseModal}
             onSuccess={() => {
+              refetch();
               handleCloseModal();
             }}
           />
