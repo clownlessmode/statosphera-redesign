@@ -95,7 +95,7 @@ export const Events = ({
   ]);
 
   return (
-    <Card className="w-full flex-1 gap-2">
+    <Card className="w-full flex-1 h-screen gap-2 pb-0">
       <CardHeader className="flex flex-row items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
           <CardTitle>События по камерам</CardTitle>
