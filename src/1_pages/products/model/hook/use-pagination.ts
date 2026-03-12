@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { ProductFilter, ProductRequestDto, ProductResponse } from "../types";
 import { ProductsService } from "@pages/products/api";
 
@@ -12,18 +12,27 @@ export const useProductInfiniteScroll = (
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const loadProducts = async (pageNumber: number) => {
+  const loadProducts = async (
+    pageNumber: number,
+    overrides?: {
+      showWithoutGroups?: boolean;
+      productFilters?: ProductFilter;
+    },
+  ) => {
     try {
       setIsLoading(true);
 
+      const effectiveShowWithoutGroups =
+        overrides?.showWithoutGroups ?? showWithoutGroups;
+      const effectiveFilters = overrides?.productFilters ?? productFilters;
+
       const payload: ProductRequestDto = {
-        filters: productFilters,
+        filters: effectiveFilters,
         pagination: {
           limit: itemsPerPage,
           offset: pageNumber * itemsPerPage,
-          filter: showWithoutGroups,
+          filter: effectiveShowWithoutGroups,
         },
       };
 
@@ -46,46 +55,19 @@ export const useProductInfiniteScroll = (
     }
   };
 
-  const refetch = useCallback(() => {
+  useEffect(() => {
+    loadProducts(0);
+  }, []);
+
+  const refetch = (opts?: {
+    showWithoutGroups?: boolean;
+    productFilters?: ProductFilter;
+  }) => {
     setPage(0);
     setHasMore(true);
     setIsInitialLoading(true);
-    loadProducts(0);
-  }, [productFilters, showWithoutGroups, itemsPerPage]);
-
-  useEffect(() => {
-    if (isFirstLoad) {
-      setIsFirstLoad(false);
-      loadProducts(0);
-    }
-  }, []);
-
-  // Объединяем логику обработки изменений showWithoutGroups и productFilters
-  const prevStateRef = useRef<{
-    showWithoutGroups: boolean;
-    productFilters: ProductFilter;
-  } | null>(null);
-
-  useEffect(() => {
-    if (!isFirstLoad) {
-      const prevState = prevStateRef.current;
-      const currentState = { showWithoutGroups, productFilters };
-
-      const shouldRefetch =
-        !prevState ||
-        prevState.showWithoutGroups !== showWithoutGroups ||
-        JSON.stringify(prevState.productFilters) !==
-          JSON.stringify(productFilters);
-
-      if (shouldRefetch) {
-        setPage(0);
-        setHasMore(true);
-        loadProducts(0);
-      }
-
-      prevStateRef.current = currentState;
-    }
-  }, [showWithoutGroups, productFilters]);
+    loadProducts(0, opts);
+  };
 
   const loadMore = () => {
     if (!isLoading && hasMore) {
