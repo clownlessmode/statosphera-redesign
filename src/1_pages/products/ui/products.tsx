@@ -20,18 +20,14 @@ export const Products = () => {
   const [appliedFilters, setAppliedFilters] = useState(() => {
     return getApiPayload().filters.product || {};
   });
-  const { products, loadMore, isLoading, hasMore, isInitialLoading } =
+  const { products, loadMore, isLoading, hasMore, isInitialLoading, refetch } =
     useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
-
-  // Автоматически обновляем фильтры при изменении состояния в store
-  useEffect(() => {
-    const currentPayload = getApiPayload();
-    setAppliedFilters(currentPayload.filters.product);
-  }, [getApiPayload]);
 
   const handleApplyFilters = () => {
     const currentPayload = getApiPayload();
-    setAppliedFilters(currentPayload.filters.product);
+    const nextFilters = currentPayload.filters.product || {};
+    setAppliedFilters(nextFilters);
+    refetch({ showWithoutGroups, productFilters: nextFilters as any });
   };
 
   const [selectedProduct, setSelectedProduct] =
@@ -54,17 +50,19 @@ export const Products = () => {
   const handleAllProductsClick = () => {
     setActiveFilter("all");
     setShowWithoutGroups(false);
-    // Обновляем фильтры при переключении, чтобы они корректно применялись
     const currentPayload = getApiPayload();
-    setAppliedFilters(currentPayload.filters.product);
+    const nextFilters = currentPayload.filters.product || {};
+    setAppliedFilters(nextFilters);
+    refetch({ showWithoutGroups: false, productFilters: nextFilters as any });
   };
 
   const handleNewProductsClick = () => {
     setActiveFilter("new");
     setShowWithoutGroups(true);
-    // Обновляем фильтры при переключении, чтобы они корректно применялись
     const currentPayload = getApiPayload();
-    setAppliedFilters(currentPayload.filters.product);
+    const nextFilters = currentPayload.filters.product || {};
+    setAppliedFilters(nextFilters);
+    refetch({ showWithoutGroups: true, productFilters: nextFilters as any });
   };
 
   const productToFormValues = (product: ProductResponse) => {
@@ -175,7 +173,12 @@ export const Products = () => {
                 setShowWithoutGroups(true);
                 setActiveFilter("new");
                 const currentPayload = getApiPayload();
-                setAppliedFilters(currentPayload.filters.product || {});
+                const nextFilters = currentPayload.filters.product || {};
+                setAppliedFilters(nextFilters);
+                refetch({
+                  showWithoutGroups: true,
+                  productFilters: nextFilters as any,
+                });
               }}
             >
               Сбросить фильтры
