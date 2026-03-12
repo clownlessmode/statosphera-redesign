@@ -20,7 +20,7 @@ export const Products = () => {
   const [appliedFilters, setAppliedFilters] = useState(() => {
     return getApiPayload().filters.product || {};
   });
-  const { products, loadMore, isLoading, hasMore, refetch, isInitialLoading } =
+  const { products, loadMore, isLoading, hasMore, isInitialLoading } =
     useProductInfiniteScroll(20, showWithoutGroups, appliedFilters as any);
 
   // Автоматически обновляем фильтры при изменении состояния в store
@@ -227,7 +227,6 @@ export const Products = () => {
             productLabels={productLabels ?? {}}
             onClose={handleCloseModal}
             onSuccess={() => {
-              refetch();
               handleCloseModal();
             }}
           />
