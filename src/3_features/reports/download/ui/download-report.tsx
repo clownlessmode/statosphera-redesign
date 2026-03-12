@@ -34,7 +34,7 @@ const DownloadReport = ({ rows }: { rows: number }) => {
   };
 
   const isExcelDisabled = true; //rows > 500000;
-  const isAllDisabled = rows > 7000000;
+  const isAllDisabled = rows > 1000000;
   const { session } = useSession();
 
   const disabledRolesList: string[] = [
@@ -88,7 +88,7 @@ const DownloadReport = ({ rows }: { rows: number }) => {
             <CardDescription>
               {isAllDisabled ? (
                 <>
-                  В текущей выборке содержится более 7 000 000 строк данных.
+                  В текущей выборке содержится более 1 000 000 строк данных.
                   Экспорт таких объёмов невозможен из-за ограничений системы.
                   <br />
                   <br />
