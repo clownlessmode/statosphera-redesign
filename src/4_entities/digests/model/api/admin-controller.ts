@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DigestsService } from "./service";
-import { CreateDigestRequest } from "../types";
+import { DigestRequest } from "../types";
 import { toast } from "sonner";
 
 export const useAdminDigests = () => {
   const queryClient = useQueryClient();
 
   const createDigestMutation = useMutation({
-    mutationFn: (data: CreateDigestRequest) =>
-      DigestsService.createDigest(data),
+    mutationFn: (data: DigestRequest) => DigestsService.createDigest(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["digests"] });
       toast.success("Дайджест успешно создан");
@@ -16,6 +15,19 @@ export const useAdminDigests = () => {
     onError: (error) => {
       console.error("Ошибка при создании дайджеста:", error);
       toast.error("Ошибка при создании дайджеста");
+    },
+  });
+
+  const updateDigestMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<DigestRequest> }) =>
+      DigestsService.updateDigest(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["digests"] });
+      toast.success("Дайджест успешно обновлен");
+    },
+    onError: (error) => {
+      console.error("Ошибка при обновлении дайджеста:", error);
+      toast.error("Ошибка при обновлении дайджеста");
     },
   });
 
@@ -33,8 +45,10 @@ export const useAdminDigests = () => {
 
   return {
     createDigest: createDigestMutation.mutateAsync,
+    updateDigest: updateDigestMutation.mutateAsync,
     deleteDigest: deleteDigestMutation.mutateAsync,
     isCreating: createDigestMutation.isPending,
+    isUpdating: updateDigestMutation.isPending,
     isDeleting: deleteDigestMutation.isPending,
   };
 };
