@@ -1,22 +1,26 @@
+import { useDigests } from "@entities/digests/model/api/controller";
+import { useState } from "react";
+import {
+  DigestRequest,
+  GetDigestsResponse,
+  useAdminDigests,
+} from "@entities/digests";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@shared/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@shared/ui/form";
 import { Input } from "@shared/ui/input";
 import { Textarea } from "@shared/ui/textarea";
-import { useAdminDigests } from "@entities/digests";
-import { useState } from "react";
-import { toast } from "sonner";
 import { Upload, X } from "lucide-react";
+import { Button } from "@shared/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card";
 import DigestPreview from "./digest-preview";
 import {
   Select,
@@ -32,12 +36,6 @@ const digestSchema = z.object({
   type: z.string().min(1, "Тип дайджеста обязателен"),
 });
 
-type DigestFormData = z.infer<typeof digestSchema>;
-
-interface DigestFormProps {
-  onSuccess?: () => void;
-}
-
 const DIGEST_TYPES = [
   { label: "Аналитика", value: "analytics" },
   { label: "Совет директоров", value: "director" },
@@ -45,17 +43,26 @@ const DIGEST_TYPES = [
   { label: "Группа компаний", value: "groupCompany" },
 ];
 
-export const DigestForm = ({ onSuccess }: DigestFormProps) => {
+type DigestFormData = z.infer<typeof digestSchema>;
+
+export const DiegestEdit = ({
+  digestData,
+  onSuccess,
+}: {
+  digestData: GetDigestsResponse[number];
+  onSuccess: () => void;
+}) => {
+  const { digest, isDigestLoading } = useDigests(digestData.id);
   const [files, setFiles] = useState<File[]>([]);
   const [cover, setCover] = useState<File | null>(null);
-  const { createDigest, isCreating } = useAdminDigests();
+  const { updateDigest, isUpdating } = useAdminDigests();
 
   const form = useForm<DigestFormData>({
     resolver: zodResolver(digestSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      type: "",
+      title: digestData?.title || "",
+      description: digestData?.description || "",
+      type: digestData?.type || "",
     },
   });
 
@@ -76,42 +83,65 @@ export const DigestForm = ({ onSuccess }: DigestFormProps) => {
   };
 
   const onSubmit = async (data: DigestFormData) => {
-    if (files.length === 0) {
-      toast.error("Выберите хотя бы один файл для страниц дайджеста");
-      return;
+    const changedData: Partial<DigestRequest> = {};
+
+    if (data.title !== digestData.title) {
+      changedData.title = data.title;
     }
 
-    if (!cover) {
-      toast.error("Выберите обложку для дайджеста");
-      return;
+    if (data.description !== digestData.description) {
+      changedData.description = data.description;
+    }
+
+    if (data.type !== digestData.type) {
+      changedData.type = data.type;
+    }
+
+    // Отправляем файлы только если пользователь выбрал новые
+    if (files.length > 0) {
+      changedData.files = files;
+    }
+
+    // Отправляем обложку только если пользователь выбрал новую
+    if (cover) {
+      changedData.cover = cover;
     }
 
     try {
-      await createDigest({
-        title: data.title,
-        description: data.description,
-        type: data.type,
-        files,
-        cover,
+      await updateDigest({
+        id: digestData.id,
+        data: changedData,
       });
 
       form.reset();
       setFiles([]);
       setCover(null);
-      onSuccess?.();
+      onSuccess();
     } catch (error) {
-      console.error("Ошибка при создании дайджеста:", error);
+      console.error("Ошибка при обновлении дайджеста:", error);
     }
   };
 
   const formValues = form.watch();
+
+  if (isDigestLoading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center">
+            <div className="text-muted-foreground">Загрузка дайджеста...</div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="gap-6 flex-1 min-h-screen grid grid-cols-4  w-full">
       <div className="col-span-1 w-full  sticky top-20 self-start">
         <Card className="flex flex-col gap-4 h-fit w-full">
           <CardHeader>
-            <CardTitle>Создание дайджеста</CardTitle>
+            <CardTitle>Редактирование дайджеста</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -257,12 +287,8 @@ export const DigestForm = ({ onSuccess }: DigestFormProps) => {
                   )}
                 </div>
 
-                <Button
-                  type="submit"
-                  disabled={isCreating || files.length === 0 || !cover}
-                  className="w-full"
-                >
-                  {isCreating ? "Создание..." : "Создать дайджест"}
+                <Button type="submit" disabled={isUpdating} className="w-full">
+                  {isUpdating ? "Обновление..." : "Обновить дайджест"}
                 </Button>
               </form>
             </Form>
@@ -281,9 +307,10 @@ export const DigestForm = ({ onSuccess }: DigestFormProps) => {
               title={formValues.title}
               description={formValues.description}
               type={formValues.type}
-              cover={cover}
-              filesCount={files.length}
-              files={files}
+              cover={cover ?? digestData.cover}
+              filesCount={files.length || digest?.pages?.length || 0}
+              files={files.length > 0 ? files : digest?.pages || []}
+              date={digestData.create_add}
             />
           </CardContent>
         </Card>

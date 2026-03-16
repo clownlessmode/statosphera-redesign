@@ -10,9 +10,12 @@ interface DigestPreviewProps {
   title: string;
   description: string;
   type: string;
-  cover?: File | null;
+  // Может быть либо File (новая обложка), либо string-URL с бэка, либо null
+  cover?: File | string | null;
   filesCount: number;
-  files: File[];
+  // Страницы: новые File или string-URL'ы с бэка
+  files: (File | string)[];
+  date?: string;
 }
 
 const DigestPreview: FC<DigestPreviewProps> = ({
@@ -22,6 +25,7 @@ const DigestPreview: FC<DigestPreviewProps> = ({
   cover,
   filesCount,
   files,
+  date,
 }) => {
   const typeMap: Record<string, string> = {
     analytics: "Аналитика",
@@ -30,7 +34,12 @@ const DigestPreview: FC<DigestPreviewProps> = ({
     groupCompany: "Группа компаний",
   };
 
-  const coverUrl = cover ? URL.createObjectURL(cover) : "/digest/cover.png";
+  let coverUrl = "/digest/cover.png";
+  if (cover instanceof Blob) {
+    coverUrl = URL.createObjectURL(cover);
+  } else if (typeof cover === "string" && cover) {
+    coverUrl = cover;
+  }
 
   return (
     <div className="space-y-6 h-full flex flex-col">
@@ -40,7 +49,7 @@ const DigestPreview: FC<DigestPreviewProps> = ({
           style={{
             backgroundImage: `url(${coverUrl})`,
           }}
-          className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center bg-cover"
+          className="size-[150px] md:size-[190px] aspect-square bg-accent bg-no-repeat bg-center bg-cover shrink-0"
         />
         <div className="flex flex-col gap-2 justify-between py-4">
           <Badge className="bg-primary/5 text-primary hover:bg-primary/5 shadow-none">
@@ -78,7 +87,7 @@ const DigestPreview: FC<DigestPreviewProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              {format(new Date(), "dd MMMM yyyy", {
+              {format(date || new Date(), "dd MMMM yyyy", {
                 locale: ru,
               })}
             </div>

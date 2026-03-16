@@ -2,7 +2,7 @@ import { api } from "@shared/api/api";
 import {
   GetDigestResponse,
   GetDigestsResponse,
-  CreateDigestRequest,
+  DigestRequest,
   CreateDigestResponse,
   DeleteDigestResponse,
 } from "../types";
@@ -19,7 +19,7 @@ export class DigestsService {
   }
 
   static async createDigest(
-    data: CreateDigestRequest,
+    data: DigestRequest,
   ): Promise<CreateDigestResponse> {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -43,6 +43,32 @@ export class DigestsService {
         },
       },
     );
+    return response.data;
+  }
+
+  static async updateDigest(
+    id: string,
+    data: Partial<DigestRequest>,
+  ): Promise<Partial<DigestRequest>> {
+    const formData = new FormData();
+    if (data.title) formData.append("title", data.title);
+    if (data.type) formData.append("type", data.type);
+    if (data.description) formData.append("description", data.description);
+
+    // Добавляем файлы страниц
+    if (data.files)
+      data.files.forEach((file) => {
+        formData.append("files", file);
+      });
+
+    // Добавляем обложку
+    if (data.cover) formData.append("cover", data.cover);
+
+    const response = await api.patch(`daydjest/up/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   }
 
