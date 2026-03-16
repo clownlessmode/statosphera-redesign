@@ -4,7 +4,8 @@ import { Minus, Plus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface DigestPagesPreviewProps {
-  files: File[];
+  // Страницы: новые File или string-URL'ы с бэка
+  files: (File | string)[];
 }
 
 export const DigestPagesPreview = ({ files }: DigestPagesPreviewProps) => {
@@ -43,10 +44,16 @@ export const DigestPagesPreview = ({ files }: DigestPagesPreviewProps) => {
       <div className="flex flex-col gap-1 items-center flex-1 min-h-0 overflow-y-auto">
         <AnimatePresence>
           {files.map((file, index) => {
-            const imageUrl = URL.createObjectURL(file);
+            const isBlob = file instanceof Blob;
+            const imageUrl = isBlob
+              ? URL.createObjectURL(file)
+              : (file as string);
+            const key = isBlob
+              ? (file as File).name || `file-${index}`
+              : (file as string);
             return (
               <motion.img
-                key={`${file.name}-${index}`}
+                key={key}
                 src={imageUrl}
                 alt={`Страница ${index + 1}`}
                 loading={index < 3 ? "eager" : "lazy"}
@@ -58,8 +65,9 @@ export const DigestPagesPreview = ({ files }: DigestPagesPreviewProps) => {
                 }}
                 className="rounded-lg shadow-sm"
                 onLoad={() => {
-                  // Очищаем URL после загрузки для освобождения памяти
-                  setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+                  if (isBlob) {
+                    setTimeout(() => URL.revokeObjectURL(imageUrl), 1000);
+                  }
                 }}
               />
             );

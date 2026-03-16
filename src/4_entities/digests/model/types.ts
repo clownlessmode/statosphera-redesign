@@ -15,7 +15,7 @@ export type GetDigestResponse = {
   type: string;
 };
 
-export type CreateDigestRequest = {
+export type DigestRequest = {
   title: string;
   type: string;
   description: string;

@@ -24,6 +24,9 @@ import {
   TreePine,
   MessageCircle,
   PersonStanding,
+  BellPlus,
+  Shield,
+  FilePen,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -221,17 +224,58 @@ const Sidebar = ({
           session?.role !== ROLES.FARMER_MANAGER &&
           session?.role !== ROLES.ADMIN,
       },
-      {
-        title: "Админ панель",
-        url: ROUTES_PATH.ADMIN_DIGESTS,
-        icon: SettingsIcon,
-        disabled: session?.role !== ROLES.ADMIN,
-        children: [
-          { title: "Дайджесты", url: ROUTES_PATH.ADMIN_DIGESTS },
-          { title: "Уведомления", url: ROUTES_PATH.ADMIN_NOTIFICATIONS },
-          { title: "Роли голосования", url: ROUTES_PATH.ADMIN_ROLES },
-        ],
-      },
+      ...(!isMobile
+        ? [
+            {
+              title: "Админ панель",
+              url: ROUTES_PATH.ADMIN_DIGESTS,
+              icon: SettingsIcon,
+              disabled:
+                session?.role !== ROLES.ADMIN &&
+                ![59, 156].includes(session?.idUser ?? -1),
+              children: [
+                {
+                  title: "Дайджесты",
+                  url: ROUTES_PATH.ADMIN_DIGESTS,
+                  disabled:
+                    session?.role !== ROLES.ADMIN &&
+                    ![59, 156].includes(session?.idUser ?? -1),
+                },
+                {
+                  title: "Уведомления",
+                  url: ROUTES_PATH.ADMIN_NOTIFICATIONS,
+                  disabled: session?.role !== ROLES.ADMIN,
+                },
+                {
+                  title: "Роли голосования",
+                  url: ROUTES_PATH.ADMIN_ROLES,
+                  disabled: session?.role !== ROLES.ADMIN,
+                },
+              ],
+            },
+          ]
+        : [
+            {
+              title: "Дайджесты (админ)",
+              url: ROUTES_PATH.ADMIN_DIGESTS,
+              icon: FilePen,
+              disabled:
+                session?.role !== ROLES.ADMIN &&
+                ![59, 156].includes(session?.idUser ?? -1),
+            },
+            {
+              title: "Уведомления",
+              url: ROUTES_PATH.ADMIN_NOTIFICATIONS,
+              icon: BellPlus,
+              disabled: session?.role !== ROLES.ADMIN,
+            },
+            {
+              title: "Роли голосования",
+              url: ROUTES_PATH.ADMIN_ROLES,
+              icon: Shield,
+              disabled: session?.role !== ROLES.ADMIN,
+            },
+          ]),
       {
         title: "R&D",
         url: "#",

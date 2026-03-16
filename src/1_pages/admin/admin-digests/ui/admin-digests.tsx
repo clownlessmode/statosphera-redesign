@@ -6,9 +6,14 @@ import { useState } from "react";
 import { DigestForm } from "./digest-form";
 import { DigestList } from "./digest-list";
 import { DigestStats } from "./digest-stats";
+import { DiegestEdit } from "./diegest-edit";
+import { GetDigestsResponse } from "@entities/digests/model/types";
 
 export const AdminDigests = () => {
   const [activeTab, setActiveTab] = useState<"create" | "manage">("create");
+  const [editDigest, setEditDigest] = useState<
+    GetDigestsResponse[number] | null
+  >(null);
 
   return (
     <div className="bg-muted h-full min-h-screen w-full p-2 flex flex-col gap-2 max-w-full overflow-hidden">
@@ -24,7 +29,10 @@ export const AdminDigests = () => {
                   "border-b-0! rounded-b-none!",
                   activeTab === "create" ? "opacity-100" : "opacity-50",
                 )}
-                onClick={() => setActiveTab("create")}
+                onClick={() => {
+                  setActiveTab("create");
+                  setEditDigest(null);
+                }}
               >
                 Создание
               </Button>
@@ -34,7 +42,10 @@ export const AdminDigests = () => {
                   "border-b-0! rounded-b-none!",
                   activeTab === "manage" ? "opacity-100" : "opacity-50",
                 )}
-                onClick={() => setActiveTab("manage")}
+                onClick={() => {
+                  setActiveTab("manage");
+                  setEditDigest(null);
+                }}
               >
                 Управление
               </Button>
@@ -50,9 +61,25 @@ export const AdminDigests = () => {
         <DigestStats />
 
         {activeTab === "create" ? (
-          <DigestForm onSuccess={() => setActiveTab("manage")} />
+          <DigestForm
+            onSuccess={() => {
+              setActiveTab("manage");
+              setEditDigest(null);
+            }}
+          />
+        ) : activeTab === "manage" && !editDigest ? (
+          <DigestList
+            onEdit={(digest) => {
+              setEditDigest(digest);
+            }}
+          />
         ) : (
-          <DigestList onEdit={() => setActiveTab("create")} />
+          editDigest && (
+            <DiegestEdit
+              digestData={editDigest!}
+              onSuccess={() => setEditDigest(null)}
+            />
+          )
         )}
       </div>
     </div>
