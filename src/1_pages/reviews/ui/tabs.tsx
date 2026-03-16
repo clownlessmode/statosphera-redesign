@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
 import { AppStoreTab } from "./app-store-tab";
 import { GooglePlayTab } from "./google-play-tab";
+import { YandexTab } from "./yandex-tab";
 
 export function TabsReviews() {
   return (
@@ -18,9 +19,7 @@ export function TabsReviews() {
         <GooglePlayTab />
       </TabsContent>
       <TabsContent value="Yandex">
-        <div className="flex items-center justify-center h-full">
-          <p className="text-xl">В разработке</p>
-        </div>
+        <YandexTab />
       </TabsContent>
       <TabsContent value="2GIS">
         <div className="flex items-center justify-center h-full">
