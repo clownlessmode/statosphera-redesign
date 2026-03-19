@@ -3,8 +3,13 @@ import { ReviewsAppStoreRequest, ReviewsAppStoreResponse } from "./types";
 import {
   ReviewsGooglePlayRequest,
   ReviewsUpdateRequest,
+  ReviewsYandexRequest,
 } from "./types/request";
-import { ReviewsGooglePlayResponse } from "./types/response";
+import {
+  ReviewsGooglePlayResponse,
+  ReviewsYandexResponse,
+  YandexStores,
+} from "./types/response";
 export class ReviewsService {
   static async getReviewsAppStore(
     data: ReviewsAppStoreRequest,
@@ -23,6 +28,21 @@ export class ReviewsService {
       "/reviews/google-play",
       data,
     );
+    return response.data;
+  }
+
+  static async getReviewsYandex(
+    data: ReviewsYandexRequest,
+  ): Promise<ReviewsYandexResponse[]> {
+    const response = await api.post<ReviewsYandexResponse[]>(
+      "/reviews/yandex",
+      data,
+    );
+    return response.data;
+  }
+
+  static async getYandexStores(): Promise<YandexStores[]> {
+    const response = await api.get<YandexStores[]>("/reviews/stores-yandex");
     return response.data;
   }
 

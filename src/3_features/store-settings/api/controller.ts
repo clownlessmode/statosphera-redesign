@@ -44,6 +44,16 @@ export const useStoreSettingsController = () => {
       return response;
     },
   });
+  const toggleNightMode = useMutation<
+    unknown,
+    ApiError,
+    { ip: string; enabled: boolean }
+  >({
+    mutationFn: async ({ ip, enabled }) => {
+      const response = await StoreSettingsService.toggleNightMode(ip, enabled);
+      return response;
+    },
+  });
   return {
     isGetStoreStatusLoading: getStoreStatus.isPending,
     getStoreStatusAsync: getStoreStatus.mutateAsync,
@@ -53,6 +63,8 @@ export const useStoreSettingsController = () => {
     isRebootLoading: reboot.isPending,
     emergencyClosure: emergencyClosure.mutateAsync,
     isEmergencyClosureLoading: emergencyClosure.isPending,
+    toggleNightMode: toggleNightMode.mutateAsync,
+    isToggleNightModeLoading: toggleNightMode.isPending,
   };
 };
 

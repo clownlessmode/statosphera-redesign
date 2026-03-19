@@ -16,10 +16,18 @@ export const AppStoreTab = () => {
     is_replied: filters.is_replied,
   });
 
+  const reviews = appStore.data?.pages.flat() ?? [];
+
   return (
     <div className="flex flex-col gap-4">
       <Filters value={filters} onChange={setFilters} />
-      <ReviewsCards data={appStore.data || []} isLoading={appStore.isLoading} />
+      <ReviewsCards
+        data={reviews}
+        isLoading={appStore.isPending}
+        hasNextPage={appStore.hasNextPage}
+        isFetchingNextPage={appStore.isFetchingNextPage}
+        fetchNextPage={appStore.fetchNextPage}
+      />
     </div>
   );
 };
