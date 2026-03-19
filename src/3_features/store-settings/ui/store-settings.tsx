@@ -14,6 +14,8 @@ import {
   RefreshCw,
   RotateCcw,
   Settings,
+  PowerOff,
+  Power,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@shared/ui/card";
 import { Separator } from "@shared/ui/separator";
@@ -149,6 +151,8 @@ const StoreSettingsDialog = ({
     isRebootLoading,
     emergencyClosure,
     isEmergencyClosureLoading,
+    toggleNightMode,
+    isToggleNightModeLoading,
   } = useStoreSettingsController();
 
   const { session } = useSession();
@@ -179,6 +183,18 @@ const StoreSettingsDialog = ({
       }, 5500);
     } catch (error) {
       console.error("Failed to open door:", error);
+    }
+  };
+
+  const handleToggleNightMode = async () => {
+    try {
+      await toggleNightMode({ ip, enabled: !data?.status_door });
+      await fetchStoreStatus();
+      setTimeout(async () => {
+        await fetchStoreStatus();
+      }, 5500);
+    } catch (error) {
+      console.error("Failed to toggle night mode:", error);
     }
   };
 
@@ -233,6 +249,17 @@ const StoreSettingsDialog = ({
             >
               Перезагрузить систему
               <RotateCcw />
+            </Button>
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              className="col-span-full"
+              disabled={isGetStoreStatusLoading || isToggleNightModeLoading}
+              onClick={handleToggleNightMode}
+              loading={isToggleNightModeLoading}
+            >
+              {data?.status_door ? "Выключить" : "Включить"} ночной режим работы
+              {data?.status_door ? <PowerOff /> : <Power />}
             </Button>
             {data?.pressing_the_emergency_button && !data?.complete_closure && (
               <Button
