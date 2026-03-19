@@ -37,4 +37,12 @@ export class StoreSettingsService {
     });
     return response.data;
   }
+  static async toggleNightMode(ip: string, enabled: boolean): Promise<unknown> {
+    const response = await api.post<unknown>("/door-store/remote", {
+      ip,
+      type: "remote",
+      command: enabled,
+    });
+    return response.data;
+  }
 }
