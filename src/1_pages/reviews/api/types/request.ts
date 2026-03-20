@@ -23,6 +23,15 @@ export interface ReviewsYandexRequest {
   offset?: number;
 }
 
+export interface Reviews2GISRequest {
+  rating?: number;
+  is_replied?: boolean;
+  order: "asc" | "desc";
+  idStore?: number;
+  limit?: number;
+  offset?: number;
+}
+
 export interface ReviewsUpdateRequest {
   id: number;
   is_replied: boolean;

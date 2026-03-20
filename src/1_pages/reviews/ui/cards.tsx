@@ -6,6 +6,8 @@ import { Checkbox } from "@shared/ui/checkbox";
 import {
   useUpdateRepliedAppStore,
   useUpdateRepliedGooglePlay,
+  useUpdateRepliedYandex,
+  useUpdateReplied2GIS,
 } from "../api/controller";
 
 interface ReviewsCardsProps {
@@ -14,6 +16,7 @@ interface ReviewsCardsProps {
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   fetchNextPage?: () => void;
+  platform: "google-play" | "app-store" | "yandex" | "2gis";
 }
 
 export const ReviewsCards = ({
@@ -22,11 +25,13 @@ export const ReviewsCards = ({
   hasNextPage,
   isFetchingNextPage,
   fetchNextPage,
+  platform,
 }: ReviewsCardsProps) => {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const { mutate: updateRepliedGooglePlay } = useUpdateRepliedGooglePlay();
   const { mutate: updateRepliedAppStore } = useUpdateRepliedAppStore();
-
+  const { mutate: updateRepliedYandex } = useUpdateRepliedYandex();
+  const { mutate: updateReplied2GIS } = useUpdateReplied2GIS();
   useEffect(() => {
     if (!fetchNextPage || !hasNextPage || isFetchingNextPage) return;
     const el = sentinelRef.current;
@@ -99,13 +104,23 @@ export const ReviewsCards = ({
                           className="border-gray-500"
                           onCheckedChange={() => {
                             // если есть поле thumbs_up то это Google Play, иначе App Store
-                            if ("thumbs_up" in review) {
+                            if (platform === "google-play") {
                               updateRepliedGooglePlay({
                                 id: review.id,
                                 is_replied: true,
                               });
-                            } else {
+                            } else if (platform === "app-store") {
                               updateRepliedAppStore({
+                                id: review.id,
+                                is_replied: true,
+                              });
+                            } else if (platform === "yandex") {
+                              updateRepliedYandex({
+                                id: review.id,
+                                is_replied: true,
+                              });
+                            } else if (platform === "2gis") {
+                              updateReplied2GIS({
                                 id: review.id,
                                 is_replied: true,
                               });
