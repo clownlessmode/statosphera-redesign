@@ -22,6 +22,7 @@ export const GooglePlayTab = () => {
     <div className="flex flex-col gap-4">
       <Filters value={filters} onChange={setFilters} />
       <ReviewsCards
+        platform="google-play"
         data={reviews}
         isLoading={googlePlay.isPending}
         hasNextPage={googlePlay.hasNextPage}

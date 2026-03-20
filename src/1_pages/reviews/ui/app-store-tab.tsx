@@ -22,6 +22,7 @@ export const AppStoreTab = () => {
     <div className="flex flex-col gap-4">
       <Filters value={filters} onChange={setFilters} />
       <ReviewsCards
+        platform="app-store"
         data={reviews}
         isLoading={appStore.isPending}
         hasNextPage={appStore.hasNextPage}
