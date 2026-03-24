@@ -164,7 +164,7 @@ export const Testtt = () => {
                         : "inline-flex w-fit rounded-md border border-border bg-muted/80 px-2.5 py-1.5 text-sm font-medium text-foreground"
                     }
                   >
-                    {row.status ? "Дверь открыта" : "Дверь не открыта"}
+                    {row.status ? "Карта считана" : "Карта не считана"}
                   </span>
 
                   <div className="rounded-md bg-background/80 px-3 py-2.5 ring-1 ring-border/60">
