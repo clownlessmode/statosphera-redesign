@@ -27,6 +27,8 @@ import {
   BellPlus,
   Shield,
   FilePen,
+  // File,
+  DoorOpen,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -187,6 +189,16 @@ const Sidebar = ({
           session?.role !== ROLES.ADMIN &&
           ![101, 191].includes(session?.idUser ?? -1),
       },
+      {
+        title: "Тест",
+        url: ROUTES_PATH.TESTTT,
+        icon: DoorOpen,
+      },
+      // {
+      //   title: "Проекты",
+      //   url: ROUTES_PATH.PROJECTS,
+      //   icon: File,
+      // },
       {
         title: "Интернет-магазин",
         url: ROUTES_PATH.IM,

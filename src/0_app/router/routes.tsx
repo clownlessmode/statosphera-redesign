@@ -40,6 +40,8 @@ import { Forest } from "@pages/forest";
 import { NightStores } from "@pages/night-stores";
 import { Review } from "@pages/reviews";
 import { Attendance } from "@pages/attendance";
+// import { Projects } from "@pages/projects";
+import { Testtt } from "@pages/testtt/api/Testtt";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -47,6 +49,7 @@ const Sidebar = React.lazy(() =>
 );
 
 export const ROUTES_PATH = {
+  TESTTT: "/testtt",
   IM_REPORT: "/im/report",
   MESSAGES: "/messages",
   TV: "/tv",
@@ -117,6 +120,7 @@ export const ROUTES_PATH = {
   FORBIDDEN: "/forbidden",
 
   NIGHT_STORES: "/night-stores",
+  PROJECTS: "/projects",
 } as const;
 
 export const ROUTES: RouteConfig[] = [
@@ -495,6 +499,20 @@ export const ROUTES: RouteConfig[] = [
     allowedRoles: [ROLES.ADMIN],
     allowedUsers: [191, 101],
   },
+  {
+    path: ROUTES_PATH.TESTTT,
+    variant: "private",
+    element: <Testtt />,
+    layout: Sidebar,
+    label: "Тест",
+  },
+  // {
+  //   path: ROUTES_PATH.PROJECTS,
+  //   variant: "private",
+  //   element: <Projects />,
+  //   layout: Sidebar,
+  //   label: "Проекты",
+  // },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",
