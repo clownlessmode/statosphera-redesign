@@ -1,5 +1,5 @@
 import { Filters, FiltersValues } from "./filters";
-import { useYandexReviews, useYandexStores } from "../api/controller";
+import { use2GISReviews, use2GISStores } from "../api/controller";
 import { ReviewsCards } from "./cards";
 import { useState } from "react";
 
@@ -8,17 +8,17 @@ const defaultFilters: FiltersValues = {
   is_replied: undefined,
 };
 
-export const YandexTab = () => {
+export const TwoGISTab = () => {
   const [filters, setFilters] = useState<FiltersValues>(defaultFilters);
-  const storesQuery = useYandexStores();
-  const yandex = useYandexReviews({
+  const storesQuery = use2GISStores();
+  const twoGIS = use2GISReviews({
     order: filters.order,
     rating: filters.rating,
     is_replied: filters.is_replied,
     idStore: filters.idStore,
   });
 
-  const reviews = yandex.data?.pages.flat() ?? [];
+  const reviews = twoGIS.data?.pages.flat() ?? [];
 
   return (
     <div className="flex flex-col gap-4">
@@ -33,12 +33,12 @@ export const YandexTab = () => {
         }
       />
       <ReviewsCards
-        platform="yandex"
+        platform="2gis"
         data={reviews}
-        isLoading={yandex.isPending}
-        hasNextPage={yandex.hasNextPage}
-        isFetchingNextPage={yandex.isFetchingNextPage}
-        fetchNextPage={yandex.fetchNextPage}
+        isLoading={twoGIS.isPending}
+        hasNextPage={twoGIS.hasNextPage}
+        isFetchingNextPage={twoGIS.isFetchingNextPage}
+        fetchNextPage={twoGIS.fetchNextPage}
       />
     </div>
   );

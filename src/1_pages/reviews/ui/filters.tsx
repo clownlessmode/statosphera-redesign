@@ -23,14 +23,16 @@ export interface FiltersValues {
   rating?: number;
   is_replied?: boolean;
   order: "asc" | "desc";
+  idStore?: number;
 }
 
 interface FiltersProps {
   value: FiltersValues;
   onChange: (value: FiltersValues) => void;
+  stores?: { id: number; name: string }[];
 }
 
-export const Filters = ({ value, onChange }: FiltersProps) => {
+export const Filters = ({ value, onChange, stores }: FiltersProps) => {
   const [hoverStar, setHoverStar] = useState<number | null>(null);
 
   const effectiveStars = hoverStar ?? value.rating;
@@ -116,6 +118,31 @@ export const Filters = ({ value, onChange }: FiltersProps) => {
           </SelectContent>
         </Select>
       </div>
+
+      {stores && stores.length > 0 && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">
+            Магазин
+          </span>
+          <Select
+            value={value.idStore ? String(value.idStore) : undefined}
+            onValueChange={(v) =>
+              onChange({ ...value, idStore: v ? Number(v) : undefined })
+            }
+          >
+            <SelectTrigger className="w-[250px] bg-muted/50 border-muted-foreground/20">
+              <SelectValue placeholder="Все магазины" />
+            </SelectTrigger>
+            <SelectContent>
+              {stores.map((store) => (
+                <SelectItem key={store.id} value={String(store.id)}>
+                  {store.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium text-muted-foreground">

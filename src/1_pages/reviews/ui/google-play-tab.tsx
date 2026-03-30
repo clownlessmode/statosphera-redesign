@@ -16,12 +16,18 @@ export const GooglePlayTab = () => {
     is_replied: filters.is_replied,
   });
 
+  const reviews = googlePlay.data?.pages.flat() ?? [];
+
   return (
     <div className="flex flex-col gap-4">
       <Filters value={filters} onChange={setFilters} />
       <ReviewsCards
-        data={googlePlay.data || []}
-        isLoading={googlePlay.isLoading}
+        platform="google-play"
+        data={reviews}
+        isLoading={googlePlay.isPending}
+        hasNextPage={googlePlay.hasNextPage}
+        isFetchingNextPage={googlePlay.isFetchingNextPage}
+        fetchNextPage={googlePlay.fetchNextPage}
       />
     </div>
   );
