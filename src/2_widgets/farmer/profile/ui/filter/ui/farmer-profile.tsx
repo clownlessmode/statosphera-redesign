@@ -250,48 +250,63 @@ export default function FarmerProfileCard({
                   <span className="text-xl font-semibold w-full text-accent max-md:text-lg">
                     Контакты
                   </span>
-                  <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
-                    <span className="text-sm text-muted-foreground">
-                      Главный бухгалтер
-                    </span>
-                    <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.chiefAccountant.name}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.responsiblePerson.email}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.responsiblePerson.phone}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
-                    <span className="text-sm text-muted-foreground">
-                      Ответственное лицо
-                    </span>
-                    <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.responsiblePerson.name}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.responsiblePerson.email}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.responsiblePerson.phone}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
-                    <span className="text-sm text-muted-foreground">
-                      {profile.mainContact.position}
-                    </span>
-                    <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.mainContact.name}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.mainContact.email}
-                    </span>
-                    <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                      {profile.mainContact.phone}
-                    </span>
-                  </div>
+                  {profile.chiefAccountant &&
+                    profile.chiefAccountant.name &&
+                    profile.chiefAccountant.email &&
+                    profile.chiefAccountant.phone && (
+                      <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
+                        <span className="text-sm text-muted-foreground">
+                          Главный бухгалтер
+                        </span>
+                        <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.chiefAccountant.name}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.chiefAccountant.email}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.chiefAccountant.phone}
+                        </span>
+                      </div>
+                    )}
+                  {profile.responsiblePerson &&
+                    profile.responsiblePerson.name &&
+                    profile.responsiblePerson.email &&
+                    profile.responsiblePerson.phone && (
+                      <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
+                        <span className="text-sm text-muted-foreground">
+                          Ответственное лицо
+                        </span>
+                        <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.responsiblePerson.name}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.responsiblePerson.email}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.responsiblePerson.phone}
+                        </span>
+                      </div>
+                    )}
+                  {profile.mainContact &&
+                    profile.mainContact.name &&
+                    profile.mainContact.email &&
+                    profile.mainContact.phone && (
+                      <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
+                        <span className="text-sm text-muted-foreground">
+                          {profile.mainContact.position}
+                        </span>
+                        <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.mainContact.name}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.mainContact.email}
+                        </span>
+                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                          {profile.mainContact.phone}
+                        </span>
+                      </div>
+                    )}
                   {profile.additionalContacts.length > 0 &&
                     profile.additionalContacts.map((contact, index) => (
                       <div
