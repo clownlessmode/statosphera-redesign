@@ -21,9 +21,28 @@ const stageColorMap: Record<string, string> = {
   Закрытие: "text-zinc-600 bg-zinc-500/10",
 };
 
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
 export const CardProject = ({ project }: { project: Projects }) => {
+  const isClosed = project.stage === "Закрытие";
+  const endMs = new Date(project.end_date).getTime();
+  const nowMs = Date.now();
+  const isOverdue = !isClosed && endMs < nowMs;
+  const isDueSoon = !isClosed && !isOverdue && endMs - nowMs < WEEK_MS;
+
+  const borderClass = isOverdue
+    ? "border-red-500"
+    : isDueSoon
+      ? "border-yellow-500"
+      : "";
+
   return (
-    <Card>
+    <Card
+      className={cn(
+        borderClass,
+        "cursor-pointer transition-all duration-300 hover:-translate-y-1 group",
+      )}
+    >
       <CardHeader>
         <CardTitle>
           <div className="grid grid-cols-[1fr_auto] items-center gap-2">
