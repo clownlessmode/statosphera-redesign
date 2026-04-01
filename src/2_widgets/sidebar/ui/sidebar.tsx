@@ -179,9 +179,9 @@ const Sidebar = ({
         icon: MessageCircle,
         disabled:
           session?.role !== ROLES.ADMIN &&
-          ![2739, 101, 2812, 2869, 2870, 124, 10, 192, 2871, 2872].includes(
-            session?.idUser ?? -1,
-          ),
+          ![
+            2739, 101, 2812, 2869, 2870, 124, 10, 192, 2871, 2872, 2873,
+          ].includes(session?.idUser ?? -1),
       },
       {
         title: "Посещаемость",
