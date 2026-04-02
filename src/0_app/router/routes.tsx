@@ -487,7 +487,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Review />,
     layout: Sidebar,
     label: "Отзывы",
-    allowedUsers: [2739, 101, 2812, 2869, 2870, 124, 10, 192, 2871, 2872, 2873],
+    allowedUsers: [
+      2739, 101, 2812, 2869, 2870, 124, 10, 192, 2871, 2872, 2873, 2874,
+    ],
     allowedRoles: [ROLES.ADMIN],
   },
   {
