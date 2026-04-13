@@ -41,6 +41,7 @@ const typeMap: Record<string, string> = {
   director: "Совет директоров",
   franchise: "Франчайзинг",
   groupCompany: "Группа компаний",
+  farmers: "Фермеры",
 };
 
 const getBadgeVariantFromType = (type: string) => {

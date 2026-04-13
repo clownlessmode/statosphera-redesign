@@ -32,6 +32,7 @@ const DigestPreview: FC<DigestPreviewProps> = ({
     director: "Совет директоров",
     franchise: "Франчайзинг",
     groupCompany: "Группа компаний",
+    farmers: "Фермеры",
   };
 
   let coverUrl = "/digest/cover.png";

@@ -9,6 +9,7 @@ import {
   GalleryHorizontalEnd,
   ShieldUser,
   Store,
+  Tractor,
 } from "lucide-react";
 
 import { Badge } from "@shared/ui/badge";
@@ -55,8 +56,8 @@ const Digests = () => {
     // Если нет сессии, показываем только director и groupCompany
     const allowedTypes =
       session && !isExternalUser
-        ? ["analytics", "director", "franchise", "groupCompany"]
-        : ["director", "groupCompany"];
+        ? ["analytics", "director", "franchise", "groupCompany", "farmers"]
+        : ["director", "groupCompany", "farmers"];
 
     const filtered = {
       analytics:
@@ -69,6 +70,7 @@ const Digests = () => {
           ? digests?.filter((digest) => digest.type === "franchise")
           : [],
       groupCompany: digests?.filter((digest) => digest.type === "groupCompany"),
+      farmers: digests?.filter((digest) => digest.type === "farmers"),
     };
 
     // Для вкладки "Все" показываем только разрешенные типы
@@ -184,6 +186,20 @@ const Digests = () => {
                     <Skeleton className="w-5 h-4" />
                   ) : (
                     <Badge>{filteredDigests.groupCompany?.length}</Badge>
+                  )}
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="farmers"
+                  className="w-full justify-between gap-4 max-md:py-2"
+                >
+                  <div className="flex flex-row gap-2 items-center">
+                    <Tractor className="size-4 text-muted-foreground" /> Фермеры
+                  </div>
+                  {isDigestsLoading ? (
+                    <Skeleton className="w-5 h-4" />
+                  ) : (
+                    <Badge>{filteredDigests.farmers?.length}</Badge>
                   )}
                 </TabsTrigger>
               </>
