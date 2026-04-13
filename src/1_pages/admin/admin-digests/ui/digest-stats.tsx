@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
 import { Badge } from "@shared/ui/badge";
-import { FileText, Eye, EyeOff, AlertTriangle } from "lucide-react";
+import { FileText, Eye, EyeOff, AlertTriangle, Tractor } from "lucide-react";
 import { useDigests } from "@entities/digests";
 import { cn } from "@shared/lib/utils";
 
@@ -59,6 +59,12 @@ export const DigestStats = () => {
       value: typeCounts.groupCompany || 0,
       icon: AlertTriangle,
       color: "text-purple-600",
+    },
+    {
+      title: "Фермеры",
+      value: typeCounts.farmers || 0,
+      icon: Tractor,
+      color: "text-pink-600",
     },
   ];
 
