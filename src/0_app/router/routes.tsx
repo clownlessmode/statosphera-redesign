@@ -40,7 +40,7 @@ import { Forest } from "@pages/forest";
 import { NightStores } from "@pages/night-stores";
 import { Review } from "@pages/reviews";
 import { Attendance } from "@pages/attendance";
-// import { Projects } from "@pages/projects";
+import { Projects } from "@pages/projects";
 import { Testtt } from "@pages/testtt/api/Testtt";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -487,7 +487,9 @@ export const ROUTES: RouteConfig[] = [
     element: <Review />,
     layout: Sidebar,
     label: "Отзывы",
-    allowedUsers: [2739, 101],
+    allowedUsers: [
+      2739, 101, 2812, 2869, 2870, 124, 10, 192, 2871, 2872, 2873, 2874,
+    ],
     allowedRoles: [ROLES.ADMIN],
   },
   {
@@ -506,13 +508,13 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Тест",
   },
-  // {
-  //   path: ROUTES_PATH.PROJECTS,
-  //   variant: "private",
-  //   element: <Projects />,
-  //   layout: Sidebar,
-  //   label: "Проекты",
-  // },
+  {
+    path: ROUTES_PATH.PROJECTS,
+    variant: "private",
+    element: <Projects />,
+    layout: Sidebar,
+    label: "Проекты",
+  },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",
