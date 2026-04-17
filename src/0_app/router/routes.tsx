@@ -423,7 +423,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.UNLOAD,
     variant: "private",
     element: <Unload />,
-    allowedRoles: [ROLES.ADMIN],
+    allowedRoles: [ROLES.ADMIN, ROLES.ANALITIK],
     allowedUsers: [107, 200, 2816],
     layout: Sidebar,
     label: "Выгрузка",
@@ -464,8 +464,11 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.FOREST,
     variant: "private",
     element: <Forest />,
-    allowedRoles: [ROLES.ADMIN, ROLES.FOREST, ROLES.OFFICE_USER, ROLES.PARTNER],
-    allowedUsers: [2758, 2564, 59, 156, 14, 19, 200, 154, 208, 138],
+    allowedRoles: [
+      ...Object.values(ROLES).filter(
+        (role) => role !== ROLES.MANAGER_STORE && role !== ROLES.FARMER,
+      ),
+    ],
     layout: Sidebar,
     label: "Проект Лес",
   },

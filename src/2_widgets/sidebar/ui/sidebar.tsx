@@ -98,11 +98,7 @@ const Sidebar = ({
                 {
                   title: "Проект Лес",
                   url: ROUTES_PATH.FOREST,
-                  disabled:
-                    session?.role !== ROLES.ADMIN &&
-                    ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
-                      session?.idUser ?? -1,
-                    ),
+                  disabled: session?.role === ROLES.MANAGER_STORE,
                 },
               ],
             },
@@ -131,14 +127,7 @@ const Sidebar = ({
               title: "Проект Лес",
               url: ROUTES_PATH.FOREST,
               icon: TreePine,
-              disabled:
-                session?.role !== ROLES.ADMIN &&
-                session?.role !== ROLES.FOREST &&
-                session?.role !== ROLES.OFFICE_USER &&
-                session?.role !== ROLES.PARTNER &&
-                ![2758, 2564, 2758, 2564, 59, 156, 14, 19, 200].includes(
-                  session?.idUser ?? -1,
-                ),
+              disabled: session?.role === ROLES.MANAGER_STORE,
             },
           ]),
 
