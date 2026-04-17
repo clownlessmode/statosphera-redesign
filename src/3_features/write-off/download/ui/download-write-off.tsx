@@ -34,7 +34,6 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
     setIsOpen(false);
   };
 
-  const isExcelDisabled = true; //rows > 500000;
   const isAllDisabled = rows > 7000000;
   const { session } = useSession();
 
@@ -63,13 +62,6 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
 
         <DialogFooter className="flex flex-row gap-2 w-full">
           <Button
-            disabled={isExcelDisabled || isAllDisabled}
-            className="w-full bg-green-500"
-            //onClick={() => handleDownloadWriteOff("excel")}
-          >
-            Excel
-          </Button>
-          <Button
             disabled={isAllDisabled}
             className="w-full bg-rose-500"
             onClick={() => handleDownloadWriteOff()}
@@ -78,18 +70,20 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
           </Button>
         </DialogFooter>
 
-        {(isExcelDisabled || isAllDisabled) && (
+        {isAllDisabled && (
           <CardContent className="bg-background p-0 m-0 border-none">
             <CardTitle className="mb-1 flex flex-row items-center gap-1">
-              {isAllDisabled
-                ? "Экспорт данных ограничен"
-                : "Ограничение на экспорт в Excel"}
-              <Sparkles className="size-4 text-primary" />
+              {isAllDisabled && (
+                <>
+                  Экспорт данных ограничен
+                  <Sparkles className="size-4 text-primary" />
+                </>
+              )}
             </CardTitle>
             <CardDescription>
-              {isAllDisabled ? (
+              {isAllDisabled && (
                 <>
-                  В текущей выборке содержится более 7 000 000 строк данных.
+                  В текущей выборке содержится более 1 000 000 строк данных.
                   Экспорт таких объёмов невозможен из-за ограничений системы.
                   <br />
                   <br />
@@ -104,24 +98,6 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
                       Обратиться в техническую поддержку за альтернативными
                       вариантами экспорта
                     </li>
-                  </ul>
-                </>
-              ) : (
-                <>
-                  В данный момент экспорт в Excel невозможен из-за технических
-                  {/* В текущей выборке содержится более 500 000 строк данных.
-                  Экспорт таких объёмов в Excel невозможен из-за технических
-                  ограничений формата. */}
-                  <br />
-                  <br />
-                  Для работы с большими данными рекомендуем:
-                  <ul className="list-disc pl-5 mt-2 space-y-1">
-                    <li>
-                      Применить дополнительные фильтры для уменьшения выборки
-                    </li>
-                    <li>Использовать группировку данных перед экспортом</li>
-                    <li>Экспортировать данные в формате CSV</li>
-                    <li>Разделить данные на несколько периодов</li>
                   </ul>
                 </>
               )}
