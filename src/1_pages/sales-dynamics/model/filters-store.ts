@@ -74,17 +74,17 @@ export interface SalesDynamicsFilters {
   role: boolean;
   lfl: boolean;
   values: string[];
-  groups: string;
+  groups: string[];
 }
 
 // расширенный state-закус для zustand
 export interface SalesDynamicsState extends SalesDynamicsFilters {
   updateFilters: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
   updateFilterDate: (dateStart: string, dateEnd: string) => void;
+  updateGroups: (groups: string[]) => void;
   updateRole: (role: boolean) => void;
   updateLfl: (lfl: boolean) => void;
   updateValues: (values: string[]) => void;
-  updateGroups: (groups: string) => void;
   resetAll: () => void;
   getApiPayload: () => SalesDynamicsFilters;
 }
@@ -119,10 +119,10 @@ const initialFilters: SalesDynamicsFilters = {
     channel: [],
     district: [],
   },
+  groups: ["store"],
   role: false,
   lfl: false,
   values: ["proceeds"],
-  groups: "store",
 };
 
 //
@@ -148,13 +148,13 @@ export const useSalesDynamicsFiltersStore = create<SalesDynamicsState>(
     updateFilterDate: (ds, de) =>
       set({ filterDate: { dateStart: ds, dateEnd: de } }),
 
+    updateGroups: (groups) => set({ groups }),
+
     updateRole: (role) => set({ role }),
 
     updateLfl: (lfl) => set({ lfl }),
 
     updateValues: (values) => set({ values }),
-
-    updateGroups: (groups) => set({ groups }),
 
     resetAll: () => set(initialFilters),
 
