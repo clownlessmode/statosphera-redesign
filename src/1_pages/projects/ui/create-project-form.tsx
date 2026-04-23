@@ -10,7 +10,7 @@ import {
 import { useForm, type DefaultValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useCreateProject } from "../api/controller";
+import { useCreateProject, useGetUsers } from "../api/controller";
 import { Input } from "@shared/ui/input";
 import { Button } from "@shared/ui/button";
 import { DatePicker } from "@shared/ui/date-picker";
@@ -30,7 +30,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/ui/select";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { MultiSelect } from "@shared/ui/multiselect";
+import { formatUserLastNameInitials } from "./project-page/lib/format-user-display-name";
 
 const createProjectSchema = z
   .object({
@@ -43,6 +45,7 @@ const createProjectSchema = z
     start_date: z.date({ message: "Выберите дату начала" }),
     end_date: z.date({ message: "Выберите дату окончания" }),
     priority: z.string().min(1, "Приоритет обязательно"),
+    access_users: z.array(z.number()).optional(),
   })
   .refine((data) => data.end_date >= data.start_date, {
     message: "Дата окончания не раньше даты начала",
@@ -67,6 +70,7 @@ const priorities = ["Низкий", "Средний", "Высокий"];
 export const CreateProjectForm = () => {
   const { mutate: createProject, isPending } = useCreateProject();
   const [isOpen, setIsOpen] = useState(false);
+  const [optionsRefresh, setOptionsRefresh] = useState(0);
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
@@ -77,8 +81,20 @@ export const CreateProjectForm = () => {
       pm_name: "",
       stage: "",
       priority: "",
+      access_users: [],
     } satisfies DefaultValues<CreateProjectFormData>,
   });
+
+  const { data: users, isLoading } = useGetUsers();
+
+  const userOptions = useMemo(
+    () =>
+      users?.map((user) => ({
+        label: formatUserLastNameInitials(user),
+        value: String(user.id_user),
+      })) ?? [],
+    [users, optionsRefresh],
+  );
 
   const onSubmit = (data: CreateProjectFormData) => {
     createProject(
@@ -92,6 +108,7 @@ export const CreateProjectForm = () => {
         start_date: data.start_date.toISOString(),
         end_date: data.end_date.toISOString(),
         priority: data.priority,
+        access_users: data.access_users ?? [],
       },
       {
         onSuccess: () => {
@@ -293,6 +310,36 @@ export const CreateProjectForm = () => {
                             ))}
                           </SelectContent>
                         </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="access_users"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Доступ</FormLabel>
+                      <FormControl>
+                        <MultiSelect
+                          placeholder="Выберите кому доступен проект"
+                          options={userOptions}
+                          isLoading={isLoading}
+                          value={field.value?.map(String) || []}
+                          onValueChange={(values) => {
+                            field.onChange(values.map(Number));
+                          }}
+                          onOpenChange={(popoverOpen) => {
+                            if (popoverOpen) {
+                              requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                  setOptionsRefresh((n) => n + 1);
+                                });
+                              });
+                            }
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

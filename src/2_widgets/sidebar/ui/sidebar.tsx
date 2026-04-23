@@ -200,6 +200,9 @@ const Sidebar = ({
         title: "Проекты",
         url: ROUTES_PATH.PROJECTS,
         icon: File,
+        disabled:
+          session?.role !== ROLES.ADMIN &&
+          ![2875, 2808, 2879].includes(session?.idUser ?? -1),
       },
       {
         title: "Интернет-магазин",

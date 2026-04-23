@@ -41,6 +41,7 @@ import { NightStores } from "@pages/night-stores";
 import { Review } from "@pages/reviews";
 import { Attendance } from "@pages/attendance";
 import { Projects } from "@pages/projects";
+import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
 import { Testtt } from "@pages/testtt/api/Testtt";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -121,6 +122,7 @@ export const ROUTES_PATH = {
 
   NIGHT_STORES: "/night-stores",
   PROJECTS: "/projects",
+  PROJECT: "/projects/:id",
 } as const;
 
 export const ROUTES: RouteConfig[] = [
@@ -509,11 +511,22 @@ export const ROUTES: RouteConfig[] = [
     label: "Тест",
   },
   {
+    path: ROUTES_PATH.PROJECT,
+    variant: "private",
+    element: <ProjectPage />,
+    layout: Sidebar,
+    label: "Проект",
+    allowedUsers: [2875, 2808, 2879],
+    allowedRoles: [ROLES.ADMIN],
+  },
+  {
     path: ROUTES_PATH.PROJECTS,
     variant: "private",
     element: <Projects />,
     layout: Sidebar,
     label: "Проекты",
+    allowedUsers: [2875, 2808, 2879],
+    allowedRoles: [ROLES.ADMIN],
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
