@@ -1,10 +1,24 @@
 import { cn } from "@shared/lib/utils";
+import { Button } from "@shared/ui/button";
 import { Upload } from "lucide-react";
 import { useCallback, useId, useRef, useState } from "react";
 
 function matchesAccept(file: File, accept: string): boolean {
-  const tokens = accept.split(",").map((s) => s.trim());
+  const tokens = accept
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (tokens.length === 0) return true;
+
   for (const token of tokens) {
+    if (token === "*/*" || token === "*") {
+      return true;
+    }
+    if (token.endsWith("/*")) {
+      const prefix = token.slice(0, -1);
+      if (file.type.startsWith(prefix)) return true;
+      continue;
+    }
     if (token.startsWith(".")) {
       if (file.name.toLowerCase().endsWith(token.toLowerCase())) {
         return true;
@@ -150,6 +164,17 @@ export const InputUploadFile = ({
           </p>
         ) : null}
       </label>
+      <div className="flex justify-center border-t border-border px-2 py-2">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          className="shrink-0"
+          onClick={() => inputRef.current?.click()}
+        >
+          Выбрать файл
+        </Button>
+      </div>
     </div>
   );
 };
