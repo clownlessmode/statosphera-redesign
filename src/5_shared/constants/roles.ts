@@ -12,4 +12,6 @@ export enum ROLES {
   FARMER = "farmer",
   FARMER_MANAGER = "farmer_manager",
   FOREST = "forest",
+  PM = "pm",
+  PM_ADMIN = "pm_admin",
 }

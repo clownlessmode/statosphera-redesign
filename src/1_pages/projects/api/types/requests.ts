@@ -55,9 +55,52 @@ export type CreateProjectRequest = {
   start_date: string;
   end_date: string;
   priority: string;
+  access_users?: number[];
 };
 
 export type GraphRequest = {
   stage?: StageProject[];
   priority?: PriorityProject[];
 };
+
+export type CreateTaskGroupRequest = {
+  name: string;
+  description: string;
+  access_users: number[];
+};
+
+export type CreateTaskRequest = {
+  name: string;
+  description: string;
+  access_users: number[];
+  assignees: number[];
+  status: string;
+  due_date: string;
+};
+
+export type CreateDocumentGroupRequest = {
+  name: string;
+  description: string;
+  access_users: number[];
+};
+
+export type UpdateDocumentGroupRequest = {
+  name?: string;
+  description?: string;
+  access_users?: number[];
+};
+
+export type UpdateDocumentRequest = {
+  name?: string;
+  description?: string;
+  access_users?: number[];
+};
+
+export type CreateDocumentRequest = {
+  name: string;
+  description: string;
+  access_users: number[];
+  file: File;
+};
+
+export type UpdateProjectRequest = CreateProjectRequest;

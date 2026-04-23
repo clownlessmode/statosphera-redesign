@@ -23,9 +23,12 @@ import {
   presetIdFromSort,
   sortFromPresetId,
 } from "./project-sort-presets";
+import { useSession } from "@entities/session";
 
 export const Projects = () => {
   const [filters, setFilters] = useState<ProjectsFilters>({});
+  const { session } = useSession();
+  const idUser = session?.idUser;
   const [showGraph, setShowGraph] = useState(false);
   const { data, isPending, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useGetProjects(filters);
@@ -63,9 +66,9 @@ export const Projects = () => {
         <div className="flex flex-wrap justify-between items-center gap-3 mb-4 shrink-0">
           <FiltersModal value={filters} onApply={setFilters} />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-light text-muted-foreground whitespace-nowrap">
+            {/* <span className="text-sm font-light text-muted-foreground whitespace-nowrap">
               Порядок:
-            </span>
+            </span> */}
             <Select
               value={presetIdFromSort(filters.sort)}
               onValueChange={(id) =>
@@ -118,8 +121,13 @@ export const Projects = () => {
             </Button>
           </div>
           <div className="flex flex-row gap-2">
-            <CreateProjectForm />
-            <ModalLoadExcel />
+            {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+              <CreateProjectForm />
+            )}
+            {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+              <ModalLoadExcel />
+            )}
+
             <Button variant="outline" onClick={() => setShowGraph(!showGraph)}>
               <span>
                 {showGraph
