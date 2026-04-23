@@ -6985,6 +6985,7 @@ export type ColumnPickerProps = {
 };
 
 export enum ColumnsKeyGroupings {
+  STORE = "store",
   FORMAT_STORE = "formatStore",
   DISCOUNT_TYPE = "discountType",
   TYPE = "type",
@@ -7036,7 +7037,7 @@ export enum ColumnsKeyGroupings {
 
 // Столбцы группировки
 export const groupingColumns: ColumnGroup[] = [
-  { label: "Магазин", value: "store" },
+  { label: "Магазин", value: ColumnsKeyGroupings.STORE },
   { label: "Кассир", value: ColumnsKeyGroupings.TAB_NUMBER },
   { label: "Город", value: ColumnsKeyGroupings.CITY },
   { label: "Регион", value: ColumnsKeyGroupings.REGION },
