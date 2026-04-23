@@ -31,6 +31,7 @@ const DigestCard: FC<Props> = ({
     director: "Совет директоров",
     franchising: "Франчайзинг",
     groupCompany: "Группа компаний",
+    farmers: "Фермеры",
   };
   return (
     <Link to={`${ROUTES_PATH.DIGESTS}/${id}`}>

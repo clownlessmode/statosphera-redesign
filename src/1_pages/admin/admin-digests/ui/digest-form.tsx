@@ -43,6 +43,7 @@ const DIGEST_TYPES = [
   { label: "Совет директоров", value: "director" },
   { label: "Франчайзинг", value: "franchise" },
   { label: "Группа компаний", value: "groupCompany" },
+  { label: "Фермеры", value: "farmers" },
 ];
 
 export const DigestForm = ({ onSuccess }: DigestFormProps) => {
