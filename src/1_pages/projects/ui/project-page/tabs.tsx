@@ -5,7 +5,7 @@ import { DocumentsGroupTab } from "./documents-group";
 
 export function TabsProject({ project }: { project: ProjectDetail }) {
   return (
-    <Tabs defaultValue="Tasks" className="">
+    <Tabs defaultValue="Documents" className="">
       <TabsList className="flex items-right w-full mb-4">
         {/* <TabsTrigger value="Tasks">Группа задач ({project.task_groups_count ?? 0})</TabsTrigger> */}
         <TabsTrigger value="Documents">

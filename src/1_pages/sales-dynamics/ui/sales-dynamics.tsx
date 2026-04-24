@@ -3,6 +3,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { Lfl } from "@features/sales-dynamics/lfl";
 import { ShopsFilter } from "@features/sales-dynamics/shops-filter";
 import { DaysFilter } from "@features/sales-dynamics/days-filter";
+import { GroupingFilter } from "@features/sales-dynamics/grouping";
 import { GraphDate } from "@features/sales-dynamics/graph-date";
 import { DownloadSalesDynamics } from "@features/sales-dynamics/download";
 import UniversalTable from "@pages/report/ui/table";
@@ -46,9 +47,11 @@ const SalesDynamics: FC = () => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const { value: dateGranularity } = useDateFilterStore((state) => state);
   const { lfl } = useSalesDynamicsFiltersStore((state) => state);
+  const { groups } = useSalesDynamicsFiltersStore((state) => state);
   const { filterDate } = useSalesDynamicsFiltersStore((state) => state);
   const { values } = useSalesDynamicsFiltersStore((state) => state);
   const { filters } = useSalesDynamicsFiltersStore((state) => state);
+
   const prepareLine = usePreparedStackedLine();
   const {
     getTable,
@@ -78,7 +81,7 @@ const SalesDynamics: FC = () => {
   }, [isLoading, defaultValues, updateValues]);
   useEffect(() => {
     setSearchTerm("");
-  }, [filterDate, filters, values, lfl]);
+  }, [filterDate, filters, values, lfl, groups]);
   const filteredTable = useMemo(() => {
     if (!table) return [];
     const term = searchTerm.trim().toLowerCase();
@@ -98,7 +101,16 @@ const SalesDynamics: FC = () => {
       }
       return true;
     });
-  }, [table, searchTerm, defaultValues, filters, filterDate, lfl, values]);
+  }, [
+    table,
+    searchTerm,
+    defaultValues,
+    filters,
+    filterDate,
+    lfl,
+    values,
+    groups,
+  ]);
 
   const { first, second } = useSalesSelectStore((state) => state);
 
@@ -115,7 +127,7 @@ const SalesDynamics: FC = () => {
     };
 
     fetchTotal();
-  }, [isLoading, lfl, getApiPayload, filterDate, values, filters]);
+  }, [isLoading, lfl, getApiPayload, filterDate, values, filters, groups]);
   // 2. Эффект только для Table
   useEffect(() => {
     if (isLoading) return;
@@ -130,7 +142,7 @@ const SalesDynamics: FC = () => {
     };
 
     fetchTable();
-  }, [isLoading, lfl, getApiPayload, filterDate, values, filters]);
+  }, [isLoading, lfl, getApiPayload, filterDate, values, filters, groups]);
 
   // 3. Эффект для первого графика
   useEffect(() => {
@@ -156,6 +168,7 @@ const SalesDynamics: FC = () => {
     filters,
     first.value,
     dateGranularity,
+    groups,
   ]);
 
   // 4. Эффект для второго графика
@@ -182,6 +195,7 @@ const SalesDynamics: FC = () => {
     filters,
     second.value,
     dateGranularity,
+    groups,
   ]);
 
   const handleSelectionChange = async (selectedRows: any) => {
@@ -251,6 +265,7 @@ const SalesDynamics: FC = () => {
             left: !isMobile && (
               <div className={cn("flex flex-row gap-2")}>
                 <DaysFilter data-testid="days-filter" />
+                <GroupingFilter data-testid="grouping-filter" />
                 <GraphDate data-testid="graph-date-filter" />
                 <ShopsFilter data-testid="shops-filter" />
                 <Lfl data-testid="lfl-filter" />
@@ -271,8 +286,9 @@ const SalesDynamics: FC = () => {
                 {isMobile && (
                   <div className="flex flex-row gap-2 justify-between">
                     <DaysFilter data-testid="days-filter-mobile" />
-                    <GraphDate data-testid="graph-date-filter-mobile" />
+                    <GroupingFilter data-testid="grouping-filter-mobile" />
                     <ShopsFilter data-testid="shops-filter-mobile" />
+                    <GraphDate data-testid="graph-date-filter-mobile" />
                     <Lfl data-testid="lfl-filter-mobile" />
                     <DownloadSalesDynamics data-testid="download-button-mobile" />
                   </div>
