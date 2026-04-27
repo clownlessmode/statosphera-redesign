@@ -5,6 +5,9 @@ export enum COLUMN_KEY {
   //Коэффициент оборачиваемости ITR
   ITR_GROUP = "itrGroup",
   ITR = "itr",
+  ITR_LW = "itrLW",
+  ITR_WoW = "itrWoW",
+  ITR_WoW_PERCENT = "itrWoWPercent",
   ITR_LM = "itrLM",
   ITR_MOM = "itrMoM",
   ITR_MOM_PERCENT = "itrMoMPercent",
@@ -93,6 +96,9 @@ export enum COLUMN_KEY {
   WRITEOFF_COUNT_MOM_PERCENT = "writeOffCountMoMPercent",
   // ----------------- Наценка без учета скидки -----------------
   GROUP_MARKUP_DISCOUNT = "groupMarkupDiscount",
+  MARKUP_DISCOUNT_LW = "markupDiscountLW",
+  MARKUP_DISCOUNT_WoW = "markupDiscountWoW",
+  MARKUP_DISCOUNT_WoW_PERCENT = "markupDiscountWoWPercent",
   MARKUP_DISCOUNT = "markupDiscount",
   MARKUP_DISCOUNT_LM = "markupDiscountLM",
   MARKUP_DISCOUNT_MOM = "markupDiscountMoM",
@@ -104,6 +110,8 @@ export enum COLUMN_KEY {
   // ----------------- Наценка в процентах без скидки -----------------
   GROUP_MARKUP_PERCENT_DISCOUNT = "groupMarkupDiscountPercent",
   MARKUP_DISCOUNT_PERCENT = "markupDiscountPercent",
+  MARKUP_DISCOUNT_PERCENT_LW = "markupDiscountPercentLW",
+  MARKUP_DISCOUNT_PERCENT_WoW = "markupDiscountPercentWoW",
   MARKUP_DISCOUNT_PERCENT_LM = "markupDiscountPercentLM",
   MARKUP_DISCOUNT_PERCENT_MOM = "markupDiscountPercentMoM",
   MARKUP_DISCOUNT_PERCENT_MOM_PERCENT = "markupDiscountPercentMoMPercent",
@@ -549,6 +557,9 @@ export enum COLUMN_KEY {
   // -----------------------------------------------
   GROUP_DISCOUNT = "groupDiscount",
   DISCOUNT = "discount",
+  DISCOUNT_LW = "discountLW",
+  DISCOUNT_WoW = "discountWoW",
+  DISCOUNT_WoW_PERCENT = "discountWoWPercent",
   DISCOUNT_LM = "discountLM",
   DISCOUNT_MOM = "discountMoM",
   DISCOUNT_MOM_PERCENT = "discountMoMPercent",
@@ -577,6 +588,9 @@ export enum COLUMN_KEY {
   CUMULATIVE_DISCOUNT_PERCENT_LAST_YEAR = "cumulativeDiscountPercentLastYear",
   GROUP_COST_PRICE = "groupCostPrice",
   COST_PRICE = "costPrice",
+  COST_PRICE_LW = "costPriceLW",
+  COST_PRICE_WoW = "costPriceWoW",
+  COST_PRICE_WoW_PERCENT = "costPriceWoWPercent",
   COST_PRICE_LM = "costPriceLM",
   COST_PRICE_MOM = "costPriceMoM",
   COST_PRICE_MOM_PERCENT = "costPriceMoMPercent",
@@ -591,6 +605,9 @@ export enum COLUMN_KEY {
   GROUP_PROFIT = "groupProfit",
   GROUP_PROFIT_PERCENT = "groupProfitPercent",
   PROFIT = "profit",
+  PROFIT_LW = "profitLW",
+  PROFIT_WoW = "profitWoW",
+  PROFIT_WoW_PERCENT = "profitWoWPercent",
   PROFIT_LM = "profitLM",
   PROFIT_MOM = "profitMoM",
   PROFIT_MOM_PERCENT = "profitMoMPercent",
@@ -642,6 +659,8 @@ export enum COLUMN_KEY {
   CUMULATIVE_WRITE_OFF_PERCENT_LAST_YEAR = "cumulativeWriteOffPercentLastYear",
   CUMULATIVE_WRITE_OFF_PERCENT_YOY = "cumulativeWriteOffPercentYoY",
   MARGIN_PERCENT = "marginPercent",
+  MARGIN_PERCENT_LW = "marginPercentLW",
+  MARGIN_PERCENT_WoW = "marginPercentWoW",
   MARGIN_PERCENT_LM = "marginPercentLM",
   MARGIN_PERCENT_MOM_PERCENT = "marginPercentMoMPercent",
   MARGIN_PERCENT_LY = "marginPercentLY",
@@ -650,6 +669,8 @@ export enum COLUMN_KEY {
   CUMULATIVE_MARGIN_PERCENT_LAST_YEAR = "cumulativeMarginPercentLastYear",
   CUMULATIVE_MARGIN_PERCENT_YOY = "cumulativeMarginPercentYoY",
   MARKUP_PERCENT = "markupPercent",
+  MARKUP_PERCENT_LW = "markupPercentLW",
+  MARKUP_PERCENT_WoW = "markupPercentWoW",
   MARKUP_PERCENT_LM = "markupPercentLM",
   MARKUP_PERCENT_MOM_PERCENT = "markupPercentMoMPercent",
   MARKUP_PERCENT_LY = "markupPercentLY",
@@ -776,6 +797,148 @@ export enum COLUMN_KEY {
 
   // ----------------- Доставка ИМ -----------------
   DELIVERY_IM_COUNT = "deliveryImCount",
+  WRITEOFF_COUNT_LW = "writeOffCountLW",
+  WRITEOFF_COUNT_WoW = "writeOffCountWoW",
+  WRITEOFF_COUNT_WoW_PERCENT = "writeOffCountWoWPercent",
+  WRITEOFF_LW = "writeOffLW",
+  WRITEOFF_WoW = "writeOffWoW",
+  WRITEOFF_WoW_PERCENT = "writeOffWoWPercent",
+  WRITEOFF_WEIGHT_LW = "writeOffWeightLW",
+  WRITEOFF_WEIGHT_WoW = "writeOffWeightWoW",
+  WRITEOFF_WEIGHT_WoW_PERCENT = "writeOffWeightWoWPercent",
+  WRITEOFF_PERCENT_LW = "writeOffPercentLW",
+  WRITEOFF_PERCENT_WoW = "writeOffPercentWoW",
+  WRITEOFF_PERCENT_WoW_PERCENT = "writeOffPercentWoWPercent",
+  DISCOUNT_PERCENT_LW = "discountPercentLW",
+  DISCOUNT_PERCENT_WoW = "discountPercentWoW",
+  PROCEEDS_LW = "proceedsLW",
+  PROCEEDS_WoW = "proceedsWoW",
+  PROCEEDS_WoW_PERCENT = "proceedsWoWPercent",
+  COUNT_SALES_LW = "countSalesLW",
+  COUNT_SALES_WoW = "countSalesWoW",
+  COUNT_SALES_WoW_PERCENT = "countSalesWoWPercent",
+  BONUS_ACCRUAL_LW = "bonusAccrualLW",
+  BONUS_ACCRUAL_WoW = "bonusAccrualWoW",
+  BONUS_ACCRUAL_WoW_PERCENT = "bonusAccrualWoWPercent",
+  BONUS_WRITEOFF_LW = "bonusWriteOffLW",
+  BONUS_WRITEOFF_WoW = "bonusWriteOffWoW",
+  BONUS_WRITEOFF_WoW_PERCENT = "bonusWriteOffWoWPercent",
+  BONUS_WRITEOFF_PERCENT_LW = "bonusWriteOffPercentLW",
+  BONUS_WRITEOFF_PERCENT_WoW = "bonusWriteOffPercentWoW",
+  BONUS_WRITEOFF_PERCENT_WoW_PERCENT = "bonusWriteOffPercentWoWPercent",
+  BONUS_ACCRUAL_PERCENT_LW = "bonusAccrualPercentLW",
+  BONUS_ACCRUAL_PERCENT_WoW = "bonusAccrualPercentWoW",
+  BONUS_ACCRUAL_PERCENT_WoW_PERCENT = "bonusAccrualPercentWoWPercent",
+  MARGIN_DISCOUNT_PERCENT_LW = "marginDiscountPercentLW",
+  MARGIN_DISCOUNT_PERCENT_WoW = "marginDiscountPercentWoW",
+  MARKUP_LW = "markupLW",
+  MARKUP_WoW = "markupWoW",
+  MARKUP_WoW_PERCENT = "markupWoWPercent",
+  WEIGHT_LW = "weightLW",
+  WEIGHT_WoW = "weightWoW",
+  WEIGHT_WoW_PERCENT = "weightWoWPercent",
+  AVG_CHECK_LW = "avgCheckLW",
+  AVG_CHECK_WoW = "avgCheckWoW",
+  AVG_CHECK_WoW_PERCENT = "avgCheckWoWPercent",
+  ONLINE_STORE_SHARE_LW = "onlineStoreShareLW",
+  ONLINE_STORE_SHARE_WoW = "onlineStoreShareWoW",
+  ONLINE_STORE_SHARE_WoW_PERCENT = "onlineStoreShareWoWPercent",
+  TURNOVER_GOODS_LW = "turnoverGoodsLW",
+  TURNOVER_GOODS_WoW = "turnoverGoodsWoW",
+  TURNOVER_GOODS_WoW_PERCENT = "turnoverGoodsWoWPercent",
+  OPENING_BALANCE_LW = "openingBalanceLW",
+  OPENING_BALANCE_WoW = "openingBalanceWoW",
+  OPENING_BALANCE_WoW_PERCENT = "openingBalanceWoWPercent",
+  FINAL_BALANCE_LW = "finalBalanceLW",
+  FINAL_BALANCE_WoW = "finalBalanceWoW",
+  FINAL_BALANCE_WoW_PERCENT = "finalBalanceWoWPercent",
+  FARMER_PRICE_LW = "farmerPriceLW",
+  FARMER_PRICE_WoW = "farmerPriceWoW",
+  FARMER_PRICE_WoW_PERCENT = "farmerPriceWoWPercent",
+  PROCEEDS_DAY_LW = "proceedsDayLW",
+  PROCEEDS_DAY_WoW = "proceedsDayWoW",
+  PROCEEDS_DAY_WoW_PERCENT = "proceedsDayWoWPercent",
+  PROCEEDS_NIGHT_LW = "proceedsNightLW",
+  PROCEEDS_NIGHT_WoW = "proceedsNightWoW",
+  PROCEEDS_NIGHT_WoW_PERCENT = "proceedsNightWoWPercent",
+  PERCENTAGE_PROCEEDS_NIGHT_LW = "percentageProceedsNightLW",
+  PERCENTAGE_PROCEEDS_NIGHT_WoW = "percentageProceedsNightWoW",
+  PERCENTAGE_PROCEEDS_NIGHT_WoW_PERCENT = "percentageProceedsNightWoWPercent",
+  PROFIT_DAY_LW = "profitDayLW",
+  PROFIT_DAY_WoW = "profitDayWoW",
+  PROFIT_DAY_WoW_PERCENT = "profitDayWoWPercent",
+  PROFIT_NIGHT_LW = "profitNightLW",
+  PROFIT_NIGHT_WoW = "profitNightWoW",
+  PROFIT_NIGHT_WoW_PERCENT = "profitNightWoWPercent",
+  PERCENTAGE_PROFIT_NIGHT_LW = "percentageProfitNightLW",
+  PERCENTAGE_PROFIT_NIGHT_WoW = "percentageProfitNightWoW",
+  PERCENTAGE_PROFIT_NIGHT_WoW_PERCENT = "percentageProfitNightWoWPercent",
+  MARKUP_DISCOUNT_DAY_LW = "markupDiscountDayLW",
+  MARKUP_DISCOUNT_DAY_WoW = "markupDiscountDayWoW",
+  MARKUP_DISCOUNT_DAY_WoW_PERCENT = "markupDiscountDayWoWPercent",
+  MARKUP_DISCOUNT_NIGHT_LW = "markupDiscountNightLW",
+  MARKUP_DISCOUNT_NIGHT_WoW = "markupDiscountNightWoW",
+  MARKUP_DISCOUNT_NIGHT_WoW_PERCENT = "markupDiscountNightWoWPercent",
+  PERCENTAGE_MARKUP_DISCOUNT_NIGHT_LW = "percentageMarkupDiscountNightLW",
+  PERCENTAGE_MARKUP_DISCOUNT_NIGHT_WoW = "percentageMarkupDiscountNightWoW",
+  PERCENTAGE_MARKUP_DISCOUNT_NIGHT_WoW_PERCENT = "percentageMarkupDiscountNightWoWPercent",
+  COST_PRICE_DAY_LW = "costPriceDayLW",
+  COST_PRICE_DAY_WoW = "costPriceDayWoW",
+  COST_PRICE_DAY_WoW_PERCENT = "costPriceDayWoWPercent",
+  COST_PRICE_NIGHT_LW = "costPriceNightLW",
+  COST_PRICE_NIGHT_WoW = "costPriceNightWoW",
+  COST_PRICE_NIGHT_WoW_PERCENT = "costPriceNightWoWPercent",
+  DISCOUNT_DAY_LW = "discountDayLW",
+  DISCOUNT_DAY_WoW = "discountDayWoW",
+  DISCOUNT_DAY_WoW_PERCENT = "discountDayWoWPercent",
+  DISCOUNT_PERCENT_DAY_LW = "discountPercentDayLW",
+  DISCOUNT_PERCENT_DAY_WoW = "discountPercentDayWoW",
+  DISCOUNT_PERCENT_DAY_WoW_PERCENT = "discountPercentDayWoWPercent",
+  DISCOUNT_NIGHT_LW = "discountNightLW",
+  DISCOUNT_NIGHT_WoW = "discountNightWoW",
+  DISCOUNT_NIGHT_WoW_PERCENT = "discountNightWoWPercent",
+  DISCOUNT_PERCENT_NIGHT_LW = "discountPercentNightLW",
+  DISCOUNT_PERCENT_NIGHT_WoW = "discountPercentNightWoW",
+  DISCOUNT_PERCENT_NIGHT_WoW_PERCENT = "discountPercentNightWoWPercent",
+  COUNT_SALES_DAY_LW = "countSalesDayLW",
+  COUNT_SALES_DAY_WoW = "countSalesDayWoW",
+  COUNT_SALES_DAY_WoW_PERCENT = "countSalesDayWoWPercent",
+  COUNT_SALES_NIGHT_LW = "countSalesNightLW",
+  COUNT_SALES_NIGHT_WoW = "countSalesNightWoW",
+  COUNT_SALES_NIGHT_WoW_PERCENT = "countSalesNightWoWPercent",
+  AVG_CHECK_DAY_LW = "avgCheckDayLW",
+  AVG_CHECK_DAY_WoW = "avgCheckDayWoW",
+  AVG_CHECK_DAY_WoW_PERCENT = "avgCheckDayWoWPercent",
+  AVG_CHECK_NIGHT_LW = "avgCheckNightLW",
+  AVG_CHECK_NIGHT_WoW = "avgCheckNightWoW",
+  AVG_CHECK_NIGHT_WoW_PERCENT = "avgCheckNightWoWPercent",
+  UNIQUE_CHECK_DAY_LW = "uniqueCheckDayLW",
+  UNIQUE_CHECK_NIGHT_LW = "uniqueCheckNightLW",
+  UNIQUE_CARD_NUMBER_DAY_LW = "uniqueCardNumberDayLW",
+  UNIQUE_CARD_NUMBER_NIGHT_LW = "uniqueCardNumberNightLW",
+  UNIQUE_CITY_NIGHT_LW = "uniqueCityNightStoreLW",
+  UNIQUE_CHANNEL_NIGHT_LW = "uniqueChannelNightStoreLW",
+  UNIQUE_STORE_NIGHT_LW = "uniqueStoreNightStoreLW",
+  UNIQUE_REGION_NIGHT_LW = "uniqueRegionNightStoreLW",
+  MARKUP_PERCENT_DAY_LW = "markupPercentDayLW",
+  MARKUP_PERCENT_DAY_WoW = "markupPercentDayWoW",
+  MARKUP_PERCENT_NIGHT_LW = "markupPercentNightLW",
+  MARKUP_PERCENT_NIGHT_WoW = "markupPercentNightWoW",
+  MARKUP_DISCOUNT_PERCENT_DAY_LW = "markupDiscountPercentDayLW",
+  MARKUP_DISCOUNT_PERCENT_DAY_WoW = "markupDiscountPercentDayWoW",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_LW = "markupDiscountPercentNightLW",
+  MARKUP_DISCOUNT_PERCENT_NIGHT_WoW = "markupDiscountPercentNightWoW",
+  PROFIT_DISCOUNT_DAY_LW = "profitDiscountDayLW",
+  PROFIT_DISCOUNT_DAY_WoW = "profitDiscountDayWoW",
+  PROFIT_DISCOUNT_DAY_WoW_PERCENT = "profitDiscountDayWoWPercent",
+  ITR_WOW = "itrWoW",
+  ITR_WOW_PERCENT = "itrWoWPercent",
+  OPENING_BALANCE_WOW = "openingBalanceWoW",
+  OPENING_BALANCE_WOW_PERCENT = "openingBalanceWoWPercent",
+  FINAL_BALANCE_WOW = "finalBalanceWoW",
+  FINAL_BALANCE_WOW_PERCENT = "finalBalanceWoWPercent",
+  WEIGHT_WOW = "weightWoW",
+  WEIGHT_WOW_PERCENT = "weightWoWPercent",
 }
 
 export const formatNumber = (
@@ -827,6 +990,30 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_LW,
+    headerName: "Бонусы начисленние LW",
+    headerTooltip: "Бонусы начисленние LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_WoW,
+    headerName: "Бонусы начисленние WoW",
+    headerTooltip: "Бонусы начисленние WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_WoW_PERCENT,
+    headerName: "Бонусы начисленние WoW%",
+    headerTooltip: "Бонусы начисленние WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.BONUS_ACCRUAL_LM,
@@ -887,6 +1074,30 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
+    field: COLUMN_KEY.BONUS_WRITEOFF_LW,
+    headerName: "Бонусы списание руб. LW",
+    headerTooltip: "Бонусы списание руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_WoW,
+    headerName: "Бонусы списание руб. WoW",
+    headerTooltip: "Бонусы списание руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_WoW_PERCENT,
+    headerName: "Бонусы списание руб. WoW%",
+    headerTooltip: "Бонусы списание руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.BONUS_WRITEOFF_LM,
     headerName: "Бонусы списание PM",
     headerTooltip: "Бонусы списание PM",
@@ -940,6 +1151,30 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT,
     headerName: "Бонусы списание %",
     headerTooltip: "Бонусы списание %",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LW,
+    headerName: "Бонусы списание % LW",
+    headerTooltip: "Бонусы списание % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW,
+    headerName: "Бонусы списание % WoW",
+    headerTooltip: "Бонусы списание % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW_PERCENT,
+    headerName: "Бонусы списание % WoW%",
+    headerTooltip: "Бонусы списание % WoW%",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
@@ -1003,6 +1238,30 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatPercent(params.value) : "",
   },
   {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LW,
+    headerName: "Бонусы начисленние % LW",
+    headerTooltip: "Бонусы начисленние % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW,
+    headerName: "Бонусы начисленние % WoW",
+    headerTooltip: "Бонусы начисленние % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW_PERCENT,
+    headerName: "Бонусы начисленние % WoW%",
+    headerTooltip: "Бонусы начисленние % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LM,
     headerName: "Бонусы начисление % PM",
     headerTooltip: "Бонусы начисление % PM",
@@ -1057,6 +1316,30 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.ITR_LW,
+    headerName: "Коэффициент оборачиваемости LW",
+    headerTooltip: "Коэффициент оборачиваемости LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.ITR_WoW,
+    headerName: "Коэффициент оборачиваемости WoW",
+    headerTooltip: "Коэффициент оборачиваемости WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.ITR_WoW_PERCENT,
+    headerName: "Коэффициент оборачиваемости WoW%",
+    headerTooltip: "Коэффициент оборачиваемости WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.ITR_LM,
@@ -1116,6 +1399,30 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
+    field: COLUMN_KEY.OPENING_BALANCE_LW,
+    headerName: "Остатки на начало дня LW",
+    headerTooltip: "Остатки на начало дня LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_WoW,
+    headerName: "Остатки на начало дня WoW",
+    headerTooltip: "Остатки на начало дня WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.OPENING_BALANCE_WoW_PERCENT,
+    headerName: "Остатки на начало дня WoW%",
+    headerTooltip: "Остатки на начало дня WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.OPENING_BALANCE_LM,
     headerName: "Остатки на начало дня PM",
     headerTooltip: "Остатки на начало дня PM",
@@ -1163,6 +1470,30 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_LW,
+    headerName: "Остатки на конец дня LW",
+    headerTooltip: "Остатки на конец дня LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_WOW,
+    headerName: "Остатки на конец дня WoW",
+    headerTooltip: "Остатки на конец дня WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.FINAL_BALANCE_WOW_PERCENT,
+    headerName: "Остатки на конец дня WoW%",
+    headerTooltip: "Остатки на конец дня WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.FINAL_BALANCE_LM,
@@ -1330,6 +1661,30 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
+    field: COLUMN_KEY.TURNOVER_GOODS_LW,
+    headerName: "Оборачиваемость остатков LW",
+    headerTooltip: "Оборачиваемость остатков LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_WoW,
+    headerName: "Оборачиваемость остатков WoW",
+    headerTooltip: "Оборачиваемость остатков WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_WoW_PERCENT,
+    headerName: "Оборачиваемость остатков WoW%",
+    headerTooltip: "Оборачиваемость остатков WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.TURNOVER_GOODS_LM,
     headerName: "Оборачиваемость остатков PM",
     headerTooltip: "Оборачиваемость остатков PM",
@@ -1381,6 +1736,22 @@ export const tableColumns: ColDef<any>[] = [
     field: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT,
     headerName: "Маржа % без учета скидки",
     headerTooltip: "Маржа % без учета скидки",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_LW,
+    headerName: "Маржа % без учета скидки LW",
+    headerTooltip: "Маржа % без учета скидки LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_WoW,
+    headerName: "Маржа % без учета скидки WoW",
+    headerTooltip: "Маржа % без учета скидки WoW",
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
@@ -1442,6 +1813,32 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatPercent(params.value) : "",
   },
   {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LW,
+    headerName: "Наценка % без учета скидки LW",
+    headerTooltip: "Наценка % без учета скидки LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW,
+    headerName: "Наценка % без учета скидки WoW",
+    headerTooltip: "Наценка % без учета скидки WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.PROCEEDS_OFFLINE,
     headerName: "Выручка Офлайн",
     headerTooltip: "Выручка Офлайн",
@@ -1497,6 +1894,45 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_LW,
+    headerName: "Наценка без учета скидки, руб. LW",
+    headerTooltip: "Наценка без учета скидки, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_WoW,
+    headerName: "Наценка без учета скидки, руб. WoW",
+    headerTooltip: "Наценка без учета скидки, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_WoW_PERCENT,
+    headerName: "Наценка % без учета скидки WoW%",
+    headerTooltip: "Наценка % без учета скидки WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
   },
   {
     field: COLUMN_KEY.MARKUP_DISCOUNT_LM,
@@ -1594,6 +2030,30 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_LW,
+    headerName: "Оборачиваемость остатков LW",
+    headerTooltip: "Оборачиваемость остатков LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_WoW,
+    headerName: "Оборачиваемость остатков WoW",
+    headerTooltip: "Оборачиваемость остатков WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.TURNOVER_GOODS_WoW_PERCENT,
+    headerName: "Оборачиваемость остатков WoW%",
+    headerTooltip: "Оборачиваемость остатков WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
   },
   {
     field: COLUMN_KEY.TURNOVER_GOODS,
@@ -2100,6 +2560,45 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       }
       return null;
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_LW,
+    headerName: "Ср. LW",
+    headerTooltip: "Ср. чек LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_WoW,
+    headerName: "Ср. WoW",
+    headerTooltip: "Ср. чек WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_WoW_PERCENT,
+    headerName: "Ср. WoW%",
+    headerTooltip: "Ср. чек WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
     },
   },
   {
@@ -2927,6 +3426,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.COST_PRICE_LW,
+    headerName: "Себестоимость LW",
+    headerTooltip: "Себестоимость LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_WoW,
+    headerName: "Себестоимость WoW",
+    headerTooltip: "Себестоимость WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_WoW_PERCENT,
+    headerName: "Себестоимость WoW%",
+    headerTooltip: "Себестоимость WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.COST_PRICE_LM,
     headerName: "Себестоимость PM",
     headerTooltip: "Прошлый месяц",
@@ -3060,6 +3598,45 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Наценка",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_LW,
+    headerName: "Наценка, руб. LW",
+    headerTooltip: "Наценка, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_WoW,
+    headerName: "Наценка, руб. WoW",
+    headerTooltip: "Наценка, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_WoW_PERCENT,
+    headerName: "Наценка, руб. WoW%",
+    headerTooltip: "Наценка, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -3472,6 +4049,32 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.MARGIN_PERCENT_LW,
+    headerName: "Маржа % LW",
+    headerTooltip: "Маржа % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_WoW,
+    headerName: "Маржа % WoW",
+    headerTooltip: "Маржа % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.MARGIN_PERCENT_LM,
     headerName: "Маржа % PM",
     headerTooltip: "Прошлый месяц",
@@ -3580,6 +4183,32 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       } else if (params.value > 100) {
         return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_LW,
+    headerName: "Наценка % LW",
+    headerTooltip: "Наценка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_WoW,
+    headerName: "Наценка % WoW",
+    headerTooltip: "Наценка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
       }
     },
   },
@@ -4708,6 +5337,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.PROCEEDS_DAY_LW,
+    headerName: "Дневная выручка LW",
+    headerTooltip: "Дневная выручка LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_WoW,
+    headerName: "Дневная выручка WoW",
+    headerTooltip: "Дневная выручка WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_DAY_WoW_PERCENT,
+    headerName: "Дневная выручка WoW%",
+    headerTooltip: "Дневная выручка WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.PROCEEDS_DAY_LM,
     headerName: "Дневная выручка PM",
     headerTooltip: "В прошлом месяце",
@@ -4794,6 +5462,45 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_LW,
+    headerName: "Ночная выручка LW",
+    headerTooltip: "Ночная выручка LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_WoW,
+    headerName: "Ночная выручка WoW",
+    headerTooltip: "Ночная выручка WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_NIGHT_WoW_PERCENT,
+    headerName: "Ночная выручка WoW%",
+    headerTooltip: "Ночная выручка WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -4896,6 +5603,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LW,
+    headerName: "Ночная выручка % LW",
+    headerTooltip: "Ночная выручка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW,
+    headerName: "Ночная выручка % WoW",
+    headerTooltip: "Ночная выручка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW_PERCENT,
+    headerName: "Ночная выручка % WoW%",
+    headerTooltip: "Ночная выручка % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
     headerName: "Ночная выручка % PM",
     headerTooltip: "Прошлый месяц",
@@ -4957,6 +5703,45 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Валовая прибыль",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_LW,
+    headerName: "Дневная валовая прибыль LW, руб.",
+    headerTooltip: "Дневная валовая прибыль LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_WoW,
+    headerName: "Дневная валовая прибыль WoW, руб.",
+    headerTooltip: "Дневная валовая прибыль WoW, руб.",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DAY_WoW_PERCENT,
+    headerName: "Дневная валовая прибыль WoW%, руб.",
+    headerTooltip: "Дневная валовая прибыль WoW%, руб.",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -5045,6 +5830,45 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Валовая прибыль",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_LW,
+    headerName: "Ночная валовая прибыль LW, руб.",
+    headerTooltip: "Ночная валовая прибыль LW, руб.",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_WoW,
+    headerName: "Ночная валовая прибыль WoW, руб.",
+    headerTooltip: "Ночная валовая прибыль WoW, руб.",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_NIGHT_WoW_PERCENT,
+    headerName: "Ночная валовая прибыль WoW%, руб.",
+    headerTooltip: "Ночная валовая прибыль WoW%, руб.",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -5142,6 +5966,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LW,
+    headerName: "Ночная валовая прибыль % LW",
+    headerTooltip: "Ночная валовая прибыль % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW,
+    headerName: "Ночная валовая прибыль % WoW",
+    headerTooltip: "Ночная валовая прибыль % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW_PERCENT,
+    headerName: "Ночная валовая прибыль % WoW%",
+    headerTooltip: "Ночная валовая прибыль % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
     headerName: "Ночная прибыль % PM",
     headerTooltip: "Прошлый месяц",
@@ -5208,6 +6071,32 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       } else if (params.value > 100) {
         return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_LW,
+    headerName: "Дневная наценка % LW",
+    headerTooltip: "Дневная наценка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_DAY_WoW,
+    headerName: "Дневная наценка % WoW",
+    headerTooltip: "Дневная наценка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
       }
     },
   },
@@ -5310,6 +6199,32 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LW,
+    headerName: "Ночная наценка % LW",
+    headerTooltip: "Ночная наценка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW,
+    headerName: "Ночная наценка % WoW",
+    headerTooltip: "Ночная наценка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
     headerName: "Ночная наценка % PM",
     headerTooltip: "Наценка за предыдущий месяц",
@@ -5402,6 +6317,32 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatPercent(params.value) : "",
   },
   {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LW,
+    headerName: "Дневная наценка % без скидки LW",
+    headerTooltip: "Дневная наценка % без скидки LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_WoW,
+    headerName: "Дневная наценка % без скидки WoW",
+    headerTooltip: "Дневная наценка % без скидки WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
     headerName: "Дневная наценка % без скидки PM",
     headerTooltip: "Наценка % без учета скидки PM",
@@ -5442,6 +6383,32 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatPercent(params.value) : "",
   },
   {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LW,
+    headerName: "Ночная наценка % без скидки LW",
+    headerTooltip: "Ночная наценка % без скидки LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW,
+    headerName: "Ночная наценка % без скидки WoW",
+    headerTooltip: "Ночная наценка % без скидки WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
     headerName: "Ночная наценка % без скидки PM",
     headerTooltip: "Наценка % без учета скидки PM",
@@ -5480,6 +6447,45 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_LW,
+    headerName: "Дневная себестоимость, руб. LW",
+    headerTooltip: "Дневная себестоимость, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_WoW,
+    headerName: "Дневная себестоимость, руб. WoW",
+    headerTooltip: "Дневная себестоимость, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_DAY_WoW_PERCENT,
+    headerName: "Дневная себестоимость, руб. WoW%",
+    headerTooltip: "Дневная себестоимость, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -5573,6 +6579,45 @@ export const tableColumns: ColDef<any>[] = [
     cellDataType: "number",
     valueFormatter: (params: any) =>
       params.value != null ? Number(params.value).toLocaleString("ru-RU") : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_LW,
+    headerName: "Ночная себестоимость, руб. LW",
+    headerTooltip: "Ночная себестоимость, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_WoW,
+    headerName: "Ночная себестоимость, руб. WoW",
+    headerTooltip: "Ночная себестоимость, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_NIGHT_WoW_PERCENT,
+    headerName: "Ночная себестоимость, руб. WoW%",
+    headerTooltip: "Ночная себестоимость, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -5684,6 +6729,45 @@ export const tableColumns: ColDef<any>[] = [
       ],
 
       maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_LW,
+    headerName: "Дневная скидка, LW",
+    headerTooltip: "Дневная скидка, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_WoW,
+    headerName: "Дневная скидка, руб. WoW",
+    headerTooltip: "Дневная скидка, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_DAY_WoW_PERCENT,
+    headerName: "Дневная скидка, руб. WoW%",
+    headerTooltip: "Дневная скидка, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
     },
   },
   {
@@ -5880,6 +6964,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_LW,
+    headerName: "Ночная скидка, руб. LW",
+    headerTooltip: "Ночная скидка, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_WoW,
+    headerName: "Ночная скидка, руб. WoW",
+    headerTooltip: "Ночная скидка, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_NIGHT_WoW_PERCENT,
+    headerName: "Ночная скидка, руб. WoW%",
+    headerTooltip: "Ночная скидка, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.DISCOUNT_NIGHT_LM,
     headerName: "Ночная скидка, руб. PM",
     headerTooltip: "Прошлый месяц",
@@ -6060,6 +7183,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LW,
+    headerName: "Дневная скидка % LW",
+    headerTooltip: "Дневная скидка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW,
+    headerName: "Дневная скидка % WoW",
+    headerTooltip: "Дневная скидка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW_PERCENT,
+    headerName: "Дневная скидка % WoW%",
+    headerTooltip: "Дневная скидка % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
     headerName: "Дневная скидка % PM",
     headerTooltip: "Прошлый месяц",
@@ -6126,6 +7288,45 @@ export const tableColumns: ColDef<any>[] = [
         return { color: "#DE5656" };
       } else if (params.value > 100) {
         return { color: "#71DE56" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LW,
+    headerName: "Ночная скидка % LW",
+    headerTooltip: "Ночная скидка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW,
+    headerName: "Ночная скидка % WoW",
+    headerTooltip: "Ночная скидка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW_PERCENT,
+    headerName: "Ночная скидка % WoW%",
+    headerTooltip: "Ночная скидка % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
       }
     },
   },
@@ -6210,6 +7411,45 @@ export const tableColumns: ColDef<any>[] = [
       ],
 
       maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.COUNT_SALES_DAY_LW,
+    headerName: "Дневное кол. продаж LW",
+    headerTooltip: "Дневное кол. продаж LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COUNT_SALES_DAY_WoW,
+    headerName: "Дневное кол. продаж WoW",
+    headerTooltip: "Дневное кол. продаж WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COUNT_SALES_DAY_WoW_PERCENT,
+    headerName: "Дневное кол. продаж WoW%",
+    headerTooltip: "Дневное кол. продаж WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
     },
   },
   {
@@ -6406,6 +7646,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_LW,
+    headerName: "Ночное кол. продаж LW",
+    headerTooltip: "Ночное кол. продаж LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_WoW,
+    headerName: "Ночное кол. продаж WoW",
+    headerTooltip: "Ночное кол. продаж WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.COUNT_SALES_NIGHT_WoW_PERCENT,
+    headerName: "Ночное кол. продаж WoW%",
+    headerTooltip: "Ночное кол. продаж WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     headerName: "Ночное кол. продаж MoM",
     field: COLUMN_KEY.COUNT_SALES_NIGHT_MOM,
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
@@ -6597,6 +7876,45 @@ export const tableColumns: ColDef<any>[] = [
       ],
 
       maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_LW,
+    headerName: "Дневной ср. чек LW",
+    headerTooltip: "Дневной ср. чек LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_WoW,
+    headerName: "Дневной ср. чек WoW",
+    headerTooltip: "Дневной ср. чек WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_DAY_WoW_PERCENT,
+    headerName: "Дневной ср. чек WoW%",
+    headerTooltip: "Дневной ср. чек WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
     },
   },
   {
@@ -6797,6 +8115,45 @@ export const tableColumns: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_LW,
+    headerName: "Ночной ср. чек LW",
+    headerTooltip: "Ночной ср. чек LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_WoW,
+    headerName: "Ночной ср. чек WoW",
+    headerTooltip: "Ночной ср. чек WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_NIGHT_WoW_PERCENT,
+    headerName: "Ночной ср. чек WoW%",
+    headerTooltip: "Ночной ср. чек WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
     field: COLUMN_KEY.AVG_CHECK_NIGHT_LM,
     headerName: "Ночной ср. чек PM",
     headerTooltip: "В прошлом месяце",
@@ -6963,6 +8320,670 @@ export const tableColumns: ColDef<any>[] = [
       ],
 
       maxNumConditions: 1,
+    },
+  },
+
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_LW,
+    headerName: "Количество списаний LW",
+    headerTooltip: "Количество списаний LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_WoW,
+    headerName: "Количество списаний WoW",
+    headerTooltip: "Количество списаний WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_WoW_PERCENT,
+    headerName: "Количество списаний WoW%",
+    headerTooltip: "Количество списаний WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_LW,
+    headerName: "Списания, руб. LW",
+    headerTooltip: "Списания, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW,
+    headerName: "Списания, руб. WoW",
+    headerTooltip: "Списания, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
+    headerName: "Списания, руб. WoW%",
+    headerTooltip: "Списания, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_LW,
+    headerName: "Вес списаний LW",
+    headerTooltip: "Вес списаний LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW,
+    headerName: "Вес списаний WoW",
+    headerTooltip: "Вес списаний WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW_PERCENT,
+    headerName: "Вес списаний WoW%",
+    headerTooltip: "Вес списаний WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_LW,
+    headerName: "Списания % LW",
+    headerTooltip: "Списания % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW,
+    headerName: "Списания % WoW",
+    headerTooltip: "Списания % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW_PERCENT,
+    headerName: "Списания % WoW%",
+    headerTooltip: "Списания % WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_LW,
+    headerName: "Скидка, руб. LW",
+    headerTooltip: "Скидка, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_WoW,
+    headerName: "Скидка, руб. WoW",
+    headerTooltip: "Скидка, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_WoW_PERCENT,
+    headerName: "Скидка, руб. WoW%",
+    headerTooltip: "Скидка, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_LW,
+    headerName: "Скидка % LW",
+    headerTooltip: "Скидка % LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_WoW,
+    headerName: "Скидка % WoW",
+    headerTooltip: "Скидка % WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_LW,
+    headerName: "Выручка, руб. LW",
+    headerTooltip: "Выручка, руб. LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_WoW,
+    headerName: "Выручка, руб. WoW",
+    headerTooltip: "Выручка, руб. WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROCEEDS_WoW_PERCENT,
+    headerName: "Выручка, руб. WoW%",
+    headerTooltip: "Выручка, руб. WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_LW,
+    headerName: "Наценка LW",
+    headerTooltip: "Наценка LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_WoW,
+    headerName: "Наценка WoW",
+    headerTooltip: "Наценка WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_WoW_PERCENT,
+    headerName: "Наценка WoW%",
+    headerTooltip: "Наценка WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.ONLINE_STORE_SHARE_LW,
+    headerName: "Доля ИМ LW",
+    headerTooltip: "Доля ИМ LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.ONLINE_STORE_SHARE_WoW,
+    headerName: "Доля ИМ WoW",
+    headerTooltip: "Доля ИМ WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.ONLINE_STORE_SHARE_WoW_PERCENT,
+    headerName: "Доля ИМ WoW%",
+    headerTooltip: "Доля ИМ WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_LW,
+    headerName: "Цена фермера LW",
+    headerTooltip: "Цена фермера LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_WoW,
+    headerName: "Цена фермера WoW",
+    headerTooltip: "Цена фермера WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.FARMER_PRICE_WoW_PERCENT,
+    headerName: "Цена фермера WoW%",
+    headerTooltip: "Цена фермера WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_DAY_LW,
+    headerName: "Наценка без учета скидки, руб. (День) LW",
+    headerTooltip: "Наценка без учета скидки, руб. (День) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_DAY_WoW,
+    headerName: "Наценка без учета скидки, руб. (День) WoW",
+    headerTooltip: "Наценка без учета скидки, руб. (День) WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_DAY_WoW_PERCENT,
+    headerName: "Наценка % без учета скидки (День) WoW%",
+    headerTooltip: "Наценка % без учета скидки (День) WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_NIGHT_LW,
+    headerName: "Наценка без учета скидки, руб. (Ночь) LW",
+    headerTooltip: "Наценка без учета скидки, руб. (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_NIGHT_WoW,
+    headerName: "Наценка без учета скидки, руб. (Ночь) WoW",
+    headerTooltip: "Наценка без учета скидки, руб. (Ночь) WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_DISCOUNT_NIGHT_WoW_PERCENT,
+    headerName: "Наценка % без учета скидки (Ночь) WoW%",
+    headerTooltip: "Наценка % без учета скидки (Ночь) WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_MARKUP_DISCOUNT_NIGHT_LW,
+    headerName: "Наценка % без учета скидки (Ночь) LW",
+    headerTooltip: "Наценка % без учета скидки (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_MARKUP_DISCOUNT_NIGHT_WoW,
+    headerName: "Наценка % без учета скидки (Ночь) WoW",
+    headerTooltip: "Наценка % без учета скидки (Ночь) WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PERCENTAGE_MARKUP_DISCOUNT_NIGHT_WoW_PERCENT,
+    headerName: "Наценка % без учета скидки (Ночь) WoW%",
+    headerTooltip: "Наценка % без учета скидки (Ночь) WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CHECK_DAY_LW,
+    headerName: "Уникальные чеки (День) LW",
+    headerTooltip: "Уникальные чеки (День) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CHECK_NIGHT_LW,
+    headerName: "Уникальные чеки (Ночь) LW",
+    headerTooltip: "Уникальные чеки (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_DAY_LW,
+    headerName: "Уникальные карты (День) LW",
+    headerTooltip: "Уникальные карты (День) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CARD_NUMBER_NIGHT_LW,
+    headerName: "Уникальные карты (Ночь) LW",
+    headerTooltip: "Уникальные карты (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CITY_NIGHT_LW,
+    headerName: "Уникальные города (Ночь) LW",
+    headerTooltip: "Уникальные города (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_CHANNEL_NIGHT_LW,
+    headerName: "Уникальные каналы (Ночь) LW",
+    headerTooltip: "Уникальные каналы (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_STORE_NIGHT_LW,
+    headerName: "Уникальные магазины (Ночь) LW",
+    headerTooltip: "Уникальные магазины (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.UNIQUE_REGION_NIGHT_LW,
+    headerName: "Уникальные регионы (Ночь) LW",
+    headerTooltip: "Уникальные регионы (Ночь) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DISCOUNT_DAY_LW,
+    headerName: "Валовая прибыль без учета скидки, руб. (День) LW",
+    headerTooltip: "Валовая прибыль без учета скидки, руб. (День) LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DISCOUNT_DAY_WoW,
+    headerName: "Валовая прибыль без учета скидки, руб. (День) WoW",
+    headerTooltip: "Валовая прибыль без учета скидки, руб. (День) WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_DISCOUNT_DAY_WoW_PERCENT,
+    headerName: "Валовая прибыль % без учета скидки (День) WoW%",
+    headerTooltip: "Валовая прибыль % без учета скидки (День) WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WEIGHT_WOW,
+    headerName: "Вес WoW",
+    headerTooltip: "Вес WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WEIGHT_WOW_PERCENT,
+    headerName: "Вес WoW%",
+    headerTooltip: "Вес WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
     },
   },
 ];
@@ -8147,6 +10168,87 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.PROFIT_LW,
+    headerName: "Наценка, руб. LW",
+    headerTooltip: "Наценка, руб. LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_WoW,
+    headerName: "Наценка, руб. WoW",
+    headerTooltip: "Наценка, руб. WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.PROFIT_WoW_PERCENT,
+    headerName: "Наценка, руб. WoW%",
+    headerTooltip: "Наценка, руб. WoW%",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.PROFIT_LM,
     headerName: "Наценка, руб. PM",
     headerTooltip: "Изменение по сравнению с прошлым месяцем",
@@ -8342,6 +10444,64 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.MARKUP_PERCENT_LW,
+    headerName: "Наценка % LW",
+    headerTooltip: "Наценка % LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.MARKUP_PERCENT_WoW,
+    headerName: "Наценка % WoW",
+    headerTooltip: "Наценка % WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.MARKUP_PERCENT_LM,
     headerName: "Наценка % PM",
     headerTooltip: "Прошлый месяц",
@@ -8461,6 +10621,87 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.COST_PRICE,
     headerName: "Себестоимость",
     headerTooltip: "Себестоимость",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_LW,
+    headerName: "Себестоимость LW",
+    headerTooltip: "Себестоимость LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_WoW,
+    headerName: "Себестоимость WoW",
+    headerTooltip: "Себестоимость WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.COST_PRICE_WoW_PERCENT,
+    headerName: "Себестоимость WoW%",
+    headerTooltip: "Себестоимость WoW%",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
@@ -8654,6 +10895,87 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.DISCOUNT,
     headerName: "Скидка",
     headerTooltip: "Скидка",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_LW,
+    headerName: "Скидки LW",
+    headerTooltip: "Скидки LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_WoW,
+    headerName: "Скидки WoW",
+    headerTooltip: "Скидки WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_WoW_PERCENT,
+    headerName: "Скидки WoW%",
+    headerTooltip: "Скидки WoW%",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
@@ -8873,6 +11195,64 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_LW,
+    headerName: "Скидки % LW",
+    headerTooltip: "Скидки % LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.DISCOUNT_PERCENT_WoW,
+    headerName: "Скидки % WoW",
+    headerTooltip: "Скидки % WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.DISCOUNT_PERCENT_LM,
     headerName: "Скидки % PM",
     headerTooltip: "Прошлый месяц",
@@ -8992,6 +11372,64 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.MARGIN_PERCENT,
     headerName: "Маржа %",
     headerTooltip: "Маржа %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_LW,
+    headerName: "Маржа % LW",
+    headerTooltip: "Маржа % LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.MARGIN_PERCENT_WoW,
+    headerName: "Маржа % WoW",
+    headerTooltip: "Маржа % WoW",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
@@ -9139,6 +11577,90 @@ export const tableConfig: ColDef<any>[] = [
     headerTooltip: "Ср. чек",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_LW,
+    headerName: "Ср. Чек LW",
+    headerTooltip: "Ср. Чек LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_WoW,
+    headerName: "Ср. Чек WOW",
+    headerTooltip: "Ср. Чек WOW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+      return null;
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.AVG_CHECK_WoW_PERCENT,
+    headerName: "Ср. Чек WOW%",
+    headerTooltip: "Ср. Чек WOW%",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
       if (params.value < 0) {
         return { color: "#DE5656" };
@@ -9695,6 +12217,87 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.WEIGHT_LW,
+    headerName: "Вес LW",
+    headerTooltip: "Вес LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WEIGHT_WoW,
+    headerName: "Вес WoW",
+    headerTooltip: "Вес WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WEIGHT_WOW_PERCENT,
+    headerName: "Вес WoW%",
+    headerTooltip: "Вес WoW%",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.WEIGHT_LM,
     headerName: "Вес PM",
     headerTooltip: "Прошлый месяц",
@@ -9864,6 +12467,87 @@ export const tableConfig: ColDef<any>[] = [
     headerName: "Кол. продаж",
     headerTooltip: "Кол. продаж",
     field: COLUMN_KEY.SALES,
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Кол. продаж LW",
+    field: COLUMN_KEY.COUNT_SALES_LW,
+    headerTooltip: "Кол. продаж LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Кол. продаж WoW",
+    field: COLUMN_KEY.COUNT_SALES_WoW,
+    headerTooltip: "Кол. продаж WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    headerName: "Кол. продаж WoW%",
+    field: COLUMN_KEY.COUNT_SALES_WoW_PERCENT,
+    headerTooltip: "Кол. продаж WoW%",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
     cellStyle: (params) => {
