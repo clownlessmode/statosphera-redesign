@@ -34,6 +34,24 @@ const all_indicators = [
           "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
       },
       {
+        id: COLUMN_KEY.PROCEEDS_LW,
+        label: "Выручка, руб. LW",
+        value: COLUMN_KEY.PROCEEDS_LW,
+        tooltip: "Выручка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_WoW,
+        label: "Выручка, руб. WoW",
+        value: COLUMN_KEY.PROCEEDS_WoW,
+        tooltip: "Выручка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_WoW_PERCENT,
+        label: "Выручка, руб. WoW%",
+        value: COLUMN_KEY.PROCEEDS_WoW_PERCENT,
+        tooltip: "Выручка, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.PROCEEDS_LM,
         label: "Выручка, руб. PM",
         value: COLUMN_KEY.PROCEEDS_LM,
@@ -89,6 +107,24 @@ const all_indicators = [
         value: COLUMN_KEY.WRITE_OFF,
         tooltip:
           "Стоимость товаров, списанных по различным причинам (порча, истечение срока годности, потери)",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_LW,
+        label: "Списания, руб. LW",
+        value: COLUMN_KEY.WRITEOFF_LW,
+        tooltip: "Списания, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WoW,
+        label: "Списания, руб. WoW",
+        value: COLUMN_KEY.WRITEOFF_WoW,
+        tooltip: "Списания, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
+        label: "Списания, руб. WoW%",
+        value: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
+        tooltip: "Списания, руб. WoW%",
       },
       {
         id: COLUMN_KEY.WRITE_OFF_LM,
@@ -147,6 +183,24 @@ const all_indicators = [
           "Процент списаний от общей выручки. Показывает долю потерь в общем объеме продаж",
       },
       {
+        id: COLUMN_KEY.WRITEOFF_PERCENT_LW,
+        label: "Списания % LW",
+        value: COLUMN_KEY.WRITEOFF_PERCENT_LW,
+        tooltip: "Списания % LW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_PERCENT_WoW,
+        label: "Списания % WoW",
+        value: COLUMN_KEY.WRITEOFF_PERCENT_WoW,
+        tooltip: "Списания % WoW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_PERCENT_WoW_PERCENT,
+        label: "Списания % WoW%",
+        value: COLUMN_KEY.WRITEOFF_PERCENT_WoW_PERCENT,
+        tooltip: "Списания % WoW%",
+      },
+      {
         id: COLUMN_KEY.WRITE_OFF_PERCENT_LM,
         label: "Списания % PM",
         value: COLUMN_KEY.WRITE_OFF_PERCENT_LM,
@@ -187,6 +241,24 @@ const all_indicators = [
         value: COLUMN_KEY.WRITEOFF_WEIGHT,
         tooltip:
           "Общий вес списанных товаров в килограммах за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_LW,
+        label: "Списания, вес LW",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_LW,
+        tooltip: "Вес списаний LW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_WoW,
+        label: "Списания, вес WoW",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_WoW,
+        tooltip: "Списания, вес WoW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_WEIGHT_WoW_PERCENT,
+        label: "Списания, вес WoW%",
+        value: COLUMN_KEY.WRITEOFF_WEIGHT_WoW_PERCENT,
+        tooltip: "Списания, вес WoW%",
       },
       {
         id: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
@@ -240,6 +312,24 @@ const all_indicators = [
         label: "Списания, кол-во",
         value: COLUMN_KEY.WRITEOFF_COUNT,
         tooltip: "Количество единиц списанных товаров за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_LW,
+        label: "Количество списаний LW",
+        value: COLUMN_KEY.WRITEOFF_COUNT_LW,
+        tooltip: "Количество списаний LW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_WoW,
+        label: "Количество списаний WoW",
+        value: COLUMN_KEY.WRITEOFF_COUNT_WoW,
+        tooltip: "Количество списаний WoW",
+      },
+      {
+        id: COLUMN_KEY.WRITEOFF_COUNT_WoW_PERCENT,
+        label: "Количество списаний WoW%",
+        value: COLUMN_KEY.WRITEOFF_COUNT_WoW_PERCENT,
+        tooltip: "Количество списаний WoW%",
       },
       {
         id: COLUMN_KEY.WRITEOFF_COUNT_LM,
@@ -298,6 +388,24 @@ const all_indicators = [
           "Разность между выручкой и себестоимостью проданных товаров. Основной показатель прибыльности",
       },
       {
+        id: COLUMN_KEY.PROFIT_LW,
+        label: "Валовая прибыль, руб. LW",
+        value: COLUMN_KEY.PROFIT_LW,
+        tooltip: "Валовая прибыль, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_WoW,
+        label: "Валовая прибыль, руб. WoW",
+        value: COLUMN_KEY.PROFIT_WoW,
+        tooltip: "Валовая прибыль, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_WoW_PERCENT,
+        label: "Валовая прибыль, руб. WoW%",
+        value: COLUMN_KEY.PROFIT_WoW_PERCENT,
+        tooltip: "Валовая прибыль, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.PROFIT_LM,
         label: "Валовая прибыль, руб. PM",
         value: COLUMN_KEY.PROFIT_LM,
@@ -354,6 +462,18 @@ const all_indicators = [
           "Процент наценки на товар. Показывает, на сколько процентов цена продажи превышает себестоимость",
       },
       {
+        id: COLUMN_KEY.MARKUP_PERCENT_LW,
+        label: "Наценка % LW",
+        value: COLUMN_KEY.MARKUP_PERCENT_LW,
+        tooltip: "Наценка % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_WoW,
+        label: "Наценка % WoW",
+        value: COLUMN_KEY.MARKUP_PERCENT_WoW,
+        tooltip: "Наценка % WoW",
+      },
+      {
         id: COLUMN_KEY.MARKUP_PERCENT_LM,
         label: "Наценка % PM",
         value: COLUMN_KEY.MARKUP_PERCENT_LM,
@@ -395,6 +515,18 @@ const all_indicators = [
           "Процент наценки без учета предоставленных скидок. Показывает первоначальную наценку",
       },
       {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LW,
+        label: "Наценка без скидки % LW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LW,
+        tooltip: "Наценка без скидки % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW,
+        label: "Наценка без скидки % WoW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW,
+        tooltip: "Наценка без скидки % WoW",
+      },
+      {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
         label: "Наценка без скидки, % PM",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
@@ -434,6 +566,24 @@ const all_indicators = [
         value: COLUMN_KEY.MARKUP_DISCOUNT,
         tooltip:
           "Валовая прибыль без учета предоставленных скидок. Показывает потенциальную прибыль",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_LW,
+        label: "Валовая прибыль без скидки, руб. LW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_LW,
+        tooltip: "Валовая прибыль без скидки, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_WoW,
+        label: "Валовая прибыль без скидки, руб. WoW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_WoW,
+        tooltip: "Валовая прибыль без скидки, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_WoW_PERCENT,
+        label: "Валовая прибыль без скидки, руб. WoW%",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_WoW_PERCENT,
+        tooltip: "Валовая прибыль без скидки, руб. WoW%",
       },
       {
         id: COLUMN_KEY.MARKUP_DISCOUNT_LM,
@@ -484,6 +634,24 @@ const all_indicators = [
         value: COLUMN_KEY.COST_PRICE,
         tooltip:
           "Общая стоимость приобретения или производства проданных товаров",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_LW,
+        label: "Себестоимость, руб. LW",
+        value: COLUMN_KEY.COST_PRICE_LW,
+        tooltip: "Себестоимость, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_WoW,
+        label: "Себестоимость, руб. WoW",
+        value: COLUMN_KEY.COST_PRICE_WoW,
+        tooltip: "Себестоимость, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_WoW_PERCENT,
+        label: "Себестоимость, руб. WoW%",
+        value: COLUMN_KEY.COST_PRICE_WoW_PERCENT,
+        tooltip: "Себестоимость, руб. WoW%",
       },
       {
         id: COLUMN_KEY.COST_PRICE_LM,
@@ -542,6 +710,24 @@ const all_indicators = [
           "Общая сумма предоставленных скидок в рублях за выбранный период",
       },
       {
+        id: COLUMN_KEY.DISCOUNT_LW,
+        label: "Скидка, руб. LW",
+        value: COLUMN_KEY.DISCOUNT_LW,
+        tooltip: "Скидка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_WoW,
+        label: "Скидка, руб. WoW",
+        value: COLUMN_KEY.DISCOUNT_WoW,
+        tooltip: "Скидка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_WoW_PERCENT,
+        label: "Скидка, руб. WoW%",
+        value: COLUMN_KEY.DISCOUNT_WoW_PERCENT,
+        tooltip: "Скидка, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.DISCOUNT_LM,
         label: "Скидки, руб. PM",
         value: COLUMN_KEY.DISCOUNT_LM,
@@ -596,6 +782,18 @@ const all_indicators = [
         tooltip: "Средний процент скидки от общей стоимости покупок",
       },
       {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_LW,
+        label: "Скидка % LW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_LW,
+        tooltip: "Скидка % LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_WoW,
+        label: "Скидка % WoW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_WoW,
+        tooltip: "Скидка % WoW",
+      },
+      {
         id: COLUMN_KEY.DISCOUNT_PERCENT_LM,
         label: "Скидки % PM",
         value: COLUMN_KEY.DISCOUNT_PERCENT_LM,
@@ -634,6 +832,18 @@ const all_indicators = [
         value: COLUMN_KEY.MARGIN_PERCENT,
         tooltip:
           "Процент маржи от выручки. Показывает долю прибыли в общей сумме продаж",
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_LW,
+        label: "Маржа % LW",
+        value: COLUMN_KEY.MARGIN_PERCENT_LW,
+        tooltip: "Маржа % LW",
+      },
+      {
+        id: COLUMN_KEY.MARGIN_PERCENT_WoW,
+        label: "Маржа % WoW",
+        value: COLUMN_KEY.MARGIN_PERCENT_WoW,
+        tooltip: "Маржа % WoW",
       },
       {
         id: COLUMN_KEY.MARGIN_PERCENT_LM,
@@ -676,6 +886,18 @@ const all_indicators = [
           "Процент маржи без учета предоставленных скидок. Показывает первоначальную рентабельность",
       },
       {
+        id: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_LW,
+        label: "Маржа % без учета скидки LW",
+        value: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_LW,
+        tooltip: "Маржа % без учета скидки LW",
+      },
+      {
+        id: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_WoW,
+        label: "Маржа % без учета скидки WoW",
+        value: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_WoW,
+        tooltip: "Маржа % без учета скидки WoW",
+      },
+      {
         id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
         label: "Маржа % без учета скидки PM",
         value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
@@ -687,7 +909,6 @@ const all_indicators = [
       //   value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
       //   tooltip: "Изменение маржи без скидки по сравнению с предыдущим месяцем",
       // },
-
       {
         id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
         label: "Маржа % без учета скидки PY",
@@ -714,6 +935,24 @@ const all_indicators = [
         label: "Кол. Продаж",
         value: COLUMN_KEY.SALES,
         tooltip: "Общее количество проданных единиц товара за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_LW,
+        label: "Кол. продаж, LW",
+        value: COLUMN_KEY.COUNT_SALES_LW,
+        tooltip: "Кол. продаж, LW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_WoW,
+        label: "Кол. продаж, WoW",
+        value: COLUMN_KEY.COUNT_SALES_WoW,
+        tooltip: "Кол. продаж, WoW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_WoW_PERCENT,
+        label: "Кол. продаж, WoW%",
+        value: COLUMN_KEY.COUNT_SALES_WoW_PERCENT,
+        tooltip: "Кол. продаж, WoW%",
       },
       {
         id: COLUMN_KEY.SALES_LM,
@@ -770,6 +1009,24 @@ const all_indicators = [
         value: COLUMN_KEY.AVG_CHECK,
         tooltip:
           "Средняя сумма одной покупки. Рассчитывается как выручка, деленная на количество чеков",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_LW,
+        label: "Средний чек LW",
+        value: COLUMN_KEY.AVG_CHECK_LW,
+        tooltip: "Средний чек LW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_WoW,
+        label: "Средний чек WoW",
+        value: COLUMN_KEY.AVG_CHECK_WoW,
+        tooltip: "Средний чек WoW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_WoW_PERCENT,
+        label: "Средний чек WoW%",
+        value: COLUMN_KEY.AVG_CHECK_WoW_PERCENT,
+        tooltip: "Средний чек WoW%",
       },
       {
         id: COLUMN_KEY.AVG_CHECK_LM,
@@ -829,6 +1086,24 @@ const all_indicators = [
           "Общая сумма начисленных бонусов клиентам за покупки в рублевом эквиваленте",
       },
       {
+        id: COLUMN_KEY.BONUS_ACCRUAL_LW,
+        label: "Бонусы начисление, руб. LW",
+        value: COLUMN_KEY.BONUS_ACCRUAL_LW,
+        tooltip: "Бонусы начисление, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_WoW,
+        label: "Бонусы начисление, руб. WoW",
+        value: COLUMN_KEY.BONUS_ACCRUAL_WoW,
+        tooltip: "Бонусы начисление, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_WoW_PERCENT,
+        label: "Бонусы начисление, руб. WoW%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_WoW_PERCENT,
+        tooltip: "Бонусы начисление, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.BONUS_ACCRUAL_LM,
         label: "Бонусы начисление, руб. PM",
         value: COLUMN_KEY.BONUS_ACCRUAL_LM,
@@ -886,6 +1161,24 @@ const all_indicators = [
           "Общая сумма списанных (потраченных) бонусов клиентами при оплате покупок",
       },
       {
+        id: COLUMN_KEY.BONUS_WRITEOFF_LW,
+        label: "Бонусы списание, руб. LW",
+        value: COLUMN_KEY.BONUS_WRITEOFF_LW,
+        tooltip: "Бонусы списание, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_WoW,
+        label: "Бонусы списание, руб. WoW",
+        value: COLUMN_KEY.BONUS_WRITEOFF_WoW,
+        tooltip: "Бонусы списание, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_WoW_PERCENT,
+        label: "Бонусы списание, руб. WoW%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_WoW_PERCENT,
+        tooltip: "Бонусы списание, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.BONUS_WRITEOFF_LM,
         label: "Бонусы списание, руб. PM",
         value: COLUMN_KEY.BONUS_WRITEOFF_LM,
@@ -939,6 +1232,24 @@ const all_indicators = [
         label: "Бонусы начисление, %",
         value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT,
         tooltip: "Процент начисленных бонусов от общей суммы покупок",
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LW,
+        label: "Бонусы начисление, % LW",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LW,
+        tooltip: "Бонусы начисление, % LW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW,
+        label: "Бонусы начисление, % WoW",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW,
+        tooltip: "Бонусы начисление, % WoW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW_PERCENT,
+        label: "Бонусы начисление, % WoW%",
+        value: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_WoW_PERCENT,
+        tooltip: "Бонусы начисление, % WoW%",
       },
       {
         id: COLUMN_KEY.BONUS_ACCRUAL_PERCENT_LM,
@@ -997,6 +1308,24 @@ const all_indicators = [
         tooltip: "Процент списанных бонусов от общей суммы покупок",
       },
       {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LW,
+        label: "Бонусы списание, % LW",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LW,
+        tooltip: "Бонусы списание, % LW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW,
+        label: "Бонусы списание, % WoW",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW,
+        tooltip: "Бонусы списание, % WoW",
+      },
+      {
+        id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW_PERCENT,
+        label: "Бонусы списание, % WoW%",
+        value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_WoW_PERCENT,
+        tooltip: "Бонусы списание, % WoW%",
+      },
+      {
         id: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LM,
         label: "Бонусы списание, % PM",
         value: COLUMN_KEY.BONUS_WRITEOFF_PERCENT_LM,
@@ -1044,6 +1373,24 @@ const all_indicators = [
     value: COLUMN_KEY.WEIGHT_GROUP,
     icon: Weight,
     children: [
+      {
+        id: COLUMN_KEY.WEIGHT_LW,
+        label: "Вес LW",
+        value: COLUMN_KEY.WEIGHT_LW,
+        tooltip: "Вес LW",
+      },
+      {
+        id: COLUMN_KEY.WEIGHT_WOW,
+        label: "Вес WoW",
+        value: COLUMN_KEY.WEIGHT_WOW,
+        tooltip: "Вес WoW",
+      },
+      {
+        id: COLUMN_KEY.WEIGHT_WOW_PERCENT,
+        label: "Вес WoW%",
+        value: COLUMN_KEY.WEIGHT_WOW_PERCENT,
+        tooltip: "Вес WoW%",
+      },
       {
         id: COLUMN_KEY.WEIGHT,
         label: "Вес",
@@ -1106,6 +1453,24 @@ const all_indicators = [
           "Себестоимость товарных остатков на складе на начало торгового дня",
       },
       {
+        id: COLUMN_KEY.OPENING_BALANCE_LW,
+        label: "С/с остатков на начало дня, руб. LW",
+        value: COLUMN_KEY.OPENING_BALANCE_LW,
+        tooltip: "С/с остатков на начало дня, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_WOW,
+        label: "С/с остатков на начало дня, руб. WoW",
+        value: COLUMN_KEY.OPENING_BALANCE_WOW,
+        tooltip: "С/с остатков на начало дня, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.OPENING_BALANCE_WOW_PERCENT,
+        label: "С/с остатков на начало дня, руб. WoW%",
+        value: COLUMN_KEY.OPENING_BALANCE_WOW_PERCENT,
+        tooltip: "С/с остатков на начало дня, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.OPENING_BALANCE_LM,
         label: "С/с остатков на начало дня, руб. PM",
         value: COLUMN_KEY.OPENING_BALANCE_LM,
@@ -1153,6 +1518,24 @@ const all_indicators = [
         value: COLUMN_KEY.FINAL_BALANCE,
         tooltip:
           "Себестоимость товарных остатков на складе на конец торгового дня",
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_LW,
+        label: "С/с остатков на конец дня, руб. LW",
+        value: COLUMN_KEY.FINAL_BALANCE_LW,
+        tooltip: "С/с остатков на конец дня, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_WOW,
+        label: "С/с остатков на конец дня, руб. WoW",
+        value: COLUMN_KEY.FINAL_BALANCE_WOW,
+        tooltip: "С/с остатков на конец дня, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.FINAL_BALANCE_WOW_PERCENT,
+        label: "С/с остатков на конец дня, руб. WoW%",
+        value: COLUMN_KEY.FINAL_BALANCE_WOW_PERCENT,
+        tooltip: "С/с остатков на конец дня, руб. WoW%",
       },
       {
         id: COLUMN_KEY.FINAL_BALANCE_LM,
@@ -1203,6 +1586,24 @@ const all_indicators = [
         value: COLUMN_KEY.TURNOVER_GOODS,
         tooltip:
           "Количество дней, за которое товарный запас полностью обновляется. Чем меньше значение, тем быстрее оборот",
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_LW,
+        label: "Оборачиваемость, дней. LW",
+        value: COLUMN_KEY.TURNOVER_GOODS_LW,
+        tooltip: "Оборачиваемость, дней. LW",
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_WoW,
+        label: "Оборачиваемость, дней. WoW",
+        value: COLUMN_KEY.TURNOVER_GOODS_WoW,
+        tooltip: "Оборачиваемость, дней. WoW",
+      },
+      {
+        id: COLUMN_KEY.TURNOVER_GOODS_WoW_PERCENT,
+        label: "Оборачиваемость, дней. WoW%",
+        value: COLUMN_KEY.TURNOVER_GOODS_WoW_PERCENT,
+        tooltip: "Оборачиваемость, дней. WoW%",
       },
       {
         id: COLUMN_KEY.TURNOVER_GOODS_LM,
@@ -1258,6 +1659,24 @@ const all_indicators = [
         value: COLUMN_KEY.ITR,
         tooltip:
           "Показывает, сколько раз товарный запас полностью обновился за период. Чем выше значение, тем эффективнее управление запасами",
+      },
+      {
+        id: COLUMN_KEY.ITR_LW,
+        label: "Коэффициент оборачиваемости LW",
+        value: COLUMN_KEY.ITR_LW,
+        tooltip: "Коэффициент оборачиваемости LW",
+      },
+      {
+        id: COLUMN_KEY.ITR_WOW,
+        label: "Коэффициент оборачиваемости WoW",
+        value: COLUMN_KEY.ITR_WOW,
+        tooltip: "Коэффициент оборачиваемости WoW",
+      },
+      {
+        id: COLUMN_KEY.ITR_WOW_PERCENT,
+        label: "Коэффициент оборачиваемости WoW%",
+        value: COLUMN_KEY.ITR_WOW_PERCENT,
+        tooltip: "Коэффициент оборачиваемости WoW%",
       },
       {
         id: COLUMN_KEY.ITR_LM,
@@ -1319,6 +1738,24 @@ const indicators_night_shops = [
           "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
       },
       {
+        id: COLUMN_KEY.PROCEEDS_DAY_LW,
+        label: "Дневная выручка, руб. LW",
+        value: COLUMN_KEY.PROCEEDS_DAY_LW,
+        tooltip: "Дневная выручка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_WoW,
+        label: "Дневная выручка, руб. WoW",
+        value: COLUMN_KEY.PROCEEDS_DAY_WoW,
+        tooltip: "Дневная выручка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_DAY_WoW_PERCENT,
+        label: "Дневная выручка, руб. WoW%",
+        value: COLUMN_KEY.PROCEEDS_DAY_WoW_PERCENT,
+        tooltip: "Дневная выручка, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.PROCEEDS_DAY_LM,
         label: "Дневная выручка, руб. PM",
         value: COLUMN_KEY.PROCEEDS_DAY_LM,
@@ -1374,6 +1811,24 @@ const indicators_night_shops = [
         value: COLUMN_KEY.PROCEEDS_NIGHT,
         tooltip:
           "Общая сумма денежных средств, полученная от продажи товаров за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_LW,
+        label: "Ночная выручка, руб. LW",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_LW,
+        tooltip: "Ночная выручка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_WoW,
+        label: "Ночная выручка, руб. WoW",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_WoW,
+        tooltip: "Ночная выручка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROCEEDS_NIGHT_WoW_PERCENT,
+        label: "Ночная выручка, руб. WoW%",
+        value: COLUMN_KEY.PROCEEDS_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная выручка, руб. WoW%",
       },
       {
         id: COLUMN_KEY.PROCEEDS_NIGHT_LM,
@@ -1433,6 +1888,24 @@ const indicators_night_shops = [
           "Процент вхождения выручки ночных магазинов в общую выручку за выбранный период",
       },
       {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LW,
+        label: "Ночная выручка, % LW",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LW,
+        tooltip: "Ночная выручка, % LW",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW,
+        label: "Ночная выручка, % WoW",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW,
+        tooltip: "Ночная выручка, % WoW",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW_PERCENT,
+        label: "Ночная выручка, % WoW%",
+        value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная выручка, % WoW%",
+      },
+      {
         id: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
         label: "Ночная выручка, % PM",
         value: COLUMN_KEY.PERCENTAGE_PROCEEDS_NIGHT_LM,
@@ -1481,6 +1954,24 @@ const indicators_night_shops = [
         value: COLUMN_KEY.PROFIT_DAY,
         tooltip:
           "Разность между выручкой и себестоимостью проданных товаров. Основной показатель прибыльности",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_LW,
+        label: "Дневная валовая прибыль, руб. LW",
+        value: COLUMN_KEY.PROFIT_DAY_LW,
+        tooltip: "Дневная валовая прибыль, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_WoW,
+        label: "Дневная валовая прибыль, руб. WoW",
+        value: COLUMN_KEY.PROFIT_DAY_WoW,
+        tooltip: "Дневная валовая прибыль, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_DAY_WoW_PERCENT,
+        label: "Дневная валовая прибыль, руб. WoW%",
+        value: COLUMN_KEY.PROFIT_DAY_WoW_PERCENT,
+        tooltip: "Дневная валовая прибыль, руб. WoW%",
       },
       {
         id: COLUMN_KEY.PROFIT_DAY_LM,
@@ -1539,6 +2030,24 @@ const indicators_night_shops = [
           "Разность между выручкой и себестоимостью проданных товаров. Основной показатель прибыльности",
       },
       {
+        id: COLUMN_KEY.PROFIT_NIGHT_LW,
+        label: "Ночная валовая прибыль, руб. LW",
+        value: COLUMN_KEY.PROFIT_NIGHT_LW,
+        tooltip: "Ночная валовая прибыль, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_WoW,
+        label: "Ночная валовая прибыль, руб. WoW",
+        value: COLUMN_KEY.PROFIT_NIGHT_WoW,
+        tooltip: "Ночная валовая прибыль, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.PROFIT_NIGHT_WoW_PERCENT,
+        label: "Ночная валовая прибыль, руб. WoW%",
+        value: COLUMN_KEY.PROFIT_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная валовая прибыль, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.PROFIT_NIGHT_LM,
         label: "Ночная валовая прибыль, руб. PM",
         value: COLUMN_KEY.PROFIT_NIGHT_LM,
@@ -1595,6 +2104,24 @@ const indicators_night_shops = [
           "Процент вхождения прибыли ночных магазинов в общую прибыль за выбранный период",
       },
       {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LW,
+        label: "Ночная валовая прибыль, % LW",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LW,
+        tooltip: "Ночная валовая прибыль, % LW",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW,
+        label: "Ночная валовая прибыль, % WoW",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW,
+        tooltip: "Ночная валовая прибыль, % WoW",
+      },
+      {
+        id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW_PERCENT,
+        label: "Ночная валовая прибыль, % WoW%",
+        value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная валовая прибыль, % WoW%",
+      },
+      {
         id: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
         label: "Ночная прибыль, % PM",
         value: COLUMN_KEY.PERCENTAGE_PROFIT_NIGHT_LM,
@@ -1638,6 +2165,18 @@ const indicators_night_shops = [
           "Процент наценки на товар. Показывает, на сколько процентов цена продажи превышает себестоимость",
       },
       {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_LW,
+        label: "Дневная наценка, % LW",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_LW,
+        tooltip: "Дневная наценка, % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_DAY_WoW,
+        label: "Дневная наценка, % WoW",
+        value: COLUMN_KEY.MARKUP_PERCENT_DAY_WoW,
+        tooltip: "Дневная наценка, % WoW",
+      },
+      {
         id: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
         label: "Дневная наценка, % PM",
         value: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
@@ -1677,6 +2216,18 @@ const indicators_night_shops = [
         value: COLUMN_KEY.MARKUP_PERCENT_NIGHT,
         tooltip:
           "Процент наценки на товар. Показывает, на сколько процентов цена продажи превышает себестоимость",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LW,
+        label: "Ночная наценка, % LW",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LW,
+        tooltip: "Ночная наценка, % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW,
+        label: "Ночная наценка, % WoW",
+        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW,
+        tooltip: "Ночная наценка, % WoW",
       },
       {
         id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
@@ -1720,6 +2271,18 @@ const indicators_night_shops = [
           "Процент наценки без учета предоставленных скидок. Показывает первоначальную наценку",
       },
       {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LW,
+        label: "Дневная наценка без скидки, % LW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LW,
+        tooltip: "Дневная наценка без скидки, % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_WoW,
+        label: "Дневная наценка без скидки, % WoW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_WoW,
+        tooltip: "Дневная наценка без скидки, % WoW",
+      },
+      {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
         label: "Дневная наценка без скидки, % PM",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
@@ -1761,6 +2324,18 @@ const indicators_night_shops = [
           "Процент наценки без учета предоставленных скидок. Показывает первоначальную наценку",
       },
       {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LW,
+        label: "Ночная наценка без скидки, % LW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LW,
+        tooltip: "Ночная наценка без скидки, % LW",
+      },
+      {
+        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW,
+        label: "Ночная наценка без скидки, % WoW",
+        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW,
+        tooltip: "Ночная наценка без скидки, % WoW",
+      },
+      {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
         label: "Ночная наценка без скидки, % PM",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
@@ -1800,6 +2375,24 @@ const indicators_night_shops = [
         value: COLUMN_KEY.COST_PRICE_DAY,
         tooltip:
           "Общая стоимость приобретения или производства проданных товаров",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_LW,
+        label: "Дневная себестоимость, руб. LW",
+        value: COLUMN_KEY.COST_PRICE_DAY_LW,
+        tooltip: "Дневная себестоимость, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_WoW,
+        label: "Дневная себестоимость, руб. WoW",
+        value: COLUMN_KEY.COST_PRICE_DAY_WoW,
+        tooltip: "Дневная себестоимость, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_DAY_WoW_PERCENT,
+        label: "Дневная себестоимость, руб. WoW%",
+        value: COLUMN_KEY.COST_PRICE_DAY_WoW_PERCENT,
+        tooltip: "Дневная себестоимость, руб. WoW%",
       },
       {
         id: COLUMN_KEY.COST_PRICE_DAY_LM,
@@ -1858,6 +2451,24 @@ const indicators_night_shops = [
           "Общая стоимость приобретения или производства проданных товаров",
       },
       {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_LW,
+        label: "Ночная себестоимость, руб. LW",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_LW,
+        tooltip: "Ночная себестоимость, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_WoW,
+        label: "Ночная себестоимость, руб. WoW",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_WoW,
+        tooltip: "Ночная себестоимость, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.COST_PRICE_NIGHT_WoW_PERCENT,
+        label: "Ночная себестоимость, руб. WoW%",
+        value: COLUMN_KEY.COST_PRICE_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная себестоимость, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.COST_PRICE_NIGHT_LM,
         label: "Ночная себестоимость, руб. PM",
         value: COLUMN_KEY.COST_PRICE_NIGHT_LM,
@@ -1912,6 +2523,24 @@ const indicators_night_shops = [
         value: COLUMN_KEY.DISCOUNT_DAY,
         tooltip:
           "Общая сумма предоставленных скидок в рублях за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_LW,
+        label: "Дневная скидка, руб. LW",
+        value: COLUMN_KEY.DISCOUNT_DAY_LW,
+        tooltip: "Дневная скидка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_WoW,
+        label: "Дневная скидка, руб. WoW",
+        value: COLUMN_KEY.DISCOUNT_DAY_WoW,
+        tooltip: "Дневная скидка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_DAY_WoW_PERCENT,
+        label: "Дневная скидка, руб. WoW%",
+        value: COLUMN_KEY.DISCOUNT_DAY_WoW_PERCENT,
+        tooltip: "Дневная скидка, руб. WoW%",
       },
       {
         id: COLUMN_KEY.DISCOUNT_DAY_LM,
@@ -1969,6 +2598,24 @@ const indicators_night_shops = [
           "Общая сумма предоставленных скидок в рублях за выбранный период",
       },
       {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_LW,
+        label: "Ночная скидка, руб. LW",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_LW,
+        tooltip: "Ночная скидка, руб. LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_WoW,
+        label: "Ночная скидка, руб. WoW",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_WoW,
+        tooltip: "Ночная скидка, руб. WoW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_NIGHT_WoW_PERCENT,
+        label: "Ночная скидка, руб. WoW%",
+        value: COLUMN_KEY.DISCOUNT_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная скидка, руб. WoW%",
+      },
+      {
         id: COLUMN_KEY.DISCOUNT_NIGHT_LM,
         label: "Ночная скидка, руб. PM",
         value: COLUMN_KEY.DISCOUNT_NIGHT_LM,
@@ -2023,6 +2670,24 @@ const indicators_night_shops = [
         tooltip: "Средний процент скидки от общей стоимости покупок",
       },
       {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LW,
+        label: "Дневная скидка, % LW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LW,
+        tooltip: "Дневная скидка, % LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW,
+        label: "Дневная скидка, % WoW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW,
+        tooltip: "Дневная скидка, % WoW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW_PERCENT,
+        label: "Дневная скидка, % WoW%",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_WoW_PERCENT,
+        tooltip: "Дневная скидка, % WoW%",
+      },
+      {
         id: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
         label: "Дневная скидка % PM",
         value: COLUMN_KEY.DISCOUNT_PERCENT_DAY_LM,
@@ -2062,6 +2727,24 @@ const indicators_night_shops = [
         tooltip: "Средний процент скидки от общей стоимости покупок",
       },
       {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LW,
+        label: "Ночная скидка, % LW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LW,
+        tooltip: "Ночная скидка, % LW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW,
+        label: "Ночная скидка, % WoW",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW,
+        tooltip: "Ночная скидка, % WoW",
+      },
+      {
+        id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW_PERCENT,
+        label: "Ночная скидка, % WoW%",
+        value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_WoW_PERCENT,
+        tooltip: "Ночная скидка, % WoW%",
+      },
+      {
         id: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LM,
         label: "Ночная скидка % PM",
         value: COLUMN_KEY.DISCOUNT_PERCENT_NIGHT_LM,
@@ -2099,6 +2782,24 @@ const indicators_night_shops = [
         label: "Дневное кол. продаж",
         value: COLUMN_KEY.COUNT_SALES_DAY,
         tooltip: "Общее количество проданных единиц товара за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_LW,
+        label: "Дневное кол. продаж, LW",
+        value: COLUMN_KEY.COUNT_SALES_DAY_LW,
+        tooltip: "Дневное кол. продаж, LW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_WoW,
+        label: "Дневное кол. продаж, WoW",
+        value: COLUMN_KEY.COUNT_SALES_DAY_WoW,
+        tooltip: "Дневное кол. продаж, WoW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_DAY_WoW_PERCENT,
+        label: "Дневное кол. продаж, WoW%",
+        value: COLUMN_KEY.COUNT_SALES_DAY_WoW_PERCENT,
+        tooltip: "Дневное кол. продаж, WoW%",
       },
       {
         id: COLUMN_KEY.COUNT_SALES_DAY_LM,
@@ -2154,6 +2855,24 @@ const indicators_night_shops = [
         label: "Ночное кол. продаж",
         value: COLUMN_KEY.COUNT_SALES_NIGHT,
         tooltip: "Общее количество проданных единиц товара за выбранный период",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_LW,
+        label: "Ночное кол. продаж, LW",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_LW,
+        tooltip: "Ночное кол. продаж, LW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_WoW,
+        label: "Ночное кол. продаж, WoW",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_WoW,
+        tooltip: "Ночное кол. продаж, WoW",
+      },
+      {
+        id: COLUMN_KEY.COUNT_SALES_NIGHT_WoW_PERCENT,
+        label: "Ночное кол. продаж, WoW%",
+        value: COLUMN_KEY.COUNT_SALES_NIGHT_WoW_PERCENT,
+        tooltip: "Ночное кол. продаж, WoW%",
       },
       {
         id: COLUMN_KEY.COUNT_SALES_NIGHT_LM,
@@ -2212,6 +2931,24 @@ const indicators_night_shops = [
           "Средняя сумма одной покупки. Рассчитывается как выручка, деленная на количество чеков",
       },
       {
+        id: COLUMN_KEY.AVG_CHECK_DAY_LW,
+        label: "Дневной ср. чек, LW",
+        value: COLUMN_KEY.AVG_CHECK_DAY_LW,
+        tooltip: "Дневной ср. чек, LW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_WoW,
+        label: "Дневной ср. чек, WoW",
+        value: COLUMN_KEY.AVG_CHECK_DAY_WoW,
+        tooltip: "Дневной ср. чек, WoW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_DAY_WoW_PERCENT,
+        label: "Дневной ср. чек, WoW%",
+        value: COLUMN_KEY.AVG_CHECK_DAY_WoW_PERCENT,
+        tooltip: "Дневной ср. чек, WoW%",
+      },
+      {
         id: COLUMN_KEY.AVG_CHECK_DAY_LM,
         label: "Дневной ср. Чек PM",
         value: COLUMN_KEY.AVG_CHECK_DAY_LM,
@@ -2266,6 +3003,24 @@ const indicators_night_shops = [
         value: COLUMN_KEY.AVG_CHECK_NIGHT,
         tooltip:
           "Средняя сумма одной покупки. Рассчитывается как выручка, деленная на количество чеков",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_LW,
+        label: "Ночной ср. чек, LW",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_LW,
+        tooltip: "Ночной ср. чек, LW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_WoW,
+        label: "Ночной ср. чек, WoW",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_WoW,
+        tooltip: "Ночной ср. чек, WoW",
+      },
+      {
+        id: COLUMN_KEY.AVG_CHECK_NIGHT_WoW_PERCENT,
+        label: "Ночной ср. чек, WoW%",
+        value: COLUMN_KEY.AVG_CHECK_NIGHT_WoW_PERCENT,
+        tooltip: "Ночной ср. чек, WoW%",
       },
       {
         id: COLUMN_KEY.AVG_CHECK_NIGHT_LM,
@@ -2363,6 +3118,10 @@ export const useIndicatorList = (type: "check" | "commerce") => {
     COLUMN_KEY.BONUS_WRITEOFF_GROUP,
     COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
     COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
+    "writeOffGroup",
+    "writeOffPercentGroup",
+    COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
+    COLUMN_KEY.WRITEOFF_COUNT_GROUP,
   ]);
   if (type === "check" && nightShops) {
     return indicators_night_shops;
