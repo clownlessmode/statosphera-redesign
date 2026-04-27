@@ -474,12 +474,6 @@ const all_indicators = [
         tooltip: "Наценка % WoW",
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_WoW_PERCENT,
-        label: "Наценка % WoW%",
-        value: COLUMN_KEY.MARKUP_PERCENT_WoW_PERCENT,
-        tooltip: "Наценка % WoW%",
-      },
-      {
         id: COLUMN_KEY.MARKUP_PERCENT_LM,
         label: "Наценка % PM",
         value: COLUMN_KEY.MARKUP_PERCENT_LM,
@@ -531,12 +525,6 @@ const all_indicators = [
         label: "Наценка без скидки % WoW",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW,
         tooltip: "Наценка без скидки % WoW",
-      },
-      {
-        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW_PERCENT,
-        label: "Наценка без скидки % WoW%",
-        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_WoW_PERCENT,
-        tooltip: "Наценка без скидки % WoW%",
       },
       {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_LM,
@@ -806,12 +794,6 @@ const all_indicators = [
         tooltip: "Скидка % WoW",
       },
       {
-        id: COLUMN_KEY.DISCOUNT_PERCENT_WoW_PERCENT,
-        label: "Скидка % WoW%",
-        value: COLUMN_KEY.DISCOUNT_PERCENT_WoW_PERCENT,
-        tooltip: "Скидка % WoW%",
-      },
-      {
         id: COLUMN_KEY.DISCOUNT_PERCENT_LM,
         label: "Скидки % PM",
         value: COLUMN_KEY.DISCOUNT_PERCENT_LM,
@@ -862,12 +844,6 @@ const all_indicators = [
         label: "Маржа % WoW",
         value: COLUMN_KEY.MARGIN_PERCENT_WoW,
         tooltip: "Маржа % WoW",
-      },
-      {
-        id: COLUMN_KEY.MARGIN_PERCENT_WoW_PERCENT,
-        label: "Маржа % WoW%",
-        value: COLUMN_KEY.MARGIN_PERCENT_WoW_PERCENT,
-        tooltip: "Маржа % WoW%",
       },
       {
         id: COLUMN_KEY.MARGIN_PERCENT_LM,
@@ -922,12 +898,6 @@ const all_indicators = [
         tooltip: "Маржа % без учета скидки WoW",
       },
       {
-        id: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_WoW_PERCENT,
-        label: "Маржа % без учета скидки WoW%",
-        value: COLUMN_KEY.MARGIN_DISCOUNT_PERCENT_WoW_PERCENT,
-        tooltip: "Маржа % без учета скидки WoW%",
-      },
-      {
         id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
         label: "Маржа % без учета скидки PM",
         value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LM,
@@ -939,7 +909,6 @@ const all_indicators = [
       //   value: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_MOM_PERCENT,
       //   tooltip: "Изменение маржи без скидки по сравнению с предыдущим месяцем",
       // },
-
       {
         id: COLUMN_KEY.MARGIN_PERCENT_DISCOUNT_LY,
         label: "Маржа % без учета скидки PY",
@@ -2208,12 +2177,6 @@ const indicators_night_shops = [
         tooltip: "Дневная наценка, % WoW",
       },
       {
-        id: COLUMN_KEY.MARKUP_PERCENT_DAY_WoW_PERCENT,
-        label: "Дневная наценка, % WoW%",
-        value: COLUMN_KEY.MARKUP_PERCENT_DAY_WoW_PERCENT,
-        tooltip: "Дневная наценка, % WoW%",
-      },
-      {
         id: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
         label: "Дневная наценка, % PM",
         value: COLUMN_KEY.MARKUP_PERCENT_DAY_LM,
@@ -2265,12 +2228,6 @@ const indicators_night_shops = [
         label: "Ночная наценка, % WoW",
         value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW,
         tooltip: "Ночная наценка, % WoW",
-      },
-      {
-        id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW_PERCENT,
-        label: "Ночная наценка, % WoW%",
-        value: COLUMN_KEY.MARKUP_PERCENT_NIGHT_WoW_PERCENT,
-        tooltip: "Ночная наценка, % WoW%",
       },
       {
         id: COLUMN_KEY.MARKUP_PERCENT_NIGHT_LM,
@@ -2326,12 +2283,6 @@ const indicators_night_shops = [
         tooltip: "Дневная наценка без скидки, % WoW",
       },
       {
-        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_WoW_PERCENT,
-        label: "Дневная наценка без скидки, % WoW%",
-        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_WoW_PERCENT,
-        tooltip: "Дневная наценка без скидки, % WoW%",
-      },
-      {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
         label: "Дневная наценка без скидки, % PM",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_DAY_LM,
@@ -2383,12 +2334,6 @@ const indicators_night_shops = [
         label: "Ночная наценка без скидки, % WoW",
         value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW,
         tooltip: "Ночная наценка без скидки, % WoW",
-      },
-      {
-        id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW_PERCENT,
-        label: "Ночная наценка без скидки, % WoW%",
-        value: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_WoW_PERCENT,
-        tooltip: "Ночная наценка без скидки, % WoW%",
       },
       {
         id: COLUMN_KEY.MARKUP_DISCOUNT_PERCENT_NIGHT_LM,
