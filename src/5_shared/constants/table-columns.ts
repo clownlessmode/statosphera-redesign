@@ -635,6 +635,9 @@ export enum COLUMN_KEY {
   CUMULATIVE_PROFIT_YOY = "cumulativeProfitYoY",
   CUMULATIVE_PROFIT_YOY_PERCENT = "cumulativeProfitYoYPercent",
   WRITE_OFF = "writeOff",
+  WRITEOFF_LW = "writeOffLW",
+  WRITEOFF_WoW = "writeOffWoW",
+  WRITEOFF_WoW_PERCENT = "writeOffWoWPercent",
   WRITE_OFF_LM = "writeOffLM",
   WRITE_OFF_MOM = "writeOffMoM",
   WRITE_OFF_MOM_PERCENT = "writeOffMoMPercent",
@@ -800,9 +803,6 @@ export enum COLUMN_KEY {
   WRITEOFF_COUNT_LW = "writeOffCountLW",
   WRITEOFF_COUNT_WoW = "writeOffCountWoW",
   WRITEOFF_COUNT_WoW_PERCENT = "writeOffCountWoWPercent",
-  WRITEOFF_LW = "writeOffLW",
-  WRITEOFF_WoW = "writeOffWoW",
-  WRITEOFF_WoW_PERCENT = "writeOffWoWPercent",
   WRITEOFF_WEIGHT_LW = "writeOffWeightLW",
   WRITEOFF_WEIGHT_WoW = "writeOffWeightWoW",
   WRITEOFF_WEIGHT_WoW_PERCENT = "writeOffWeightWoWPercent",
@@ -1545,6 +1545,30 @@ export const tableColumns: ColDef<any>[] = [
       params.value != null ? formatNumber(params.value) : "",
   },
   {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_LW,
+    headerName: "Списания, вес LW",
+    headerTooltip: "Списания, вес LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW,
+    headerName: "Списания, вес WoW",
+    headerTooltip: "Списания, вес WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW_PERCENT,
+    headerName: "Списания, вес WoW%",
+    headerTooltip: "Списания, вес WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
     field: COLUMN_KEY.WRITEOFF_WEIGHT_LM,
     headerName: "Списания, вес PM",
     headerTooltip: "Списания, вес PM",
@@ -1602,6 +1626,30 @@ export const tableColumns: ColDef<any>[] = [
       if (params.value == null) return "";
       return params.value.toLocaleString("ru-RU");
     },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_LW,
+    headerName: "Списания, кол-во LW",
+    headerTooltip: "Списания, кол-во LW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_WoW,
+    headerName: "Списания, кол-во WoW",
+    headerTooltip: "Списания, кол-во WoW",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_COUNT_WoW_PERCENT,
+    headerName: "Списания, кол-во WoW%",
+    headerTooltip: "Списания, кол-во WoW%",
+    cellDataType: "number",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
   },
   {
     field: COLUMN_KEY.WRITEOFF_COUNT_LM,
@@ -3777,6 +3825,48 @@ export const tableColumns: ColDef<any>[] = [
     headerTooltip: "Списания",
     valueFormatter: (params: any) =>
       params.value != null ? formatNumber(params.value) : "",
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_LW,
+    headerName: "Списания, руб. LW",
+    headerTooltip: "Списания, руб. LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#71DE56" };
+      } else if (params.value > 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW,
+    headerName: "Списания, руб. WoW",
+    headerTooltip: "Списания, руб. WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#71DE56" };
+      } else if (params.value > 0) {
+        return { color: "#DE5656" };
+      }
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
+    headerName: "Списания, руб. WoW%",
+    headerTooltip: "Списания, руб. WoW%",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#71DE56" };
+      } else if (params.value > 0) {
+        return { color: "#DE5656" };
+      }
+    },
   },
   {
     field: COLUMN_KEY.WRITE_OFF_LM,
@@ -8322,163 +8412,6 @@ export const tableColumns: ColDef<any>[] = [
       maxNumConditions: 1,
     },
   },
-
-  {
-    field: COLUMN_KEY.WRITEOFF_COUNT_LW,
-    headerName: "Количество списаний LW",
-    headerTooltip: "Количество списаний LW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_COUNT_WoW,
-    headerName: "Количество списаний WoW",
-    headerTooltip: "Количество списаний WoW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_COUNT_WoW_PERCENT,
-    headerName: "Количество списаний WoW%",
-    headerTooltip: "Количество списаний WoW%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_LW,
-    headerName: "Списания, руб. LW",
-    headerTooltip: "Списания, руб. LW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_WoW,
-    headerName: "Списания, руб. WoW",
-    headerTooltip: "Списания, руб. WoW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
-    headerName: "Списания, руб. WoW%",
-    headerTooltip: "Списания, руб. WoW%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_WEIGHT_LW,
-    headerName: "Вес списаний LW",
-    headerTooltip: "Вес списаний LW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW,
-    headerName: "Вес списаний WoW",
-    headerTooltip: "Вес списаний WoW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatNumber(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_WEIGHT_WoW_PERCENT,
-    headerName: "Вес списаний WoW%",
-    headerTooltip: "Вес списаний WoW%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_PERCENT_LW,
-    headerName: "Списания % LW",
-    headerTooltip: "Списания % LW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW,
-    headerName: "Списания % WoW",
-    headerTooltip: "Списания % WoW",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
-  {
-    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW_PERCENT,
-    headerName: "Списания % WoW%",
-    headerTooltip: "Списания % WoW%",
-    cellDataType: "number",
-    valueFormatter: (params: any) =>
-      params.value != null ? formatPercent(params.value) : "",
-    cellStyle: (params) => {
-      if (params.value < 0) {
-        return { color: "#DE5656" };
-      }
-    },
-  },
   {
     field: COLUMN_KEY.DISCOUNT_LW,
     headerName: "Скидка, руб. LW",
@@ -9830,6 +9763,87 @@ export const tableConfig: ColDef<any>[] = [
     },
   },
   {
+    field: COLUMN_KEY.WRITEOFF_LW,
+    headerName: "Списания LW",
+    headerTooltip: "Списания LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW,
+    headerName: "Списания WoW",
+    headerTooltip: "Списания WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatNumber(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_WoW_PERCENT,
+    headerName: "Списания WoW%",
+    headerTooltip: "Списания WoW%",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
     field: COLUMN_KEY.WRITE_OFF_LM,
     headerName: "Списания  PM",
     headerTooltip: "Прошлый месяц",
@@ -9999,6 +10013,93 @@ export const tableConfig: ColDef<any>[] = [
     field: COLUMN_KEY.WRITE_OFF_PERCENT,
     headerName: "Списания %",
     headerTooltip: "Списания %",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_LW,
+    headerName: "Списания % LW",
+    headerTooltip: "Списания % LW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW,
+    headerName: "Списания % WoW",
+    headerTooltip: "Списания % WoW",
+    valueFormatter: (params: any) =>
+      params.value != null ? formatPercent(params.value) : "",
+    cellStyle: (params) => {
+      if (params.value < 0) {
+        return { color: "#DE5656" };
+      } else if (params.value > 100) {
+        return { color: "#71DE56" };
+      }
+    },
+    filter: "agNumberColumnFilter",
+    filterParams: {
+      buttons: ["reset", "apply"],
+      filterOptions: [
+        {
+          displayKey: "betweenExclusive",
+          displayName: "Между",
+          predicate: ([fv1, fv2]: any[], cellValue: any) =>
+            cellValue == null || (fv1 < cellValue && fv2 > cellValue),
+          numberOfInputs: 2,
+        },
+      ],
+
+      maxNumConditions: 1,
+    },
+  },
+  {
+    field: COLUMN_KEY.WRITEOFF_PERCENT_WoW_PERCENT,
+    headerName: "Списания % WoW%",
+    headerTooltip: "Списания % WoW%",
     valueFormatter: (params: any) =>
       params.value != null ? formatPercent(params.value) : "",
     cellStyle: (params) => {
