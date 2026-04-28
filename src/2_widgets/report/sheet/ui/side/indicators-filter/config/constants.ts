@@ -3118,10 +3118,6 @@ export const useIndicatorList = (type: "check" | "commerce") => {
     COLUMN_KEY.BONUS_WRITEOFF_GROUP,
     COLUMN_KEY.BONUS_ACCRUAL_PERCENT_GROUP,
     COLUMN_KEY.BONUS_WRITEOFF_PERCENT_GROUP,
-    "writeOffGroup",
-    "writeOffPercentGroup",
-    COLUMN_KEY.WRITEOFF_WEIGHT_GROUP,
-    COLUMN_KEY.WRITEOFF_COUNT_GROUP,
   ]);
   if (type === "check" && nightShops) {
     return indicators_night_shops;
