@@ -334,14 +334,12 @@ export const ModalUpdateProject = ({
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor={`upd-responsible-${project.id}`}>
-                Ответственный
-              </Label>
+              <Label htmlFor={`upd-responsible-${project.id}`}>Лидер</Label>
               <Input
                 id={`upd-responsible-${project.id}`}
                 className="bg-background"
                 disabled={fieldsDisabled}
-                placeholder="Введите ответственного"
+                placeholder="Введите лидера"
                 value={responsible_name}
                 onChange={(e) => setResponsibleName(e.target.value)}
               />

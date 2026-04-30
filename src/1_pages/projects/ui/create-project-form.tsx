@@ -37,7 +37,7 @@ import { formatUserLastNameInitials } from "./project-page/lib/format-user-displ
 const createProjectSchema = z
   .object({
     name: z.string().min(1, "Название проекта обязательно"),
-    responsible_name: z.string().min(1, "Ответственный обязательно"),
+    responsible_name: z.string().min(1, "Лидер обязательно"),
     team_info: z.string().min(1, "Команда обязательно"),
     client_name: z.string().min(1, "Заказчик обязательно"),
     pm_name: z.string().min(1, "Проджект-менеджер обязательно"),
@@ -160,10 +160,10 @@ export const CreateProjectForm = () => {
                   name="responsible_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ответственный</FormLabel>
+                      <FormLabel>Лидер</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Введите ответственного"
+                          placeholder="Введите лидера"
                           className="bg-background"
                           {...field}
                         />
@@ -261,6 +261,10 @@ export const CreateProjectForm = () => {
                           value={field.value}
                           onChange={field.onChange}
                           placeholder="Выберите дату начала"
+                          disabled={(date) => {
+                            const start = form.getValues("end_date");
+                            return Boolean(start && date < start);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

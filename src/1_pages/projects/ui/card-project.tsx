@@ -148,9 +148,7 @@ export const CardProject = ({ project }: { project: Projects }) => {
                 <p className="text-sm font-light truncate max-w-48">
                   {project.responsible_name}
                 </p>
-                <p className="text-[12px] text-muted-foreground">
-                  Ответственный
-                </p>
+                <p className="text-[12px] text-muted-foreground">Лидер</p>
               </div>
             </div>
             <div className="flex flex-col gap-2">

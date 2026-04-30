@@ -241,7 +241,6 @@ export const ROUTES: RouteConfig[] = [
     element: <DemocracyPage />,
     layout: Sidebar,
     label: "Предложения",
-    allowedRoles: [ROLES.ADMIN],
   },
   {
     path: ROUTES_PATH.LESSONS,

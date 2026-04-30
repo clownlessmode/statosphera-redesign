@@ -1,3 +1,3 @@
 export { DemocracyPage } from "./ui/democracy";
-export * from "./types";
-export * from "./api";
+export { useDemocracyController } from "./api/controller";
+export * from "./api/types";
