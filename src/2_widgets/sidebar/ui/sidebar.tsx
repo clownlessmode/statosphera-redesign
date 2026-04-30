@@ -14,7 +14,6 @@ import {
   ShoppingBag,
   SlidersHorizontal,
   Store,
-  Vote,
   ChartColumn,
   //  MessageCircle,
   Tractor,
@@ -29,6 +28,7 @@ import {
   FilePen,
   File,
   DoorOpen,
+  Lightbulb,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -221,9 +221,8 @@ const Sidebar = ({
       {
         title: "Предложения",
         url: ROUTES_PATH.DEMOCRACY,
-        disabled: true,
         allowedRoles: [ROLES.ADMIN],
-        icon: Vote,
+        icon: Lightbulb,
       },
       {
         title: "Фермеры",

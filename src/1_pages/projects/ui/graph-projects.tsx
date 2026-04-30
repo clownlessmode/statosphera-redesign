@@ -128,7 +128,7 @@ const buildOption = (
         if (!proj) return "";
         const title = proj.name.replace(/</g, "&lt;");
         return [
-          `<div style="font-weight:600;max-width:280px">${title}</div>`,
+          `<div style="font-weight:600">${title}</div>`,
           `Этап: ${proj.stage}`,
           `Приоритет: ${proj.priority ?? "—"}`,
           `Начало: ${proj.start_date.split("T")[0]}`,

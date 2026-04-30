@@ -1,41 +1,101 @@
-import { democracyService } from "./service";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { DemocracyService } from "./service";
+import { ApiError } from "@shared/api/types";
 import {
   CreateIdeaRequest,
+  IdeasResponse,
+  MyIdeaResponse,
+  UpdateIdeaRequest,
   VoteRequest,
-  RoleConfigRequest,
-  UserRoleConfigRequest,
-} from "../types";
+} from "./types";
 
-export const democracyController = {
-  // Получить все идеи
-  getIdeas: () => democracyService.getIdeas(),
+export const useInfiniteDemocracyController = (params: { limit: number }) => {
+  const getIdeas = useInfiniteQuery<IdeasResponse, ApiError>({
+    queryKey: ["democracy-ideas", "list", params],
+    queryFn: ({ pageParam }) =>
+      DemocracyService.getIdeas(params.limit, pageParam as number),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.hasMore ? allPages.length * params.limit : undefined;
+    },
+    initialPageParam: 0,
+  });
 
-  // Получить идею по ID
-  getIdeaById: (id: string) => democracyService.getIdeaById(id),
+  return {
+    ideas: getIdeas.data?.pages.flatMap((page) => page.items) || [],
+    isIdeasLoading: getIdeas.isLoading,
+    isIdeasFetchingNextPage: getIdeas.isFetchingNextPage,
+    fetchNextPage: getIdeas.fetchNextPage,
+    hasNextPage: getIdeas.hasNextPage,
+  };
+};
 
-  // Создать новую идею
-  createIdea: (data: CreateIdeaRequest) => democracyService.createIdea(data),
+export const useDemocracyController = () => {
+  const queryClient = useQueryClient();
 
-  // Проголосовать за идею
-  voteForIdea: (data: VoteRequest) => democracyService.voteForIdea(data),
+  const getMyIdeas = useQuery<MyIdeaResponse, ApiError>({
+    queryKey: ["democracy-idea"],
+    queryFn: () => DemocracyService.getMyIdea(),
+  });
 
-  // Получить голоса пользователя
-  getUserVotes: (userId: string) => democracyService.getUserVotes(userId),
+  const createIdea = useMutation<void, ApiError, CreateIdeaRequest>({
+    mutationFn: async (dto: CreateIdeaRequest) => {
+      const response = await DemocracyService.createIdea(dto);
+      queryClient.invalidateQueries({ queryKey: ["democracy-ideas"] });
+      queryClient.invalidateQueries({ queryKey: ["democracy-idea"] });
+      return response;
+    },
+  });
 
-  // Получить роли для голосования
-  getVotingRoles: () => democracyService.getVotingRoles(),
+  const updateIdea = useMutation<
+    void,
+    ApiError,
+    { ideaId: number; dto: UpdateIdeaRequest }
+  >({
+    mutationFn: async ({ ideaId, dto }) => {
+      const response = await DemocracyService.updateIdea(ideaId, dto);
+      queryClient.invalidateQueries({ queryKey: ["democracy-ideas"] });
+      queryClient.invalidateQueries({ queryKey: ["democracy-idea"] });
+      return response;
+    },
+  });
 
-  // Получить конфигурацию ролей голосования пользователей
-  getUserVotingRoleConfigs: () => democracyService.getUserVotingRoleConfigs(),
+  const deleteIdea = useMutation<void, ApiError, { ideaId: number }>({
+    mutationFn: async ({ ideaId }) => {
+      const response = await DemocracyService.deleteIdea(ideaId);
+      queryClient.invalidateQueries({ queryKey: ["democracy-ideas"] });
+      queryClient.invalidateQueries({ queryKey: ["democracy-idea"] });
+      return response;
+    },
+  });
 
-  // Обновить множитель роли голосования
-  updateVotingRoleWeight: (data: RoleConfigRequest) =>
-    democracyService.updateVotingRoleWeight(data),
+  const voteIdea = useMutation<
+    void,
+    ApiError,
+    { ideaId: number; dto: VoteRequest }
+  >({
+    mutationFn: async ({ ideaId, dto }) => {
+      const response = await DemocracyService.voteIdea(ideaId, dto);
+      queryClient.invalidateQueries({ queryKey: ["democracy-ideas"] });
+      queryClient.invalidateQueries({ queryKey: ["democracy-idea"] });
+      return response;
+    },
+  });
 
-  // Назначить роль голосования пользователю
-  assignUserVotingRole: (data: UserRoleConfigRequest) =>
-    democracyService.assignUserVotingRole(data),
-
-  // Получить статистику идей
-  getIdeasStats: () => democracyService.getIdeasStats(),
+  return {
+    myIdeas: getMyIdeas.data || [],
+    isMyIdeasLoading: getMyIdeas.isLoading,
+    createIdea: createIdea.mutateAsync,
+    isCreateIdeaLoading: createIdea.isPending,
+    voteIdea: voteIdea.mutateAsync,
+    isVoteIdeaLoading: voteIdea.isPending,
+    updateIdea: updateIdea.mutateAsync,
+    isUpdateIdeaLoading: updateIdea.isPending,
+    deleteIdea: deleteIdea.mutateAsync,
+    isDeleteIdeaLoading: deleteIdea.isPending,
+  };
 };
