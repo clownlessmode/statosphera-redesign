@@ -60,7 +60,7 @@ export const IdeasList: React.FC<IdeasListProps> = ({
               Идей пока нет
             </h3>
             <p className="text-muted-foreground">
-              Станьте первым, кто предложит улучшение для Статосферы!
+              Станьте первым, кто предложит свое улучшение!
             </p>
           </div>
         )}
