@@ -426,6 +426,11 @@ export const ROUTES: RouteConfig[] = [
     element: <Unload />,
     layout: Sidebar,
     label: "Выгрузка",
+    allowedRoles: [
+      ...Object.values(ROLES).filter(
+        (role) => role !== ROLES.FARMER && role !== ROLES.FOREST,
+      ),
+    ],
   },
   {
     path: ROUTES_PATH.FARMER,
