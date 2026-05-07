@@ -252,7 +252,9 @@ const Sidebar = ({
                 {
                   title: "Уведомления",
                   url: ROUTES_PATH.ADMIN_NOTIFICATIONS,
-                  disabled: session?.role !== ROLES.ADMIN,
+                  disabled:
+                    session?.role !== ROLES.ADMIN &&
+                    ![156].includes(session?.idUser ?? -1),
                 },
                 {
                   title: "Роли голосования",
@@ -272,10 +274,12 @@ const Sidebar = ({
                 ![59, 156].includes(session?.idUser ?? -1),
             },
             {
-              title: "Уведомления",
+              title: "Уведомления (админ)",
               url: ROUTES_PATH.ADMIN_NOTIFICATIONS,
               icon: BellPlus,
-              disabled: session?.role !== ROLES.ADMIN,
+              disabled:
+                session?.role !== ROLES.ADMIN &&
+                ![156].includes(session?.idUser ?? -1),
             },
             {
               title: "Роли голосования",

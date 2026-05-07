@@ -153,6 +153,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [156],
     element: <AdminNotifications />,
     layout: Sidebar,
   },
