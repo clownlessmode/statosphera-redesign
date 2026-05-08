@@ -27,6 +27,10 @@ export type ProjectsFilters = {
   quarterFilter?: QuarterFilter;
   isActive?: boolean;
   sort?: ProjectSort;
+  pm_name?: string;
+  responsible_name?: string;
+  start_date?: string;
+  end_date?: string;
 };
 
 export type ProjectsRequest = ProjectsFilters & {
@@ -104,3 +108,15 @@ export type CreateDocumentRequest = {
 };
 
 export type UpdateProjectRequest = CreateProjectRequest;
+
+export type CreateDescriptionRequest = {
+  description: string;
+};
+
+export type PmNameRequest = {
+  name?: string;
+};
+
+export type ResponsibleNameRequest = {
+  name?: string;
+};

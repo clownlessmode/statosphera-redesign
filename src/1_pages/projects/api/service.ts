@@ -13,8 +13,12 @@ import {
   type GetProjectsParams,
   type ProjectsRequest,
   UpdateProjectRequest,
+  CreateDescriptionRequest,
+  PmNameRequest,
+  ResponsibleNameRequest,
 } from "./types/requests";
 import {
+  CreateDescriptionResponse,
   CreateDocumentGroupResponse,
   CreateDocumentResponse,
   CreateProjectResponse,
@@ -23,8 +27,10 @@ import {
   DocGroup,
   Document,
   Graph,
+  PmNameResponse,
   ProjectDetail,
   Projects,
+  ResponsibleNameResponse,
   Task,
   TaskGroup,
   UpdateProjectResponse,
@@ -33,8 +39,18 @@ import {
 
 export class ProjectsService {
   static async getProjects(request: GetProjectsParams): Promise<Projects[]> {
-    const { pagination, stage, priority, quarterFilter, isActive, sort } =
-      request;
+    const {
+      pagination,
+      stage,
+      priority,
+      quarterFilter,
+      isActive,
+      sort,
+      pm_name,
+      responsible_name,
+      start_date,
+      end_date,
+    } = request;
     const body: ProjectsRequest = {
       pagination,
       sort: sort ?? DEFAULT_PROJECT_SORT,
@@ -43,6 +59,11 @@ export class ProjectsService {
     if (priority?.length) body.priority = priority;
     if (isActive) body.isActive = isActive;
     if (quarterFilter) body.quarterFilter = quarterFilter;
+    if (pm_name?.trim()) body.pm_name = pm_name.trim();
+    if (responsible_name?.trim())
+      body.responsible_name = responsible_name.trim();
+    if (start_date?.trim()) body.start_date = start_date.trim();
+    if (end_date?.trim()) body.end_date = end_date.trim();
 
     const response = await api.post<Projects[]>("/projects/get-all", body);
     return response.data;
@@ -69,6 +90,17 @@ export class ProjectsService {
   ): Promise<CreateProjectResponse> {
     const response = await api.post<CreateProjectResponse>(
       "/projects",
+      request,
+    );
+    return response.data;
+  }
+
+  static async createDescription(
+    request: CreateDescriptionRequest,
+    id: number,
+  ): Promise<CreateDescriptionResponse> {
+    const response = await api.post<CreateDescriptionResponse>(
+      `/projects/description/${id}`,
       request,
     );
     return response.data;
@@ -107,6 +139,31 @@ export class ProjectsService {
 
   static async deleteProject(id: number): Promise<void> {
     const response = await api.delete<void>(`/projects/${id}`);
+    return response.data;
+  }
+}
+
+export class FiltersNameService {
+  static async getPmName(
+    request: PmNameRequest = {},
+  ): Promise<PmNameResponse[]> {
+    const name = request.name?.trim();
+    const response = await api.get<PmNameResponse[]>(`/projects/pm-name`, {
+      ...(name ? { params: { name } } : {}),
+    });
+    return response.data;
+  }
+
+  static async getResponsibleName(
+    request: ResponsibleNameRequest = {},
+  ): Promise<ResponsibleNameResponse[]> {
+    const name = request.name?.trim();
+    const response = await api.get<ResponsibleNameResponse[]>(
+      `/projects/responsible-name`,
+      {
+        ...(name ? { params: { name } } : {}),
+      },
+    );
     return response.data;
   }
 }
