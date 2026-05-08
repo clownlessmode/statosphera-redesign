@@ -11,6 +11,7 @@ import {
   GraphRequest,
   ProjectsFilters,
   UpdateProjectRequest,
+  CreateDescriptionRequest,
 } from "./types/requests";
 import {
   CreateDocumentGroupResponse,
@@ -27,10 +28,14 @@ import {
   TaskGroup,
   UsersResponse,
   UpdateProjectResponse,
+  CreateDescriptionResponse,
+  PmNameResponse,
+  ResponsibleNameResponse,
 } from "./types/response";
 import {
   DocGroupsService,
   DocumentsService,
+  FiltersNameService,
   ProjectsService,
   TaskGroupsService,
   TasksService,
@@ -92,6 +97,24 @@ export const useCreateProject = () => {
   });
 };
 
+export const useCreateDescription = (id: number) => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    CreateDescriptionResponse,
+    ApiError,
+    CreateDescriptionRequest
+  >({
+    mutationFn: (request) => ProjectsService.createDescription(request, id),
+    onSuccess: async () => {
+      toast.success("Описание успешно добавлено");
+      await queryClient.invalidateQueries({ queryKey: ["project", id] });
+    },
+    onError: () => {
+      toast.error("Произошла ошибка при добавлении обновления");
+    },
+  });
+};
+
 export const useGetGraph = (filters: GraphRequest = {}) => {
   return useQuery<Graph[], ApiError>({
     queryKey: ["graph", filters],
@@ -140,6 +163,22 @@ export const useGetProject = (id: number | undefined) => {
     queryKey: ["project", id],
     queryFn: () => ProjectsService.getProjectById(id as number),
     enabled: typeof id === "number" && Number.isFinite(id) && id > 0,
+  });
+};
+
+export const useGetPmName = (enabled: boolean) => {
+  return useQuery<PmNameResponse[], ApiError>({
+    queryKey: ["pm-name"],
+    queryFn: () => FiltersNameService.getPmName({}),
+    enabled,
+  });
+};
+
+export const useGetResponsibleName = (enabled: boolean) => {
+  return useQuery<ResponsibleNameResponse[], ApiError>({
+    queryKey: ["responsible-name"],
+    queryFn: () => FiltersNameService.getResponsibleName({}),
+    enabled,
   });
 };
 

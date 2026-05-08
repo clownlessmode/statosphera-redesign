@@ -334,23 +334,21 @@ export const ModalUpdateProject = ({
               />
             </div>
             <div className="flex flex-col gap-2">
+              <Label htmlFor={`upd-responsible-${project.id}`}>
+                Ответственный
+              </Label>
+              <Input
+                id={`upd-responsible-${project.id}`}
+                className="bg-background"
+                disabled={fieldsDisabled}
+                placeholder="Введите ответственного"
+              />
               <Label htmlFor={`upd-responsible-${project.id}`}>Лидер</Label>
               <Input
                 id={`upd-responsible-${project.id}`}
                 className="bg-background"
                 disabled={fieldsDisabled}
                 placeholder="Введите лидера"
-                value={responsible_name}
-                onChange={(e) => setResponsibleName(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor={`upd-team-${project.id}`}>Команда</Label>
-              <Input
-                id={`upd-team-${project.id}`}
-                className="bg-background"
-                disabled={fieldsDisabled}
-                placeholder="Введите команду"
                 value={team_info}
                 onChange={(e) => setTeamInfo(e.target.value)}
               />

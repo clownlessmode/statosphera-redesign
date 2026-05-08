@@ -49,6 +49,10 @@ const Sidebar = React.lazy(() =>
   import("@widgets/sidebar").then((module) => ({ default: module.Sidebar })),
 );
 
+const FeedbackPage = React.lazy(() =>
+  import("@pages/feedback").then((module) => ({ default: module.Feedback })),
+);
+
 export const ROUTES_PATH = {
   TESTTT: "/testtt",
   IM_REPORT: "/im/report",
@@ -62,6 +66,7 @@ export const ROUTES_PATH = {
   SETTINGS: "/settings",
   NOTIFICATIONS: "/notifications",
   DEMOCRACY: "/democracy",
+  FEEDBACK: "/feedback",
 
   // Тренировка
   LESSONS: "/lessons",
@@ -242,6 +247,13 @@ export const ROUTES: RouteConfig[] = [
     element: <DemocracyPage />,
     layout: Sidebar,
     label: "Предложения",
+  },
+  {
+    path: ROUTES_PATH.FEEDBACK,
+    variant: "private",
+    element: <FeedbackPage />,
+    layout: Sidebar,
+    label: "Обратная связь",
   },
   {
     path: ROUTES_PATH.LESSONS,

@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
-import { Calendar, ChevronLeft, Pencil } from "lucide-react";
+import { Calendar, Check, ChevronLeft, Pencil } from "lucide-react";
 import { Header } from "@widgets/header";
 import { ROUTES_PATH } from "@app/router/routes";
 import { Button } from "@shared/ui/button";
 import { cn } from "@shared/lib/utils";
-import { useDeleteProject, useGetProject } from "../../api/controller";
+import {
+  useCreateDescription,
+  useDeleteProject,
+  useGetProject,
+} from "../../api/controller";
 import { formatDate, parseISO } from "date-fns";
 import { TabsProject } from "./tabs";
 import {
@@ -23,6 +27,7 @@ import {
 import { getApiErrorMessage, getHttpErrorStatus } from "../../api/error-utils";
 import { ModalUpdateProject } from "./components/modal-update-project";
 import { useSession } from "@entities/session";
+import { Textarea } from "@shared/ui/textarea";
 
 const stageColorMap: Record<string, string> = {
   Инициация: "text-sky-600 bg-sky-500/10",
@@ -45,6 +50,7 @@ export const ProjectPage = () => {
   const { session } = useSession();
   const idUser = session?.idUser;
   const queryClient = useQueryClient();
+  const [description, setDescription] = useState("");
   const { id: rawId } = useParams<{ id: string }>();
   const id = rawId ? Number(rawId) : NaN;
   const validId = Number.isFinite(id) && id > 0 ? id : undefined;
@@ -52,6 +58,10 @@ export const ProjectPage = () => {
   const [accessDeniedOpen, setAccessDeniedOpen] = useState(false);
   const accessDeniedMessage =
     getApiErrorMessage(error) ?? "Нет доступа к подробностям проекта.";
+
+  const { mutate: createDescription, isPending } = useCreateDescription(
+    validId ? validId : 0,
+  );
 
   const { mutate: deleteProject, isPending: isDeletingProject } =
     useDeleteProject(validId);
@@ -75,6 +85,14 @@ export const ProjectPage = () => {
       },
     });
   };
+
+  useEffect(() => {
+    if (project?.description) {
+      setDescription(project.description);
+    }
+  }, [project?.description]);
+
+  const isChanged = description !== (project?.description ?? "");
 
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
@@ -158,7 +176,22 @@ export const ProjectPage = () => {
           </div>
         </div>
         <div className="w-full h-[1px] bg-gray-500 rounded-full"></div>
-
+        <div className="grid grid-cols-[1fr_auto] gap-2 w-full items-start">
+          <Textarea
+            placeholder="Описание проекта"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full min-h-[100px] resize-none"
+          />
+          <Button
+            type="button"
+            onClick={() => createDescription({ description })}
+            disabled={isPending || !description || !isChanged}
+            className="shrink-0"
+          >
+            {isPending ? "..." : <Check className="size-4" />}
+          </Button>
+        </div>
         {project && !accessDeniedOpen && <TabsProject project={project} />}
       </div>
       <AlertDialog

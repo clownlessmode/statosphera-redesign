@@ -29,6 +29,7 @@ import {
   File,
   DoorOpen,
   Lightbulb,
+  MailWarning,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -223,6 +224,11 @@ const Sidebar = ({
         url: ROUTES_PATH.DEMOCRACY,
         allowedRoles: [ROLES.ADMIN],
         icon: Lightbulb,
+      },
+      {
+        title: "Обратная связь",
+        url: ROUTES_PATH.FEEDBACK,
+        icon: MailWarning,
       },
       {
         title: "Фермеры",

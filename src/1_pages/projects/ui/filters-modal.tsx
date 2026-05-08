@@ -29,13 +29,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@shared/ui/select";
+import { DatePicker } from "@shared/ui/date-picker";
 import { cn } from "@shared/lib/utils";
+import { format, parse, parseISO } from "date-fns";
+import { useGetPmName, useGetResponsibleName } from "../api/controller";
+
+/** Только для фильтров: календарный день без сдвига −1 из‑за toISOString/UTC. */
+function filterRangeDateFromApi(raw: string): Date {
+  const trimmed = raw.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+    return parse(trimmed, "yyyy-MM-dd", new Date());
+  }
+  const d = parseISO(trimmed);
+  return Number.isNaN(d.getTime()) ? new Date() : d;
+}
+
+function filterRangeDateToApi(date: Date): string {
+  return format(date, "yyyy-MM-dd");
+}
+
+const NONE = "__none__";
 
 function countActiveFilters(f: ProjectsFilters): number {
   return (
     (f.stage?.length ?? 0) +
     (f.priority?.length ?? 0) +
-    (f.quarterFilter ? 1 : 0)
+    (f.quarterFilter ? 1 : 0) +
+    (f.pm_name?.trim() ? 1 : 0) +
+    (f.responsible_name?.trim() ? 1 : 0) +
+    (f.start_date?.trim() ? 1 : 0) +
+    (f.end_date?.trim() ? 1 : 0)
   );
 }
 
@@ -54,6 +77,17 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
   const [priorities, setPriorities] = useState<PriorityProject[]>([]);
   const [quarterYear, setQuarterYear] = useState("");
   const [quarter, setQuarter] = useState<string>("");
+  const [pmName, setPmName] = useState("");
+  const [responsibleName, setResponsibleName] = useState("");
+  const [pmSelectOpen, setPmSelectOpen] = useState(false);
+  const [responsibleSelectOpen, setResponsibleSelectOpen] = useState(false);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+
+  const { data: pmList = [] } = useGetPmName(pmSelectOpen);
+  const { data: responsibleList = [] } = useGetResponsibleName(
+    responsibleSelectOpen,
+  );
 
   const openSync = (nextOpen: boolean) => {
     if (nextOpen) {
@@ -64,6 +98,18 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
       );
       setQuarter(
         value.quarterFilter ? String(value.quarterFilter.quarter) : "",
+      );
+      setPmName(value.pm_name?.trim() ?? "");
+      setResponsibleName(value.responsible_name?.trim() ?? "");
+      setStartDate(
+        value.start_date?.trim()
+          ? filterRangeDateFromApi(value.start_date)
+          : undefined,
+      );
+      setEndDate(
+        value.end_date?.trim()
+          ? filterRangeDateFromApi(value.end_date)
+          : undefined,
       );
     }
     setOpen(nextOpen);
@@ -90,6 +136,13 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
       next.quarterFilter = { year, quarter: q };
     }
 
+    const pm = pmName.trim();
+    const lead = responsibleName.trim();
+    if (pm) next.pm_name = pm;
+    if (lead) next.responsible_name = lead;
+
+    if (startDate) next.start_date = filterRangeDateToApi(startDate);
+    if (endDate) next.end_date = filterRangeDateToApi(endDate);
     onApply(next);
     setOpen(false);
   };
@@ -121,24 +174,113 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
           ) : null}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Фильтры</DialogTitle>
         </DialogHeader>
-        <DialogBody className="space-y-6">
-          <div className="space-y-3">
-            <Label>Этап проекта</Label>
-            <div className="flex flex-col gap-2 rounded-md border border-border p-3">
-              <div className="flex max-h-48 flex-col gap-2 overflow-y-auto">
-                {STAGE_PROJECT_OPTIONS.map((opt) => (
+        <DialogBody className="grid grid-cols-2 gap-x-4 gap-y-6">
+          <div className="col-span-1 flex min-w-0 flex-col gap-6">
+            <div className="space-y-3">
+              <Label>Начальная дата</Label>
+              <DatePicker
+                value={startDate}
+                onChange={setStartDate}
+                placeholder="Выберите дату"
+                className="bg-background w-full max-w-full"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Label>Проджект-менеджер</Label>
+              <Select
+                value={pmName ? pmName : NONE}
+                onValueChange={(v) => setPmName(v === NONE ? "" : v)}
+                onOpenChange={setPmSelectOpen}
+              >
+                <SelectTrigger className="bg-background w-full max-w-full">
+                  <SelectValue placeholder="Не выбрано" />
+                </SelectTrigger>
+                <SelectContent className="max-h-66">
+                  <SelectItem value={NONE}>Не выбрано</SelectItem>
+                  {pmList.map((row) => (
+                    <SelectItem key={row.pm_name} value={row.pm_name}>
+                      {row.pm_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-3">
+              <Label>Этап проекта</Label>
+              <div className="flex flex-col gap-2 rounded-md border border-border p-3">
+                <div className="flex max-h-48 flex-col gap-2 overflow-y-auto">
+                  {STAGE_PROJECT_OPTIONS.map((opt) => (
+                    <label
+                      key={opt.value}
+                      className="flex cursor-pointer items-center gap-2 text-sm"
+                    >
+                      <Checkbox
+                        checked={stages.includes(opt.value)}
+                        onCheckedChange={() =>
+                          setStages((s) => toggleInList(s, opt.value))
+                        }
+                      />
+                      <span>{opt.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-span-1 flex min-w-0 flex-col gap-6">
+            <div className="space-y-3">
+              <Label>Конечная дата</Label>
+              <DatePicker
+                value={endDate}
+                onChange={setEndDate}
+                placeholder="Выберите дату"
+                className="bg-background w-full max-w-full"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Label>Ответственный (лидер)</Label>
+              <Select
+                value={responsibleName ? responsibleName : NONE}
+                onValueChange={(v) => setResponsibleName(v === NONE ? "" : v)}
+                onOpenChange={setResponsibleSelectOpen}
+              >
+                <SelectTrigger className="bg-background w-full max-w-full">
+                  <SelectValue placeholder="Не выбрано" />
+                </SelectTrigger>
+                <SelectContent className="max-h-66">
+                  <SelectItem value={NONE}>Не выбрано</SelectItem>
+                  {responsibleList.map((row) => (
+                    <SelectItem
+                      key={row.responsible_name}
+                      value={row.responsible_name}
+                    >
+                      {row.responsible_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-3">
+              <Label>Приоритет</Label>
+              <div className="flex flex-col gap-2 rounded-md border border-border p-3">
+                {PRIORITY_PROJECT_OPTIONS.map((opt) => (
                   <label
                     key={opt.value}
                     className="flex cursor-pointer items-center gap-2 text-sm"
                   >
                     <Checkbox
-                      checked={stages.includes(opt.value)}
+                      checked={priorities.includes(opt.value)}
                       onCheckedChange={() =>
-                        setStages((s) => toggleInList(s, opt.value))
+                        setPriorities((p) => toggleInList(p, opt.value))
                       }
                     />
                     <span>{opt.label}</span>
@@ -146,54 +288,34 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
                 ))}
               </div>
             </div>
-          </div>
 
-          <div className="space-y-3">
-            <Label>Приоритет</Label>
-            <div className="flex flex-col gap-2 rounded-md border border-border p-3">
-              {PRIORITY_PROJECT_OPTIONS.map((opt) => (
-                <label
-                  key={opt.value}
-                  className="flex cursor-pointer items-center gap-2 text-sm"
-                >
-                  <Checkbox
-                    checked={priorities.includes(opt.value)}
-                    onCheckedChange={() =>
-                      setPriorities((p) => toggleInList(p, opt.value))
-                    }
-                  />
-                  <span>{opt.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <Label>Календарный квартал</Label>
-            <p className="text-xs text-muted-foreground">
-              Укажите год и квартал или оставьте пустым, если фильтр не нужен.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <Input
-                type="number"
-                min={1970}
-                max={2100}
-                placeholder="Год"
-                className="bg-background w-[120px]"
-                value={quarterYear}
-                onChange={(e) => setQuarterYear(e.target.value)}
-              />
-              <Select value={quarter || undefined} onValueChange={setQuarter}>
-                <SelectTrigger className="bg-background w-[160px]">
-                  <SelectValue placeholder="Квартал" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">I квартал</SelectItem>
-                  <SelectItem value="2">II квартал</SelectItem>
-                  <SelectItem value="3">III квартал</SelectItem>
-                  <SelectItem value="4">IV квартал</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="space-y-3">
+              <Label className="mb-1">Календарный квартал</Label>
+              <p className="text-xs text-muted-foreground max-w-md mb-1">
+                Укажите год и квартал или оставьте пустым, если фильтр не нужен.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <Input
+                  type="number"
+                  min={1970}
+                  max={2100}
+                  placeholder="Год"
+                  className="bg-background w-[120px]"
+                  value={quarterYear}
+                  onChange={(e) => setQuarterYear(e.target.value)}
+                />
+                <Select value={quarter || undefined} onValueChange={setQuarter}>
+                  <SelectTrigger className="bg-background w-[160px]">
+                    <SelectValue placeholder="Квартал" />
+                  </SelectTrigger>
+                  <SelectContent side="top" sideOffset={4}>
+                    <SelectItem value="1">I квартал</SelectItem>
+                    <SelectItem value="2">II квартал</SelectItem>
+                    <SelectItem value="3">III квартал</SelectItem>
+                    <SelectItem value="4">IV квартал</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </DialogBody>

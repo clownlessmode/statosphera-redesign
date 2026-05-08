@@ -12,6 +12,7 @@ export type Projects = {
   priority: string;
   task_groups_count?: number;
   doc_groups_count?: number;
+  description: string;
 };
 
 export type UsersResponse = {
@@ -44,6 +45,7 @@ export type CreateProjectResponse = {
   created_at: string;
   updated_at: string;
   access_users: number[];
+  description: string;
 };
 
 export type UpdateProjectResponse = {
@@ -61,6 +63,7 @@ export type UpdateProjectResponse = {
   created_at: string;
   updated_at: string;
   access_users: number[];
+  description: string;
 };
 
 export type Graph = {
@@ -156,4 +159,29 @@ export type CreateDocumentResponse = {
   url: string;
   uploaded_by: number;
   created_at: string;
+};
+
+export type CreateDescriptionResponse = {
+  id: number;
+  name: string;
+  responsible_name: string;
+  team_info: string;
+  client_name: string;
+  pm_name: string;
+  stage: string;
+  start_date: string;
+  end_date: string;
+  priority: string;
+  created_at: string;
+  updated_at: string;
+  excel_import_id: number;
+  description: string;
+};
+
+export type PmNameResponse = {
+  pm_name: string;
+};
+
+export type ResponsibleNameResponse = {
+  responsible_name: string;
 };

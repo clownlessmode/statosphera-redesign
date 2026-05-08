@@ -22,7 +22,7 @@ function PopoverContent({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
-    <>
+    <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         onOpenAutoFocus={(e) => e.preventDefault()}
         data-slot="popover-content"
@@ -34,7 +34,7 @@ function PopoverContent({
         )}
         {...props}
       />
-    </>
+    </PopoverPrimitive.Portal>
   );
 }
 

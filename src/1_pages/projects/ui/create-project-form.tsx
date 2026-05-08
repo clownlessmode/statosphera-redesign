@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@shared/ui/dialog";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -33,6 +33,18 @@ import {
 import { useMemo, useState } from "react";
 import { MultiSelect } from "@shared/ui/multiselect";
 import { formatUserLastNameInitials } from "./project-page/lib/format-user-display-name";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@shared/ui/alert-dialog";
+import { useNavigate } from "react-router";
+import { ROUTES_PATH } from "@app/router/routes";
 
 const createProjectSchema = z
   .object({
@@ -68,9 +80,15 @@ const stages = [
 const priorities = ["Низкий", "Средний", "Высокий"];
 
 export const CreateProjectForm = () => {
+  const navigate = useNavigate();
   const { mutate: createProject, isPending } = useCreateProject();
+
+  // Состояния для управления окнами
   const [isOpen, setIsOpen] = useState(false);
+  const [showExitAlert, setShowExitAlert] = useState(false);
+  const [exitType, setExitType] = useState<"x" | "outside" | null>(null);
   const [optionsRefresh, setOptionsRefresh] = useState(0);
+
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
@@ -96,267 +114,366 @@ export const CreateProjectForm = () => {
     [users, optionsRefresh],
   );
 
+  // Функция обработки попытки закрытия
+  const handleCloseAttempt = (type: "x" | "outside") => {
+    // Если форма была изменена (есть введенные данные)
+    if (form.formState.isDirty) {
+      setExitType(type);
+      setShowExitAlert(true);
+    } else {
+      // Если форма пустая, просто закрываем без лишних вопросов
+      setIsOpen(false);
+    }
+  };
+
+  // Логика кнопок в Alert Dialog
+  const handleAlertConfirm = () => {
+    if (exitType === "x") {
+      // Клик на Х -> Подтвердили выход -> Сброс и закрытие
+      form.reset();
+      setIsOpen(false);
+    } else if (exitType === "outside") {
+      // Клик мимо -> Нажали "Сохранить" -> Просто закрываем (данные остаются в форме)
+      setIsOpen(false);
+    }
+    setShowExitAlert(false);
+  };
+
+  const handleAlertDiscard = () => {
+    if (exitType === "outside") {
+      // Клик мимо -> Нажали "Не сохранять" -> Сброс и закрытие
+      form.reset();
+      setIsOpen(false);
+    }
+    setShowExitAlert(false);
+  };
+
   const onSubmit = (data: CreateProjectFormData) => {
     createProject(
       {
-        name: data.name,
-        responsible_name: data.responsible_name,
-        team_info: data.team_info,
-        client_name: data.client_name,
-        pm_name: data.pm_name,
-        stage: data.stage,
+        ...data,
         start_date: data.start_date.toISOString(),
         end_date: data.end_date.toISOString(),
-        priority: data.priority,
         access_users: data.access_users ?? [],
       },
       {
-        onSuccess: () => {
+        onSuccess: (newProject) => {
           form.reset();
           setIsOpen(false);
+          if (newProject.id) {
+            const projectId = newProject.id;
+            navigate(`${ROUTES_PATH.PROJECTS}/${projectId}`);
+          }
         },
       },
     );
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusIcon className="size-4" />
-          Создать проект
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Создать проект</DialogTitle>
-        </DialogHeader>
-        <DialogBody>
-          <div>
+    <>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          // Если пытаются закрыть (open === false), мы игнорируем это здесь,
+          // так как обработаем вручную через кнопки и overlay
+          if (!open) return;
+          setIsOpen(open);
+        }}
+      >
+        <DialogTrigger asChild>
+          <Button>
+            <PlusIcon className="size-4" />
+            Создать проект
+          </Button>
+        </DialogTrigger>
+        <DialogContent
+          className="[&>button]:hidden max-h-[90vh] overflow-y-auto max-w-3xl!"
+          onPointerDownOutside={(e) => {
+            e.preventDefault();
+            handleCloseAttempt("outside");
+          }}
+          onEscapeKeyDown={(e) => {
+            e.preventDefault();
+            handleCloseAttempt("outside");
+          }}
+        >
+          <DialogHeader className="flex flex-row items-center justify-between space-y-0">
+            <DialogTitle>Создать проект</DialogTitle>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100"
+              onClick={() => handleCloseAttempt("x")}
+            >
+              <X className="size-4" />
+              <span className="sr-only">Закрыть</span>
+            </Button>
+          </DialogHeader>
+          <DialogBody>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Название проекта</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Введите название проекта"
-                          className="bg-background"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="responsible_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Лидер</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Введите лидера"
-                          className="bg-background"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="team_info"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Команда</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Введите команду"
-                          className="bg-background"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="client_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Заказчик</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Введите название проекта"
-                          className="bg-background"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="pm_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Проджект-менеджер</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Введите проджект-менеджера"
-                          className="bg-background"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="stage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Этап проекта</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-full !bg-background">
-                            <SelectValue placeholder="Выберите этап проекта" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {stages.map((stage) => (
-                              <SelectItem key={stage} value={stage}>
-                                {stage}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="start_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>Дата начала</FormLabel>
-                      <FormControl>
-                        <DatePicker
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Выберите дату начала"
-                          disabled={(date) => {
-                            const start = form.getValues("end_date");
-                            return Boolean(start && date < start);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="end_date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>Дата окончания</FormLabel>
-                      <FormControl>
-                        <DatePicker
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Выберите дату окончания"
-                          disabled={(date) => {
-                            const start = form.getValues("start_date");
-                            return Boolean(start && date < start);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="priority"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Приоритет</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-full !bg-background">
-                            <SelectValue placeholder="Выберите приоритет" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {priorities.map((priority) => (
-                              <SelectItem key={priority} value={priority}>
-                                {priority}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="access_users"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Доступ</FormLabel>
-                      <FormControl>
-                        <MultiSelect
-                          placeholder="Выберите кому доступен проект"
-                          options={userOptions}
-                          isLoading={isLoading}
-                          value={field.value?.map(String) || []}
-                          onValueChange={(values) => {
-                            field.onChange(values.map(Number));
-                          }}
-                          onOpenChange={(popoverOpen) => {
-                            if (popoverOpen) {
-                              requestAnimationFrame(() => {
-                                requestAnimationFrame(() => {
-                                  setOptionsRefresh((n) => n + 1);
-                                });
-                              });
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" disabled={isPending}>
-                  Создать проект
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Название проекта</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Введите название проекта"
+                              className="bg-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="responsible_name"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Лидер</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Введите лидера"
+                              className="bg-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="team_info"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Команда</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Введите команду"
+                              className="bg-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="client_name"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Заказчик</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Введите название проекта"
+                              className="bg-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="pm_name"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Проджект-менеджер</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Введите проджект-менеджера"
+                              className="bg-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="stage"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Этап проекта</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <SelectTrigger className="w-full !bg-background">
+                                <SelectValue placeholder="Выберите этап проекта" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {stages.map((stage) => (
+                                  <SelectItem key={stage} value={stage}>
+                                    {stage}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="start_date"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Дата начала</FormLabel>
+                          <FormControl>
+                            <DatePicker
+                              value={field.value}
+                              onChange={field.onChange}
+                              placeholder="Выберите дату начала"
+                              disabled={(date) => {
+                                const end = form.getValues("end_date");
+                                return Boolean(end && date > end);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="end_date"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Дата окончания</FormLabel>
+                          <FormControl>
+                            <DatePicker
+                              value={field.value}
+                              onChange={field.onChange}
+                              placeholder="Выберите дату окончания"
+                              disabled={(date) => {
+                                const start = form.getValues("start_date");
+                                return Boolean(start && date < start);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="priority"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Приоритет</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <SelectTrigger className="w-full !bg-background">
+                                <SelectValue placeholder="Выберите приоритет" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {priorities.map((priority) => (
+                                  <SelectItem key={priority} value={priority}>
+                                    {priority}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="access_users"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col gap-2">
+                          <FormLabel>Доступ</FormLabel>
+                          <FormControl>
+                            <MultiSelect
+                              placeholder="Выберите кому доступен проект"
+                              options={userOptions}
+                              isLoading={isLoading}
+                              value={field.value?.map(String) || []}
+                              onValueChange={(values) => {
+                                field.onChange(values.map(Number));
+                              }}
+                              onOpenChange={(popoverOpen) => {
+                                if (popoverOpen) {
+                                  requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                      setOptionsRefresh((n) => n + 1);
+                                    });
+                                  });
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? "Создание..." : "Создать проект"}
                 </Button>
               </form>
             </Form>
-          </div>
-        </DialogBody>
-      </DialogContent>
-    </Dialog>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={showExitAlert} onOpenChange={setShowExitAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {exitType === "x" ? "Закрыть форму?" : "Сохранить изменения?"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {exitType === "x"
+                ? "Все введенные данные будут утеряны."
+                : "Вы закрываете окно. Сохранить введенные данные, чтобы продолжить позже?"}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            {exitType === "x" ? (
+              <>
+                <AlertDialogCancel>Отмена</AlertDialogCancel>
+                <AlertDialogAction onClick={handleAlertConfirm}>
+                  ОК
+                </AlertDialogAction>
+              </>
+            ) : (
+              <>
+                <AlertDialogCancel onClick={handleAlertDiscard}>
+                  Не сохранять
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={handleAlertConfirm}>
+                  Сохранить
+                </AlertDialogAction>
+              </>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
