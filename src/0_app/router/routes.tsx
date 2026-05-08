@@ -153,6 +153,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.ADMIN_NOTIFICATIONS,
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [156],
     element: <AdminNotifications />,
     layout: Sidebar,
   },
@@ -424,10 +425,13 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.UNLOAD,
     variant: "private",
     element: <Unload />,
-    allowedRoles: [ROLES.ADMIN, ROLES.ANALITIK],
-    allowedUsers: [107, 200, 2816],
     layout: Sidebar,
     label: "Выгрузка",
+    allowedRoles: [
+      ...Object.values(ROLES).filter(
+        (role) => role !== ROLES.FARMER && role !== ROLES.FOREST,
+      ),
+    ],
   },
   {
     path: ROUTES_PATH.FARMER,
