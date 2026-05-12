@@ -15,6 +15,7 @@ export const useForm = () => {
     idManager,
     idRegion,
     idStore,
+    sector,
     storeCondition,
   } = useFiltersStore((state) => state.filters.store);
   const form = useHookForm<FormValues>({
@@ -31,6 +32,7 @@ export const useForm = () => {
       idRegion: processArrayableValue(idRegion, defaultValues.idRegion),
       idStore: processArrayableValue(idStore, defaultValues.idStore),
       storeCondition: storeCondition || defaultValues.storeCondition,
+      sector: sector || defaultValues.sector,
     },
     mode: "all",
   });

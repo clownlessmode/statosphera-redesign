@@ -41,6 +41,7 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       storeCondition: [],
       ageGroup: [],
       channel: [],
+      sector: [],
     },
     product: {
       idProduct: [],
@@ -110,6 +111,13 @@ function extractFiltersFromRow(_row: any, selectedRows: any[]) {
       !filters.store.channel.includes(currentRow.channel)
     ) {
       filters.store.channel.push(currentRow.channel);
+    }
+    if (
+      currentRow.sector != null &&
+      currentRow.sector !== "" &&
+      !filters.store.sector.includes(String(currentRow.sector))
+    ) {
+      filters.store.sector.push(String(currentRow.sector));
     }
     if (
       currentRow.id_product &&
@@ -393,6 +401,10 @@ const FarmerAnalytics: FC = () => {
             extractedFilters.store.idRegion.length > 0
               ? extractedFilters.store.idRegion
               : payload.filters.store.idRegion,
+          sector:
+            extractedFilters.store.sector.length > 0
+              ? extractedFilters.store.sector
+              : payload.filters.store.sector,
         },
         product: {
           ...payload.filters.product,
@@ -527,6 +539,10 @@ const FarmerAnalytics: FC = () => {
                 extractedFilters.store.channel.length > 0
                   ? extractedFilters.store.channel
                   : baseFilters.store.channel,
+              sector:
+                extractedFilters.store.sector.length > 0
+                  ? extractedFilters.store.sector
+                  : baseFilters.store.sector,
             },
             product: {
               ...baseFilters.product,

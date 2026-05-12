@@ -20,6 +20,7 @@ import {
   usePartners,
   useRegions,
   useShops,
+  useSectors,
 } from "../model";
 import { FC, useEffect, useCallback, useRef } from "react";
 import ClearFilters from "./clear-filter";
@@ -69,6 +70,12 @@ export const ShopsFilter: FC = () => {
     handleOpenShopsSelect,
     isShopsLoading,
   } = useShops(payload);
+  const {
+    savedSectorLabels,
+    sectorsOptions,
+    handleOpenSectorsSelect,
+    isSectorsLoading,
+  } = useSectors();
 
   // Мемоизированная функция для загрузки магазинов
   const loadShops = useCallback(() => {
@@ -265,6 +272,32 @@ export const ShopsFilter: FC = () => {
                       externalLabels={savedCityLabels}
                       defaultValue={field.value?.map(String)}
                       placeholder="Выберите города"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sector"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Сектора</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      disabled={isMyShopsMode}
+                      value={field.value || []}
+                      options={sectorsOptions}
+                      isLoading={isSectorsLoading}
+                      onOpenChange={handleOpenSectorsSelect}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        updateStoreFilter("sector", value);
+                      }}
+                      externalLabels={savedSectorLabels}
+                      defaultValue={field.value}
+                      placeholder="Выберите сектора"
+                      maxCount={1}
                     />
                   </FormControl>
                 </FormItem>

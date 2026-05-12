@@ -15,4 +15,5 @@ export const schema = z.object({
   idLegalEntity: z.array(z.number()),
   channel: z.array(frsChannelSchema),
   district: z.array(z.string()),
+  sector: z.array(z.string()),
 });

@@ -93,6 +93,10 @@ export const WriteOffFilters = ({
       activeFilters.push(`Каналы: ${filters.store.channel.join(", ")}`);
     }
 
+    if (filters.store.sector.length > 0) {
+      activeFilters.push(`Сектора: ${filters.store.sector.length}`);
+    }
+
     // Фильтры по продуктам
     if (filters.product.idProduct.length > 0) {
       const productNames = filters.product.idProduct
@@ -212,6 +216,7 @@ export const WriteOffFilters = ({
     legalEntity: "Юр.лицо",
     nameManager: "Партнер",
     formatStore: "Формат магазина",
+    sector: "Сектор",
   };
 
   // Формируем список выбранных группировок

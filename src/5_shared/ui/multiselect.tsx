@@ -110,10 +110,13 @@ export const MultiSelect = React.forwardRef<
     });
 
     React.useEffect(() => {
-      if (isPopoverOpen) {
+      if (!isPopoverOpen) return;
+
+      requestAnimationFrame(() => {
         rowVirtualizer.scrollToOffset(0);
-      }
-    }, [isPopoverOpen]);
+        rowVirtualizer.measure();
+      });
+    }, [isPopoverOpen, filteredOptions.length, rowVirtualizer]);
 
     React.useEffect(() => {
       if (value !== undefined) {

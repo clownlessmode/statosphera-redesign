@@ -16,6 +16,7 @@ const getFilterLabel = (sectionKey: string, filterKey: string): string => {
       idLegalEntity: "Юр. лица",
       channel: "Каналы",
       district: "Районы",
+      sector: "Сектора",
     },
     product: {
       groupFranchise: "Структура продаж",

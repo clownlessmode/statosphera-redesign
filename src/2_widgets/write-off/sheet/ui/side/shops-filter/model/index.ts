@@ -3,3 +3,4 @@ export * from "./hooks/use-form";
 export * from "./hooks/use-partners";
 export * from "./hooks/use-regions";
 export * from "./hooks/use-shops";
+export * from "./hooks/use-sectors";
