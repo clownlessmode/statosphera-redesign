@@ -15,6 +15,7 @@ import {
   CitiesFilterResponse,
   RegionsFilterResponse,
   ShopsFilterResponse,
+  SectorsFilterResponse,
 } from "@pages/sales-dynamics/model/api/service";
 const useForm = () => {
   const {
@@ -27,6 +28,7 @@ const useForm = () => {
     idRegion,
     idStore,
     storeCondition,
+    sector,
   } = useSalesDynamicsFiltersStore((state) => state.filters);
   const form = useHookForm<FormValues>({
     resolver: zodResolver(schema),
@@ -40,6 +42,7 @@ const useForm = () => {
       idRegion: idRegion || defaultValues.idRegion,
       idStore: idStore || defaultValues.idStore,
       storeCondition: storeCondition || defaultValues.storeCondition,
+      sector: sector || defaultValues.sector,
     },
     mode: "all",
   });
@@ -113,6 +116,33 @@ export const useRegions = (allData: any) => {
   };
 
   return { regionsOptions, handleOpenRegionsSelect, isRegionsLoading };
+};
+
+export const useSectors = () => {
+  const [sectorsOptions, setSectorsOptions] = useState<MultiSelectOption[]>([]);
+  const { sectors, isSectorsLoading } = useSalesDynamicsController();
+
+  const handleOpenSectorsSelect = async (isOpen: boolean) => {
+    if (!isOpen) return;
+
+    try {
+      const apiOptions = sectors.map((sector: SectorsFilterResponse) => ({
+        label: sector.sector,
+        value: sector.sector,
+      }));
+
+      setSectorsOptions(apiOptions);
+    } catch (error) {
+      setSectorsOptions([]);
+      console.error("Ошибка при загрузке секторов:", error);
+    }
+  };
+
+  return {
+    sectorsOptions,
+    handleOpenSectorsSelect,
+    isSectorsLoading,
+  };
 };
 
 export const useShops = (allData: any) => {

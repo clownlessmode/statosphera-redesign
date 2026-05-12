@@ -12,4 +12,5 @@ export const defaultValues: FormValues = {
   idLegalEntity: [],
   channel: [],
   district: [],
+  sector: [],
 };

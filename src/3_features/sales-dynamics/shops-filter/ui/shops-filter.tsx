@@ -24,6 +24,7 @@ import useForm, {
   useCities,
   usePartners,
   useRegions,
+  useSectors,
 } from "../model/hook";
 import {
   AGE_GROUP,
@@ -56,6 +57,8 @@ const ShopsFilter = () => {
     useRegions(allData);
   const { citiesOptions, handleOpenCitiesSelect, isCitiesLoading } =
     useCities(allData);
+  const { sectorsOptions, handleOpenSectorsSelect, isSectorsLoading } =
+    useSectors();
   const { handleOpenShopsSelect, isShopsLoading, shopsOptions } =
     useShops(allData);
   const [selectedMyShops, setSelectedMyShops] = useState<boolean>(false);
@@ -287,6 +290,31 @@ const ShopsFilter = () => {
                           }}
                           defaultValue={field.value?.map(String)}
                           placeholder="Выберите города"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="sector"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Сектора</FormLabel>
+                      <FormControl>
+                        <MultiSelect
+                          disabled={selectedMyShops}
+                          value={field.value || []}
+                          options={sectorsOptions}
+                          isLoading={isSectorsLoading}
+                          onOpenChange={handleOpenSectorsSelect}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            updateFilters("sector", value);
+                          }}
+                          defaultValue={field.value}
+                          placeholder="Выберите сектора"
+                          maxCount={1}
                         />
                       </FormControl>
                     </FormItem>

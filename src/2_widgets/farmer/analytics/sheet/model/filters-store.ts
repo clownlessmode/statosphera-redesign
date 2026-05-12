@@ -229,6 +229,7 @@ export type FiltersState = {
       idLegalEntity: string[];
       channel: FRS_CHANNEL[];
       district: string[];
+      sector: string[];
     };
     product: {
       groupFranchise: string[];
@@ -386,6 +387,7 @@ const initialState: Omit<
       idLegalEntity: [],
       channel: [],
       district: [],
+      sector: [],
     },
     product: {
       groupFranchise: [],

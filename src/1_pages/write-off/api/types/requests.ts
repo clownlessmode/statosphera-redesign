@@ -59,6 +59,7 @@ export interface WriteOffTableRequest {
       idLegalEntity: string[];
       channel: string[];
       district: string[];
+      sector: string[];
     };
     product: {
       groupFranchise: string[];
@@ -142,6 +143,7 @@ export interface WriteOffTotalRequest {
       idLegalEntity: string[];
       channel: string[];
       district: string[];
+      sector: string[];
     };
     product: {
       groupFranchise: string[];
