@@ -105,6 +105,7 @@ export function transformToTableDto(
           .map((id) => id.toString()),
         channel: payload.filters.store.channel || [],
         district: payload.filters.store.district || [],
+        sector: payload.filters.store.sector || [],
       },
       product: {
         groupFranchise: payload.filters.product.groupFranchise || [],
@@ -232,6 +233,7 @@ export function transformToTotalDto(
           .map((id) => id.toString()),
         channel: payload.filters.store.channel || [],
         district: payload.filters.store.district || [],
+        sector: payload.filters.store.sector || [],
       },
       product: {
         groupFranchise: payload.filters.product.groupFranchise || [],

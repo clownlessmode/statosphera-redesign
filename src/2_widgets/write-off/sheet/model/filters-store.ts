@@ -64,6 +64,7 @@ export enum FULL_GROUPS_SERVER {
   ID_DISCOUNT = "idDiscount",
   DISCOUNT_TYPE = "discountType",
   WRITE_OFF_TYPE = "ops",
+  SECTOR = "sector",
 }
 
 export enum GROUPINGS {
@@ -107,6 +108,7 @@ export enum GROUPINGS {
   IM_PROMO = FULL_GROUPS_SERVER.IM_PROMO,
   IM_RECEIVE_INTERVAL = FULL_GROUPS_SERVER.IM_RECEIVE_INTERVAL,
   WRITE_OFF_TYPE = FULL_GROUPS_SERVER.WRITE_OFF_TYPE,
+  SECTOR = FULL_GROUPS_SERVER.SECTOR,
 }
 
 export enum GROUP_COLUMN_CHECK_GRAPH {
@@ -214,6 +216,7 @@ export type FiltersState = {
       idLegalEntity: string[];
       channel: FRS_CHANNEL[];
       district: string[];
+      sector: string[];
     };
     product: {
       groupFranchise: string[];
@@ -363,6 +366,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
       idLegalEntity: [],
       channel: [],
       district: [],
+      sector: [],
     },
     product: {
       groupFranchise: [],
@@ -569,6 +573,7 @@ export const useWriteOffFiltersStore = create<FiltersState>((set, get) => ({
           idLegalEntity: [],
           channel: [],
           district: [],
+          sector: [],
         },
         product: {
           groupFranchise: [],
@@ -674,6 +679,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
       idLegalEntity: [],
       channel: [],
       district: [],
+      sector: [],
     },
     product: {
       groupFranchise: [],
@@ -880,6 +886,7 @@ export const useEquipmentFiltersStore = create<FiltersState>((set, get) => ({
           idLegalEntity: [],
           channel: [],
           district: [],
+          sector: [],
         },
         product: {
           groupFranchise: [],

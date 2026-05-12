@@ -66,6 +66,7 @@ interface Filters {
   idLegalEntity: number[];
   channel: FRS_CHANNEL[];
   district: string[];
+  sector: string[];
 }
 
 export interface SalesDynamicsFilters {
@@ -118,6 +119,7 @@ const initialFilters: SalesDynamicsFilters = {
     idLegalEntity: [],
     channel: [],
     district: [],
+    sector: [],
   },
   groups: ["store"],
   role: false,

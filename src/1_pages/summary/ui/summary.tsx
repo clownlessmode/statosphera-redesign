@@ -483,6 +483,7 @@ export const Summary = () => {
                                 selectedRows={selectedTableRows}
                                 dataVersion={dataVersion}
                                 rowSelection="multiple"
+                                showCheckbox
                                 cacheBlockSize={100}
                                 maxBlocksInCache={10}
                               />

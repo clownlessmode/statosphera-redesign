@@ -39,4 +39,8 @@ export const SHOP = [
     label: "Формат магазина",
     value: "formatStore",
   },
+  {
+    label: "Сектор",
+    value: GROUPINGS.SECTOR,
+  },
 ];

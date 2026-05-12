@@ -6986,6 +6986,7 @@ export type ColumnPickerProps = {
 
 export enum ColumnsKeyGroupings {
   STORE = "store",
+  SECTOR = "sector",
   FORMAT_STORE = "formatStore",
   DISCOUNT_TYPE = "discountType",
   TYPE = "type",
@@ -7038,6 +7039,7 @@ export enum ColumnsKeyGroupings {
 // Столбцы группировки
 export const groupingColumns: ColumnGroup[] = [
   { label: "Магазин", value: ColumnsKeyGroupings.STORE },
+  { label: "Сектор", value: ColumnsKeyGroupings.SECTOR },
   { label: "Кассир", value: ColumnsKeyGroupings.TAB_NUMBER },
   { label: "Город", value: ColumnsKeyGroupings.CITY },
   { label: "Регион", value: ColumnsKeyGroupings.REGION },
@@ -7283,6 +7285,11 @@ export const tableConfig: ColDef<any>[] = [
   {
     field: "store",
     headerName: "Магазин",
+    cellStyle: { textAlign: "left" },
+  },
+  {
+    field: ColumnsKeyGroupings.SECTOR,
+    headerName: "Сектор",
     cellStyle: { textAlign: "left" },
   },
   {

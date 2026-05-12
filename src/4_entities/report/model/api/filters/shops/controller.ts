@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import {
   CitiesFilterResponse,
@@ -6,6 +6,7 @@ import {
   PartnersFilterResponse,
   RegionsFilterResponse,
   ShopsFilterResponse,
+  SectorsFilterResponse,
 } from "./service";
 import { FilterApiPayload } from "@widgets/report/sheet/model/filters-store";
 import { RequestDto } from "@pages/night-stores/config";
@@ -53,6 +54,11 @@ export const useFilters = () => {
       queryClient.invalidateQueries({ queryKey: ["shops"] });
       return response;
     },
+  });
+
+  const sectors = useQuery<SectorsFilterResponse[], ApiError>({
+    queryKey: ["sectors"],
+    queryFn: () => FiltersShopsService.getSectors(),
   });
 
   const partnersNightStores = useMutation<
@@ -114,6 +120,9 @@ export const useFilters = () => {
     //
     getShops: shops.mutateAsync,
     isShopsLoading: shops.isPending,
+    //
+    sectors: sectors.data || [],
+    isSectorsLoading: sectors.isPending,
     //
     getPartnersNightStores: partnersNightStores.mutateAsync,
     isPartnersNightStoresLoading: partnersNightStores.isPending,

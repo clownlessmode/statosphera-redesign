@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   CitiesFilterResponse,
   GraphSeries,
@@ -8,6 +8,7 @@ import {
   SalesDynamicsService,
   SalesTableResponse,
   SalesTotalResponse,
+  SectorsFilterResponse,
   ShopsFilterResponse,
 } from "./service";
 import { ApiError } from "@shared/api/types";
@@ -103,6 +104,10 @@ export const useSalesDynamicsController = () => {
       return response;
     },
   });
+  const sectors = useQuery<SectorsFilterResponse[], ApiError>({
+    queryKey: ["sectors"],
+    queryFn: () => SalesDynamicsService.getSectors(),
+  });
   const shops = useMutation<
     ShopsFilterResponse[],
     ApiError,
@@ -132,6 +137,9 @@ export const useSalesDynamicsController = () => {
     //
     getCities: cities.mutateAsync,
     isCitiesLoading: cities.isPending,
+    //
+    sectors: sectors.data || [],
+    isSectorsLoading: sectors.isPending,
     //
     getShops: shops.mutateAsync,
     isShopsLoading: shops.isPending,

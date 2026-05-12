@@ -61,6 +61,7 @@ export enum FULL_GROUPS_SERVER {
   TYPE = "type",
   ID_DISCOUNT = "idDiscount",
   DISCOUNT_TYPE = "discountType",
+  SECTOR = "sector",
 }
 
 export enum GROUPINGS {
@@ -103,6 +104,7 @@ export enum GROUPINGS {
   IM_STATUS_ORDER = FULL_GROUPS_SERVER.IM_STATUS_ORDER,
   IM_PROMO = FULL_GROUPS_SERVER.IM_PROMO,
   IM_RECEIVE_INTERVAL = FULL_GROUPS_SERVER.IM_RECEIVE_INTERVAL,
+  SECTOR = FULL_GROUPS_SERVER.SECTOR,
 }
 
 export enum GROUP_COLUMN_CHECK_GRAPH {
@@ -229,6 +231,7 @@ export type FiltersState = {
       idLegalEntity: string[];
       channel: FRS_CHANNEL[];
       district: string[];
+      sector: string[];
     };
     product: {
       groupFranchise: string[];
@@ -398,6 +401,7 @@ const initialState: Omit<
       idLegalEntity: [],
       channel: [],
       district: [],
+      sector: [],
     },
     product: {
       groupFranchise: [],

@@ -50,6 +50,10 @@ export interface ShopsFilterResponse {
   storeName: string;
   idStore: number[];
 }
+
+export interface SectorsFilterResponse {
+  sector: string;
+}
 export class SalesDynamicsService {
   static async getPartners(dto: any): Promise<PartnersFilterResponse[]> {
     const response = await api.post<any>("store/manager", {
@@ -79,6 +83,12 @@ export class SalesDynamicsService {
     const response = await api.post<any>("store/shop", dto.filters);
     return response.data;
   }
+
+  static async getSectors(): Promise<SectorsFilterResponse[]> {
+    const response = await api.get("/sector");
+    return response.data;
+  }
+
   static async getSalesDynamicsTable(
     dto: SalesDynamicsApiPayload,
   ): Promise<SalesTableResponse> {

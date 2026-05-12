@@ -16,6 +16,7 @@ export const useForm = () => {
     idRegion,
     idStore,
     storeCondition,
+    sector,
   } = filtersStore.filters.store;
 
   const form = useHookForm<FormValues>({
@@ -30,6 +31,7 @@ export const useForm = () => {
       idRegion: idRegion || defaultValues.idRegion,
       idStore: idStore || defaultValues.idStore,
       storeCondition: storeCondition || defaultValues.storeCondition,
+      sector: sector || defaultValues.sector,
     },
     mode: "all",
   });

@@ -473,6 +473,7 @@ function aggregateDuplicateRows(data: any[], groups: string[]): any[] {
   // Определяем ключевые поля для всех группировок
   const groupingKeyMap: Record<string, string> = {
     store: "store_id",
+    sector: "sector",
     city: "idCity",
     region: "idRegion",
     nameManager: "idManager",
@@ -963,6 +964,7 @@ export const AllWriteOffs = ({
         const primaryGroup = groups[0];
         const searchFieldMap: Record<string, string[]> = {
           store: ["store", "storeName", "store_name"],
+          sector: ["sector"],
           city: ["city"],
           region: ["region"],
           legalEntity: ["legalEntity"],
