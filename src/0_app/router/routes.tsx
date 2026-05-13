@@ -42,7 +42,7 @@ import { Review } from "@pages/reviews";
 import { Attendance } from "@pages/attendance";
 import { Projects } from "@pages/projects";
 import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
-import { Testtt } from "@pages/testtt/api/Testtt";
+import { Testtt } from "@pages/testtt/api/night-entries";
 import { AdminMailing } from "@pages/admin/admin-mailing";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -535,7 +535,7 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     element: <Testtt />,
     layout: Sidebar,
-    label: "Тест",
+    label: "Ночные посещения",
   },
   {
     path: ROUTES_PATH.PROJECT,

@@ -1,23 +1,23 @@
 import { ApiError } from "@shared/api/types";
-import { TestttResponse, TestttStores } from "./types/response";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { TestttRequest } from "./types/request";
-import { TestttService } from "./service";
+import { NightEntriesRequest } from "./types/request";
+import { NightEntriesService } from "./service";
+import { NightEntriesResponse, NightStoresResponse } from "./types/response";
 
 const TESTTT_PAGE_SIZE = 10;
 
-type UseGetTestttOptions = {
+type UseGetNightEntriesOptions = {
   enabled?: boolean;
 };
 
-export const useGetTesttt = (
-  params: Omit<TestttRequest, "pagination">,
-  options?: UseGetTestttOptions,
+export const useGetNightEntries = (
+  params: Omit<NightEntriesRequest, "pagination">,
+  options?: UseGetNightEntriesOptions,
 ) => {
-  return useInfiniteQuery<TestttResponse[], ApiError>({
-    queryKey: ["testtt", params],
+  return useInfiniteQuery<NightEntriesResponse[], ApiError>({
+    queryKey: ["night-entries", params],
     queryFn: ({ pageParam }) =>
-      TestttService.getTesttt({
+      NightEntriesService.getNightEntries({
         ...params,
         pagination: {
           limit: TESTTT_PAGE_SIZE,
@@ -33,9 +33,9 @@ export const useGetTesttt = (
   });
 };
 
-export const useGetTestttStores = () => {
-  return useQuery<TestttStores[], ApiError>({
-    queryKey: ["testtt-stores"],
-    queryFn: () => TestttService.getTestttStores(),
+export const useGetNightStores = () => {
+  return useQuery<NightStoresResponse[], ApiError>({
+    queryKey: ["night-stores"],
+    queryFn: () => NightEntriesService.getNightStores(),
   });
 };
