@@ -297,7 +297,7 @@ export const MultiSelect = React.forwardRef<
                 <>
                   <CommandEmpty>Ничего не найдено</CommandEmpty>
                   <CommandGroup>
-                    {options && options.length > 0 && (
+                    {!singleSelect && options && options.length > 0 && (
                       <CommandItem
                         onSelect={toggleAll}
                         className="cursor-pointer"
@@ -357,33 +357,35 @@ export const MultiSelect = React.forwardRef<
                 </>
               )}
             </CommandList>
-            <CommandSeparator />
-            <div className="flex items-center justify-between p-2">
-              {selectedValues.length > 0 && (
-                <>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="flex-1 justify-center cursor-pointer"
-                    onClick={handleClear}
-                  >
-                    Очистить
-                  </Button>
-                  <Separator
-                    orientation="vertical"
-                    className="flex min-h-6 h-full"
-                  />
-                </>
-              )}
-              <Button
-                type="button"
-                variant="ghost"
-                className="flex-1 justify-center cursor-pointer"
-                onClick={() => handlePopoverOpenChange(false)}
-              >
-                Закрыть
-              </Button>
-            </div>
+            {!singleSelect && <CommandSeparator />}
+            {!singleSelect && (
+              <div className="flex items-center justify-between p-2">
+                {selectedValues.length > 0 && (
+                  <>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="flex-1 justify-center cursor-pointer"
+                      onClick={handleClear}
+                    >
+                      Очистить
+                    </Button>
+                    <Separator
+                      orientation="vertical"
+                      className="flex min-h-6 h-full"
+                    />
+                  </>
+                )}
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="flex-1 justify-center cursor-pointer"
+                  onClick={() => handlePopoverOpenChange(false)}
+                >
+                  Закрыть
+                </Button>
+              </div>
+            )}
           </Command>
         </PopoverContent>
       </Popover>
