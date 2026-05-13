@@ -43,6 +43,7 @@ import { Attendance } from "@pages/attendance";
 import { Projects } from "@pages/projects";
 import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
 import { Testtt } from "@pages/testtt/api/Testtt";
+import { AdminMailing } from "@pages/admin/admin-mailing";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -84,6 +85,7 @@ export const ROUTES_PATH = {
   ADMIN_PRODUCTS: "/admin/products",
   ADMIN_USERS: "/admin/users",
   ADMIN_ROLES: "/admin/roles",
+  ADMIN_MAILING: "/admin/mailing",
   ADMIN_PERMISSIONS: "/admin/permissions",
   ADMIN_SETTINGS: "/admin/settings",
   ADMIN_LOGS: "/admin/logs",
@@ -180,6 +182,13 @@ export const ROUTES: RouteConfig[] = [
     allowedRoles: [ROLES.ADMIN],
     allowedUsers: [59, 156],
     element: <AdminDigests />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.ADMIN_MAILING,
+    variant: "private",
+    allowedRoles: [ROLES.ADMIN],
+    element: <AdminMailing />,
     layout: Sidebar,
   },
   {
