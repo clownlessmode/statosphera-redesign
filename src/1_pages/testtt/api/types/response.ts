@@ -1,4 +1,4 @@
-export type TestttResponse = {
+export type NightEntriesResponse = {
   id_store: number;
   card_number: string;
   status: boolean;
@@ -6,7 +6,7 @@ export type TestttResponse = {
   store_name: string;
 };
 
-export type TestttStores = {
+export type NightStoresResponse = {
   id_store: number;
   store: string;
 };

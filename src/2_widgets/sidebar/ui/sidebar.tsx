@@ -186,7 +186,7 @@ const Sidebar = ({
           ![101, 191].includes(session?.idUser ?? -1),
       },
       {
-        title: "Тест",
+        title: "Ночные посещения",
         url: ROUTES_PATH.TESTTT,
         icon: DoorOpen,
       },
