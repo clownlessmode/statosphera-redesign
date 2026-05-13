@@ -31,7 +31,7 @@ export const Farmers = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2 overflow-y-auto">
           {filteredFarmers?.map((farmer) => (
             <li key={farmer.idUser}>
               <ShortProfile farmer={farmer} />

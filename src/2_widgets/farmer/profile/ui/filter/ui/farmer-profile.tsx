@@ -250,25 +250,22 @@ export default function FarmerProfileCard({
                   <span className="text-xl font-semibold w-full text-accent max-md:text-lg">
                     Контакты
                   </span>
-                  {profile.chiefAccountant &&
-                    profile.chiefAccountant.name &&
-                    profile.chiefAccountant.email &&
-                    profile.chiefAccountant.phone && (
-                      <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
-                        <span className="text-sm text-muted-foreground">
-                          Главный бухгалтер
-                        </span>
-                        <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
-                          {profile.chiefAccountant.name}
-                        </span>
-                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                          {profile.chiefAccountant.email}
-                        </span>
-                        <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
-                          {profile.chiefAccountant.phone}
-                        </span>
-                      </div>
-                    )}
+                  {profile.chiefAccountant && profile.chiefAccountant.name && (
+                    <div className="flex flex-col gap-2 bg-background p-4 rounded-md w-fit h-fit max-md:w-full">
+                      <span className="text-sm text-muted-foreground">
+                        Главный бухгалтер
+                      </span>
+                      <span className="text-base font-medium w-fit max-md:font-normal max-md:text-sm">
+                        {profile.chiefAccountant.name}
+                      </span>
+                      <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                        {profile.chiefAccountant?.email}
+                      </span>
+                      <span className="text-sm font-medium w-fit max-md:font-normal max-md:text-sm">
+                        {profile.chiefAccountant?.phone}
+                      </span>
+                    </div>
+                  )}
                   {profile.responsiblePerson &&
                     profile.responsiblePerson.name &&
                     profile.responsiblePerson.email &&
