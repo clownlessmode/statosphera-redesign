@@ -30,6 +30,7 @@ import {
   DoorOpen,
   Lightbulb,
   MailWarning,
+  Mail,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -263,6 +264,11 @@ const Sidebar = ({
                     ![156].includes(session?.idUser ?? -1),
                 },
                 {
+                  title: "Рассылка",
+                  url: ROUTES_PATH.ADMIN_MAILING,
+                  disabled: session?.role !== ROLES.ADMIN,
+                },
+                {
                   title: "Роли голосования",
                   url: ROUTES_PATH.ADMIN_ROLES,
                   disabled: session?.role !== ROLES.ADMIN,
@@ -286,6 +292,12 @@ const Sidebar = ({
               disabled:
                 session?.role !== ROLES.ADMIN &&
                 ![156].includes(session?.idUser ?? -1),
+            },
+            {
+              title: "Рассылка (админ)",
+              url: ROUTES_PATH.ADMIN_MAILING,
+              icon: Mail,
+              disabled: session?.role !== ROLES.ADMIN,
             },
             {
               title: "Роли голосования",
