@@ -270,6 +270,8 @@ export const MultiSelect = React.forwardRef<
           className="w-full p-0"
           align="start"
           onEscapeKeyDown={() => handlePopoverOpenChange(false)}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
         >
           <Command shouldFilter={false}>
             {!isLoading && options && options.length > 0 && (
