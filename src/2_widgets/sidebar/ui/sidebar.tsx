@@ -181,9 +181,7 @@ const Sidebar = ({
         title: "Посещаемость",
         url: ROUTES_PATH.ATTENDANCE,
         icon: PersonStanding,
-        disabled:
-          session?.role !== ROLES.ADMIN &&
-          ![101, 191].includes(session?.idUser ?? -1),
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Ночные посещения",
@@ -194,9 +192,6 @@ const Sidebar = ({
         title: "Проекты",
         url: ROUTES_PATH.PROJECTS,
         icon: File,
-        disabled:
-          session?.role !== ROLES.ADMIN &&
-          ![2875, 2808, 2879].includes(session?.idUser ?? -1),
       },
       {
         title: "Интернет-магазин",

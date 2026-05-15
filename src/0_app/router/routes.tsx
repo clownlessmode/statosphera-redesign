@@ -543,17 +543,14 @@ export const ROUTES: RouteConfig[] = [
     element: <ProjectPage />,
     layout: Sidebar,
     label: "Проект",
-    allowedUsers: [2875, 2808, 2879],
     allowedRoles: [ROLES.ADMIN],
   },
   {
     path: ROUTES_PATH.PROJECTS,
-    variant: "private",
+    variant: "public",
     element: <Projects />,
     layout: Sidebar,
     label: "Проекты",
-    allowedUsers: [2875, 2808, 2879],
-    allowedRoles: [ROLES.ADMIN],
   },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
