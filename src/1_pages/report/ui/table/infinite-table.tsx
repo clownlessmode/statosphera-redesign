@@ -26,6 +26,8 @@ export interface InfinityTableProps {
     endRow: number;
     sortModel?: { colId: string; sort: "asc" | "desc" }[];
   }) => Promise<{ data: any[]; totalRows: number }>;
+  /** Если задано — колонки строятся из ответа API, а не из table-columns */
+  resolveColumnDefs?: (firstRow: Record<string, unknown>) => ColDef[];
   cacheBlockSize?: number;
   maxBlocksInCache?: number;
   totalData: any[];
@@ -44,6 +46,7 @@ export interface InfinityTableProps {
 
 const InfinityTable: React.FC<InfinityTableProps> = ({
   fetchData,
+  resolveColumnDefs,
   cacheBlockSize = 100,
   maxBlocksInCache = 3,
   totalData,
@@ -83,6 +86,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
 
   useEffect(() => {
     if (dataVersion !== previousDataVersion.current && gridApiRef.current) {
+      columnsSetRef.current = false;
       gridApiRef.current.purgeInfiniteCache();
       gridApiRef.current.setGridOption("rowData", []);
       previousDataVersion.current = dataVersion;
@@ -116,11 +120,13 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
     (firstRow: any) => {
       if (!gridApiRef.current || !firstRow) return;
 
-      const baseDefs = masterColumnDefs.filter(
-        (col) =>
-          col.field &&
-          Object.prototype.hasOwnProperty.call(firstRow, col.field),
-      );
+      const baseDefs = resolveColumnDefs
+        ? resolveColumnDefs(firstRow)
+        : masterColumnDefs.filter(
+            (col) =>
+              col.field &&
+              Object.prototype.hasOwnProperty.call(firstRow, col.field),
+          );
 
       const mergedDefs = baseDefs.map(withSkeleton);
 
@@ -200,7 +206,7 @@ const InfinityTable: React.FC<InfinityTableProps> = ({
       gridApiRef.current.updateGridOptions({ columnDefs: mergedDefs });
       columnsSetRef.current = true;
     },
-    [actions, actionsIndex, showCheckbox],
+    [actions, actionsIndex, showCheckbox, resolveColumnDefs],
   );
 
   const datasource: IDatasource = useMemo(
