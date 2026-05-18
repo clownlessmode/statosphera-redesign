@@ -1,6 +1,5 @@
 import { Button } from "@shared/ui/button";
 import { useSearchParams } from "react-router";
-import { useCallback } from "react";
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import { usePartnerFiltersStore } from "@pages/partner/model/filters-store";
 
@@ -14,10 +13,11 @@ export const PartnerSubmitButton = ({
   ...props
 }: PartnerSubmitButtonProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { values } = usePartnerFiltersStore();
+  const values = usePartnerFiltersStore((s) => s.values);
+  const group = usePartnerFiltersStore((s) => s.group);
   const isMobile = useIsMobile();
 
-  const isDisabled = useCallback(() => values.length === 0, [values.length]);
+  const isDisabled = values.length === 0 || group.length === 0;
 
   const handleSubmit = async () => {
     const p = new URLSearchParams(searchParams);
@@ -30,7 +30,7 @@ export const PartnerSubmitButton = ({
     <Button
       className={className}
       onClick={handleSubmit}
-      disabled={isDisabled()}
+      disabled={isDisabled}
       {...props}
     >
       {isMobile ? "Получить отчёт" : "Получить отчёт"}
