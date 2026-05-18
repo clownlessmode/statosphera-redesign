@@ -53,6 +53,17 @@ const formatDateByGroupType = (dateStr: string, groupType?: string): string => {
   }
 };
 
+const getPointValue = (param: any): number | undefined => {
+  const raw = param?.value ?? param?.data;
+  if (Array.isArray(raw) && raw.length >= 2) {
+    const n = Number(raw[1]);
+    return Number.isNaN(n) ? undefined : n;
+  }
+  if (raw === null || raw === undefined || raw === "") return undefined;
+  const n = Number(raw);
+  return Number.isNaN(n) ? undefined : n;
+};
+
 export const getFormatTooltip = (args: any, groupType?: string) => {
   try {
     const dateStr = args[0].axisValue as string;
@@ -60,23 +71,28 @@ export const getFormatTooltip = (args: any, groupType?: string) => {
 
     let tooltip = `<p>${formattedDate}</p>`;
 
-    args.forEach(({ marker, seriesName, value }: any) => {
-      if (value && value[1]) {
-        tooltip += `<p>${marker} ${seriesName}: ${divideNumberSpaces(
-          value[1],
-        )}</p>`;
-      }
+    args.forEach((param: any) => {
+      const y = getPointValue(param);
+      if (y === undefined) return;
+
+      tooltip += `<p>${param.marker} ${param.seriesName}: ${divideNumberSpaces(
+        Math.round(y),
+      )}</p>`;
     });
 
-    const currentValue = args[0]?.value?.[1];
-    const prevValue = args[1]?.value?.[1];
+    const currentValue = getPointValue(args[0]);
+    const prevValue = getPointValue(args[1]);
 
-    if (currentValue && prevValue) {
-      const deltaPercent = Math.floor(
-        ((currentValue - prevValue) / prevValue) * 100,
-      );
+    if (currentValue !== undefined && prevValue !== undefined) {
+      const delta = currentValue - prevValue;
+      const deltaPercent =
+        prevValue !== 0
+          ? Math.floor((delta / prevValue) * 100)
+          : delta !== 0
+            ? 100
+            : 0;
       tooltip += `<p>Разница: ${divideNumberSpaces(
-        currentValue - prevValue,
+        Math.round(delta),
       )} (${deltaPercent}%)</p>`;
     }
 

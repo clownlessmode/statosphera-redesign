@@ -24,6 +24,7 @@ import {
   sortFromPresetId,
 } from "./project-sort-presets";
 import { useSession } from "@entities/session";
+import { FormSelectDropdown } from "./ui/form-select-dropdown";
 
 export const Projects = () => {
   const [filters, setFilters] = useState<ProjectsFilters>({});
@@ -120,6 +121,7 @@ export const Projects = () => {
               Все
             </Button>
           </div>
+          <FormSelectDropdown />
           <div className="flex flex-row gap-2">
             {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
               <CreateProjectForm />

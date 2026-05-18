@@ -17,6 +17,7 @@ import {
   isValidRowFocus,
 } from "../lib/row-focus";
 import { PartnerGraph } from "./graph";
+import { PartnerGraphGranularityDropdown } from "./graph-granularity-dropdown";
 import { TablePartner } from "./table";
 import { PartnerFiltersChips } from "./partner-filters-chips";
 import { usePartnerUrlStore } from "@widgets/partner/sheet/model/url-store";
@@ -24,6 +25,7 @@ import { useWriteOffFiltersStore } from "@widgets/write-off/sheet/model/filters-
 import { useIsMobile } from "@shared/hooks/use-mobile";
 import NotSelectedFilters from "@shared/assets/capibara/not-selected-filters";
 import Spinner from "@shared/ui/spinner";
+import { ValueGraphDropdown } from "./value-graph-dropdown";
 
 type AllPartnersProps = {
   isFiltersOpen: boolean;
@@ -49,9 +51,10 @@ export const AllPartners = ({
     isGraphLoading,
   } = usePartnerController();
 
+  const appliedReport = usePartnerFiltersStore((s) => s.appliedReport);
+  const tableGroups = appliedReport?.group ?? [];
+
   const {
-    values,
-    group,
     graphGranularity,
     graphValue,
     dataVersion,
@@ -59,7 +62,6 @@ export const AllPartners = ({
     setGraphValue,
     bumpDataVersion,
     resetFilters,
-    buildFilter,
     buildTableRequest,
     submitRequestId,
   } = usePartnerFiltersStore();
@@ -106,10 +108,16 @@ export const AllPartners = ({
     try {
       setLoadError(false);
       clearRowFocus();
-      bumpDataVersion();
       setHasSubmitted(true);
+      bumpDataVersion();
 
-      const total = await getTableTotal({ values, filter: buildFilter() });
+      const applied = usePartnerFiltersStore.getState().appliedReport;
+      if (!applied) return;
+
+      const total = await getTableTotal({
+        values: applied.values,
+        filter: applied.filter,
+      });
       setTotalData(total ? [total] : []);
 
       await loadGraph();
@@ -120,8 +128,6 @@ export const AllPartners = ({
   }, [
     bumpDataVersion,
     getTableTotal,
-    values,
-    buildFilter,
     loadGraph,
     setIsFiltersOpen,
     clearRowFocus,
@@ -131,12 +137,12 @@ export const AllPartners = ({
     if (submitRequestId > 0) {
       void handleSubmit();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- только по кнопке из sheet
   }, [submitRequestId]);
 
   const handleClearFilters = () => {
     resetFilters();
     resetAllFilters();
+    usePartnerFiltersStore.setState({ appliedReport: null });
     setTotalData([]);
     setGraphData(undefined);
     clearRowFocus();
@@ -155,7 +161,7 @@ export const AllPartners = ({
 
   const handleRowClick = useCallback(
     async (row: PartnerTableRow) => {
-      const focus = buildRowFocus(row, group);
+      const focus = buildRowFocus(row, tableGroups);
 
       if (focus && isValidRowFocus(focus)) {
         setRowFocus(focus);
@@ -166,10 +172,10 @@ export const AllPartners = ({
       }
 
       clearRowFocus();
-      setRowFocusHint(explainRowFocusUnavailable(row, group));
+      setRowFocusHint(explainRowFocusUnavailable(row, tableGroups));
       await loadGraph({});
     },
-    [group, loadGraph, clearRowFocus],
+    [tableGroups, loadGraph, clearRowFocus],
   );
 
   const handleClearRowFocus = useCallback(async () => {
@@ -191,7 +197,7 @@ export const AllPartners = ({
     }
   };
 
-  const isLoading = isTableLoading || isTableTotalLoading;
+  const isSubmitting = isTableLoading || isTableTotalLoading || isGraphLoading;
 
   const handleFiltersToggle = () => {
     if (!hasSubmitted) {
@@ -203,9 +209,12 @@ export const AllPartners = ({
 
   const toolbar = (
     <div className="flex flex-row gap-1 items-center justify-end flex-wrap">
-      <Button size={"sm"} variant="outline">
-        Группировка
-      </Button>
+      <ValueGraphDropdown value={graphValue} onChange={handleGraphMetric} />
+      <PartnerGraphGranularityDropdown
+        value={graphGranularity}
+        onChange={handleGraphGranularity}
+        disabled={!hasSubmitted}
+      />
       <Button
         className="w-fit"
         size={isMobile ? "default" : "sm"}
@@ -242,7 +251,7 @@ export const AllPartners = ({
           onOpenSheet={handleOpenSheet}
         />
         <div className="flex flex-1 flex-col items-center justify-center gap-4 dark:opacity-70">
-          {isLoading ? (
+          {isSubmitting ? (
             <Spinner />
           ) : loadError ? (
             <p className="text-sm text-destructive">Ошибка загрузки</p>
@@ -267,7 +276,6 @@ export const AllPartners = ({
             metric={graphValue}
             rowFocusLabel={rowFocusLabel}
             rowFocusHint={rowFocusHint}
-            onGranularityChange={handleGraphGranularity}
             onMetricChange={handleGraphMetric}
             onClearRowFocus={
               rowFocusLabel ? () => void handleClearRowFocus() : undefined

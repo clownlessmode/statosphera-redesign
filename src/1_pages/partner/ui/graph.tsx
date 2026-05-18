@@ -3,25 +3,13 @@ import { X } from "lucide-react";
 import { usePreparedStackedLine } from "@shared/ui/graphs/stacked-line/preparedStackedLine";
 import StackedLine from "@shared/ui/graphs/stacked-line/stacked-line";
 import StackedLineSkeleton from "@shared/ui/graphs/stacked-line/stacked-line-skeleton";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@shared/ui/select";
 import { Badge } from "@shared/ui/badge";
 import {
-  PARTNER_GRAPH_GRANULARITY,
-  PARTNER_GRAPH_METRICS,
   type GraphPartnerPoint,
   type PartnerGraphGranularity,
   type PartnerGraphMetric,
 } from "../api/types";
-import {
-  PARTNER_GRAPH_METRIC_LABELS,
-  PARTNER_DIMENSION_LABELS,
-} from "../lib/labels";
+import { PARTNER_GRAPH_METRIC_LABELS } from "../lib/labels";
 
 type PartnerGraphProps = {
   data?: GraphPartnerPoint[];
@@ -30,10 +18,24 @@ type PartnerGraphProps = {
   metric: PartnerGraphMetric;
   rowFocusLabel?: string;
   rowFocusHint?: string;
-  onGranularityChange: (g: PartnerGraphGranularity) => void;
   onMetricChange: (m: PartnerGraphMetric) => void;
   onClearRowFocus?: () => void;
 };
+
+const toGraphSeries = (data: GraphPartnerPoint[]) => [
+  {
+    name: "Выбранный период",
+    type: "line" as const,
+    encode: { x: 0, y: 1 },
+    data: data.map((d) => [d.period, d.currentValue] as [string, number]),
+  },
+  {
+    name: "Прошлый год",
+    type: "line" as const,
+    encode: { x: 0, y: 1 },
+    data: data.map((d) => [d.period, d.prevYearValue] as [string, number]),
+  },
+];
 
 export const PartnerGraph = ({
   data,
@@ -42,8 +44,6 @@ export const PartnerGraph = ({
   metric,
   rowFocusLabel,
   rowFocusHint,
-  onGranularityChange,
-  onMetricChange,
   onClearRowFocus,
 }: PartnerGraphProps) => {
   const prepareLine = usePreparedStackedLine();
@@ -51,61 +51,29 @@ export const PartnerGraph = ({
   const option = useMemo(() => {
     if (!data?.length) return null;
 
-    const periods = data.map((d) => d.period);
-    const current = data.map((d) => d.currentValue);
-    const prevYear = data.map((d) => d.prevYearValue);
+    const graphSeries = toGraphSeries(data);
 
     return {
       title: { text: PARTNER_GRAPH_METRIC_LABELS[metric] ?? metric },
-      legend: { data: ["Текущий период", "Прошлый год"] },
-      xAxis: {
-        type: "category" as const,
-        data: periods,
-        axisLabel: { rotate: periods.length > 12 ? 45 : 0 },
-      },
-      series: prepareLine([
-        { name: "Текущий период", type: "line", data: current },
-        { name: "Прошлый год", type: "line", data: prevYear },
-      ]),
+      legend: { data: ["Выбранный период", "Прошлый год"] },
+      groupType: granularity,
+      series: prepareLine(
+        graphSeries,
+        granularity === "month" && !isLoading
+          ? {
+              firstLineStyle: { width: 4, type: "solid" },
+              secondLineStyle: { width: 3, type: "dashed" },
+              thirdLineStyle: { width: 4, type: "solid" },
+              fourthLineStyle: { width: 3, type: "dashed" },
+            }
+          : {},
+      ),
     };
-  }, [data, metric, prepareLine]);
+  }, [data, metric, granularity, isLoading, prepareLine]);
 
   return (
     <div className="flex flex-col gap-2 h-64 shrink-0">
       <div className="flex flex-wrap items-center gap-2">
-        <Select
-          value={granularity}
-          onValueChange={(v) =>
-            onGranularityChange(v as PartnerGraphGranularity)
-          }
-        >
-          <SelectTrigger className="w-[140px] bg-background">
-            <SelectValue placeholder="Шаг по времени" />
-          </SelectTrigger>
-          <SelectContent>
-            {PARTNER_GRAPH_GRANULARITY.map((g) => (
-              <SelectItem key={g} value={g}>
-                {PARTNER_DIMENSION_LABELS[g] ?? g}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          value={metric}
-          onValueChange={(v) => onMetricChange(v as PartnerGraphMetric)}
-        >
-          <SelectTrigger className="w-[240px] bg-background">
-            <SelectValue placeholder="Метрика графика" />
-          </SelectTrigger>
-          <SelectContent>
-            {PARTNER_GRAPH_METRICS.map((m) => (
-              <SelectItem key={m} value={m}>
-                {PARTNER_GRAPH_METRIC_LABELS[m]}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
         {rowFocusLabel ? (
           <Badge variant="secondary" className="gap-1 max-w-full truncate">
             Срез: {rowFocusLabel}
@@ -121,9 +89,7 @@ export const PartnerGraph = ({
             )}
           </Badge>
         ) : (
-          <span className="text-xs text-muted-foreground">
-            Весь отчёт по фильтру
-          </span>
+          <></>
         )}
       </div>
 

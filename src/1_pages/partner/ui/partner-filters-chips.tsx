@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@shared/ui/card";
-import { Filter, Grid2x2Check, Layers3 } from "lucide-react";
+import { BarChart3, Filter, Grid2x2Check, Layers3 } from "lucide-react";
 import { Button } from "@shared/ui/button";
 import { Badge } from "@shared/ui/badge";
 import { useMemo } from "react";
@@ -9,7 +9,7 @@ import { ru } from "date-fns/locale";
 import { useWriteOffFiltersStore } from "@widgets/write-off/sheet/model/filters-store";
 import { usePartnerFiltersStore } from "../model/filters-store";
 import { PARTNER_METRIC_LABELS } from "../lib/labels";
-import { PARTNER_GROUPING_SECTIONS } from "@widgets/partner/sheet/ui/side/grouping-filter/config";
+import { PARTNER_GROUPING_SECTIONS } from "@widgets/partner/sheet/ui/side/grouping-filter/config/constants";
 
 const GROUP_LABELS = Object.fromEntries(
   PARTNER_GROUPING_SECTIONS.flatMap((s) =>
@@ -56,6 +56,21 @@ export const PartnerFiltersChips = ({
     }
     if (filters.product.idGroupMain.length > 0) {
       list.push(`Группы: ${filters.product.idGroupMain.length}`);
+    }
+    if (filters.product.subGroups.length > 0) {
+      list.push(`Подгруппы: ${filters.product.subGroups.length}`);
+    }
+    if (filters.product.subSubGroups.length > 0) {
+      list.push(`Подподгруппы: ${filters.product.subSubGroups.length}`);
+    }
+    if (filters.product.directionProducts.length > 0) {
+      list.push(`Направления: ${filters.product.directionProducts.length}`);
+    }
+    if (filters.product.groupFranchise.length > 0) {
+      list.push(`Структура продаж: ${filters.product.groupFranchise.length}`);
+    }
+    if (filters.product.typeProducts.length > 0) {
+      list.push(`Тип поставщика: ${filters.product.typeProducts.length}`);
     }
 
     return list;
@@ -113,7 +128,7 @@ export const PartnerFiltersChips = ({
                 onOpenSheet("Дата");
               }}
             >
-              Изменить <Filter className="size-4" />
+              Изменить фильтры <Filter className="size-4" />
             </Button>
           </Card>
 
@@ -148,7 +163,8 @@ export const PartnerFiltersChips = ({
                 onOpenSheet("Показатели");
               }}
             >
-              Изменить <Grid2x2Check className="size-4" />
+              Изменить показатели
+              <BarChart3 className="size-4" />
             </Button>
           </Card>
 
@@ -185,7 +201,7 @@ export const PartnerFiltersChips = ({
                 onOpenSheet("Группировка");
               }}
             >
-              Изменить <Layers3 className="size-4" />
+              Изменить группировки <Layers3 className="size-4" />
             </Button>
           </Card>
         </motion.div>

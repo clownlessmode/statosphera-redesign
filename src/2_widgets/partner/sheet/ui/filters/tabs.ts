@@ -6,15 +6,15 @@ import {
   Store,
 } from "lucide-react";
 import { DateFilter } from "@widgets/write-off/sheet/ui/side/date-filter";
-import { ShopsFilter } from "@widgets/write-off/sheet/ui/side/shops-filter";
-import { ProductsFilter } from "@widgets/write-off/sheet/ui/side/products-filter";
-import { PartnerGroupingFilter } from "../side/grouping-filter/grouping-filter";
-import { PartnerMetricsFilter } from "../side/metrics-filter/metrics-filter";
+import { PartnerShopsFilter } from "../side/shops-filter/partner-shops-filter";
+import { PartnerProductsFilter } from "../side/products-filter/partner-products-filter";
+import { PartnerGroupingFilter } from "../side/grouping-filter/ui";
+import { PartnerMetricsFilter } from "../side/metrics-filter/ui";
 
 export const partnerFilters = [
   { title: "Дата", icon: Calendar, component: DateFilter },
-  { title: "Магазины", icon: Store, component: ShopsFilter },
-  { title: "Продукты", icon: ShoppingBasket, component: ProductsFilter },
+  { title: "Магазины", icon: Store, component: PartnerShopsFilter },
+  { title: "Продукты", icon: ShoppingBasket, component: PartnerProductsFilter },
 ];
 
 export const partnerGrouping = [

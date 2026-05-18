@@ -15,7 +15,7 @@ export type PartnerFilter = {
   filterDate: PartnerFilterDate;
   idProduct?: string[];
   idStore?: number[];
-  innProducer?: number[];
+  typeProducts?: number[];
   groups?: number[];
   subgroups?: number[];
   subsubgroups?: number[];

@@ -11,9 +11,10 @@ import {
   PartnerTableGroup,
   TablePartnerRequest,
 } from "../api/types";
-
-const toNumIds = (ids: string[]): number[] =>
-  ids.map((id) => Number(id)).filter((n) => !Number.isNaN(n));
+import {
+  parseNumericFilterIds,
+  parseStringFilterIds,
+} from "../lib/parse-filter-ids";
 
 const today = new Date();
 
@@ -28,23 +29,45 @@ export const DEFAULT_PARTNER_VALUES: PartnerMetric[] = [
   PARTNER_VALUES.SHIPMENT_PERCENT,
 ];
 
-export const DEFAULT_PARTNER_GROUPS: PartnerTableGroup[] = [
-  "directionProducts",
-  "group",
-  "product",
-];
+export const DEFAULT_PARTNER_GROUPS: PartnerTableGroup[] = [];
+
+export type AppliedPartnerReport = {
+  values: PartnerMetric[];
+  group: PartnerTableGroup[];
+  filter: PartnerFilter;
+};
+
+const buildFilterFromWriteOff = (): PartnerFilter => {
+  const wo = useWriteOffFiltersStore.getState();
+  const { filters, filterDate } = wo;
+
+  const dateStart =
+    filterDate.dateStart?.slice(0, 10) || defaultFilterDate.dateStart;
+  const dateEnd = filterDate.dateEnd?.slice(0, 10) || defaultFilterDate.dateEnd;
+
+  return {
+    filterDate: { dateStart, dateEnd },
+    idProduct: parseStringFilterIds(filters.product.idProduct),
+    idStore: parseNumericFilterIds(filters.store.idStore),
+    typeProducts: parseNumericFilterIds(filters.product.typeProducts),
+    groups: parseNumericFilterIds(filters.product.idGroupMain),
+    subgroups: parseNumericFilterIds(filters.product.subGroups),
+    subsubgroups: parseNumericFilterIds(filters.product.subSubGroups),
+    groupsFranchise: parseNumericFilterIds(filters.product.groupFranchise),
+    directionProducts: parseNumericFilterIds(filters.product.directionProducts),
+  };
+};
 
 export type PartnerFiltersState = {
   values: PartnerMetric[];
   group: PartnerTableGroup[];
-  filter: PartnerFilter;
   sort: PartnerSort;
   graphGranularity: PartnerGraphGranularity;
   graphValue: PartnerGraphMetric;
   dataVersion: number;
   submitRequestId: number;
+  appliedReport: AppliedPartnerReport | null;
   requestSubmit: () => void;
-  setFilter: (patch: Partial<PartnerFilter>) => void;
   setValues: (values: PartnerMetric[]) => void;
   setGroup: (group: PartnerTableGroup[]) => void;
   setSort: (sort: PartnerSort) => void;
@@ -59,33 +82,27 @@ export type PartnerFiltersState = {
   ) => TablePartnerRequest;
 };
 
-const emptyArraysFilter = (): Omit<PartnerFilter, "filterDate"> => ({
-  idProduct: [],
-  idStore: [],
-  innProducer: [],
-  groups: [],
-  subgroups: [],
-  subsubgroups: [],
-  groupsFranchise: [],
-  directionProducts: [],
-});
-
 export const usePartnerFiltersStore = create<PartnerFiltersState>(
   (set, get) => ({
     values: DEFAULT_PARTNER_VALUES,
     group: DEFAULT_PARTNER_GROUPS,
-    filter: {
-      ...emptyArraysFilter(),
-      filterDate: defaultFilterDate,
-    },
     sort: { sort: "desc", colId: PARTNER_VALUES.ORDERED_COUNT },
     graphGranularity: "month",
     graphValue: PARTNER_VALUES.NOT_SHIPPED_PROFIT,
     dataVersion: 0,
     submitRequestId: 0,
-    requestSubmit: () =>
-      set((s) => ({ submitRequestId: s.submitRequestId + 1 })),
-    setFilter: (patch) => set((s) => ({ filter: { ...s.filter, ...patch } })),
+    appliedReport: null,
+    requestSubmit: () => {
+      const { values, group } = get();
+      set({
+        submitRequestId: get().submitRequestId + 1,
+        appliedReport: {
+          values: [...values],
+          group: [...group],
+          filter: buildFilterFromWriteOff(),
+        },
+      });
+    },
     setValues: (values) => set({ values }),
     setGroup: (group) => set({ group }),
     setSort: (sort) => set({ sort }),
@@ -94,39 +111,31 @@ export const usePartnerFiltersStore = create<PartnerFiltersState>(
     bumpDataVersion: () => set((s) => ({ dataVersion: s.dataVersion + 1 })),
     resetFilters: () =>
       set({
-        filter: { ...emptyArraysFilter(), filterDate: defaultFilterDate },
         values: DEFAULT_PARTNER_VALUES,
         group: DEFAULT_PARTNER_GROUPS,
         sort: { sort: "desc", colId: PARTNER_VALUES.ORDERED_COUNT },
+        appliedReport: null,
       }),
     buildFilter: () => {
-      const { filter } = get();
-      const wo = useWriteOffFiltersStore.getState();
-      const { filters, filterDate } = wo;
-
-      const dateStart =
-        filterDate.dateStart?.slice(0, 10) || filter.filterDate.dateStart;
-      const dateEnd =
-        filterDate.dateEnd?.slice(0, 10) || filter.filterDate.dateEnd;
-
-      return {
-        filterDate: { dateStart, dateEnd },
-        idProduct: filters.product.idProduct ?? [],
-        idStore: toNumIds(filters.store.idStore ?? []),
-        innProducer: filter.innProducer ?? [],
-        groups: toNumIds(filters.product.idGroupMain ?? []),
-        subgroups: toNumIds(filters.product.subGroups ?? []),
-        subsubgroups: toNumIds(filters.product.subSubGroups ?? []),
-        groupsFranchise: toNumIds(filters.product.groupFranchise ?? []),
-        directionProducts: toNumIds(filters.product.directionProducts ?? []),
-      };
+      const applied = get().appliedReport;
+      if (applied) return applied.filter;
+      return buildFilterFromWriteOff();
     },
     buildTableRequest: (pagination, nextSort) => {
-      const { values, group, sort, buildFilter } = get();
+      const { sort, appliedReport } = get();
+      if (!appliedReport) {
+        return {
+          values: [],
+          filter: buildFilterFromWriteOff(),
+          group: [],
+          pagination,
+          sort: nextSort ?? sort,
+        };
+      }
       return {
-        values,
-        filter: buildFilter(),
-        group,
+        values: appliedReport.values,
+        filter: appliedReport.filter,
+        group: appliedReport.group,
         pagination,
         sort: nextSort ?? sort,
       };

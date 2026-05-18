@@ -26,7 +26,9 @@ export const TablePartner = ({
   buildTableRequest,
   onRowClick,
 }: TablePartnerProps) => {
-  const { values, group } = usePartnerFiltersStore();
+  const appliedReport = usePartnerFiltersStore((s) => s.appliedReport);
+  const values = appliedReport?.values ?? [];
+  const group = appliedReport?.group ?? [];
 
   const resolveColumnDefs = useCallback(
     (row: Record<string, unknown>) =>
