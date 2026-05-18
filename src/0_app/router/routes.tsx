@@ -44,6 +44,7 @@ import { Projects } from "@pages/projects";
 import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
 import { Testtt } from "@pages/testtt/api/night-entries";
 import { AdminMailing } from "@pages/admin/admin-mailing";
+// import { Partner } from "@pages/partner";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
 const Sidebar = React.lazy(() =>
@@ -119,6 +120,9 @@ export const ROUTES_PATH = {
 
   // Сводная таблица
   SUMMARY: "/summary",
+
+  // Партнеры
+  // PARTNERS: "/partners",
 
   //Отзывы
   REVIEWS: "/reviews",
@@ -543,7 +547,6 @@ export const ROUTES: RouteConfig[] = [
     element: <ProjectPage />,
     layout: Sidebar,
     label: "Проект",
-    allowedRoles: [ROLES.ADMIN],
   },
   {
     path: ROUTES_PATH.PROJECTS,
@@ -552,6 +555,13 @@ export const ROUTES: RouteConfig[] = [
     layout: Sidebar,
     label: "Проекты",
   },
+  // {
+  //   path: ROUTES_PATH.PARTNERS,
+  //   variant: "private",
+  //   element: <Partner />,
+  //   layout: Sidebar,
+  //   label: "Партнеры",
+  // },
   // {
   //   path: ROUTES_PATH.ADMIN_STORES,
   //   variant: "private",
