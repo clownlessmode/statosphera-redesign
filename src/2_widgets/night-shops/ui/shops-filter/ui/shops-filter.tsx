@@ -99,7 +99,7 @@ const ShopsFilter = () => {
         className="p-0 max-xxs:h-[calc(100vh-128px)] max-md:h-max rounded-xl border-none"
         aria-describedby={undefined}
       >
-        <Card className="w-full mr-4 max-md:overflow-y-auto scrollbar-hide">
+        <Card className="w-full mr-4 max-md:h-max max-h-[90dvh] overflow-y-auto scrollbar-hide">
           <CardHeader>
             <CardTitle>Магазины</CardTitle>
             <div className="flex flex-row gap-2 justify-between items-center w-full">
