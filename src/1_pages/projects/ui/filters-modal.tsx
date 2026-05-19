@@ -246,7 +246,7 @@ export const FiltersModal = ({ value, onApply }: FiltersModalProps) => {
             </div>
 
             <div className="space-y-3">
-              <Label>Ответственный (лидер)</Label>
+              <Label>Лидер</Label>
               <Select
                 value={responsibleName ? responsibleName : NONE}
                 onValueChange={(v) => setResponsibleName(v === NONE ? "" : v)}

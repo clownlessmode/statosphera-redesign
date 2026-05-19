@@ -1,5 +1,9 @@
 import type { ProjectDetail } from "@pages/projects/api/types/response";
-import { useGetUsers, useUpdateProject } from "@pages/projects/api/controller";
+import {
+  useGetPmName,
+  useGetUsers,
+  useUpdateProject,
+} from "@pages/projects/api/controller";
 import { Button } from "@shared/ui/button";
 import {
   Dialog,
@@ -143,6 +147,7 @@ export const ModalUpdateProject = ({
 }: ModalUpdateProjectProps) => {
   const [open, setOpen] = useState(false);
   const [optionsRefresh, setOptionsRefresh] = useState(0);
+  const [pmSelectOpen, setPmSelectOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(project.name);
   const [responsible_name, setResponsibleName] = useState(
@@ -168,6 +173,7 @@ export const ModalUpdateProject = ({
 
   const queryClient = useQueryClient();
   const { data: users, isLoading: usersLoading } = useGetUsers();
+  const { data: pmList = [] } = useGetPmName(open || pmSelectOpen);
   const { mutate: updateProject, isPending } = useUpdateProject(project.id);
 
   const userOptions = useMemo(
@@ -298,7 +304,7 @@ export const ModalUpdateProject = ({
         start_date: start_date.toISOString(),
         end_date: end_date.toISOString(),
         priority,
-        access_users: access_users ?? [],
+        access_users: access_users.length > 0 ? access_users : undefined,
       },
       {
         onSuccess: () => {
@@ -334,23 +340,14 @@ export const ModalUpdateProject = ({
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor={`upd-responsible-${project.id}`}>
-                Ответственный
-              </Label>
-              <Input
-                id={`upd-responsible-${project.id}`}
-                className="bg-background"
-                disabled={fieldsDisabled}
-                placeholder="Введите ответственного"
-              />
               <Label htmlFor={`upd-responsible-${project.id}`}>Лидер</Label>
               <Input
                 id={`upd-responsible-${project.id}`}
                 className="bg-background"
                 disabled={fieldsDisabled}
                 placeholder="Введите лидера"
-                value={team_info}
-                onChange={(e) => setTeamInfo(e.target.value)}
+                value={responsible_name}
+                onChange={(e) => setResponsibleName(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -365,15 +362,24 @@ export const ModalUpdateProject = ({
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor={`upd-pm-${project.id}`}>Проджект-менеджер</Label>
-              <Input
-                id={`upd-pm-${project.id}`}
-                className="bg-background"
+              <Label>Проджект-менеджер</Label>
+              <Select
                 disabled={fieldsDisabled}
-                placeholder="Введите проджект-менеджера"
                 value={pm_name}
-                onChange={(e) => setPmName(e.target.value)}
-              />
+                onValueChange={setPmName}
+                onOpenChange={setPmSelectOpen}
+              >
+                <SelectTrigger className="w-full !bg-background">
+                  <SelectValue placeholder="Выберите проджект-менеджера" />
+                </SelectTrigger>
+                <SelectContent side="top" sideOffset={4} className="max-h-66">
+                  {pmList.map((row) => (
+                    <SelectItem key={row.pm_name} value={row.pm_name}>
+                      {row.pm_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex flex-col gap-2">
               <Label>Этап проекта</Label>
