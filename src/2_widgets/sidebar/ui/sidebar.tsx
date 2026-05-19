@@ -31,7 +31,7 @@ import {
   Lightbulb,
   MailWarning,
   Mail,
-  Users,
+  // Users,
 } from "lucide-react";
 import { Link } from "react-router";
 import {
@@ -227,11 +227,11 @@ const Sidebar = ({
         url: ROUTES_PATH.FEEDBACK,
         icon: MailWarning,
       },
-      {
-        title: "Партнеры",
-        url: ROUTES_PATH.PARTNERS,
-        icon: Users,
-      },
+      // {
+      //   title: "Партнеры",
+      //   url: ROUTES_PATH.PARTNERS,
+      //   icon: Users,
+      // },
       {
         title: "Фермеры",
         url: ROUTES_PATH.FARMERS,
