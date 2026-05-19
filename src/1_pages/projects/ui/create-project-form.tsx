@@ -10,7 +10,7 @@ import {
 import { useForm, type DefaultValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useCreateProject, useGetUsers } from "../api/controller";
+import { useCreateProject, useGetPmName, useGetUsers } from "../api/controller";
 import { Input } from "@shared/ui/input";
 import { Button } from "@shared/ui/button";
 import { DatePicker } from "@shared/ui/date-picker";
@@ -52,7 +52,7 @@ const createProjectSchema = z
     responsible_name: z.string().min(1, "Лидер обязательно"),
     team_info: z.string().min(1, "Команда обязательно"),
     client_name: z.string().min(1, "Заказчик обязательно"),
-    pm_name: z.string().min(1, "Проджект-менеджер обязательно"),
+    pm_name: z.string().min(1, "Выберите проджект-менеджера"),
     stage: z.string().min(1, "Этапы проекта обязательно"),
     start_date: z.date({ message: "Выберите дату начала" }),
     end_date: z.date({ message: "Выберите дату окончания" }),
@@ -88,6 +88,7 @@ export const CreateProjectForm = () => {
   const [showExitAlert, setShowExitAlert] = useState(false);
   const [exitType, setExitType] = useState<"x" | "outside" | null>(null);
   const [optionsRefresh, setOptionsRefresh] = useState(0);
+  const [pmSelectOpen, setPmSelectOpen] = useState(false);
 
   const form = useForm<CreateProjectFormData>({
     resolver: zodResolver(createProjectSchema),
@@ -104,6 +105,7 @@ export const CreateProjectForm = () => {
   });
 
   const { data: users, isLoading } = useGetUsers();
+  const { data: pmList = [] } = useGetPmName(pmSelectOpen);
 
   const userOptions = useMemo(
     () =>
@@ -292,11 +294,29 @@ export const CreateProjectForm = () => {
                         <FormItem className="flex flex-col gap-2">
                           <FormLabel>Проджект-менеджер</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Введите проджект-менеджера"
-                              className="bg-background"
-                              {...field}
-                            />
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                              onOpenChange={setPmSelectOpen}
+                            >
+                              <SelectTrigger className="w-full !bg-background">
+                                <SelectValue placeholder="Выберите проджект-менеджера" />
+                              </SelectTrigger>
+                              <SelectContent
+                                side="top"
+                                sideOffset={4}
+                                className="max-h-66"
+                              >
+                                {pmList.map((row) => (
+                                  <SelectItem
+                                    key={row.pm_name}
+                                    value={row.pm_name}
+                                  >
+                                    {row.pm_name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -408,6 +428,7 @@ export const CreateProjectForm = () => {
                           <FormLabel>Доступ</FormLabel>
                           <FormControl>
                             <MultiSelect
+                              className="!min-h-[36px]"
                               placeholder="Выберите кому доступен проект"
                               options={userOptions}
                               isLoading={isLoading}
