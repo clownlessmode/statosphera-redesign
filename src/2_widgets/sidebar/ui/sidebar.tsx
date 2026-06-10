@@ -248,14 +248,14 @@ const Sidebar = ({
               icon: SettingsIcon,
               disabled:
                 session?.role !== ROLES.ADMIN &&
-                ![59, 156].includes(session?.idUser ?? -1),
+                ![59, 156, 2837].includes(session?.idUser ?? -1),
               children: [
                 {
                   title: "Дайджесты",
                   url: ROUTES_PATH.ADMIN_DIGESTS,
                   disabled:
                     session?.role !== ROLES.ADMIN &&
-                    ![59, 156].includes(session?.idUser ?? -1),
+                    ![59, 156, 2837].includes(session?.idUser ?? -1),
                 },
                 {
                   title: "Уведомления",
@@ -284,7 +284,7 @@ const Sidebar = ({
               icon: FilePen,
               disabled:
                 session?.role !== ROLES.ADMIN &&
-                ![59, 156].includes(session?.idUser ?? -1),
+                ![59, 156, 2837].includes(session?.idUser ?? -1),
             },
             {
               title: "Уведомления (админ)",

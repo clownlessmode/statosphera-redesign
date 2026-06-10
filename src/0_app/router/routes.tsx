@@ -184,7 +184,7 @@ export const ROUTES: RouteConfig[] = [
     path: ROUTES_PATH.ADMIN_DIGESTS,
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
-    allowedUsers: [59, 156],
+    allowedUsers: [59, 156, 2837],
     element: <AdminDigests />,
     layout: Sidebar,
   },
