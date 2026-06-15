@@ -294,6 +294,23 @@ const Digests = () => {
               ))}
             </div>
           </TabsContent>
+
+          <TabsContent value="farmers">
+            <div className="flex flex-col gap-2 w-full">
+              {filteredDigests.farmers?.map((item) => (
+                <DigestCard
+                  description={item.description}
+                  key={item.id}
+                  id={item.id}
+                  count={item.count}
+                  cover={item.cover}
+                  title={item.title}
+                  create_add={item.create_add}
+                  type="Фермеры"
+                />
+              ))}
+            </div>
+          </TabsContent>
         </div>
       </Tabs>
     </div>
