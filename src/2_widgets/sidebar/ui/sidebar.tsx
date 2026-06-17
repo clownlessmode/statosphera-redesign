@@ -271,7 +271,7 @@ const Sidebar = ({
                 {
                   title: "Рассылка",
                   url: ROUTES_PATH.ADMIN_MAILING,
-                  disabled: session?.role !== ROLES.ADMIN,
+                  disabled: ![2819].includes(session?.idUser ?? -1),
                 },
                 {
                   title: "Роли голосования",

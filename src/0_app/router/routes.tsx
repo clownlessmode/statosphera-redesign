@@ -191,7 +191,7 @@ export const ROUTES: RouteConfig[] = [
   {
     path: ROUTES_PATH.ADMIN_MAILING,
     variant: "private",
-    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [2819],
     element: <AdminMailing />,
     layout: Sidebar,
   },
