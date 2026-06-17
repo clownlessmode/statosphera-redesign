@@ -168,7 +168,6 @@ const Sidebar = ({
         title: "Лояльность",
         url: ROUTES_PATH.LOYALTY,
         icon: Heart,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Отзывы",
