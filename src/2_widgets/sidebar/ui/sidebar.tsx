@@ -153,6 +153,7 @@ const Sidebar = ({
         title: "Справочник магазинов",
         url: ROUTES_PATH.STORES,
         icon: Store,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Номенклатура",
@@ -167,6 +168,7 @@ const Sidebar = ({
         title: "Лояльность",
         url: ROUTES_PATH.LOYALTY,
         icon: Heart,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Отзывы",
@@ -198,17 +200,19 @@ const Sidebar = ({
         title: "Интернет-магазин",
         url: ROUTES_PATH.IM,
         icon: ShoppingBag,
-        disabled: false,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Мониторинг сетей",
         url: ROUTES_PATH.MONITORING,
         icon: Globe,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Ночные магазины",
         url: ROUTES_PATH.NIGHT_STORES,
         icon: Moon,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Гриль",
@@ -221,6 +225,7 @@ const Sidebar = ({
         url: ROUTES_PATH.DEMOCRACY,
         allowedRoles: [ROLES.ADMIN],
         icon: Lightbulb,
+        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Обратная связь",
