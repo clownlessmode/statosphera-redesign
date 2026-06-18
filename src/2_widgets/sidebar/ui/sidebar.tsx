@@ -153,7 +153,6 @@ const Sidebar = ({
         title: "Справочник магазинов",
         url: ROUTES_PATH.STORES,
         icon: Store,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Номенклатура",
@@ -199,7 +198,6 @@ const Sidebar = ({
         title: "Интернет-магазин",
         url: ROUTES_PATH.IM,
         icon: ShoppingBag,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Мониторинг сетей",
