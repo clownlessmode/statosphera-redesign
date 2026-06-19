@@ -209,7 +209,6 @@ const Sidebar = ({
         title: "Ночные магазины",
         url: ROUTES_PATH.NIGHT_STORES,
         icon: Moon,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Гриль",
