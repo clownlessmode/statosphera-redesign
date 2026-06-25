@@ -203,7 +203,6 @@ const Sidebar = ({
         title: "Мониторинг сетей",
         url: ROUTES_PATH.MONITORING,
         icon: Globe,
-        disabled: session?.role !== ROLES.ADMIN,
       },
       {
         title: "Ночные магазины",
