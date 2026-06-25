@@ -16,8 +16,9 @@ export const useStoresController = (id?: number, filters?: StoreFilters) => {
     enabled: !!id,
   });
   const map = useQuery({
-    queryKey: ["stores-map"],
-    queryFn: StoresService.getMap,
+    queryKey: ["stores-map", filters],
+    queryFn: () => StoresService.getMap(filters as StoreFilters),
+    enabled: !!filters,
   });
   return {
     map: map.data,

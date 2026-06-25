@@ -12,8 +12,11 @@ export class StoresService {
     const response = await api.get<Store[]>(`store/${id}`);
     return response.data[0];
   }
-  static async getMap() {
-    const response = await api.get<Coordinates[]>(`store/coordinates`);
+  static async getMap(filters: StoreFilters) {
+    const response = await api.post<Coordinates[]>(
+      `store/coordinates`,
+      filters,
+    );
     return response.data;
   }
 }
