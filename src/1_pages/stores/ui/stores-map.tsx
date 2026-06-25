@@ -6,7 +6,7 @@ import {
   Polygon,
   ZoomControl,
 } from "@pbe/react-yandex-maps";
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useTheme } from "@app/providers/theme-provider";
 import { Card, CardContent } from "@shared/ui/card";
 import StoreDetails from "./store-details";
@@ -16,12 +16,35 @@ import { Checkbox } from "@shared/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Separator } from "@shared/ui/separator";
 import { MapPin } from "lucide-react";
+import { useStoresFiltersStore } from "@widgets/stores-filters";
 
 const StoresMap: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Coordinates>();
   const { theme } = useTheme();
-  const { map, isMapLoading } = useStoresController();
+  const { getApiPayload } = useStoresFiltersStore();
+  const [appliedFilters, setAppliedFilters] = useState(getApiPayload());
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    import("@widgets/stores-filters").then(({ useStoresApplyStore }) => {
+      unsubscribe = useStoresApplyStore.subscribe((state) => {
+        if (state.shouldApply) {
+          setAppliedFilters(getApiPayload());
+          state.setShouldApply(false);
+        }
+      });
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [getApiPayload]);
+
+  const { map, isMapLoading } = useStoresController(undefined, appliedFilters);
 
   const [showExtended, setShowExtended] = useState<CheckedState>(true);
   const [showFast, setShowFast] = useState<CheckedState>(true);
