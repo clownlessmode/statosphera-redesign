@@ -210,7 +210,6 @@ const ProductsFilter: FC<Props> = ({ className }) => {
                   <FormLabel>Команда</FormLabel>
                   <FormControl>
                     <MultiSelect
-                      disabled
                       value={field.value?.map(String) || []}
                       options={teamOptions}
                       isLoading={isTeamLoading}
