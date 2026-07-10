@@ -555,7 +555,7 @@ export const EditProduct: FC<Props> = ({
                                 <MultiSelect
                                   maxCount={1}
                                   singleSelect={true}
-                                  disabled={true}
+                                  disabled={session?.isAdminProduct !== true}
                                   value={
                                     Array.isArray(field.value)
                                       ? field.value.map(String)

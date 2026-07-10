@@ -164,7 +164,7 @@ export class FiltersProductsService {
     return response.data;
   }
   static async getTeam(dto: any): Promise<TeamFilterResponse[]> {
-    const response = await api.post<any>("products/team", {
+    const response = await api.post<any>("products-team/team", {
       filters: {
         product: {
           ...dto.filters.product,
