@@ -87,10 +87,10 @@ export const PRODUCT = [
     label: "Группа",
     value: GROUPINGS.GROUP,
   },
-  // {
-  //   label: "Команда",
-  //   value: GROUPINGS.TEAM_PRODUCT,
-  // },
+  {
+    label: "Команда",
+    value: GROUPINGS.TEAM_PRODUCT,
+  },
   {
     label: "Подгруппа",
     value: GROUPINGS.SUBGROUPS,
