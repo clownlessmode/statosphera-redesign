@@ -77,11 +77,10 @@ export const PRODUCT = [
   //   value: GROUPINGS.SUBDIVISION_PRODUCT,
   // },
 
-  // {
-  //   label: "Команда",
-  //   value: GROUPINGS.TEAM_PRODUCT,
-  // },
-
+  {
+    label: "Команда",
+    value: GROUPINGS.TEAM_PRODUCT,
+  },
   {
     label: "Направление",
     value: GROUPINGS.DIRECTION_PRODUCT,
