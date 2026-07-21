@@ -52,7 +52,7 @@ const createProjectSchema = z
     responsible_name: z.string().min(1, "Лидер обязательно"),
     team_info: z.string().min(1, "Команда обязательно"),
     client_name: z.string().min(1, "Заказчик обязательно"),
-    pm_name: z.string().min(1, "Выберите проджект-менеджера"),
+    pm_name: z.string(),
     stage: z.string().min(1, "Этапы проекта обязательно"),
     start_date: z.date({ message: "Выберите дату начала" }),
     end_date: z.date({ message: "Выберите дату окончания" }),
