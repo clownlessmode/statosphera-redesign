@@ -44,6 +44,7 @@ import { Projects } from "@pages/projects";
 import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
 import { Testtt } from "@pages/testtt/api/night-entries";
 import { AdminMailing } from "@pages/admin/admin-mailing";
+import { AdminUsers } from "@pages/admin/admin-users";
 // import { Partner } from "@pages/partner";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -200,6 +201,14 @@ export const ROUTES: RouteConfig[] = [
     variant: "private",
     allowedRoles: [ROLES.ADMIN],
     element: <AdminRolesPage />,
+    layout: Sidebar,
+  },
+  {
+    path: ROUTES_PATH.ADMIN_USERS,
+    variant: "private",
+    allowedRoles: [ROLES.ADMIN],
+    allowedUsers: [151],
+    element: <AdminUsers />,
     layout: Sidebar,
   },
   // Авторизация
