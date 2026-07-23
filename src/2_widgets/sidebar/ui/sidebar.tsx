@@ -31,6 +31,7 @@ import {
   Lightbulb,
   MailWarning,
   Mail,
+  Users,
   // Users,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -274,6 +275,13 @@ const Sidebar = ({
                   url: ROUTES_PATH.ADMIN_ROLES,
                   disabled: session?.role !== ROLES.ADMIN,
                 },
+                {
+                  title: "Пользователи",
+                  url: ROUTES_PATH.ADMIN_USERS,
+                  disabled:
+                    session?.role !== ROLES.ADMIN &&
+                    ![151].includes(session?.idUser ?? -1),
+                },
               ],
             },
           ]
@@ -305,6 +313,14 @@ const Sidebar = ({
               url: ROUTES_PATH.ADMIN_ROLES,
               icon: Shield,
               disabled: session?.role !== ROLES.ADMIN,
+            },
+            {
+              title: "Пользователи",
+              url: ROUTES_PATH.ADMIN_USERS,
+              icon: Users,
+              disabled:
+                session?.role !== ROLES.ADMIN &&
+                ![151].includes(session?.idUser ?? -1),
             },
           ]),
       {

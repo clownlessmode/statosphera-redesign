@@ -3,22 +3,28 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SortableHeader } from "@shared/ui/sortable-header";
 import StatusBadge from "@shared/ui/status-badge";
 import { Store } from "@entities/store/config";
+import { EditStore } from "@features/edit-store";
 import { StoreSettings } from "@features/store-settings";
+import { useSession } from "@entities/session";
+import { ROLES } from "@shared/constants/roles";
 
 export const columns: ColumnDef<Store>[] = [
   {
     id: "actions",
-    size: 32,
-    maxSize: 32,
+    size: 64,
+    maxSize: 64,
     cell: ({ row }) => {
+      const { session } = useSession();
+      const canEditStore =
+        session?.role === ROLES.ADMIN ||
+        [151, 156].includes(session?.idUser ?? 0);
       const isNightStore = row.original.ipNightStore.length > 0;
       const store = row.original;
 
-      if (!isNightStore) return null;
-
       return (
-        <div onClick={(e) => e.stopPropagation()}>
-          <StoreSettings store={store} />
+        <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+          {isNightStore && <StoreSettings store={store} />}
+          {canEditStore && <EditStore store={store} />}
         </div>
       );
     },
