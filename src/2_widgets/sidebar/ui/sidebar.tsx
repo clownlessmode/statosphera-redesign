@@ -249,7 +249,7 @@ const Sidebar = ({
               icon: SettingsIcon,
               disabled:
                 session?.role !== ROLES.ADMIN &&
-                ![59, 156, 2837, 2813].includes(session?.idUser ?? -1),
+                ![59, 156, 2837, 2813, 151].includes(session?.idUser ?? -1),
               children: [
                 {
                   title: "Дайджесты",
