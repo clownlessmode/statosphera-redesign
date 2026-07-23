@@ -76,7 +76,7 @@ export const EditUserStores = ({
   return (
     <>
       <button
-        className="flex items-center justify-center size-9 cursor-pointer"
+        className="flex items-center justify-center size-9 cursor-pointer text-muted-foreground hover:text-foreground"
         onClick={(event) => {
           event.stopPropagation();
           setOpen(true);
