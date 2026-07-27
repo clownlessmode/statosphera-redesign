@@ -7,11 +7,6 @@ export class FarmerService {
     return response.data;
   }
 
-  static async checkProfile(id: number) {
-    const response = await api.get("/profile/check-profile/" + id);
-    return response.data;
-  }
-
   static async createProfile(dto: RequestDto) {
     const response = await api.post("/profile/create-profile", dto);
     return response.data;

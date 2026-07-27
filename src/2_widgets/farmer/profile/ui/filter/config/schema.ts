@@ -1,112 +1,88 @@
 // schema.ts
 import { z } from "zod";
-import { isValid, parse } from "date-fns";
-import validateOgrn from "@shared/lib/check-orgn";
-import isValidOkpo from "@shared/lib/check-okpo";
 
 export const schema = z.object({
   photo: z
-    .instanceof(FileList, { message: "Фотография обязательна" })
-    .refine((files) => files.length === 1, "Фотография обязательна")
+    .instanceof(FileList)
     .refine(
-      (files) => files?.[0]?.size <= 5 * 1024 * 1024,
-      `Максимальный размер файла - 5 МБ.`,
+      (files) => files.length === 0 || files.length === 1,
+      "Можно загрузить только одну фотографию",
+    )
+    .refine(
+      (files) => files.length === 0 || files[0].size <= 5 * 1024 * 1024,
+      "Максимальный размер файла - 5 МБ.",
     )
     .refine(
       (files) =>
+        files.length === 0 ||
         ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(
-          files?.[0]?.type,
+          files[0].type,
         ),
       "Поддерживаются только .jpg, .jpeg, .png и .webp форматы.",
-    ),
-  organizationName: z.string().min(1, "Обязательное поле"),
-  managerName: z.string().min(1, "Обязательное поле"),
-  phoneOrganization: z
-    .string()
-    .length(16, { message: "Введите номер полностью" }),
-  emailOrganization: z.string().email({ message: "Некорректный email" }),
-  inn: z.array(z.string().min(10)).min(1, "Обязательное поле"),
-  kpp: z.array(z.string().min(9)),
-  nds: z.string(),
-  bankDetails: z
-    .string({
-      required_error: "Обязательное поле",
-      invalid_type_error: "Обязательное поле",
-    })
+    )
+    .optional(),
+  organizationName: z
+    .string({ message: "Обязательное поле" })
     .min(1, "Обязательное поле"),
-  companyHistory: z.string(),
-  legalAddress: z.string().min(1, "Обязательное поле"),
-  postalAddress: z.string().min(1, "Обязательное поле"),
-  workshopAddress: z.string().min(1, "Обязательное поле"),
-  ogrn: z.union([
-    z.literal(""),
-    z.string().refine((val) => validateOgrn(val), {
-      message: "Некорректный ОГРН",
-    }),
-  ]),
-  okpo: z.union([
-    z.literal(""),
-    z.string().refine((val) => isValidOkpo(val), {
-      message: "Некорректный ОКПО",
-    }),
-  ]),
-  okved: z.union([
-    z.literal(""),
-    z.string().refine((val) => /^(\d{2}(\.\d{1,2})?(\.\d{1,2})?)$/.test(val), {
-      message: "Некорректный ОКВЭД",
-    }),
-  ]),
+  managerName: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  phoneOrganization: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  emailOrganization: z
+    .string({ message: "Обязательное поле" })
+    .email("Некорректный email"),
+  inn: z
+    .array(
+      z.string({ message: "Обязательное поле" }).min(1, "Обязательное поле"),
+    )
+    .min(1, "Обязательное поле"),
+  kpp: z.array(z.string({ message: "Обязательное поле" })),
+  nds: z.string({ message: "Обязательное поле" }).min(1, "Обязательное поле"),
+  bankDetails: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  companyHistory: z.string().optional(),
+  legalAddress: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  postalAddress: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  workshopAddress: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
+  ogrn: z.string({ message: "Обязательное поле" }).min(1, "Обязательное поле"),
+  okpo: z.string({ message: "Обязательное поле" }).min(1, "Обязательное поле"),
+  okved: z.string({ message: "Обязательное поле" }).min(1, "Обязательное поле"),
   declarations: z.array(
     z.object({
-      nameDeclaration: z.string().min(1),
-      dateEndDeclaration: z
-        .string()
-        .min(10)
-        .refine((val) => isValid(parse(val, "dd.MM.yyyy", new Date()))),
+      nameDeclaration: z.string(),
+      dateEndDeclaration: z.string().nullable(),
     }),
   ),
-  startDateOfCooperation: z.union([
-    z.literal(""),
-    z
-      .string()
-      .min(10, "Введите дату полностью")
-      .refine((val) => isValid(parse(val, "dd.MM.yyyy", new Date())), {
-        message: "Некорректная дата",
-      }),
-  ]),
-  dateOfFirstDelivery: z.union([
-    z.literal(""),
-    z
-      .string()
-      .min(10, "Введите дату полностью")
-      .refine((val) => isValid(parse(val, "dd.MM.yyyy", new Date())), {
-        message: "Некорректная дата",
-      }),
-  ]),
-  chiefAccountant: z.object({
-    name: z.string().min(1, "Обязательное поле"),
-    phone: z.string().length(16, { message: "Введите номер полностью" }),
-    email: z.string().email({ message: "Некорректный email" }),
-    position: z.literal("Главный бухгалтер"),
-  }),
-  responsiblePerson: z.object({
-    name: z.string().min(1, "Обязательное поле"),
-    phone: z.string().length(16, { message: "Введите номер полностью" }),
-    email: z.string().email({ message: "Некорректный email" }),
-    position: z.literal("Ответственное лицо"),
-  }),
-  mainContact: z.object({
-    name: z.string().min(1, "Обязательное поле"),
-    phone: z.string().length(16, { message: "Введите номер полностью" }),
-    email: z.string().email({ message: "Некорректный email" }),
-    position: z.string().min(1, "Обязательное поле"),
-  }),
+  startDateOfCooperation: z
+    .string()
+    .refine((val) => val === "" || val.length === 10, {
+      message: "Введите дату полностью",
+    })
+    .optional(),
+  dateOfFirstDelivery: z
+    .string()
+    .refine((val) => val === "" || val.length === 10, {
+      message: "Введите дату полностью",
+    })
+    .optional(),
+  chiefAccountant: z
+    .string({ message: "Обязательное поле" })
+    .min(1, "Обязательное поле"),
   additionalContacts: z.array(
     z.object({
-      name: z.string().min(1),
-      phone: z.string().length(16),
-      email: z.string().email(),
-      position: z.string().min(1),
+      name: z.string(),
+      phone: z.string(),
+      email: z.string(),
+      position: z.string(),
     }),
   ),
 });
@@ -115,8 +91,8 @@ export const schemaContacts = z.object({
   contacts: z.array(
     z.object({
       name: z.string().min(1, "Обязательное поле"),
-      phone: z.string().length(16, { message: "Введите номер полностью" }),
-      email: z.string().email({ message: "Некорректный email" }),
+      phone: z.string().length(16, "Введите номер полностью"),
+      email: z.string().email("Некорректный email"),
       position: z.string().min(1, "Обязательное поле"),
     }),
   ),
