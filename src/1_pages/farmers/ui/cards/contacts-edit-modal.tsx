@@ -49,7 +49,7 @@ export const ContactsEditModal: FC<{ farmer: FarmersResponse }> = ({
             </div>
           }
         >
-          <ContactsEditField contacts={farmer.kmContacts} />
+          <ContactsEditField contacts={farmer.kmContacts ?? []} />
           <Button onClick={handleSave}>Сохранить</Button>
         </Suspense>
       </DialogContent>

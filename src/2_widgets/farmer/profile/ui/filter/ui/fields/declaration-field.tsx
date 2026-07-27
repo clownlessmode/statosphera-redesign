@@ -77,7 +77,7 @@ export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Название декларации"
-                    className="bg-background"
+                    className="bg-background!"
                   />
                 </div>
                 <div className="flex-1 space-y-1 max-md:w-full">
@@ -93,7 +93,7 @@ export const DeclarationField: FC<DeclarationFieldProps> = ({ control }) => {
                     limitToday={false}
                     onChange={(val) => setDate(val)}
                     placeholder="Введите дату"
-                    className="bg-background"
+                    className="bg-background!"
                   />
                 </div>
                 <Button

@@ -7,11 +7,17 @@ import { cn } from "@shared/lib/utils";
 export const ShortProfile = ({ farmer }: { farmer: FarmersResponse }) => {
   return (
     <Card
-      className={cn(farmer.kmContacts.length === 0 && "border-accent border-2")}
+      className={cn(
+        (farmer.kmContacts.length ?? 0) === 0 && "border-accent border-2",
+      )}
     >
       <CardContent className="grid grid-cols-[max-content_1fr_1fr_1fr_1fr_max-content] gap-4 items-center max-md:grid-cols-[max-content_1fr_max-content]">
         <Card
-          style={{ backgroundImage: `url("${farmer.photo}")` }}
+          style={
+            farmer.photo
+              ? { backgroundImage: `url("${farmer.photo}")` }
+              : undefined
+          }
           className="size-[50px] rounded-full aspect-square bg-accent bg-no-repeat bg-center bg-cover shrink-0"
         />
         <span className="truncate">{farmer.organizationName}</span>

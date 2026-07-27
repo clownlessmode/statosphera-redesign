@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@shared/ui/card";
+﻿import { Card, CardContent, CardHeader } from "@shared/ui/card";
 import {
   Form,
   FormControl,
@@ -12,7 +12,7 @@ import { Input } from "@shared/ui/input";
 import { PhoneInput } from "@shared/ui/phone-input";
 import { Textarea } from "@shared/ui/textarea";
 import DateInput from "@shared/ui/date-input";
-import { ClipboardPaste, Save, Upload, User, X } from "lucide-react";
+import { Save, Upload, User, X } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@shared/ui/label";
 import AddressInput from "@shared/ui/address-input";
@@ -22,32 +22,24 @@ import { UseFormReturn } from "react-hook-form";
 import { FormValues } from "../config/types";
 import { Button } from "@shared/ui/button";
 import { useEffect, useState } from "react";
-import isValidInn from "@shared/lib/check-inn";
-import isValidKpp from "@shared/lib/check-kpp";
 import { DeclarationField } from "./fields/declaration-field";
-import { ResponsiblePersonField } from "./fields/responsible-person-filed";
-import { ChiefAccountantField } from "./fields/chief-accountant-field";
-import { MainContactField } from "./fields/main-contact-field";
 import { AdditionalContactsField } from "./fields/additional-contacts-field";
 import { ProfileResponse } from "@entities/farmer/config";
 import { useFarmer } from "@entities/farmer";
 import { useSession } from "@entities/session";
 import formatDateIso from "@shared/lib/format-date-iso";
-import { STEPS_FIELDS } from "../config/constant";
+import normalizeRuPhone from "@shared/lib/normalize-ru-phone";
 import { useIsMobile } from "@shared/hooks";
-import { Separator } from "@shared/ui/separator";
 import { useSessionController } from "@entities/session/api/controller";
 import { CropAvatarDialog } from "./crop-avatar-dialog";
 
 interface FarmerQuestionnaireProps {
-  level?: number;
   data?: ProfileResponse;
   form: UseFormReturn<FormValues>;
   handleCancel?: () => void;
 }
 
 export default function FarmerQuestionnaire({
-  level,
   form,
   data,
   handleCancel,
@@ -60,15 +52,18 @@ export default function FarmerQuestionnaire({
   const [isCropOpen, setIsCropOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageName, setImageName] = useState("");
-  // Эффект для инициализации формы данными, если включен режим редактирования
+
   useEffect(() => {
     if (data) {
-      // Сбрасываем форму значениями из data, исключая поле photo,
-      // так как оно требует FileList, а с сервера приходит строка URL
       form.reset({
         ...data,
         photo: undefined,
-      } as unknown as FormValues);
+        phoneOrganization: normalizeRuPhone(data.phoneOrganization),
+        additionalContacts: data.additionalContacts?.map((contact) => ({
+          ...contact,
+          phone: normalizeRuPhone(contact.phone),
+        })),
+      });
     }
   }, [data, form]);
 
@@ -106,12 +101,7 @@ export default function FarmerQuestionnaire({
 
   const handleSave = async () => {
     if (!data || !form.getValues()) return;
-    // Фильтруем массив, исключая "photo"
-    const fieldsToValidate = STEPS_FIELDS.flat().filter(
-      (field) => field !== "photo",
-    ) as (keyof FormValues)[];
-    // Запускаем валидацию
-    const isValid = await form.trigger(fieldsToValidate);
+    const isValid = await form.trigger();
     if (isValid) {
       const changes = getChangedFields(data, form.getValues());
       if (changes && session?.idUser) {
@@ -123,6 +113,9 @@ export default function FarmerQuestionnaire({
           if (Object.keys(changesFields).length > 0) {
             await updateProfile({
               ...payloadWithoutPhoto,
+              companyHistory: payloadWithoutPhoto.companyHistory
+                ? payloadWithoutPhoto.companyHistory
+                : null,
               startDateOfCooperation: payloadWithoutPhoto.startDateOfCooperation
                 ? formatDateIso(payloadWithoutPhoto.startDateOfCooperation)
                 : null,
@@ -131,18 +124,20 @@ export default function FarmerQuestionnaire({
                 : null,
               declarations: payloadWithoutPhoto.declarations?.map((d: any) => ({
                 ...d,
-                dateEndDeclaration: formatDateIso(d.dateEndDeclaration),
+                dateEndDeclaration: d.dateEndDeclaration
+                  ? formatDateIso(d.dateEndDeclaration)
+                  : null,
               })),
               idUser: session?.idUser,
             });
           }
 
-          if (changedPhoto && changedPhoto.length > 0) {
+          if (changedPhoto && changedPhoto.length > 0 && photo?.[0]) {
             await uploadPhoto({ photo: photo[0] });
           }
 
           toast.success("Профиль успешно обновлен");
-          const { data: newSession } = await getUpdatedSession(); // Исправлено здесь
+          const { data: newSession } = await getUpdatedSession();
           if (newSession && newSession.idUser === session?.idUser) {
             setSession(newSession);
           }
@@ -154,52 +149,6 @@ export default function FarmerQuestionnaire({
       }
     } else {
       toast.error("Обязательные поля не могут быть пустыми");
-    }
-  };
-
-  const handleAutoFill = (
-    section: "chiefAccountant" | "responsiblePerson" | "mainContact",
-  ) => {
-    const { managerName, phoneOrganization, emailOrganization } =
-      form.getValues();
-
-    if (!managerName && !phoneOrganization && !emailOrganization) {
-      toast.error("Сначала заполните данные руководителя");
-      return;
-    }
-
-    const commonData = {
-      name: managerName,
-      phone: phoneOrganization,
-      email: emailOrganization,
-    };
-
-    let dataToSet: any;
-
-    switch (section) {
-      case "chiefAccountant":
-        dataToSet = {
-          ...commonData,
-          position: "Главный бухгалтер" as const,
-        };
-        break;
-      case "responsiblePerson":
-        dataToSet = {
-          ...commonData,
-          position: "Ответственное лицо" as const,
-        };
-        break;
-      case "mainContact":
-        dataToSet = {
-          ...commonData,
-          position: "Руководитель",
-        };
-        break;
-    }
-
-    if (dataToSet) {
-      form.setValue(section, dataToSet, { shouldValidate: true });
-      updateFilters(section, dataToSet);
     }
   };
 
@@ -276,15 +225,7 @@ export default function FarmerQuestionnaire({
           )}
         >
           <Form {...form}>
-            <div
-              className={cn(
-                "grid-cols-[1fr_min-content] gap-4 w-full max-md:grid-cols-1",
-                level === 0
-                  ? "grid max-md:flex max-md:flex-col max-md:px-4"
-                  : "hidden",
-                data && "grid",
-              )}
-            >
+            <div className="grid grid-cols-[1fr_min-content] gap-4 w-full max-md:grid-cols-1">
               <div
                 className={cn(
                   "flex flex-col gap-4",
@@ -301,19 +242,15 @@ export default function FarmerQuestionnaire({
 
                       return (
                         <FormItem className="h-full w-max flex flex-col gap-2 max-md:w-full max-md:items-center max-md:justify-center max-md:gap-4 max-md:py-2">
-                          <FormLabel>
-                            <span>
-                              Фото
-                              <span className="text-destructive ml-0.5">*</span>
-                            </span>
-                          </FormLabel>
+                          <FormLabel>Фото</FormLabel>
                           <Card
                             style={{
-                              backgroundImage: showPreview
-                                ? `url(${URL.createObjectURL(field.value[0])})`
-                                : data?.photo
-                                  ? `url("${data.photo}")`
-                                  : "none",
+                              backgroundImage:
+                                showPreview && field.value?.[0]
+                                  ? `url(${URL.createObjectURL(field.value[0])})`
+                                  : data?.photo
+                                    ? `url("${data.photo}")`
+                                    : "none",
                             }}
                             className={cn(
                               "size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover relative max-md:size-[150px] max-md:rounded-full",
@@ -369,7 +306,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите название организации"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             if (e.target.value.startsWith(" ")) {
                               e.target.value = e.target.value.trimStart();
@@ -388,7 +325,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="managerName"
                   control={form.control}
@@ -405,7 +341,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите ФИО руководителя"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             let value = e.target.value.replace(
                               /[^а-яА-ЯёЁ\s-]/g,
@@ -425,7 +361,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="phoneOrganization"
                   control={form.control}
@@ -449,13 +384,13 @@ export default function FarmerQuestionnaire({
                           onBlur={(e) => {
                             updateFilters("phoneOrganization", e.target.value);
                           }}
+                          className="bg-background!"
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="emailOrganization"
                   control={form.control}
@@ -472,7 +407,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите email"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             field.onChange(e.target.value.trim());
                           }}
@@ -485,27 +420,23 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="nds"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>НДС</FormLabel>
+                      <FormLabel>
+                        <span>
+                          НДС
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          type="tel"
-                          maxLength={2}
-                          value={field.value || ""}
-                          placeholder="Введите кол-во процентов"
-                          className="bg-background"
-                          onChange={(e) => {
-                            const value = e.target.value
-                              .replace(/\D/g, "")
-                              .replace(/^0+/, "");
-                            field.onChange(value);
-                          }}
+                          placeholder="Введите НДС"
+                          className="bg-background!"
+                          onChange={field.onChange}
                           onBlur={(e) => {
                             updateFilters("nds", e.target.value);
                           }}
@@ -515,20 +446,24 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="ogrn"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>ОГРН / ОГРНИП</FormLabel>
+                      <FormLabel>
+                        <span>
+                          ОГРН / ОГРНИП
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           value={field.value || ""}
                           type="tel"
                           placeholder="Введите ОГРН / ОГРНИП"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             const value = e.target.value.replace(/\D/g, "");
                             field.onChange(value);
@@ -542,20 +477,24 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="okpo"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>ОКПО</FormLabel>
+                      <FormLabel>
+                        <span>
+                          ОКПО
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           value={field.value || ""}
                           type="tel"
                           placeholder="Введите ОКПО"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             const value = e.target.value.replace(/\D/g, "");
                             field.onChange(value);
@@ -569,19 +508,23 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="okved"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="gap-0.5">ОКВЭД</FormLabel>
+                      <FormLabel>
+                        <span>
+                          ОКВЭД
+                          <span className="text-destructive ml-0.5">*</span>
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите ОКВЭД"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(e) => {
                             const value = e.target.value.replace(/[^\d.]/g, "");
                             field.onChange(value);
@@ -595,7 +538,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="startDateOfCooperation"
                   control={form.control}
@@ -607,7 +549,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите дату"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(value) => {
                             field.onChange(value);
                           }}
@@ -623,7 +565,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="dateOfFirstDelivery"
                   control={form.control}
@@ -635,7 +576,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите дату"
-                          className="bg-background"
+                          className="bg-background!"
                           onChange={(value) => {
                             field.onChange(value);
                           }}
@@ -651,7 +592,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="bankDetails"
                   control={form.control}
@@ -668,7 +608,7 @@ export default function FarmerQuestionnaire({
                           {...field}
                           value={field.value || ""}
                           placeholder="Введите банковские реквизиты"
-                          className="!bg-background resize-none"
+                          className="bg-background! resize-none"
                           rows={2}
                           onChange={(e) => {
                             if (e.target.value.startsWith(" ")) {
@@ -685,7 +625,6 @@ export default function FarmerQuestionnaire({
                     </FormItem>
                   )}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="inn"
                   control={form.control}
@@ -695,7 +634,7 @@ export default function FarmerQuestionnaire({
                     const handleAdd = () => {
                       const currentValues = field.value || [];
 
-                      if (currentInn && isValidInn(currentInn)) {
+                      if (currentInn.trim()) {
                         if (currentValues.includes(currentInn)) {
                           toast.error("Такой ИНН уже есть");
                           return;
@@ -705,7 +644,7 @@ export default function FarmerQuestionnaire({
                         updateFilters("inn", newValues as string[]);
                         setCurrentInn("");
                       } else {
-                        toast.error("Некорректный формат ИНН");
+                        toast.error("Заполните ИНН");
                         return;
                       }
                     };
@@ -735,7 +674,7 @@ export default function FarmerQuestionnaire({
                                 if (val.length <= 12) setCurrentInn(val);
                               }}
                               placeholder="Введите ИНН"
-                              className="bg-background"
+                              className="bg-background!"
                               type="tel"
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
@@ -749,7 +688,7 @@ export default function FarmerQuestionnaire({
                             type="button"
                             variant="outline"
                             onClick={handleAdd}
-                            disabled={!currentInn || !isValidInn(currentInn)}
+                            disabled={!currentInn.trim()}
                           >
                             Сохранить
                           </Button>
@@ -783,7 +722,6 @@ export default function FarmerQuestionnaire({
                     );
                   }}
                 />
-                {level !== undefined && <Separator />}
                 <FormField
                   name="kpp"
                   control={form.control}
@@ -793,7 +731,7 @@ export default function FarmerQuestionnaire({
                     const handleAdd = () => {
                       const currentValues = field.value || [];
 
-                      if (currentKpp && isValidKpp(currentKpp)) {
+                      if (currentKpp.trim()) {
                         if (currentValues.includes(currentKpp)) {
                           toast.error("Такой КПП уже есть");
                           return;
@@ -803,7 +741,7 @@ export default function FarmerQuestionnaire({
                         updateFilters("kpp", newValues as string[]);
                         setCurrentKpp("");
                       } else {
-                        toast.error("Некорректный формат КПП");
+                        toast.error("Заполните КПП");
                         return;
                       }
                     };
@@ -828,7 +766,7 @@ export default function FarmerQuestionnaire({
                                 if (val.length <= 9) setCurrentKpp(val);
                               }}
                               placeholder="Введите КПП"
-                              className="bg-background"
+                              className="bg-background!"
                               type="tel"
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
@@ -842,7 +780,7 @@ export default function FarmerQuestionnaire({
                             type="button"
                             variant="outline"
                             onClick={handleAdd}
-                            disabled={!currentKpp || !isValidKpp(currentKpp)}
+                            disabled={!currentKpp.trim()}
                           >
                             Сохранить
                           </Button>
@@ -886,19 +824,15 @@ export default function FarmerQuestionnaire({
 
                     return (
                       <FormItem className="h-full w-max flex flex-col gap-2">
-                        <FormLabel>
-                          <span>
-                            Фото
-                            <span className="text-destructive ml-0.5">*</span>
-                          </span>
-                        </FormLabel>
+                        <FormLabel>Фото</FormLabel>
                         <Card
                           style={{
-                            backgroundImage: showPreview
-                              ? `url(${URL.createObjectURL(field.value[0])})`
-                              : data?.photo
-                                ? `url("${data.photo}")`
-                                : "none",
+                            backgroundImage:
+                              showPreview && field.value?.[0]
+                                ? `url(${URL.createObjectURL(field.value[0])})`
+                                : data?.photo
+                                  ? `url("${data.photo}")`
+                                  : "none",
                           }}
                           className={cn(
                             "size-[300px] aspect-square bg-background bg-no-repeat bg-center bg-cover relative",
@@ -939,13 +873,41 @@ export default function FarmerQuestionnaire({
                 />
               )}
             </div>
-            <div
-              className={cn(
-                "flex-col gap-4 w-full",
-                level === 1 ? "flex max-md:flex-col max-md:px-4" : "hidden",
-                data && "flex",
+            <FormField
+              name="chiefAccountant"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <span>
+                      Главный бухгалтер
+                      <span className="text-destructive ml-0.5">*</span>
+                    </span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      value={field.value || ""}
+                      placeholder="Введите ФИО"
+                      className="bg-background!"
+                      onChange={(e) => {
+                        let value = e.target.value.replace(
+                          /[^а-яА-ЯёЁ\s-]/g,
+                          "",
+                        );
+                        if (value.startsWith(" ")) value = value.trimStart();
+                        field.onChange(value);
+                      }}
+                      onBlur={(e) => {
+                        updateFilters("chiefAccountant", e.target.value.trim());
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            >
+            />
+            <div className="flex flex-col gap-4 w-full">
               <FormField
                 name="legalAddress"
                 control={form.control}
@@ -962,7 +924,7 @@ export default function FarmerQuestionnaire({
                         {...field}
                         value={field.value || ""}
                         placeholder="Введите адрес"
-                        className="bg-background"
+                        className="bg-background!"
                         onValueChange={(value) => {
                           field.onChange(value);
                           updateFilters("legalAddress", value);
@@ -973,7 +935,6 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
-              {level !== undefined && <Separator />}
               <FormField
                 name="postalAddress"
                 control={form.control}
@@ -990,7 +951,7 @@ export default function FarmerQuestionnaire({
                         {...field}
                         value={field.value || ""}
                         placeholder="Введите адрес"
-                        className="bg-background"
+                        className="bg-background!"
                         onValueChange={(value) => {
                           field.onChange(value);
                           updateFilters("postalAddress", value);
@@ -1001,7 +962,6 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
-              {level !== undefined && <Separator />}
               <FormField
                 name="workshopAddress"
                 control={form.control}
@@ -1018,7 +978,7 @@ export default function FarmerQuestionnaire({
                         {...field}
                         value={field.value || ""}
                         placeholder="Введите адрес"
-                        className="bg-background"
+                        className="bg-background!"
                         onValueChange={(value) => {
                           field.onChange(value);
                           updateFilters("workshopAddress", value);
@@ -1029,62 +989,8 @@ export default function FarmerQuestionnaire({
                   </FormItem>
                 )}
               />
-              {level !== undefined && <Separator />}
-              <ChiefAccountantField control={form.control}>
-                {level && (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="max-md:px-0!"
-                      onClick={() => handleAutoFill("chiefAccountant")}
-                    >
-                      Данные руководителя
-                      <ClipboardPaste />
-                    </Button>
-                  </div>
-                )}
-              </ChiefAccountantField>
-              {level !== undefined && <Separator />}
-              <ResponsiblePersonField control={form.control}>
-                {level && (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="max-md:px-0!"
-                      onClick={() => handleAutoFill("responsiblePerson")}
-                    >
-                      Данные руководителя
-                      <ClipboardPaste />
-                    </Button>
-                  </div>
-                )}
-              </ResponsiblePersonField>
-              {level !== undefined && <Separator />}
-              <MainContactField control={form.control}>
-                {level && (
-                  <div className="flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="max-md:px-0!"
-                      onClick={() => handleAutoFill("mainContact")}
-                    >
-                      Данные руководителя
-                      <ClipboardPaste />
-                    </Button>
-                  </div>
-                )}
-              </MainContactField>
-              {level !== undefined && <Separator />}
               <AdditionalContactsField control={form.control} />
-              {level !== undefined && <Separator />}
               <DeclarationField control={form.control} />
-              {level !== undefined && <Separator />}
               <FormField
                 name="companyHistory"
                 control={form.control}

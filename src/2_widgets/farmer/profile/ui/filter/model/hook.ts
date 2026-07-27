@@ -29,8 +29,6 @@ const useForm = () => {
     startDateOfCooperation,
     dateOfFirstDelivery,
     chiefAccountant,
-    responsiblePerson,
-    mainContact,
     additionalContacts,
     companyHistory,
   } = useFarmerProfileStore((state) => state.data);
@@ -57,8 +55,6 @@ const useForm = () => {
       dateOfFirstDelivery:
         dateOfFirstDelivery || defaultValues.dateOfFirstDelivery,
       chiefAccountant: chiefAccountant || defaultValues.chiefAccountant,
-      responsiblePerson: responsiblePerson || defaultValues.responsiblePerson,
-      mainContact: mainContact || defaultValues.mainContact,
       additionalContacts:
         additionalContacts || defaultValues.additionalContacts,
       companyHistory: companyHistory || defaultValues.companyHistory,
