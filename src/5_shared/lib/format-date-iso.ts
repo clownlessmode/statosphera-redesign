@@ -1,6 +1,8 @@
 import { parse, isValid, format } from "date-fns";
 
-export default function formatDateIso(dateStr: string) {
+export default function formatDateIso(dateStr: string | null | undefined) {
+  if (!dateStr) return dateStr ?? "";
+
   // Если уже ISO (простая проверка на наличие дефисов и год в начале)
   if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
 

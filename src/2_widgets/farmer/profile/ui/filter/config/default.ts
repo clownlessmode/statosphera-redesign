@@ -2,7 +2,7 @@
 import { ContactsValues, FormValues } from "./types";
 
 export const defaultValues: FormValues = {
-  photo: [] as unknown as FileList,
+  photo: undefined,
   organizationName: "",
   managerName: "",
   phoneOrganization: "",
@@ -20,24 +20,7 @@ export const defaultValues: FormValues = {
   declarations: [],
   startDateOfCooperation: "",
   dateOfFirstDelivery: "",
-  chiefAccountant: {
-    name: "",
-    phone: "",
-    email: "",
-    position: "Главный бухгалтер",
-  },
-  responsiblePerson: {
-    name: "",
-    phone: "",
-    email: "",
-    position: "Ответственное лицо",
-  },
-  mainContact: {
-    name: "",
-    phone: "",
-    email: "",
-    position: "",
-  },
+  chiefAccountant: "",
   additionalContacts: [],
   companyHistory: "",
 };

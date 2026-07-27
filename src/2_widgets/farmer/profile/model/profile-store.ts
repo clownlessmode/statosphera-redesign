@@ -2,7 +2,7 @@ import { create } from "zustand";
 import formatDateIso from "@shared/lib/format-date-iso";
 
 interface Data {
-  photo: FileList;
+  photo?: FileList;
   organizationName: string;
   managerName: string;
   phoneOrganization: string;
@@ -23,24 +23,7 @@ interface Data {
   }[];
   startDateOfCooperation: string;
   dateOfFirstDelivery: string;
-  chiefAccountant: {
-    name: string;
-    phone: string;
-    email: string;
-    position: "Главный бухгалтер";
-  };
-  responsiblePerson: {
-    name: string;
-    phone: string;
-    email: string;
-    position: "Ответственное лицо";
-  };
-  mainContact: {
-    name: string;
-    phone: string;
-    email: string;
-    position: string;
-  };
+  chiefAccountant: string;
   additionalContacts: {
     name: string;
     phone: string;
@@ -58,7 +41,7 @@ interface FarmerFiltersState {
 
 const initialFilters = {
   data: {
-    photo: [] as unknown as FileList,
+    photo: undefined,
     organizationName: "",
     managerName: "",
     phoneOrganization: "",
@@ -76,24 +59,7 @@ const initialFilters = {
     declarations: [],
     startDateOfCooperation: "",
     dateOfFirstDelivery: "",
-    chiefAccountant: {
-      name: "",
-      phone: "",
-      email: "",
-      position: "Главный бухгалтер" as const,
-    },
-    responsiblePerson: {
-      name: "",
-      phone: "",
-      email: "",
-      position: "Ответственное лицо" as const,
-    },
-    mainContact: {
-      name: "",
-      phone: "",
-      email: "",
-      position: "",
-    },
+    chiefAccountant: "",
     additionalContacts: [],
     companyHistory: "",
   },

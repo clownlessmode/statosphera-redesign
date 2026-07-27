@@ -35,7 +35,7 @@ export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
 
   return (
     <div className="grid grid-cols-2 gap-2 items-start">
-      <span className="col-span-2 text-sm leading-none font-medium select-none">
+      <span className="col-span-full text-sm leading-none font-medium select-none">
         Дополнительные контакты
       </span>
       <FormField
@@ -89,7 +89,7 @@ export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
                       setName(e.target.value.replace(/[^а-яА-ЯёЁ\s-]/g, ""))
                     }
                     placeholder="ФИО"
-                    className="bg-background"
+                    className="bg-background!"
                   />
                 </div>
                 <div className="space-y-1">
@@ -106,6 +106,7 @@ export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
                     value={phone}
                     onValueChange={setPhone}
                     mask="+{7}-000-000-00-00"
+                    className="bg-background!"
                   />
                 </div>
                 <div className="space-y-1">
@@ -121,7 +122,7 @@ export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value.trim())}
                     placeholder="Email"
-                    className="bg-background"
+                    className="bg-background!"
                   />
                 </div>
                 <div className="space-y-1">
@@ -137,7 +138,7 @@ export const AdditionalContactsField: FC<AdditionalContactsFieldProps> = ({
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
                     placeholder="Должность"
-                    className="bg-background"
+                    className="bg-background!"
                   />
                 </div>
                 <Button

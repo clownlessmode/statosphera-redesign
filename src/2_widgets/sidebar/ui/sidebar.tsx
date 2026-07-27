@@ -52,7 +52,6 @@ import { ROLES } from "@shared/constants/roles";
 import { useTabStore } from "@widgets/report/sheet/model/url-store";
 import { useTabStore as useTabStoreWriteOff } from "@widgets/write-off/sheet/model/url-store";
 import { useIsMobile } from "@shared/hooks/use-mobile";
-import { useFarmer } from "@entities/farmer/api/controller";
 import { useCallback } from "react";
 
 const Sidebar = ({
@@ -61,7 +60,6 @@ const Sidebar = ({
 }: React.ComponentProps<typeof SidebarComponent>) => {
   const { session } = useSession();
   const isMobile = useIsMobile();
-  const { profileStatus } = useFarmer(session?.idUser, session?.role);
   const { tab } = useTabStore();
   const { tab: tabWriteOff } = useTabStoreWriteOff();
 
@@ -430,44 +428,42 @@ const Sidebar = ({
 
   return (
     <>
-      {session &&
-        ((session?.role === ROLES.FARMER && profileStatus) ||
-          session?.role !== ROLES.FARMER) && (
-          <SidebarComponent collapsible="icon" {...props}>
-            {isMobile && !isExternalUser && (
-              <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
-                <Logotype size={isCollapsed ? "sm" : "md"} />
-              </Link>
-            )}
-            {isMobile && isExternalUser && (
-              <div onClick={toggleSidebar} className="py-2 pl-2">
-                <Logotype size={isCollapsed ? "sm" : "md"} />
-              </div>
-            )}
-            {!isMobile && !isExternalUser && (
-              <Link to="/" className="py-2 pl-2">
-                <Logotype size={isCollapsed ? "sm" : "md"} />
-              </Link>
-            )}
-            {!isMobile && isExternalUser && (
-              <div className="py-2 pl-2">
-                <Logotype size={isCollapsed ? "sm" : "md"} />
-              </div>
-            )}
-            <SidebarContent>
-              <NavMain items={getNavMainItems()} />
-            </SidebarContent>
-            <SidebarRail />
-            <SidebarMenu>
-              <NavSecondary
-                items={getNavSecondaryItems()}
-                isCollapsed={isCollapsed}
-                toggleSidebar={toggleSidebar}
-                className="mt-auto"
-              />
-            </SidebarMenu>
-          </SidebarComponent>
-        )}
+      {session && (
+        <SidebarComponent collapsible="icon" {...props}>
+          {isMobile && !isExternalUser && (
+            <Link onClick={toggleSidebar} to="/" className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </Link>
+          )}
+          {isMobile && isExternalUser && (
+            <div onClick={toggleSidebar} className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </div>
+          )}
+          {!isMobile && !isExternalUser && (
+            <Link to="/" className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </Link>
+          )}
+          {!isMobile && isExternalUser && (
+            <div className="py-2 pl-2">
+              <Logotype size={isCollapsed ? "sm" : "md"} />
+            </div>
+          )}
+          <SidebarContent>
+            <NavMain items={getNavMainItems()} />
+          </SidebarContent>
+          <SidebarRail />
+          <SidebarMenu>
+            <NavSecondary
+              items={getNavSecondaryItems()}
+              isCollapsed={isCollapsed}
+              toggleSidebar={toggleSidebar}
+              className="mt-auto"
+            />
+          </SidebarMenu>
+        </SidebarComponent>
+      )}
 
       {children}
     </>

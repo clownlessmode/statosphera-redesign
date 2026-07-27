@@ -1,6 +1,7 @@
 import { useIMask } from "react-imask";
 import { Input } from "./input";
 import { cn } from "@shared/lib/utils";
+import normalizeRuPhone from "@shared/lib/normalize-ru-phone";
 import {
   InputHTMLAttributes,
   RefObject,
@@ -49,7 +50,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 
     useEffect(() => {
       if (value !== undefined) {
-        setValue(value);
+        setValue(normalizeRuPhone(value));
       }
     }, [value]);
 

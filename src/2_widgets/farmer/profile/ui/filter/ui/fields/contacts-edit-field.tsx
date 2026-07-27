@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { FarmersResponse } from "@pages/farmers/config";
 
 const ContactsEditField: FC<{
-  contacts: FarmersResponse["kmContacts"];
+  contacts: NonNullable<FarmersResponse["kmContacts"]>;
 }> = ({ contacts }) => {
   const form = useContactsEdit();
   const { updateContacts } = useContactsStore();
@@ -98,7 +98,7 @@ const ContactsEditField: FC<{
                             )
                           }
                           placeholder="ФИО"
-                          className="bg-background"
+                          className="bg-background!"
                         />
                       </div>
                       <div className="space-y-1">
@@ -115,6 +115,7 @@ const ContactsEditField: FC<{
                           value={phone}
                           onValueChange={setPhone}
                           mask="+{7}-000-000-00-00"
+                          className="bg-background!"
                         />
                       </div>
                       <div className="space-y-1">
@@ -130,7 +131,7 @@ const ContactsEditField: FC<{
                           value={email}
                           onChange={(e) => setEmail(e.target.value.trim())}
                           placeholder="Email"
-                          className="bg-background"
+                          className="bg-background!"
                         />
                       </div>
                       <div className="space-y-1">
@@ -146,7 +147,7 @@ const ContactsEditField: FC<{
                           value={position}
                           onChange={(e) => setPosition(e.target.value)}
                           placeholder="Должность"
-                          className="bg-background"
+                          className="bg-background!"
                         />
                       </div>
                       <Button

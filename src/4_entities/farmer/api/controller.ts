@@ -13,22 +13,13 @@ export const useFarmer = (idUser?: number, role?: string) => {
   const queryClient = useQueryClient();
   const isFarmer = role === ROLES.FARMER || role === ROLES.ADMIN;
 
-  const checkProfile = useQuery<boolean, ApiError>({
-    queryKey: ["checkProfile", idUser],
-    queryFn: async () => {
-      const response = await FarmerService.checkProfile(idUser!);
-      return response;
-    },
-    enabled: !!idUser && isFarmer,
-  });
-
   const getProfile = useQuery<ProfileResponse, ApiError>({
     queryKey: ["farmer", idUser],
     queryFn: async () => {
       const response = await FarmerService.getProfile(idUser!);
       return response;
     },
-    enabled: !!idUser && checkProfile.data === true,
+    enabled: !!idUser && isFarmer,
   });
 
   const createProfile = useMutation<void, ApiError, RequestDto>({
@@ -79,9 +70,6 @@ export const useFarmer = (idUser?: number, role?: string) => {
     getProfile: getProfile.refetch,
     isGetProfileLoading: getProfile.isPending,
     profile: getProfile.data,
-    checkProfile: checkProfile.refetch,
-    isCheckProfileLoading: checkProfile.isPending,
-    profileStatus: checkProfile.data,
     createProfile: createProfile.mutateAsync,
     isCreateProfileLoading: createProfile.isPending,
     uploadPhoto: uploadPhoto.mutateAsync,

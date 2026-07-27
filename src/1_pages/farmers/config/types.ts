@@ -4,13 +4,8 @@ export interface FarmersResponse {
   organizationName: string;
   phoneOrganization: string;
   emailOrganization: string;
-  startDateOfCooperation: string;
-  dateOfFirstDelivery: string;
-  photo: string;
   legalAddress: string;
   workshopAddress: string;
-  companyHistory: string;
-  kpp: string[];
   nds: string;
   bankDetails: string;
   postalAddress: string;
@@ -18,34 +13,18 @@ export interface FarmersResponse {
   okpo: string;
   okved: string;
   managerName: string;
-  chiefAccountant: {
+  chiefAccountant: string;
+  startDateOfCooperation?: string;
+  dateOfFirstDelivery?: string;
+  photo?: string;
+  companyHistory?: string;
+  kpp: string[];
+  additionalContacts: {
     name: string;
     email: string;
     phone: string;
     position: string;
-  };
-  responsiblePerson: {
-    name: string;
-    email: string;
-    phone: string;
-    position: string;
-  };
-  mainContact: {
-    name: string;
-    email: string;
-    phone: string;
-    position: string;
-  };
-  additionalContacts:
-    | [
-        {
-          name: string;
-          email: string;
-          phone: string;
-          position: string;
-        },
-      ]
-    | [];
+  }[];
   kmContacts: {
     name: string;
     email: string;
@@ -58,4 +37,5 @@ export interface FarmersResponse {
     dateEndDeclaration: string;
     photoDeclaration: string | null;
   }[];
+  agreementUrl: string;
 }

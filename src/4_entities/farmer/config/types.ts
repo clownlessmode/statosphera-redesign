@@ -5,42 +5,25 @@ export interface RequestDto {
   phoneOrganization: string;
   emailOrganization: string;
   inn: string[];
-  kpp: string[] | [];
+  kpp: string[];
   nds: string;
   bankDetails: string;
-  companyHistory: string;
   legalAddress: string;
   postalAddress: string;
   workshopAddress: string;
   ogrn: string;
   okpo: string;
   okved: string;
+  chiefAccountant: string;
+  companyHistory: string | null;
   declarations: {
     idDeclarations: number;
     nameDeclaration: string;
-    dateEndDeclaration: string;
+    dateEndDeclaration: string | null;
     photoDeclaration?: string;
   }[];
   startDateOfCooperation: string | null;
   dateOfFirstDelivery: string | null;
-  chiefAccountant: {
-    name: string;
-    phone: string;
-    email: string;
-    position: "Главный бухгалтер";
-  };
-  responsiblePerson: {
-    name: string;
-    phone: string;
-    email: string;
-    position: "Ответственное лицо";
-  };
-  mainContact: {
-    name: string;
-    phone: string;
-    email: string;
-    position: string;
-  };
   additionalContacts: {
     name: string;
     email: string;
@@ -69,14 +52,9 @@ export interface ProfileResponse {
   organizationName: string;
   phoneOrganization: string;
   emailOrganization: string;
-  startDateOfCooperation: string;
-  dateOfFirstDelivery: string;
-  photo: string;
   legalAddress: string;
   workshopAddress: string;
-  companyHistory: string;
   inn: string[];
-  kpp: string[] | [];
   nds: string;
   bankDetails: string;
   postalAddress: string;
@@ -84,24 +62,12 @@ export interface ProfileResponse {
   okpo: string;
   okved: string;
   managerName: string;
-  chiefAccountant: {
-    name: string;
-    email: string;
-    phone: string;
-    position: string;
-  };
-  responsiblePerson: {
-    name: string;
-    email: string;
-    phone: string;
-    position: string;
-  };
-  mainContact: {
-    name: string;
-    email: string;
-    phone: string;
-    position: string;
-  };
+  chiefAccountant: string;
+  startDateOfCooperation?: string;
+  dateOfFirstDelivery?: string;
+  photo?: string;
+  companyHistory?: string;
+  kpp: string[];
   additionalContacts: {
     name: string;
     email: string;
@@ -111,7 +77,7 @@ export interface ProfileResponse {
   declarations: {
     idDeclarations: number;
     nameDeclaration: string;
-    dateEndDeclaration: string;
+    dateEndDeclaration: string | null;
     photoDeclaration: string | null;
   }[];
   kmContacts: {
@@ -120,4 +86,5 @@ export interface ProfileResponse {
     phone: string;
     position: string;
   }[];
+  agreementUrl: string;
 }
