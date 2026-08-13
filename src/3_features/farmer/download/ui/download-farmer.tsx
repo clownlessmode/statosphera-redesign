@@ -13,8 +13,6 @@ import {
 import { useFiltersStore } from "@widgets/farmer/analytics/sheet/model/filters-store";
 import { useState } from "react";
 import { CardContent, CardDescription, CardTitle } from "@shared/ui/card";
-import { useSession } from "@entities/session";
-import { ROLES } from "@shared/constants/roles";
 
 const DownloadFarmer = ({ rows }: { rows: number }) => {
   const { downloadFarmer } = useDownloadFarmerController();
@@ -34,18 +32,10 @@ const DownloadFarmer = ({ rows }: { rows: number }) => {
   };
 
   const isAllDisabled = rows > 7000000;
-  const { session } = useSession();
 
-  const disabledRolesList: string[] = [
-    ROLES.MANAGER_STORE,
-    ROLES.PARTNER,
-    ROLES.SERVICE_MANAGER,
-  ];
-
-  const isDisabled = disabledRolesList.includes(session?.role as string);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild disabled={isDisabled}>
+      <DialogTrigger asChild>
         <Button variant="outline">
           <Download />
         </Button>
