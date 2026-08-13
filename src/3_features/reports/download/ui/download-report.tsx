@@ -38,7 +38,6 @@ const DownloadReport = ({ rows }: { rows: number }) => {
 
   const disabledRolesList: string[] = [
     ROLES.MANAGER_STORE,
-    ROLES.PARTNER,
     ROLES.SERVICE_MANAGER,
   ];
 
