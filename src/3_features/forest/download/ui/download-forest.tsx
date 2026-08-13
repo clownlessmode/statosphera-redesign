@@ -49,7 +49,6 @@ const DownloadForest = ({ rows, tab }: { rows: number; tab: string }) => {
 
   const disabledRolesList: string[] = [
     ROLES.MANAGER_STORE,
-    ROLES.PARTNER,
     ROLES.SERVICE_MANAGER,
   ];
 
