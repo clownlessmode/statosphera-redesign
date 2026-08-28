@@ -34,7 +34,7 @@ export const TasksGroupTab = ({ id_project }: { id_project: number }) => {
 
   return (
     <>
-      {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+      {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
         <div className="flex justify-end">
           <ModalCreateGroupTask project_id={id_project} />
         </div>
