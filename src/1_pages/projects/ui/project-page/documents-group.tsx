@@ -52,7 +52,7 @@ export const DocumentsGroupTab = ({ id_project }: { id_project: number }) => {
 
   return (
     <>
-      {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+      {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
         <div className="flex justify-end">
           <ModalCreateGroupDoc project_id={id_project} />
         </div>
@@ -93,27 +93,21 @@ export const DocumentsGroupTab = ({ id_project }: { id_project: number }) => {
                     className="flex flex-row gap-2"
                   >
                     {/* модалка для просмотра инфы и редактирования */}
-                    {(idUser === 2875 ||
-                      idUser === 2808 ||
-                      idUser === 2879) && (
+                    {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
                       <ModalGetGroupDoc
                         project_id={id_project}
                         docGroup={docGroup}
                       />
                     )}
                     {/* модалка для созлания группы документов */}
-                    {(idUser === 2875 ||
-                      idUser === 2808 ||
-                      idUser === 2879) && (
+                    {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
                       <ModalCreateDoc
                         project_id={id_project}
                         group_id={docGroup.id}
                       />
                     )}
                     {/* модалка для удаления группы документов */}
-                    {(idUser === 2875 ||
-                      idUser === 2808 ||
-                      idUser === 2879) && (
+                    {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button size="sm">Удалить группу</Button>

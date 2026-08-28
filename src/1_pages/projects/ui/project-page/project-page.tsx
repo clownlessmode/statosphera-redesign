@@ -128,7 +128,7 @@ export const ProjectPage = () => {
           </div>
           <div className="flex flex-row items-center gap-2">
             {project &&
-              (idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+              [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
                 <ModalUpdateProject
                   project={project}
                   trigger={
@@ -140,7 +140,7 @@ export const ProjectPage = () => {
                 />
               )}
             {project &&
-              (idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+              [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button

@@ -123,10 +123,10 @@ export const Projects = () => {
           </div>
           <FormSelectDropdown />
           <div className="flex flex-row gap-2">
-            {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+            {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
               <CreateProjectForm />
             )}
-            {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+            {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
               <ModalLoadExcel />
             )}
 

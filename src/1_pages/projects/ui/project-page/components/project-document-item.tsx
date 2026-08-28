@@ -28,7 +28,7 @@ type Props = {
   id_project: number;
 };
 
-const PRIVILEGED_DOC_USER_IDS = [2875, 2808, 2879] as const;
+const PRIVILEGED_DOC_USER_IDS = [2875, 2808, 2879, 2904] as const;
 
 export function ProjectDocumentItem({ document: doc, id_project }: Props) {
   const { session } = useSession();
@@ -60,7 +60,7 @@ export function ProjectDocumentItem({ document: doc, id_project }: Props) {
           </p>
         </div>
         <div className="flex flex-row items-center gap-2">
-          {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+          {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
             <ModalGetDoc project_id={id_project} document={doc} />
           )}
           {canDownload && (
@@ -76,7 +76,7 @@ export function ProjectDocumentItem({ document: doc, id_project }: Props) {
               </a>
             </Button>
           )}
-          {(idUser === 2875 || idUser === 2808 || idUser === 2879) && (
+          {[2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
             <AlertDialog>
               <AlertDialogTrigger>
                 <Button size={"sm"}>Удалить</Button>
