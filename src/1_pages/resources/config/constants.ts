@@ -27,24 +27,24 @@ export const EXTERNAL_RESOURCES = [
   },
   {
     title: "Ночные магазины",
-    url: "https://app.powerbi.com/view?r=eyJrIjoiNDZINTRhZDAtMmUzNi00YWJmLWE4NTYtN2JmZmE4ZGRmYmI0IiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
+    url: "https://app.powerbi.com/view?r=eyJrIjoiNDZlNTRhZDAtMmUzNi00YWJmLWE4NTYtN2JmZmE4ZGRmYmI0IiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
     source: "Power BI",
     category: "Аналитика",
     icon: PieChart,
   },
   {
     title: "Экран проблем",
-    url: "https://docs.google.com/spreadsheets/d/1u3h6kC-dHORx1oy5Ke3ZmZvbW4WD9sZwJWbhoQiKURw/edit?gid=14050",
+    url: "https://docs.google.com/spreadsheets/d/1u3h6kC-dHORx1oy5Ke3ZmZvbW4WD9sZwJWbhoQiKURw/edit?gid=1405042014#gid=1405042014",
     source: "Google Таблицы",
     category: "Сервисы",
     icon: Table2,
   },
   {
     title: "Бриф для дизайнера",
-    url: "https://forms.gle/9cQQXRH3zkqoFFgZ9",
-    source: "Google Формы",
+    url: "https://franchise.kalina-malina.ru/catalog_km#rec2161265371",
+    source: "Франчайзинг",
     category: "Сервисы",
-    icon: ClipboardList,
+    icon: Store,
   },
   {
     title: "Каталог мероприятий (маркетинг)",
@@ -55,7 +55,7 @@ export const EXTERNAL_RESOURCES = [
   },
   {
     title: "Битрикс24",
-    url: "https://www.bitrix24.ru/",
+    url: "https://www.bitrix24.ru/prices/?utm_source=yandex&utm_medium=cpc&utm_campaign=ru_brand_tovarnaya&utm_content=keys_5491424048%7Ccid%7C114231842%7Caid%7C---autotargeting%7C53011605547%7Csrc&utm_term=---autotargeting&etext=2202.3Mcjnl2WZBZLO7rMU08XfvnnKPc051ffAc6UguECXbJ4emlramxjcHJwcnFwZHFm.e1d9af5a7dea20cef58a3450db6d00e45a9b5fc9&yclid=16677198276915363839&ybaip=1",
     source: "Битрикс24",
     category: "Сервисы",
     icon: Briefcase,
@@ -69,14 +69,14 @@ export const EXTERNAL_RESOURCES = [
   },
   {
     title: "Структура сотрудников сопутствующих товаров",
-    url: "https://docs.google.com/spreadsheets/d/1O4n6ZkWN3ObnEvrYv6ugmTW9j5RQsZDB/edit?gid=1681098189#gid=1681098189",
+    url: "https://docs.google.com/spreadsheets/d/1O4n6ZkWN3ObnEvrYv6ugmTW9j5RQszDB/edit?gid=1681098189#gid=1681098189",
     source: "Google Таблицы",
     category: "Сервисы",
     icon: Table2,
   },
   {
     title: "NPS",
-    url: "https://app.powerbi.com/view?r=eyJrIjoiNGI0NGM1ZmYtZGlwYS00MmY3LWI3MDgtYjE5NzE3MDRjNTU3IiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
+    url: "https://app.powerbi.com/view?r=eyJrIjoiNGI0NGM1ZmYtZGIwYS00MmY3LWI3MDgtYjE5NzE3MDRjNTU3IiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
     source: "Power BI",
     category: "Аналитика",
     icon: PieChart,
@@ -90,7 +90,7 @@ export const EXTERNAL_RESOURCES = [
   },
   {
     title: "SKU",
-    url: "https://app.powerbi.com/view?r=eyJrIjoiZDk2NjRjM2QtNWM2Yi00MDgzLTkyMGEtOWJhNWQyNzIzNjdlIiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
+    url: "https://app.powerbi.com/view?r=eyJrIjoiZDk2NjRjM2QtNWM2Yi00MDgzLTkyMGEtOWJhNWQyNzIzNjdmIiwidCI6IjJiZWEzNTBjLTUwOTctNDQ1NC1hMmNkLTY5ODA4YjJhNDg1ZSJ9",
     source: "Power BI",
     category: "Аналитика",
     icon: PieChart,
@@ -104,14 +104,14 @@ export const EXTERNAL_RESOURCES = [
   },
   {
     title: "Запрос по корректировке заказа от партнера/магазина",
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSe4Lnrt6KCnQQsr7Xe4NHDI6gLo3ta56ulHsmyFYSz2FHrv9A/viewform",
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe4Lnrt6KCnQQsr7Xe4NHDl6gLo3ta56uIHsmyFYSz2FHrv9A/viewform",
     source: "Google Формы",
     category: "Автозаказ",
     icon: ClipboardList,
   },
   {
     title: "Запрос по корректировке заказа (Ответы)",
-    url: "https://docs.google.com/spreadsheets/d/1EBoyWDx2MHSeopDdF0DNKJkKOgU6HRr498zfmJZ1lxs/edit?resourcekey=&gid=1885801896#gid=1885801896",
+    url: "https://docs.google.com/spreadsheets/d/1EBoyWDx2MHsEopDdF0DNKJkKOgU6HRr498zfmJZ1lxs/edit?resourcekey=&gid=1885801896#gid=1885801896",
     source: "Google Таблицы",
     category: "Автозаказ",
     icon: Table2,
@@ -133,7 +133,7 @@ export const EXTERNAL_RESOURCES = [
   {
     title:
       "Что делать, если на магазине не работает или некорректно работает видеонаблюдение",
-    url: "https://docs.google.com/document/d/19P7LNh0E-JZ2Qu1k8isErlp9Z5xUh5Ua/edit",
+    url: "https://docs.google.com/document/d/19P7LNh0E-JZ2Qu1k8isErIp9Z5xUh5Ua/edit",
     source: "Google Документы",
     category: "Обучение",
     icon: BookOpen,
