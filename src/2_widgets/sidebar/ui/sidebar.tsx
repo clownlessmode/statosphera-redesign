@@ -32,7 +32,7 @@ import {
   MailWarning,
   Mail,
   Users,
-  ExternalLink,
+  Library,
   // Users,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -230,7 +230,7 @@ const Sidebar = ({
       {
         title: "Ресурсы",
         url: ROUTES_PATH.RESOURCES,
-        icon: ExternalLink,
+        icon: Library,
       },
       // {
       //   title: "Партнеры",
