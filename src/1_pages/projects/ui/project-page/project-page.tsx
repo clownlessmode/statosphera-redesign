@@ -127,52 +127,50 @@ export const ProjectPage = () => {
             </div>
           </div>
           <div className="flex flex-row items-center gap-2">
-            {project &&
-              [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
-                <ModalUpdateProject
-                  project={project}
-                  trigger={
-                    <Button type="button" size="sm" variant="outline">
-                      <Pencil className="size-4" />
-                      Редактировать проект
-                    </Button>
-                  }
-                />
-              )}
-            {project &&
-              [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      type="button"
-                      size="sm"
+            {project && [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
+              <ModalUpdateProject
+                project={project}
+                trigger={
+                  <Button type="button" size="sm" variant="outline">
+                    <Pencil className="size-4" />
+                    Редактировать проект
+                  </Button>
+                }
+              />
+            )}
+            {project && [2875, 2808, 2879, 2904].includes(idUser ?? -1) && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={validId == null || isDeletingProject}
+                  >
+                    Удалить проект
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Удалить проект?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Это действие нельзя отменить. Проект будет удалён
+                      навсегда.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isDeletingProject}>
+                      Отмена
+                    </AlertDialogCancel>
+                    <AlertDialogAction
                       disabled={validId == null || isDeletingProject}
+                      onClick={() => handleDeleteProject()}
                     >
-                      Удалить проект
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Удалить проект?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Это действие нельзя отменить. Проект будет удалён
-                        навсегда.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel disabled={isDeletingProject}>
-                        Отмена
-                      </AlertDialogCancel>
-                      <AlertDialogAction
-                        disabled={validId == null || isDeletingProject}
-                        onClick={() => handleDeleteProject()}
-                      >
-                        {isDeletingProject ? "Удаление…" : "Удалить"}
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              )}
+                      {isDeletingProject ? "Удаление…" : "Удалить"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
           </div>
         </div>
         <div className="w-full h-[1px] bg-gray-500 rounded-full"></div>
