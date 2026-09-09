@@ -45,6 +45,7 @@ import { ProjectPage } from "@pages/projects/ui/project-page/project-page";
 import { Testtt } from "@pages/testtt/api/night-entries";
 import { AdminMailing } from "@pages/admin/admin-mailing";
 import { AdminUsers } from "@pages/admin/admin-users";
+import { Resources } from "@pages/resources";
 // import { Partner } from "@pages/partner";
 
 // Ленивый импорт Sidebar для избежания циклических зависимостей
@@ -70,6 +71,7 @@ export const ROUTES_PATH = {
   NOTIFICATIONS: "/notifications",
   DEMOCRACY: "/democracy",
   FEEDBACK: "/feedback",
+  RESOURCES: "/resources",
 
   // Тренировка
   LESSONS: "/lessons",
@@ -276,6 +278,18 @@ export const ROUTES: RouteConfig[] = [
     element: <FeedbackPage />,
     layout: Sidebar,
     label: "Обратная связь",
+  },
+  {
+    path: ROUTES_PATH.RESOURCES,
+    variant: "private",
+    element: <Resources />,
+    layout: Sidebar,
+    label: "Сторонние ресурсы",
+    allowedRoles: [
+      ...Object.values(ROLES).filter(
+        (role) => role !== ROLES.FARMER && role !== ROLES.FOREST,
+      ),
+    ],
   },
   {
     path: ROUTES_PATH.LESSONS,

@@ -32,6 +32,7 @@ import {
   MailWarning,
   Mail,
   Users,
+  ExternalLink,
   // Users,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -225,6 +226,11 @@ const Sidebar = ({
         title: "Обратная связь",
         url: ROUTES_PATH.FEEDBACK,
         icon: MailWarning,
+      },
+      {
+        title: "Ресурсы",
+        url: ROUTES_PATH.RESOURCES,
+        icon: ExternalLink,
       },
       // {
       //   title: "Партнеры",
