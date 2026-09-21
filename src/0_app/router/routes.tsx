@@ -35,6 +35,7 @@ import { Unload } from "@pages/unload";
 import { IMReport } from "@pages/im-report";
 import { FarmerProfile } from "@pages/farmer/profile";
 import { FarmerAnalytics } from "@pages/farmer/analytics";
+import { FarmerApplications } from "@pages/farmer/applications";
 import { Farmers } from "@pages/farmers";
 import { Forest } from "@pages/forest";
 import { NightStores } from "@pages/night-stores";
@@ -112,6 +113,7 @@ export const ROUTES_PATH = {
   FARMER: "/farmer",
   FARMERS: "/farmers",
   ANALYTICS: "/analytics",
+  APPLICATIONS: "/applications",
   CHAT: "/chat",
 
   // Профиль
@@ -496,6 +498,14 @@ export const ROUTES: RouteConfig[] = [
     allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
     layout: Sidebar,
     label: "Аналитика фермера",
+  },
+  {
+    path: ROUTES_PATH.APPLICATIONS,
+    variant: "private",
+    element: <FarmerApplications />,
+    allowedRoles: [ROLES.ADMIN, ROLES.FARMER],
+    layout: Sidebar,
+    label: "Заявки",
   },
   //{
   //  path: ROUTES_PATH.CHAT,

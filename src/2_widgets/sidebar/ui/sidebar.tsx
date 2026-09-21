@@ -15,6 +15,7 @@ import {
   SlidersHorizontal,
   Store,
   ChartColumn,
+  ClipboardList,
   //  MessageCircle,
   Tractor,
   Moon,
@@ -363,6 +364,12 @@ const Sidebar = ({
         title: "Аналитика",
         url: ROUTES_PATH.ANALYTICS,
         icon: ChartColumn,
+        disabled: session?.role !== ROLES.FARMER,
+      },
+      {
+        title: "Заявки",
+        url: ROUTES_PATH.APPLICATIONS,
+        icon: ClipboardList,
         disabled: session?.role !== ROLES.FARMER,
       },
       {

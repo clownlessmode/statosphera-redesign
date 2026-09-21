@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
 import {
+  FarmerApplicationDetail,
+  FarmerApplication,
   ProfileResponse,
   RequestDto,
   RequestDtoKmContacts,
@@ -9,7 +11,11 @@ import {
 } from "../config";
 import { ROLES } from "@shared/constants/roles";
 
-export const useFarmer = (idUser?: number, role?: string) => {
+export const useFarmer = (
+  idUser?: number,
+  role?: string,
+  idApplication?: string,
+) => {
   const queryClient = useQueryClient();
   const isFarmer = role === ROLES.FARMER || role === ROLES.ADMIN;
 
@@ -66,6 +72,23 @@ export const useFarmer = (idUser?: number, role?: string) => {
     },
   });
 
+  const getApplications = useQuery<FarmerApplication[], ApiError>({
+    queryKey: ["applications"],
+    queryFn: async () => {
+      const response = await FarmerService.getApplications();
+      return response;
+    },
+  });
+
+  const getApplication = useQuery<FarmerApplicationDetail, ApiError>({
+    queryKey: ["application", idApplication],
+    queryFn: async () => {
+      const response = await FarmerService.getApplication(idApplication!);
+      return response;
+    },
+    enabled: !!idApplication,
+  });
+
   return {
     getProfile: getProfile.refetch,
     isGetProfileLoading: getProfile.isPending,
@@ -80,5 +103,11 @@ export const useFarmer = (idUser?: number, role?: string) => {
     isUpdateProfileLoading: updateProfile.isPending,
     updateKmContacts: updateKmContacts.mutateAsync,
     isUpdateKmContactsLoading: updateKmContacts.isPending,
+    getApplications: getApplications.refetch,
+    isApplicationsLoading: getApplications.isPending,
+    applications: getApplications.data,
+    getApplication: getApplication.refetch,
+    isApplicationLoading: getApplication.isPending,
+    application: getApplication.data,
   };
 };

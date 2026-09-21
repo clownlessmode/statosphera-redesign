@@ -1,5 +1,11 @@
 import { api } from "@shared/api/api";
-import { RequestDto, RequestDtoKmContacts, RequestDtoPhoto } from "../config";
+import {
+  FarmerApplicationDetail,
+  FarmerApplication,
+  RequestDto,
+  RequestDtoKmContacts,
+  RequestDtoPhoto,
+} from "../config";
 
 export class FarmerService {
   static async getProfile(id: number) {
@@ -46,6 +52,18 @@ export class FarmerService {
 
   static async updateKmContacts(dto: RequestDtoKmContacts) {
     const response = await api.put("/profile/update-km-contacts", dto);
+    return response.data;
+  }
+
+  static async getApplications() {
+    const response = await api.get<FarmerApplication[]>("/bitrix/applications");
+    return response.data;
+  }
+
+  static async getApplication(id: string | number) {
+    const response = await api.get<FarmerApplicationDetail>(
+      `/bitrix/applications/${id}`,
+    );
     return response.data;
   }
 }

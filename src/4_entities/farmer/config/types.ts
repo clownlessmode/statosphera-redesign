@@ -88,3 +88,17 @@ export interface ProfileResponse {
   }[];
   agreementUrl: string;
 }
+
+export interface FarmerApplication {
+  itemId: string;
+  technical_task: string;
+  stageId: string;
+  updatedTime: string;
+  bitrixSyncedAt: string;
+  stageKey: string;
+  stageName: string;
+}
+
+export interface FarmerApplicationDetail {
+  itemId: string;
+}
