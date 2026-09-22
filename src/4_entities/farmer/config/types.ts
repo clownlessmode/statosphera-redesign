@@ -99,6 +99,11 @@ export interface FarmerApplication {
   stageName: string;
 }
 
+export interface FarmerApplicationResponse {
+  items: FarmerApplication[];
+  hasMore: boolean;
+}
+
 export interface FarmerApplicationDetail {
   itemId: string;
 }

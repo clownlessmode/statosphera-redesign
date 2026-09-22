@@ -1,7 +1,7 @@
 import { api } from "@shared/api/api";
 import {
   FarmerApplicationDetail,
-  FarmerApplication,
+  FarmerApplicationResponse,
   RequestDto,
   RequestDtoKmContacts,
   RequestDtoPhoto,
@@ -55,8 +55,13 @@ export class FarmerService {
     return response.data;
   }
 
-  static async getApplications() {
-    const response = await api.get<FarmerApplication[]>("/bitrix/applications");
+  static async getApplications(params?: { offset?: number; limit?: number }) {
+    const response = await api.get<FarmerApplicationResponse>(
+      "/bitrix/applications",
+      {
+        params,
+      },
+    );
     return response.data;
   }
 

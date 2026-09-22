@@ -1,15 +1,61 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useMemo } from "react";
 import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
 import {
   FarmerApplicationDetail,
-  FarmerApplication,
+  FarmerApplicationResponse,
   ProfileResponse,
   RequestDto,
   RequestDtoKmContacts,
   RequestDtoPhoto,
 } from "../config";
 import { ROLES } from "@shared/constants/roles";
+
+export const useInfiniteFarmerApplications = (params: { limit: number }) => {
+  const getApplications = useInfiniteQuery<FarmerApplicationResponse, ApiError>(
+    {
+      queryKey: ["farmer-applications", "list", params.limit],
+      queryFn: ({ pageParam }) =>
+        FarmerService.getApplications({
+          limit: params.limit,
+          offset: pageParam as number,
+        }),
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasMore || lastPage.items.length === 0) return undefined;
+
+        return allPages.reduce((offset, page) => offset + page.items.length, 0);
+      },
+      initialPageParam: 0,
+    },
+  );
+
+  const applications = useMemo(() => {
+    const uniqueApplications = new Map(
+      getApplications.data?.pages
+        .flatMap((page) => page.items ?? [])
+        .map((application) => [application.itemId, application]),
+    );
+
+    return Array.from(uniqueApplications.values());
+  }, [getApplications.data?.pages]);
+
+  return {
+    applications,
+    isApplicationsLoading: getApplications.isLoading,
+    isApplicationsError: getApplications.isError,
+    isApplicationsFetchingNextPage: getApplications.isFetchingNextPage,
+    isApplicationsFetchNextPageError: getApplications.isFetchNextPageError,
+    fetchNextPage: getApplications.fetchNextPage,
+    hasNextPage: getApplications.hasNextPage,
+    refetchApplications: getApplications.refetch,
+  };
+};
 
 export const useFarmer = (
   idUser?: number,
@@ -72,14 +118,6 @@ export const useFarmer = (
     },
   });
 
-  const getApplications = useQuery<FarmerApplication[], ApiError>({
-    queryKey: ["applications"],
-    queryFn: async () => {
-      const response = await FarmerService.getApplications();
-      return response;
-    },
-  });
-
   const getApplication = useQuery<FarmerApplicationDetail, ApiError>({
     queryKey: ["application", idApplication],
     queryFn: async () => {
@@ -103,9 +141,6 @@ export const useFarmer = (
     isUpdateProfileLoading: updateProfile.isPending,
     updateKmContacts: updateKmContacts.mutateAsync,
     isUpdateKmContactsLoading: updateKmContacts.isPending,
-    getApplications: getApplications.refetch,
-    isApplicationsLoading: getApplications.isPending,
-    applications: getApplications.data,
     getApplication: getApplication.refetch,
     isApplicationLoading: getApplication.isPending,
     application: getApplication.data,
