@@ -62,7 +62,7 @@ export const FarmerApplications = () => {
         {isApplicationsLoading ? (
           <ApplicationsSkeleton />
         ) : isApplicationsError ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
             <p className="text-sm font-bold">Не удалось загрузить заявки</p>
             <Button
               variant="outline"
@@ -73,7 +73,7 @@ export const FarmerApplications = () => {
             </Button>
           </div>
         ) : applications.length === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
             <Inbox className="size-8 text-muted-foreground" />
             <p className="text-sm font-bold">Заявок не найдено</p>
           </div>
