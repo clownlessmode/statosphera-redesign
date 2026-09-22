@@ -1,5 +1,12 @@
 import { api } from "@shared/api/api";
 import {
+  SuccessResponse,
+  CompleteFarmerApprovalDto,
+  CompleteFarmerLabelApprovalDto,
+  CompleteMrpRevisionDto,
+  CompleteMrpTastingDto,
+  CompleteNdCheckDto,
+  CompleteNdRevisionDto,
   FarmerApplicationDetail,
   FarmerApplicationResponse,
   RequestDto,
@@ -65,9 +72,111 @@ export class FarmerService {
     return response.data;
   }
 
-  static async getApplication(id: string | number) {
+  static async getApplication(id: string) {
     const response = await api.get<FarmerApplicationDetail>(
       `/bitrix/applications/${id}`,
+    );
+    return response.data;
+  }
+
+  static async completeFarmerApproval(
+    id: string,
+    dto: CompleteFarmerApprovalDto,
+  ) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-approval`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeMrpTasting(id: string, dto: CompleteMrpTastingDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-mrp-tasting`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeMrpRevision(id: string, dto: CompleteMrpRevisionDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-mrp-revision`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeFarmerNdFill(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-nd-fill`,
+      {},
+    );
+    return response.data;
+  }
+
+  static async completeNdCheck(id: string, dto: CompleteNdCheckDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-nd-check`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeNdRevision(id: string, dto: CompleteNdRevisionDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-nd-revision`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completePriceCalculation(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-price-calculation`,
+      {},
+    );
+    return response.data;
+  }
+
+  static async completePriceApproval(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-price-approval`,
+      {},
+    );
+    return response.data;
+  }
+
+  static async completeLabelDesign(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-label-design`,
+      {},
+    );
+    return response.data;
+  }
+
+  static async completeFarmerLabelApproval(
+    id: string,
+    dto: CompleteFarmerLabelApprovalDto,
+  ) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-label-approval`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeNoveltyDistribution(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-novelty-distribution`,
+      {},
+    );
+    return response.data;
+  }
+
+  static async failNovelty(id: string) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/fail`,
+      {},
     );
     return response.data;
   }

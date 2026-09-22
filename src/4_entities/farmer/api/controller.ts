@@ -8,12 +8,19 @@ import { useMemo } from "react";
 import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
 import {
+  CompleteFarmerApprovalDto,
+  CompleteFarmerLabelApprovalDto,
+  CompleteMrpRevisionDto,
+  CompleteMrpTastingDto,
+  CompleteNdCheckDto,
+  CompleteNdRevisionDto,
   FarmerApplicationDetail,
   FarmerApplicationResponse,
   ProfileResponse,
   RequestDto,
   RequestDtoKmContacts,
   RequestDtoPhoto,
+  SuccessResponse,
 } from "../config";
 import { ROLES } from "@shared/constants/roles";
 
@@ -55,6 +62,164 @@ export const useInfiniteFarmerApplications = (params: { limit: number }) => {
     hasNextPage: getApplications.hasNextPage,
     refetchApplications: getApplications.refetch,
   };
+};
+
+export const useCompleteFarmerApproval = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteFarmerApprovalDto>({
+    mutationFn: (dto) =>
+      FarmerService.completeFarmerApproval(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteMrpTasting = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteMrpTastingDto>({
+    mutationFn: (dto) => FarmerService.completeMrpTasting(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteMrpRevision = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteMrpRevisionDto>({
+    mutationFn: (dto) => FarmerService.completeMrpRevision(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteFarmerNdFill = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.completeFarmerNdFill(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteNdCheck = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteNdCheckDto>({
+    mutationFn: (dto) => FarmerService.completeNdCheck(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteNdRevision = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteNdRevisionDto>({
+    mutationFn: (dto) => FarmerService.completeNdRevision(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["farmer-applications"] });
+    },
+  });
+};
+
+export const useCompletePriceCalculation = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.completePriceCalculation(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompletePriceApproval = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.completePriceApproval(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteLabelDesign = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.completeLabelDesign(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useCompleteFarmerLabelApproval = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteFarmerLabelApprovalDto>(
+    {
+      mutationFn: (dto) =>
+        FarmerService.completeFarmerLabelApproval(idApplication, dto),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["farmer-applications", idApplication],
+        });
+      },
+    },
+  );
+};
+
+export const useCompleteNoveltyDistribution = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.completeNoveltyDistribution(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
+};
+
+export const useFailNovelty = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, void>({
+    mutationFn: () => FarmerService.failNovelty(idApplication),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+  });
 };
 
 export const useFarmer = (
@@ -119,7 +284,7 @@ export const useFarmer = (
   });
 
   const getApplication = useQuery<FarmerApplicationDetail, ApiError>({
-    queryKey: ["application", idApplication],
+    queryKey: ["farmer-applications", idApplication],
     queryFn: async () => {
       const response = await FarmerService.getApplication(idApplication!);
       return response;

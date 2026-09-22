@@ -235,3 +235,44 @@ export interface FarmerApplicationDetail {
   stage_FAIL: Record<string, never>;
   stage_SUCCESS: FarmerApplicationLaunchStage;
 }
+
+export type CompleteFarmerApprovalDto =
+  | {
+      decision: "accepted";
+      sampleReadyDate: string;
+    }
+  | {
+      decision: "rejected";
+    };
+
+export interface CompleteMrpTastingDto {
+  result: FarmerTastingResult;
+  comment?: string;
+}
+
+export interface CompleteMrpRevisionDto {
+  result: FarmerTastingResult;
+  comment?: string;
+}
+
+export interface CompleteNdCheckDto {
+  result: FarmerDataCheckStatus;
+  comment?: string;
+}
+
+export interface CompleteNdRevisionDto {
+  decision: "accepted" | "rejected";
+}
+
+export type CompleteFarmerLabelApprovalDto =
+  | {
+      decision: "approved";
+      deliveryDate: string;
+    }
+  | {
+      decision: "rejected";
+    };
+
+export interface SuccessResponse {
+  success: boolean;
+}
