@@ -108,15 +108,17 @@ const ndFillMarkingSchema = z.union([
   }),
 ]);
 
-export const ndFillSchema = z
-  .discriminatedUnion("mercuryControlledProduct", [
-    ndFillBaseSchema.extend({
-      mercuryControlledProduct: z.literal("нет"),
-    }),
-    ndFillBaseSchema.extend({
-      mercuryControlledProduct: z.literal("да"),
-      mercuryNomenclatureGuid: z.string().min(1, "Обязательное поле"),
-      tnvedCode: z.string().min(1, "Обязательное поле"),
-    }),
-  ])
+const ndFillMercurySchema = z.discriminatedUnion("mercuryControlledProduct", [
+  z.object({
+    mercuryControlledProduct: z.literal("нет"),
+  }),
+  z.object({
+    mercuryControlledProduct: z.literal("да"),
+    mercuryNomenclatureGuid: z.string().min(1, "Обязательное поле"),
+    tnvedCode: z.string().min(1, "Обязательное поле"),
+  }),
+]);
+
+export const ndFillSchema = ndFillBaseSchema
+  .and(ndFillMercurySchema)
   .and(ndFillMarkingSchema);

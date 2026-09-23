@@ -11,6 +11,7 @@ import {
   RequestDtoKmContacts,
   RequestDtoPhoto,
   CompleteFarmerNdFillDto,
+  UploadFileResponse,
 } from "../config";
 
 export class FarmerService {
@@ -120,6 +121,17 @@ export class FarmerService {
     const response = await api.post<SuccessResponse>(
       `/bitrix/item/${id}/stage/complete-farmer-label-approval`,
       dto,
+    );
+    return response.data;
+  }
+
+  static async uploadFile(photo: File) {
+    const formData = new FormData();
+    formData.append("photo", photo);
+
+    const response = await api.post<UploadFileResponse>(
+      "/uploads/photo",
+      formData,
     );
     return response.data;
   }

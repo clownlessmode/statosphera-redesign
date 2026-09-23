@@ -20,6 +20,7 @@ import {
   RequestDtoKmContacts,
   RequestDtoPhoto,
   SuccessResponse,
+  UploadFileResponse,
 } from "../config";
 import { ROLES } from "@shared/constants/roles";
 import { toast } from "sonner";
@@ -156,6 +157,15 @@ export const useFarmerApplicationDetail = (idApplication: string) => {
       return response;
     },
     enabled: !!idApplication,
+  });
+};
+
+export const useUploadFile = () => {
+  return useMutation<UploadFileResponse, ApiError, File>({
+    mutationFn: async (photo: File) => {
+      const response = await FarmerService.uploadFile(photo);
+      return response;
+    },
   });
 };
 

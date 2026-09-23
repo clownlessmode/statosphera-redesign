@@ -334,3 +334,7 @@ export type CompleteFarmerLabelApprovalDto =
 export interface SuccessResponse {
   success: boolean;
 }
+
+export interface UploadFileResponse {
+  url: string;
+}

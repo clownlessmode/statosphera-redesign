@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { FilePenLine } from "lucide-react";
+import { useRef, useState, type ChangeEvent, type ComponentProps } from "react";
+import { ExternalLink, FilePenLine, Image, Upload, X } from "lucide-react";
 import { useWatch } from "react-hook-form";
-import { useCompleteFarmerNdFill } from "@entities/farmer";
+import { useCompleteFarmerNdFill, useUploadFile } from "@entities/farmer";
 import { Badge } from "@shared/ui/badge";
 import { Button } from "@shared/ui/button";
 import { Card } from "@shared/ui/card";
@@ -29,7 +29,113 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import { Textarea } from "@shared/ui/textarea";
+import { toast } from "sonner";
 import { NdFillFormValues, useNdFillForm } from "../model/hook";
+
+type DocumentUploadFieldProps = Omit<ComponentProps<"div">, "onChange"> & {
+  value?: string;
+  onChange: (url: string) => void;
+};
+
+const DocumentUploadField = ({
+  value,
+  onChange,
+  "aria-invalid": ariaInvalid,
+  ...props
+}: DocumentUploadFieldProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState("");
+  const { mutate: uploadFile, isPending } = useUploadFile();
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Можно загрузить только изображение");
+      return;
+    }
+
+    uploadFile(file, {
+      onSuccess: ({ url }) => {
+        setFileName(file.name);
+        onChange(url);
+      },
+      onError: () => {
+        toast.error("Не удалось загрузить файл");
+      },
+    });
+  };
+
+  const handleClear = () => {
+    setFileName("");
+    onChange("");
+  };
+
+  return (
+    <div {...props}>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="sr-only"
+        onChange={handleFileChange}
+        disabled={isPending}
+      />
+      {value ? (
+        <div
+          aria-invalid={ariaInvalid}
+          className="flex min-w-0 items-center gap-4 rounded-md border border-input bg-transparent p-4 shadow-xs outline-none dark:bg-input/30 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:hover:border-destructive dark:aria-invalid:ring-destructive/40"
+        >
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <Image className="size-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium">
+              {fileName || "Изображение загружено"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Можно открыть или удалить файл
+            </p>
+          </div>
+          <Button type="button" variant="ghost" size="icon" asChild>
+            <a href={value} target="_blank" rel="noreferrer">
+              <ExternalLink className="size-4" />
+            </a>
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleClear}
+          >
+            <X className="size-4" />
+          </Button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          aria-invalid={ariaInvalid}
+          className="w-full cursor-pointer border-dashed text-left transition-colors hover:border-primary/50 flex min-w-0 items-center gap-4 rounded-md border border-input bg-transparent p-4 shadow-xs outline-none dark:bg-input/30 aria-invalid:border-destructive aria-invalid:ring-destructive/20 aria-invalid:hover:border-destructive dark:aria-invalid:ring-destructive/40"
+          onClick={() => inputRef.current?.click()}
+          disabled={isPending}
+        >
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <Upload className="size-4" />
+          </div>
+          <div>
+            <p className="text-sm font-medium">
+              {isPending ? "Загружаем файл…" : "Выберите файл"}
+            </p>
+            <p className="text-xs text-muted-foreground">Только изображение</p>
+          </div>
+        </button>
+      )}
+    </div>
+  );
+};
 
 export const NdFillForm = ({ itemId }: { itemId: string }) => {
   const form = useNdFillForm();
@@ -117,7 +223,10 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                         Результат проверки наименования
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ""} />
+                        <DocumentUploadField
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -131,7 +240,10 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                         Декларация
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} value={field.value ?? ""} />
+                        <DocumentUploadField
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -145,10 +257,9 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                         Протокол испытаний
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="url"
-                          {...field}
-                          value={field.value ?? ""}
+                        <DocumentUploadField
+                          value={field.value}
+                          onChange={field.onChange}
                         />
                       </FormControl>
                     </FormItem>
