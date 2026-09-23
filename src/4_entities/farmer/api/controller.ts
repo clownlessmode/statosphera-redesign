@@ -1,13 +1,173 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { useMemo } from "react";
 import { ApiError } from "@shared/api/types";
 import { FarmerService } from "./service";
 import {
+  CompleteFarmerApprovalDto,
+  CompleteFarmerLabelApprovalDto,
+  CompleteFarmerNdFillDto,
+  CompleteMrpRevisionDto,
+  CompleteNdRevisionDto,
+  FarmerApplicationDetail,
+  FarmerApplicationResponse,
   ProfileResponse,
   RequestDto,
   RequestDtoKmContacts,
   RequestDtoPhoto,
+  SuccessResponse,
+  UploadFileResponse,
 } from "../config";
 import { ROLES } from "@shared/constants/roles";
+import { toast } from "sonner";
+
+export const useInfiniteFarmerApplications = (params: { limit: number }) => {
+  const getApplications = useInfiniteQuery<FarmerApplicationResponse, ApiError>(
+    {
+      queryKey: ["farmer-applications", "list", params.limit],
+      queryFn: ({ pageParam }) =>
+        FarmerService.getApplications({
+          limit: params.limit,
+          offset: pageParam as number,
+        }),
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.hasMore || lastPage.items.length === 0) return undefined;
+
+        return allPages.reduce((offset, page) => offset + page.items.length, 0);
+      },
+      initialPageParam: 0,
+    },
+  );
+
+  const applications = useMemo(() => {
+    const uniqueApplications = new Map(
+      getApplications.data?.pages
+        .flatMap((page) => page.items ?? [])
+        .map((application) => [application.itemId, application]),
+    );
+
+    return Array.from(uniqueApplications.values());
+  }, [getApplications.data?.pages]);
+
+  return {
+    applications,
+    isApplicationsLoading: getApplications.isLoading,
+    isApplicationsError: getApplications.isError,
+    isApplicationsFetchingNextPage: getApplications.isFetchingNextPage,
+    isApplicationsFetchNextPageError: getApplications.isFetchNextPageError,
+    fetchNextPage: getApplications.fetchNextPage,
+    hasNextPage: getApplications.hasNextPage,
+    refetchApplications: getApplications.refetch,
+  };
+};
+
+export const useCompleteFarmerApproval = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteFarmerApprovalDto>({
+    mutationFn: (dto) =>
+      FarmerService.completeFarmerApproval(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+    onError: () => {
+      toast.error("Не удалось выполнить действие");
+    },
+  });
+};
+
+export const useCompleteMrpRevision = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteMrpRevisionDto>({
+    mutationFn: (dto) => FarmerService.completeMrpRevision(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+    onError: () => {
+      toast.error("Не удалось выполнить действие");
+    },
+  });
+};
+
+export const useCompleteFarmerNdFill = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteFarmerNdFillDto>({
+    mutationFn: (dto) => FarmerService.completeFarmerNdFill(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+    onError: () => {
+      toast.error("Не удалось выполнить действие");
+    },
+  });
+};
+
+export const useCompleteNdRevision = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteNdRevisionDto>({
+    mutationFn: (dto) => FarmerService.completeNdRevision(idApplication, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["farmer-applications", idApplication],
+      });
+    },
+    onError: () => {
+      toast.error("Не удалось выполнить действие");
+    },
+  });
+};
+
+export const useCompleteFarmerLabelApproval = (idApplication: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<SuccessResponse, ApiError, CompleteFarmerLabelApprovalDto>(
+    {
+      mutationFn: (dto) =>
+        FarmerService.completeFarmerLabelApproval(idApplication, dto),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["farmer-applications", idApplication],
+        });
+      },
+      onError: () => {
+        toast.error("Не удалось выполнить действие");
+      },
+    },
+  );
+};
+
+export const useFarmerApplicationDetail = (idApplication: string) => {
+  return useQuery<FarmerApplicationDetail, ApiError>({
+    queryKey: ["farmer-applications", idApplication],
+    queryFn: async () => {
+      const response = await FarmerService.getApplication(idApplication);
+      return response;
+    },
+    enabled: !!idApplication,
+  });
+};
+
+export const useUploadFile = () => {
+  return useMutation<UploadFileResponse, ApiError, File>({
+    mutationFn: async (photo: File) => {
+      const response = await FarmerService.uploadFile(photo);
+      return response;
+    },
+  });
+};
 
 export const useFarmer = (idUser?: number, role?: string) => {
   const queryClient = useQueryClient();

@@ -1,5 +1,18 @@
 import { api } from "@shared/api/api";
-import { RequestDto, RequestDtoKmContacts, RequestDtoPhoto } from "../config";
+import {
+  SuccessResponse,
+  CompleteFarmerApprovalDto,
+  CompleteFarmerLabelApprovalDto,
+  CompleteMrpRevisionDto,
+  CompleteNdRevisionDto,
+  FarmerApplicationDetail,
+  FarmerApplicationResponse,
+  RequestDto,
+  RequestDtoKmContacts,
+  RequestDtoPhoto,
+  CompleteFarmerNdFillDto,
+  UploadFileResponse,
+} from "../config";
 
 export class FarmerService {
   static async getProfile(id: number) {
@@ -46,6 +59,80 @@ export class FarmerService {
 
   static async updateKmContacts(dto: RequestDtoKmContacts) {
     const response = await api.put("/profile/update-km-contacts", dto);
+    return response.data;
+  }
+
+  static async getApplications(params?: { offset?: number; limit?: number }) {
+    const response = await api.get<FarmerApplicationResponse>(
+      "/bitrix/applications",
+      {
+        params,
+      },
+    );
+    return response.data;
+  }
+
+  static async getApplication(id: string) {
+    const response = await api.get<FarmerApplicationDetail>(
+      `/bitrix/applications/${id}`,
+    );
+    return response.data;
+  }
+
+  static async completeFarmerApproval(
+    id: string,
+    dto: CompleteFarmerApprovalDto,
+  ) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-approval`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeMrpRevision(id: string, dto: CompleteMrpRevisionDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-mrp-revision`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeFarmerNdFill(id: string, dto: CompleteFarmerNdFillDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-nd-fill`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeNdRevision(id: string, dto: CompleteNdRevisionDto) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-nd-revision`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async completeFarmerLabelApproval(
+    id: string,
+    dto: CompleteFarmerLabelApprovalDto,
+  ) {
+    const response = await api.post<SuccessResponse>(
+      `/bitrix/item/${id}/stage/complete-farmer-label-approval`,
+      dto,
+    );
+    return response.data;
+  }
+
+  static async uploadFile(photo: File) {
+    const formData = new FormData();
+    formData.append("photo", photo);
+
+    const response = await api.post<UploadFileResponse>(
+      "/uploads/photo",
+      formData,
+    );
     return response.data;
   }
 }
