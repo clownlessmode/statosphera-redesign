@@ -4,14 +4,13 @@ import {
   CompleteFarmerApprovalDto,
   CompleteFarmerLabelApprovalDto,
   CompleteMrpRevisionDto,
-  CompleteMrpTastingDto,
-  CompleteNdCheckDto,
   CompleteNdRevisionDto,
   FarmerApplicationDetail,
   FarmerApplicationResponse,
   RequestDto,
   RequestDtoKmContacts,
   RequestDtoPhoto,
+  CompleteFarmerNdFillDto,
 } from "../config";
 
 export class FarmerService {
@@ -90,14 +89,6 @@ export class FarmerService {
     return response.data;
   }
 
-  static async completeMrpTasting(id: string, dto: CompleteMrpTastingDto) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-mrp-tasting`,
-      dto,
-    );
-    return response.data;
-  }
-
   static async completeMrpRevision(id: string, dto: CompleteMrpRevisionDto) {
     const response = await api.post<SuccessResponse>(
       `/bitrix/item/${id}/stage/complete-mrp-revision`,
@@ -106,17 +97,9 @@ export class FarmerService {
     return response.data;
   }
 
-  static async completeFarmerNdFill(id: string) {
+  static async completeFarmerNdFill(id: string, dto: CompleteFarmerNdFillDto) {
     const response = await api.post<SuccessResponse>(
       `/bitrix/item/${id}/stage/complete-farmer-nd-fill`,
-      {},
-    );
-    return response.data;
-  }
-
-  static async completeNdCheck(id: string, dto: CompleteNdCheckDto) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-nd-check`,
       dto,
     );
     return response.data;
@@ -130,30 +113,6 @@ export class FarmerService {
     return response.data;
   }
 
-  static async completePriceCalculation(id: string) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-price-calculation`,
-      {},
-    );
-    return response.data;
-  }
-
-  static async completePriceApproval(id: string) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-price-approval`,
-      {},
-    );
-    return response.data;
-  }
-
-  static async completeLabelDesign(id: string) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-label-design`,
-      {},
-    );
-    return response.data;
-  }
-
   static async completeFarmerLabelApproval(
     id: string,
     dto: CompleteFarmerLabelApprovalDto,
@@ -161,22 +120,6 @@ export class FarmerService {
     const response = await api.post<SuccessResponse>(
       `/bitrix/item/${id}/stage/complete-farmer-label-approval`,
       dto,
-    );
-    return response.data;
-  }
-
-  static async completeNoveltyDistribution(id: string) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/complete-novelty-distribution`,
-      {},
-    );
-    return response.data;
-  }
-
-  static async failNovelty(id: string) {
-    const response = await api.post<SuccessResponse>(
-      `/bitrix/item/${id}/stage/fail`,
-      {},
     );
     return response.data;
   }

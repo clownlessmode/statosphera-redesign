@@ -4,16 +4,31 @@ export type StageCategory =
   | "success"
   | "fail";
 
+export const MAIN_STAGE_FLOW = [
+  { step: 1, title: "Согласование заявки" },
+  { step: 2, title: "Выработка МРП / Дегустация" },
+  { step: 3, title: "Заполнение НД" },
+  { step: 4, title: "Проверка НД" },
+  { step: 5, title: "Расчёт стоимости" },
+  { step: 6, title: "Согласование цены" },
+  { step: 7, title: "Дизайн этикетки" },
+  { step: 8, title: "Согласование этикетки" },
+  { step: 9, title: "Распределение новинки" },
+  { step: 10, title: "Завершено" },
+] as const;
+
+export type MainStageStep = (typeof MAIN_STAGE_FLOW)[number]["step"];
+
 export type Stage = {
   order: number;
   stageId: string;
   stageKey: string;
   shortName: string;
   category: StageCategory;
-  mainStep?: number;
+  mainStep?: MainStageStep;
 };
 
-export const TOTAL_MAIN_STEPS = 10;
+export const TOTAL_MAIN_STEPS = MAIN_STAGE_FLOW.length;
 
 export const BITRIX_STAGE_FLOW: Stage[] = [
   {
@@ -37,7 +52,7 @@ export const BITRIX_STAGE_FLOW: Stage[] = [
     stageId: "DT1490_265:UC_XA4NH4",
     stageKey: "UC_XA4NH4",
     shortName: "Доработка МРП",
-    category: "in_progress",
+    category: "action_required",
     mainStep: 2,
   },
   {
@@ -77,7 +92,7 @@ export const BITRIX_STAGE_FLOW: Stage[] = [
     stageId: "DT1490_265:UC_2JOKXY",
     stageKey: "UC_2JOKXY",
     shortName: "Согласование цены",
-    category: "action_required",
+    category: "in_progress",
     mainStep: 6,
   },
   {

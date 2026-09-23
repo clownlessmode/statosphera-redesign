@@ -10,7 +10,7 @@ import {
   TOTAL_MAIN_STEPS,
 } from "../config/stage-flow";
 import { cn } from "@shared/lib/utils";
-import { StageBadge } from "./stage-badge";
+import { Badge } from "@shared/ui/badge";
 
 interface ApplicationCardProps {
   application: FarmerApplication;
@@ -24,12 +24,7 @@ export const ApplicationCard = ({
   const stage = getStage(application.stageKey, application.stageId);
 
   return (
-    <Card
-      className={cn(
-        "flex flex-col justify-between p-5",
-        stage?.category === "action_required" && "border-primary/50",
-      )}
-    >
+    <Card className="flex flex-col justify-between p-5">
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
@@ -40,7 +35,9 @@ export const ApplicationCard = ({
               <AlertCircle className="size-4 text-primary" />
             )}
           </div>
-          <StageBadge stage={stage} />
+          {stage?.shortName && (
+            <Badge variant="muted">{stage?.shortName}</Badge>
+          )}
         </div>
         <p
           className={cn(

@@ -1,13 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Header } from "@widgets/header";
-import { useInfiniteFarmerApplications } from "@entities/farmer";
+import {
+  useInfiniteFarmerApplications,
+  FarmerApplication,
+} from "@entities/farmer";
 import { Button } from "@shared/ui/button";
 import Spinner from "@shared/ui/spinner";
 import { ApplicationCard } from "./application-card";
 import { ApplicationsSkeleton } from "./applications-skeleton";
+import { ApplicationDetail } from "./application-detail";
 import { Inbox } from "lucide-react";
 
 export const FarmerApplications = () => {
+  const [selectedApplication, setSelectedApplication] =
+    useState<FarmerApplication | null>(null);
+
   const {
     applications,
     isApplicationsLoading,
@@ -59,7 +66,12 @@ export const FarmerApplications = () => {
         ref={scrollContainerRef}
         className="flex flex-1 min-h-0 flex-col gap-4 overflow-y-auto rounded-3xl bg-background p-4"
       >
-        {isApplicationsLoading ? (
+        {selectedApplication ? (
+          <ApplicationDetail
+            application={selectedApplication}
+            onBack={() => setSelectedApplication(null)}
+          />
+        ) : isApplicationsLoading ? (
           <ApplicationsSkeleton />
         ) : isApplicationsError ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
@@ -84,7 +96,7 @@ export const FarmerApplications = () => {
                 <ApplicationCard
                   key={application.itemId}
                   application={application}
-                  onOpenDetails={() => {}}
+                  onOpenDetails={(app) => setSelectedApplication(app)}
                 />
               ))}
             </div>

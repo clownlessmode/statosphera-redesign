@@ -245,23 +245,81 @@ export type CompleteFarmerApprovalDto =
       decision: "rejected";
     };
 
-export interface CompleteMrpTastingDto {
-  result: FarmerTastingResult;
-  comment?: string;
-}
-
 export interface CompleteMrpRevisionDto {
-  result: FarmerTastingResult;
-  comment?: string;
+  readiness: string;
 }
 
-export interface CompleteNdCheckDto {
-  result: FarmerDataCheckStatus;
-  comment?: string;
+interface CompleteFarmerNdFillBase {
+  declarationProductName: string;
+  declarationNameCheckResultUrl: string;
+  productUnit: string;
+  netWeight: string;
+  grossWeight: string;
+  shelfLifeDays: number;
+  shipmentQuant: number;
+  vatPercent: number;
+  shippingFrom: string;
+  protein: string;
+  fat: string;
+  carbohydrates: string;
+  calories: string;
+  normativeDocument: string;
+  composition: string;
+  storageConditionsLabel: string;
+  okpd2Code: string;
+  purchasePrice: number;
+  testProtocolUrl: string;
+  kj: string;
+  consumptionRestrictions: string;
+  declarationUrl: string;
+  allergens: string;
+  cookingMethod: string;
+  usp: string;
+  mobiusLoop: string;
+  fragileCargo: string;
+  temperatureRegime: string;
+  estimatedVolume: string;
+  palletJackRequired: string;
+  palletJackType: string;
+  loaderRequired: string;
+  transportPackagingType: string;
+  pallets: string;
+  palletizing: string;
+  parkingToLoadingDistance: string;
+  loadingRamp: string;
+  fromFarmer: string;
+  supplierRegion: string;
+  labelSize?: string;
 }
+
+type CompleteFarmerNdFillMercury =
+  | {
+      mercuryControlledProduct: "нет";
+    }
+  | {
+      mercuryControlledProduct: "да";
+      mercuryNomenclatureGuid: string;
+      tnvedCode: string;
+    };
+
+type CompleteFarmerNdFillMarking =
+  | {
+      chzMarkingType?: undefined;
+      gtin?: undefined;
+      groupGtin?: undefined;
+    }
+  | {
+      chzMarkingType: string;
+      gtin: number;
+      groupGtin: number;
+    };
+
+export type CompleteFarmerNdFillDto = CompleteFarmerNdFillBase &
+  CompleteFarmerNdFillMercury &
+  CompleteFarmerNdFillMarking;
 
 export interface CompleteNdRevisionDto {
-  decision: "accepted" | "rejected";
+  readiness: string;
 }
 
 export type CompleteFarmerLabelApprovalDto =
