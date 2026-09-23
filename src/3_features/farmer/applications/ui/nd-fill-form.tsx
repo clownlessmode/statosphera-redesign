@@ -1,7 +1,11 @@
 import { useRef, useState, type ChangeEvent, type ComponentProps } from "react";
 import { ExternalLink, FilePenLine, Image, Upload, X } from "lucide-react";
 import { useWatch } from "react-hook-form";
-import { useCompleteFarmerNdFill, useUploadFile } from "@entities/farmer";
+import {
+  type CompleteFarmerNdFillDto,
+  useCompleteFarmerNdFill,
+  useUploadFile,
+} from "@entities/farmer";
 import { Badge } from "@shared/ui/badge";
 import { Button } from "@shared/ui/button";
 import { Card } from "@shared/ui/card";
@@ -151,7 +155,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
   const { mutate: completeNdFill, isPending } = useCompleteFarmerNdFill(itemId);
 
   const onSubmit = (data: NdFillFormValues) => {
-    completeNdFill(data, {
+    completeNdFill(data as CompleteFarmerNdFillDto, {
       onSuccess: () => setOpen(false),
     });
   };

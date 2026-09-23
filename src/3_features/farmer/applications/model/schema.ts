@@ -91,22 +91,50 @@ const ndFillBaseSchema = z.object({
   labelSize: z.string().optional(),
 });
 
-const ndFillMarkingSchema = z.union([
-  z.object({
-    chzMarkingType: z.string().min(1, "Укажите тип маркировки"),
+const ndFillMarkingSchema = z
+  .object({
+    chzMarkingType: z.string().optional(),
     gtin: z
       .number({ invalid_type_error: "Укажите целое число" })
-      .int("Укажите целое число"),
+      .int("Укажите целое число")
+      .optional(),
     groupGtin: z
       .number({ invalid_type_error: "Укажите целое число" })
-      .int("Укажите целое число"),
-  }),
-  z.object({
-    chzMarkingType: z.undefined().optional(),
-    gtin: z.undefined().optional(),
-    groupGtin: z.undefined().optional(),
-  }),
-]);
+      .int("Укажите целое число")
+      .optional(),
+  })
+  .superRefine(({ chzMarkingType, gtin, groupGtin }, ctx) => {
+    const hasMarkingType = Boolean(chzMarkingType?.trim());
+    const hasGtin = gtin !== undefined;
+    const hasGroupGtin = groupGtin !== undefined;
+    const hasAnyMarkingField = hasMarkingType || hasGtin || hasGroupGtin;
+
+    if (!hasAnyMarkingField) return;
+
+    if (!hasMarkingType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["chzMarkingType"],
+        message: "Укажите тип маркировки",
+      });
+    }
+
+    if (!hasGtin) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["gtin"],
+        message: "Укажите целое число",
+      });
+    }
+
+    if (!hasGroupGtin) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["groupGtin"],
+        message: "Укажите целое число",
+      });
+    }
+  });
 
 const ndFillMercurySchema = z.discriminatedUnion("mercuryControlledProduct", [
   z.object({
