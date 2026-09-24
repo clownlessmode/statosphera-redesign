@@ -1,21 +1,22 @@
 import React from "react";
-import { format } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 import { ru } from "date-fns/locale";
 import {
   AlertCircle,
-  Calendar,
+  Barcode,
   CheckCircle2,
   DollarSign,
   ExternalLink,
   FileCheck,
   FileText,
+  FlaskConical,
   Image as ImageIcon,
-  Layers,
+  Package,
   Phone,
   Scale,
-  Sparkles,
   Tag,
   Truck,
+  UtensilsCrossed,
   XCircle,
 } from "lucide-react";
 import { FarmerApplicationDetail, FarmerApplication } from "@entities/farmer";
@@ -31,13 +32,12 @@ interface ApplicationTabsProps {
 
 const formatDate = (dateString?: string | null) => {
   if (!dateString) return null;
-  try {
-    const d = new Date(dateString);
-    if (isNaN(d.getTime())) return dateString;
-    return format(d, "d MMMM yyyy", { locale: ru });
-  } catch {
-    return dateString;
-  }
+
+  const dotted = parse(dateString, "dd.MM.yyyy", new Date());
+  const date = isValid(dotted) ? dotted : new Date(dateString);
+  if (!isValid(date)) return dateString;
+
+  return format(date, "d MMMM yyyy", { locale: ru });
 };
 
 interface DetailItemProps {
@@ -98,7 +98,7 @@ const FileLink = ({
 }) => {
   if (!href) {
     return (
-      <div className="flex min-h-13 items-center gap-3 rounded-xl border border-dashed border-border/70 bg-muted/20 px-3 py-2.5 text-muted-foreground">
+      <div className="flex items-center gap-4 rounded-xl border border-dashed border-border bg-muted px-4 py-2.5 text-muted-foreground">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted/70">
           <Icon className="size-4" />
         </div>
@@ -115,7 +115,7 @@ const FileLink = ({
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="group flex min-h-13 items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/70 px-3 py-2.5 transition-all hover:border-primary/25 hover:bg-primary/[0.04]"
+      className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-background px-4 py-2 transition-all hover:border-primary/15 hover:bg-primary/[0.03]"
     >
       <div className="flex min-w-0 items-center gap-2.5">
         <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -139,44 +139,20 @@ const PriceMetric = ({
   label,
   value,
   emptyLabel,
-  highlighted = false,
 }: {
   label: string;
   value?: number | null;
   emptyLabel: string;
-  highlighted?: boolean;
 }) => (
-  <div
-    className={cn(
-      "flex min-h-20 items-center justify-between gap-4 px-4 py-3.5",
-      highlighted && "bg-primary/[0.05]",
-    )}
-  >
-    <span
-      className={cn(
-        "text-sm leading-5",
-        highlighted ? "font-medium text-foreground" : "text-muted-foreground",
-      )}
-    >
-      {label}
-    </span>
+  <div className="flex flex-wrap items-center justify-between gap-4 p-4">
+    <span className="text-xs font-medium text-muted-foreground">{label}</span>
     <div className="flex shrink-0 items-baseline gap-1.5 text-right">
       {value != null ? (
         <>
-          <span
-            className={cn(
-              "font-bold tracking-tight text-foreground tabular-nums",
-              highlighted ? "text-2xl" : "text-xl",
-            )}
-          >
+          <span className="text-2xl font-semibold text-foreground tabular-nums">
             {value.toLocaleString("ru-RU")}
           </span>
-          <span
-            className={cn(
-              "text-sm font-semibold",
-              highlighted ? "text-primary" : "text-muted-foreground",
-            )}
-          >
+          <span className="text-2xl font-semibold text-muted-foreground">
             ₽
           </span>
         </>
@@ -243,14 +219,14 @@ const ReviewSummary = ({
   feedback?: React.ReactNode;
   feedbackPlaceholder: string;
 }) => (
-  <div className="overflow-hidden rounded-xl border border-border/60 bg-background/70">
-    <div className="flex flex-wrap items-center justify-between gap-3 p-4">
+  <div className="overflow-hidden rounded-xl border border-border bg-background">
+    <div className="flex flex-wrap items-center justify-between gap-4 p-4">
       <span className="text-xs font-medium text-muted-foreground">
         {statusLabel}
       </span>
       {status}
     </div>
-    <div className="border-t border-border/60 bg-muted/20 p-4">
+    <div className="border-t border-border bg-background p-4">
       <DetailItem
         label={feedbackLabel}
         value={feedback}
@@ -342,8 +318,8 @@ export const ApplicationTabs = ({
         </Card>
 
         <Card className="flex flex-col gap-4 p-5">
-          <SectionHeader icon={Tag} title="Параметры новинки" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeader icon={Package} title="Параметры новинки" />
+          <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
             <DetailItem
               label="Рабочее наименование"
               value={common?.working_name}
@@ -359,7 +335,7 @@ export const ApplicationTabs = ({
                 common?.responsible_phone ? (
                   <a
                     href={`tel:${common.responsible_phone}`}
-                    className="inline-flex items-center gap-1.5 text-primary hover:underline"
+                    className="inline-flex items-center gap-1 text-primary hover:underline"
                   >
                     <Phone className="size-3.5" />
                     {common.responsible_phone}
@@ -374,7 +350,10 @@ export const ApplicationTabs = ({
       <TabsContent value="sample" className="mt-3 flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card className="flex flex-col gap-4 p-5">
-            <SectionHeader icon={Calendar} title="Подготовка образца (МРП)" />
+            <SectionHeader
+              icon={FlaskConical}
+              title="Подготовка образца (МРП)"
+            />
             <div className="flex flex-col gap-5">
               <DetailItem
                 label="Желаемая дата разработки"
@@ -394,7 +373,10 @@ export const ApplicationTabs = ({
           </Card>
 
           <Card className="flex flex-col gap-4 p-5">
-            <SectionHeader icon={Sparkles} title="Результаты дегустации" />
+            <SectionHeader
+              icon={UtensilsCrossed}
+              title="Результаты дегустации"
+            />
             <div className="flex flex-col gap-5">
               <ReviewSummary
                 statusLabel="Решение комиссии"
@@ -438,17 +420,14 @@ export const ApplicationTabs = ({
             icon={Scale}
             title="Характеристики и состав продукта"
           />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-col gap-5">
             <DetailItem
               label="Название продукта из декларации"
               value={normativeStage?.declaration_product_name}
-              className="col-span-full"
             />
-            <DetailItem
-              label="Состав"
-              value={normativeStage?.composition}
-              className="col-span-full"
-            />
+            <DetailItem label="Состав" value={normativeStage?.composition} />
+          </div>
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
             <DetailItem
               label="Срок годности, дней"
               value={normativeStage?.shelf_life_days}
@@ -488,16 +467,18 @@ export const ApplicationTabs = ({
               value={normativeStage?.kj}
             />
             <DetailItem
+              label="Регион поставщика"
+              value={normativeStage?.supplier_region}
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <DetailItem
               label="Условия хранения и срок годности"
               value={normativeStage?.storage_conditions_label}
             />
             <DetailItem
               label="Нормативный документ (ГОСТ/ТУ)"
               value={normativeStage?.normative_document}
-            />
-            <DetailItem
-              label="Регион поставщика"
-              value={normativeStage?.supplier_region}
             />
             <DetailItem label="Аллергены" value={normativeStage?.allergens} />
             <DetailItem
@@ -507,14 +488,13 @@ export const ApplicationTabs = ({
             <DetailItem
               label="Уникальное торговое предложение"
               value={normativeStage?.usp}
-              className="col-span-full"
             />
           </div>
         </Card>
 
         <Card className="flex flex-col gap-4 p-5">
-          <SectionHeader icon={Layers} title="Коды и маркировка" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeader icon={Barcode} title="Коды и маркировка" />
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
             <DetailItem
               label='Тип маркировки "Честный Знак"'
               value={normativeStage?.chz_marking_type}
@@ -564,7 +544,7 @@ export const ApplicationTabs = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card className="flex flex-col gap-4 p-5">
             <SectionHeader icon={DollarSign} title="Стоимость и цены" />
-            <div className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60 bg-background/70">
+            <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-background">
               <PriceMetric
                 label="Цена продажи «Калине-Малине»"
                 value={purchasePrice}
@@ -574,44 +554,65 @@ export const ApplicationTabs = ({
                 label="Итоговая цена на полке"
                 value={finalShelfPrice}
                 emptyLabel="Не рассчитана"
-                highlighted
               />
             </div>
           </Card>
 
           <Card className="flex flex-col gap-4 p-5">
             <SectionHeader icon={Tag} title="Этикетка" />
-            <div className="flex flex-col gap-5">
-              <DetailItem
-                label="Размер этикетки"
-                value={labelDesignStage?.label_size}
-              />
-              <DetailItem
-                label="Статус согласования макета"
-                value={labelApprovalStage?.design_layout_approval_status}
-                placeholder="Макет ещё не согласован"
-              />
-              <FileLink
-                href={
-                  labelApprovalStage?.approved_label_design_url ||
-                  labelDesignStage?.approved_label_design_url
-                }
-                title="Согласованный макет этикетки"
-              />
+            <div className="overflow-hidden rounded-xl border border-border bg-background">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-4">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Статус согласования макета
+                </span>
+                <span
+                  className={cn(
+                    "text-sm",
+                    labelApprovalStage?.design_layout_approval_status
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {labelApprovalStage?.design_layout_approval_status ||
+                    "Ещё не согласован"}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border p-4">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Размер этикетки
+                </span>
+                <span
+                  className={cn(
+                    "text-sm",
+                    labelDesignStage?.label_size
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {labelDesignStage?.label_size || "Не указан"}
+                </span>
+              </div>
             </div>
+            <FileLink
+              href={
+                labelApprovalStage?.approved_label_design_url ||
+                labelDesignStage?.approved_label_design_url
+              }
+              title="Согласованный макет этикетки"
+              icon={ImageIcon}
+            />
           </Card>
         </div>
       </TabsContent>
 
-      {/* 5. ПОСТАВКА И ЗАПУСК */}
       <TabsContent value="distribution" className="mt-3 flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-5">
           <SectionHeader icon={Truck} title="Распределение и поставки" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
-            <DetailItem
-              label="График поставок"
-              value={distStage?.delivery_schedule}
-            />
+          <DetailItem
+            label="График поставок"
+            value={distStage?.delivery_schedule}
+          />
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-3">
             <DetailItem
               label="Согласованная дата поставки"
               placeholder="Не указана"

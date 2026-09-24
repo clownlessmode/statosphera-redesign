@@ -56,6 +56,7 @@ export const FarmerApplications = () => {
     hasNextPage,
     isApplicationsFetchingNextPage,
     isApplicationsFetchNextPageError,
+    selectedApplication,
   ]);
 
   return (
