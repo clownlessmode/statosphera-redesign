@@ -61,7 +61,7 @@ export const FarmerApplications = () => {
 
   return (
     <div className="bg-muted h-screen w-full p-2 flex flex-col gap-2">
-      <Header title="Заявки на новинки" />
+      <Header title="Заявки на разработку продукта" />
 
       <div
         ref={scrollContainerRef}

@@ -74,7 +74,7 @@ export const FarmerApprovalForm = ({ itemId }: { itemId: string }) => {
       </Card>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Заявка ожидает вашего решения</DialogTitle>
             <DialogDescription>
@@ -97,16 +97,17 @@ export const FarmerApprovalForm = ({ itemId }: { itemId: string }) => {
                       <BooleanCheckboxCard
                         options={[
                           {
-                            label: "Принять заявку",
+                            label: "Беру в разработку",
                             value: "accepted",
                           },
                           {
-                            label: "Отклонить заявку",
+                            label: "Отказываюсь от разработки",
                             value: "rejected",
                           },
                         ]}
                         value={field.value}
                         onChange={field.onChange}
+                        className="grid-cols-1 sm:grid-cols-2"
                       />
                     </FormControl>
                   </FormItem>
