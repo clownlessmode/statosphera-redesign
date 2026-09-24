@@ -28,7 +28,12 @@ export const ApplicationCard = ({
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
-            <span className="text-sm font-bold text-foreground uppercase tracking-wider">
+            <span
+              className={cn(
+                "text-sm font-bold text-foreground uppercase tracking-wider",
+                stage?.category === "action_required" && "text-primary",
+              )}
+            >
               Заявка #{application.itemId}
             </span>
             {stage?.category === "action_required" && (
@@ -78,10 +83,10 @@ export const ApplicationCard = ({
           <Button
             size="sm"
             onClick={() => onOpenDetails(application)}
-            className="text-xs group/btn gap-1"
+            className="text-xs group gap-1"
           >
             Подробнее
-            <ChevronRight className="size-4 transition-transform group-hover/btn:translate-x-0.5" />
+            <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </Button>
         </div>
       </div>

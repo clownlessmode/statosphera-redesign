@@ -12,7 +12,7 @@ import {
   NdRevisionForm,
 } from "@features/farmer/applications";
 import { getStage } from "../config/stage-flow";
-import { ArrowLeft } from "lucide-react";
+import { X } from "lucide-react";
 import { Separator } from "@shared/ui/separator";
 import { ApplicationsDetailSkeleton } from "./applications-detail-skeleton";
 
@@ -37,17 +37,13 @@ export const ApplicationDetail = ({
   return (
     <div className="flex flex-col gap-4 animate-in fade-in-50 duration-200">
       <Card className="flex flex-col p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="icon" onClick={onBack}>
-                <ArrowLeft className="size-4" />
-              </Button>
-              <span className="text-xl sm:text-2xl font-bold text-foreground uppercase tracking-wider">
-                Заявка #{application.itemId}
-              </span>
-            </div>
-          </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={onBack}>
+            <X className="size-4" />
+          </Button>
+          <span className="text-xl font-bold uppercase tracking-wider text-foreground sm:text-2xl">
+            Заявка #{application.itemId}
+          </span>
         </div>
 
         <Separator />
