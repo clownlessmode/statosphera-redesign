@@ -319,7 +319,7 @@ export const ApplicationTabs = ({
 
         <Card className="flex flex-col gap-4 p-5">
           <SectionHeader icon={Package} title="Параметры новинки" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
             <DetailItem
               label="Рабочее наименование"
               value={common?.working_name}
@@ -335,7 +335,7 @@ export const ApplicationTabs = ({
                 common?.responsible_phone ? (
                   <a
                     href={`tel:${common.responsible_phone}`}
-                    className="inline-flex items-center gap-1.5 text-primary hover:underline"
+                    className="inline-flex items-center gap-1 text-primary hover:underline"
                   >
                     <Phone className="size-3.5" />
                     {common.responsible_phone}
@@ -420,17 +420,14 @@ export const ApplicationTabs = ({
             icon={Scale}
             title="Характеристики и состав продукта"
           />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="flex flex-col gap-5">
             <DetailItem
               label="Название продукта из декларации"
               value={normativeStage?.declaration_product_name}
-              className="col-span-full"
             />
-            <DetailItem
-              label="Состав"
-              value={normativeStage?.composition}
-              className="col-span-full"
-            />
+            <DetailItem label="Состав" value={normativeStage?.composition} />
+          </div>
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
             <DetailItem
               label="Срок годности, дней"
               value={normativeStage?.shelf_life_days}
@@ -470,16 +467,18 @@ export const ApplicationTabs = ({
               value={normativeStage?.kj}
             />
             <DetailItem
+              label="Регион поставщика"
+              value={normativeStage?.supplier_region}
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <DetailItem
               label="Условия хранения и срок годности"
               value={normativeStage?.storage_conditions_label}
             />
             <DetailItem
               label="Нормативный документ (ГОСТ/ТУ)"
               value={normativeStage?.normative_document}
-            />
-            <DetailItem
-              label="Регион поставщика"
-              value={normativeStage?.supplier_region}
             />
             <DetailItem label="Аллергены" value={normativeStage?.allergens} />
             <DetailItem
@@ -489,14 +488,13 @@ export const ApplicationTabs = ({
             <DetailItem
               label="Уникальное торговое предложение"
               value={normativeStage?.usp}
-              className="col-span-full"
             />
           </div>
         </Card>
 
         <Card className="flex flex-col gap-4 p-5">
           <SectionHeader icon={Barcode} title="Коды и маркировка" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
             <DetailItem
               label='Тип маркировки "Честный Знак"'
               value={normativeStage?.chz_marking_type}
@@ -610,11 +608,11 @@ export const ApplicationTabs = ({
       <TabsContent value="distribution" className="mt-3 flex flex-col gap-4">
         <Card className="flex flex-col gap-4 p-5">
           <SectionHeader icon={Truck} title="Распределение и поставки" />
-          <div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
-            <DetailItem
-              label="График поставок"
-              value={distStage?.delivery_schedule}
-            />
+          <DetailItem
+            label="График поставок"
+            value={distStage?.delivery_schedule}
+          />
+          <div className="grid grid-cols-1 items-start gap-x-8 gap-y-5 sm:grid-cols-3">
             <DetailItem
               label="Согласованная дата поставки"
               placeholder="Не указана"
