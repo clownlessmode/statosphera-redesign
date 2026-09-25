@@ -29,8 +29,12 @@ export const ApplicationCard = ({
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
             <span
+              title={
+                application.working_name?.trim() ||
+                `Заявка #${application.itemId}`
+              }
               className={cn(
-                "text-sm font-bold text-foreground uppercase tracking-wider",
+                "text-sm font-bold text-foreground uppercase tracking-wider line-clamp-1",
                 stage?.category === "action_required" && "text-primary",
               )}
             >
@@ -38,7 +42,7 @@ export const ApplicationCard = ({
                 `Заявка #${application.itemId}`}
             </span>
             {stage?.category === "action_required" && (
-              <AlertCircle className="size-4 text-primary" />
+              <AlertCircle className="size-4 text-primary shrink-0" />
             )}
           </div>
           {stage?.shortName && (
