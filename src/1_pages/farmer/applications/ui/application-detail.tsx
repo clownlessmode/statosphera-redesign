@@ -42,7 +42,8 @@ export const ApplicationDetail = ({
             <X className="size-4" />
           </Button>
           <span className="text-xl font-bold uppercase tracking-wider text-foreground sm:text-2xl">
-            Заявка #{application.itemId}
+            {application.working_name?.trim() ||
+              `Заявка #${application.itemId}`}
           </span>
         </div>
 
