@@ -34,7 +34,8 @@ export const ApplicationCard = ({
                 stage?.category === "action_required" && "text-primary",
               )}
             >
-              Заявка #{application.itemId}
+              {application.working_name?.trim() ||
+                `Заявка #${application.itemId}`}
             </span>
             {stage?.category === "action_required" && (
               <AlertCircle className="size-4 text-primary" />

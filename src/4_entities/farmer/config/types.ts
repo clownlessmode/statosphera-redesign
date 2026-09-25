@@ -97,6 +97,7 @@ export interface FarmerApplication {
   bitrixSyncedAt: string;
   stageKey: string;
   stageName: string;
+  working_name: string | null;
 }
 
 export interface FarmerApplicationResponse {
