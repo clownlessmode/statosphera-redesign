@@ -6,11 +6,16 @@ import { SidebarProvider } from "@shared/ui/sidebar";
 export const Authorization = () => {
   return (
     <SidebarProvider>
+      <link
+        rel="preload"
+        as="image"
+        href="/authorization/background.png"
+        fetchPriority="high"
+      />
       <div
         className="flex flex-col justify-between px-7 py-8 h-screen gap-6 items-center w-full bg-cover bg-center bg-no-repeat dark:bg-background/95 dark:bg-blend-overlay"
         style={{
-          backgroundImage:
-            "url('https://826d0f1c-f5de-47aa-b1a1-a0190a1d5c7c.selstorage.ru/photos%2Fbackground_login%2Fauth-background.webp')",
+          backgroundImage: "url('/authorization/background.png')",
         }}
       >
         <div className="flex justify-between items-center w-full">

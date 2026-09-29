@@ -37,10 +37,7 @@ const DownloadWriteOff = ({ rows, tab }: { rows: number; tab: string }) => {
   const isAllDisabled = rows > 7000000;
   const { session } = useSession();
 
-  const disabledRolesList: string[] = [
-    ROLES.MANAGER_STORE,
-    ROLES.SERVICE_MANAGER,
-  ];
+  const disabledRolesList: string[] = [ROLES.SERVICE_MANAGER];
 
   const isDisabled = disabledRolesList.includes(session?.role as string);
   return (
