@@ -294,7 +294,7 @@ export const ApplicationTabs = ({
               value={common?.marketing_name}
             />
             <DetailItem
-              label="Ответственный менеджер"
+              label="Контакт ответственного специалиста за продукт"
               placeholder="Не указан"
               value={
                 common?.responsible_phone ? (
