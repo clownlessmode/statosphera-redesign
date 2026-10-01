@@ -29,10 +29,9 @@ export const ApplicationDetail = ({
     application.itemId,
   );
 
-  const stage = getStage(
-    data?.common?.stage_name || application.stageKey,
-    application.stageId,
-  );
+  const stage =
+    getStage(data?.common?.stage_name) ??
+    getStage(application.stageKey, application.stageId);
 
   return (
     <div className="flex flex-col gap-4 animate-in fade-in-50 duration-200">

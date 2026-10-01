@@ -10,15 +10,12 @@ export const farmerApprovalSchema = z.discriminatedUnion("decision", [
   }),
 ]);
 
-export const labelApprovalSchema = z.discriminatedUnion("decision", [
-  z.object({
-    decision: z.literal("approved"),
-    deliveryDate: z.date({ message: "Укажите дату поставки" }),
-  }),
-  z.object({
-    decision: z.literal("rejected"),
-  }),
-]);
+export const labelApprovalSchema = z.object({
+  decision: z
+    .string({ message: "Укажите свое решение, предложения и тд." })
+    .min(1, "Укажите свое решение, предложения и тд."),
+  deliveryDate: z.date({ message: "Укажите дату поставки" }),
+});
 
 export const mrpRevisionSchema = z.object({
   readiness: z

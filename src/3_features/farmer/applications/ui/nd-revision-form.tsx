@@ -58,7 +58,7 @@ export const NdRevisionForm = ({ itemId }: { itemId: string }) => {
               setOpen(true);
             }}
           >
-            Завершить доработку
+            Решение по доработке НД
           </Button>
         </div>
       </Card>

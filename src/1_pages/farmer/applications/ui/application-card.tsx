@@ -1,6 +1,6 @@
 import { Card } from "@shared/ui/card";
 import { Button } from "@shared/ui/button";
-import { Clock, ChevronRight, AlertCircle } from "lucide-react";
+import { Clock, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import { FarmerApplication } from "@entities/farmer";
@@ -26,25 +26,16 @@ export const ApplicationCard = ({
   return (
     <Card className="flex flex-col justify-between p-5">
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1">
-            <span
-              title={
-                application.working_name?.trim() ||
-                `Заявка #${application.itemId}`
-              }
-              className={cn(
-                "text-sm font-bold text-foreground uppercase tracking-wider line-clamp-1",
-                stage?.category === "action_required" && "text-primary",
-              )}
-            >
-              {application.working_name?.trim() ||
-                `Заявка #${application.itemId}`}
-            </span>
-            {stage?.category === "action_required" && (
-              <AlertCircle className="size-4 text-primary shrink-0" />
+        <div className="flex max-md:flex-wrap items-start justify-between gap-2">
+          <span
+            title={application.working_name || `Заявка #${application.itemId}`}
+            className={cn(
+              "text-sm font-bold text-foreground uppercase tracking-wider line-clamp-2",
+              stage?.category === "action_required" && "text-primary",
             )}
-          </div>
+          >
+            {application.working_name || `Заявка #${application.itemId}`}
+          </span>
           {stage?.shortName && (
             <Badge variant="muted">{stage?.shortName}</Badge>
           )}

@@ -2,9 +2,7 @@ import React from "react";
 import { format, isValid, parse } from "date-fns";
 import { ru } from "date-fns/locale";
 import {
-  AlertCircle,
   Barcode,
-  CheckCircle2,
   DollarSign,
   ExternalLink,
   FileCheck,
@@ -17,7 +15,6 @@ import {
   Tag,
   Truck,
   UtensilsCrossed,
-  XCircle,
 } from "lucide-react";
 import { FarmerApplicationDetail, FarmerApplication } from "@entities/farmer";
 import { cn } from "@shared/lib/utils";
@@ -144,20 +141,20 @@ const PriceMetric = ({
   value?: number | null;
   emptyLabel: string;
 }) => (
-  <div className="flex flex-wrap items-center justify-between gap-4 p-4">
-    <span className="text-xs font-medium text-muted-foreground">{label}</span>
-    <div className="flex shrink-0 items-baseline gap-1.5 text-right">
+  <div className="flex min-h-36 flex-1 justify-center flex-col gap-4 p-6">
+    <span className="text-md font-medium text-muted-foreground">{label}</span>
+    <div className="flex items-baseline gap-2">
       {value != null ? (
         <>
-          <span className="text-2xl font-semibold text-foreground tabular-nums">
+          <span className="text-5xl font-semibold tracking-tight text-foreground tabular-nums">
             {value.toLocaleString("ru-RU")}
           </span>
-          <span className="text-2xl font-semibold text-muted-foreground">
+          <span className="text-3xl font-semibold text-muted-foreground">
             ₽
           </span>
         </>
       ) : (
-        <span className="text-sm font-normal text-muted-foreground">
+        <span className="text-5xl font-semibold tracking-tight text-muted-foreground">
           {emptyLabel}
         </span>
       )}
@@ -165,40 +162,12 @@ const PriceMetric = ({
   </div>
 );
 
-const TastingBadge = ({ result }: { result?: string | null }) => {
-  switch (result) {
-    case "approved":
-      return (
-        <Badge variant="positive" className="gap-1.5">
-          <CheckCircle2 className="size-3.5" />
-          Одобрено
-        </Badge>
-      );
-    case "needsRevision":
-      return (
-        <Badge variant="secondary" className="gap-1.5">
-          <AlertCircle className="size-3.5" />
-          Требуется доработка
-        </Badge>
-      );
-    case "rejected":
-      return (
-        <Badge variant="destructive" className="gap-1.5">
-          <XCircle className="size-3.5" />
-          Отклонено
-        </Badge>
-      );
-    default:
-      return <Badge variant="muted">Не проводилась</Badge>;
-  }
-};
-
-const DocumentStatusBadge = ({ status }: { status?: string | null }) => {
+const StatusBadge = ({ status }: { status?: string | null }) => {
   switch (status) {
     case "approved":
-      return <Badge variant="positive">Согласовано</Badge>;
+      return <Badge variant="positive">Одобрено</Badge>;
     case "needsRevision":
-      return <Badge variant="destructive">Требуется доработка</Badge>;
+      return <Badge variant="default">Требуется доработка</Badge>;
     case "rejected":
       return <Badge variant="destructive">Отклонено</Badge>;
     default:
@@ -267,10 +236,6 @@ export const ApplicationTabs = ({
     priceStage?.purchase_price ??
     docRev2?.purchase_price ??
     docRev1?.purchase_price;
-  const finalShelfPrice =
-    priceStage?.final_shelf_price ??
-    docRev2?.final_shelf_price ??
-    docRev1?.final_shelf_price;
 
   const docStatus =
     docRev2?.farmer_data_check_status ??
@@ -329,7 +294,7 @@ export const ApplicationTabs = ({
               value={common?.marketing_name}
             />
             <DetailItem
-              label="Телефон ответственного"
+              label="Ответственный менеджер"
               placeholder="Не указан"
               value={
                 common?.responsible_phone ? (
@@ -380,22 +345,15 @@ export const ApplicationTabs = ({
             <div className="flex flex-col gap-5">
               <ReviewSummary
                 statusLabel="Решение комиссии"
-                status={<TastingBadge result={tastingStage?.tasting_result} />}
+                status={<StatusBadge status={tastingStage?.tasting_result} />}
                 feedbackLabel="Отзыв комиссии"
                 feedback={tastingStage?.tasting_feedback}
                 feedbackPlaceholder="Отзыва пока нет"
               />
-              <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-2">
-                <FileLink
-                  href={tastingStage?.tasting_product_url}
-                  title="Фото продукта"
-                  icon={ImageIcon}
-                />
-                <FileLink
-                  href={tastingStage?.novelty_example_public_url}
-                  title="Пример новинки"
-                />
-              </div>
+              <FileLink
+                href={tastingStage?.novelty_example_public_url}
+                title="Пример новинки"
+              />
             </div>
           </Card>
         </div>
@@ -406,7 +364,7 @@ export const ApplicationTabs = ({
           <SectionHeader icon={FileCheck} title="Статус проверки документов" />
           <ReviewSummary
             statusLabel="Результат проверки"
-            status={<DocumentStatusBadge status={docStatus} />}
+            status={<StatusBadge status={docStatus} />}
             feedbackLabel="Замечания"
             feedback={docFeedback}
             feedbackPlaceholder={
@@ -542,18 +500,13 @@ export const ApplicationTabs = ({
 
       <TabsContent value="price" className="mt-3 flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Card className="flex flex-col gap-4 p-5">
+          <Card className="flex h-full flex-col gap-4 p-5">
             <SectionHeader icon={DollarSign} title="Стоимость и цены" />
-            <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-background">
+            <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background">
               <PriceMetric
                 label="Цена продажи «Калине-Малине»"
                 value={purchasePrice}
                 emptyLabel="Не указана"
-              />
-              <PriceMetric
-                label="Итоговая цена на полке"
-                value={finalShelfPrice}
-                emptyLabel="Не рассчитана"
               />
             </div>
           </Card>
@@ -620,11 +573,6 @@ export const ApplicationTabs = ({
                 distStage?.approved_delivery_date ||
                   labelApprovalStage?.approved_delivery_date,
               )}
-            />
-            <DetailItem
-              label="Согласование графика РЦ"
-              value={distStage?.rc_delivery_schedule_approval_status}
-              placeholder="Ещё не согласован"
             />
             <DetailItem
               label="Планируемая дата запуска"

@@ -20,6 +20,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -226,6 +227,24 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                       <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
                         Результат проверки наименования
                       </FormLabel>
+                      <FormDescription>
+                        Cайты для проверки названия{" "}
+                        <a
+                          href="https://clck.ru/3T9fzH"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          https://clck.ru/3T9fzH
+                        </a>{" "}
+                        и{" "}
+                        <a
+                          href="https://clck.ru/3T9g3e"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          https://clck.ru/3T9g3e
+                        </a>
+                      </FormDescription>
                       <FormControl>
                         <DocumentUploadField
                           value={field.value}
@@ -243,6 +262,9 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                       <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
                         Декларация
                       </FormLabel>
+                      <FormDescription>
+                        Файл должен содержать все листы документа
+                      </FormDescription>
                       <FormControl>
                         <DocumentUploadField
                           value={field.value}
@@ -258,8 +280,11 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                        Протокол испытаний
+                        Протокол лабораторных испытаний
                       </FormLabel>
+                      <FormDescription>
+                        Файл должен содержать все листы документа
+                      </FormDescription>
                       <FormControl>
                         <DocumentUploadField
                           value={field.value}
@@ -293,7 +318,11 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                           Вес НЕТТО
                         </FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value ?? ""} />
+                          <Input
+                            {...field}
+                            value={field.value ?? ""}
+                            placeholder="Пример, 0,25 кг"
+                          />
                         </FormControl>
                       </FormItem>
                     )}
@@ -307,7 +336,11 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                           Вес БРУТТО
                         </FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value ?? ""} />
+                          <Input
+                            {...field}
+                            value={field.value ?? ""}
+                            placeholder="Пример, 0,28кг"
+                          />
                         </FormControl>
                       </FormItem>
                     )}
@@ -389,7 +422,11 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                           ОКПД2
                         </FormLabel>
                         <FormControl>
-                          <Input {...field} value={field.value ?? ""} />
+                          <Input
+                            {...field}
+                            value={field.value ?? ""}
+                            placeholder="Код состоит из цифр (2-9 знаков)"
+                          />
                         </FormControl>
                       </FormItem>
                     )}
@@ -496,7 +533,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                          Белки (с базой расчёта)
+                          Содержание белка в 100гр
                         </FormLabel>
                         <FormControl>
                           <Input {...field} value={field.value ?? ""} />
@@ -510,7 +547,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                          Жиры (с базой расчёта)
+                          Содержание жиров в 100гр
                         </FormLabel>
                         <FormControl>
                           <Input {...field} value={field.value ?? ""} />
@@ -524,7 +561,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                          Углеводы (с базой расчёта)
+                          Содержание углеводов в 100гр
                         </FormLabel>
                         <FormControl>
                           <Input {...field} value={field.value ?? ""} />
@@ -540,7 +577,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                          Калорийность (с базой расчёта)
+                          Калорийность в 100гр
                         </FormLabel>
                         <FormControl>
                           <Input {...field} value={field.value ?? ""} />
@@ -554,7 +591,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                          Энергетическая ценность (с базой расчёта)
+                          Энергетическая ценность в 100гр
                         </FormLabel>
                         <FormControl>
                           <Input {...field} value={field.value ?? ""} />
@@ -569,7 +606,7 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                        Состав
+                        Подробный состав продукта
                       </FormLabel>
                       <FormControl>
                         <Textarea
@@ -677,14 +714,10 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="gap-0.5 after:text-destructive after:content-['*']">
-                        Подпись "От фермера"
+                        Укажите от какого фермера производится продукт
                       </FormLabel>
                       <FormControl>
-                        <Textarea
-                          {...field}
-                          value={field.value ?? ""}
-                          className="max-h-40"
-                        />
+                        <Input {...field} value={field.value ?? ""} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -872,20 +905,79 @@ export const NdFillForm = ({ itemId }: { itemId: string }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Тип маркировки "Честный Знак"</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
+                        <div className="relative min-w-0">
+                          <Select
+                            key={field.value ?? "empty"}
                             value={field.value ?? ""}
-                            onChange={(event) => {
-                              const value = event.target.value || undefined;
-                              field.onChange(value);
-                              if (!value) {
+                            onValueChange={(value) => {
+                              const next = value || undefined;
+                              field.onChange(next);
+                              if (!next) {
                                 form.setValue("gtin", undefined);
                                 form.setValue("groupGtin", undefined);
                               }
                             }}
-                          />
-                        </FormControl>
+                          >
+                            <FormControl>
+                              <SelectTrigger className="w-full *:data-[slot=select-value]:block! *:data-[slot=select-value]:truncate *:data-[slot=select-value]:pr-5">
+                                <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Молочная продукция">
+                                Молочная продукция
+                              </SelectItem>
+                              <SelectItem value="Упакованная вода">
+                                Упакованная вода
+                              </SelectItem>
+                              <SelectItem value="Подакцизный товар">
+                                Подакцизный товар
+                              </SelectItem>
+                              <SelectItem value="Безалкогольные напитки">
+                                Безалкогольные напитки
+                              </SelectItem>
+                              <SelectItem value="Растительное масло">
+                                Растительное масло
+                              </SelectItem>
+                              <SelectItem value="Консервированная продукция">
+                                Консервированная продукция
+                              </SelectItem>
+                              <SelectItem value="БИО добавка">
+                                БИО добавка
+                              </SelectItem>
+                              <SelectItem value="Бакалея">Бакалея</SelectItem>
+                              <SelectItem value="Легкая промышленность и одежда">
+                                Легкая промышленность и одежда
+                              </SelectItem>
+                              <SelectItem value="Сладости">Сладости</SelectItem>
+                              <SelectItem value="Макароны, крупы, мед">
+                                Макароны, крупы, мед
+                              </SelectItem>
+                              <SelectItem value="Мясные изделия">
+                                Мясные изделия
+                              </SelectItem>
+                              <SelectItem value="П/Ф и зам продукция">
+                                П/Ф и зам продукция
+                              </SelectItem>
+                              <SelectItem value="Растворимые напитки">
+                                Растворимые напитки
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          {field.value && (
+                            <button
+                              type="button"
+                              className="absolute top-1/2 right-8 z-10 flex size-5 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
+                              onClick={() => {
+                                field.onChange(undefined);
+                                form.setValue("gtin", undefined);
+                                form.setValue("groupGtin", undefined);
+                              }}
+                            >
+                              <X className="size-3.5" />
+                            </button>
+                          )}
+                        </div>
                       </FormItem>
                     )}
                   />

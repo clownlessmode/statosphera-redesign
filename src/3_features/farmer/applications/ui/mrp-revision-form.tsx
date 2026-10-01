@@ -58,7 +58,7 @@ export const MrpRevisionForm = ({ itemId }: { itemId: string }) => {
               setOpen(true);
             }}
           >
-            Завершить доработку
+            Решение по доработке
           </Button>
         </div>
       </Card>
