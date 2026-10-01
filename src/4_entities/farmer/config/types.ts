@@ -323,14 +323,10 @@ export interface CompleteNdRevisionDto {
   readiness: string;
 }
 
-export type CompleteFarmerLabelApprovalDto =
-  | {
-      decision: "approved";
-      deliveryDate: string;
-    }
-  | {
-      decision: "rejected";
-    };
+export type CompleteFarmerLabelApprovalDto = {
+  decision: string;
+  deliveryDate: string;
+};
 
 export interface SuccessResponse {
   success: boolean;

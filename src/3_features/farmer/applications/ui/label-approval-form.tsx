@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { PackageCheck } from "lucide-react";
 import { format } from "date-fns";
-import { useWatch } from "react-hook-form";
 import { useCompleteFarmerLabelApproval } from "@entities/farmer";
 import { Badge } from "@shared/ui/badge";
-import BooleanCheckboxCard from "@shared/ui/boolean-checkbox-cards";
 import { Button } from "@shared/ui/button";
 import { Card } from "@shared/ui/card";
 import { DatePicker } from "@shared/ui/date-picker";
@@ -24,22 +22,20 @@ import {
   FormLabel,
 } from "@shared/ui/form";
 import { LabelApprovalFormValues, useLabelApprovalForm } from "../model/hook";
+import { Textarea } from "@shared/ui/textarea";
 
 export const LabelApprovalForm = ({ itemId }: { itemId: string }) => {
   const form = useLabelApprovalForm();
-  const decision = useWatch({ control: form.control, name: "decision" });
   const [open, setOpen] = useState(false);
   const { mutate: completeLabelApproval, isPending } =
     useCompleteFarmerLabelApproval(itemId);
 
   const onSubmit = (data: LabelApprovalFormValues) => {
     completeLabelApproval(
-      data.decision === "approved"
-        ? {
-            ...data,
-            deliveryDate: format(data.deliveryDate, "yyyy-MM-dd"),
-          }
-        : data,
+      {
+        ...data,
+        deliveryDate: format(data.deliveryDate, "yyyy-MM-dd"),
+      },
       { onSuccess: () => setOpen(false) },
     );
   };
@@ -68,7 +64,7 @@ export const LabelApprovalForm = ({ itemId }: { itemId: string }) => {
               setOpen(true);
             }}
           >
-            Рассмотреть макет
+            Статус согласования макета
           </Button>
         </div>
       </Card>
@@ -94,43 +90,34 @@ export const LabelApprovalForm = ({ itemId }: { itemId: string }) => {
                   <FormItem>
                     <FormLabel>Решение</FormLabel>
                     <FormControl>
-                      <BooleanCheckboxCard
-                        options={[
-                          {
-                            label: "Согласовать макет",
-                            value: "approved",
-                          },
-                          {
-                            label: "Отправить на доработку",
-                            value: "rejected",
-                          },
-                        ]}
-                        value={field.value}
+                      <Textarea
+                        {...field}
+                        value={field.value ?? ""}
                         onChange={field.onChange}
+                        placeholder="Введите свое решение, предложения и тд."
+                        className="max-h-40"
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
-              {decision === "approved" && (
-                <FormField
-                  control={form.control}
-                  name="deliveryDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Согласованная дата поставки</FormLabel>
-                      <FormControl>
-                        <DatePicker
-                          value={field.value}
-                          onChange={field.onChange}
-                          placeholder="Выберите дату поставки"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              )}
+              <FormField
+                control={form.control}
+                name="deliveryDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Согласованная дата поставки</FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Выберите дату поставки"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <DialogFooter>
                 <Button
