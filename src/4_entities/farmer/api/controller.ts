@@ -28,7 +28,7 @@ import { toast } from "sonner";
 export const useInfiniteFarmerApplications = (params: { limit: number }) => {
   const getApplications = useInfiniteQuery<FarmerApplicationResponse, ApiError>(
     {
-      queryKey: ["farmer-applications", "list", params.limit],
+      queryKey: ["farmer-applications", params.limit],
       queryFn: ({ pageParam }) =>
         FarmerService.getApplications({
           limit: params.limit,
@@ -73,7 +73,7 @@ export const useCompleteFarmerApproval = (idApplication: string) => {
       FarmerService.completeFarmerApproval(idApplication, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["farmer-applications", idApplication],
+        queryKey: ["farmer-applications"],
       });
     },
     onError: () => {
@@ -89,7 +89,7 @@ export const useCompleteMrpRevision = (idApplication: string) => {
     mutationFn: (dto) => FarmerService.completeMrpRevision(idApplication, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["farmer-applications", idApplication],
+        queryKey: ["farmer-applications"],
       });
     },
     onError: () => {
@@ -105,7 +105,7 @@ export const useCompleteFarmerNdFill = (idApplication: string) => {
     mutationFn: (dto) => FarmerService.completeFarmerNdFill(idApplication, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["farmer-applications", idApplication],
+        queryKey: ["farmer-applications"],
       });
     },
     onError: () => {
@@ -121,7 +121,7 @@ export const useCompleteNdRevision = (idApplication: string) => {
     mutationFn: (dto) => FarmerService.completeNdRevision(idApplication, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["farmer-applications", idApplication],
+        queryKey: ["farmer-applications"],
       });
     },
     onError: () => {
@@ -139,7 +139,7 @@ export const useCompleteFarmerLabelApproval = (idApplication: string) => {
         FarmerService.completeFarmerLabelApproval(idApplication, dto),
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: ["farmer-applications", idApplication],
+          queryKey: ["farmer-applications"],
         });
       },
       onError: () => {
@@ -151,7 +151,7 @@ export const useCompleteFarmerLabelApproval = (idApplication: string) => {
 
 export const useFarmerApplicationDetail = (idApplication: string) => {
   return useQuery<FarmerApplicationDetail, ApiError>({
-    queryKey: ["farmer-applications", idApplication],
+    queryKey: ["farmer-applications", "detail", idApplication],
     queryFn: async () => {
       const response = await FarmerService.getApplication(idApplication);
       return response;

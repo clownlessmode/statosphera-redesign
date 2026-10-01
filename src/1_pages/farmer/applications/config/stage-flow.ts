@@ -153,6 +153,7 @@ export const getStage = (stageKey?: string | null, stageId?: string | null) => {
   return BITRIX_STAGE_FLOW.find(
     (item) =>
       (key && item.stageKey.toUpperCase() === key) ||
+      (key && item.shortName.trim().toUpperCase() === key) ||
       (id && item.stageId === id),
   );
 };
