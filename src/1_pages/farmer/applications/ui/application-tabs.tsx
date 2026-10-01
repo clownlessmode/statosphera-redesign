@@ -2,9 +2,7 @@ import React from "react";
 import { format, isValid, parse } from "date-fns";
 import { ru } from "date-fns/locale";
 import {
-  AlertCircle,
   Barcode,
-  CheckCircle2,
   DollarSign,
   ExternalLink,
   FileCheck,
@@ -17,7 +15,6 @@ import {
   Tag,
   Truck,
   UtensilsCrossed,
-  XCircle,
 } from "lucide-react";
 import { FarmerApplicationDetail, FarmerApplication } from "@entities/farmer";
 import { cn } from "@shared/lib/utils";
@@ -165,40 +162,12 @@ const PriceMetric = ({
   </div>
 );
 
-const TastingBadge = ({ result }: { result?: string | null }) => {
-  switch (result) {
-    case "approved":
-      return (
-        <Badge variant="positive" className="gap-1.5">
-          <CheckCircle2 className="size-3.5" />
-          Одобрено
-        </Badge>
-      );
-    case "needsRevision":
-      return (
-        <Badge variant="secondary" className="gap-1.5">
-          <AlertCircle className="size-3.5" />
-          Требуется доработка
-        </Badge>
-      );
-    case "rejected":
-      return (
-        <Badge variant="destructive" className="gap-1.5">
-          <XCircle className="size-3.5" />
-          Отклонено
-        </Badge>
-      );
-    default:
-      return <Badge variant="muted">Не проводилась</Badge>;
-  }
-};
-
-const DocumentStatusBadge = ({ status }: { status?: string | null }) => {
+const StatusBadge = ({ status }: { status?: string | null }) => {
   switch (status) {
     case "approved":
-      return <Badge variant="positive">Согласовано</Badge>;
+      return <Badge variant="positive">Одобрено</Badge>;
     case "needsRevision":
-      return <Badge variant="destructive">Требуется доработка</Badge>;
+      return <Badge variant="default">Требуется доработка</Badge>;
     case "rejected":
       return <Badge variant="destructive">Отклонено</Badge>;
     default:
@@ -376,7 +345,7 @@ export const ApplicationTabs = ({
             <div className="flex flex-col gap-5">
               <ReviewSummary
                 statusLabel="Решение комиссии"
-                status={<TastingBadge result={tastingStage?.tasting_result} />}
+                status={<StatusBadge status={tastingStage?.tasting_result} />}
                 feedbackLabel="Отзыв комиссии"
                 feedback={tastingStage?.tasting_feedback}
                 feedbackPlaceholder="Отзыва пока нет"
@@ -395,7 +364,7 @@ export const ApplicationTabs = ({
           <SectionHeader icon={FileCheck} title="Статус проверки документов" />
           <ReviewSummary
             statusLabel="Результат проверки"
-            status={<DocumentStatusBadge status={docStatus} />}
+            status={<StatusBadge status={docStatus} />}
             feedbackLabel="Замечания"
             feedback={docFeedback}
             feedbackPlaceholder={
